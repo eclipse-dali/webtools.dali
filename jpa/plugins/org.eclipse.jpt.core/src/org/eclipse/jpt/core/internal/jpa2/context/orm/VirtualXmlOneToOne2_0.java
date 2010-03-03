@@ -34,6 +34,8 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 	
 	protected final VirtualXmlOneToOne virtualXmlOneToOne;
 	
+	protected final VirtualXmlCascadeType2_0 virtualXmlCascadeType;
+	
 	
 	public VirtualXmlOneToOne2_0(
 			OrmTypeMapping ormTypeMapping, 
@@ -43,6 +45,8 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToOneMapping;
 		this.virtualXmlOneToOne = new VirtualXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
+		this.virtualXmlCascadeType = 
+				new VirtualXmlCascadeType2_0(javaOneToOneMapping.getCascade(), isOrmMetadataComplete());
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -93,15 +97,15 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 	public EList<XmlJoinColumn> getJoinColumns() {
 		return this.virtualXmlOneToOne.getJoinColumns();
 	}
-
+	
 	@Override
 	public CascadeType getCascade() {
-		return this.virtualXmlOneToOne.getCascade();
+		return this.virtualXmlCascadeType;
 	}
 	
 	@Override
 	public void setCascade(CascadeType value) {
-		this.virtualXmlOneToOne.setCascade(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToOneMapping2_0 oneToOneMapping) {

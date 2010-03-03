@@ -20,8 +20,8 @@ import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java single relationship (1:1, m:1) mapping
  */
-public abstract class AbstractJavaSingleRelationshipMapping<T extends RelationshipMappingAnnotation>
+public abstract class AbstractJavaSingleRelationshipMapping<T extends RelationshipMapping2_0Annotation>
 	extends AbstractJavaRelationshipMapping<T>
 	implements JavaSingleRelationshipMapping2_0
 {

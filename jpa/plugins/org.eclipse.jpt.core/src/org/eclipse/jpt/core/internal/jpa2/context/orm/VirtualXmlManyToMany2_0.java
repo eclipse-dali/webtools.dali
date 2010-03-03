@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
@@ -31,33 +30,41 @@ import org.eclipse.jpt.core.utility.TextRange;
  * VirtualBasic is an implementation of Basic used when there is 
  * no tag in the orm.xml and an underlying javaBasicMapping exists.
  */
-public class VirtualXmlManyToMany2_0 extends XmlManyToMany
+public class VirtualXmlManyToMany2_0
+	extends XmlManyToMany
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected final JavaManyToManyMapping javaAttributeMapping;
-
+	protected final JavaManyToManyMapping2_0 javaAttributeMapping;
+	
 	protected final VirtualXmlManyToMany virtualXmlManyToMany;
+	
+	protected final VirtualXmlCascadeType2_0 virtualXmlCascadeType;
 	
 	protected final XmlClassReference mapKeyClass;
 	
 	protected VirtualXmlOrderColumn orderColumn;
-
+	
 	protected final VirtualXmlColumn mapKeyColumn;
-
-	public VirtualXmlManyToMany2_0(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping2_0 javaManyToManyMapping) {
+	
+	
+	public VirtualXmlManyToMany2_0(
+			OrmTypeMapping ormTypeMapping, JavaManyToManyMapping2_0 javaManyToManyMapping) {
+		
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
 		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
+		this.virtualXmlCascadeType = 
+				new VirtualXmlCascadeType2_0(javaManyToManyMapping.getCascade(), isOrmMetadataComplete());
 		this.mapKeyClass = new VirtualMapKeyClassReference(javaManyToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
 			this.ormTypeMapping);
 		this.mapKeyColumn = new VirtualXmlColumn(ormTypeMapping, javaManyToManyMapping.getMapKeyColumn());
 	}
-
+	
+	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
 	}
@@ -94,12 +101,12 @@ public class VirtualXmlManyToMany2_0 extends XmlManyToMany
 
 	@Override
 	public CascadeType getCascade() {
-		return this.virtualXmlManyToMany.getCascade();
+		return this.virtualXmlCascadeType;
 	}
 	
 	@Override
 	public void setCascade(CascadeType value) {
-		this.virtualXmlManyToMany.setCascade(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	@Override

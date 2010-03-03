@@ -14,9 +14,10 @@ import org.eclipse.jpt.core.resource.orm.CascadeType;
 
 public class VirtualCascadeType extends CascadeType
 {
-	Cascade javaCascade;
-
+	protected Cascade javaCascade;
+	
 	protected boolean metadataComplete;
+	
 	
 	public VirtualCascadeType(Cascade javaCascade, boolean metadataComplete) {
 		super();
@@ -82,10 +83,5 @@ public class VirtualCascadeType extends CascadeType
 			return false;
 		}
 		return this.javaCascade.isRemove();
-	}
-
-	@Override
-	public void setCascadeRemove(boolean value) {
-		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 }

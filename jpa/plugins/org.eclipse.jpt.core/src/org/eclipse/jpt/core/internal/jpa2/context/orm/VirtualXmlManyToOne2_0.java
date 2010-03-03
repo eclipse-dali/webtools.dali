@@ -30,6 +30,8 @@ public class VirtualXmlManyToOne2_0 extends XmlManyToOne
 	
 	protected final VirtualXmlManyToOne virtualXmlManyToOne;
 	
+	protected final VirtualXmlCascadeType2_0 virtualXmlCascadeType;
+	
 	
 	public VirtualXmlManyToOne2_0(
 			OrmTypeMapping ormTypeMapping, 
@@ -39,7 +41,10 @@ public class VirtualXmlManyToOne2_0 extends XmlManyToOne
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToOneMapping;
 		this.virtualXmlManyToOne = new VirtualXmlManyToOne(ormTypeMapping, javaManyToOneMapping);
+		this.virtualXmlCascadeType = 
+				new VirtualXmlCascadeType2_0(javaManyToOneMapping.getCascade(), isOrmMetadataComplete());
 	}
+	
 	
 	protected boolean isOrmMetadataComplete() {
 		return this.ormTypeMapping.isMetadataComplete();
@@ -92,12 +97,12 @@ public class VirtualXmlManyToOne2_0 extends XmlManyToOne
 
 	@Override
 	public CascadeType getCascade() {
-		return this.virtualXmlManyToOne.getCascade();
+		return this.virtualXmlCascadeType;
 	}
 	
 	@Override
 	public void setCascade(CascadeType value) {
-		this.virtualXmlManyToOne.setCascade(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	@Override

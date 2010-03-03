@@ -22,8 +22,5 @@ import org.eclipse.jpt.core.context.Cascade;
  */
 public interface OrmCascade extends Cascade
 {
-	void initializeFrom(Cascade oldCascade);
-
 	void update();
-
 }

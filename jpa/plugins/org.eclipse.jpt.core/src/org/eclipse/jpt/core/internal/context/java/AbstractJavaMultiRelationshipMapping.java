@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -38,9 +37,9 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
+import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
-import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
@@ -53,7 +52,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java multi-relationship (m:m, 1:m) mapping
  */
-public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMappingAnnotation>
+public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMapping2_0Annotation>
 	extends AbstractJavaRelationshipMapping<T> 
 	implements JavaMultiRelationshipMapping, CollectionMapping2_0
 {

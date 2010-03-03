@@ -26,7 +26,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
@@ -102,8 +101,6 @@ public interface OrmXmlContextNodeFactory
 	OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, XmlAssociationOverride associationOverride);
 
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner);
-	
-	OrmCascade buildOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping);
 	
 	OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner);
 	

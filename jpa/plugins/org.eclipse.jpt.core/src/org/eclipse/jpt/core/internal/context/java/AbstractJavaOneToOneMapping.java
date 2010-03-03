@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Vector;
-
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -18,12 +17,13 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToOne2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 
 
 public abstract class AbstractJavaOneToOneMapping
-	extends AbstractJavaSingleRelationshipMapping<OneToOneAnnotation>
+	extends AbstractJavaSingleRelationshipMapping<OneToOne2_0Annotation>
 	implements JavaOneToOneMapping2_0, JavaOrphanRemovalHolder2_0
 {
 	protected final JavaOrphanRemovable2_0 orphanRemoval;
@@ -74,11 +74,6 @@ public abstract class AbstractJavaOneToOneMapping
 	}
 
 	// ********** JavaOneToOneMapping implementation **********
-	
-	@Override
-	public OneToOneAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
-	}
 	
 	@Override
 	public JavaOneToOneRelationshipReference2_0 getRelationshipReference() {

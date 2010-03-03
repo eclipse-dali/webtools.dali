@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToOne2_0Annotation;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -26,5 +27,7 @@ import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 public interface JavaOneToOneMapping2_0
 	extends JavaOneToOneMapping, OneToOneMapping2_0, JavaSingleRelationshipMapping2_0
 {
+	OneToOne2_0Annotation getMappingAnnotation();
+	
 	JavaOneToOneRelationshipReference2_0 getRelationshipReference();
 }

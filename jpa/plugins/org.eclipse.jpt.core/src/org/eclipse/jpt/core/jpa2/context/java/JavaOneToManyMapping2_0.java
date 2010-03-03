@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,8 +24,10 @@ import org.eclipse.jpt.core.jpa2.context.OneToManyMapping2_0;
  * @since 3.0
  */
 public interface JavaOneToManyMapping2_0
-	extends JavaOneToManyMapping, OneToManyMapping2_0
+	extends JavaOneToManyMapping, JavaRelationshipMapping2_0, OneToManyMapping2_0
 {
+	OneToMany2_0Annotation getMappingAnnotation();
+	
 	JavaOneToManyRelationshipReference2_0 getRelationshipReference();
 
 	public JavaOrderable2_0 getOrderable();

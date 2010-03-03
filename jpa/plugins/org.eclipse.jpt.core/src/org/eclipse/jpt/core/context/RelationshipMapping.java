@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
 
 /**
  * Relationship (1:1, 1:m, m:1, m:m) mapping.

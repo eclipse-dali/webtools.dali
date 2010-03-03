@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
 /**
  * 
@@ -23,5 +24,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 public interface JavaRelationshipMapping
 	extends JavaAttributeMapping, RelationshipMapping
 {
+	RelationshipMappingAnnotation getMappingAnnotation();
+	
 	JavaCascade getCascade();
 }

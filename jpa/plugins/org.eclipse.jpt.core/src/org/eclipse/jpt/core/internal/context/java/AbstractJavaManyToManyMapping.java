@@ -14,11 +14,12 @@ import org.eclipse.jpt.core.context.java.JavaManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToManyMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.ManyToMany2_0Annotation;
 import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 
 
 public abstract class AbstractJavaManyToManyMapping
-	extends AbstractJavaMultiRelationshipMapping<ManyToManyAnnotation>
+	extends AbstractJavaMultiRelationshipMapping<ManyToMany2_0Annotation>
 	implements JavaManyToManyMapping2_0
 {
 	protected AbstractJavaManyToManyMapping(JavaPersistentAttribute parent) {
@@ -32,11 +33,6 @@ public abstract class AbstractJavaManyToManyMapping
 		
 	public String getAnnotationName() {
 		return ManyToManyAnnotation.ANNOTATION_NAME;
-	}
-	
-	@Override
-	public ManyToManyAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
 	}
 	
 	public String getKey() {

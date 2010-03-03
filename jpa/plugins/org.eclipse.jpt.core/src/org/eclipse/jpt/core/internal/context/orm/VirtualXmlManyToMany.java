@@ -37,7 +37,9 @@ public class VirtualXmlManyToMany
 	
 	
 	public VirtualXmlManyToMany(
-			OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping) {
+			OrmTypeMapping ormTypeMapping, 
+			JavaManyToManyMapping javaManyToManyMapping) {
+		
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;

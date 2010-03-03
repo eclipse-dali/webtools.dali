@@ -9,17 +9,19 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.core.context.Cascade;
-import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.utility.TextRange;
 
 
-public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmCascade
+public class GenericOrmCascade
+	extends AbstractOrmXmlContextNode
+	implements OrmCascade2_0
 {
 	protected boolean all;
 
@@ -30,9 +32,12 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 	protected boolean remove;
 
 	protected boolean refresh;
-
+	
+	/* JPA 2.0 */
+	protected boolean detach;
 	
 	protected final AbstractXmlRelationshipMapping relationshipMapping;
+	
 	
 	public GenericOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping relationshipMapping) {
 		super(parent);
@@ -43,20 +48,23 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		this.merge = this.getResourceMerge(cascade);
 		this.remove = this.getResourceRemove(cascade);
 		this.refresh = this.getResourceRefresh(cascade);
+		this.detach = this.getResourceDetach(cascade);
 	}
 	
-	public void initializeFrom(Cascade oldCascade) {
+	
+	public void initializeFrom(Cascade2_0 oldCascade) {
 		setAll(oldCascade.isAll());
 		setPersist(oldCascade.isPersist());
 		setMerge(oldCascade.isMerge());
 		setRemove(oldCascade.isRemove());
 		setRefresh(oldCascade.isRefresh());
+		setDetach(oldCascade.isDetach());
 	}
-
+	
 	public boolean isAll() {
 		return this.all;
 	}
-
+	
 	public void setAll(boolean newAll) {
 		boolean oldAll = this.all;
 		this.all = newAll;
@@ -84,7 +92,7 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 	public boolean isPersist() {
 		return this.persist;
 	}
-
+	
 	public void setPersist(boolean newPersist) {
 		boolean oldPersist = this.persist;
 		this.persist = newPersist;
@@ -108,12 +116,11 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		this.persist = newPersist;		
 		firePropertyChanged(PERSIST_PROPERTY, oldPersist, newPersist);
 	}
-
-
+	
 	public boolean isMerge() {
 		return this.merge;
 	}
-
+	
 	public void setMerge(boolean newMerge) {
 		boolean oldMerge = this.merge;
 		this.merge = newMerge;
@@ -137,15 +144,15 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		this.merge = newMerge;
 		firePropertyChanged(MERGE_PROPERTY, oldMerge, newMerge);
 	}
-
+	
 	public boolean isRemove() {
 		return this.remove;
 	}
-
+	
 	public void setRemove(boolean newRemove) {
 		boolean oldRemove = this.remove;
-		this.remove = newRemove;
 		if (oldRemove != newRemove) {
+			this.remove = newRemove;
 			if (this.getResourceCascade() != null) {
 				this.getResourceCascade().setCascadeRemove(newRemove);						
 				if (this.getResourceCascade().isUnset()) {
@@ -165,11 +172,11 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		this.remove = newRemove;		
 		firePropertyChanged(REMOVE_PROPERTY, oldRemove, newRemove);
 	}
-
+	
 	public boolean isRefresh() {
 		return this.refresh;
 	}
-
+	
 	public void setRefresh(boolean newRefresh) {
 		boolean oldRefresh = this.refresh;
 		this.refresh = newRefresh;	
@@ -194,7 +201,34 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		firePropertyChanged(REFRESH_PROPERTY, oldRefresh, newRefresh);
 	}
 	
-
+	public boolean isDetach() {
+		return this.detach;
+	}
+	
+	public void setDetach(boolean newDetach) {
+		boolean oldDetach = this.detach;
+		this.detach = newDetach;	
+		if (oldDetach != newDetach) {
+			if (this.getResourceCascade() != null) {
+				this.getResourceCascade().setCascadeDetach(newDetach);						
+				if (this.getResourceCascade().isUnset()) {
+					removeResourceCascade();
+				}
+			}
+			else if (newDetach != false) {
+				addResourceCascade();
+				getResourceCascade().setCascadeDetach(newDetach);
+			}
+		}
+		firePropertyChanged(DETACH_PROPERTY, oldDetach, newDetach);
+	}
+	
+	protected void setDetach_(boolean newDetach) {
+		boolean oldDetach = this.detach;
+		this.detach = newDetach;
+		firePropertyChanged(DETACH_PROPERTY, oldDetach, newDetach);
+	}
+	
 	protected CascadeType getResourceCascade() {
 		return this.relationshipMapping.getCascade();
 	}
@@ -213,29 +247,34 @@ public class GenericOrmCascade extends AbstractOrmXmlContextNode implements OrmC
 		this.setPersist_(this.getResourcePersist(cascade));
 		this.setMerge_(this.getResourceMerge(cascade));
 		this.setRemove_(this.getResourceRemove(cascade));
-		this.setRefresh_(this.getResourceRefresh(cascade));		
+		this.setRefresh_(this.getResourceRefresh(cascade));
+		this.setDetach_(this.getResourceDetach(cascade));
 	}
-
+	
 	protected boolean getResourceAll(CascadeType cascade) {
 		return cascade == null ? false : cascade.isCascadeAll();
 	}
-
+	
 	protected boolean getResourcePersist(CascadeType cascade) {
 		return cascade == null ? false : cascade.isCascadePersist();
 	}
-
+	
 	protected boolean getResourceMerge(CascadeType cascade) {
 		return cascade == null ? false : cascade.isCascadeMerge();
 	}
-
+	
 	protected boolean getResourceRemove(CascadeType cascade) {
 		return cascade == null ? false : cascade.isCascadeRemove();
 	}
-
+	
 	protected boolean getResourceRefresh(CascadeType cascade) {
 		return cascade == null ? false : cascade.isCascadeRefresh();
 	}
-
+	
+	protected boolean getResourceDetach(CascadeType cascade) {
+		return cascade == null ? false : cascade.isCascadeDetach();
+	}
+	
 	public TextRange getValidationTextRange() {
 		return this.getResourceCascade().getValidationTextRange();
 	}

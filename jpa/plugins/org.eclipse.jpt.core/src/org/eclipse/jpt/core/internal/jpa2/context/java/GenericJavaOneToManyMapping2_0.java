@@ -12,20 +12,19 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
-import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 
 
 public class GenericJavaOneToManyMapping2_0
-	extends AbstractJavaOneToManyMapping<OneToManyAnnotation>
+	extends AbstractJavaOneToManyMapping<OneToMany2_0Annotation>
 {
-	
 	public GenericJavaOneToManyMapping2_0(JavaPersistentAttribute parent) {
 		super(parent);
 	}	
+	
 	
 	@Override
 	protected JavaRelationshipReference buildRelationshipReference() {
 		return new GenericJavaOneToManyRelationshipReference2_0(this);
 	}
-
 }

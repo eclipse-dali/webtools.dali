@@ -28,7 +28,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
@@ -59,7 +58,6 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaQueryHint;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaTable;
@@ -84,7 +82,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOve
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaBasicMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaEmbeddable;
@@ -233,10 +230,6 @@ public abstract class AbstractJpaFactory
 	
 	public JavaTable buildJavaTable(JavaEntity parent) {
 		return new GenericJavaTable(parent);
-	}
-	
-	public JavaCascade buildJavaCascade(JavaRelationshipMapping parent) {
-		return new GenericJavaCascade(parent);
 	}
 	
 	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {

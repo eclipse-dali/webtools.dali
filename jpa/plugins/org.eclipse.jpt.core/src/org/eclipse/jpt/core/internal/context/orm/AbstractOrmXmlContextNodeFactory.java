@@ -34,7 +34,6 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmDiscriminatorColumn;
@@ -64,7 +63,6 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTable;
@@ -82,7 +80,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverr
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmDiscriminatorColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmEmbeddable;
@@ -140,7 +137,6 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
-import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
@@ -261,10 +257,6 @@ public abstract class AbstractOrmXmlContextNodeFactory
 	
 	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner) {
 		return new GenericOrmDiscriminatorColumn(parent, owner);
-	}
-	
-	public OrmCascade buildOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping resourceMapping) {
-		return new GenericOrmCascade(parent, resourceMapping);
 	}
 	
 	public OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {

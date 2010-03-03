@@ -42,25 +42,30 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  */
 public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 {
-		
 	protected OrmTypeMapping ormTypeMapping;
 	
 	protected final JavaOneToManyMapping2_0 javaAttributeMapping;
-
+	
 	protected final VirtualXmlOneToMany virtualXmlOneToMany;
-
+	
+	protected final VirtualXmlCascadeType2_0 virtualXmlCascadeType;
+	
 	protected final XmlClassReference mapKeyClass;
-
+	
 	protected VirtualXmlOrderColumn orderColumn;
-
+	
 	protected final VirtualXmlColumn mapKeyColumn;
-
+	
+	
 	public VirtualXmlOneToMany2_0(
 			OrmTypeMapping ormTypeMapping, JavaOneToManyMapping2_0 javaOneToManyMapping) {
+	
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
 		this.virtualXmlOneToMany = new VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
+		this.virtualXmlCascadeType = 
+				new VirtualXmlCascadeType2_0(javaOneToManyMapping.getCascade(), isOrmMetadataComplete());
 		this.mapKeyClass = new VirtualMapKeyClassReference(javaOneToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
@@ -104,12 +109,12 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 
 	@Override
 	public CascadeType getCascade() {
-		return this.virtualXmlOneToMany.getCascade();
+		return this.virtualXmlCascadeType;
 	}
 	
 	@Override
 	public void setCascade(CascadeType value) {
-		this.virtualXmlOneToMany.setCascade(value);
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
 	
 	private JavaOrphanRemovable2_0 getOrphanRemovalOf(OneToManyMapping2_0 oneToManyMapping) {

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -20,14 +19,15 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaCascade;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaCascade;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCascade2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaRelationshipMapping2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -40,53 +40,54 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java relationship mapping
  */
-public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMappingAnnotation>
+public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapping2_0Annotation>
 	extends AbstractJavaAttributeMapping<T>
-	implements JavaRelationshipMapping
+	implements JavaRelationshipMapping2_0
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
 	protected PersistentType resolvedTargetType;
 	protected Entity resolvedTargetEntity;
-
+	
 	protected final JavaRelationshipReference relationshipReference;
-
-	protected final JavaCascade cascade;
-
+	
+	protected final JavaCascade2_0 cascade;
+	
 	protected FetchType specifiedFetch;
-
-
+	
+	
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.relationshipReference = this.buildRelationshipReference();
-		this.cascade = this.getJpaFactory().buildJavaCascade(this);
+		this.relationshipReference = buildRelationshipReference();
+		this.cascade = buildCascade();
 	}
-
+	
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.relationshipReference.initialize();
 		this.specifiedFetch = this.getResourceFetch();
-		this.cascade.initialize(this.mappingAnnotation);
+		this.cascade.initialize();
 		this.specifiedTargetEntity = this.getResourceTargetEntity();
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
 	}
-
+	
 	@Override
 	protected void update() {
 		super.update();
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.relationshipReference.update();
 		this.setSpecifiedFetch_(this.getResourceFetch());
-		this.cascade.update(this.mappingAnnotation);
+		this.cascade.update();
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
 	}
-
-
+	
+	
 	// ********** target entity **********
 
 	public String getTargetEntity() {
@@ -228,12 +229,16 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 
 	// ********** cascade **********  
-
-	public JavaCascade getCascade() {
+	
+	protected JavaCascade2_0 buildCascade() {
+		return new GenericJavaCascade(this);
+	}
+	
+	public JavaCascade2_0 getCascade() {
 		return this.cascade;
 	}
-
-
+	
+	
 	// ********** fetch **********  
 
 	public FetchType getFetch() {

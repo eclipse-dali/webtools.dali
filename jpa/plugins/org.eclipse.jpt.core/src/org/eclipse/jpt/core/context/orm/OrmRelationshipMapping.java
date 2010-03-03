@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -23,5 +24,5 @@ public interface OrmRelationshipMapping
 {
 	OrmRelationshipReference getRelationshipReference();
 	
-	OrmCascade getCascade();
+	OrmCascade2_0 getCascade();
 }

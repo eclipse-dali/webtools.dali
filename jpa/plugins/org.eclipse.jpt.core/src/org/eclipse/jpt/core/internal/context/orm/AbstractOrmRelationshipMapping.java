@@ -18,13 +18,14 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmCascade;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -46,7 +47,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	
 	protected final OrmRelationshipReference relationshipReference;
 	
-	protected final OrmCascade cascade;
+	protected final OrmCascade2_0 cascade;
 
 	protected FetchType specifiedFetch;
 	
@@ -54,7 +55,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.relationshipReference = buildRelationshipReference();
-		this.cascade = getXmlContextNodeFactory().buildOrmCascade(this, this.resourceAttributeMapping);
+		this.cascade = buildCascade();
 		this.specifiedTargetEntity = getResourceTargetEntity();
 		this.defaultTargetEntity = buildDefaultTargetEntity();
 		this.resolvedTargetType = this.buildResolvedTargetType();
@@ -75,7 +76,7 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 	
 	protected abstract OrmRelationshipReference buildRelationshipReference();
-
+	
 	@Override
 	public OrmPersistentAttribute getParent() {
 		return (OrmPersistentAttribute) super.getParent();
@@ -229,7 +230,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	
 	// **************** cascade ************************************************
 	
-	public OrmCascade getCascade() {
+	protected OrmCascade2_0 buildCascade() {
+		return new GenericOrmCascade(this, this.resourceAttributeMapping);
+	}
+	
+	public OrmCascade2_0 getCascade() {
 		return this.cascade;
 	}
 	

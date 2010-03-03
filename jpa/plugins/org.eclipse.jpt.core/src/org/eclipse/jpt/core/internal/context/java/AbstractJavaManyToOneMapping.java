@@ -13,11 +13,12 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.resource.java.ManyToOne2_0Annotation;
 import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 
 public abstract class AbstractJavaManyToOneMapping
-	extends AbstractJavaSingleRelationshipMapping<ManyToOneAnnotation>
+	extends AbstractJavaSingleRelationshipMapping<ManyToOne2_0Annotation>
 	implements JavaManyToOneMapping2_0
 {
 	protected AbstractJavaManyToOneMapping(JavaPersistentAttribute parent) {
@@ -26,11 +27,6 @@ public abstract class AbstractJavaManyToOneMapping
 	
 	public String getAnnotationName() {
 		return ManyToOneAnnotation.ANNOTATION_NAME;
-	}
-	
-	@Override
-	public ManyToOneAnnotation getMappingAnnotation() {
-		return super.getMappingAnnotation();
 	}
 	
 	public String getKey() {
