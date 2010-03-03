@@ -1056,7 +1056,8 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) resourceAttribute.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
-		annotation.setName("bar");	
+		annotation.setName("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(3, overrideContainer.associationOverridesSize());
 	}
 

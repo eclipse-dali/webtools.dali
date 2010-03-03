@@ -13,15 +13,12 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -31,57 +28,39 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
+public class GenericOrmAttributeOverride extends AbstractOrmOverride
 	implements OrmAttributeOverride, OrmColumn.Owner
 {
-
-	protected String name;
-
-	private final Owner owner;
-
-	protected XmlAttributeOverride resourceAttributeOverride;
-	
 
 	protected final OrmColumn column;
 
 	public GenericOrmAttributeOverride(OrmAttributeOverrideContainer parent, AttributeOverride.Owner owner, XmlAttributeOverride resourceAttributeOverride) {
-		super(parent);
-		this.owner = owner;
+		super(parent, owner, resourceAttributeOverride);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
-		this.resourceAttributeOverride = resourceAttributeOverride;
-		this.name = resourceAttributeOverride.getName();
 		this.column.initialize(resourceAttributeOverride.getColumn());
-	}
-	
-	@Override
-	public XmlContextNode getParent() {
-		return (XmlContextNode) super.getParent();
 	}
 
 	public OrmAttributeOverride setVirtual(boolean virtual) {
 		return (OrmAttributeOverride) getOwner().setVirtual(virtual, this);
 	}
 
+	@Override
 	public Owner getOwner() {
-		return this.owner;
-	}
-	
-	public String getName() {
-		return this.name;
-	}
-	
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.resourceAttributeOverride.setName(newName);
-		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
+		return (Owner) super.getOwner();
 	}
 
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(BaseOverride.NAME_PROPERTY, oldName, newName);
+	@Override
+	protected XmlAttributeOverride getResourceOverride() {
+		return (XmlAttributeOverride) super.getResourceOverride();
 	}
+
+	public void update(XmlAttributeOverride xmlAttributeOverride) {
+		super.update(xmlAttributeOverride);
+		this.column.update(xmlAttributeOverride.getColumn());
+	}
+	
+
+	// ********************* column ****************
 
 	public OrmColumn getColumn() {
 		return this.column;
@@ -134,40 +113,19 @@ public class GenericOrmAttributeOverride extends AbstractOrmXmlContextNode
 		return getOwner().isVirtual(this);
 	}
 
-	public TextRange getValidationTextRange() {
-		TextRange textRange = this.resourceAttributeOverride.getValidationTextRange();
-		return textRange == null ? getParent().getValidationTextRange() : textRange;
-	}
-
 
 	//***************** OrmColumn.Owner implementation ****************
 	
 	public XmlColumn getResourceColumn() {
-		return this.resourceAttributeOverride.getColumn();
+		return this.getResourceOverride().getColumn();
 	}
 	
 	public void addResourceColumn() {
-		this.resourceAttributeOverride.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
+		this.getResourceOverride().setColumn(OrmFactory.eINSTANCE.createXmlColumn());
 	}
 	
 	public void removeResourceColumn() {
-		this.resourceAttributeOverride.setColumn(null);
-	}
-	
-	//****************** miscellaneous ********************
-	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
-	}
-
-
-	//***************** updating ****************
-	
-	public void update(XmlAttributeOverride xmlAttributeOverride) {
-		this.resourceAttributeOverride = xmlAttributeOverride;
-		this.setName_(xmlAttributeOverride.getName());
-		this.column.update(xmlAttributeOverride.getColumn());
+		this.getResourceOverride().setColumn(null);
 	}
 
 

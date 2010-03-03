@@ -149,11 +149,13 @@ public class GenericJavaAssociationOverride2_0Tests extends Generic2_0ContextMod
 		//set name to null in the resource model
 		associationOverrideResource.setName(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(javaAssociationOverride.getName());
+		assertEquals(0, overrideContainer.specifiedAssociationOverridesSize());
 		assertNull(associationOverrideResource.getName());
 		
 		associationOverrideResource.setName("FOO");
 		getJpaProject().synchronizeContextModel();
+		assertEquals(1, overrideContainer.specifiedAssociationOverridesSize());
+		javaAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
 		assertEquals("FOO", javaAssociationOverride.getName());
 		assertEquals("FOO", associationOverrideResource.getName());
 

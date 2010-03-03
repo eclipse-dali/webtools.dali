@@ -53,18 +53,15 @@
       interface="true" eSuperTypes="#//v2_0/XmlAttributeMapping_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlJoinColumnsMapping #//v2_0/XmlAssociationOverride_2_0">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverride" eSuperTypes="#//XmlOverride #//XmlJoinColumnsMapping #//v2_0/XmlAssociationOverride_2_0"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAssociationOverrideContainer" abstract="true"
       interface="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="associationOverrides" upperBound="-1"
         eType="#//XmlAssociationOverride" containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" eSuperTypes="#//v2_0/XmlAttributeOverride_2_0">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverride" eSuperTypes="#//XmlOverride #//v2_0/XmlAttributeOverride_2_0">
     <eStructuralFeatures xsi:type="ecore:EReference" name="column" lowerBound="1"
         eType="#//XmlColumn" containment="true" resolveProxies="false"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeOverrideContainer" abstract="true"
       interface="true">
@@ -303,6 +300,9 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="orderBy" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOrderColumn" eSuperTypes="#//AbstractXmlNamedColumn #//v2_0/XmlOrderColumn_2_0"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOverride" abstract="true" interface="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlPersistenceUnitDefaults" eSuperTypes="#//XmlAccessHolder #//v2_0/XmlPersistenceUnitDefaults_2_0">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>

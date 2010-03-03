@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -254,7 +255,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 			return getTypeMapping().getPrimaryTableName();
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeUnresolvedColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -297,7 +298,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 				);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
 			}

@@ -12,11 +12,9 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
-import org.eclipse.jpt.core.utility.TextRange;
 
-public interface OrmAssociationOverrideContainer extends AssociationOverrideContainer, XmlContextNode
+public interface OrmAssociationOverrideContainer extends AssociationOverrideContainer, OrmOverrideContainer
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAssociationOverride> associationOverrides();
@@ -31,12 +29,8 @@ public interface OrmAssociationOverrideContainer extends AssociationOverrideCont
 	
 	void update();
 	
-	interface Owner extends AssociationOverrideContainer.Owner
-	{		
-		OrmTypeMapping getTypeMapping();
-		
-		TextRange getValidationTextRange();
-		
+	interface Owner extends AssociationOverrideContainer.Owner, OrmOverrideContainer.Owner
+	{				
 		EList<XmlAssociationOverride> getResourceAssociationOverrides();
 	}
 }

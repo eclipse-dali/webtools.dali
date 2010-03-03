@@ -92,15 +92,12 @@
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeMapping">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAttributeMapping/name"/>
     </genClasses>
-    <genClasses ecoreClass="orm.ecore#//XmlAssociationOverride">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAssociationOverride/name"/>
-    </genClasses>
+    <genClasses ecoreClass="orm.ecore#//XmlAssociationOverride"/>
     <genClasses ecoreClass="orm.ecore#//XmlAssociationOverrideContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAssociationOverrideContainer/associationOverrides"/>
     </genClasses>
     <genClasses image="false" ecoreClass="orm.ecore#//XmlAttributeOverride">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAttributeOverride/column"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlAttributeOverride/name"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlAttributeOverrideContainer">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference orm.ecore#//XmlAttributeOverrideContainer/attributeOverrides"/>
@@ -271,6 +268,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOrderable/orderBy"/>
     </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlOrderColumn"/>
+    <genClasses image="false" ecoreClass="orm.ecore#//XmlOverride">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlOverride/name"/>
+    </genClasses>
     <genClasses ecoreClass="orm.ecore#//XmlPersistenceUnitDefaults">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPersistenceUnitDefaults/schema"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute orm.ecore#//XmlPersistenceUnitDefaults/catalog"/>

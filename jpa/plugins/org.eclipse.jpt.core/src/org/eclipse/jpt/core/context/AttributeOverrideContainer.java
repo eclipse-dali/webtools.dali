@@ -9,10 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,7 +19,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface AttributeOverrideContainer
-	extends JpaContextNode
+	extends OverrideContainer
 {
 
 	// **************** attribute overrides **************************************
@@ -76,53 +73,9 @@ public interface AttributeOverrideContainer
 	 */
 	AttributeOverride getAttributeOverrideNamed(String name);
 	
-	interface Owner
+	interface Owner extends OverrideContainer.Owner
 	{
-		/**
-		 * Return the type mapping of the owning persistent type.
-		 */
-		TypeMapping getTypeMapping();
-
-		/**
-		 * Return the overridable persistent type, not the owning persistent type.
-		 * This will be the persistent type of the mapped superclass or embeddable.
-		 */
-		TypeMapping getOverridableTypeMapping();
-
 		Column resolveOverriddenColumn(String attributeOverrideName);
-
-		/**
-		 * Return the name of the table which the column belongs to by default
-		 */
-		String getDefaultTableName();
-
-		/**
-		 * return whether the given table cannot be explicitly specified
-		 * in the column's 'table' element
-		 */
-		boolean tableNameIsInvalid(String tableName);
-
-		/**
-		 * Return the database table for the specified table name
-		 */
-		org.eclipse.jpt.db.Table getDbTable(String tableName);
-
-		/**
-		 * Return a list of table names that are valid for the overrides column, or join columns
-		 */
-		Iterator<String> candidateTableNames();		
-		
-		/**
-		 * Return a validation message for the column's table not being valid in the context.
-		 * Use the given text range in the message
-		 */
-		IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange);
-		
-		/**
-		 * Return a validation message for the column's name not resolving on the 
-		 * table either specified or default. Use the given text range in the message
-		 */
-		IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange);
 	}
 
 }

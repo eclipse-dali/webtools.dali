@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,11 +7,9 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.orm;
+package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
+import org.eclipse.jpt.core.context.BaseOverride;
 
 /**
  * 
@@ -22,15 +20,16 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface OrmAttributeOverride extends AttributeOverride, XmlContextNode
+public interface JavaOverride extends BaseOverride, JavaJpaContextNode
 {
-	OrmColumn getColumn();
+	
+	interface Owner extends BaseOverride.Owner
+	{
 
-	OrmAttributeOverride setVirtual(boolean virtual);
-
-	/**
-	 * Update the OrmAttributeOverride context model object to match the XmlAttributeOverride 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlAttributeOverride attributeOverride);
+		/**
+		 * Return a prefix (ending in '.') that is allowed to be appended to the override name.
+		 * Return null if no prefix is supported.
+		 */
+		String getPrefix();
+	}
 }

@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAssociationOverride extends AssociationOverride, JavaJpaContextNode
+public interface JavaAssociationOverride
+	extends AssociationOverride, JavaOverride
 {
 	JavaAssociationOverrideRelationshipReference getRelationshipReference();
 
@@ -35,5 +36,9 @@ public interface JavaAssociationOverride extends AssociationOverride, JavaJpaCon
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(AssociationOverrideAnnotation associationOverride);
-	
+
+	interface Owner extends AssociationOverride.Owner, JavaOverride.Owner
+	{
+		//nothing yet
+	}
 }

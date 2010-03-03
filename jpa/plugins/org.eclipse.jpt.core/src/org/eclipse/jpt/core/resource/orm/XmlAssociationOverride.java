@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,6 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
@@ -37,19 +36,33 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAssociationOverride#getName <em>Name</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride()
  * @model kind="class"
  * @generated
  */
-public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoinColumnsMapping, XmlAssociationOverride_2_0
+public class XmlAssociationOverride extends AbstractJpaEObject implements XmlOverride, XmlJoinColumnsMapping, XmlAssociationOverride_2_0
 {
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getJoinColumns() <em>Join Columns</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -89,26 +102,6 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	 * @ordered
 	 */
 	protected XmlJoinTable joinTable;
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -259,7 +252,7 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAssociationOverride_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOverride_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -312,14 +305,14 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
+				return getName();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				return getJoinColumns();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				return getDescription();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_TABLE:
 				return getJoinTable();
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
-				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -335,6 +328,9 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
+				setName((String)newValue);
+				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				getJoinColumns().addAll((Collection<? extends XmlJoinColumn>)newValue);
@@ -344,9 +340,6 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)newValue);
-				return;
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
-				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -362,6 +355,9 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				getJoinColumns().clear();
 				return;
@@ -370,9 +366,6 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 				return;
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_TABLE:
 				setJoinTable((XmlJoinTable)null);
-				return;
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
-				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -388,14 +381,14 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS:
 				return joinColumns != null && !joinColumns.isEmpty();
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_TABLE:
 				return joinTable != null;
-			case OrmPackage.XML_ASSOCIATION_OVERRIDE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -408,6 +401,14 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAssociationOverride_2_0.class)
 		{
 			switch (derivedFeatureID)
@@ -428,6 +429,14 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlJoinColumnsMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_ASSOCIATION_OVERRIDE__JOIN_COLUMNS;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAssociationOverride_2_0.class)
 		{
 			switch (baseFeatureID)
@@ -451,10 +460,10 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (description: ");
-		result.append(description);
-		result.append(", name: ");
+		result.append(" (name: ");
 		result.append(name);
+		result.append(", description: ");
+		result.append(description);
 		result.append(')');
 		return result.toString();
 	}
@@ -475,11 +484,11 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	}
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAssociationOverride_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlOverride_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlAssociationOverride_2_0_Description());
+		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlAssociationOverride_2_0_Description());
 	}
 	
 	protected static Translator buildJoinColumnTranslator() {
@@ -487,6 +496,6 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlJoi
 	}	
 	
 	protected static Translator buildJoinTableTranslator() {
-		return XmlJoinTable.buildTranslator(JPA2_0.JOIN_TABLE, OrmV2_0Package.eINSTANCE.getXmlAssociationOverride_2_0_JoinTable());
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmV2_0Package.eINSTANCE.getXmlAssociationOverride_2_0_JoinTable());
 	}
 }

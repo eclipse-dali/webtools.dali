@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
+import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
@@ -1254,22 +1256,39 @@ public class GenericJavaElementCollectionMapping2_0
 		}
 	}
 
-	// ********** association override container owner **********
+	// ********** override container owners **********
 
-	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
-		
+	abstract class OverrideContainerOwner implements JavaOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
 		}
-
+		
 		public TypeMapping getTypeMapping() {
 			return GenericJavaElementCollectionMapping2_0.this.getTypeMapping();
 		}
+		
+		public String getDefaultTableName() {
+			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getName();
+		}
+		
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
+		}
 
-		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
-			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
-		}	
+		public java.util.Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
 
+		public String getPrefix() {
+			return "value."; //$NON-NLS-1$
+		}
+
+		//return false if the override is prefixed with "key.", these will be part of the MapKeyAttributeOverrideContainer.
+		//a prefix of "value." or no prefix at all is relevant
+		public boolean isRelevant(String overrideName) {
+			return !overrideName.startsWith("key."); //$NON-NLS-1$
+		}
+		
 		/**
 		 * If there is a specified table name it needs to be the same
 		 * the default table name.  the table is always the collection table
@@ -1277,24 +1296,20 @@ public class GenericJavaElementCollectionMapping2_0
 		public boolean tableNameIsInvalid(String tableName) {
 			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
-
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-
-		public String getDefaultTableName() {
-			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getName();
-		}
-
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
-		}
-
+		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
 		}
+	}
 
-		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+	class AssociationOverrideContainerOwner extends OverrideContainerOwner
+		implements JavaAssociationOverrideContainer.Owner {
+
+		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
+			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
+		}	
+
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -1317,7 +1332,7 @@ public class GenericJavaElementCollectionMapping2_0
 			);
 		}
 		
-		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1412,44 +1427,16 @@ public class GenericJavaElementCollectionMapping2_0
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements JavaAttributeOverrideContainer.Owner {
-		public TypeMapping getOverridableTypeMapping() {
-			return GenericJavaElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
-		}
+	class AttributeOverrideContainerOwner
+		extends OverrideContainerOwner
+		implements JavaAttributeOverrideContainer.Owner
+	{
 		
-		public TypeMapping getTypeMapping() {
-			return GenericJavaElementCollectionMapping2_0.this.getTypeMapping();
-		}
-
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
-		
-		public String getDefaultTableName() {
-			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getName();
-		}
-		
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
-		}
 
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-		
-		/**
-		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the collection table
-		 */
-		public boolean tableNameIsInvalid(String tableName) {
-			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
-		}
-		
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaElementCollectionMapping2_0.this.getValidationTextRange(astRoot);
-		}
-
-		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1472,7 +1459,7 @@ public class GenericJavaElementCollectionMapping2_0
 			);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -1493,7 +1480,6 @@ public class GenericJavaElementCollectionMapping2_0
 				column, 
 				textRange
 			);
-
 		}
 	}
 }

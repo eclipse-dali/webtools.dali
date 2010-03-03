@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -37,6 +38,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
+import org.eclipse.jpt.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -1343,15 +1345,40 @@ public class GenericOrmElementCollectionMapping2_0
 			);
 		}
 	}
-	
-	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
+
+	abstract class OverrideContainerOwner implements OrmOverrideContainer.Owner {
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
 		}
-
+		
 		public OrmTypeMapping getTypeMapping() {
 			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
+		
+		public String getDefaultTableName() {
+			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getName();
+		}
+		
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
+			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
+		}
+
+		public java.util.Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+
+		/**
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
+		 */
+		public boolean tableNameIsInvalid(String tableName) {
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+		}
+	}
+
+	class AssociationOverrideContainerOwner extends OverrideContainerOwner 
+		implements OrmAssociationOverrideContainer.Owner
+	{
 
 		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAssociationOverrides();
@@ -1367,27 +1394,7 @@ public class GenericOrmElementCollectionMapping2_0
 			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
 
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-
-		/**
-		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the collection table
-		 */
-		public boolean tableNameIsInvalid(String tableName) {
-			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
-		}
-
-		public String getDefaultTableName() {
-			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getName();
-		}
-
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
-		}
-
-		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -1430,7 +1437,7 @@ public class GenericOrmElementCollectionMapping2_0
 			);
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1603,15 +1610,9 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	//********** OrmAttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
-		public TypeMapping getOverridableTypeMapping() {
-			return GenericOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
-		}
-		
-		public OrmTypeMapping getTypeMapping() {
-			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
-		}
-
+	class AttributeOverrideContainerOwner extends OverrideContainerOwner
+		implements OrmAttributeOverrideContainer.Owner
+	{
 		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAttributeOverrides();
 		}
@@ -1630,27 +1631,7 @@ public class GenericOrmElementCollectionMapping2_0
 			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 		}
 		
-		public String getDefaultTableName() {
-			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getName();
-		}
-		
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			return GenericOrmElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
-		}
-
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-
-		/**
-		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the collection table
-		 */
-		public boolean tableNameIsInvalid(String tableName) {
-			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
-		}
-
-		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1695,7 +1676,7 @@ public class GenericOrmElementCollectionMapping2_0
 			);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
 			}

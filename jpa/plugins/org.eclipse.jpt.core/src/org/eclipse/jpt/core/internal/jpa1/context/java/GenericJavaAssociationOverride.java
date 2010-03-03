@@ -28,7 +28,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 
 	protected final JavaAssociationOverrideRelationshipReference relationshipReference;
 
-	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverride.Owner owner) {
+	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, JavaAssociationOverride.Owner owner) {
 		super(parent, owner);
 		this.relationshipReference = buildRelationshipReference();
 	}
@@ -57,8 +57,8 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	public AssociationOverride.Owner getOwner() {
-		return (AssociationOverride.Owner) super.getOwner();
+	public JavaAssociationOverride.Owner getOwner() {
+		return (JavaAssociationOverride.Owner) super.getOwner();
 	}
 
 	@Override

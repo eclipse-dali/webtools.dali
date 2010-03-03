@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -143,7 +144,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		return associationOverride;
 	}
 	
-	protected AssociationOverride.Owner createAssociationOverrideOwner() {
+	protected JavaAssociationOverride.Owner createAssociationOverrideOwner() {
 		return new AssociationOverrideOwner();
 	}
 	
@@ -243,11 +244,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}	
 	
 	protected void initializeSpecifiedAssociationOverrides() {
-		for (Iterator<NestableAnnotation> stream = 
-				this.javaResourcePersistentMember.annotations(
-					AssociationOverrideAnnotation.ANNOTATION_NAME, 
-					AssociationOverridesAnnotation.ANNOTATION_NAME); 
-				stream.hasNext(); ) {
+		for (Iterator<NestableAnnotation> stream = this.relavantResourceAssociationOverrides(); stream.hasNext(); ) {
 			this.specifiedAssociationOverrides.add(
 				buildAssociationOverride((AssociationOverrideAnnotation) stream.next()));
 		}
@@ -280,10 +277,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 
 	protected void updateSpecifiedAssociationOverrides() {
 		ListIterator<JavaAssociationOverride> associationOverrides = specifiedAssociationOverrides();
-		Iterator<NestableAnnotation> resourceAssociationOverrides = 
-				this.javaResourcePersistentMember.annotations(
-					AssociationOverrideAnnotation.ANNOTATION_NAME, 
-					AssociationOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceAssociationOverrides = this.relavantResourceAssociationOverrides();
 		
 		while (associationOverrides.hasNext()) {
 			JavaAssociationOverride associationOverride = associationOverrides.next();
@@ -299,6 +293,21 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			addSpecifiedAssociationOverride(buildAssociationOverride((AssociationOverrideAnnotation) resourceAssociationOverrides.next()));
 		}	
 	}
+	protected Iterator<NestableAnnotation> relavantResourceAssociationOverrides() {
+		Iterator<NestableAnnotation> resourceAssociationOverrides = 
+			this.javaResourcePersistentMember.annotations(
+				AssociationOverrideAnnotation.ANNOTATION_NAME, 
+				AssociationOverridesAnnotation.ANNOTATION_NAME);
+
+		return new FilteringIterator<NestableAnnotation>(resourceAssociationOverrides) {
+			@Override
+			protected boolean accept(NestableAnnotation o) {
+				String overrideName = ((AssociationOverrideAnnotation) o).getName();
+				return overrideName != null && getOwner().isRelevant(overrideName);
+			}
+		};
+	}
+
 	
 	protected JavaAssociationOverride buildAssociationOverride(AssociationOverrideAnnotation associationOverrideResource) {
 		JavaAssociationOverride associationOverride = getJpaFactory().buildJavaAssociationOverride(this, createAssociationOverrideOwner());
@@ -377,7 +386,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	
 	// ********** association override owner **********
 
-	class AssociationOverrideOwner implements AssociationOverride.Owner {
+	class AssociationOverrideOwner implements JavaAssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			return MappingTools.getRelationshipMapping(attributeName, getOwner().getOverridableTypeMapping());
@@ -399,6 +408,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			return GenericJavaAssociationOverrideContainer.this.allOverridableAssociationNames();
 		}
 
+		public String getPrefix() {
+			return getOwner().getPrefix();
+		}
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
 		}
@@ -416,11 +429,11 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 		}
 
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
-			return getOwner().buildColumnTableNotValidMessage((AssociationOverride) override, column, textRange);
+			return getOwner().buildColumnTableNotValidMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
-			return getOwner().buildColumnUnresolvedNameMessage((AssociationOverride) override, column, textRange);
+			return getOwner().buildColumnUnresolvedNameMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {

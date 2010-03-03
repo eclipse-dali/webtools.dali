@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
@@ -262,7 +263,7 @@ public class GenericOrmEmbeddedMapping
 			return GenericOrmEmbeddedMapping.this.getValidationTextRange();
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -305,7 +306,7 @@ public class GenericOrmEmbeddedMapping
 			);
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}

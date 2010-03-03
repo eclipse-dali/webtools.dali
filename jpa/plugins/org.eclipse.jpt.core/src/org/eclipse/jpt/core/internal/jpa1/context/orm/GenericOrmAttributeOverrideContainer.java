@@ -376,11 +376,11 @@ public class GenericOrmAttributeOverrideContainer extends AbstractOrmXmlContextN
 		}
 		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
-			return getOwner().buildColumnTableNotValidMessage((AttributeOverride) override, column, textRange);
+			return getOwner().buildColumnTableNotValidMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
-			return getOwner().buildColumnUnresolvedNameMessage((AttributeOverride) override, column, textRange);
+			return getOwner().buildColumnUnresolvedNameMessage(override, column, textRange);
 		}
 	}
 }

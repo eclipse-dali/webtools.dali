@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -215,12 +216,21 @@ public class GenericJavaEmbeddedMapping
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
 		}
-		
+
+		public String getPrefix() {
+			return null;
+		}
+
+		//no prefix, so always true
+		public boolean isRelevant(String overrideName) {
+			return true;
+		}
+
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -243,7 +253,7 @@ public class GenericJavaEmbeddedMapping
 			);
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}

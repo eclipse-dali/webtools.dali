@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
@@ -1517,12 +1518,21 @@ public abstract class AbstractJavaEntity
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
-		
+
+		public String getPrefix() {
+			return null;
+		}
+
+		public boolean isRelevant(String overrideName) {
+			//no prefix, so always true
+			return true;
+		}
+
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AssociationOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
 			}
@@ -1545,7 +1555,7 @@ public abstract class AbstractJavaEntity
 			);
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AssociationOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1667,12 +1677,21 @@ public abstract class AbstractJavaEntity
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
+
+		public String getPrefix() {
+			return null;
+		}
 		
+		public boolean isRelevant(String overrideName) {
+			//no prefix, so always true
+			return true;
+		}
+
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildColumnUnresolvedNameMessage(AttributeOverride override, NamedColumn column, TextRange textRange) {
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
 			}
@@ -1695,7 +1714,7 @@ public abstract class AbstractJavaEntity
 			);
 		}
 
-		public IMessage buildColumnTableNotValidMessage(AttributeOverride override, BaseColumn column, TextRange textRange) {
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
 			}

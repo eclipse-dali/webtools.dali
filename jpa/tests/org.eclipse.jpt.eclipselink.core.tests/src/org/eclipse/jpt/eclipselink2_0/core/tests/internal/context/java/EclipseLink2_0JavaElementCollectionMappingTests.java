@@ -1027,8 +1027,8 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 
 		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
 		attributeOverride.setName("BAZ");
-		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
@@ -1036,16 +1036,16 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 	
 		//move an annotation to the resource model and verify the context model is updated
 		attributeResource.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());
 
 		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
 		assertEquals("BAZ", specifiedAttributeOverrides.next().getName());
 		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
 		assertFalse(specifiedAttributeOverrides.hasNext());

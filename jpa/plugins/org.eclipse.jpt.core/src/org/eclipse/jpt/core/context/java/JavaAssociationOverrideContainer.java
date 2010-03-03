@@ -10,10 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,7 +19,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAssociationOverrideContainer extends AssociationOverrideContainer, JavaJpaContextNode
+public interface JavaAssociationOverrideContainer
+	extends AssociationOverrideContainer, JavaOverrideContainer
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAssociationOverride> associationOverrides();
@@ -35,18 +33,9 @@ public interface JavaAssociationOverrideContainer extends AssociationOverrideCon
 	
 	JavaAssociationOverride getAssociationOverrideNamed(String name);
 
-	void initialize(JavaResourcePersistentMember jrpm);
-	
-	/**
-	 * Update the JavaAssociationOverrideContainer context model object to match the JavaResourcePersistentMember 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentMember jrpm);
-	
-	interface Owner extends AssociationOverrideContainer.Owner
-	{		
-		TextRange getValidationTextRange(CompilationUnit astRoot);
+	interface Owner extends AssociationOverrideContainer.Owner, JavaOverrideContainer.Owner
+	{
+		//nothing yet
 	}
-
 
 }

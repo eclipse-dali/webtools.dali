@@ -946,7 +946,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) typeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
-		annotation.setName("bar");	
+		annotation.setName("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(4, overrideContainer.attributeOverridesSize());
 	}
 
@@ -1436,7 +1437,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_SUB_TYPE_NAME);
 		AssociationOverrideAnnotation annotation = (AssociationOverrideAnnotation) typeResource.addAnnotation(0, JPA.ASSOCIATION_OVERRIDE, JPA.ASSOCIATION_OVERRIDES);
-		annotation.setName("bar");	
+		annotation.setName("bar");
+		getJpaProject().synchronizeContextModel();
 		assertEquals(5, overrideContainer.associationOverridesSize());
 	}
 

@@ -10,10 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -22,7 +19,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAttributeOverrideContainer extends AttributeOverrideContainer, JavaJpaContextNode
+public interface JavaAttributeOverrideContainer
+	extends AttributeOverrideContainer, JavaOverrideContainer
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaAttributeOverride> attributeOverrides();
@@ -35,18 +33,9 @@ public interface JavaAttributeOverrideContainer extends AttributeOverrideContain
 	
 	JavaAttributeOverride getAttributeOverrideNamed(String name);
 	
-	void initialize(JavaResourcePersistentMember jrpm);
-	
-	/**
-	 * Update the JavaAttributeOverrideContainer context model object to match the JavaResourcePersistentMember 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentMember jrpm);
-	
-	interface Owner extends AttributeOverrideContainer.Owner
+	interface Owner extends AttributeOverrideContainer.Owner, JavaOverrideContainer.Owner
 	{		
-		TextRange getValidationTextRange(CompilationUnit astRoot);
-
+		//nothing yet
 	}
 
 }

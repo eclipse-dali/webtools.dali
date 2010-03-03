@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlAttributeOverride_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
@@ -37,7 +36,6 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride#getColumn <em>Column</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlAttributeOverride#getName <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,8 +43,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttributeOverride_2_0
+public class XmlAttributeOverride extends AbstractJpaEObject implements XmlOverride, XmlAttributeOverride_2_0
 {
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -76,26 +94,6 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	 * @ordered
 	 */
 	protected XmlColumn column;
-
-	/**
-	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final String NAME_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getName()
-	 * @generated
-	 * @ordered
-	 */
-	protected String name = NAME_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -223,7 +221,7 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlAttributeOverride_Name()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOverride_Name()
 	 * @model dataType="org.eclipse.emf.ecore.xml.type.String" required="true"
 	 * @generated
 	 */
@@ -274,12 +272,12 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
+				return getName();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
 				return getDescription();
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				return getColumn();
-			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
-				return getName();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -294,14 +292,14 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
+				setName((String)newValue);
+				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
 				setDescription((String)newValue);
 				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				setColumn((XmlColumn)newValue);
-				return;
-			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
-				setName((String)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -317,14 +315,14 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
+				setName(NAME_EDEFAULT);
+				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				setColumn((XmlColumn)null);
-				return;
-			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
-				setName(NAME_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -340,14 +338,52 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	{
 		switch (featureID)
 		{
+			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION:
 				return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
 			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__COLUMN:
 				return column != null;
-			case OrmPackage.XML_ATTRIBUTE_OVERRIDE__NAME:
-				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
 		}
 		return super.eIsSet(featureID);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributeOverride_2_0.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION: return OrmV2_0Package.XML_ATTRIBUTE_OVERRIDE_20__DESCRIPTION;
+				default: return -1;
+			}
+		}
+		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
+	{
+		if (baseClass == XmlAttributeOverride_2_0.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmV2_0Package.XML_ATTRIBUTE_OVERRIDE_20__DESCRIPTION: return OrmPackage.XML_ATTRIBUTE_OVERRIDE__DESCRIPTION;
+				default: return -1;
+			}
+		}
+		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
@@ -361,10 +397,10 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (description: ");
-		result.append(description);
-		result.append(", name: ");
+		result.append(" (name: ");
 		result.append(name);
+		result.append(", description: ");
+		result.append(description);
 		result.append(')');
 		return result.toString();
 	}
@@ -384,11 +420,11 @@ public class XmlAttributeOverride extends AbstractJpaEObject implements XmlAttri
 	}
 	
 	protected static Translator buildNameTranslator() {
-		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlAttributeOverride_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, OrmPackage.eINSTANCE.getXmlOverride_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlAttributeOverride_2_0_Description());
+		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlAttributeOverride_2_0_Description());
 	}
 	
 	protected static Translator buildColumnTranslator() {

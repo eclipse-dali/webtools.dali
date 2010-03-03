@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaOverride;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -20,7 +21,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 
-public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode implements BaseOverride
+public abstract class AbstractJavaOverride
+	extends AbstractJavaJpaContextNode
+	implements JavaOverride
 {
 
 	protected String name;
@@ -36,13 +39,19 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 	
 	protected void initialize(OverrideAnnotation overrideAnnotation) {
 		this.overrideAnnotation = overrideAnnotation;
-		this.name = this.getResourceName(overrideAnnotation);
+		this.initializeName();
+	}
+
+	protected void update(OverrideAnnotation overrideResource) {
+		this.overrideAnnotation = overrideResource;
+		this.updateName();
 	}
 
 	protected OverrideAnnotation getOverrideAnnotation() {
 		return this.overrideAnnotation;
 	}
 	
+	// ********************* name ****************
 	public String getName() {
 		return this.name;
 	}
@@ -60,13 +69,26 @@ public abstract class AbstractJavaOverride extends AbstractJavaJpaContextNode im
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	protected void update(OverrideAnnotation overrideResource) {
-		this.overrideAnnotation = overrideResource;
-		this.setName_(this.getResourceName(overrideResource));
+	protected void initializeName() {
+		String name = this.getResourceName();
+		String prefix = getOwner().getPrefix();
+		if (name != null && prefix != null && name.startsWith(prefix)) {
+			name = name.substring(name.indexOf('.') + 1);
+		}
+		this.name = name;
 	}
 
-	protected String getResourceName(OverrideAnnotation overrideAnnotation) {
-		return overrideAnnotation.getName();
+	protected void updateName() {
+		String name = this.getResourceName();
+		String prefix = getOwner().getPrefix();
+		if (name != null && prefix != null && name.startsWith(prefix)) {
+			name = name.substring(name.indexOf('.') + 1);
+		}
+		this.setName_(name);
+	}
+
+	protected String getResourceName() {
+		return this.overrideAnnotation.getName();
 	}
 
 	public boolean isVirtual() {

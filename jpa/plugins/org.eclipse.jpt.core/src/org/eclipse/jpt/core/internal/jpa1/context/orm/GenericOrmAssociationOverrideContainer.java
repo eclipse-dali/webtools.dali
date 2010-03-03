@@ -364,11 +364,11 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		}
 
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
-			return getOwner().buildColumnTableNotValidMessage((AssociationOverride) override, column, textRange);
+			return getOwner().buildColumnTableNotValidMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
-			return getOwner().buildColumnUnresolvedNameMessage((AssociationOverride) override, column, textRange);
+			return getOwner().buildColumnUnresolvedNameMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {

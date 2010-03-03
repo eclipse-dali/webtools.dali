@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
@@ -37,6 +36,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -160,7 +160,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		return newAttributeOverride;
 	}
 	
-	protected AttributeOverride.Owner createAttributeOverrideOwner() {
+	protected JavaAttributeOverride.Owner createAttributeOverrideOwner() {
 		return new AttributeOverrideOwner();
 	}
 	
@@ -240,11 +240,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 	
 	protected void initializeSpecifiedAttributeOverrides() {
-		for (Iterator<NestableAnnotation> stream = 
-				this.javaResourcePersistentMember.annotations(
-					AttributeOverrideAnnotation.ANNOTATION_NAME, 
-					AttributeOverridesAnnotation.ANNOTATION_NAME); 
-				stream.hasNext(); ) {
+		for (Iterator<NestableAnnotation> stream = this.relavantResourceAttributeOverrides(); stream.hasNext(); ) {
 			this.specifiedAttributeOverrides.add(
 				buildAttributeOverride((AttributeOverrideAnnotation) stream.next()));
 		}
@@ -267,10 +263,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	
 	protected void updateSpecifiedAttributeOverrides() {
 		ListIterator<JavaAttributeOverride> attributeOverrides = specifiedAttributeOverrides();
-		Iterator<NestableAnnotation> resourceAttributeOverrides = 
-				this.javaResourcePersistentMember.annotations(
-					AttributeOverrideAnnotation.ANNOTATION_NAME, 
-					AttributeOverridesAnnotation.ANNOTATION_NAME);
+		Iterator<NestableAnnotation> resourceAttributeOverrides = this.relavantResourceAttributeOverrides();
 		
 		while (attributeOverrides.hasNext()) {
 			JavaAttributeOverride attributeOverride = attributeOverrides.next();
@@ -284,9 +277,24 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		
 		while (resourceAttributeOverrides.hasNext()) {
 			addSpecifiedAttributeOverride(buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
-		}	
+		}
 	}
 	
+	protected Iterator<NestableAnnotation> relavantResourceAttributeOverrides() {
+		Iterator<NestableAnnotation> resourceAttributeOverrides = 
+			this.javaResourcePersistentMember.annotations(
+				AttributeOverrideAnnotation.ANNOTATION_NAME, 
+				AttributeOverridesAnnotation.ANNOTATION_NAME);
+
+		return new FilteringIterator<NestableAnnotation>(resourceAttributeOverrides) {
+			@Override
+			protected boolean accept(NestableAnnotation o) {
+				String overrideName = ((AttributeOverrideAnnotation) o).getName();
+				return overrideName != null && getOwner().isRelevant(overrideName);
+			}
+		};
+	}
+
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
 		JavaAttributeOverride attributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		attributeOverride.initialize(attributeOverrideResource);
@@ -364,7 +372,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	
 	// ********** attribute override owner **********
 
-	class AttributeOverrideOwner implements AttributeOverride.Owner {
+	class AttributeOverrideOwner implements JavaAttributeOverride.Owner {
 
 		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {
@@ -389,6 +397,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			return GenericJavaAttributeOverrideContainer.this.allOverridableAttributeNames();
 		}
 
+		public String getPrefix() {
+			return getOwner().getPrefix();
+		}
+
 		public boolean tableNameIsInvalid(String tableName) {
 			return getOwner().tableNameIsInvalid(tableName);
 		}
@@ -406,11 +418,11 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		}
 
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
-			return getOwner().buildColumnTableNotValidMessage((AttributeOverride) override, column, textRange);
+			return getOwner().buildColumnTableNotValidMessage(override, column, textRange);
 		}
 
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
-			return getOwner().buildColumnUnresolvedNameMessage((AttributeOverride) override, column, textRange);
+			return getOwner().buildColumnUnresolvedNameMessage(override, column, textRange);
 		}
 	}
 }

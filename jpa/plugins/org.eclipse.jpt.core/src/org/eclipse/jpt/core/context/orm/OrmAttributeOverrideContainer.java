@@ -13,12 +13,10 @@ import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
-import org.eclipse.jpt.core.utility.TextRange;
 
-public interface OrmAttributeOverrideContainer extends AttributeOverrideContainer, XmlContextNode
+public interface OrmAttributeOverrideContainer extends AttributeOverrideContainer, OrmOverrideContainer
 {
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmAttributeOverride> attributeOverrides();
@@ -35,16 +33,13 @@ public interface OrmAttributeOverrideContainer extends AttributeOverrideContaine
 	
 	void initializeFromAttributeOverrideContainer(OrmAttributeOverrideContainer oldContainer);
 	
-	interface Owner extends AttributeOverrideContainer.Owner
+	interface Owner extends AttributeOverrideContainer.Owner, OrmOverrideContainer.Owner
 	{		
-		OrmTypeMapping getTypeMapping();
 		
 		/**
 		 * Build a virtual xml column based on the overridable column.
 		 */
 		XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete);
-
-		TextRange getValidationTextRange();
 		
 		EList<XmlAttributeOverride> getResourceAttributeOverrides();
 	}

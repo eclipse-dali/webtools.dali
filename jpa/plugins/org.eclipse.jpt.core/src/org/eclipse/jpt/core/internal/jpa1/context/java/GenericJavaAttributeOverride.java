@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -37,7 +36,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	protected final JavaColumn column;
 	
 
-	public GenericJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverride.Owner owner) {
+	public GenericJavaAttributeOverride(JavaAttributeOverrideContainer parent, JavaAttributeOverride.Owner owner) {
 		super(parent, owner);
 		this.column = getJpaFactory().buildJavaColumn(this, this);
 	}
@@ -53,8 +52,8 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	public AttributeOverride.Owner getOwner() {
-		return (AttributeOverride.Owner) super.getOwner();
+	public JavaAttributeOverride.Owner getOwner() {
+		return (JavaAttributeOverride.Owner) super.getOwner();
 	}
 	
 	public ColumnAnnotation getResourceColumn() {
