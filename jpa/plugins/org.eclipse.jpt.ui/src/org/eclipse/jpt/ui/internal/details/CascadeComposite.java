@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Group;
  * @version 2.0
  * @since 1.0
  */
-public class CascadeComposite extends Pane<Cascade>
+public class CascadeComposite<T extends Cascade> extends Pane<T>
 {
 	/**
 	 * Creates a new <code>CascadeComposite</code>.
@@ -49,13 +49,14 @@ public class CascadeComposite extends Pane<Cascade>
 	 * @param subjectHolder The holder of the subject <code>ICascade</code>
 	 * @param parent The parent container
 	 */
-	public CascadeComposite(Pane<? extends RelationshipMapping> parentPane,
-	                        PropertyValueModel<? extends Cascade> subjectHolder,
-		                     Composite parent) {
-
+	public CascadeComposite(
+			Pane<? extends RelationshipMapping> parentPane,
+	        PropertyValueModel<T> subjectHolder,
+	        Composite parent) {
+		
 		super(parentPane, subjectHolder, parent, false);
 	}
-
+	
 	/**
 	 * Creates a new <code>ColumnComposite</code>.
 	 *
@@ -63,14 +64,82 @@ public class CascadeComposite extends Pane<Cascade>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public CascadeComposite(PropertyValueModel<? extends Cascade> subjectHolder,
-		                     Composite parent,
-		                     WidgetFactory widgetFactory) {
-
+	public CascadeComposite(
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+		    WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
-	private WritablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
+	
+	
+	@Override
+	protected void initializeLayout(Composite container) {
+		// Cascade group
+		Group cascadeGroup = addCascadeGroup(container);
+		
+		// Container of the check boxes
+		container = addSubPane(cascadeGroup, 5, 8, 0, 0, 0);
+		
+		addAllCheckBox(container);
+		addPersistCheckBox(container);
+		addMergeCheckBox(container);
+		addRemoveCheckBox(container);
+		addRefreshCheckBox(container);
+	}
+	
+	protected void addAllCheckBox(Composite container) {
+		// All check box
+		addCheckBox(
+				container,
+				JptUiDetailsMessages.CascadeComposite_all,
+				buildCascadeTypeAllHolder(),
+				null);
+	}
+	
+	protected void addPersistCheckBox(Composite container) {
+		// Persist check box
+		addCheckBox(
+				container,
+				JptUiDetailsMessages.CascadeComposite_persist,
+				buildCascadeTypePersistHolder(),
+				null);
+	}
+	
+	protected void addMergeCheckBox(Composite container) {
+		// Merge check box
+		addCheckBox(
+				container,
+				JptUiDetailsMessages.CascadeComposite_merge,
+				buildCascadeTypeMergeHolder(),
+				null);
+	}
+	
+	protected void addRemoveCheckBox(Composite container) {
+		// Remove check box
+		addCheckBox(
+				container,
+				JptUiDetailsMessages.CascadeComposite_remove,
+				buildCascadeTypeRemoveHolder(),
+				null);
+	}
+	
+	protected void addRefreshCheckBox(Composite container) {
+		// Refresh check box
+		addCheckBox(
+				container,
+				JptUiDetailsMessages.CascadeComposite_refresh,
+				buildCascadeTypeRefreshHolder(),
+				null);
+	}
+	
+	protected Group addCascadeGroup(Composite container) {
+		return addTitledGroup(
+				container,
+				JptUiDetailsMessages.CascadeComposite_cascadeTitle);
+	}
+	
+	protected WritablePropertyValueModel<Boolean> buildCascadeTypeAllHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.ALL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -83,8 +152,8 @@ public class CascadeComposite extends Pane<Cascade>
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildCascadeTypeMergeHolder() {
+	
+	protected WritablePropertyValueModel<Boolean> buildCascadeTypeMergeHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.MERGE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -97,102 +166,46 @@ public class CascadeComposite extends Pane<Cascade>
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildCascadeTypePersistHolder() {
+	
+	protected WritablePropertyValueModel<Boolean> buildCascadeTypePersistHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.PERSIST_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isPersist();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setPersist(value);
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildCascadeTypeRefreshHolder() {
+	
+	protected WritablePropertyValueModel<Boolean> buildCascadeTypeRefreshHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REFRESH_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isRefresh();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setRefresh(value);
 			}
 		};
 	}
-
-	private WritablePropertyValueModel<Boolean> buildCascadeTypeRemoveHolder() {
+	
+	protected WritablePropertyValueModel<Boolean> buildCascadeTypeRemoveHolder() {
 		return new PropertyAspectAdapter<Cascade, Boolean>(getSubjectHolder(), Cascade.REMOVE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return subject.isRemove();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				subject.setRemove(value);
 			}
 		};
-	}
-
-	/*
-	 * (non-Javadoc)
-	 */
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Cascade group
-		Group cascadeGroup = addTitledGroup(
-			container,
-			JptUiDetailsMessages.CascadeComposite_cascadeTitle
-		);
-
-		// Container of the check boxes
-		container = addSubPane(cascadeGroup, 5, 8, 0, 0, 0);
-
-		// All check box
-		addCheckBox(
-			container,
-			JptUiDetailsMessages.CascadeComposite_all,
-			buildCascadeTypeAllHolder(),
-			null
-		);
-
-		// Persist check box
-		addCheckBox(
-			container,
-			JptUiDetailsMessages.CascadeComposite_persist,
-			buildCascadeTypePersistHolder(),
-			null
-		);
-
-		// Merge check box
-		addCheckBox(
-			container,
-			JptUiDetailsMessages.CascadeComposite_merge,
-			buildCascadeTypeMergeHolder(),
-			null
-		);
-
-		// Remove check box
-		addCheckBox(
-			container,
-			JptUiDetailsMessages.CascadeComposite_remove,
-			buildCascadeTypeRemoveHolder(),
-			null
-		);
-
-		// Refresh check box
-		addCheckBox(
-			container,
-			JptUiDetailsMessages.CascadeComposite_refresh,
-			buildCascadeTypeRefreshHolder(),
-			null
-		);
 	}
 }

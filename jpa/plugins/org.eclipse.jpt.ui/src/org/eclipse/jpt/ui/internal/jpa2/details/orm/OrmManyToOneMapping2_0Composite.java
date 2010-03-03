@@ -11,72 +11,19 @@ package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.ManyToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractManyToOneMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | DerivedIdentity2_0Pane                                                | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ManyToOneJoiningStrategyPane                                          | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AccessTypeComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OptionalComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see {@link OrmManyToOneMapping2_0}
- * @see {@link OrmManyToOneMapping2_0UiProvider}
- * @see {@link TargetEntityComposite}
- * @see {@link DerivedId2_0Pane}
- * @see {@link ManyToOneJoiningStrategyPane}
- * @see {@link AccessTypeComposite}
- * @see {@link FetchTypeComposite}
- * @see {@link OptionalComposite}
- * @see {@link CascadeComposite}
- */
 public class OrmManyToOneMapping2_0Composite
 	extends AbstractManyToOneMapping2_0Composite<OrmManyToOneMapping, OrmManyToOneRelationshipReference2_0>
 {
@@ -87,7 +34,8 @@ public class OrmManyToOneMapping2_0Composite
 		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeManyToOneSection(Composite container) {
 		new TargetEntityComposite(this, container);
@@ -95,7 +43,7 @@ public class OrmManyToOneMapping2_0Composite
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
 		new OptionalComposite(this, container);
-		new CascadeComposite(this, buildCascadeHolder(),  addSubPane(container, 5));
+		new CascadePane2_0(this, buildCascadeHolder(),  addSubPane(container, 5));
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

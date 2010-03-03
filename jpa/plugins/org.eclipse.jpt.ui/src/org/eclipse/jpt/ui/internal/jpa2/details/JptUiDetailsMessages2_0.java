@@ -19,6 +19,8 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiDetailsMessages2_0 
 {
+	public static String CascadePane2_0_detach;
+	
 	public static String CollectionTable2_0Composite_title;
 	public static String CollectionTable2_0Composite_joinColumn;
 	public static String CollectionTable2_0Composite_name;

@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
@@ -18,12 +17,10 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
-import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
-import org.eclipse.jpt.ui.internal.details.OneToManyJoiningStrategyPane;
-import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
@@ -31,56 +28,6 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TargetEntityComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OneToManyJoiningStrategyPane                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AccessTypeComposite                                                | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | FetchTypeComposite                                                    | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | CascadeComposite                                                      | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OrphanRemoval2_0Composite                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | OrderingComposite                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see OneToManyMapping
- * @see TargetEntityComposite
- * @see OneToManyJoiningStrategyPane
- * @see AccessTypeComposite
- * @see FetchTypeComposite
- * @see CascadeComposite
- * @see OrphanRemoval2_0Composite
- * @see OrderingComposite
- */
 public class OrmOneToManyMapping2_0Composite
 	extends AbstractOneToManyMappingComposite<OrmOneToManyMapping, OrmOneToManyRelationshipReference2_0>
 {
@@ -88,9 +35,11 @@ public class OrmOneToManyMapping2_0Composite
 			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeOneToManySection(Composite container) {
 		new TargetEntityComposite(this, container);
@@ -98,7 +47,7 @@ public class OrmOneToManyMapping2_0Composite
 		new AccessTypeComposite(this, this.buildAccessHolderHolder(), container);
 		new FetchTypeComposite(this, container);
 		new OrphanRemoval2_0Composite(this, this.buildOrphanRemovableHolder(), container);
-		new CascadeComposite(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
+		new CascadePane2_0(this, this.buildCascadeHolder(), this.addSubPane(container, 5));
 	}
 
 	@Override
