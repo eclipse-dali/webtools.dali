@@ -36,7 +36,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
-import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -50,6 +49,7 @@ import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -87,7 +87,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	protected FetchType specifiedFetch;
 	
-	protected final JavaOrderable orderable;
+	protected final JavaOrderable2_0 orderable;
 	
 	protected final JavaCollectionTable2_0 collectionTable;
 
@@ -495,7 +495,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	// ********** ordering **********  
 	
-	public JavaOrderable getOrderable() {
+	public JavaOrderable2_0 getOrderable() {
 		return this.orderable;
 	}
 

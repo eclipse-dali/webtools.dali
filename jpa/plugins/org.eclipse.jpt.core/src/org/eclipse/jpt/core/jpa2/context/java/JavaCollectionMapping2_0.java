@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
+import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -19,9 +20,12 @@ import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
  */
 public interface JavaCollectionMapping2_0
-	extends CollectionMapping2_0
+	extends CollectionMapping2_0, JavaAttributeMapping
 {
 
 	JavaOrderable2_0 getOrderable();

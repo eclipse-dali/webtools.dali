@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
@@ -24,11 +23,11 @@ import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public interface JavaElementCollectionMapping2_0
-	extends JavaAttributeMapping, ElementCollectionMapping2_0
+	extends JavaCollectionMapping2_0, ElementCollectionMapping2_0
 {
 	JavaCollectionTable2_0 getCollectionTable();
 	
