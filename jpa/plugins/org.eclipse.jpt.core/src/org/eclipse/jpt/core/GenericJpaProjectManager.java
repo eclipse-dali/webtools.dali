@@ -75,19 +75,20 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * source.
  * <p>
  * Various things that cause us to add or remove a JPA project:<ul>
- * <li>Startup of the Dali plug-in will trigger all the pre-existing JPA
- *     projects to be added
+ * <li>The {@link JptCorePlugin} will "lazily" instantiate and {@link #start() start}
+ *     a JPA project manager as appropriate. This will trigger the manager
+ *     to find and add all pre-existing JPA projects.
  * 
  * <li>Project created and facet installed<p>
  *     {@link IFacetedProjectEvent.Type#POST_INSTALL}
  * <li>Project facet uninstalled<p>
  *     {@link IFacetedProjectEvent.Type#PRE_UNINSTALL}
- * <p>
  * 
  * <li>Project opened<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
  *     -> {@link IResource#FILE}
- *     -> {@link IResourceDelta#ADDED} /.settings/org.eclipse.wst.common.project.facet.core.xml (facet settings file)
+ *     -> {@link IResourceDelta#ADDED} facet settings file
+ *     (<code>/.settings/org.eclipse.wst.common.project.facet.core.xml</code>)
  * <li>Project closed<p>
  *     {@link IResourceChangeEvent#POST_CHANGE}
  *     -> {@link IResource#FILE}
@@ -117,6 +118,9 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     -> {@link IResourceDelta#CHANGED} facet settings file
  * </ul>
  */
+// TODO remove faceted project listener and rely solely on resource change events
+// for the faceted project settings file - this will require moving all the
+// datamodel stuff to the UI (where it belongs)
 class GenericJpaProjectManager
 	extends AbstractModel
 	implements JpaProjectManager
@@ -140,7 +144,6 @@ class GenericJpaProjectManager
 	/**
 	 * Listen for<ul>
 	 * <li>changes to projects and files
-	 * <li>deleted projects
 	 * <li>clean builds
 	 * </ul>
 	 */
@@ -152,9 +155,13 @@ class GenericJpaProjectManager
 	 */
 	private static final int RESOURCE_CHANGE_EVENT_TYPES =
 			IResourceChangeEvent.POST_CHANGE |
-			IResourceChangeEvent.POST_BUILD |
-			IResourceChangeEvent.PRE_DELETE |
-			IResourceChangeEvent.PRE_CLOSE;
+			IResourceChangeEvent.POST_BUILD;
+
+	/**
+	 * Listen for changes to this file to determine when the JPA facet is
+	 * added to or removed from a "faceted" project.
+	 */
+	private static final String FACETED_PROJECT_FRAMEWORK_SETTINGS_FILE_NAME = FacetedProjectFramework.PLUGIN_ID + ".xml"; //$NON-NLS-1$
 
 	/**
 	 * Listen for the JPA facet being added to or removed from a "faceted" project.
@@ -162,16 +169,33 @@ class GenericJpaProjectManager
 	private final IFacetedProjectListener facetedProjectListener = new FacetedProjectListener();
 
 	/**
+	 * The types of faceted project events that interest
+	 * {@link #facetedProjectListener}.
+	 */
+	private static final IFacetedProjectEvent.Type[] FACETED_PROJECT_EVENT_TYPES = new IFacetedProjectEvent.Type[] {
+			IFacetedProjectEvent.Type.POST_INSTALL,
+			IFacetedProjectEvent.Type.PRE_UNINSTALL
+		};
+
+	/**
 	 * Listen for Java changes (unless the Dali UI is active).
 	 * @see #javaElementChangeListenerIsActive()
 	 */
 	private final JavaElementChangeListener javaElementChangeListener = new JavaElementChangeListener();
 
+	/**
+	 * The types of resource change events that interest
+	 * {@link #javaElementChangeListener}.
+	 */
+	private static final int JAVA_CHANGE_EVENT_TYPES =
+			ElementChangedEvent.POST_CHANGE |
+			ElementChangedEvent.POST_RECONCILE;
+
 
 	// ********** constructor **********
 
 	/**
-	 * internal - called by the Dali plug-in
+	 * Internal: called by {@link JptCorePlugin Dali plug-in}.
 	 */
 	GenericJpaProjectManager() {
 		super();
@@ -181,7 +205,7 @@ class GenericJpaProjectManager
 	// ********** plug-in controlled life-cycle **********
 
 	/**
-	 * internal - called by the Dali plug-in
+	 * Internal: called by {@link JptCorePlugin Dali plug-in}.
 	 */
 	void start() {
 		try {
@@ -198,8 +222,8 @@ class GenericJpaProjectManager
 			this.buildJpaProjects();
 			this.eventHandler.start();
 			this.getWorkspace().addResourceChangeListener(this.resourceChangeListener, RESOURCE_CHANGE_EVENT_TYPES);
-			FacetedProjectFramework.addListener(this.facetedProjectListener, IFacetedProjectEvent.Type.values());
-			JavaCore.addElementChangedListener(this.javaElementChangeListener);
+			FacetedProjectFramework.addListener(this.facetedProjectListener, FACETED_PROJECT_EVENT_TYPES);
+			JavaCore.addElementChangedListener(this.javaElementChangeListener, JAVA_CHANGE_EVENT_TYPES);
 		} catch (RuntimeException ex) {
 			JptCorePlugin.log(ex);
 			this.stop_();
@@ -207,7 +231,7 @@ class GenericJpaProjectManager
 	}
 
 	/**
-	 * side-effect: 'jpaProjects' populated
+	 * Side-effect: {@link #jpaProjects} populated.
 	 */
 	private void buildJpaProjects() {
 		try {
@@ -224,7 +248,7 @@ class GenericJpaProjectManager
 	}
 
 	/**
-	 * internal - called by the Dali plug-in
+	 * Internal: called by {@link JptCorePlugin Dali plug-in}.
 	 */
 	void stop() throws Exception {
 		try {
@@ -391,7 +415,7 @@ class GenericJpaProjectManager
 		return config;
 	}
 
-	private void removeJpaProject(JpaProject jpaProject) {
+	/* private */ void removeJpaProject(JpaProject jpaProject) {
 		// figure out exactly when JPA projects are removed
 		dumpStackTrace("remove: ", jpaProject); //$NON-NLS-1$
 		this.removeItemFromCollection(jpaProject, this.jpaProjects, JPA_PROJECTS_COLLECTION);
@@ -406,14 +430,10 @@ class GenericJpaProjectManager
 	}
 
 	private Command buildProjectChangedCommand(final IResourceDelta delta) {
-		return new EventHandlerCommand() {
+		return new EventHandlerCommand("Project POST_CHANGE Command") { //$NON-NLS-1$
 			@Override
 			void execute_() {
 				GenericJpaProjectManager.this.projectChanged_(delta);
-			}
-			@Override
-			public String toString() {
-				return "Project POST_CHANGE Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -436,14 +456,10 @@ class GenericJpaProjectManager
 	}
 
 	private Command buildProjectPostCleanBuildCommand(final IProject project) {
-		return new EventHandlerCommand() {
+		return new EventHandlerCommand("Project POST_BUILD (CLEAN_BUILD) Command") { //$NON-NLS-1$
 			@Override
 			void execute_() {
 				GenericJpaProjectManager.this.projectPostCleanBuild_(project);
-			}
-			@Override
-			public String toString() {
-				return "Project POST_BUILD (CLEAN_BUILD) Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -457,71 +473,43 @@ class GenericJpaProjectManager
 	}
 
 
-	// ********** Project PRE_DELETE **********
-
-	/* private */ void projectPreDelete(IProject project) {
-		this.executeAfterEventsHandled(this.buildProjectPreDeleteCommand(project));
-	}
-
-	private Command buildProjectPreDeleteCommand(final IProject project) {
-		return new EventHandlerCommand() {
-			@Override
-			void execute_() {
-				GenericJpaProjectManager.this.projectPreDelete_(project);
-			}
-			@Override
-			public String toString() {
-				return "Project PRE_DELETE Command"; //$NON-NLS-1$
-			}
-		};
-	}
+	// ********** File POST_CHANGE **********
 
 	/**
-	 * A project is being deleted. Remove its corresponding
-	 * JPA project if appropriate.
+	 * The Faceted Project settings file has changed in some fashion, check
+	 * whether the JPA facet has been added to or removed from the specified
+	 * project.
 	 */
-	/* private */ void projectPreDelete_(IProject project) {
-		JpaProject jpaProject = this.getJpaProject(project);
-		if (jpaProject != null) {
-			this.removeJpaProject(jpaProject);
-		}
-	}
-
-
-	// ********** Resource and/or Facet events **********
-
 	/* private */ void checkForJpaFacetTransition(IProject project) {
-		this.executeAfterEventsHandled(this.buildCheckForJpaFacetTransitionCommand(project));
-	}
-
-	private Command buildCheckForJpaFacetTransitionCommand(final IProject project) {
-		return new EventHandlerCommand() {
-			@Override
-			void execute_() {
-				GenericJpaProjectManager.this.checkForJpaFacetTransition_(project);
-			}
-			@Override
-			public String toString() {
-				return "JPA Facet Transition Command"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	/**
-	 * Check whether the JPA facet has been added or removed.
-	 */
-	/* private */ void checkForJpaFacetTransition_(IProject project) {
 		JpaProject jpaProject = this.getJpaProject_(project);
 
 		if (JptCorePlugin.projectHasJpaFacet(project)) {
 			if (jpaProject == null) {  // JPA facet added
-				this.addJpaProject(project);
+				this.executeAfterEventsHandled(this.buildAddJpaProjectCommand(project));
 			}
 		} else {
 			if (jpaProject != null) {  // JPA facet removed
-				this.removeJpaProject(jpaProject);
+				this.executeAfterEventsHandled(this.buildRemoveJpaProjectCommand(jpaProject));
 			}
 		}
+	}
+
+	private Command buildAddJpaProjectCommand(final IProject project) {
+		return new EventHandlerCommand("Add JPA Project Command") { //$NON-NLS-1$
+			@Override
+			void execute_() {
+				GenericJpaProjectManager.this.addJpaProject(project);
+			}
+		};
+	}
+
+	private Command buildRemoveJpaProjectCommand(final JpaProject jpaProject) {
+		return new EventHandlerCommand("Remove JPA Project Command") { //$NON-NLS-1$
+			@Override
+			void execute_() {
+				GenericJpaProjectManager.this.removeJpaProject(jpaProject);
+			}
+		};
 	}
 
 
@@ -532,14 +520,10 @@ class GenericJpaProjectManager
 	}
 
 	private Command buildJpaFacetedProjectPostInstallCommand(final IProjectFacetActionEvent event) {
-		return new EventHandlerCommand() {
+		return new EventHandlerCommand("Faceted Project POST_INSTALL Command") { //$NON-NLS-1$
 			@Override
 			void execute_() {
 				GenericJpaProjectManager.this.jpaFacetedProjectPostInstall_(event);
-			}
-			@Override
-			public String toString() {
-				return "Faceted Project POST_INSTALL Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -594,14 +578,10 @@ class GenericJpaProjectManager
 	}
 
 	private Command buildJpaFacetedProjectPreUninstallCommand(final IProject project) {
-		return new EventHandlerCommand() {
+		return new EventHandlerCommand("Faceted Project PRE_UNINSTALL Command") { //$NON-NLS-1$
 			@Override
 			void execute_() {
 				GenericJpaProjectManager.this.jpaFacetedProjectPreUninstall_(project);
-			}
-			@Override
-			public String toString() {
-				return "Faceted Project PRE_UNINSTALL Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -619,14 +599,10 @@ class GenericJpaProjectManager
 	}
 
 	private Command buildJavaElementChangedCommand(final ElementChangedEvent event) {
-		return new EventHandlerCommand() {
+		return new EventHandlerCommand("Java element changed Command") { //$NON-NLS-1$
 			@Override
 			void execute_() {
 				GenericJpaProjectManager.this.javaElementChanged_(event);
-			}
-			@Override
-			public String toString() {
-				return "Java element changed Command"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -779,7 +755,7 @@ class GenericJpaProjectManager
 	}
 
 
-	// ********** command **********
+	// ********** event handler command **********
 
 	/**
 	 * Command that holds the JPA project manager lock while
@@ -788,8 +764,11 @@ class GenericJpaProjectManager
 	private abstract class EventHandlerCommand
 		implements Command
 	{
-		EventHandlerCommand() {
+		private final String name;
+
+		EventHandlerCommand(String name) {
 			super();
+			this.name = name;
 		}
 
 		public final void execute() {
@@ -805,6 +784,10 @@ class GenericJpaProjectManager
 
 		abstract void execute_();
 
+		@Override
+		public String toString() {
+			return this.name;
+		}
 	}
 
 
@@ -817,12 +800,13 @@ class GenericJpaProjectManager
 		}
 
 		/**
-		 * POST_INSTALL and PRE_UNINSTALL fare the only facet events we use for 
-		 * adding/removing jpa projects. These are the cases where we listen for resource events.
+		 * POST_INSTALL and PRE_UNINSTALL are the only facet events we use for 
+		 * adding/removing JPA projects. These are the cases where we listen for resource events.
 		 * <p>
 		 * Check for:<ul>
-		 * <li>facet settings file added/removed/changed (/.settings/org.eclipse.wst.common.project.facet.core.xml)
-		 * <li>file add/remove - forwarded to the individual jpa projects
+		 * <li>facet settings file added/removed/changed
+		 * (<code>/.settings/org.eclipse.wst.common.project.facet.core.xml</code>)
+		 * <li>file add/remove - forwarded to the individual JPA projects
 		 * <li>project clean
 		 * </ul>
 		 */
@@ -845,7 +829,7 @@ class GenericJpaProjectManager
 				case IResourceChangeEvent.PRE_CLOSE :  
 					break;  // ignore
 				case IResourceChangeEvent.PRE_DELETE :
-					break; //ignore
+					break;  // ignore
 				default :
 					break;
 			}
@@ -860,46 +844,51 @@ class GenericJpaProjectManager
 			IResource resource = delta.getResource();
 			switch (resource.getType()) {
 				case IResource.ROOT :
-					this.processPostChangeDeltaChildren(delta);
+					this.processPostChangeRootDelta(delta);
 					break;
 				case IResource.PROJECT :
-					//process the project first for the Opening project case. The jpa project will not be built
-					//until the children are processed and we see that the facet metadata file is added.
-					//Otherwise the JPA project would be built and then we would process the ADDED deltas
-					//for all the files in the project.
 					this.processPostChangeProjectDelta(delta);
-					this.processPostChangeDeltaChildren(delta);
 					break;
 				case IResource.FOLDER :
-					this.processPostChangeSettingsFolderDelta((IFolder) resource, delta);
+					this.processPostChangeFolderDelta((IFolder) resource, delta);
 					break;
 				case IResource.FILE :
-					this.processPostChangeFacetFileDelta((IFile) resource, delta);
+					this.processPostChangeFileDelta((IFile) resource, delta);
 					break;
 				default :
 					break;
 			}
 		}
 
-		private void processPostChangeDeltaChildren(IResourceDelta delta) {
-			for (IResourceDelta child : delta.getAffectedChildren()) {
-				this.processPostChangeDelta(child);  // recurse
+		// ***** POST_CHANGE ROOT
+		private void processPostChangeRootDelta(IResourceDelta delta) {
+			this.processPostChangeDeltaChildren(delta);
+		}
+
+		// ***** POST_CHANGE PROJECT
+		/**
+		 * Process the project first for the Opening project case.
+		 * The JPA project will not be built until the children are processed
+		 * and we see that the facet metadata file is added.
+		 * Otherwise the JPA project would be built and then we would process
+		 * the ADDED deltas for all the files in the project.
+		 */
+		private void processPostChangeProjectDelta(IResourceDelta delta) {
+			GenericJpaProjectManager.this.projectChanged(delta);
+			this.processPostChangeDeltaChildren(delta);
+		}
+
+		// ***** POST_CHANGE FOLDER
+		private void processPostChangeFolderDelta(IFolder folder, IResourceDelta delta) {
+			if (folder.getName().equals(".settings")) { //$NON-NLS-1$
+				this.processPostChangeDeltaChildren(delta);
 			}
 		}
 
-		private void processPostChangeProjectDelta(IResourceDelta delta) {
-			GenericJpaProjectManager.this.projectChanged(delta);
-		}
-		
-		private void processPostChangeSettingsFolderDelta(IFolder folder, IResourceDelta delta) {
-			if (folder.getName().equals(".settings")) { //$NON-NLS-1$
-				processPostChangeDeltaChildren(delta);
-			}
-		}
-		
-		private void processPostChangeFacetFileDelta(IFile file, IResourceDelta delta) {
-			if (file.getName().equals(FacetedProjectFramework.PLUGIN_ID + ".xml")) { //$NON-NLS-1$
-				checkForFacetFileChanges(file, delta);
+		// ***** POST_CHANGE FILE
+		private void processPostChangeFileDelta(IFile file, IResourceDelta delta) {
+			if (file.getName().equals(FACETED_PROJECT_FRAMEWORK_SETTINGS_FILE_NAME)) {
+				this.checkForFacetFileChanges(file, delta);
 			}
 		}
 		
@@ -919,10 +908,17 @@ class GenericJpaProjectManager
 			}
 		}
 
+		private void processPostChangeDeltaChildren(IResourceDelta delta) {
+			for (IResourceDelta child : delta.getAffectedChildren()) {
+				this.processPostChangeDelta(child);  // recurse
+			}
+		}
+
 		/**
 		 * A post build event has occurred.
 		 * Check for whether the build was a "clean" build and trigger project update.
 		 */
+		// ***** POST_BUILD
 		private void processPostBuildEvent(IResourceChangeEvent event) {
 			debug("Resource POST_BUILD: ", event.getResource()); //$NON-NLS-1$
 			if (event.getBuildKind() == IncrementalProjectBuilder.CLEAN_BUILD) {
@@ -991,8 +987,6 @@ class GenericJpaProjectManager
 					break;
 				case PRE_UNINSTALL :
 					this.processPreUninstallEvent((IProjectFacetActionEvent) event);
-					break;
-				case PROJECT_MODIFIED : //ignore, we use resource events instead
 					break;
 				default :
 					break;
