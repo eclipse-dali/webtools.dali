@@ -133,11 +133,11 @@ final class DTPColumnWrapper
 
 	private JavaType getJavaType(PredefinedDataType dataType) {
 		// this is just a bit hacky: moving from a type declaration to a class name to a type declaration...
-		String dtpJavaClassName = this.getDefinition(dataType).getJavaClassName();
+		String dtpJavaClassName = this.resolveDefinition(dataType).getJavaClassName();
 		return new SimpleJavaType(ReflectionTools.getClassNameForTypeDeclaration(dtpJavaClassName));
 	}
 
-	private PredefinedDataTypeDefinition getDefinition(PredefinedDataType dataType) {
+	private PredefinedDataTypeDefinition resolveDefinition(PredefinedDataType dataType) {
 		return this.getDatabase().getDTPDefinition().getPredefinedDataTypeDefinition(dataType.getName());
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,8 +44,7 @@ public class JDTTools {
 	public static CompilationUnit buildASTRoot(ICompilationUnit compilationUnit) {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(compilationUnit);
-// TODO
-//		parser.setFocalPosition(0);
+		parser.setFocalPosition(0);  // we need only a "skeleton" AST
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735
 		return (CompilationUnit) parser.createAST(null);

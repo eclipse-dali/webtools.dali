@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -165,8 +165,7 @@ public abstract class JDTMember
 		ITextFileBuffer buffer = FileBuffers.getTextFileBufferManager().getTextFileBuffer(this.compilationUnit.getResource().getFullPath(), LocationKind.NORMALIZE);
 		boolean sharedDocument = (buffer != null);  // documents are typically shared when they are already open in an editor
 		IDocument doc = sharedDocument ?
-				buffer.getDocument()
-			:
+				buffer.getDocument() :
 				new Document(this.compilationUnit.getBuffer().getContents());
 
 		try {
