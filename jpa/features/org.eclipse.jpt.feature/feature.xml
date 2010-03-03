@@ -73,6 +73,13 @@
          unpack="false"/>
 
    <plugin
+         id="org.eclipse.jpt.ui.jaxb"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
          id="org.eclipse.jpt.doc.user"
          download-size="0"
          install-size="0"
