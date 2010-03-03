@@ -43,7 +43,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.eclipselink.ui.jaxb"
+         id="org.eclipse.jpt.eclipselink.jaxb.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

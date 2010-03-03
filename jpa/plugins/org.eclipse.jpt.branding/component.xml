@@ -8,6 +8,6 @@
 <plugin id="org.eclipse.jpt.db.ui" fragment="false"/>
 <plugin id="org.eclipse.jpt.gen" fragment="false"/>
 <plugin id="org.eclipse.jpt.ui" fragment="false"/>
-<plugin id="org.eclipse.jpt.ui.jaxb" fragment="false"/>
+<plugin id="org.eclipse.jpt.jaxb.ui" fragment="false"/>
 <plugin id="org.eclipse.jpt.utility" fragment="false"/>
 </component>
