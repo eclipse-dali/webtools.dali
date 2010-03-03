@@ -11,12 +11,11 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipReference;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMapping;
-import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
@@ -26,7 +25,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkOneToManyMapping
-	extends AbstractJavaOneToManyMapping<OneToManyAnnotation>
+	extends AbstractJavaOneToManyMapping<OneToMany2_0Annotation>
 	implements EclipseLinkOneToManyMapping2_0
 {
 	protected final JavaEclipseLinkJoinFetch joinFetch;
