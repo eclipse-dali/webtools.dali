@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
+
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
@@ -31,6 +32,8 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.general.GeneralPrope
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.caching.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
@@ -42,6 +45,8 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * EclipseLink persistence unit
@@ -391,6 +396,28 @@ public class EclipseLinkPersistenceUnit
 	// we catch all added converters
 	protected void convertersUpdated() {
 		fireListChanged(CONVERTERS_LIST, this.converters);
+	}
+	
+	// ********** validation **********
+
+	@Override
+	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
+
+		if(this.isJpa2_0Compatible()) {
+			Iterator<Property> properties = this.propertiesWithNamePrefix("eclipselink.cache.type."); //$NON-NLS-1$
+			
+			if(properties.hasNext()) {
+				Property property = properties.next();
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
+						new String[] {property.getName()},
+						this.getPersistenceUnit()
+					)
+				);
+			}
+		}
 	}
 
 }

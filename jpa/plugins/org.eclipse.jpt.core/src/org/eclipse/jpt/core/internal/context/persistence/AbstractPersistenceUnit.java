@@ -1443,9 +1443,10 @@ public abstract class AbstractPersistenceUnit
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		validateMappingFiles(messages, reporter);
-		validateClassRefs(messages, reporter);
-		validateJarFileRefs(messages, reporter);
+		this.validateMappingFiles(messages, reporter);
+		this.validateClassRefs(messages, reporter);
+		this.validateJarFileRefs(messages, reporter);
+		this.validateProperties(messages, reporter);
 	}
 
 	protected void validateMappingFiles(List<IMessage> messages, IReporter reporter) {
@@ -1573,6 +1574,11 @@ public abstract class AbstractPersistenceUnit
 				return jarFileRef.getFileName();
 			}
 		};
+	}
+	
+	@SuppressWarnings("unused")
+	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
+		// do nothing by default
 	}
 
 

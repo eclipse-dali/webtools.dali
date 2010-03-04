@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,5 +21,7 @@ public interface EclipseLinkJpaValidationMessages {
 	public static final String CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER = "CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER";
 		
 	public static final String MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE = "MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE";
-	
+
+	public static final String PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING = "PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING";
+
 }
