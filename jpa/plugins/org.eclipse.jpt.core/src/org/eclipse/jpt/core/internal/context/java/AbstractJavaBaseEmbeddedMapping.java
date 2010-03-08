@@ -282,7 +282,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getTable(), column.getName()}, 
+				new String[] {column.getName(), column.getDbTable().getName()}, 
 				column, 
 				textRange
 			);
