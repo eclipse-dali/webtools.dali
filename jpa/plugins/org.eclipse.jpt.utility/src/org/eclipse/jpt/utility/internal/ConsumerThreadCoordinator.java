@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.utility.internal;
 
 import java.util.Vector;
+import java.util.concurrent.ThreadFactory;
 
 /**
  * A <code>ConsumerThreadCoordinator</code> controls the creation,
@@ -27,6 +28,12 @@ public class ConsumerThreadCoordinator {
 	 * The runnable passed to the consumer thread each time it is built.
 	 */
 	private final Runnable runnable;
+
+	/**
+	 * Client-supplied thread factory. Defaults to a straightforward
+	 * implementation.
+	 */
+	private final ThreadFactory threadFactory;
 
 	/**
 	 * Optional, client-supplied name for the consumer thread.
@@ -52,19 +59,40 @@ public class ConsumerThreadCoordinator {
 
 	/**
 	 * Construct a consumer thread coordinator for the specified consumer.
+	 * Use simple JDK thread(s) for the consumer thread(s).
 	 * Allow the consumer thread(s) to be assigned JDK-generated names.
 	 */
 	public ConsumerThreadCoordinator(Consumer consumer) {
-		this(consumer, null);
+		this(consumer, SimpleThreadFactory.instance());
+	}
+
+	/**
+	 * Construct a consumer thread coordinator for the specified consumer.
+	 * Use the specified thread factory to construct the consumer thread(s).
+	 * Allow the consumer thread(s) to be assigned JDK-generated names.
+	 */
+	public ConsumerThreadCoordinator(Consumer consumer, ThreadFactory threadFactory) {
+		this(consumer, threadFactory, null);
 	}
 
 	/**
 	 * Construct a consumer thread coordinator for the specified consumer.
 	 * Assign the consumer thread(s) the specified name.
+	 * Use simple JDK thread(s) for the consumer thread(s).
 	 */
 	public ConsumerThreadCoordinator(Consumer consumer, String threadName) {
+		this(consumer, SimpleThreadFactory.instance(), threadName);
+	}
+
+	/**
+	 * Construct a consumer thread coordinator for the specified consumer.
+	 * Use the specified thread factory to construct the consumer thread(s).
+	 * Assign the consumer thread(s) the specified name.
+	 */
+	public ConsumerThreadCoordinator(Consumer consumer, ThreadFactory threadFactory, String threadName) {
 		super();
 		this.runnable = this.buildRunnable(consumer);
+		this.threadFactory = threadFactory;
 		this.threadName = threadName;
 	}
 
@@ -87,7 +115,7 @@ public class ConsumerThreadCoordinator {
 	}
 
 	private Thread buildThread() {
-		Thread t = new Thread(this.runnable);
+		Thread t = this.threadFactory.newThread(this.runnable);
 		if (this.threadName != null) {
 			t.setName(this.threadName);
 		}

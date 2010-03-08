@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.synchronizers;
+
+import java.util.concurrent.ThreadFactory;
 
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
@@ -42,24 +44,49 @@ public class AsynchronousSynchronizer
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
-	 * perform the synchronization. Allow the synchronization thread(s) to be assigned
+	 * perform the synchronization.
+	 * Use simple JDK thread(s) for the synchronization thread(s).
+	 * Allow the synchronization thread(s) to be assigned
 	 * JDK-generated names.
 	 */
 	public AsynchronousSynchronizer(Command command) {
-		this(command, null);
+		this(command, null, null);
+	}
+
+	/**
+	 * Construct an asynchronous synchronizer that uses the specified command to
+	 * perform the synchronization.
+	 * Use the specified thread factory to construct the synchronization thread(s).
+	 * Allow the synchronization thread(s) to be assigned
+	 * JDK-generated names.
+	 */
+	public AsynchronousSynchronizer(Command command, ThreadFactory threadFactory) {
+		this(command, threadFactory, null);
 	}
 
 	/**
 	 * Construct an asynchronous synchronizer that uses the specified command to
 	 * perform the synchronization. Assign the synchronization thread(s) the specified
 	 * name.
+	 * Use simple JDK thread(s) for the synchronization thread(s).
 	 */
 	public AsynchronousSynchronizer(Command command, String threadName) {
+		this(command, null, threadName);
+	}
+
+	/**
+	 * Construct an asynchronous synchronizer that uses the specified command to
+	 * perform the synchronization.
+	 * Use the specified thread factory to construct the synchronization thread(s).
+	 * Assign the synchronization thread(s) the specified
+	 * name.
+	 */
+	public AsynchronousSynchronizer(Command command, ThreadFactory threadFactory, String threadName) {
 		super();
 		if (command == null) {
 			throw new NullPointerException();
 		}
-		this.consumerThreadCoordinator = new ConsumerThreadCoordinator(this.buildConsumer(command), threadName);
+		this.consumerThreadCoordinator = new ConsumerThreadCoordinator(this.buildConsumer(command), threadFactory, threadName);
 	}
 
 	ConsumerThreadCoordinator.Consumer buildConsumer(Command command) {

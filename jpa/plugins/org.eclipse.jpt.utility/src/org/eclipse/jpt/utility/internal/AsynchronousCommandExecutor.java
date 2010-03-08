@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,6 +8,8 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal;
+
+import java.util.concurrent.ThreadFactory;
 
 import org.eclipse.jpt.utility.Command;
 
@@ -42,23 +44,42 @@ public class AsynchronousCommandExecutor
 
 	/**
 	 * Construct an asynchronous command executor.
+	 * Use simple JDK thread(s) for the command execution thread(s).
 	 * Allow the command execution thread(s) to be assigned JDK-generated names.
 	 */
 	public AsynchronousCommandExecutor() {
-		this(null);
+		this(SimpleThreadFactory.instance(), null);
+	}
+
+	/**
+	 * Construct an asynchronous command executor.
+	 * Use the specified thread factory to construct the command execution thread(s).
+	 * Allow the command execution thread(s) to be assigned JDK-generated names.
+	 */
+	public AsynchronousCommandExecutor(ThreadFactory threadFactory) {
+		this(threadFactory, null);
+	}
+
+	/**
+	 * Construct an asynchronous command executor.
+	 * Use simple JDK thread(s) for the command execution thread(s).
+	 * Assign the command execution thread(s) the specified name.
+	 */
+	public AsynchronousCommandExecutor(String threadName) {
+		this(SimpleThreadFactory.instance(), threadName);
 	}
 
 	/**
 	 * Construct an asynchronous command executor.
 	 * Assign the command execution thread(s) the specified name.
 	 */
-	public AsynchronousCommandExecutor(String threadName) {
+	public AsynchronousCommandExecutor(ThreadFactory threadFactory, String threadName) {
 		super();
-		this.consumerThreadCoordinator = this.buildConsumerThreadCoordinator(threadName);
+		this.consumerThreadCoordinator = this.buildConsumerThreadCoordinator(threadFactory, threadName);
 	}
 
-	private ConsumerThreadCoordinator buildConsumerThreadCoordinator(String threadName) {
-		return new ConsumerThreadCoordinator(this.buildConsumer(), threadName);
+	private ConsumerThreadCoordinator buildConsumerThreadCoordinator(ThreadFactory threadFactory, String threadName) {
+		return new ConsumerThreadCoordinator(this.buildConsumer(), threadFactory, threadName);
 	}
 
 	private ConsumerThreadCoordinator.Consumer buildConsumer() {
