@@ -68,14 +68,10 @@ public abstract class PreferencesTestCase extends TestCase {
 	}
 
 	protected void waitForEventQueueToClear() {
-		try {
-			while ( ! this.preferencesEventQueue().isEmpty()) {
-				Thread.sleep(100);
-			}
-			Thread.sleep(100);
-		} catch (InterruptedException ex) {
-			throw new RuntimeException(ex);
+		while ( ! this.preferencesEventQueue().isEmpty()) {
+			TestTools.sleep(100);
 		}
+		TestTools.sleep(100);
 	}
 
 	@SuppressWarnings("unchecked")

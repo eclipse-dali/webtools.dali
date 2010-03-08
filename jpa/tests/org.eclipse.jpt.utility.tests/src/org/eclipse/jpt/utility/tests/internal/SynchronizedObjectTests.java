@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SynchronizedObject;
 
 @SuppressWarnings("nls")
-public class SynchronizedObjectTests extends TestCase {
+public class SynchronizedObjectTests
+	extends MultiThreadedTestCase
+{
 	private volatile SynchronizedObject<Object> so;
-	private volatile boolean exCaught;
-	private volatile boolean timeoutOccurred;
+	volatile boolean timeoutOccurred;
 	volatile Object value = new Object();
-	private volatile long startTime;
-	private volatile long endTime;
-	private volatile Object soValue;
+	volatile long startTime;
+	volatile long endTime;
+	volatile Object soValue;
 
 
 	public SynchronizedObjectTests(String name) {
@@ -31,17 +31,10 @@ public class SynchronizedObjectTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.so = new SynchronizedObject<Object>();
-		this.exCaught = false;
 		this.timeoutOccurred = false;
 		this.startTime = 0;
 		this.endTime = 0;
 		this.soValue = null;
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		TestTools.clear(this);
-		super.tearDown();
 	}
 
 	public void testAccessors() throws Exception {
@@ -93,22 +86,22 @@ public class SynchronizedObjectTests extends TestCase {
 		// ...and the value should be set to null by t2
 		assertNull(this.so.getValue());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 150): " + time, time > 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
 	}
 
 	/**
 	 * t2 will time out waiting for t1 to set the value to null
 	 */
 	public void testWaitUntilNullTimeout() throws Exception {
-		this.verifyWaitUntilNull(20);
+		this.verifyWaitUntilNull(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to null by t1
 		assertNull(this.so.getValue());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit late (expected value should be < 150): " + time, time < 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
 	private void verifyWaitUntilNull(long t2Timeout) throws Exception {
@@ -126,22 +119,22 @@ public class SynchronizedObjectTests extends TestCase {
 		// ...and the value should be set to an object by t2
 		assertTrue(this.so.isNotNull());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 150): " + time, time > 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
 	}
 
 	/**
 	 * t2 will time out waiting for t1 to set the value to null
 	 */
 	public void testWaitToSetValueTimeout() throws Exception {
-		this.verifyWaitToSetValue(20);
+		this.verifyWaitToSetValue(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to null by t1
 		assertTrue(this.so.isNull());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit late (expected value should be < 150): " + time, time < 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
 	private void verifyWaitToSetValue(long t2Timeout) throws Exception {
@@ -156,34 +149,30 @@ public class SynchronizedObjectTests extends TestCase {
 		this.so.setValue(null);
 		Runnable r1 = this.buildRunnable(this.buildInitializeValueCommand(), this.so, 0);
 		// give t1 a head start of 100 ms
-		Runnable r2 = this.buildRunnable(this.buildGetValueCommand(), this.so, 100);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Runnable r2 = this.buildRunnable(this.buildGetValueCommand(), this.so, TICK);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 		assertEquals("foo", this.so.getValue());
 		assertEquals("foo", this.soValue);
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 100): " + time, time > 300);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TWO_TICKS + "): " + time, time > TWO_TICKS);
 	}
 
 	private void executeThreads(Command t1Command, Command t2Command) throws Exception {
 		this.so.setValue(this.value);
-		Runnable r1 = this.buildRunnable(t1Command, this.so, 200);
+		Runnable r1 = this.buildRunnable(t1Command, this.so, TWO_TICKS);
 		Runnable r2 = this.buildRunnable(t2Command, this.so, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 	}
 
 	private Command buildSetNullCommand() {
@@ -196,35 +185,35 @@ public class SynchronizedObjectTests extends TestCase {
 
 	private Command buildWaitUntilNullCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedObject<Object> sObject) throws Exception {
-				SynchronizedObjectTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedObjectTests.this.setTimeoutOccurred( ! sObject.waitUntilNull(timeout));
-				SynchronizedObjectTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
+				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
+				SynchronizedObjectTests.this.timeoutOccurred = ! sObject.waitUntilNull(timeout);
+				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Command buildWaitToSetValueCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedObject<Object> sObject) throws Exception {
-				SynchronizedObjectTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedObjectTests.this.setTimeoutOccurred( ! sObject.waitToSetValue(SynchronizedObjectTests.this.value, timeout));
-				SynchronizedObjectTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
+				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
+				SynchronizedObjectTests.this.timeoutOccurred = ! sObject.waitToSetValue(SynchronizedObjectTests.this.value, timeout);
+				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Command buildInitializeValueCommand() {
 		return new Command() {
-			public void execute(final SynchronizedObject<Object> sObject) throws Exception {
+			public void execute(final SynchronizedObject<Object> sObject) throws InterruptedException {
 				sObject.execute(
 					new org.eclipse.jpt.utility.Command() {
 						public void execute() {
 							// pretend to perform some long initialization process
 							try {
-								Thread.sleep(500);
+								Thread.sleep(5 * TICK);
 							} catch (Exception ex) {
-								SynchronizedObjectTests.this.setExCaught(true);
+								throw new RuntimeException(ex);
 							}
 							sObject.setValue("foo");
 						}
@@ -236,58 +225,35 @@ public class SynchronizedObjectTests extends TestCase {
 
 	private Command buildGetValueCommand() {
 		return new Command() {
-			public void execute(SynchronizedObject<Object> sObject) throws Exception {
-				SynchronizedObjectTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedObjectTests.this.setSOValue(sObject.getValue());
-				SynchronizedObjectTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedObject<Object> sObject) throws InterruptedException {
+				SynchronizedObjectTests.this.startTime = System.currentTimeMillis();
+				SynchronizedObjectTests.this.soValue = sObject.getValue();
+				SynchronizedObjectTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Runnable buildRunnable(final Command command, final SynchronizedObject<Object> sObject, final long sleep) {
-		return new Runnable() {
-			public void run() {
-				try {
-					if (sleep != 0) {
-						Thread.sleep(sleep);
-					}
-					command.execute(sObject);
-				} catch (Exception ex) {
-					SynchronizedObjectTests.this.setExCaught(true);
+		return new TestRunnable() {
+			@Override
+			protected void run_() throws InterruptedException {
+				if (sleep != 0) {
+					Thread.sleep(sleep);
 				}
+				command.execute(sObject);
 			}
 		};
 	}
 
-	void setExCaught(boolean exCaught) {
-		this.exCaught = exCaught;
-	}
-
-	void setTimeoutOccurred(boolean timeoutOccurred) {
-		this.timeoutOccurred = timeoutOccurred;
-	}
-
-	void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-
-	private long elapsedTime() {
+	private long calculateElapsedTime() {
 		return this.endTime - this.startTime;
-	}
-
-	void setSOValue(Object soValue) {
-		this.soValue = soValue;
 	}
 
 
 	// ********** Command interface **********
 
 	private interface Command {
-		void execute(SynchronizedObject<Object> so) throws Exception;
+		void execute(SynchronizedObject<Object> so) throws InterruptedException;
 	}
 
 }

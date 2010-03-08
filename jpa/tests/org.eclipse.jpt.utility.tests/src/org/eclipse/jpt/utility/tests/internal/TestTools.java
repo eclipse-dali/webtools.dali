@@ -34,6 +34,17 @@ import junit.framework.TestResult;
 public final class TestTools {
 
 	/**
+	 * Convenience method that handles {@link InterruptedException}.
+	 */
+	public static void sleep(long millis) {
+		try {
+			Thread.sleep(millis);
+		} catch (InterruptedException ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+
+	/**
 	 * test an object's implementation of Serializable by serializing the
 	 * specified object to a byte array; then de-serializing the byte array and
 	 * returning the resultant object
@@ -116,9 +127,9 @@ public final class TestTools {
 		} else {
 			TestFailure failure = null;
 			if (result.failures().hasMoreElements()) {
-				failure = (TestFailure) result.failures().nextElement();
+				failure = result.failures().nextElement();
 			} else {
-				failure = (TestFailure) result.errors().nextElement();
+				failure = result.errors().nextElement();
 			}
 			failure.thrownException().printStackTrace(writer);
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.CommandRunnable;
 import org.eclipse.jpt.utility.internal.RunnableCommand;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommand;
 
-public class CommandTests extends TestCase {
-
+public class CommandTests
+	extends MultiThreadedTestCase
+{
 	public CommandTests(String name) {
 		super(name);
 	}
@@ -95,11 +94,11 @@ public class CommandTests extends TestCase {
 	public void testThreadLocalCommand() throws Exception {
 		ThreadLocalCommand threadLocalCommand = new ThreadLocalCommand();
 		TestRunnable testRunnable1 = new TestRunnable(threadLocalCommand, 1);
-		Thread thread1 = new Thread(testRunnable1);
+		Thread thread1 = this.buildThread(testRunnable1);
 		thread1.run();
 
 		TestRunnable testRunnable2 = new TestRunnable(threadLocalCommand, 2);
-		Thread thread2 = new Thread(testRunnable2);
+		Thread thread2 = this.buildThread(testRunnable2);
 		thread2.run();
 
 		thread1.join();

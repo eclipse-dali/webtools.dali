@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,13 +15,14 @@ import org.eclipse.jpt.utility.internal.Stack;
 import org.eclipse.jpt.utility.internal.SynchronizedStack;
 
 @SuppressWarnings("nls")
-public class SynchronizedStackTests extends SimpleStackTests {
+public class SynchronizedStackTests
+	extends SimpleStackTests
+{
 	private volatile SynchronizedStack<String> ss;
-	private volatile boolean exCaught;
-	private volatile boolean timeoutOccurred;
-	private volatile long startTime;
-	private volatile long endTime;
-	private volatile Object poppedObject;
+	volatile boolean timeoutOccurred;
+	volatile long startTime;
+	volatile long endTime;
+	volatile Object poppedObject;
 
 	static final String ITEM_1 = new String();
 	static final String ITEM_2 = new String();
@@ -44,7 +45,6 @@ public class SynchronizedStackTests extends SimpleStackTests {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.ss = new SynchronizedStack<String>();
-		this.exCaught = false;
 		this.timeoutOccurred = false;
 		this.startTime = 0;
 		this.endTime = 0;
@@ -64,9 +64,9 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		slowStack.push("first");
 		slowStack.push("second");
 
-		Thread thread = new Thread(this.buildRunnable(slowStack));
+		Thread thread = this.buildThread(this.buildRunnable(slowStack));
 		thread.start();
-		Thread.sleep(200);
+		Thread.sleep(TWO_TICKS);
 
 		assertEquals(expected, slowStack.pop());
 		thread.join();
@@ -92,7 +92,7 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		}
 		public Object slowPop() {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(5 * TICK);
 			} catch (InterruptedException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -107,7 +107,7 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		}
 		public synchronized Object slowPop() {
 			try {
-				Thread.sleep(500);
+				Thread.sleep(5 * TICK);
 			} catch (InterruptedException ex) {
 				throw new RuntimeException(ex);
 			}
@@ -128,11 +128,11 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		// ...and the stack should be empty
 		assertTrue(this.ss.isEmpty());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() > 150);
+		assertTrue(this.calculateElapsedTime() > TICK);
 	}
 
 	public void testWaitToPopTimeout() throws Exception {
-		this.verifyWaitToPop(20);
+		this.verifyWaitToPop(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the stack was never popped...
@@ -140,20 +140,18 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		// ...and it still holds the item
 		assertSame(ITEM_1, this.ss.peek());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() < 150);
+		assertTrue(this.calculateElapsedTime() < THREE_TICKS);
 	}
 
 	private void verifyWaitToPop(long timeout) throws Exception {
-		Runnable r1 = this.buildRunnable(this.buildPushCommand(), this.ss, 200);
+		Runnable r1 = this.buildRunnable(this.buildPushCommand(), this.ss, TWO_TICKS);
 		Runnable r2 = this.buildRunnable(this.buildWaitToPopCommand(timeout), this.ss, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 	}
 
 	public void testWaitToPush() throws Exception {
@@ -166,11 +164,11 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		assertFalse(this.ss.isEmpty());
 		assertSame(ITEM_2, this.ss.peek());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() > 150);
+		assertTrue(this.calculateElapsedTime() > TICK);
 	}
 
 	public void testWaitToPushTimeout() throws Exception {
-		this.verifyWaitToPush(20);
+		this.verifyWaitToPush(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the stack is eventually popped by t1...
@@ -178,21 +176,19 @@ public class SynchronizedStackTests extends SimpleStackTests {
 		// ...but nothing is pushed on to the stack by t2
 		assertTrue(this.ss.isEmpty());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() < 150);
+		assertTrue(this.calculateElapsedTime() < THREE_TICKS);
 	}
 
 	private void verifyWaitToPush(long timeout) throws Exception {
 		this.ss.push(ITEM_1);
-		Runnable r1 = this.buildRunnable(this.buildPopCommand(), this.ss, 200);
+		Runnable r1 = this.buildRunnable(this.buildPopCommand(), this.ss, TWO_TICKS);
 		Runnable r2 = this.buildRunnable(this.buildWaitToPushCommand(timeout), this.ss, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 	}
 
 	private Command buildPushCommand() {
@@ -205,14 +201,14 @@ public class SynchronizedStackTests extends SimpleStackTests {
 
 	private Command buildWaitToPopCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedStack<String> synchronizedStack) throws Exception {
-				SynchronizedStackTests.this.setStartTime(System.currentTimeMillis());
+			public void execute(SynchronizedStack<String> synchronizedStack) throws InterruptedException {
+				SynchronizedStackTests.this.startTime = System.currentTimeMillis();
 				try {
-					SynchronizedStackTests.this.setPoppedObject(synchronizedStack.waitToPop(timeout));
+					SynchronizedStackTests.this.poppedObject = synchronizedStack.waitToPop(timeout);
 				} catch (EmptyStackException ex) {
-					SynchronizedStackTests.this.setTimeoutOccurred(true);
+					SynchronizedStackTests.this.timeoutOccurred = true;
 				}
-				SynchronizedStackTests.this.setEndTime(System.currentTimeMillis());
+				SynchronizedStackTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
@@ -220,57 +216,34 @@ public class SynchronizedStackTests extends SimpleStackTests {
 	private Command buildPopCommand() {
 		return new Command() {
 			public void execute(SynchronizedStack<String> synchronizedStack) {
-				SynchronizedStackTests.this.setPoppedObject(synchronizedStack.pop());
+				SynchronizedStackTests.this.poppedObject = synchronizedStack.pop();
 			}
 		};
 	}
 
 	private Command buildWaitToPushCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedStack<String> synchronizedStack) throws Exception {
-				SynchronizedStackTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedStackTests.this.setTimeoutOccurred( ! synchronizedStack.waitToPush(ITEM_2, timeout));
-				SynchronizedStackTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedStack<String> synchronizedStack) throws InterruptedException {
+				SynchronizedStackTests.this.startTime = System.currentTimeMillis();
+				SynchronizedStackTests.this.timeoutOccurred = ! synchronizedStack.waitToPush(ITEM_2, timeout);
+				SynchronizedStackTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Runnable buildRunnable(final Command command, final SynchronizedStack<String> synchronizedStack, final long sleep) {
-		return new Runnable() {
-			public void run() {
-				try {
-					if (sleep != 0) {
-						Thread.sleep(sleep);
-					}
-					command.execute(synchronizedStack);
-				} catch (Exception ex) {
-					SynchronizedStackTests.this.setExCaught(true);
+		return new TestRunnable() {
+			@Override
+			protected void run_() throws Throwable {
+				if (sleep != 0) {
+					Thread.sleep(sleep);
 				}
+				command.execute(synchronizedStack);
 			}
 		};
 	}
 
-	void setExCaught(boolean exCaught) {
-		this.exCaught = exCaught;
-	}
-
-	void setTimeoutOccurred(boolean timeoutOccurred) {
-		this.timeoutOccurred = timeoutOccurred;
-	}
-
-	void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-
-	void setPoppedObject(Object poppedObject) {
-		this.poppedObject = poppedObject;
-	}
-
-	long elapsedTime() {
+	long calculateElapsedTime() {
 		return this.endTime - this.startTime;
 	}
 
@@ -278,7 +251,7 @@ public class SynchronizedStackTests extends SimpleStackTests {
 	// ********** Command interface **********
 
 	private interface Command {
-		void execute(SynchronizedStack<String> synchronizedStack) throws Exception;
+		void execute(SynchronizedStack<String> synchronizedStack) throws InterruptedException;
 	}
 
 }

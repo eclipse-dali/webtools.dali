@@ -9,16 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.tests.internal.MultiThreadedTestCase;
+import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class SynchronousSynchronizerTests extends TestCase {
+public class SynchronousSynchronizerTests
+	extends MultiThreadedTestCase
+{
 	PrimaryModel1 primaryModel1;
 	SecondaryModel1 secondaryModel1;
 	Command command1;
@@ -173,21 +175,27 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 	}
 
-	private Thread buildTriggerSynchronizeThread(final PrimaryModel2 primaryModel, final long ticks) {
-		return new Thread("trigger sync") {
-			@Override
+	private Thread buildTriggerSynchronizeThread(PrimaryModel2 primaryModel, long ticks) {
+		return this.buildThread(this.buildTriggerSynchronizeRunnable(primaryModel, ticks), "trigger sync");
+	}
+
+	private Runnable buildTriggerSynchronizeRunnable(final PrimaryModel2 primaryModel, final long ticks) {
+		return new Runnable() {
 			public void run() {
-				delay(ticks);
+				TestTools.sleep(ticks * TICK);
 				primaryModel.setCount(7);
 			}
 		};
 	}
 
-	private Thread buildStopThread(final Synchronizer synchronizer, final long ticks) {
-		return new Thread("stop") {
-			@Override
+	private Thread buildStopThread(Synchronizer synchronizer, long ticks) {
+		return this.buildThread(this.buildStopRunnable(synchronizer, ticks), "stop");
+	}
+
+	private Runnable buildStopRunnable(final Synchronizer synchronizer, final long ticks) {
+		return new Runnable() {
 			public void run() {
-				delay(ticks);
+				TestTools.sleep(ticks * TICK);
 				log("STOP thread Synchronizer.stop()");
 				synchronizer.stop();
 				log("STOP thread stop");
@@ -324,11 +332,14 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(10, secondaryModel3.getDoubleCountPlus3());
 	}
 
-	private Thread buildInterruptThread(final Thread thread, final long ticks) {
-		return new Thread("interrupt") {
-			@Override
+	private Thread buildInterruptThread(Thread thread, long ticks) {
+		return this.buildThread(this.buildInterruptRunnable(thread, ticks), "interrupt");
+	}
+
+	private Runnable buildInterruptRunnable(final Thread thread, final long ticks) {
+		return new Runnable() {
 			public void run() {
-				delay(ticks);
+				TestTools.sleep(ticks * TICK);
 				log("INTERRUPT thread Thread.interrupt()");
 				thread.interrupt();
 			}
@@ -377,16 +388,16 @@ public class SynchronousSynchronizerTests extends TestCase {
 		assertEquals(2, command.count);
 	}
 
-	private DelayCommand buildDelayCommand(float ticks) {
+	private DelayCommand buildDelayCommand(int ticks) {
 		return new DelayCommand(ticks);
 	}
 
 	class DelayCommand implements Command {
-		final float ticks;
+		final long ticks;
 		boolean first = true;
 		int count = 0;
 
-		DelayCommand(float ticks) {
+		DelayCommand(int ticks) {
 			super();
 			this.ticks = ticks;
 		}
@@ -400,17 +411,20 @@ public class SynchronousSynchronizerTests extends TestCase {
 				return;
 			}
 			log("EXEC start " + this.count);
-			delay(this.ticks);
+			TestTools.sleep(this.ticks * TICK);
 			log("EXEC stop " + this.count);
 		}
 
 	}
 
-	private Thread buildStartThread(final Synchronizer synchronizer, final long ticks, final SynchronizedBoolean exCaught) {
-		return new Thread("start") {
-			@Override
+	private Thread buildStartThread(Synchronizer synchronizer, long ticks, SynchronizedBoolean exCaught) {
+		return this.buildThread(this.buildStartRunnable(synchronizer, ticks, exCaught), "start");
+	}
+
+	private Runnable buildStartRunnable(final Synchronizer synchronizer, final long ticks, final SynchronizedBoolean exCaught) {
+		return new Runnable() {
 			public void run() {
-				delay(ticks);
+				TestTools.sleep(ticks * TICK);
 				log("START thread Synchronizer.start()");
 				try {
 					synchronizer.start();
@@ -423,11 +437,14 @@ public class SynchronousSynchronizerTests extends TestCase {
 		};
 	}
 
-	private Thread buildSynchronizeThread(final Synchronizer synchronizer, final long ticks) {
-		return new Thread("synchronize") {
-			@Override
+	private Thread buildSynchronizeThread(Synchronizer synchronizer, long ticks) {
+		return this.buildThread(this.buildSynchronizeRunnable(synchronizer, ticks), "synchronize");
+	}
+
+	private Runnable buildSynchronizeRunnable(final Synchronizer synchronizer, final long ticks) {
+		return new Runnable() {
 			public void run() {
-				delay(ticks);
+				TestTools.sleep(ticks * TICK);
 				log("SYNC thread Synchronizer.synchronize()");
 				synchronizer.synchronize();
 				log("SYNC thread stop");
@@ -684,27 +701,27 @@ public class SynchronousSynchronizerTests extends TestCase {
 	 * change the tick count. (It is called in the SecondaryModel1 constructor.)
 	 */
 	public static class SecondaryModel3 extends SecondaryModel2 {
-		private long ticks = 0;
+		private long delay = 0;
 		public SecondaryModel3(PrimaryModel2 primaryModel) {
 			super(primaryModel);
 		}
 
 		public void setTicks(long ticks) {
-			this.ticks = ticks;
+			this.delay = ticks * TICK;
 		}
 
 		@Override
 		public void synchronize() {
 			// don't log anything until 'ticks' is set
-			if (this.ticks == 0) {
+			if (this.delay == 0) {
 				super.synchronize();
 			} else {
-				log("SYNC thread start - sync duration will be: " + this.ticks + " ticks");
+				log("SYNC thread start - sync duration will be: " + (this.delay / TICK) + " ticks");
 				try {
-					delay_(this.ticks);
+					Thread.sleep(this.delay);
 				} catch (InterruptedException ex) {
 					log("SYNC thread interrupted");
-					delay(1);
+					TestTools.sleep(TICK);
 					return;  // stop synchronize (i.e. don't call super.synchronize())
 				}
 				super.synchronize();
@@ -734,27 +751,6 @@ public class SynchronousSynchronizerTests extends TestCase {
 
 	public static String timestamp() {
 		return String.valueOf((System.currentTimeMillis() % 10000) / 1000f);
-	}
-
-	public static void delay(float ticks) {
-		try {
-			delay_(ticks);
-		} catch (InterruptedException ex) {
-			// just stop everything and return
-			log("INTERRUPT");
-			return;
-		}
-	}
-
-	public static void delay_(float ticks) throws InterruptedException {
-		// a tenth of second per tick should work...
-		long milliseconds = (long) (ticks * 100);
-		long stop = System.currentTimeMillis() + milliseconds;
-		long remaining = milliseconds;
-		while (remaining > 0L) {
-			Thread.sleep(remaining);
-			remaining = stop - System.currentTimeMillis();
-		}
 	}
 
 }

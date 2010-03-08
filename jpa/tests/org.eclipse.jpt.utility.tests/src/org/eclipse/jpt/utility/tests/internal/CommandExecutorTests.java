@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 
-public class CommandExecutorTests extends TestCase {
+public class CommandExecutorTests
+	extends MultiThreadedTestCase
+{
 
 	public CommandExecutorTests(String name) {
 		super(name);
@@ -55,15 +55,15 @@ public class CommandExecutorTests extends TestCase {
 	public void testThreadLocalCommandExecutor() throws Exception {
 		ThreadLocalCommandExecutor threadLocalCommandExecutor = new ThreadLocalCommandExecutor();
 		TestRunnable testRunnable1 = new TestRunnable(threadLocalCommandExecutor, 1);
-		Thread thread1 = new Thread(testRunnable1);
+		Thread thread1 = this.buildThread(testRunnable1);
 		thread1.run();
 
 		TestRunnable testRunnable2 = new TestRunnable(threadLocalCommandExecutor, 2);
-		Thread thread2 = new Thread(testRunnable2);
+		Thread thread2 = this.buildThread(testRunnable2);
 		thread2.run();
 
 		TestRunnable testRunnable3 = new TestRunnable(threadLocalCommandExecutor, 3, null);
-		Thread thread3 = new Thread(testRunnable3);
+		Thread thread3 = this.buildThread(testRunnable3);
 		thread3.run();
 
 		thread1.join();

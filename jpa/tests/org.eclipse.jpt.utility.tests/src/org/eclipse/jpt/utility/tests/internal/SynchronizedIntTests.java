@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SynchronizedInt;
 
 @SuppressWarnings("nls")
-public class SynchronizedIntTests extends TestCase {
+public class SynchronizedIntTests
+	extends MultiThreadedTestCase
+{
 	private volatile SynchronizedInt si;
-	private volatile boolean exCaught;
-	private volatile boolean timeoutOccurred;
+	volatile boolean timeoutOccurred;
 	volatile int value = 7;
-	private volatile long startTime;
-	private volatile long endTime;
-	private volatile int sIntValue;
+	volatile long startTime;
+	volatile long endTime;
+	volatile int sIntValue;
 
 
 	public SynchronizedIntTests(String name) {
@@ -31,17 +31,10 @@ public class SynchronizedIntTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.si = new SynchronizedInt();
-		this.exCaught = false;
 		this.timeoutOccurred = false;
 		this.startTime = 0;
 		this.endTime = 0;
 		this.sIntValue = 0;
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		TestTools.clear(this);
-		super.tearDown();
 	}
 
 	public void testGetValue() throws Exception {
@@ -213,28 +206,28 @@ public class SynchronizedIntTests extends TestCase {
 	 * t2 will wait indefinitely until t1 sets the value to 0
 	 */
 	public void testWaitUntilZero() throws Exception {
-		this.verifyWaitUntilZero(0);
+		this.verifyWaitUntilZero(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to 0 by t2
 		assertEquals(0, this.si.getValue());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 150): " + time, time > 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
 	}
 
 	/**
 	 * t2 will time out waiting for t1 to set the value to 0
 	 */
 	public void testWaitUntilZeroTimeout() throws Exception {
-		this.verifyWaitUntilZero(20);
+		this.verifyWaitUntilZero(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to 0 by t1
 		assertEquals(0, this.si.getValue());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit late (expected value should be < 150): " + time, time < 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
 	private void verifyWaitUntilZero(long t2Timeout) throws Exception {
@@ -246,28 +239,28 @@ public class SynchronizedIntTests extends TestCase {
 	 * then t2 will set the value to 7
 	 */
 	public void testWaitToSetValue() throws Exception {
-		this.verifyWaitToSetValue(0);
+		this.verifyWaitToSetValue(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to an object by t2
 		assertTrue(this.si.isNotZero());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 150): " + time, time > 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TICK + "): " + time, time > TICK);
 	}
 
 	/**
 	 * t2 will time out waiting for t1 to set the value to 0
 	 */
 	public void testWaitToSetValueTimeout() throws Exception {
-		this.verifyWaitToSetValue(20);
+		this.verifyWaitToSetValue(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
-		// ...and the value will eventually be set to null by t1
+		// ...and the value will eventually be set to zero by t1
 		assertTrue(this.si.isZero());
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit late (expected value should be < 150): " + time, time < 150);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit late (expected value should be < " + THREE_TICKS + "): " + time, time < THREE_TICKS);
 	}
 
 	private void verifyWaitToSetValue(long t2Timeout) throws Exception {
@@ -281,35 +274,31 @@ public class SynchronizedIntTests extends TestCase {
 	public void testExecute() throws Exception {
 		this.si.setValue(0);
 		Runnable r1 = this.buildRunnable(this.buildInitializeValueCommand(), this.si, 0);
-		// give t1 a head start of 100 ms
-		Runnable r2 = this.buildRunnable(this.buildGetValueCommand(), this.si, 100);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		// give t1 a head start
+		Runnable r2 = this.buildRunnable(this.buildGetValueCommand(), this.si, TICK);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 		assertEquals(42, this.si.getValue());
 		assertEquals(42, this.sIntValue);
 		// make a reasonable guess about how long t2 took
-		long time = this.elapsedTime();
-		assertTrue("t2 finished a bit early (expected value should be > 100): " + time, time > 300);
+		long time = this.calculateElapsedTime();
+		assertTrue("t2 finished a bit early (expected value should be > " + TWO_TICKS + "): " + time, time > TWO_TICKS);
 	}
 
 	private void executeThreads(Command t1Command, Command t2Command) throws Exception {
 		this.si.setValue(this.value);
-		Runnable r1 = this.buildRunnable(t1Command, this.si, 200);
+		Runnable r1 = this.buildRunnable(t1Command, this.si, TWO_TICKS);
 		Runnable r2 = this.buildRunnable(t2Command, this.si, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 	}
 
 	private Command buildSetZeroCommand() {
@@ -322,35 +311,35 @@ public class SynchronizedIntTests extends TestCase {
 
 	private Command buildWaitUntilZeroCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedInt sInt) throws Exception {
-				SynchronizedIntTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedIntTests.this.setTimeoutOccurred( ! sInt.waitUntilZero(timeout));
-				SynchronizedIntTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedInt sInt) throws InterruptedException {
+				SynchronizedIntTests.this.startTime = System.currentTimeMillis();
+				SynchronizedIntTests.this.timeoutOccurred = ! sInt.waitUntilZero(timeout);
+				SynchronizedIntTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Command buildWaitToSetValueCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedInt sInt) throws Exception {
-				SynchronizedIntTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedIntTests.this.setTimeoutOccurred( ! sInt.waitToSetValue(SynchronizedIntTests.this.value, timeout));
-				SynchronizedIntTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedInt sInt) throws InterruptedException {
+				SynchronizedIntTests.this.startTime = System.currentTimeMillis();
+				SynchronizedIntTests.this.timeoutOccurred = ! sInt.waitToSetValue(SynchronizedIntTests.this.value, timeout);
+				SynchronizedIntTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Command buildInitializeValueCommand() {
 		return new Command() {
-			public void execute(final SynchronizedInt sInt) throws Exception {
+			public void execute(final SynchronizedInt sInt) throws InterruptedException {
 				sInt.execute(
 					new org.eclipse.jpt.utility.Command() {
 						public void execute() {
 							// pretend to perform some long initialization process
 							try {
-								Thread.sleep(500);
-							} catch (Exception ex) {
-								SynchronizedIntTests.this.setExCaught(true);
+								Thread.sleep(5 * TICK);
+							} catch (InterruptedException ex) {
+								throw new RuntimeException(ex);
 							}
 							sInt.setValue(42);
 						}
@@ -362,58 +351,35 @@ public class SynchronizedIntTests extends TestCase {
 
 	private Command buildGetValueCommand() {
 		return new Command() {
-			public void execute(SynchronizedInt sInt) throws Exception {
-				SynchronizedIntTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedIntTests.this.setSOValue(sInt.getValue());
-				SynchronizedIntTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedInt sInt) throws InterruptedException {
+				SynchronizedIntTests.this.startTime = System.currentTimeMillis();
+				SynchronizedIntTests.this.sIntValue = sInt.getValue();
+				SynchronizedIntTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Runnable buildRunnable(final Command command, final SynchronizedInt sInt, final long sleep) {
-		return new Runnable() {
-			public void run() {
-				try {
-					if (sleep != 0) {
-						Thread.sleep(sleep);
-					}
-					command.execute(sInt);
-				} catch (Exception ex) {
-					SynchronizedIntTests.this.setExCaught(true);
+		return new TestRunnable() {
+			@Override
+			protected void run_() throws InterruptedException {
+				if (sleep != 0) {
+					Thread.sleep(sleep);
 				}
+				command.execute(sInt);
 			}
 		};
 	}
 
-	void setExCaught(boolean exCaught) {
-		this.exCaught = exCaught;
-	}
-
-	void setTimeoutOccurred(boolean timeoutOccurred) {
-		this.timeoutOccurred = timeoutOccurred;
-	}
-
-	void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-
-	private long elapsedTime() {
+	private long calculateElapsedTime() {
 		return this.endTime - this.startTime;
-	}
-
-	void setSOValue(int sIntValue) {
-		this.sIntValue = sIntValue;
 	}
 
 
 	// ********** Command interface **********
 
 	private interface Command {
-		void execute(SynchronizedInt sInt) throws Exception;
+		void execute(SynchronizedInt sInt) throws InterruptedException;
 	}
 
 }

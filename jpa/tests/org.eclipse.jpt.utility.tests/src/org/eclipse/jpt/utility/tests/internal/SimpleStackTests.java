@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,14 @@
 package org.eclipse.jpt.utility.tests.internal;
 
 import java.util.EmptyStackException;
-import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.SimpleStack;
 import org.eclipse.jpt.utility.internal.Stack;
 
 @SuppressWarnings("nls")
-public class SimpleStackTests extends TestCase {
-
+public class SimpleStackTests
+	extends MultiThreadedTestCase
+{
 	public SimpleStackTests(String name) {
 		super(name);
 	}

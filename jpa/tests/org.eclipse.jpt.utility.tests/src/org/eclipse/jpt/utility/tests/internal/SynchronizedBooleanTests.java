@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 
-public class SynchronizedBooleanTests extends TestCase {
+public class SynchronizedBooleanTests
+	extends MultiThreadedTestCase
+{
 	private volatile SynchronizedBoolean sb;
-	private volatile boolean exCaught;
-	private volatile boolean timeoutOccurred;
-	private volatile long startTime;
-	private volatile long endTime;
+	volatile boolean timeoutOccurred;
+	volatile long startTime;
+	volatile long endTime;
 
 
 	public SynchronizedBooleanTests(String name) {
@@ -28,16 +28,9 @@ public class SynchronizedBooleanTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.sb = new SynchronizedBoolean();
-		this.exCaught = false;
 		this.timeoutOccurred = false;
 		this.startTime = 0;
 		this.endTime = 0;
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		TestTools.clear(this);
-		super.tearDown();
 	}
 
 	public void testGetValue() throws Exception {
@@ -137,72 +130,76 @@ public class SynchronizedBooleanTests extends TestCase {
 		assertEquals(1, this.sb.hashCode());
 	}
 
+	/**
+	 * t2 will wait indefinitely until t1 sets the value to true
+	 */
 	public void testWaitUntilTrue() throws Exception {
-		this.verifyWaitUntilTrue(0);
+		this.verifyWaitUntilTrue(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to true by t2
 		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() > 150);
+		assertTrue(this.calculateElapsedTime() > TICK);
 	}
 
+	/**
+	 * t2 will time out waiting for t1 to set the value to true
+	 */
 	public void testWaitUntilTrueTimeout() throws Exception {
-		this.verifyWaitUntilTrue(20);
+		this.verifyWaitUntilTrue(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to true by t1
 		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() < 150);
+		assertTrue(this.calculateElapsedTime() < THREE_TICKS);
 	}
 
-	private void verifyWaitUntilTrue(long timeout) throws Exception {
-		this.sb.setFalse();
-		Runnable r1 = this.buildRunnable(this.buildSetTrueCommand(), this.sb, 200);
-		Runnable r2 = this.buildRunnable(this.buildWaitUntilTrueCommand(timeout), this.sb, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
-		t1.start();
-		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+	private void verifyWaitUntilTrue(long t2Timeout) throws Exception {
+		this.executeThreads(this.buildSetTrueCommand(), this.buildWaitUntilTrueCommand(t2Timeout));
 	}
 
+	/**
+	 * t2 will wait indefinitely until t1 sets the value to false
+	 */
 	public void testWaitToSetFalse() throws Exception {
-		this.verifyWaitToSetFalse(0);
+		this.verifyWaitToSetFalse(0);  // 0 = indefinite wait
 		// no timeout occurs...
 		assertFalse(this.timeoutOccurred);
 		// ...and the value should be set to false by t2
 		assertFalse(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() > 150);
+		assertTrue(this.calculateElapsedTime() > TICK);
 	}
 
+	/**
+	 * t2 will time out waiting for t1 to set the value to false
+	 */
 	public void testWaitToSetFalseTimeout() throws Exception {
-		this.verifyWaitToSetFalse(20);
+		this.verifyWaitToSetFalse(TICK);
 		// timeout occurs...
 		assertTrue(this.timeoutOccurred);
 		// ...and the value will eventually be set to true by t1
 		assertTrue(this.sb.getValue());
 		// make a reasonable guess about how long t2 took
-		assertTrue(this.elapsedTime() < 150);
+		assertTrue(this.calculateElapsedTime() < THREE_TICKS);
 	}
 
-	private void verifyWaitToSetFalse(long timeout) throws Exception {
+	private void verifyWaitToSetFalse(long t2Timeout) throws Exception {
+		this.executeThreads(this.buildSetTrueCommand(), this.buildWaitToSetFalseCommand(t2Timeout));
+	}
+
+	private void executeThreads(Command t1Command, Command t2Command) throws Exception {
 		this.sb.setFalse();
-		Runnable r1 = this.buildRunnable(this.buildSetTrueCommand(), this.sb, 200);
-		Runnable r2 = this.buildRunnable(this.buildWaitToSetFalseCommand(timeout), this.sb, 0);
-		Thread t1 = new Thread(r1);
-		Thread t2 = new Thread(r2);
+		Runnable r1 = this.buildRunnable(t1Command, this.sb, TWO_TICKS);
+		Runnable r2 = this.buildRunnable(t2Command, this.sb, 0);
+		Thread t1 = this.buildThread(r1);
+		Thread t2 = this.buildThread(r2);
 		t1.start();
 		t2.start();
-		while (t1.isAlive() || t2.isAlive()) {
-			Thread.sleep(50);
-		}
-		assertFalse(this.exCaught);
+		t1.join();
+		t2.join();
 	}
 
 	private Command buildSetTrueCommand() {
@@ -215,56 +212,37 @@ public class SynchronizedBooleanTests extends TestCase {
 
 	private Command buildWaitUntilTrueCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedBoolean syncBool) throws Exception {
-				SynchronizedBooleanTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedBooleanTests.this.setTimeoutOccurred( ! syncBool.waitUntilTrue(timeout));
-				SynchronizedBooleanTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedBoolean syncBool) throws InterruptedException {
+				SynchronizedBooleanTests.this.startTime = System.currentTimeMillis();
+				SynchronizedBooleanTests.this.timeoutOccurred = ! syncBool.waitUntilTrue(timeout);
+				SynchronizedBooleanTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
 	private Command buildWaitToSetFalseCommand(final long timeout) {
 		return new Command() {
-			public void execute(SynchronizedBoolean syncBool) throws Exception {
-				SynchronizedBooleanTests.this.setStartTime(System.currentTimeMillis());
-				SynchronizedBooleanTests.this.setTimeoutOccurred( ! syncBool.waitToSetFalse(timeout));
-				SynchronizedBooleanTests.this.setEndTime(System.currentTimeMillis());
+			public void execute(SynchronizedBoolean syncBool) throws InterruptedException {
+				SynchronizedBooleanTests.this.startTime = System.currentTimeMillis();
+				SynchronizedBooleanTests.this.timeoutOccurred =  ! syncBool.waitToSetFalse(timeout);
+				SynchronizedBooleanTests.this.endTime = System.currentTimeMillis();
 			}
 		};
 	}
 
-	private Runnable buildRunnable(final Command command, final SynchronizedBoolean syncBool, final long sleep) {
-		return new Runnable() {
-			public void run() {
-				try {
-					if (sleep != 0) {
-						Thread.sleep(sleep);
-					}
-					command.execute(syncBool);
-				} catch (Exception ex) {
-					SynchronizedBooleanTests.this.setExCaught(true);
+	private Runnable buildRunnable(final Command command, final SynchronizedBoolean syncBool, final long delay) {
+		return new TestRunnable() {
+			@Override
+			public void run_() throws InterruptedException {
+				if (delay != 0) {
+					Thread.sleep(delay);
 				}
+				command.execute(syncBool);
 			}
 		};
 	}
 
-	void setExCaught(boolean exCaught) {
-		this.exCaught = exCaught;
-	}
-
-	void setTimeoutOccurred(boolean timeoutOccurred) {
-		this.timeoutOccurred = timeoutOccurred;
-	}
-
-	void setStartTime(long startTime) {
-		this.startTime = startTime;
-	}
-
-	void setEndTime(long endTime) {
-		this.endTime = endTime;
-	}
-
-	long elapsedTime() {
+	long calculateElapsedTime() {
 		return this.endTime - this.startTime;
 	}
 
@@ -272,7 +250,7 @@ public class SynchronizedBooleanTests extends TestCase {
 	// ********** Command interface **********
 
 	private interface Command {
-		void execute(SynchronizedBoolean syncBool) throws Exception;
+		void execute(SynchronizedBoolean syncBool) throws InterruptedException;
 	}
 
 }

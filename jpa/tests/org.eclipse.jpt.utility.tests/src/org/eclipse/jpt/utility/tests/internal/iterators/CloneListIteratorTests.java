@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,15 +14,17 @@ import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import junit.framework.TestCase;
+
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
-public class CloneListIteratorTests extends TestCase {
+public class CloneListIteratorTests
+	extends MultiThreadedTestCase
+{
 	List<String> originalList;
 
-	private boolean concurrentProblem;
 	private List<String> concurrentList;
 
 	public CloneListIteratorTests(String name) {
@@ -33,12 +35,6 @@ public class CloneListIteratorTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		this.originalList = this.buildList();
-	}
-
-	@Override
-	protected void tearDown() throws Exception {
-		TestTools.clear(this);
-		super.tearDown();
 	}
 
 	public void testHasNext() {
@@ -364,29 +360,25 @@ public class CloneListIteratorTests extends TestCase {
 		// this.originalList = slow;
 		this.originalList = Collections.synchronizedList(slow);
 
-		this.concurrentProblem = false;
 		this.concurrentList = new ArrayList<String>();
-		Thread thread = new Thread(this.buildRunnable());
+		Thread thread = this.buildThread(this.buildRunnable());
 		thread.start();
-		while (!slow.hasStartedClone()) {
+		while ( ! slow.hasStartedClone()) {
 			// wait for the other thread to start the clone...
 			Thread.yield();
 		}
 		// ...then sneak in an extra element
 		this.originalList.add("seventeen");
-		while (thread.isAlive()) {
-			// wait for the other thread to finish
-			Thread.yield();
-		}
-		assertFalse(this.concurrentProblem);
+		thread.join();
 		List<String> expected = new ArrayList<String>();
 		this.populateList(expected);
 		assertEquals(expected, this.concurrentList);
 	}
 
 	private Runnable buildRunnable() {
-		return new Runnable() {
-			public void run() {
+		return new TestRunnable() {
+			@Override
+			protected void run_() throws Throwable {
 				CloneListIteratorTests.this.loopWithCloneListIterator();
 			}
 		};
@@ -397,12 +389,8 @@ public class CloneListIteratorTests extends TestCase {
 	 * contents to the concurrent collection
 	 */
 	void loopWithCloneListIterator() {
-		try {
-			for (ListIterator<String> stream = this.buildCloneListIterator(); stream.hasNext();) {
-				this.concurrentList.add(stream.next());
-			}
-		} catch (Throwable t) {
-			this.concurrentProblem = true;
+		for (ListIterator<String> stream = this.buildCloneListIterator(); stream.hasNext();) {
+			this.concurrentList.add(stream.next());
 		}
 	}
 

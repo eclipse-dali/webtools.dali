@@ -9,17 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
+import org.eclipse.jpt.utility.tests.internal.MultiThreadedTestCase;
 
 @SuppressWarnings("nls")
-public class AsynchronousSynchronizerTests extends TestCase {
+public class AsynchronousSynchronizerTests
+	extends MultiThreadedTestCase
+{
 	PrimaryModel1 primaryModel1;
 	SecondaryModel1 secondaryModel1;
 	Command command1;
@@ -40,28 +41,21 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		this.primaryModel1 = new PrimaryModel1();
 		this.secondaryModel1 = new SecondaryModel1(this.primaryModel1);
 		this.command1 = new SynchronizeSecondaryModelCommand1(this.secondaryModel1);
-		this.synchronizer1 = new AsynchronousSynchronizer(this.command1);
+		this.synchronizer1 = new AsynchronousSynchronizer(this.command1, this.buildThreadFactory());
 		this.primaryModel1.setSynchronizer(this.synchronizer1);
 
 		this.primaryModel2 = new PrimaryModel2();
 		this.secondaryModel2 = new SecondaryModel2(this.primaryModel2);
 		this.command2 = new SynchronizeSecondaryModelCommand2(this.primaryModel2, this.secondaryModel2);
-		this.synchronizer2 = new AsynchronousSynchronizer(this.command2);
+		this.synchronizer2 = new AsynchronousSynchronizer(this.command2, this.buildThreadFactory());
 		this.primaryModel2.setSynchronizer(this.synchronizer2);
 	}
 
 	@Override
 	protected void tearDown() throws Exception {
-		stop(this.synchronizer1);
-		stop(this.synchronizer2);
+		this.synchronizer1.stop();
+		this.synchronizer2.stop();
 		super.tearDown();
-	}
-
-	protected static void stop(Synchronizer synchronizer) {
-		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ReflectionTools.getFieldValue(synchronizer, "consumerThreadCoordinator");
-		if (ReflectionTools.getFieldValue(ctc, "thread") != null) {
-			synchronizer.stop();
-		}
 	}
 
 	public void testInitialization() {
@@ -76,11 +70,14 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
 		this.primaryModel1.setCount(7);
 
-		delay(1);
+		this.sleep(TICK);
 		this.synchronizer1.stop();
-		delay(1);
+		this.sleep(TICK);
 
 		assertEquals(14, this.secondaryModel1.getDoubleCount());
+
+		// re-start so tear-down works
+		this.synchronizer1.start();
 	}
 
 	public void testStart() throws Exception {
@@ -94,11 +91,14 @@ public class AsynchronousSynchronizerTests extends TestCase {
 
 		this.primaryModel1.setCount(8);
 
-		delay(1);
+		this.sleep(TICK);
 		this.synchronizer1.stop();
-		delay(1);
+		this.sleep(TICK);
 
 		assertEquals(16, this.secondaryModel1.getDoubleCount());
+
+		// re-start so tear-down works
+		this.synchronizer1.start();
 	}
 
 	public void testStop() throws Exception {
@@ -106,6 +106,9 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		this.primaryModel1.dispose();
 		this.primaryModel1.setCount(7);
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
+
+		// re-start so tear-down works
+		this.synchronizer1.start();
 	}
 
 	public void testDoubleStart() throws Exception {
@@ -120,11 +123,14 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertTrue(exCaught);
 		this.primaryModel1.setCount(7);
 
-		delay(1);
+		this.sleep(TICK);
 		this.synchronizer1.stop();
-		delay(1);
+		this.sleep(TICK);
 
 		assertEquals(14, this.secondaryModel1.getDoubleCount());
+
+		// re-start so tear-down works
+		this.synchronizer1.start();
 	}
 
 	public void testDoubleStop() throws Exception {
@@ -140,24 +146,27 @@ public class AsynchronousSynchronizerTests extends TestCase {
 		assertTrue(exCaught);
 		this.primaryModel1.setCount(7);
 		assertEquals(4, this.secondaryModel1.getDoubleCount());
+
+		// re-start so tear-down works
+		this.synchronizer1.start();
 	}
 
 	public void testRecursiveChange() throws Exception {
 		assertEquals(4, this.secondaryModel2.getDoubleCount());
 		this.primaryModel2.setCount(7);
 
-		delay(1);
+		this.sleep(TICK);
 		assertEquals(10, this.primaryModel2.getCountPlus3());
 		assertEquals(14, this.secondaryModel2.getDoubleCount());
 
-		delay(1);
+		this.sleep(TICK);
 		assertEquals(20, this.secondaryModel2.getDoubleCountPlus3());
 	}
 
 	public void testNullCommand() {
 		boolean exCaught = false;
 		try {
-			Synchronizer s = new AsynchronousSynchronizer(null);
+			Synchronizer s = new AsynchronousSynchronizer(null, this.buildThreadFactory());
 			fail("bogus: " + s);
 		} catch (NullPointerException ex) {
 			exCaught = true;
@@ -166,7 +175,7 @@ public class AsynchronousSynchronizerTests extends TestCase {
 	}
 
 	public void testThreadName() {
-		Synchronizer s = new AsynchronousSynchronizer(this.command1, "sync");
+		Synchronizer s = new AsynchronousSynchronizer(this.command1, this.buildThreadFactory(), "sync");
 		s.start();
 		ConsumerThreadCoordinator ctc = (ConsumerThreadCoordinator) ReflectionTools.getFieldValue(s, "consumerThreadCoordinator");
 		Thread t = (Thread) ReflectionTools.getFieldValue(ctc, "thread");
@@ -176,11 +185,11 @@ public class AsynchronousSynchronizerTests extends TestCase {
 
 	public void testSynchronizeCalledBeforeStart() throws Exception {
 		SimpleCommand command = new SimpleCommand();
-		Synchronizer synchronizer = new AsynchronousSynchronizer(command);
+		Synchronizer synchronizer = new AsynchronousSynchronizer(command, this.buildThreadFactory());
 
 		synchronizer.synchronize();
 		synchronizer.start();
-		delay(1);
+		this.sleep(TICK);
 		synchronizer.stop();
 		assertEquals(1, command.count);
 	}
@@ -194,14 +203,14 @@ public class AsynchronousSynchronizerTests extends TestCase {
 
 	public void testException() throws Exception {
 		BogusCommand command = new BogusCommand();
-		Synchronizer synchronizer = new AsynchronousSynchronizer(command);
+		Synchronizer synchronizer = new AsynchronousSynchronizer(command, this.buildThreadFactory());
 		synchronizer.start();
 
 		synchronizer.synchronize();
-		delay(1);
+		this.sleep(TICK);
 
 		synchronizer.synchronize();
-		delay(1);
+		this.sleep(TICK);
 
 		boolean exCaught = false;
 		try {
@@ -429,26 +438,6 @@ public class AsynchronousSynchronizerTests extends TestCase {
 			sb.append(this.doubleCountPlus3);
 		}
 
-	}
-
-	public static void delay(float ticks) {
-		try {
-			delay_(ticks);
-		} catch (InterruptedException ex) {
-			// just stop everything and return
-			return;
-		}
-	}
-
-	public static void delay_(float ticks) throws InterruptedException {
-		// a tenth of second per tick should work...
-		long milliseconds = (long) (ticks * 100);
-		long stop = System.currentTimeMillis() + milliseconds;
-		long remaining = milliseconds;
-		while (remaining > 0L) {
-			Thread.sleep(remaining);
-			remaining = stop - System.currentTimeMillis();
-		}
 	}
 
 }

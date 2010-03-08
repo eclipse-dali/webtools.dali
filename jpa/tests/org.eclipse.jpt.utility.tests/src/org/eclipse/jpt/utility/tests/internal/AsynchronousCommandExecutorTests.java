@@ -9,26 +9,25 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.tests.internal;
 
-import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.StatefulCommandExecutor;
 
-public class AsynchronousCommandExecutorTests extends TestCase {
-
+public class AsynchronousCommandExecutorTests
+	extends MultiThreadedTestCase
+{
 	public AsynchronousCommandExecutorTests(String name) {
 		super(name);
 	}
 
 	public void testExecution() throws Exception {
 		TestCommand command = new TestCommand();
-		StatefulCommandExecutor commandExecutor = new AsynchronousCommandExecutor();
+		StatefulCommandExecutor commandExecutor = new AsynchronousCommandExecutor(this.buildThreadFactory());
 		commandExecutor.start();
 		commandExecutor.execute(command);
 		commandExecutor.execute(command);
 		commandExecutor.execute(command);
-		Thread.sleep(200);  // wait for the command to execute
+		Thread.sleep(TWO_TICKS);  // wait for the command to execute
 		commandExecutor.stop();
 		assertEquals(3, command.count);
 	}
