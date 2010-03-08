@@ -296,12 +296,14 @@ public class SWTUtil {
 			@Override
 			public void run() {
 				asyncExec(
-					new Runnable() { public void run() {
-						showImp(dialog, postExecution);
+					new Runnable() {
+						public void run() {
+							showImp(dialog, postExecution);
+						}
 					}
-				}
-			);
-		}}.start();
+				);
+			}
+		}.start();
 	}
 
 	/**
