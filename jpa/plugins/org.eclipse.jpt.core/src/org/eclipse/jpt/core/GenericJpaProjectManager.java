@@ -642,7 +642,7 @@ class GenericJpaProjectManager
 	 */
 	private void executeAfterEventsHandled(Command command) {
 		SynchronizedBoolean flag = new SynchronizedBoolean(false);
-		this.eventHandler.execute(new PauseCommand(Thread.currentThread(), flag));
+		this.eventHandler.execute(new PauseCommand(flag));
 		try {
 			flag.waitUntilTrue();
 		} catch (InterruptedException ex) {
@@ -672,6 +672,10 @@ class GenericJpaProjectManager
 	{
 		private final Thread producerThread;
 		private final SynchronizedBoolean flag;
+
+		PauseCommand(SynchronizedBoolean flag) {
+			this(Thread.currentThread(), flag);
+		}
 
 		PauseCommand(Thread producerThread, SynchronizedBoolean flag) {
 			super();
