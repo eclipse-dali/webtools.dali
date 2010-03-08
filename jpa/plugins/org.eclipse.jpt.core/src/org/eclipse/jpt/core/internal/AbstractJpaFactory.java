@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -380,8 +381,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaNullConverter(parent);
 	}
 	
-	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
-		return new GenericJavaOrderable(parent, owner);
+	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner) {
+		return new GenericJavaOrderable(parent, (Orderable2_0.Owner) owner);
 	}
 	
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {

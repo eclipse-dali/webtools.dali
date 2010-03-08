@@ -12,6 +12,18 @@ package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.Cascade;
 
+/**
+ * 1:m, m:m, element collection are all collection mappings.
+ * <p>
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
+ */
 public interface Cascade2_0
 	extends Cascade
 {	

@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOve
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
+import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -342,8 +342,8 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 	}
 
 	
-	private LockModeType_2_0 lockModeOf(NamedQuery2_0Annotation resourceQuery) {
-		return resourceQuery == null ? null : LockModeType_2_0.fromJavaResourceModel(resourceQuery.getLockMode());
+	private LockModeType2_0 lockModeOf(NamedQuery2_0Annotation resourceQuery) {
+		return resourceQuery == null ? null : LockModeType2_0.fromJavaResourceModel(resourceQuery.getLockMode());
 	}
 	
 	public void testAddNamedQuery2_0() throws Exception {
@@ -355,34 +355,34 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(0);
 			namedQuery1.setName("FOO");
-			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery1.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 		
 		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(
 						NamedQueryAnnotation.ANNOTATION_NAME, 
 						NamedQueriesAnnotation.ANNOTATION_NAME);
 		NamedQuery2_0Annotation queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("FOO", queryAnnotation.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(queryAnnotation));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(queryAnnotation));
 
 		NamedQuery2_0 namedQuery2 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(0);
 			namedQuery2.setName("BAR");
-			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.READ);
+			namedQuery2.setSpecifiedLockMode(LockModeType2_0.READ);
 		
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAR", queryAnnotation.getName());
-			assertEquals(LockModeType_2_0.READ, this.lockModeOf(queryAnnotation));
+			assertEquals(LockModeType2_0.READ, this.lockModeOf(queryAnnotation));
 		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 		
 		NamedQuery2_0 namedQuery3 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
 			namedQuery3.setName("BAZ");
-			namedQuery3.setSpecifiedLockMode(LockModeType_2_0.WRITE);
+			namedQuery3.setSpecifiedLockMode(LockModeType2_0.WRITE);
 		
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAR", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 		queryAnnotation = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAZ", queryAnnotation.getName());
-			assertEquals(LockModeType_2_0.WRITE, this.lockModeOf(queryAnnotation));
+			assertEquals(LockModeType2_0.WRITE, this.lockModeOf(queryAnnotation));
 		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 		
 		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
@@ -408,11 +408,11 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
 			namedQuery1.setName("BAR");
-			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.READ);
+			namedQuery1.setSpecifiedLockMode(LockModeType2_0.READ);
 		
 		NamedQuery2_0 namedQuery2 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(2);
 			namedQuery2.setName("BAZ");
-			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery2.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 		
 		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals(3, CollectionTools.size(javaNamedQueries));
@@ -423,11 +423,11 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAR", annotation1.getName());
-			assertEquals(LockModeType_2_0.READ, this.lockModeOf(annotation1));
+			assertEquals(LockModeType2_0.READ, this.lockModeOf(annotation1));
 		
 		NamedQuery2_0Annotation annotation2 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAZ", annotation2.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation2));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(annotation2));
 
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
@@ -435,7 +435,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		annotation2 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAZ", annotation2.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation2));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(annotation2));
 		
 		entity.getQueryContainer().removeNamedQuery(0);
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
@@ -452,7 +452,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		entity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) entity.getQueryContainer().addNamedQuery(1);
 			namedQuery1.setName("BAR");
-			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery1.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 		entity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		Iterator<NestableAnnotation> javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
@@ -463,14 +463,14 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<JavaNamedQuery> namedQueries = entity.getQueryContainer().namedQueries();
 		namedQuery1 = (NamedQuery2_0) namedQueries.next();
 			assertEquals("BAR", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		NamedQuery2_0Annotation annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAR", annotation1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation1));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(annotation1));
 		assertEquals("BAZ", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 
@@ -480,14 +480,14 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("BAZ", namedQueries.next().getName());
 		namedQuery1 = (NamedQuery2_0) namedQueries.next();
 			assertEquals("BAR", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("FOO", namedQueries.next().getName());
 
 		javaNamedQueries = typeResource.annotations(NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		assertEquals("BAZ", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 		annotation1 = (NamedQuery2_0Annotation) javaNamedQueries.next();
 			assertEquals("BAR", annotation1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(annotation1));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(annotation1));
 		assertEquals("FOO", ((NamedQuery2_0Annotation) javaNamedQueries.next()).getName());
 	}
 	
@@ -511,7 +511,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("FOO", namedQueries.next().getName());
 		NamedQuery2_0 namedQuery1 = (NamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(3, entity.getPersistenceUnit().queriesSize());
@@ -521,7 +521,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		namedQueries = entity.getQueryContainer().namedQueries();
 		namedQuery1 = (NamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
@@ -532,7 +532,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		namedQuery1 = (NamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaQuery;
-import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
+import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaNamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
@@ -22,8 +22,8 @@ import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 public class GenericJavaNamedQuery2_0 extends AbstractJavaQuery 
 	implements JavaNamedQuery2_0
 {
-	private LockModeType_2_0 specifiedLockMode;
-	private LockModeType_2_0 defaultLockMode;
+	private LockModeType2_0 specifiedLockMode;
+	private LockModeType2_0 defaultLockMode;
 
 	public GenericJavaNamedQuery2_0(JavaJpaContextNode parent) {
 		super(parent);
@@ -31,39 +31,39 @@ public class GenericJavaNamedQuery2_0 extends AbstractJavaQuery
 
 	// ********** NamedQuery2_0 implementation **********
 
-	public LockModeType_2_0 getLockMode() {
+	public LockModeType2_0 getLockMode() {
 		return (this.specifiedLockMode != null) ? this.specifiedLockMode : this.defaultLockMode;
 	}
 
-	public LockModeType_2_0 getSpecifiedLockMode() {
+	public LockModeType2_0 getSpecifiedLockMode() {
 		return this.specifiedLockMode;
 	}
 
-	public void setSpecifiedLockMode(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.specifiedLockMode;
+	public void setSpecifiedLockMode(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.specifiedLockMode;
 		this.specifiedLockMode = lockMode;
-		this.getResourceQuery().setLockMode(LockModeType_2_0.toJavaResourceModel(lockMode));
+		this.getResourceQuery().setLockMode(LockModeType2_0.toJavaResourceModel(lockMode));
 		this.firePropertyChanged(SPECIFIED_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 	
-	protected void setSpecifiedLockMode_(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.specifiedLockMode;
+	protected void setSpecifiedLockMode_(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.specifiedLockMode;
 		this.specifiedLockMode = lockMode;
 		this.firePropertyChanged(SPECIFIED_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
-	public LockModeType_2_0 getDefaultLockMode() {
+	public LockModeType2_0 getDefaultLockMode() {
 		return this.defaultLockMode;
 	}
 
-	protected void setDefaultLockMode(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.defaultLockMode;
+	protected void setDefaultLockMode(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.defaultLockMode;
 		this.defaultLockMode = lockMode;
 		firePropertyChanged(DEFAULT_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
-	protected LockModeType_2_0 buildDefaultLockMode() {
-		return LockModeType_2_0.NONE;
+	protected LockModeType2_0 buildDefaultLockMode() {
+		return LockModeType2_0.NONE;
 	}
 
 	// ********** resource => context **********
@@ -84,8 +84,8 @@ public class GenericJavaNamedQuery2_0 extends AbstractJavaQuery
 		return (NamedQuery2_0Annotation) super.getResourceQuery();
 	}
 	
-	protected LockModeType_2_0 getResourceQueryLockMode(NamedQueryAnnotation resourceQuery) {
-		return LockModeType_2_0.fromJavaResourceModel(
+	protected LockModeType2_0 getResourceQueryLockMode(NamedQueryAnnotation resourceQuery) {
+		return LockModeType2_0.fromJavaResourceModel(
 					((NamedQuery2_0Annotation)resourceQuery).getLockMode());
 	}
 	

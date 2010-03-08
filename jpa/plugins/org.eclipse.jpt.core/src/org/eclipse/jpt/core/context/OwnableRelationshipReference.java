@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -24,8 +24,12 @@ package org.eclipse.jpt.core.context;
  * 
  * @see RelationshipMapping
  * @see RelationshipReference
+ * 
+ * @version 2.2
+ * @since 2.2
  */
-public interface OwnableRelationshipReference extends RelationshipReference
+public interface OwnableRelationshipReference
+	extends RelationshipReference
 {
 	/**
 	 * Return the aggregate (never null) object used to configure the mapped by

@@ -20,6 +20,9 @@ import org.eclipse.jpt.db.Table;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
  */
 public interface Orderable2_0
 	extends Orderable
@@ -36,7 +39,7 @@ public interface Orderable2_0
 	/**
 	 * interface allowing Orderable2_0 to be used in multiple places
 	 */
-	interface Owner {
+	interface Owner extends Orderable.Owner {
 		/**
 		 * Return the name of the table which the column belongs to
 		 */

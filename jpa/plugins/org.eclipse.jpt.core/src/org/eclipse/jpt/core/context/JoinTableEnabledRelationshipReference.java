@@ -25,8 +25,12 @@ package org.eclipse.jpt.core.context;
  * @see RelationshipReference
  * @see JoinTableJoiningStrategy
  * @see JoinTable
+ * 
+ * @version 2.2
+ * @since 2.2
  */
-public interface JoinTableEnabledRelationshipReference extends RelationshipReference
+public interface JoinTableEnabledRelationshipReference
+	extends RelationshipReference
 {
 	/**
 	 * Return the aggregate (never null) object used to configure the join table 

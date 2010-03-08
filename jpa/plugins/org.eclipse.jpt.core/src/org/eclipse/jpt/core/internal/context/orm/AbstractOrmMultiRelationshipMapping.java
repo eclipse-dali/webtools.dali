@@ -18,19 +18,18 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
-import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
@@ -48,9 +47,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlMultiRelationshipMapping>
 	extends AbstractOrmRelationshipMapping<T>
-	implements OrmMultiRelationshipMapping, CollectionMapping2_0
+	implements OrmMultiRelationshipMapping, OrmCollectionMapping2_0
 {
-	protected final OrmOrderable orderable;
+	protected final OrmOrderable2_0 orderable;
 		
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -113,7 +112,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	
 	// **************** order by ***********************************************
 
-	public Orderable getOrderable() {
+	public OrmOrderable2_0 getOrderable() {
 		return this.orderable;
 	}
 

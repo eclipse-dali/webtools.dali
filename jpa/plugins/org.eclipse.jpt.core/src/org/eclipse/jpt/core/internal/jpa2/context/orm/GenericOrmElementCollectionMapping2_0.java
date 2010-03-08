@@ -37,7 +37,6 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -54,6 +53,7 @@ import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.MapKey;
@@ -88,7 +88,7 @@ public class GenericOrmElementCollectionMapping2_0
 
 	protected FetchType specifiedFetch;
 	
-	protected final OrmOrderable orderable;
+	protected final OrmOrderable2_0 orderable;
 
 	protected final OrmCollectionTable2_0 collectionTable;
 
@@ -176,7 +176,7 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	@Override
 	protected OrmXml2_0ContextNodeFactory getXmlContextNodeFactory() {
-		return (OrmXml2_0ContextNodeFactory) super.getXmlContextNodeFactory();
+		return super.getXmlContextNodeFactory();
 	}
 	
 	public Entity getEntity() {
@@ -488,7 +488,7 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	// **************** ordering ***********************************************
 
-	public OrmOrderable getOrderable() {
+	public OrmOrderable2_0 getOrderable() {
 		return this.orderable;
 	}
 

@@ -19,6 +19,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.0
+ * @since 2.0
  */
 public abstract class AbstractTextRange
 	implements TextRange

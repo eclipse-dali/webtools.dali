@@ -24,7 +24,8 @@ import org.eclipse.jpt.core.context.XmlContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface OrmConverter extends XmlContextNode, Converter
+public interface OrmConverter
+	extends XmlContextNode, Converter
 {
 	/**
 	 * Update the OrmConverter context model object to match the XmlConvertibleMapping 

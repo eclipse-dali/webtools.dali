@@ -22,6 +22,9 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * This interface is not intended to be implemented by clients.
+ * 
+ * @version 2.0
+ * @since 2.0
  */
 public interface TextRange {
 

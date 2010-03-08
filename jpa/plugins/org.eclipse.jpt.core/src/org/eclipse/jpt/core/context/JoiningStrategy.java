@@ -22,13 +22,14 @@ import org.eclipse.jpt.db.Table;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
- * @since 2.1
+ * @version 2.3
+ * @since 2.2
  * 
  * @see {@link RelationshipMapping}
  * @see {@link RelationshipReference}
  */
-public interface JoiningStrategy extends JpaContextNode
+public interface JoiningStrategy
+	extends JpaContextNode
 {
 	/**
 	 * Return the relationship reference that owns this strategy

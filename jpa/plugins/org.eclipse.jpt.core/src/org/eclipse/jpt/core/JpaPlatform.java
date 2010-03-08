@@ -41,6 +41,9 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
  * See the <code>org.eclipse.jpt.core.jpaPlatforms</code> extension point.
  * @see JpaPlatformFactory
  * @see JpaPlatformProvider
+ * 
+ * @version 2.3
+ * @since 2.0
  */
 public interface JpaPlatform
 {

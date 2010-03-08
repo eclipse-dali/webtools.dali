@@ -21,7 +21,8 @@ package org.eclipse.jpt.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface TemporalConverter extends Converter
+public interface TemporalConverter
+	extends Converter
 {
 	TemporalType getTemporalType();
 	void setTemporalType(TemporalType temporalType);

@@ -14,13 +14,17 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.db.Schema;
 
 /**
- * oProvisional API: This interface is part of an interim API that is still under
+ * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
  * It is available at this early stage to solicit feedback from pioneering
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.0
  */
-public interface TypeMapping extends JpaContextNode {
+public interface TypeMapping
+	extends JpaContextNode {
 	/**
 	 * Return a unique key for the ITypeMapping. If this is defined in an
 	 * extension they should be equal.

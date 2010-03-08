@@ -19,8 +19,8 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 2.1
+ * @version 2.3
+ * @since 2.2
  * 
  * @see {@link RelationshipMapping}
  * @see {@link JoinTableEnabledRelationshipReference}

@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 
 /**
  * Use this abstract class for context nodes that are part of an OrmXml file.
@@ -37,7 +37,7 @@ public abstract class AbstractOrmXmlContextNode
 		return this.getMappingFileDefinition().getResourceNodeFactory();
 	}
 
-	protected OrmXmlContextNodeFactory getXmlContextNodeFactory() {
-		return this.getMappingFileDefinition().getContextNodeFactory();
+	protected OrmXml2_0ContextNodeFactory getXmlContextNodeFactory() {
+		return (OrmXml2_0ContextNodeFactory) this.getMappingFileDefinition().getContextNodeFactory();
 	}
 }

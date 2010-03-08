@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -55,7 +56,6 @@ import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.context.orm.OrmNamedQuery;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -363,8 +363,8 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmNullConverter(parent);
 	}
 	
-	public OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner) {
-		return new GenericOrmOrderable(parent, owner);
+	public OrmOrderable2_0 buildOrmOrderable(OrmAttributeMapping parent, Orderable.Owner owner) {
+		return new GenericOrmOrderable(parent, (Orderable2_0.Owner) owner);
 	}
 	
 	public OrmOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner) {

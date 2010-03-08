@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,20 +18,21 @@ import org.eclipse.jpt.core.context.NamedQuery;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
-public interface NamedQuery2_0 extends NamedQuery
+public interface NamedQuery2_0
+	extends NamedQuery
 {
 	/**
 	 * Return the specified lockMode if present, otherwise return the default
 	 * lockMode.
 	 */
-	LockModeType_2_0 getLockMode();
-	LockModeType_2_0 getSpecifiedLockMode();
-	void setSpecifiedLockMode(LockModeType_2_0 lockMode);
+	LockModeType2_0 getLockMode();
+	LockModeType2_0 getSpecifiedLockMode();
+	void setSpecifiedLockMode(LockModeType2_0 lockMode);
 		String SPECIFIED_LOCK_MODE_PROPERTY = "specifiedLockMode"; //$NON-NLS-1$
-	LockModeType_2_0 getDefaultLockMode();
+	LockModeType2_0 getDefaultLockMode();
 		String DEFAULT_LOCK_MODE_PROPERTY = "defaultLockMode"; //$NON-NLS-1$
 
 }

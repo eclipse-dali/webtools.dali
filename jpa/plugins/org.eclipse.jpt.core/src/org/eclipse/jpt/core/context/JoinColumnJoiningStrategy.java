@@ -21,8 +21,8 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 2.1
+ * @version 2.3
+ * @since 2.2
  * 
  * @see {@link RelationshipMapping}
  * @see {@link JoinColumnEnabledRelationshipReference}
@@ -37,7 +37,7 @@ public interface JoinColumnJoiningStrategy
 	 * Return the TypeMapping in which this join column is contained.
 	 */
 	TypeMapping getTypeMapping();
-	//TODO getJoinColumnSourceTypeMapping();
+
 	/**
 	 * Return a list iterator of the join columns whether specified or default.
 	 * This will not be null.

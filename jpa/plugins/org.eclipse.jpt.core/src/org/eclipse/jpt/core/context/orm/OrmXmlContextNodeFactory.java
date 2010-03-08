@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
@@ -60,6 +60,16 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
+/**
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
+ */
 public interface OrmXmlContextNodeFactory
 {
 	// ********** ORM Context Model **********
@@ -154,7 +164,7 @@ public interface OrmXmlContextNodeFactory
 
 	OrmConverter buildOrmNullConverter(OrmAttributeMapping parent);
 	
-	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner);
+	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable.Owner owner);
 	
 	// ********** ORM Virtual Resource Model **********
 	

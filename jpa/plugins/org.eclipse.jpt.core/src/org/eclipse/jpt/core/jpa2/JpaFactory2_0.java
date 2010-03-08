@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.jpa2;
 
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
-import org.eclipse.jpt.core.jpa2.context.Orderable2_0.Owner;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -43,6 +43,9 @@ import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see org.eclipse.jpt.core.internal.jpa2.GenericJpaFactory2_0
+ * 
+ * @version 2.3
+ * @since 2.3
  */
 public interface JpaFactory2_0
 	extends JpaFactory
@@ -79,5 +82,5 @@ public interface JpaFactory2_0
 
 	JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner);
 	
-	JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Owner owner);
+	JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner);
 }

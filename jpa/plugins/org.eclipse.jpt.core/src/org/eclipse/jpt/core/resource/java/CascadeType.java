@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
- * Corresponds to the JPA enum
+ * Corresponds to the JPA 1.0/2.0 enum
  * javax.persistence.CascadeType
  * 
  * Provisional API: This interface is part of an interim API that is still
@@ -21,6 +21,9 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.0
  */
 public enum CascadeType {
 

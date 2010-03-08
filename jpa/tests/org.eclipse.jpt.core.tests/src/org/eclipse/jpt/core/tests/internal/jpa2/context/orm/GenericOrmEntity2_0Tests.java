@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
+import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -320,8 +320,8 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
 	
-	private LockModeType_2_0 lockModeOf(XmlNamedQuery resourceQuery) {
-		return resourceQuery == null ? null : LockModeType_2_0.fromOrmResourceModel(resourceQuery.getLockMode());
+	private LockModeType2_0 lockModeOf(XmlNamedQuery resourceQuery) {
+		return resourceQuery == null ? null : LockModeType2_0.fromOrmResourceModel(resourceQuery.getLockMode());
 	}
 
 	public void testAddNamedQuery() throws Exception {
@@ -331,29 +331,29 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		OrmNamedQuery2_0 namedQuery = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(0);
 			namedQuery.setName("FOO");
-			namedQuery.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 			
 		XmlNamedQuery resourceQuery = entityResource.getNamedQueries().get(0);
 			assertEquals("FOO", resourceQuery.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(resourceQuery));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(resourceQuery));
 		
 		OrmNamedQuery2_0 namedQuery2 = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(0);
 			namedQuery2.setName("BAR");
-			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.READ);
+			namedQuery2.setSpecifiedLockMode(LockModeType2_0.READ);
 
 		resourceQuery = entityResource.getNamedQueries().get(0);
 			assertEquals("BAR", resourceQuery.getName());
-			assertEquals(LockModeType_2_0.READ, this.lockModeOf(resourceQuery));
+			assertEquals(LockModeType2_0.READ, this.lockModeOf(resourceQuery));
 		assertEquals("FOO", entityResource.getNamedQueries().get(1).getName());
 		
 		OrmNamedQuery2_0 namedQuery3 = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(1);
 			namedQuery3.setName("BAZ");
-			namedQuery3.setSpecifiedLockMode(LockModeType_2_0.WRITE);
+			namedQuery3.setSpecifiedLockMode(LockModeType2_0.WRITE);
 		
 		assertEquals("BAR", entityResource.getNamedQueries().get(0).getName());
 		resourceQuery = entityResource.getNamedQueries().get(1);
 			assertEquals("BAZ", resourceQuery.getName());
-			assertEquals(LockModeType_2_0.WRITE, this.lockModeOf(resourceQuery));
+			assertEquals(LockModeType2_0.WRITE, this.lockModeOf(resourceQuery));
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 		
 		ListIterator<OrmNamedQuery> namedQueries = ormEntity.getQueryContainer().namedQueries();
@@ -374,11 +374,11 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ormEntity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		OrmNamedQuery2_0 namedQuery1 = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(1);
 			namedQuery1.setName("BAR");
-			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.READ);
+			namedQuery1.setSpecifiedLockMode(LockModeType2_0.READ);
 	
 			OrmNamedQuery2_0 namedQuery2 = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(2);
 			namedQuery2.setName("BAZ");
-			namedQuery2.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery2.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 	
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		assertEquals(3, entityResource.getNamedQueries().size());
@@ -387,18 +387,18 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals(2, entityResource.getNamedQueries().size());
 		XmlNamedQuery xmlQuery0 = entityResource.getNamedQueries().get(0);
 			assertEquals("BAR", xmlQuery0.getName());
-			assertEquals(LockModeType_2_0.READ, this.lockModeOf(xmlQuery0));
+			assertEquals(LockModeType2_0.READ, this.lockModeOf(xmlQuery0));
 	
 		XmlNamedQuery xmlQuery1 = entityResource.getNamedQueries().get(1);
 			assertEquals("BAZ", xmlQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(xmlQuery1));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(xmlQuery1));
 
 		ormEntity.getQueryContainer().removeNamedQuery(0);
 		assertEquals(1, entityResource.getNamedQueries().size());
 		assertEquals("BAZ", entityResource.getNamedQueries().get(0).getName());
 		xmlQuery0 = entityResource.getNamedQueries().get(0);
 			assertEquals("BAZ", xmlQuery0.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(xmlQuery0));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(xmlQuery0));
 		
 		ormEntity.getQueryContainer().removeNamedQuery(0);
 		assertEquals(0, entityResource.getNamedQueries().size());
@@ -411,7 +411,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ormEntity.getQueryContainer().addNamedQuery(0).setName("FOO");
 		OrmNamedQuery2_0 namedQuery1 = (OrmNamedQuery2_0) ormEntity.getQueryContainer().addNamedQuery(1);
 			namedQuery1.setName("BAR");
-			namedQuery1.setSpecifiedLockMode(LockModeType_2_0.OPTIMISTIC);
+			namedQuery1.setSpecifiedLockMode(LockModeType2_0.OPTIMISTIC);
 		ormEntity.getQueryContainer().addNamedQuery(2).setName("BAZ");
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
@@ -422,13 +422,13 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		ListIterator<OrmNamedQuery> namedQueries = ormEntity.getQueryContainer().namedQueries();
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAR", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("BAZ", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 
 		XmlNamedQuery xmlQuery0 = entityResource.getNamedQueries().get(0);
 			assertEquals("BAR", xmlQuery0.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(xmlQuery0));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(xmlQuery0));
 		assertEquals("BAZ", entityResource.getNamedQueries().get(1).getName());
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 
@@ -438,13 +438,13 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("BAZ", namedQueries.next().getName());
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAR", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("FOO", namedQueries.next().getName());
 
 		assertEquals("BAZ", entityResource.getNamedQueries().get(0).getName());
 		XmlNamedQuery xmlQuery1 = entityResource.getNamedQueries().get(1);
 			assertEquals("BAR", xmlQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, this.lockModeOf(xmlQuery1));
+			assertEquals(LockModeType2_0.OPTIMISTIC, this.lockModeOf(xmlQuery1));
 		assertEquals("FOO", entityResource.getNamedQueries().get(2).getName());
 	}
 	
@@ -469,7 +469,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		OrmNamedQuery2_0 namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(3, ormEntity.getPersistenceUnit().queriesSize());
 		
@@ -478,7 +478,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		assertEquals("BAR", namedQueries.next().getName());
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		
@@ -486,7 +486,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		namedQueries = ormEntity.getQueryContainer().namedQueries();
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("BAR", namedQueries.next().getName());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
@@ -495,7 +495,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		namedQueries = ormEntity.getQueryContainer().namedQueries();
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertEquals("FOO", namedQueries.next().getName());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(2, ormEntity.getPersistenceUnit().queriesSize());
@@ -504,7 +504,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 		namedQueries = ormEntity.getQueryContainer().namedQueries();
 		namedQuery1 = (OrmNamedQuery2_0) namedQueries.next();
 			assertEquals("BAZ", namedQuery1.getName());
-			assertEquals(LockModeType_2_0.OPTIMISTIC, namedQuery1.getLockMode());
+			assertEquals(LockModeType2_0.OPTIMISTIC, namedQuery1.getLockMode());
 		assertFalse(namedQueries.hasNext());
 		assertEquals(1, ormEntity.getPersistenceUnit().queriesSize());
 		

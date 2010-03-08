@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmQuery;
-import org.eclipse.jpt.core.jpa2.context.LockModeType_2_0;
+import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 
@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 public class GenericOrmNamedQuery2_0 extends AbstractOrmQuery<XmlNamedQuery>
 	implements OrmNamedQuery2_0
 {
-	private LockModeType_2_0 specifiedLockMode;
-	private LockModeType_2_0 defaultLockMode;
+	private LockModeType2_0 specifiedLockMode;
+	private LockModeType2_0 defaultLockMode;
 
 	// ********** constructor **********
 	public GenericOrmNamedQuery2_0(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {
@@ -31,39 +31,39 @@ public class GenericOrmNamedQuery2_0 extends AbstractOrmQuery<XmlNamedQuery>
 
 	// ********** NamedQuery2_0 implementation **********
 
-	public LockModeType_2_0 getLockMode() {
+	public LockModeType2_0 getLockMode() {
 		return (this.specifiedLockMode != null) ? this.specifiedLockMode : this.defaultLockMode;
 	}
 
-	public LockModeType_2_0 getSpecifiedLockMode() {
+	public LockModeType2_0 getSpecifiedLockMode() {
 		return this.specifiedLockMode;
 	}
 
-	public void setSpecifiedLockMode(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.specifiedLockMode;
+	public void setSpecifiedLockMode(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.specifiedLockMode;
 		this.specifiedLockMode = lockMode;
-		this.getResourceQuery().setLockMode(LockModeType_2_0.toOrmResourceModel(lockMode));
+		this.getResourceQuery().setLockMode(LockModeType2_0.toOrmResourceModel(lockMode));
 		this.firePropertyChanged(SPECIFIED_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
-	public void setSpecifiedLockMode_(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.specifiedLockMode;
+	public void setSpecifiedLockMode_(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.specifiedLockMode;
 		this.specifiedLockMode = lockMode;
 		this.firePropertyChanged(SPECIFIED_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 	
-	public LockModeType_2_0 getDefaultLockMode() {
+	public LockModeType2_0 getDefaultLockMode() {
 		return this.defaultLockMode;
 	}
 
-	protected void setDefaultLockMode(LockModeType_2_0 lockMode) {
-		LockModeType_2_0 old = this.defaultLockMode;
+	protected void setDefaultLockMode(LockModeType2_0 lockMode) {
+		LockModeType2_0 old = this.defaultLockMode;
 		this.defaultLockMode = lockMode;
 		this.firePropertyChanged(DEFAULT_LOCK_MODE_PROPERTY, old, lockMode);
 	}
 
-	protected LockModeType_2_0 buildDefaultLockMode() {
-		return LockModeType_2_0.NONE;
+	protected LockModeType2_0 buildDefaultLockMode() {
+		return LockModeType2_0.NONE;
 	}
 
 	// ********** resource => context **********
@@ -81,8 +81,8 @@ public class GenericOrmNamedQuery2_0 extends AbstractOrmQuery<XmlNamedQuery>
 		this.setSpecifiedLockMode_(this.getResourceLockModeOf(xmlQuery));
 	}
 
-	private LockModeType_2_0 getResourceLockModeOf(XmlNamedQuery xmlQuery) {
-		return LockModeType_2_0.fromOrmResourceModel(xmlQuery.getLockMode());
+	private LockModeType2_0 getResourceLockModeOf(XmlNamedQuery xmlQuery) {
+		return LockModeType2_0.fromOrmResourceModel(xmlQuery.getLockMode());
 	}
 	
 }

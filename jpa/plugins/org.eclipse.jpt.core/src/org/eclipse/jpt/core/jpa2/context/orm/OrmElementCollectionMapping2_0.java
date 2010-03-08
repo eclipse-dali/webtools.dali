@@ -11,7 +11,6 @@
 package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
@@ -24,11 +23,11 @@ import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
- * @since 3.0
+ * @version 2.3
+ * @since 2.3
  */
 public interface OrmElementCollectionMapping2_0
-	extends OrmAttributeMapping, ElementCollectionMapping2_0
+	extends OrmCollectionMapping2_0, ElementCollectionMapping2_0
 {
 	OrmCollectionTable2_0 getCollectionTable();
 

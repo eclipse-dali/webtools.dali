@@ -14,6 +14,7 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -68,7 +69,6 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -101,6 +101,9 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
  * @see org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory
+ * 
+ * @version 2.3
+ * @since 2.0
  */
 public interface JpaFactory 
 {
@@ -226,7 +229,7 @@ public interface JpaFactory
 
 	JavaConverter buildJavaNullConverter(JavaAttributeMapping parent);
 	
-	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner);
+	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner);
 	
 	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy);
 	
