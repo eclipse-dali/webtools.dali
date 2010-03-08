@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,6 +32,7 @@ import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.swt.SWT;
@@ -300,21 +301,21 @@ public class DatabaseGroup
 			    	throws InvocationTargetException, InterruptedException
 			    {
 					monitor.beginTask(JptUiEntityGenMessages.connectingToDatabase, 10);
-					final boolean[] isConnected= new boolean[1];
-					isConnected[0]=false;
-					Thread t= new Thread(){
+					final SynchronizedBoolean finished = new SynchronizedBoolean(false);
+					Thread t = new Thread(){
 						@Override
 						public void run() {
 							try {
 								DatabaseGroup.this.selectedConnectionProfile.connect();
 							} catch (Exception ex) {
-								// huh?
+								JptUiPlugin.log(ex);
+							} finally {
+								finished.setTrue();
 							}
-							isConnected[0]=true;
 						}						
 					};
 					t.start();
-					while( !isConnected[0] ){
+					while (finished.isFalse()){
 						Thread.sleep(1000);
 						monitor.worked(1);
 					}
