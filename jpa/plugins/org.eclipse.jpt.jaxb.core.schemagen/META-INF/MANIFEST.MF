@@ -6,5 +6,4 @@ Bundle-SymbolicName: org.eclipse.jpt.jaxb.core.schemagen;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: javax.xml.bind;bundle-version="[2.1.9,3.0.0)"
 Export-Package: org.eclipse.jpt.jaxb.core.schemagen
