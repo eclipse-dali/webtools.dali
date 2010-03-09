@@ -127,9 +127,9 @@ public final class TestTools {
 		} else {
 			TestFailure failure = null;
 			if (result.failures().hasMoreElements()) {
-				failure = result.failures().nextElement();
+				failure = (TestFailure) result.failures().nextElement();
 			} else {
-				failure = result.errors().nextElement();
+				failure = (TestFailure) result.errors().nextElement();
 			}
 			failure.thrownException().printStackTrace(writer);
 		}
