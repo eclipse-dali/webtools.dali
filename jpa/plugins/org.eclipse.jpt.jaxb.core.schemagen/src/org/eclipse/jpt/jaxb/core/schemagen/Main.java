@@ -20,6 +20,12 @@ import javax.xml.transform.Result;
 
 /**
  *  Generate a JAXB Schema
+ *  
+ * Current command-line arguments:
+ *     [-s schema.xsd] - specifies the target schema
+ *     [-p packageName] - specifies the source package 
+ * 
+ *  Required JRE 1.6 and eclipselink.jar to run
  */
 public class Main
 {
@@ -57,6 +63,8 @@ public class Main
 			new JptSchemaOutputResolver(this.targetSchemaName);
 		
 		jaxbContext.generateSchema(schemaOutputResolver);
+
+		System.out.println("\nSchema " + this.targetSchemaName + " generated");
     }
     
 	private void initializeWith(String[] args) {
