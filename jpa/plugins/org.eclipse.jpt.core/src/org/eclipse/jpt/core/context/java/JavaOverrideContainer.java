@@ -41,10 +41,16 @@ public interface JavaOverrideContainer
 		TextRange getValidationTextRange(CompilationUnit astRoot);
 
 		/**
+		 * This is necessary for JPA 2.0. Return a prefix (ending in '.') that should be written
+		 * to the java source when an override is specified.
+		 */
+		String getWritePrefix();
+
+		/**
 		 * This is necessary for JPA 2.0. Return a prefix (ending in '.') that is allowed to be appended to the override name.
 		 * Return null if no prefix is supported. "map." and "key." are the prefixes supported in JPA 2.0.
 		 */
-		String getPrefix();
+		String getPossiblePrefix();
 
 		/**
 		 * This is necessary for JPA 2.0 where Override annotation can have a prefix that distinguishes them.

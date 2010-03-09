@@ -31,6 +31,8 @@ public interface JavaAttributeOverride
 	
 	JavaAttributeOverride setVirtual(boolean virtual);
 	
+	AttributeOverrideAnnotation getOverrideAnnotation();
+
 	void initialize(AttributeOverrideAnnotation attributeOverride);
 	
 	/**

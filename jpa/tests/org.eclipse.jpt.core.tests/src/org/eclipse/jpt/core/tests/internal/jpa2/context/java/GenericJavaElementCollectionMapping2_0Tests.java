@@ -65,7 +65,6 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 @SuppressWarnings("nls")
 public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0ContextModelTestCase
 {
-
 	public static final String EMBEDDABLE_TYPE_NAME = "Address";
 	public static final String FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME = PACKAGE_NAME + "." + EMBEDDABLE_TYPE_NAME;
 
@@ -252,6 +251,61 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+	}
+
+	private ICompilationUnit createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA2_0.ELEMENT_COLLECTION, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity").append(CR);
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);				
+				sb.append("    private java.util.Map<Address, PropertyInfo> parcels;").append(CR);			
+				sb.append(CR);
+				sb.append("    @Id").append(CR);				
+			}
+		});
+	}
+
+	private void createTestEmbeddablePropertyInfo() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.ID);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("PropertyInfo").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    private Integer parcelNumber;").append(CR);
+				sb.append(CR);
+				sb.append("    private Integer size;").append(CR);
+				sb.append(CR);
+				sb.append("    private java.math.BigDecimal tax;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
 	}
 
 	public GenericJavaElementCollectionMapping2_0Tests(String name) {
@@ -1430,5 +1484,545 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals("foo", elementCollectionMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("foo", elementCollectionMapping.getMapKeyColumn().getName());
 		assertEquals("addresses_KEY", elementCollectionMapping.getMapKeyColumn().getDefaultName());
+	}
+
+	public void testMapKeyValueSpecifiedAttributeOverrides() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		JavaAttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		
+		ListIterator<JavaAttributeOverride> specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();
+		
+		assertFalse(specifiedAttributeOverrides.hasNext());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("value.BAR");
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+
+
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.BAZ");
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		ListIterator<JavaAttributeOverride> specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+	
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.BLAH");
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
+		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+
+		//move an annotation to the resource model and verify the context model is updated
+		attributeResource.moveAnnotation(1, 0, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BAZ", specifiedMapKeyAttributeOverrides.next().getName());
+		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+
+		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("FOO", specifiedAttributeOverrides.next().getName());
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+	
+		attributeResource.removeAnnotation(1, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BLAH", specifiedMapKeyAttributeOverrides.next().getName());
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+
+		
+		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertEquals("BAR", specifiedAttributeOverrides.next().getName());
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+
+		attributeResource.removeAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		getJpaProject().synchronizeContextModel();
+		specifiedAttributeOverrides = attributeOverrideContainer.specifiedAttributeOverrides();		
+		assertFalse(specifiedAttributeOverrides.hasNext());
+		specifiedMapKeyAttributeOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();		
+		assertFalse(specifiedMapKeyAttributeOverrides.hasNext());
+	}
+
+	public void testMapKeyValueVirtualAttributeOverrides() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer attributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		assertEquals("parcels", attributeResource.getName());
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+		
+		assertEquals(4, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		AttributeOverride defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("city", defaultAttributeOverride.getName());
+		assertEquals("city", defaultAttributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
+		
+		
+		ListIterator<ClassRef> classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		Embeddable addressEmbeddable = (Embeddable) classRefs.next().getJavaPersistentType().getMapping();
+		
+		BasicMapping cityMapping = (BasicMapping) addressEmbeddable.getPersistentType().getAttributeNamed("city").getMapping();
+		cityMapping.getColumn().setSpecifiedName("FOO");
+		cityMapping.getColumn().setSpecifiedTable("BAR");
+		cityMapping.getColumn().setColumnDefinition("COLUMN_DEF");
+		cityMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		cityMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		cityMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		cityMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		cityMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
+		
+		assertEquals("parcels", attributeResource.getName());
+		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNull(attributeResource.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME));
+
+		assertEquals(4, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("city", defaultAttributeOverride.getName());
+		assertEquals("FOO", defaultAttributeOverride.getColumn().getName());
+		assertEquals("BAR", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF", defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(false, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
+
+		cityMapping.getColumn().setSpecifiedName(null);
+		cityMapping.getColumn().setSpecifiedTable(null);
+		cityMapping.getColumn().setColumnDefinition(null);
+		cityMapping.getColumn().setSpecifiedInsertable(null);
+		cityMapping.getColumn().setSpecifiedUpdatable(null);
+		cityMapping.getColumn().setSpecifiedUnique(null);
+		cityMapping.getColumn().setSpecifiedNullable(null);
+		cityMapping.getColumn().setSpecifiedLength(null);
+		cityMapping.getColumn().setSpecifiedPrecision(null);
+		cityMapping.getColumn().setSpecifiedScale(null);
+		defaultAttributeOverride = mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("city", defaultAttributeOverride.getName());
+		assertEquals("city", defaultAttributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
+		
+		AttributeOverrideAnnotation annotation = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		annotation.setName("key.city");
+		getJpaProject().synchronizeContextModel();
+		assertEquals(3, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+	
+		
+		
+		assertEquals(3, attributeOverrideContainer.virtualAttributeOverridesSize());
+		defaultAttributeOverride = attributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("parcelNumber", defaultAttributeOverride.getName());
+		assertEquals("parcelNumber", defaultAttributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
+		
+		
+		classRefs = getPersistenceUnit().specifiedClassRefs();
+		classRefs.next();
+		classRefs.next();
+		Embeddable propertyInfoEmbeddable = (Embeddable) classRefs.next().getJavaPersistentType().getMapping();
+		
+		BasicMapping parcelNumberMapping = (BasicMapping) propertyInfoEmbeddable.getPersistentType().getAttributeNamed("parcelNumber").getMapping();
+		parcelNumberMapping.getColumn().setSpecifiedName("FOO1");
+		parcelNumberMapping.getColumn().setSpecifiedTable("BAR1");
+		parcelNumberMapping.getColumn().setColumnDefinition("COLUMN_DEF1");
+		parcelNumberMapping.getColumn().setSpecifiedInsertable(Boolean.FALSE);
+		parcelNumberMapping.getColumn().setSpecifiedUpdatable(Boolean.FALSE);
+		parcelNumberMapping.getColumn().setSpecifiedUnique(Boolean.TRUE);
+		parcelNumberMapping.getColumn().setSpecifiedNullable(Boolean.FALSE);
+		parcelNumberMapping.getColumn().setSpecifiedLength(Integer.valueOf(5));
+		parcelNumberMapping.getColumn().setSpecifiedPrecision(Integer.valueOf(6));
+		parcelNumberMapping.getColumn().setSpecifiedScale(Integer.valueOf(7));
+		
+		assertEquals("parcels", attributeResource.getName());
+
+		assertEquals(3, attributeOverrideContainer.virtualAttributeOverridesSize());
+		defaultAttributeOverride = attributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("parcelNumber", defaultAttributeOverride.getName());
+		assertEquals("FOO1", defaultAttributeOverride.getColumn().getName());
+		assertEquals("BAR1", defaultAttributeOverride.getColumn().getTable());
+		assertEquals("COLUMN_DEF1", defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(false, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(false, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(5, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(6, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(7, defaultAttributeOverride.getColumn().getScale());
+
+		parcelNumberMapping.getColumn().setSpecifiedName(null);
+		parcelNumberMapping.getColumn().setSpecifiedTable(null);
+		parcelNumberMapping.getColumn().setColumnDefinition(null);
+		parcelNumberMapping.getColumn().setSpecifiedInsertable(null);
+		parcelNumberMapping.getColumn().setSpecifiedUpdatable(null);
+		parcelNumberMapping.getColumn().setSpecifiedUnique(null);
+		parcelNumberMapping.getColumn().setSpecifiedNullable(null);
+		parcelNumberMapping.getColumn().setSpecifiedLength(null);
+		parcelNumberMapping.getColumn().setSpecifiedPrecision(null);
+		parcelNumberMapping.getColumn().setSpecifiedScale(null);
+		defaultAttributeOverride = attributeOverrideContainer.virtualAttributeOverrides().next();
+		assertEquals("parcelNumber", defaultAttributeOverride.getName());
+		assertEquals("parcelNumber", defaultAttributeOverride.getColumn().getName());
+		assertEquals(TYPE_NAME +"_parcels", defaultAttributeOverride.getColumn().getTable());
+		assertEquals(null, defaultAttributeOverride.getColumn().getColumnDefinition());
+		assertEquals(true, defaultAttributeOverride.getColumn().isInsertable());
+		assertEquals(true, defaultAttributeOverride.getColumn().isUpdatable());
+		assertEquals(false, defaultAttributeOverride.getColumn().isUnique());
+		assertEquals(true, defaultAttributeOverride.getColumn().isNullable());
+		assertEquals(255, defaultAttributeOverride.getColumn().getLength());
+		assertEquals(0, defaultAttributeOverride.getColumn().getPrecision());
+		assertEquals(0, defaultAttributeOverride.getColumn().getScale());
+		
+		annotation = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		annotation.setName("value.parcelNumber");
+		getJpaProject().synchronizeContextModel();
+		assertEquals(2, attributeOverrideContainer.virtualAttributeOverridesSize());
+	}
+	
+	public void testMapKeyValueSpecifiedAttributeOverridesSize() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer valueAttributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		assertEquals(0, valueAttributeOverrideContainer.specifiedAttributeOverridesSize());
+		assertEquals(0, mapKeyAttributeOverrideContainer.specifiedAttributeOverridesSize());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.BAR");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("value.FOO2");
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(2, valueAttributeOverrideContainer.specifiedAttributeOverridesSize());
+		assertEquals(1, mapKeyAttributeOverrideContainer.specifiedAttributeOverridesSize());
+	}
+	
+	public void testMapKeyValueAttributeOverridesSize() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer valueAttributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		assertEquals(4, mapKeyAttributeOverrideContainer.attributeOverridesSize());
+		assertEquals(3, valueAttributeOverrideContainer.attributeOverridesSize());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.BAR");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("value.FOO2");
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(5, mapKeyAttributeOverrideContainer.attributeOverridesSize());
+		assertEquals(5, valueAttributeOverrideContainer.attributeOverridesSize());
+		
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("city");
+		getJpaProject().synchronizeContextModel();
+		assertEquals(5, mapKeyAttributeOverrideContainer.attributeOverridesSize());
+		assertEquals(6, valueAttributeOverrideContainer.attributeOverridesSize());
+	}
+	
+	public void testMapKeyValueVirtualAttributeOverridesSize() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer valueAttributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		assertEquals(4, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(3, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+
+		//add an annotation to the resource model and verify the context model is updated
+		AttributeOverrideAnnotation attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("FOO");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.BAR");
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals(4, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(3, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+
+		
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.city");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("value.parcelNumber");
+		getJpaProject().synchronizeContextModel();
+		assertEquals(3, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(2, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+		
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("key.state.name");
+		attributeOverride = (AttributeOverrideAnnotation) attributeResource.addAnnotation(0, JPA.ATTRIBUTE_OVERRIDE, JPA.ATTRIBUTE_OVERRIDES);
+		attributeOverride.setName("size");
+		getJpaProject().synchronizeContextModel();
+		assertEquals(2, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals(1, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+	}
+
+	public void testMapKeyValueAttributeOverrideSetVirtual() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+				
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer valueAttributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		valueAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		valueAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		
+		assertEquals("key.city", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.parcelNumber", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.size", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		valueAttributeOverrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
+		mapKeyAttributeOverrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
+		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.size", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		assertEquals("tax", valueAttributeOverrideContainer.virtualAttributeOverrides().next().getName());
+		assertEquals(2, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+		assertEquals("state.abbr", mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next().getName());
+		assertEquals(3, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+		
+		valueAttributeOverrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
+		mapKeyAttributeOverrideContainer.specifiedAttributeOverrides().next().setVirtual(true);
+		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		assertFalse(attributeOverrides.hasNext());
+		
+		Iterator<AttributeOverride> virtualAttributeOverrides = valueAttributeOverrideContainer.virtualAttributeOverrides();
+		assertEquals("tax", virtualAttributeOverrides.next().getName());
+		assertEquals("parcelNumber", virtualAttributeOverrides.next().getName());
+		assertEquals("size", virtualAttributeOverrides.next().getName());
+		assertEquals(3, valueAttributeOverrideContainer.virtualAttributeOverridesSize());
+		
+		virtualAttributeOverrides = mapKeyAttributeOverrideContainer.virtualAttributeOverrides();
+		assertEquals("state.abbr", virtualAttributeOverrides.next().getName());
+		assertEquals("zip", virtualAttributeOverrides.next().getName());
+		assertEquals("city", virtualAttributeOverrides.next().getName());
+		assertEquals("state.name", virtualAttributeOverrides.next().getName());
+		assertEquals(4, mapKeyAttributeOverrideContainer.virtualAttributeOverridesSize());
+	}
+	
+	
+	public void testMapKeyValueMoveSpecifiedAttributeOverride() throws Exception {
+		createTestEntityWithEmbeddableKeyAndValueElementCollectionMapping();
+		createTestTargetEmbeddableAddress();
+		createTestEmbeddableState();
+		createTestEmbeddablePropertyInfo();
+		
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(FULLY_QUALIFIED_EMBEDDABLE_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".PropertyInfo");
+		addXmlClassRef(PACKAGE_NAME + ".State");
+		
+		ElementCollectionMapping2_0 elementCollectionMapping = (ElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("parcels").getMapping();
+		AttributeOverrideContainer valueAttributeOverrideContainer = elementCollectionMapping.getValueAttributeOverrideContainer();
+		AttributeOverrideContainer mapKeyAttributeOverrideContainer = elementCollectionMapping.getMapKeyAttributeOverrideContainer();
+		valueAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		valueAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		mapKeyAttributeOverrideContainer.virtualAttributeOverrides().next().setVirtual(false);
+		
+		ListIterator<AttributeOverride> specifiedOverrides = valueAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("parcelNumber", specifiedOverrides.next().getName());
+		assertEquals("size", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
+		
+		specifiedOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("city", specifiedOverrides.next().getName());
+		assertEquals("state.name", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		
+		attributeResource.moveAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		
+		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+
+		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("key.city", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.parcelNumber", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.size", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		specifiedOverrides = valueAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("parcelNumber", specifiedOverrides.next().getName());
+		assertEquals("size", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
+		
+		specifiedOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("state.name", specifiedOverrides.next().getName());
+		assertEquals("city", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
+		
+		
+		attributeResource.moveAnnotation(3, 2, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		
+		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
+
+		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("key.city", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.size", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertEquals("value.parcelNumber", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
+		assertFalse(attributeOverrides.hasNext());
+		
+		specifiedOverrides = valueAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("size", specifiedOverrides.next().getName());
+		assertEquals("parcelNumber", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
+		
+		specifiedOverrides = mapKeyAttributeOverrideContainer.specifiedAttributeOverrides();
+		assertEquals("state.name", specifiedOverrides.next().getName());
+		assertEquals("city", specifiedOverrides.next().getName());
+		assertFalse(specifiedOverrides.hasNext());
 	}
 }

@@ -241,4 +241,9 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
 		this.virtualXmlElementCollection.setOrderColumn(newOrderColumn);
 	}
+
+	@Override
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
+		return this.virtualXmlElementCollection.getMapKeyAttributeOverrides();
+	}
 }

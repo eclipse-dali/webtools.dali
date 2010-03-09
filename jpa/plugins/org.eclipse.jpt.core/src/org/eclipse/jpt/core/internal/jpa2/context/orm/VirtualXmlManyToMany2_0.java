@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverride;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlColumn;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToMany;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlOrderColumn;
@@ -19,12 +24,15 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * VirtualBasic is an implementation of Basic used when there is 
@@ -214,5 +222,23 @@ public class VirtualXmlManyToMany2_0
 	@Override
 	public void setAccess(AccessType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
+	@Override
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
+		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_MANY_TO_MANY__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
+		if (!this.isOrmMetadataComplete()) {
+			javaAttributeOverrides = this.javaAttributeMapping.getMapKeyAttributeOverrideContainer().attributeOverrides();
+		}
+		else {
+			javaAttributeOverrides = this.javaAttributeMapping.getMapKeyAttributeOverrideContainer().virtualAttributeOverrides();
+		}
+		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
+			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn());
+			XmlAttributeOverride xmlAttributeOverride = new VirtualXmlAttributeOverride(javaAttributeOverride.getName(), xmlColumn);
+			attributeOverrides.add(xmlAttributeOverride);
+		}
+		return attributeOverrides;
 	}
 }

@@ -265,4 +265,22 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 	public void setOrderColumn(XmlOrderColumn newOrderColumn) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
 	}
+
+	@Override
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
+		EList<XmlAttributeOverride> attributeOverrides = new EObjectContainmentEList<XmlAttributeOverride>(XmlAttributeOverride.class, this, OrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ATTRIBUTE_OVERRIDES);
+		ListIterator<JavaAttributeOverride> javaAttributeOverrides;
+		if (!this.isOrmMetadataComplete()) {
+			javaAttributeOverrides = this.javaAttributeMapping.getMapKeyAttributeOverrideContainer().attributeOverrides();
+		}
+		else {
+			javaAttributeOverrides = this.javaAttributeMapping.getMapKeyAttributeOverrideContainer().virtualAttributeOverrides();
+		}
+		for (JavaAttributeOverride javaAttributeOverride : CollectionTools.iterable(javaAttributeOverrides)) {
+			XmlColumn xmlColumn = new VirtualXmlColumn(this.ormTypeMapping, javaAttributeOverride.getColumn());
+			XmlAttributeOverride xmlAttributeOverride = new VirtualXmlAttributeOverride(javaAttributeOverride.getName(), xmlColumn);
+			attributeOverrides.add(xmlAttributeOverride);
+		}
+		return attributeOverrides;
+	}
 }

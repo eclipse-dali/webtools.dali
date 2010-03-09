@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
@@ -22,9 +24,11 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -76,10 +80,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected final JavaColumn mapKeyColumn;
 
+	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
+
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.orderable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrderable(this, buildOrderableOwner());
 		this.mapKeyColumn = ((JpaFactory2_0) this.getJpaFactory()).buildJavaMapKeyColumn(parent, this.buildMapKeyColumnOwner());
+		this.mapKeyAttributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new MapKeyAttributeOverrideContainerOwner());
 	}
 
 	@Override
@@ -97,6 +104,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.initializeKeyType();
 		this.initializeMapKey();
 		this.initializeMapKeyColumn();
+		this.mapKeyAttributeOverrideContainer.initialize(getResourcePersistentAttribute());
 	}
 
 	@Override
@@ -114,6 +122,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.updateKeyType();
 		this.updateMapKey();
 		this.updateMapKeyColumn();
+		this.mapKeyAttributeOverrideContainer.update(getResourcePersistentAttribute());
 	}
 
 	// ********** AbstractJavaAttributeMapping implementation **********  
@@ -125,6 +134,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		names.add(JPA.MAP_KEY);
 		names.add(JPA.ORDER_BY);
 		if (this.isJpa2_0Compatible()) {
+			names.add(JPA.ATTRIBUTE_OVERRIDE);
+			names.add(JPA.ATTRIBUTE_OVERRIDES);
 			names.add(JPA2_0.MAP_KEY_CLASS);
 			names.add(JPA2_0.MAP_KEY_COLUMN);
 			names.add(JPA2_0.MAP_KEY_ENUMERATED);
@@ -555,6 +566,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return new MapKeyColumnOwner();
 	}
 
+	public JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
+		return this.mapKeyAttributeOverrideContainer;
+	}
+
 	// ********** Java completion proposals **********  
 
 	@Override
@@ -571,6 +586,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return this.javaCandidateMapKeyNames(filter);
 		}
 		result = this.getMapKeyColumn().javaCompletionProposals(pos, filter, astRoot);
+		if (result != null) {
+			return result;
+		}
+		result = this.getMapKeyAttributeOverrideContainer().javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -623,7 +642,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.validateMapKey(messages, reporter, astRoot);
 	}
 
-	public void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+	protected void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (getMapKey() != null) {
 			//TODO validate that the map key refers to an existing attribute
 			return;
@@ -636,8 +655,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			//validate map key join columns
 		}
 		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
-			//validate map key attribute overrides
-			//validate map key association overrides
+			getMapKeyAttributeOverrideContainer().validate(messages, reporter, astRoot);
+			//validate map key association overrides - for eclipselink
 		}
 	}
 
@@ -690,6 +709,113 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 				IMessage.HIGH_SEVERITY,
 				JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME,
 				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+	}
+
+	abstract class OverrideContainerOwner implements JavaOverrideContainer.Owner {
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
+		}
+
+		protected JoiningStrategy getPredominantJoiningStrategy() {
+			return getRelationshipReference().getPredominantJoiningStrategy();
+		}
+
+		public String getDefaultTableName() {
+			return getPredominantJoiningStrategy().getTableName();
+		}
+
+		public Table getDbTable(String tableName) {
+			return getPredominantJoiningStrategy().getDbTable(tableName);
+		}
+
+		public java.util.Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+		
+		/**
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
+		 */
+		public boolean tableNameIsInvalid(String tableName) {
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+		}
+		
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
+		}
+	}
+
+	class MapKeyAttributeOverrideContainerOwner
+		extends OverrideContainerOwner
+		implements JavaAttributeOverrideContainer.Owner
+	{
+	
+		public String getPossiblePrefix() {
+			return "key."; //$NON-NLS-1$
+		}
+
+		public String getWritePrefix() {
+			return this.getPossiblePrefix();
+		}
+
+		//since only the key can be an embeddable on a 1-m or m-m, all overrides are relevant
+		public boolean isRelevant(String overrideName) {
+			return true;
+		}
+	
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
+		}
+	
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+		}
+	
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column, 
+				textRange
+			);
+		}
+		
+		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {overrideName, column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+	
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
+			if (override.isVirtual()) {
+				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+				new String[] {column.getTable(), column.getName(), getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
+				column,
+				textRange
+			);
+		}
+	
+		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] {overrideName, column.getTable(), column.getName(), getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
 				column, 
 				textRange
 			);

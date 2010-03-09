@@ -476,7 +476,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(attributeResource.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(OneToManyAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testMorphToManyToOneMapping() throws Exception {
@@ -516,7 +516,7 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		
 		assertNull(attributeResource.getAnnotation(EmbeddedAnnotation.ANNOTATION_NAME));
 		assertNotNull(attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME));
-		assertNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
+		assertNotNull(attributeResource.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME));
 	}
 
 	public void testSpecifiedAttributeOverrides() throws Exception {

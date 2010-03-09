@@ -52,7 +52,7 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	}
 
 	@Override
-	protected AssociationOverrideAnnotation getOverrideAnnotation() {
+	public AssociationOverrideAnnotation getOverrideAnnotation() {
 		return (AssociationOverrideAnnotation) super.getOverrideAnnotation();
 	}
 	

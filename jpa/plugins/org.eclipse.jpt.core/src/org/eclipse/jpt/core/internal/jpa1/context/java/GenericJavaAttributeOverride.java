@@ -47,7 +47,7 @@ public class GenericJavaAttributeOverride extends AbstractJavaOverride
 	}
 	
 	@Override
-	protected AttributeOverrideAnnotation getOverrideAnnotation() {
+	public AttributeOverrideAnnotation getOverrideAnnotation() {
 		return (AttributeOverrideAnnotation) super.getOverrideAnnotation();
 	}
 	

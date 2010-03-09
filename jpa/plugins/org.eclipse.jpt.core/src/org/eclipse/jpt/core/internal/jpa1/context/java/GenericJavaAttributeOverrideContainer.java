@@ -107,10 +107,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		return setAttributeOverrideSpecified(attributeOverride);
 	}
 	
-	protected JavaAttributeOverride setAttributeOverrideVirtual(JavaAttributeOverride attributeOverride) {
-		int index = this.specifiedAttributeOverrides.indexOf(attributeOverride);
+	protected JavaAttributeOverride setAttributeOverrideVirtual(JavaAttributeOverride specifiedAttributeOverride) {
+		int index = this.specifiedAttributeOverrides.indexOf(specifiedAttributeOverride);
 		this.specifiedAttributeOverrides.remove(index);
-		String attributeOverrideName = attributeOverride.getName();
+		String attributeOverrideName = specifiedAttributeOverride.getName();
 		//add the virtual attribute override so that I can control the order that change notification is sent.
 		//otherwise when we remove the annotation from java we will get an update and add the attribute override
 		//during the update.  This causes the UI to be flaky, since change notification might not occur in the correct order
@@ -127,9 +127,10 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		}
 
 		this.javaResourcePersistentMember.removeAnnotation(
-				index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+				this.resourceIndexOf(specifiedAttributeOverride),
+				AttributeOverrideAnnotation.ANNOTATION_NAME, 
 				AttributeOverridesAnnotation.ANNOTATION_NAME);
-		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, attributeOverride);
+		fireItemRemoved(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, specifiedAttributeOverride);
 		
 		if (virtualAttributeOverride != null) {
 			fireItemAdded(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, virtualAttributeOverridesSize() - 1, virtualAttributeOverride);
@@ -137,27 +138,37 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 		return virtualAttributeOverride;
 	}
 	
-	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride oldAttributeOverride) {
+	protected JavaAttributeOverride setAttributeOverrideSpecified(JavaAttributeOverride virtualAttributeOverride) {
 		int index = specifiedAttributeOverridesSize();
-		JavaAttributeOverride newAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
-		this.specifiedAttributeOverrides.add(index, newAttributeOverride);
+		int resourceIndex = 0;
+		if (specifiedAttributeOverridesSize() > 0) {
+			resourceIndex = this.resourceIndexOf(this.specifiedAttributeOverrides.get(index - 1)) + 1;
+		}
+		JavaAttributeOverride specifiedAttributeOverride = getJpaFactory().buildJavaAttributeOverride(this, createAttributeOverrideOwner());
 		
 		AttributeOverrideAnnotation attributeOverrideResource = 
 				(AttributeOverrideAnnotation) this.javaResourcePersistentMember.addAnnotation(
-					index, AttributeOverrideAnnotation.ANNOTATION_NAME, 
+					resourceIndex,
+					AttributeOverrideAnnotation.ANNOTATION_NAME, 
 					AttributeOverridesAnnotation.ANNOTATION_NAME);
-		newAttributeOverride.initialize(attributeOverrideResource);
+		specifiedAttributeOverride.initialize(attributeOverrideResource);
 		
-		int defaultIndex = this.virtualAttributeOverrides.indexOf(oldAttributeOverride);
+		int defaultIndex = this.virtualAttributeOverrides.indexOf(virtualAttributeOverride);
 		this.virtualAttributeOverrides.remove(defaultIndex);
 
-		newAttributeOverride.setName(oldAttributeOverride.getName());
-		newAttributeOverride.getColumn().setSpecifiedName(oldAttributeOverride.getColumn().getName());
+		String name = virtualAttributeOverride.getName();
+		String prefix = getOwner().getWritePrefix();
+		if (prefix != null) {
+			name = prefix + name;
+		}
+		this.specifiedAttributeOverrides.add(index, specifiedAttributeOverride);
+		specifiedAttributeOverride.setName(name);
+		specifiedAttributeOverride.getColumn().setSpecifiedName(virtualAttributeOverride.getColumn().getName());
 		
-		this.fireItemRemoved(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, oldAttributeOverride);
-		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, newAttributeOverride);		
+		this.fireItemRemoved(VIRTUAL_ATTRIBUTE_OVERRIDES_LIST, defaultIndex, virtualAttributeOverride);
+		this.fireItemAdded(SPECIFIED_ATTRIBUTE_OVERRIDES_LIST, index, specifiedAttributeOverride);		
 
-		return newAttributeOverride;
+		return specifiedAttributeOverride;
 	}
 	
 	protected JavaAttributeOverride.Owner createAttributeOverrideOwner() {
@@ -279,7 +290,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			addSpecifiedAttributeOverride(buildAttributeOverride((AttributeOverrideAnnotation) resourceAttributeOverrides.next()));
 		}
 	}
-	
+
 	protected Iterator<NestableAnnotation> relavantResourceAttributeOverrides() {
 		Iterator<NestableAnnotation> resourceAttributeOverrides = 
 			this.javaResourcePersistentMember.annotations(
@@ -293,6 +304,16 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 				return overrideName != null && getOwner().isRelevant(overrideName);
 			}
 		};
+	}
+	
+	protected int resourceIndexOf(JavaAttributeOverride specifiedAttributeOverride) {
+		Iterator<NestableAnnotation> overrideAnnotations = this.javaResourcePersistentMember.annotations(
+			AttributeOverrideAnnotation.ANNOTATION_NAME, 
+			AttributeOverridesAnnotation.ANNOTATION_NAME);
+		
+		return CollectionTools.indexOf(
+				overrideAnnotations,
+				specifiedAttributeOverride.getOverrideAnnotation());
 	}
 
 	protected JavaAttributeOverride buildAttributeOverride(AttributeOverrideAnnotation attributeOverrideResource) {
@@ -397,8 +418,8 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 			return GenericJavaAttributeOverrideContainer.this.allOverridableAttributeNames();
 		}
 
-		public String getPrefix() {
-			return getOwner().getPrefix();
+		public String getPossiblePrefix() {
+			return getOwner().getPossiblePrefix();
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {

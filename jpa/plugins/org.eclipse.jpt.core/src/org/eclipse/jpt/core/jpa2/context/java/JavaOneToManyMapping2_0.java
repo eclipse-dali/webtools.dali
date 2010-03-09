@@ -24,11 +24,11 @@ import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
  * @since 2.3
  */
 public interface JavaOneToManyMapping2_0
-	extends JavaOneToManyMapping, JavaRelationshipMapping2_0, OneToManyMapping2_0
+	extends JavaOneToManyMapping, JavaRelationshipMapping2_0, OneToManyMapping2_0, JavaCollectionMapping2_0
 {
 	OneToMany2_0Annotation getMappingAnnotation();
 	
 	JavaOneToManyRelationshipReference2_0 getRelationshipReference();
 
-	public JavaOrderable2_0 getOrderable();
+	JavaOrderable2_0 getOrderable();
 }

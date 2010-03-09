@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -240,5 +241,10 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	@Override
 	public void setAccess(AccessType value) {
 		this.eclipseLinkVirtualXmlOneToMany.setAccess(value);
+	}
+
+	@Override
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
+		return this.virtualXmlOneToMany.getMapKeyAttributeOverrides();
 	}
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -67,5 +68,7 @@ public interface CollectionMapping2_0
 	 * Return the map key column for this collection mapping.
 	 */
 	Column getMapKeyColumn();
+
+	AttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 
 }

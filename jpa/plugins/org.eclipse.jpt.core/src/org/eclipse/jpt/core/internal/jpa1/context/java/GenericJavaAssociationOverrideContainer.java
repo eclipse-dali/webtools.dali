@@ -408,8 +408,8 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			return GenericJavaAssociationOverrideContainer.this.allOverridableAssociationNames();
 		}
 
-		public String getPrefix() {
-			return getOwner().getPrefix();
+		public String getPossiblePrefix() {
+			return getOwner().getPossiblePrefix();
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {

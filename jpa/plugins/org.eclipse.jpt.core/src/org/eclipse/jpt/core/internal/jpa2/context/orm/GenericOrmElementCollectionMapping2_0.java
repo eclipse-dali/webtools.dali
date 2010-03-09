@@ -119,6 +119,8 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	protected final OrmColumn mapKeyColumn;
 
+	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
+
 	public GenericOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 		this.specifiedFetch = this.getResourceFetch();
@@ -141,6 +143,7 @@ public class GenericOrmElementCollectionMapping2_0
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
 		this.mapKeyColumn = getXmlContextNodeFactory().buildOrmColumn(this, new MapKeyColumnOwner());
+		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
 	}
 	
 	@Override
@@ -166,6 +169,7 @@ public class GenericOrmElementCollectionMapping2_0
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 		this.mapKeyColumn.update(getResourceMapKeyColumn());
+		this.mapKeyAttributeOverrideContainer.update();
 	}
 
 	@Override
@@ -511,7 +515,7 @@ public class GenericOrmElementCollectionMapping2_0
 	}
 
 	protected OrmAttributeOverrideContainer buildValueAttributeOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new ValueAttributeOverrideContainerOwner());
 	}
 
 	protected JavaAttributeOverride getJavaValueAttributeOverrideNamed(String attributeName) {
@@ -547,6 +551,21 @@ public class GenericOrmElementCollectionMapping2_0
 		return null;
 	}
 	
+	public OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
+		return this.mapKeyAttributeOverrideContainer;
+	}
+
+	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new MapKeyAttributeOverrideContainerOwner());
+	}
+
+	protected JavaAttributeOverride getJavaMapKeyAttributeOverrideNamed(String attributeName) {
+		if (getJavaElementCollectionMapping() != null) {
+			return getJavaElementCollectionMapping().getMapKeyAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		}
+		return null;
+	}
+
 	// **************** map key ************************************************
 	
 	public String getMapKey() {
@@ -1090,7 +1109,7 @@ public class GenericOrmElementCollectionMapping2_0
 			//validate map key join columns
 		}
 		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
-			//validate map key attribute overrides
+			this.getMapKeyAttributeOverrideContainer().validate(messages, reporter);
 			//validate map key association overrides
 		}
 	}
@@ -1183,7 +1202,7 @@ public class GenericOrmElementCollectionMapping2_0
 		return this.resourceAttributeMapping.getTargetClassTextRange();
 	}
 
-	abstract class AbstractColumnOwner implements OrmColumn.Owner {		
+	abstract class ColumnOwner implements OrmColumn.Owner {		
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
 		}
@@ -1214,9 +1233,71 @@ public class GenericOrmElementCollectionMapping2_0
 		public TextRange getValidationTextRange() {
 			return GenericOrmElementCollectionMapping2_0.this.getValidationTextRange();
 		}
+
+		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualTableNotValidMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				getColumnTableNotValidMessage(),
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getVirtualAttributeColumnTableNotValidMessage(),
+				new String[] {
+					getName(),
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+				column,
+				textRange
+			);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualUnresolvedNameMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getColumnUnresolvedNameMessage(),
+				new String[] {
+					column.getName(),
+					column.getDbTable().getName()}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getVirtualAttributeColumnUnresolvedNameMessage(),
+				new String[] {getName(), column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}		
+		protected abstract String getColumnTableNotValidMessage();
+
+		protected abstract String getVirtualAttributeColumnTableNotValidMessage();
+		
+		protected abstract String getColumnUnresolvedNameMessage();
+		
+		protected abstract String getVirtualAttributeColumnUnresolvedNameMessage();
 	}
 
-	class ValueColumnOwner extends AbstractColumnOwner {
+	class ValueColumnOwner extends ColumnOwner {
 
 		public XmlColumn getResourceColumn() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getColumn();
@@ -1234,54 +1315,28 @@ public class GenericOrmElementCollectionMapping2_0
 			return GenericOrmElementCollectionMapping2_0.this.getName();
 		}
 
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			if (isVirtual()) {
-				return this.buildVirtualTableNotValidMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-				new String[] {column.getTable(), column.getName()}, 
-				column, 
-				textRange
-			);
+		@Override
+		public String getColumnTableNotValidMessage() {
+			return JpaValidationMessages.COLUMN_TABLE_NOT_VALID;
 		}
 
-		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-				new String[] {getName(), column.getTable(), column.getName()},
-				column,
-				textRange
-			);
+		@Override
+		public String getVirtualAttributeColumnTableNotValidMessage() {
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID;
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			if (isVirtual()) {
-				return this.buildVirtualUnresolvedNameMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()}, 
-				column,
-				textRange
-			);
+		@Override
+		public String getColumnUnresolvedNameMessage() {
+			return JpaValidationMessages.COLUMN_UNRESOLVED_NAME;
 		}
-
-		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_VALUE_COLUMN_UNRESOLVED_NAME,
-				new String[] {getName(), column.getName(), column.getDbTable().getName()},
-				column, 
-				textRange
-			);
+		
+		@Override
+		public String getVirtualAttributeColumnUnresolvedNameMessage() {
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME;
 		}
 	}
 
-	class MapKeyColumnOwner extends AbstractColumnOwner {
+	class MapKeyColumnOwner extends ColumnOwner {
 
 		public XmlColumn getResourceColumn() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getMapKeyColumn();
@@ -1299,58 +1354,29 @@ public class GenericOrmElementCollectionMapping2_0
 			return GenericOrmElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
 
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			if (isVirtual()) {
-				return this.buildVirtualTableNotValidMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID,
-				new String[] {column.getTable(), column.getName(), JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
-				column,
-				textRange
-			);
+		@Override
+		protected String getColumnTableNotValidMessage() {
+			return JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID;
 		}
 
-		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID,
-				new String[] {getName(), column.getTable(), column.getName(), JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
-				column,
-				textRange
-			);
+		@Override
+		protected String getVirtualAttributeColumnTableNotValidMessage() {
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_TABLE_NOT_VALID;
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			if (isVirtual()) {
-				return this.buildVirtualUnresolvedNameMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()}, 
-				column,
-				textRange
-			);
+		@Override
+		public String getColumnUnresolvedNameMessage() {
+			return JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME;
+		}
+		
+		@Override
+		public String getVirtualAttributeColumnUnresolvedNameMessage() {
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
 		}
 
-		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME,
-				new String[] {getName(), column.getName(), column.getDbTable().getName()},
-				column, 
-				textRange
-			);
-		}
 	}
 
 	abstract class OverrideContainerOwner implements OrmOverrideContainer.Owner {
-		public TypeMapping getOverridableTypeMapping() {
-			return GenericOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
-		}
-		
 		public OrmTypeMapping getTypeMapping() {
 			return GenericOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
@@ -1379,7 +1405,10 @@ public class GenericOrmElementCollectionMapping2_0
 	class AssociationOverrideContainerOwner extends OverrideContainerOwner 
 		implements OrmAssociationOverrideContainer.Owner
 	{
-
+		public TypeMapping getOverridableTypeMapping() {
+			return GenericOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
+		}
+		
 		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAssociationOverrides();
 		}
@@ -1403,8 +1432,11 @@ public class GenericOrmElementCollectionMapping2_0
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-					new String[] {column.getTable(), column.getName()}, 
+					JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+					new String[] {
+						column.getTable(),
+						column.getName(),
+						JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
 					column, 
 					textRange
 				);
@@ -1413,12 +1445,13 @@ public class GenericOrmElementCollectionMapping2_0
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID,
 				new String[] {
 					GenericOrmElementCollectionMapping2_0.this.getName(), 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
 				column,
 				textRange
 			);
@@ -1427,11 +1460,12 @@ public class GenericOrmElementCollectionMapping2_0
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID,
 				new String[] { 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
 				column,
 				textRange
 			);
@@ -1607,12 +1641,16 @@ public class GenericOrmElementCollectionMapping2_0
 			return GenericOrmElementCollectionMapping2_0.this.getValidationTextRange();
 		}
 	}
-	
+
 	//********** OrmAttributeOverrideContainer.Owner implementation *********	
-	
-	class AttributeOverrideContainerOwner extends OverrideContainerOwner
+
+	class ValueAttributeOverrideContainerOwner extends OverrideContainerOwner
 		implements OrmAttributeOverrideContainer.Owner
 	{
+		public TypeMapping getOverridableTypeMapping() {
+			return GenericOrmElementCollectionMapping2_0.this.getResolvedTargetEmbeddable();
+		}
+
 		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
 			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getAttributeOverrides();
 		}
@@ -1626,11 +1664,11 @@ public class GenericOrmElementCollectionMapping2_0
 			}
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
-		
+
 		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
 			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 		}
-		
+
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -1685,8 +1723,11 @@ public class GenericOrmElementCollectionMapping2_0
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.ELEMENT_COLLECTION_VALUE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-					new String[] {column.getTable(), column.getName()}, 
+					JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+					new String[] {
+						column.getTable(),
+						column.getName(),
+						JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
 					column, 
 					textRange
 				);
@@ -1695,12 +1736,13 @@ public class GenericOrmElementCollectionMapping2_0
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
 				new String[] {
 					GenericOrmElementCollectionMapping2_0.this.getName(), 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
 				column,
 				textRange
 			);
@@ -1709,11 +1751,135 @@ public class GenericOrmElementCollectionMapping2_0
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
 				new String[] { 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
+				column,
+				textRange
+			);
+		}
+
+		public TextRange getValidationTextRange() {
+			return GenericOrmElementCollectionMapping2_0.this.getValidationTextRange();
+		}
+	}
+
+	class MapKeyAttributeOverrideContainerOwner extends OverrideContainerOwner
+		implements OrmAttributeOverrideContainer.Owner
+	{
+		public TypeMapping getOverridableTypeMapping() {
+			return GenericOrmElementCollectionMapping2_0.this.getResolvedMapKeyEmbeddable();
+		}
+
+		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+			return GenericOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getMapKeyAttributeOverrides();
+		}
+
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
+			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
+				JavaAttributeOverride javaAttributeOverride = getJavaMapKeyAttributeOverrideNamed(attributeOverrideName);
+				if (javaAttributeOverride != null && !javaAttributeOverride.isVirtual()) {
+					return javaAttributeOverride.getColumn();
+				}
+			}
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+		}
+
+		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
+			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
+		}
+
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualAttributeColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					GenericOrmElementCollectionMapping2_0.this.getName(), 
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualOverrideColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+					new String[] {
+						column.getTable(),
+						column.getName(),
+						JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
+					column, 
+					textRange
+				);
+		}
+
+		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					GenericOrmElementCollectionMapping2_0.this.getName(), 
+					overrideName, 
+					column.getTable(), 
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] { 
+					overrideName, 
+					column.getTable(), 
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
 				column,
 				textRange
 			);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.BaseOverride;
+import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 
 /**
  * 
@@ -26,6 +27,8 @@ import org.eclipse.jpt.core.context.BaseOverride;
 public interface JavaOverride
 	extends BaseOverride, JavaJpaContextNode
 {
+
+	OverrideAnnotation getOverrideAnnotation();
 	
 	interface Owner extends BaseOverride.Owner
 	{
@@ -34,6 +37,6 @@ public interface JavaOverride
 		 * Return a prefix (ending in '.') that is allowed to be appended to the override name.
 		 * Return null if no prefix is supported.
 		 */
-		String getPrefix();
+		String getPossiblePrefix();
 	}
 }

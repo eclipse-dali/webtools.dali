@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
@@ -224,5 +225,10 @@ public class VirtualEclipseLinkXmlManyToMany2_0 extends XmlManyToMany
 	@Override
 	public void setAccess(AccessType value) {
 		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+	
+	@Override
+	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
+		return this.virtualXmlManyToMany.getMapKeyAttributeOverrides();
 	}
 }

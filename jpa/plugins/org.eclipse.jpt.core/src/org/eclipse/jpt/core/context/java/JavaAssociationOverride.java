@@ -31,6 +31,7 @@ public interface JavaAssociationOverride
 
 	JavaAssociationOverride setVirtual(boolean virtual);
 	
+	AssociationOverrideAnnotation getOverrideAnnotation();
 	
 	void initialize(AssociationOverrideAnnotation associationOverride);
 	

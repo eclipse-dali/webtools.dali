@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 
 /**
@@ -29,5 +30,7 @@ public interface JavaCollectionMapping2_0
 {
 
 	JavaOrderable2_0 getOrderable();
+	
+	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 
 }

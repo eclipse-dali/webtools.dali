@@ -47,7 +47,7 @@ public abstract class AbstractJavaOverride
 		this.updateName();
 	}
 
-	protected OverrideAnnotation getOverrideAnnotation() {
+	public OverrideAnnotation getOverrideAnnotation() {
 		return this.overrideAnnotation;
 	}
 	
@@ -57,10 +57,15 @@ public abstract class AbstractJavaOverride
 	}
 
 	public void setName(String newName) {
+		String prefix = getOwner().getPossiblePrefix();
+		String unprefixedName = newName;
+		if (newName != null && prefix != null && newName.startsWith(prefix)) {
+			unprefixedName = newName.substring(newName.indexOf('.') + 1);
+		}
 		String oldName = this.name;
-		this.name = newName;
-		this.overrideAnnotation.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+		this.name = unprefixedName; //set the name without the prefix in the context model
+		this.overrideAnnotation.setName(newName); // set the name with the prefix in the resource model
+		firePropertyChanged(NAME_PROPERTY, oldName, unprefixedName);
 	}
 	
 	protected void setName_(String newName) {
@@ -71,7 +76,7 @@ public abstract class AbstractJavaOverride
 
 	protected void initializeName() {
 		String name = this.getResourceName();
-		String prefix = getOwner().getPrefix();
+		String prefix = getOwner().getPossiblePrefix();
 		if (name != null && prefix != null && name.startsWith(prefix)) {
 			name = name.substring(name.indexOf('.') + 1);
 		}
@@ -80,7 +85,7 @@ public abstract class AbstractJavaOverride
 
 	protected void updateName() {
 		String name = this.getResourceName();
-		String prefix = getOwner().getPrefix();
+		String prefix = getOwner().getPossiblePrefix();
 		if (name != null && prefix != null && name.startsWith(prefix)) {
 			name = name.substring(name.indexOf('.') + 1);
 		}

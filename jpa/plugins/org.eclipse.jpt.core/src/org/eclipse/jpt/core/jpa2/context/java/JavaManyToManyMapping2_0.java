@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.ManyToMany2_0Annotation;
  * @since 2.3
  */
 public interface JavaManyToManyMapping2_0
-	extends JavaManyToManyMapping, JavaRelationshipMapping2_0, ManyToManyMapping2_0
+	extends JavaManyToManyMapping, JavaRelationshipMapping2_0, ManyToManyMapping2_0, JavaCollectionMapping2_0
 {
 	ManyToMany2_0Annotation getMappingAnnotation();
 }

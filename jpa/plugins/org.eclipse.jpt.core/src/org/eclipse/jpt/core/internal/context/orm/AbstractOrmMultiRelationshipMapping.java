@@ -12,32 +12,42 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.CollectionMapping;
+import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -69,6 +79,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	protected final OrmColumn mapKeyColumn;
 
+	protected final OrmAttributeOverrideContainer mapKeyAttributeOverrideContainer;
+
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, this.buildOrderableOwner());
@@ -81,6 +93,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
 		this.mapKeyColumn = getXmlContextNodeFactory().buildOrmColumn(this, this.buildMapKeyColumnOwner());
+		this.mapKeyAttributeOverrideContainer = buildMapKeyAttributeOverrideContainer();
 	}
 	
 	@Override
@@ -99,7 +112,9 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 		this.mapKeyColumn.update(getResourceMapKeyColumn());
-	}
+		this.mapKeyColumn.update(getResourceMapKeyColumn());
+		this.mapKeyAttributeOverrideContainer.update();
+}
 	
 	@Override
 	protected String getResourceDefaultTargetEntity() {
@@ -518,6 +533,32 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		return new MapKeyColumnOwner();
 	}
 
+	public OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
+		return this.mapKeyAttributeOverrideContainer;
+	}
+
+	protected OrmAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
+		return getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(this, new MapKeyAttributeOverrideContainerOwner());
+	}
+
+	protected JavaAttributeOverride getJavaMapKeyAttributeOverrideNamed(String attributeName) {
+		if (getJavaMultiRelationshipMapping() != null) {
+			return getJavaMultiRelationshipMapping().getMapKeyAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+		}
+		return null;
+	}	
+
+	protected JavaCollectionMapping2_0 getJavaMultiRelationshipMapping() {
+		if (this.getJavaPersistentAttribute() == null) {
+			return null;
+		}
+		AttributeMapping javaAttributeMapping = this.getJavaPersistentAttribute().getMapping();
+		if (javaAttributeMapping.getKey() == this.getKey()) {
+			return ((JavaCollectionMapping2_0) javaAttributeMapping);
+		}
+		return null;
+	}
+
 	// ********** metamodel **********  
 
 	@Override
@@ -565,7 +606,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 			//validate map key join columns
 		}
 		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
-			//validate map key attribute overrides
+			getMapKeyAttributeOverrideContainer().validate(messages, reporter);
 			//validate map key association overrides
 		}
 	}
@@ -660,6 +701,160 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				column, 
 				textRange
 			);
+		}
+	}
+
+	class MapKeyAttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
+		}
+	
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
+		}
+
+		protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
+			return AbstractOrmMultiRelationshipMapping.this.getJavaMapKeyAttributeOverrideNamed(attributeName);
+		}
+
+		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
+			return AbstractOrmMultiRelationshipMapping.this.resourceAttributeMapping.getMapKeyAttributeOverrides();
+		}
+
+		public Column resolveOverriddenColumn(String attributeOverrideName) {
+			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
+				JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeOverrideName);
+				if (javaAttributeOverride != null && !javaAttributeOverride.isVirtual()) {
+					return javaAttributeOverride.getColumn();
+				}
+			}
+			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+		}
+
+		
+		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
+			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
+		}
+
+		protected OrmJoiningStrategy getPredominantJoiningStrategy() {
+			return getRelationshipReference().getPredominantJoiningStrategy();
+		}
+		
+		public String getDefaultTableName() {
+			return getPredominantJoiningStrategy().getTableName();
+		}
+
+		public Table getDbTable(String tableName) {
+			return getPredominantJoiningStrategy().getDbTable(tableName);
+		}
+
+		public java.util.Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+
+		/**
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
+		 */
+		public boolean tableNameIsInvalid(String tableName) {
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+		}
+
+		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnUnresolvedNameMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualAttributeColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					AbstractOrmMultiRelationshipMapping.this.getName(), 
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualOverrideColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					overrideName, 
+					column.getName(), 
+					column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
+			if (isVirtual()) {
+				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			if (override.isVirtual()) {
+				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+					new String[] {
+						column.getTable(),
+						column.getName(),
+						getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
+					column, 
+					textRange
+				);
+		}
+
+		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					AbstractOrmMultiRelationshipMapping.this.getName(), 
+					overrideName, 
+					column.getTable(), 
+					column.getName(),
+					getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					overrideName,
+					column.getTable(),
+					column.getName(),
+					getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
+				column,
+				textRange
+			);
+		}
+
+		public TextRange getValidationTextRange() {
+			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}
 	}
 }
