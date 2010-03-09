@@ -28,15 +28,11 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizardPage_usesMoxyImplementation;
 	
 	public static String ClassesGeneratorWizardPage_settingsGroupTitle;
-	public static String ClassesGeneratorWizardPage_targetFolder;
-	public static String ClassesGeneratorWizardPage_targetPackage;
 	public static String ClassesGeneratorWizardPage_catalog;
 	public static String ClassesGeneratorWizardPage_bindingsFiles;
 	public static String ClassesGeneratorWizardPage_addButton;
 	public static String ClassesGeneratorWizardPage_removeButton;
 	public static String ClassesGeneratorWizardPage_chooseABindingsFile;
-	
-	public static String ClassesGeneratorWizardPage_targetFolderCannotBeEmpty;
 	
 	public static String ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable;
 	
