@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlReferenceTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -418,7 +419,10 @@ public class GenericOrmJoinTable
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				this.getTableNotValidMessage(),
-				new String[] {column.getTable(), column.getName()}, 
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE}, 
 				column, 
 				textRange
 			);
@@ -428,7 +432,11 @@ public class GenericOrmJoinTable
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				this.getVirtualTableNotValidMessage(),
-				new String[] {getName(), column.getTable(), column.getName()},
+				new String[] {
+					getName(),
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE},
 				column, 
 				textRange
 			);
@@ -605,12 +613,12 @@ public class GenericOrmJoinTable
 
 		@Override
 		protected String getTableNotValidMessage() {
-			return JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
 		public String getVirtualTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
@@ -706,12 +714,12 @@ public class GenericOrmJoinTable
 
 		@Override
 		protected String getTableNotValidMessage() {
-			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
 		public String getVirtualTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override

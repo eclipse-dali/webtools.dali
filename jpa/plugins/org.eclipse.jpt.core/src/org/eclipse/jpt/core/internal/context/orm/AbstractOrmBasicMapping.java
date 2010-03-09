@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -302,8 +303,11 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 		}
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-			new String[] {column.getTable(), column.getName()}, 
+			JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+			new String[] {
+				column.getTable(),
+				column.getName(),
+				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
 			column, 
 			textRange
 		);
@@ -312,8 +316,12 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	public IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-			new String[] {getName(), column.getTable(), column.getName()},
+			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
+			new String[] {
+				getName(),
+				column.getTable(),
+				column.getName(),
+				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
 			column, 
 			textRange
 		);

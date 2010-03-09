@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
@@ -272,8 +273,11 @@ public class GenericOrmEmbeddedMapping
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-					new String[] {column.getTable(), column.getName()}, 
+					JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+					new String[] {
+						column.getTable(),
+						column.getName(),
+						JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
 					column, 
 					textRange
 				);
@@ -282,12 +286,13 @@ public class GenericOrmEmbeddedMapping
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID,
 				new String[] {
 					GenericOrmEmbeddedMapping.this.getName(), 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
 				column,
 				textRange
 			);
@@ -296,11 +301,12 @@ public class GenericOrmEmbeddedMapping
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID,
 				new String[] { 
 					overrideName, 
 					column.getTable(), 
-					column.getName()},
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
 				column,
 				textRange
 			);

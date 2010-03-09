@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -239,7 +240,11 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			return getTypeMapping().getPrimaryTableName();
 		}
 
-		public String getPrefix() {
+		public String getPossiblePrefix() {
+			return null;
+		}
+
+		public String getWritePrefix() {
 			return null;
 		}
 
@@ -258,8 +263,11 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-				new String[] {column.getTable(), column.getName()}, 
+				JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
 				column, 
 				textRange
 			);
@@ -268,8 +276,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-				new String[] {overrideName, column.getTable(), column.getName()},
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					overrideName,
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
 				column, 
 				textRange
 			);

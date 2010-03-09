@@ -212,8 +212,11 @@ public class GenericJavaJoinColumnJoiningStrategy
 		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-				new String[] {column.getTable(), column.getName()}, 
+				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
 				column,
 				textRange
 			);

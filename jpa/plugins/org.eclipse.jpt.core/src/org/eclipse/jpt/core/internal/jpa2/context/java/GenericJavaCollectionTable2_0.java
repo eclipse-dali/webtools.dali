@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaReferenceTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
@@ -192,8 +193,11 @@ public class GenericJavaCollectionTable2_0
 		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-				new String[] {column.getTable(), column.getName()}, 
+				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
 				column,
 				textRange
 			);

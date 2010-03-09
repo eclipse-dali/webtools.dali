@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -217,7 +218,11 @@ public class GenericJavaEmbeddedMapping
 			return getTypeMapping().getPrimaryTableName();
 		}
 
-		public String getPrefix() {
+		public String getPossiblePrefix() {
+			return null;
+		}
+
+		public String getWritePrefix() {
 			return null;
 		}
 
@@ -236,8 +241,11 @@ public class GenericJavaEmbeddedMapping
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-				new String[] {column.getTable(), column.getName()}, 
+				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
 				column, 
 				textRange
 			);
@@ -246,8 +254,12 @@ public class GenericJavaEmbeddedMapping
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID_FOR_THIS_ENTITY,
-				new String[] {overrideName, column.getTable(), column.getName()},
+				JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					overrideName,
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
 				column, 
 				textRange
 			);

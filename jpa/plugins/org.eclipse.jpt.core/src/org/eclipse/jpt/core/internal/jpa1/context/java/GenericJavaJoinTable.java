@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
@@ -388,7 +389,10 @@ public class GenericJavaJoinTable
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				this.getTableNotValidMessage(),
-				new String[] {column.getTable(), column.getName()}, 
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_JOIN_TABLE}, 
 				column,
 				textRange
 			);
@@ -503,7 +507,7 @@ public class GenericJavaJoinTable
 
 		@Override
 		protected String getTableNotValidMessage() {
-			return JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
@@ -569,7 +573,7 @@ public class GenericJavaJoinTable
 
 		@Override
 		protected String getTableNotValidMessage() {
-			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_JOIN_TABLE;
+			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override

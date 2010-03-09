@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmReferenceTable;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -231,8 +232,11 @@ public class GenericOrmCollectionTable2_0
 			}
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-				new String[] {column.getTable(), column.getName()}, 
+				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
 				column, 
 				textRange
 			);
@@ -241,8 +245,12 @@ public class GenericOrmCollectionTable2_0
 		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_DOES_NOT_MATCH_COLLECTION_TABLE,
-				new String[] {this.getPersistentAttributeName(), column.getTable(), column.getName()},
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID,
+				new String[] {
+					this.getPersistentAttributeName(),
+					column.getTable(),
+					column.getName(),
+					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
 				column, 
 				textRange
 			);
