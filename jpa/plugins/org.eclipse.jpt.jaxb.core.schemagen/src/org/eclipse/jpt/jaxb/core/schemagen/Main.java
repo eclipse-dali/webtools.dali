@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.SchemaOutputResolver;
 import javax.xml.transform.stream.StreamResult;
 
@@ -33,9 +34,11 @@ public class Main
 	private String targetSchemaName;
 	private boolean isDebugMode;
 
+	static public String NO_FACTORY_CLASS = "doesnt contain ObjectFactory.class";   //$NON-NLS-1$
+
 	// ********** static methods **********
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		new Main().execute(args);
 	}
 	
@@ -47,23 +50,41 @@ public class Main
 
 	// ********** behavior **********
 	
-	protected void execute(String[] args) throws Exception {
+	protected void execute(String[] args) {
 		
 		this.initializeWith(args);
 		
 		this.generate();
 	}
 		
-    private void generate() throws Exception {
+    private void generate() {
         // Create the JAXBContext
-        JAXBContext jaxbContext = JAXBContext.newInstance(this.sourcePackageName);
-
+        JAXBContext jaxbContext = null;
+		try {
+			jaxbContext = JAXBContext.newInstance(this.sourcePackageName);
+		}
+		catch (JAXBException e) {
+			String message = e.getMessage();
+			if(message.indexOf(NO_FACTORY_CLASS) > -1) {
+				System.out.println(message);
+			}
+			else {
+				e.printStackTrace();
+			}
+			System.out.println("\nSchema " + this.targetSchemaName + " not created");
+			return;
+		}
         // Generate an XML Schema
 		SchemaOutputResolver schemaOutputResolver = 
 			new JptSchemaOutputResolver(this.targetSchemaName);
 		
-		jaxbContext.generateSchema(schemaOutputResolver);
-
+		try {
+			jaxbContext.generateSchema(schemaOutputResolver);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
 		System.out.println("\nSchema " + this.targetSchemaName + " generated");
     }
     
