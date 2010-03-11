@@ -1198,7 +1198,7 @@ public class GenericJavaElementCollectionMapping2_0
 		}
 		
 		public Table getDbTable(String tableName) {
-			if (getCollectionTable().getName().equals(tableName)) {
+			if (getCollectionTable().getName() != null && getCollectionTable().getName().equals(tableName)) {
 				return GenericJavaElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
 			}
 			return null;
