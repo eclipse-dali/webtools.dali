@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,7 +52,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -96,41 +95,36 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		this.jpaProject = jpaProject;
 		this.selection = selection;
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
+		this.setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
 	
-	public Image getDefaultPageImage() {
-		return JptUiPlugin.getImage( JptUiIcons.ENTITY_WIZ_BANNER ) ;
-	}	
-	
+	@Override
 	public void addPages() {
-		super.addPages();
-
 		setForcePreviousAndNextButtons(true);
 		
 		//If this.jpaProject is not initialized because user didn't select a JPA project
 		if( this.jpaProject == null ){
-			projectPage = new PromptJPAProjectWizardPage( HELP_CONTEXT_ID );
-			this.addPage(projectPage);
+			this.projectPage = new PromptJPAProjectWizardPage(HELP_CONTEXT_ID);
+			this.addPage(this.projectPage);
 			return;
 		}
 		addMainPages();
 	}
 
-	private void addMainPages()
-	{
-		this.tablesSelectorPage = new TablesSelectorWizardPage( this.jpaProject );
-		this.addPage(tablesSelectorPage);
+	private void addMainPages() {
+		this.tablesSelectorPage = new TablesSelectorWizardPage(this.jpaProject);
+		this.addPage(this.tablesSelectorPage);
 		
-		this.tableAssociationsPage = new TableAssociationsWizardPage( this.jpaProject  );
-		this.addPage(tableAssociationsPage);
+		this.tableAssociationsPage = new TableAssociationsWizardPage(this.jpaProject);
+		this.addPage(this.tableAssociationsPage);
 
-		this.defaultTableGenerationPage = new DefaultTableGenerationWizardPage( this.jpaProject);
-		this.addPage(defaultTableGenerationPage);
+		this.defaultTableGenerationPage = new DefaultTableGenerationWizardPage(this.jpaProject);
+		this.addPage(this.defaultTableGenerationPage);
 		this.defaultTableGenerationPage.init(this.selection);
 		
-		this.tablesAndColumnsCustomizationPage = new TablesAndColumnsCustomizationWizardPage( this.jpaProject );
-		this.addPage(tablesAndColumnsCustomizationPage);
-		this.tablesAndColumnsCustomizationPage.init(selection);		
+		this.tablesAndColumnsCustomizationPage = new TablesAndColumnsCustomizationWizardPage(this.jpaProject);
+		this.addPage(this.tablesAndColumnsCustomizationPage);
+		this.tablesAndColumnsCustomizationPage.init(this.selection);		
 	}
 	
 	public ORMGenCustomizer getORMGenCustomizer(){
@@ -161,20 +155,20 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	public ORMGenCustomizer createORMGenCustomizer(Schema schema){
 		JpaPlatform jpaPlatform = this.jpaProject.getJpaPlatform();
 		Object obj = Platform.getAdapterManager().getAdapter( jpaPlatform, ORMGenCustomizer.class );
-		if( obj != null  && obj instanceof ORMGenCustomizer){
-			customizer = (ORMGenCustomizer) obj ; 
-			customizer.init(getCustomizationFile(), schema );  
-		}else{
-			customizer = new BaseEntityGenCustomizer( );
-			customizer.init(getCustomizationFile(), schema );  
+		if (obj != null  && obj instanceof ORMGenCustomizer) {
+			this.customizer = (ORMGenCustomizer) obj; 
+			this.customizer.init(getCustomizationFile(), schema);  
+		} else{
+			this.customizer = new BaseEntityGenCustomizer( );
+			this.customizer.init(getCustomizationFile(), schema);  
 		}
-		return customizer;
+		return this.customizer;
 	} 
 	
 	protected String getCustomizationFileName() {
 		ConnectionProfile profile = getProjectConnectionProfile();
-		String connection = profile==null?"":profile.getName();
-		String name = "org.eclipse.jpt.entitygen." + (connection==null?"":connection.replace(' ', '-'));  //$NON-NLS-1$
+		String connection = profile == null ? "" : profile.getName();
+		String name = "org.eclipse.jpt.entitygen." + (connection == null ? "" :connection.replace(' ', '-'));  //$NON-NLS-1$
 		Schema schema = getDefaultSchema();
 		if ( schema!= null  ) {
 			name += "." + schema.getName();//$NON-NLS-1$
@@ -186,25 +180,28 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	 * Returns the nodes state file. 
 	 */
 	private File getCustomizationFile() {
-		String projectPath = jpaProject.getProject().getLocation().toPortableString();
+		String projectPath = this.jpaProject.getProject().getLocation().toPortableString();
 		File genDir = new File(projectPath + "/.settings");//$NON-NLS-1$
         genDir.mkdirs();
 		return new File(genDir, getCustomizationFileName());
 	}
 
+	@Override
 	public boolean performFinish() {
-		if( this.jpaProject == null )
+		if (this.jpaProject == null) {
 			return true;
+		}
 		try {
 			this.customizer.setDatabaseAnnotationNameBuilder( buildDatabaseAnnotationNameBuilder() );
 			this.customizer.save();
 		} catch (IOException e) {
 			JptUiPlugin.log(e);
 		}
-		if(shouldShowOverwriteWarning())
-			PackageGenerator.setOverwriteConfirmer( new OverwriteConfirmer());
+		if (shouldShowOverwriteWarning()) {
+			PackageGenerator.setOverwriteConfirmer(new OverwriteConfirmer());
+		}
 		
-		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob( this.jpaProject, getCustomizer());
+		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer());
 		genEntitiesJob.schedule();
 		return true;
 	}
@@ -212,7 +209,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	// ********** generate entities job **********
 
 	static class GenerateEntitiesJob extends WorkspaceJob {
-		JpaProject jpaProject ;
+		JpaProject jpaProject;
 		ORMGenCustomizer customizer;
 		GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer) {
 			super(JptUiMessages.EntitiesGenerator_jobName);
@@ -225,7 +222,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			try{
-				PackageGenerator.generate(jpaProject,this.customizer, monitor);
+				PackageGenerator.generate(this.jpaProject,this.customizer, monitor);
 			}catch(OperationCanceledException e){
 				//user canceled generation
 			}
@@ -234,9 +231,9 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 
 	}	
     public static boolean shouldShowOverwriteWarning(){
-    	IEclipsePreferences pref = new InstanceScope().getNode( JptUiPlugin.PLUGIN_ID); 
+    	IEclipsePreferences pref = new InstanceScope().getNode(JptUiPlugin.PLUGIN_ID); 
     	boolean ret = ! pref.getBoolean( DONT_SHOW_OVERWRITE_WARNING_DIALOG, false) ;
-    	return( ret );
+    	return ret;
     }
     
     // ********** overwrite confirmer **********
@@ -454,13 +451,12 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	@Override
     public IWizardPage getStartingPage() {
 		if (this.projectPage != null) {
-			if (this.tablesSelectorPage != null)
+			if (this.tablesSelectorPage != null) {
 				return this.tablesSelectorPage;
-			else
-				return this.projectPage;
+			}
+			return this.projectPage;
 		}
-		else
-			return super.getStartingPage();
+		return super.getStartingPage();
     }
 	
 	public ORMGenCustomizer getCustomizer (){
@@ -485,38 +481,36 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		if (this.jpaProject == null) {
 			this.jpaProject = jpaProject;
 			IWizardPage currentPage = getContainer().getCurrentPage();
-			if (projectPage != null && currentPage.equals(projectPage)) {
+			if (this.projectPage != null && currentPage.equals(this.projectPage)) {
 				addMainPages();
 			}
 		}
 	}
 
 	public Schema getDefaultSchema() {
-		return getJpaProject().getDefaultDbSchema() ;
+		return getJpaProject().getDefaultDbSchema();
 	}
 
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		
 		Object sel = selection.getFirstElement();
-		if( sel instanceof IResource ){
+		if ( sel instanceof IResource ) {
 			IProject proj = ((IResource) sel).getProject();
-			JpaProject jpaProj = JptCorePlugin.getJpaProject( proj );
+			JpaProject jpaProj = JptCorePlugin.getJpaProject(proj);
 			this.jpaProject = jpaProj;
-		}else if( sel instanceof org.eclipse.jdt.core.IPackageFragmentRoot ){
-			org.eclipse.jdt.core.IPackageFragmentRoot root = (org.eclipse.jdt.core.IPackageFragmentRoot)sel;
+		} else if( sel instanceof org.eclipse.jdt.core.IPackageFragmentRoot ) {
+			org.eclipse.jdt.core.IPackageFragmentRoot root = (org.eclipse.jdt.core.IPackageFragmentRoot) sel;
 			IProject proj = root.getJavaProject().getProject();
-			JpaProject jpaProj = JptCorePlugin.getJpaProject( proj );
+			JpaProject jpaProj = JptCorePlugin.getJpaProject(proj);
 			this.jpaProject = jpaProj;
-		}else if( sel instanceof org.eclipse.jdt.core.IPackageFragment){
-			org.eclipse.jdt.core.IPackageFragment frag = (org.eclipse.jdt.core.IPackageFragment)sel;
+		} else if( sel instanceof org.eclipse.jdt.core.IPackageFragment) {
+			org.eclipse.jdt.core.IPackageFragment frag = (org.eclipse.jdt.core.IPackageFragment) sel;
 			IProject proj = frag.getJavaProject().getProject();
-			JpaProject jpaProj = JptCorePlugin.getJpaProject( proj );
+			JpaProject jpaProj = JptCorePlugin.getJpaProject(proj);
 			this.jpaProject = jpaProj;
 		}
 		
 		this.selection = selection;
-		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
-		
+		this.setWindowTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 
 }
