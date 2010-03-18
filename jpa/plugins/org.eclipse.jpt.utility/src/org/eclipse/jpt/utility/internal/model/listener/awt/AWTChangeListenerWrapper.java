@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -31,9 +31,10 @@ import org.eclipse.jpt.utility.model.listener.ChangeListener;
 
 /**
  * Wrap another change listener and forward events to it on the AWT
- * event queue.
- * Forward <em>every</em> event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * event queue, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public final class AWTChangeListenerWrapper
 	implements ChangeListener
@@ -50,67 +51,131 @@ public final class AWTChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
-		this.executeOnEventQueue(this.buildStateChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.stateChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildStateChangedRunnable(event));
+		}
 	}
 
 	public void propertyChanged(PropertyChangeEvent event) {
-		this.executeOnEventQueue(this.buildPropertyChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.propertyChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildPropertyChangedRunnable(event));
+		}
 	}
 
 	public void itemsAdded(CollectionAddEvent event) {
-		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(CollectionRemoveEvent event) {
-		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void collectionCleared(CollectionClearEvent event) {
-		this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.collectionCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildCollectionClearedRunnable(event));
+		}
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.collectionChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildCollectionChangedRunnable(event));
+		}
 	}
 
 	public void itemsAdded(ListAddEvent event) {
-		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(ListRemoveEvent event) {
-		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void itemsMoved(ListMoveEvent event) {
-		this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsMoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		}
 	}
 
 	public void itemsReplaced(ListReplaceEvent event) {
-		this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsReplaced_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		}
 	}
 
 	public void listCleared(ListClearEvent event) {
-		this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		}
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		}
 	}
 
 	public void nodeAdded(TreeAddEvent event) {
-		this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		}
 	}
 
 	public void nodeRemoved(TreeRemoveEvent event) {
-		this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		}
 	}
 
 	public void treeCleared(TreeClearEvent event) {
-		this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		}
 	}
 
 	public void treeChanged(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildStateChangedRunnable(final StateChangeEvent event) {
@@ -297,10 +362,14 @@ public final class AWTChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return EventQueue.isDispatchThread();
+	}
+
 	/**
-	 * EventQueue#invokeLater(Runnable) seems to work OK;
-	 * but using #invokeAndWait(Runnable) can sometimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
+	 * {@link EventQueue#invokeLater(Runnable)} seems to work OK;
+	 * but using {@link EventQueue#invokeAndWait(Runnable)} can sometimes make
+	 * things more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnEventQueue(Runnable r) {
 		EventQueue.invokeLater(r);

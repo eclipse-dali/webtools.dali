@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,9 +21,10 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 
 /**
  * Wrap another list change listener and forward events to it on the AWT
- * event queue.
- * Forward <em>every</em> event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * event queue, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public final class AWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -39,27 +40,51 @@ public final class AWTListChangeListenerWrapper
 	}
 
 	public void itemsAdded(ListAddEvent event) {
-		this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(ListRemoveEvent event) {
-		this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void itemsMoved(ListMoveEvent event) {
-		this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsMoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsMovedRunnable(event));
+		}
 	}
 
 	public void itemsReplaced(ListReplaceEvent event) {
-		this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsReplaced_(event);
+		} else {
+			this.executeOnEventQueue(this.buildItemsReplacedRunnable(event));
+		}
 	}
 
 	public void listCleared(ListClearEvent event) {
-		this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListClearedRunnable(event));
+		}
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildListChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListAddEvent event) {
@@ -134,10 +159,14 @@ public final class AWTListChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return EventQueue.isDispatchThread();
+	}
+
 	/**
-	 * EventQueue#invokeLater(Runnable) seems to work OK;
-	 * but using #invokeAndWait(Runnable) can sometimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
+	 * {@link EventQueue#invokeLater(Runnable)} seems to work OK;
+	 * but using {@link EventQueue#invokeAndWait(Runnable)} can sometimes make
+	 * things more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnEventQueue(Runnable r) {
 		EventQueue.invokeLater(r);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,9 +16,10 @@ import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 
 /**
  * Wrap another state change listener and forward events to it on the AWT
- * event queue.
- * Forward <em>every</em> event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * event queue, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public final class AWTStateChangeListenerWrapper
 	implements StateChangeListener
@@ -34,10 +35,14 @@ public final class AWTStateChangeListenerWrapper
 	}
 
 	public void stateChanged(StateChangeEvent event) {
-		this.executeOnEventQueue(this.buildRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.stateChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildStateChangedRunnable(event));
+		}
 	}
 
-	private Runnable buildRunnable(final StateChangeEvent event) {
+	private Runnable buildStateChangedRunnable(final StateChangeEvent event) {
 		return new Runnable() {
 			public void run() {
 				AWTStateChangeListenerWrapper.this.stateChanged_(event);
@@ -45,10 +50,14 @@ public final class AWTStateChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return EventQueue.isDispatchThread();
+	}
+
 	/**
-	 * EventQueue#invokeLater(Runnable) seems to work OK;
-	 * but using #invokeAndWait(Runnable) can sometimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
+	 * {@link EventQueue#invokeLater(Runnable)} seems to work OK;
+	 * but using {@link EventQueue#invokeAndWait(Runnable)} can sometimes make
+	 * things more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnEventQueue(Runnable r) {
 		EventQueue.invokeLater(r);

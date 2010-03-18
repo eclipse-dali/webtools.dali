@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,9 +19,10 @@ import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
 
 /**
  * Wrap another tree change listener and forward events to it on the AWT
- * event queue.
- * Forward <em>every</em> event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * event queue, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public final class AWTTreeChangeListenerWrapper
 	implements TreeChangeListener
@@ -37,19 +38,35 @@ public final class AWTTreeChangeListenerWrapper
 	}
 
 	public void nodeAdded(TreeAddEvent event) {
-		this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeAdded_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeAddedRunnable(event));
+		}
 	}
 
 	public void nodeRemoved(TreeRemoveEvent event) {
-		this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeRemoved_(event);
+		} else {
+			this.executeOnEventQueue(this.buildNodeRemovedRunnable(event));
+		}
 	}
 
 	public void treeCleared(TreeClearEvent event) {
-		this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeCleared_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeClearedRunnable(event));
+		}
 	}
 
 	public void treeChanged(TreeChangeEvent event) {
-		this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeChanged_(event);
+		} else {
+			this.executeOnEventQueue(this.buildTreeChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildNodeAddedRunnable(final TreeAddEvent event) {
@@ -100,10 +117,14 @@ public final class AWTTreeChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return EventQueue.isDispatchThread();
+	}
+
 	/**
-	 * EventQueue#invokeLater(Runnable) seems to work OK;
-	 * but using #invokeAndWait(Runnable) can sometimes make things
-	 * more predictable when debugging, at the risk of deadlocks.
+	 * {@link EventQueue#invokeLater(Runnable)} seems to work OK;
+	 * but using {@link EventQueue#invokeAndWait(Runnable)} can sometimes make
+	 * things more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnEventQueue(Runnable r) {
 		EventQueue.invokeLater(r);
