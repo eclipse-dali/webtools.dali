@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
@@ -100,9 +101,18 @@ public class JptUiPlugin
 	 * Return an image for the specified <code>.gif<code>
 	 * file in the icons folder.
 	 */
+	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin, 
+	//which means until the workspace is closed.  This is better than before where we constantly 
+	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers 
+	//on our views so that closing the JPA perspective would mean our icons are disposed.
 	public static Image getImage(String key) {
-		ImageDescriptor descriptor = getImageDescriptor(key);
-		return (descriptor == null) ? null : descriptor.createImage();
+		ImageRegistry imageRegistry = instance().getImageRegistry();
+		Image image = imageRegistry.get(key);
+		if (image == null) {
+			imageRegistry.put(key, getImageDescriptor(key));
+			image = imageRegistry.get(key);
+		}
+		return image;
 	}
 
 

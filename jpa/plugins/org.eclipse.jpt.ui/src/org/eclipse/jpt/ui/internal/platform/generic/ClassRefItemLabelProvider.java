@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,9 +29,12 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		Image image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
+		Image image;
 		if (((ClassRef) model()).isVirtual()) {
-			image = JptUiIcons.ghost(image);
+			image = JptUiIcons.ghost(JptUiIcons.CLASS_REF);
+		}
+		else {
+			 image = JptUiPlugin.getImage(JptUiIcons.CLASS_REF);
 		}
 		return new StaticPropertyValueModel<Image>(image);
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,7 +34,6 @@ import org.eclipse.jpt.gen.internal.Association;
 import org.eclipse.jpt.gen.internal.AssociationRole;
 import org.eclipse.jpt.gen.internal.ORMGenColumn;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
-import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.SWT;
@@ -148,7 +147,9 @@ public class TableAssociationsWizardPage extends WizardPage {
 		});
 		
 		deleteAssociationLink = new Button(c, SWT.NONE);
-		deleteAssociationLink.setForeground( new Color(Display.getDefault(), 0,0,255));
+		Color foreground = new Color(Display.getDefault(), 0,0,255);
+		deleteAssociationLink.setForeground(foreground);
+		foreground.dispose();
 		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage()  );
 		deleteAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_delAssoc );
 		deleteAssociationLink.addSelectionListener(new SelectionListener(){
@@ -283,6 +284,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 	}	
 	
 	
+	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		if( visible ){
@@ -494,7 +496,9 @@ public class TableAssociationsWizardPage extends WizardPage {
 	private void createAssociationsListPanel(Composite parent) {
 		Composite composite = new Composite( parent, SWT.NULL );
 		composite.setLayout( new FillLayout());
-		composite.setBackground(new Color(Display.getDefault(),255, 0,0) );
+		Color backgroundColor = new Color(Display.getDefault(),255, 0,0);
+		composite.setBackground(backgroundColor);
+		backgroundColor.dispose();
 		GridData layoutData = new GridData();
 		layoutData.horizontalSpan = 1;
 		layoutData.verticalAlignment = SWT.FILL;
@@ -753,5 +757,11 @@ public class TableAssociationsWizardPage extends WizardPage {
     
 	protected final IWorkbenchHelpSystem getHelpSystem() {
 		return PlatformUI.getWorkbench().getHelpSystem();
+	}
+	
+	@Override
+	public void dispose() {
+		this.associationList.dispose();
+		super.dispose();
 	}
 }

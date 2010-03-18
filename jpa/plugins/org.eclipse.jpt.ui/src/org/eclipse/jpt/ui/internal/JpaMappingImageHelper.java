@@ -17,60 +17,69 @@ import org.eclipse.swt.graphics.Image;
 
 public class JpaMappingImageHelper
 {
+
 	public static Image imageForTypeMapping(String mappingKey) {
+		return JptUiPlugin.getImage(iconKeyForTypeMapping(mappingKey));
+	}
+
+	public static String iconKeyForTypeMapping(String mappingKey) {
 		if (MappingKeys.NULL_TYPE_MAPPING_KEY == mappingKey) {
-			return JptUiPlugin.getImage(JptUiIcons.NULL_TYPE_MAPPING);
+			return JptUiIcons.NULL_TYPE_MAPPING;
 		}
 		else if (MappingKeys.ENTITY_TYPE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.ENTITY);
+			return JptUiIcons.ENTITY;
 		}
 		else if (MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.EMBEDDABLE);
+			return JptUiIcons.EMBEDDABLE;
 		}
 		else if (MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.MAPPED_SUPERCLASS);
+			return JptUiIcons.MAPPED_SUPERCLASS;
 		}
 		return null;
 	}
-	
+
 	public static Image imageForAttributeMapping(String mappingKey) {
+		return JptUiPlugin.getImage(iconKeyForAttributeMapping(mappingKey));
+	}
+
+	public static String iconKeyForAttributeMapping(String mappingKey) {
 		if (MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY == mappingKey) {
-			return JptUiPlugin.getImage(JptUiIcons.NULL_ATTRIBUTE_MAPPING);
+			return JptUiIcons.NULL_ATTRIBUTE_MAPPING;
 		}
 		else if (MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.BASIC);
+			return JptUiIcons.BASIC;
 		}
 		else if (MappingKeys.ID_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.ID);
+			return JptUiIcons.ID;
 		}
 		else if (MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.VERSION);
+			return JptUiIcons.VERSION;
 		}
 		else if (MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.EMBEDDED_ID);
+			return JptUiIcons.EMBEDDED_ID;
 		}
 		else if (MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.EMBEDDED);
+			return JptUiIcons.EMBEDDED;
 		}
 		else if (MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.ONE_TO_ONE);
+			return JptUiIcons.ONE_TO_ONE;
 		}
 		else if (MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.ONE_TO_MANY);
+			return JptUiIcons.ONE_TO_MANY;
 		}
 		else if (MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.MANY_TO_ONE);
+			return JptUiIcons.MANY_TO_ONE;
 		}
 		else if (MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.MANY_TO_MANY);
+			return JptUiIcons.MANY_TO_MANY;
 		}
 		else if (MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.ELEMENT_COLLECTION);
+			return JptUiIcons.ELEMENT_COLLECTION;
 		}
 		else if (MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
-			return JptUiPlugin.getImage(JptUiIcons.TRANSIENT);
+			return JptUiIcons.TRANSIENT;
 		}
 		//return the JPA_CONTENT icon instead of null, might as well have an icon if one is not defined
-		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
+		return JptUiIcons.JPA_CONTENT;
 	}
 }

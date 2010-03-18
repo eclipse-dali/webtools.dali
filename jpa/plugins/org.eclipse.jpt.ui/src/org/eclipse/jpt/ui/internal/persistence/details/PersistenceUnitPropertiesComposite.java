@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.ui.internal.persistence.details;
 
 import java.util.ListIterator;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ICellModifier;
@@ -64,7 +65,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @see BaseJavaUiFactory - The invoker
  * @see AddRemoveTablePane
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -128,39 +129,24 @@ public class PersistenceUnitPropertiesComposite extends Pane<PersistenceUnit>
 		};
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String getHelpID() {
 		return JpaHelpContextIds.PERSISTENCE_XML_PROPERTIES;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public Image getPageImage() {
+	public ImageDescriptor getPageImageDescriptor() {
 		return null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public String getPageText() {
 		return JptUiPersistenceMessages.PersistenceUnitPropertiesComposite_properties;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
 		propertyHolder = new SimplePropertyValueModel<PersistenceUnit.Property>();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 

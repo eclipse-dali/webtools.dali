@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,13 +24,13 @@ import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 
 public class NewAssociationWizard extends Wizard {	
 
-	public static String ASSOCIATION_SCHEMA = "ASSOCIATION_SCHEMA";
-	public static String ASSOCIATION_REFERRER_TABLE = "ASSOCIATION_REFERRER_TABLE";
-	public static String ASSOCIATION_REFERENCED_TABLE = "ASSOCIATION_REFERENCED_TABLE";
-	public static String ASSOCIATION_JOIN_COLUMNS1 = "ASSOCIATION_REFERRER_COLUMNS1";
-	public static String ASSOCIATION_JOIN_COLUMNS2 = "ASSOCIATION_REFERRER_COLUMNS2"; //used in MTM associations only
-	public static String ASSOCIATION_JOIN_TABLE = "ASSOCIATION_JOIN_TABLE"; // TreeMap<String, String>
-	public static String ASSOCIATION_CADINALITY = "ASSOCIATION_CADINALITY";
+	public static String ASSOCIATION_SCHEMA = "ASSOCIATION_SCHEMA"; //$NON-NLS-1$
+	public static String ASSOCIATION_REFERRER_TABLE = "ASSOCIATION_REFERRER_TABLE"; //$NON-NLS-1$
+	public static String ASSOCIATION_REFERENCED_TABLE = "ASSOCIATION_REFERENCED_TABLE"; //$NON-NLS-1$
+	public static String ASSOCIATION_JOIN_COLUMNS1 = "ASSOCIATION_REFERRER_COLUMNS1"; //$NON-NLS-1$
+	public static String ASSOCIATION_JOIN_COLUMNS2 = "ASSOCIATION_REFERRER_COLUMNS2"; //used in MTM associations only //$NON-NLS-1$
+	public static String ASSOCIATION_JOIN_TABLE = "ASSOCIATION_JOIN_TABLE"; // TreeMap<String, String> //$NON-NLS-1$
+	public static String ASSOCIATION_CADINALITY = "ASSOCIATION_CADINALITY"; //$NON-NLS-1$
 	
 	private JpaProject jpaProject;
 	private HashMap<String, Object> associationDataModel = new HashMap<String, Object>();
@@ -52,6 +52,7 @@ public class NewAssociationWizard extends Wizard {
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS2, new TreeMap<String, String>());
 	}
 
+	@Override
 	public void addPages() {
 		super.addPages();
 		this.associationTablesPage = new AssociationTablesPage( customizer );
@@ -64,6 +65,7 @@ public class NewAssociationWizard extends Wizard {
 		addPage(this.cardinalityPage);
 	}
 
+	@Override
 	public boolean performFinish() {
 		return true;
 	}

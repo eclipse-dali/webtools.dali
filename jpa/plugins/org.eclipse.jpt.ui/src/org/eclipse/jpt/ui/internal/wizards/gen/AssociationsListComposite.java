@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,9 @@ public class AssociationsListComposite extends FigureCanvas {
 		this.tableAssociationsWizardPage = tableAssociationsWizardPage;
 
 		setBounds(10, 10 , 500, 200);
-		setBackground( new Color(Display.getDefault(), 255,255,255));
+		Color backgroundColor = new Color(Display.getDefault(), 255,255,255);
+		setBackground(backgroundColor);
+		backgroundColor.dispose();
 		
 		Figure figure = new Figure();
 		figure.setLayoutManager(new ToolbarLayout());
@@ -49,15 +51,9 @@ public class AssociationsListComposite extends FigureCanvas {
 		this.setContents(figure);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void updateAssociations(List<Association> associations){
 		Figure figure = (Figure)this.getContents();
-		List<AssociationFigure> associationFigures = figure.getChildren();
-		for(AssociationFigure assocFig : associationFigures){
-			assocFig.removeActionListener(listener);
-		}
-		figure.removeAll();
-		this.selectedAssociationFigure = null;
+		this.disposeFigure(figure);
 		
 		this.associations = associations;
 		if( associations != null ){
@@ -103,6 +99,22 @@ public class AssociationsListComposite extends FigureCanvas {
 		return ret==null?null:ret.getAssociation();
 	}
 	
+	@Override
+	public void dispose() {
+		this.disposeFigure((Figure) getContents());
+		super.dispose();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected void disposeFigure(Figure figure) {
+		for (AssociationFigure associationFigure : (List<AssociationFigure>) figure.getChildren()) {
+			associationFigure.removeActionListener(this.listener);
+			associationFigure.dispose();
+		}
+		figure.removeAll();
+		this.selectedAssociationFigure = null;
+	}
+
 	class AssociationToggleSelectionListener implements ActionListener {
 		public void actionPerformed(ActionEvent event) {
 			AssociationFigure figure = (AssociationFigure )event.getSource() ;
@@ -116,8 +128,6 @@ public class AssociationsListComposite extends FigureCanvas {
 			//Highlight new selection
 			selectedAssociationFigure = figure;
 			selectedAssociationFigure.setSelected( true );
-			
 		}
-		
 	}
 }

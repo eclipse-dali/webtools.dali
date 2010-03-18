@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -122,6 +121,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 	/**
 	 * Update wizard page UI with new table names
 	 */
+	@Override
 	public void updateWithNewTables() {
 		String cardinality = this.getCardinality() ;
 		if( Association.MANY_TO_MANY.equals( cardinality ) ){
@@ -335,6 +335,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		return new SimpleJoin( nextCol1, nextCol2);
 	}
 
+	@Override
 	public boolean canFlipToNextPage() {
 		return isPageComplete();
 	}
@@ -392,6 +393,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		newJoinColumnsTable.setLabelProvider(this.buildTableTableLabelProvider());
 		newJoinColumnsTable.setContentProvider(this.buildTableTableContentProvider());
 		newJoinColumnsTable.setSorter(new ViewerSorter() {
+			@Override
 			public int compare(Viewer viewer, Object e1, Object e2) {
 				return ((SimpleJoin) e1).foreignKey.compareTo(((SimpleJoin) e2).foreignKey);
 			}
@@ -409,7 +411,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 
 	@SuppressWarnings("unchecked")
 	public void populateTableDataModel(){
-		HashMap<String, Object> dataModel = (HashMap<String, Object> )getWizardDataModel();
+		HashMap<String, Object> dataModel = getWizardDataModel();
 		TreeMap<String, String> joinColumns = (TreeMap<String, String>)dataModel.get(NewAssociationWizard.ASSOCIATION_JOIN_COLUMNS1);
 		if( joinColumns!= null ){
 			for( String referrerColumn : joinColumns.keySet() ){
@@ -498,6 +500,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 		public String foreignKey;
 		public String primaryKey;
 		
+		@Override
 		public String toString(){
 			return "["+ this.foreignKey + " = " + this.primaryKey + "]";
 		}
@@ -617,6 +620,7 @@ public class JoinColumnsPage extends NewAssociationWizardPage {
 	            	return null;
             }
 		}
+		@Override
 		public String getText(Object element) {
 		    return getColumnText(element, 0); // needed to make the sorter work
 		}

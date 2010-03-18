@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,9 @@ package org.eclipse.jpt.eclipselink.ui;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -26,11 +26,12 @@ import org.osgi.framework.BundleContext;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
+@SuppressWarnings("nls")
 public class JptEclipseLinkUiPlugin extends AbstractUIPlugin
 {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";
 
 	
 	// ********** singleton **********
@@ -72,9 +73,18 @@ public class JptEclipseLinkUiPlugin extends AbstractUIPlugin
 	/**
 	 * This returns an image for a .gif from the icons folder
 	 */
+	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin, 
+	//which means until the workspace is closed.  This is better than before where we constantly 
+	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers 
+	//on our views so that closing the JPA perspective would mean our icons are disposed.
 	public static Image getImage(String key) {
-		ImageDescriptor desc = getImageDescriptor(key);
-		return (desc == null) ? null : desc.createImage();
+		ImageRegistry imageRegistry = instance().getImageRegistry();
+		Image image = imageRegistry.get(key);
+		if (image == null) {
+			imageRegistry.put(key, getImageDescriptor(key));
+			image = imageRegistry.get(key);
+		}
+		return image;
 	}
 
 
@@ -82,17 +92,9 @@ public class JptEclipseLinkUiPlugin extends AbstractUIPlugin
 	// ********** constructors **********
 	public JptEclipseLinkUiPlugin() {
 		super();
+		if (INSTANCE != null) {
+			throw new IllegalStateException();
+		}
 		INSTANCE = this;
-	}
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		INSTANCE = this;
-	}
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		INSTANCE = null;
-		super.stop(context);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -38,7 +41,6 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
@@ -61,7 +63,7 @@ import org.eclipse.wst.sse.ui.StructuredTextEditor;
  *
  * @see JpaUiFactory
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -83,11 +85,14 @@ public class PersistenceEditor extends FormEditor
 	 */
 	private WidgetFactory widgetFactory;
 
+	private final ResourceManager resourceManager;
+
 	/**
 	 * Creates a new <code>PersistenceEditor</code>.
 	 */
 	public PersistenceEditor() {
 		super();
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		initialize();
 	}
 	
@@ -131,7 +136,7 @@ public class PersistenceEditor extends FormEditor
 		ListIterator<JpaPageComposite> pages = definition.buildPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),
 			getContainer(),
-			widgetFactory
+			this.widgetFactory
 		);
 
 		while (pages.hasNext()) {
@@ -231,43 +236,27 @@ public class PersistenceEditor extends FormEditor
 		);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void dispose() {
-
-		editorInputHolder.setValue(null);
-
+		this.editorInputHolder.setValue(null);
+		this.resourceManager.dispose();
 		super.dispose();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void doSave(IProgressMonitor monitor) {
 		getEditor(getPageCount() - 1).doSave(monitor);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void doSaveAs() {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public IFileEditorInput getEditorInput() {
 		return (IFileEditorInput) super.getEditorInput();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void init(IEditorSite site, IEditorInput editorInput) throws PartInitException {
 		Assert.isLegal(editorInput instanceof IFileEditorInput, "Invalid Input: Must be IFileEditorInput");
@@ -286,9 +275,6 @@ public class PersistenceEditor extends FormEditor
 		editorInputHolder  = buildEditorInputHolder();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean isSaveAsAllowed() {
 		return false;
@@ -316,6 +302,8 @@ public class PersistenceEditor extends FormEditor
 		 */
 		private final JpaPageComposite page;
 
+		private ImageDescriptor imageDescriptor;
+
 		/**
 		 * Creates a new <code>Page</code>.
 		 *
@@ -330,9 +318,6 @@ public class PersistenceEditor extends FormEditor
 			this.page = page;
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		protected void createFormContent(IManagedForm managedForm) {
 
@@ -350,21 +335,18 @@ public class PersistenceEditor extends FormEditor
 			form.updateToolBar();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void dispose() {
-			page.dispose();
+			this.page.dispose();
+			if (this.imageDescriptor != null) {
+				PersistenceEditor.this.resourceManager.destroyImage(this.imageDescriptor);
+			}
 			super.dispose();
 		}
 
-		/**
-		 * {@inheritDoc}
-		 */
 		@Override
 		public void setFocus() {
-			page.getControl().setFocus();
+			this.page.getControl().setFocus();
 		}
 
 		/**
@@ -384,8 +366,8 @@ public class PersistenceEditor extends FormEditor
 				TableWrapData.FILL_GRAB
 			);
 
-			page.getControl().setLayoutData(wrapData);
-			page.getControl().setParent(body);
+			this.page.getControl().setLayoutData(wrapData);
+			this.page.getControl().setParent(body);
 		}
 
 		/**
@@ -395,13 +377,11 @@ public class PersistenceEditor extends FormEditor
 		 * and image, the image can be <code>null</code>
 		 */
 		private void updateForm(ScrolledForm form) {
+			form.setText(this.page.getPageText());
 
-			form.setText(page.getPageText());
-
-			Image image = page.getPageImage();
-
-			if (image != null) {
-				form.setImage(image);
+			this.imageDescriptor = this.page.getPageImageDescriptor();
+			if (this.imageDescriptor != null) {
+				form.setImage(PersistenceEditor.this.resourceManager.createImage(this.imageDescriptor));
 			}
 		}
 
@@ -410,7 +390,7 @@ public class PersistenceEditor extends FormEditor
 		 */
 		private void updateHelpButton() {
 
-			String helpID = page.getHelpID();
+			String helpID = this.page.getHelpID();
 
 			if (helpID != null) {
 				Action helpAction = new HelpAction(helpID);

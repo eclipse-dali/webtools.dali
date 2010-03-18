@@ -12,9 +12,9 @@ package org.eclipse.jpt.jaxb.ui;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -26,11 +26,12 @@ import org.osgi.framework.BundleContext;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
+@SuppressWarnings("nls")
 public class JptJaxbUiPlugin extends AbstractUIPlugin
 {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.eclipse.jpt.jaxb.ui"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.eclipse.jpt.jaxb.ui";
 
 	
 	// ********** singleton **********
@@ -72,9 +73,18 @@ public class JptJaxbUiPlugin extends AbstractUIPlugin
 	/**
 	 * This returns an image for a .gif from the icons folder
 	 */
+	//TODO we are using the ImageRegistry here and storing all our icons for the life of the plugin, 
+	//which means until the workspace is closed.  This is better than before where we constantly 
+	//created new images. Bug 306437 is about cleaning this up and using Local Resource Managers 
+	//on our views so that closing the JPA perspective would mean our icons are disposed.
 	public static Image getImage(String key) {
-		ImageDescriptor desc = getImageDescriptor(key);
-		return (desc == null) ? null : desc.createImage();
+		ImageRegistry imageRegistry = instance().getImageRegistry();
+		Image image = imageRegistry.get(key);
+		if (image == null) {
+			imageRegistry.put(key, getImageDescriptor(key));
+			image = imageRegistry.get(key);
+		}
+		return image;
 	}
 
 
@@ -82,17 +92,9 @@ public class JptJaxbUiPlugin extends AbstractUIPlugin
 	// ********** constructors **********
 	public JptJaxbUiPlugin() {
 		super();
+		if (INSTANCE != null) {
+			throw new IllegalStateException();
+		}
 		INSTANCE = this;
-	}
-
-	@Override
-	public void start(BundleContext context) throws Exception {
-		super.start(context);
-		INSTANCE = this;
-	}
-	@Override
-	public void stop(BundleContext context) throws Exception {
-		INSTANCE = null;
-		super.stop(context);
 	}
 }

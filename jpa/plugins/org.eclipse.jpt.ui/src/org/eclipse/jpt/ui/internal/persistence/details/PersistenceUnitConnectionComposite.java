@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.persistence.details;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -124,16 +124,10 @@ public class PersistenceUnitConnectionComposite extends Pane<PersistenceUnit>
 		initializeDatabasePane(container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
-	public Image getPageImage() {
+	public ImageDescriptor getPageImageDescriptor() {
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	public String getPageText() {
 		return JptUiPersistenceMessages.PersistenceUnitConnectionComposite_connection;
 	}

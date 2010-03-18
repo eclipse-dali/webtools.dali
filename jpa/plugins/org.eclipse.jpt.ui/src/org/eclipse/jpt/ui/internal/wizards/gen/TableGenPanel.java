@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,8 +65,6 @@ class TableGenPanel
 	private ORMGenTable mTable;
 	
 	private boolean isDefaultTable = false;
-	
-	private static Color NOTE_LABEL_COLOR = new Color( Display.getDefault(), 102,102,102);
 	
 	public TableGenPanel(Composite parent, int columns , boolean isDefaultTable, WizardPage wizardPage   ){
 		super();
@@ -356,7 +354,9 @@ class TableGenPanel
 			sequenceNameNoteLabel.setEnabled(false);
 		} else {
 			sequenceNameField.setEnabled(true);
+			Color NOTE_LABEL_COLOR = new Color( Display.getDefault(), 102,102,102);
 			sequenceNameNoteLabel.setForeground( NOTE_LABEL_COLOR );
+			NOTE_LABEL_COLOR.dispose();
 			sequenceNameNoteLabel.setEnabled(true);
 			if ( sequenceNameField.getText().length()==0 ) {
 				String newMessage = "Please specify a sequence name";

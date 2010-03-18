@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
@@ -16,7 +17,6 @@ import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -80,7 +80,7 @@ public class GenericPersistenceUnit2_0OptionsTab extends Pane<JpaOptions2_0>
 		return null;						// TODO - Review for JPA 2.0
 	}
 	
-	public Image getPageImage() {
+	public ImageDescriptor getPageImageDescriptor() {
 		return null;
 	}
 

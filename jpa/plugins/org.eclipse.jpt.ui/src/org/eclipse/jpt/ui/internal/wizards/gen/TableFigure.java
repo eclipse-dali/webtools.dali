@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,10 +29,9 @@ import org.eclipse.swt.graphics.Font;
  *
  */
 public class TableFigure extends Figure {
-	  public static Color tableColor = new Color(null,220,232,241);
-	  public static Font tableFont = new Font(null, "Arial", 8, SWT.NONE);
-	  public static Color disabledColor = ColorConstants.white; 
-	  public static Color borderColor = new Color( null, 14,66,115);
+	  private Color tableColor = new Color(null,220,232,241);
+	  private Font tableFont = new Font(null, "Arial", 8, SWT.NONE); //$NON-NLS-1$
+	  private Color borderColor = new Color( null, 14,66,115);
 	  
 	  public static final int OUTLINE_CORNER_RADIUS = 6; 
 	  
@@ -42,21 +41,21 @@ public class TableFigure extends Figure {
 		gl.marginWidth = 10;
 		setLayoutManager(gl);
 
-		setBorder(new LineBorder(tableColor,0));
-	    setBackgroundColor(tableColor);
+		setBorder(new LineBorder(this.tableColor, 0));
+	    setBackgroundColor(this.tableColor);
 	    setOpaque(true);
 	    setSize(150, 20);
 		
 		Label nameLabel = new Label("", ImageRepository.getTableObjImage());
-		nameLabel.setFont(tableFont);
+		nameLabel.setFont(this.tableFont);
 		nameLabel.setText(name);
-		nameLabel.setForegroundColor(borderColor);
+		nameLabel.setForegroundColor(this.borderColor);
 		nameLabel.setLabelAlignment(PositionConstants.CENTER);
 	    add(nameLabel);	
 	  }
 	  
-	protected void paintClientArea(Graphics graphics)
-	{
+	@Override
+	protected void paintClientArea(Graphics graphics) {
 		super.paintClientArea(graphics);
 		graphics.pushState();
 		Rectangle r = getBounds().getCopy();
@@ -65,12 +64,19 @@ public class TableFigure extends Figure {
 		graphics.popState();
 	}	  
 	
+	@Override
 	public void setEnabled(boolean enabled ) {
 		super.setEnabled(enabled);
-		if( enabled ){
-			setBackgroundColor(tableColor);
-		}else{
-			setBackgroundColor(disabledColor);
+		if (enabled) {
+			setBackgroundColor(this.tableColor);
+		} else {
+			setBackgroundColor(ColorConstants.white);
 		}
+	}
+	
+	public void dispose() {
+		this.borderColor.dispose();
+		this.tableFont.dispose();
+		this.tableColor.dispose();
 	}
 }

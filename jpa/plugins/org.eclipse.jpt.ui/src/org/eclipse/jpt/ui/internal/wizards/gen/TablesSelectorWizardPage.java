@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -276,7 +276,9 @@ class TablesSelectorWizardPage extends WizardPage{
 		gd.grabExcessHorizontalSpace = true;
 		gd.grabExcessVerticalSpace = true ;
 		layout.setLayoutData(gd);
-		layout.setBackground(new Color( Display.getDefault(), 255, 0,0));
+		Color backgroundColor = new Color( Display.getDefault(), 255, 0,0);
+		layout.setBackground(backgroundColor);
+		backgroundColor.dispose();
 
 		this.tableTable = new CheckboxTableViewer(table);
 		this.tableTable.setUseHashlookup(true);

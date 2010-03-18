@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details;
 
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.jface.resource.ImageDescriptor;
 
 /**
  * A {@link JpaPageComposite} defines the common behavior of the JPA
@@ -36,7 +36,7 @@ public interface JpaPageComposite extends JpaComposite {
 	 *
 	 * @return The page's image
 	 */
-	Image getPageImage();
+	ImageDescriptor getPageImageDescriptor();
 
 	/**
 	 * The text of the tab showing this page.
