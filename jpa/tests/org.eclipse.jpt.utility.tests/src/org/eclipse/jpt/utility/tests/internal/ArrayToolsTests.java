@@ -36,6 +36,15 @@ public class ArrayToolsTests extends TestCase {
 
 	// ********** instantiation **********
 
+	public void testNewArrayObjectArray() {
+		String[] array1 = new String[2];
+		String[] array2 = ArrayTools.newArray(array1);
+		array2[0] = "foo";
+		array2[1] = "bar";
+		assertEquals(String.class, array2.getClass().getComponentType());
+		assertEquals(2, array2.length);
+	}
+
 	public void testNewArrayObjectArrayInt() {
 		String[] array1 = new String[2];
 		String[] array2 = ArrayTools.newArray(array1, 5);

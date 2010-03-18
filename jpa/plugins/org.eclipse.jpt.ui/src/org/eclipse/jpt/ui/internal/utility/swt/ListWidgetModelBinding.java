@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,9 +42,9 @@ final class ListWidgetModelBinding<E> {
 
 	// ***** model
 	/**
-	 * A value model on the underlying model list.
+	 * The underlying list model.
 	 */
-	private final ListValueModel<E> listHolder;
+	private final ListValueModel<E> listModel;
 
 	/**
 	 * A listener that allows us to synchronize the list widget's contents with
@@ -83,22 +83,22 @@ final class ListWidgetModelBinding<E> {
 	 * Constructor - all parameters are required.
 	 */
 	ListWidgetModelBinding(
-			ListValueModel<E> listHolder,
+			ListValueModel<E> listModel,
 			ListWidget listWidget,
 			StringConverter<E> stringConverter,
 			SelectionBinding selectionBinding
 	) {
 		super();
-		if ((listHolder == null) || (listWidget == null) || (stringConverter == null) || (selectionBinding == null)) {
+		if ((listModel == null) || (listWidget == null) || (stringConverter == null) || (selectionBinding == null)) {
 			throw new NullPointerException();
 		}
-		this.listHolder = listHolder;
+		this.listModel = listModel;
 		this.listWidget = listWidget;
 		this.stringConverter = stringConverter;
 		this.selectionBinding = selectionBinding;
 
 		this.listChangeListener = this.buildListChangeListener();
-		this.listHolder.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.addListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 
 		this.listWidgetDisposeListener = this.buildListWidgetDisposeListener();
 		this.listWidget.addDisposeListener(this.listWidgetDisposeListener);
@@ -165,8 +165,8 @@ final class ListWidgetModelBinding<E> {
 	}
 
 	private void synchronizeListWidget_() {
-		ArrayList<String> items = new ArrayList<String>(this.listHolder.size());
-		for (E item : this.listHolder) {
+		ArrayList<String> items = new ArrayList<String>(this.listModel.size());
+		for (E item : this.listModel) {
 			items.add(this.convert(item));
 		}
 		this.listWidget.setItems(items.toArray(new String[items.size()]));
@@ -311,7 +311,7 @@ final class ListWidgetModelBinding<E> {
 		// the list widget is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.listWidget.removeDisposeListener(this.listWidgetDisposeListener);
-		this.listHolder.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
+		this.listModel.removeListChangeListener(ListValueModel.LIST_VALUES, this.listChangeListener);
 		this.selectionBinding.dispose();
 	}
 
@@ -320,7 +320,7 @@ final class ListWidgetModelBinding<E> {
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.listHolder);
+		return StringTools.buildToStringFor(this, this.listModel);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -62,6 +61,9 @@ public class DataSourcePropertiesComposite extends Pane<JpaConnection2_0>
 		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
 			@Override
 			protected Boolean transform(PersistenceUnitTransactionType value) {
+				return Boolean.valueOf(this.transform2(value));
+			}
+			private boolean transform2(PersistenceUnitTransactionType value) {
 				return value == null || value == PersistenceUnitTransactionType.JTA;
 			}
 		};
@@ -122,28 +124,18 @@ public class DataSourcePropertiesComposite extends Pane<JpaConnection2_0>
 		container = this.addSubPane(container, 0, groupBoxMargin, 0, groupBoxMargin);
 
 		// JTA Data Source
-		Label jtaLabel = this.addUnmanagedLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_jtaDataSourceLabel);
-		Text text = this.addUnmanagedText(container, this.buildJtaDataSourceHolder(), this.getHelpID());
-		this.addLabeledComposite(container, jtaLabel, text, this.getHelpID());
-
-		this.installJTADataSourceControlEnabler(text, jtaLabel);
+		PropertyValueModel<Boolean> jtaEnabled = this.buildJTADataSourceHolder();
+		Label jtaLabel = this.addLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_jtaDataSourceLabel, jtaEnabled);
+		Text jtaText = this.addText(container, this.buildJtaDataSourceHolder(), this.getHelpID(), jtaEnabled);
+		this.addLabeledComposite(container, jtaLabel, jtaText, this.getHelpID());
 
 		// Non-JTA Data Source
-		Label nonJtaLabel = this.addUnmanagedLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_nonJtaDataSourceLabel);
-		Text nonJtaText = this.addUnmanagedText(container, this.buildNonJtaDataSourceHolder(), this.getHelpID());
+		PropertyValueModel<Boolean> nonJTAEnabled = this.buildNonJTADataSourceHolder();
+		Label nonJtaLabel = this.addLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_nonJtaDataSourceLabel, nonJTAEnabled);
+		Text nonJtaText = this.addText(container, this.buildNonJtaDataSourceHolder(), this.getHelpID(), nonJTAEnabled);
 		this.addLabeledComposite(container, nonJtaLabel, nonJtaText, this.getHelpID());
-
-		this.installNonJTADataSourceControlEnabler(nonJtaText, nonJtaLabel);
 	}
 
-	private void installJTADataSourceControlEnabler(Text text, Label label) {
-		SWTTools.controlEnabledState(this.buildJTADataSourceHolder(), text, label);
-	}
-
-	private void installNonJTADataSourceControlEnabler(Text text, Label label) {
-		SWTTools.controlEnabledState(this.buildNonJTADataSourceHolder(), text, label);
-	}
-	
 	public String getHelpID() {
 		return JpaHelpContextIds.PERSISTENCE_XML_CONNECTION;	// TODO - Review for JPA 2.0
 	}

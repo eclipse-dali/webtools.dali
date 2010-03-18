@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -213,18 +213,18 @@ public class CollectionPropertyValueModelAdapterTests extends TestCase {
 			if (this.booleanValue()) {
 				if ( ! this.booleanValueOf(value)) {
 					// the value is changing from true to false
-					((SimpleCollectionValueModel<String>) this.collectionHolder).remove(this.item);
+					((SimpleCollectionValueModel<String>) this.collectionModel).remove(this.item);
 				}
 			} else {
 				if (this.booleanValueOf(value)) {
 					// the value is changing from false to true
-					((SimpleCollectionValueModel<String>) this.collectionHolder).add(this.item);
+					((SimpleCollectionValueModel<String>) this.collectionModel).add(this.item);
 				}
 			}
 		}
 		@Override
 		protected Boolean buildValue() {
-			return Boolean.valueOf(CollectionTools.contains(this.collectionHolder.iterator(), this.item));
+			return Boolean.valueOf(CollectionTools.contains(this.collectionModel.iterator(), this.item));
 		}
 
 		// ********** internal methods **********

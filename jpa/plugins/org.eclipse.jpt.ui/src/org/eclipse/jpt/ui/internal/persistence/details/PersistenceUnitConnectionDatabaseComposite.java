@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -59,7 +58,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends Pane<Persistence
 		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
 			@Override
 			protected Boolean transform_(PersistenceUnitTransactionType value) {
-				return value == PersistenceUnitTransactionType.JTA;
+				return Boolean.valueOf(value == PersistenceUnitTransactionType.JTA);
 			}
 		};
 	}
@@ -85,7 +84,7 @@ public class PersistenceUnitConnectionDatabaseComposite extends Pane<Persistence
 		return new TransformationPropertyValueModel<PersistenceUnitTransactionType, Boolean>(buildTransactionTypeHolder()) {
 			@Override
 			protected Boolean transform_(PersistenceUnitTransactionType value) {
-				return value == PersistenceUnitTransactionType.RESOURCE_LOCAL;
+				return Boolean.valueOf(value == PersistenceUnitTransactionType.RESOURCE_LOCAL);
 			}
 		};
 	}
@@ -127,38 +126,34 @@ public class PersistenceUnitConnectionDatabaseComposite extends Pane<Persistence
 	protected void initializeLayout(Composite container) {
 
 		// JTA Datasource Name widgets
-		Label label = addUnmanagedLabel(
+		PropertyValueModel<Boolean> enabled = this.buildJTADatasourceNameBooleanHolder();
+		Label label = addLabel(
 			container, 
-			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName);
-		Text text = addUnmanagedText(
+			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_jtaDatasourceName,
+			enabled
+		);
+		Text text = addText(
 			container,
 			buildJTADatasourceNameHolder(),
-			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION,
+			enabled
 		);
 		addLabeledComposite(container, label, text, JpaHelpContextIds.PERSISTENCE_XML_CONNECTION);
-		
-		installJTADatasourceNameEnabler(text, label);
 		
 		
 		// Non-JTA Datasource Name widgets
-		label = addUnmanagedLabel(
+		enabled = this.buildNonJTADatasourceNameBooleanHolder();
+		label = addLabel(
 			container, 
-			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName);
-		text = addUnmanagedText(
+			JptUiPersistenceMessages.PersistenceUnitConnectionDatabaseComposite_nonJtaDatasourceName,
+			enabled
+		);
+		text = addText(
 			container,
 			buildNonJTADatasourceNameHolder(),
-			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION
+			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION,
+			enabled
 		);
 		addLabeledComposite(container, label, text, JpaHelpContextIds.PERSISTENCE_XML_CONNECTION);
-
-		installNonJTADatasourceNameEnabler(text, label);
-	}
-
-	private void installJTADatasourceNameEnabler(Text text, Label label) {
-		SWTTools.controlEnabledState(buildJTADatasourceNameBooleanHolder(), text, label);
-	}
-
-	private void installNonJTADatasourceNameEnabler(Text text, Label label) {
-		SWTTools.controlEnabledState(buildNonJTADatasourceNameBooleanHolder(), text, label);
 	}
 }

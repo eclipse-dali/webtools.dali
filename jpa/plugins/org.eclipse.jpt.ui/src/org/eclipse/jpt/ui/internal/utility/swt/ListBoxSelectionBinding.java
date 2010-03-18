@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,9 +44,9 @@ final class ListBoxSelectionBinding<E>
 {
 	// ***** model
 	/**
-	 * A value model on the underlying model list.
+	 * The underlying list model.
 	 */
-	private final ListValueModel<E> listHolder;
+	private final ListValueModel<E> listModel;
 
 	/**
 	 * A writable value model on the underlying model selections.
@@ -78,15 +78,15 @@ final class ListBoxSelectionBinding<E>
 	 * Constructor - all parameters are required.
 	 */
 	ListBoxSelectionBinding(
-			ListValueModel<E> listHolder,
+			ListValueModel<E> listModel,
 			WritableCollectionValueModel<E> selectedItemsHolder,
 			List listBox
 	) {
 		super();
-		if ((listHolder == null) || (selectedItemsHolder == null) || (listBox == null)) {
+		if ((listModel == null) || (selectedItemsHolder == null) || (listBox == null)) {
 			throw new NullPointerException();
 		}
-		this.listHolder = listHolder;
+		this.listModel = listModel;
 		this.selectedItemsHolder = selectedItemsHolder;
 		this.listBox = listBox;
 
@@ -157,7 +157,7 @@ final class ListBoxSelectionBinding<E>
 			select[i++] = this.indexOf(item);
 		}
 
-		int listSize = this.listHolder.size();
+		int listSize = this.listModel.size();
 		int[] deselect = new int[listSize - selectedItemsSize];
 		i = 0;
 		for (int j = 0; j < listSize; j++) {
@@ -257,9 +257,9 @@ final class ListBoxSelectionBinding<E>
 	}
 
 	private int indexOf(E item) {
-		int len = this.listHolder.size();
+		int len = this.listModel.size();
 		for (int i = 0; i < len; i++) {
-			if (Tools.valuesAreEqual(this.listHolder.get(i), item)) {
+			if (Tools.valuesAreEqual(this.listModel.get(i), item)) {
 				return i;
 			}
 		}
@@ -289,7 +289,7 @@ final class ListBoxSelectionBinding<E>
 	private Iterable<E> getListBoxSelectedItems() {
 		ArrayList<E> selectedItems = new ArrayList<E>(this.listBox.getSelectionCount());
 		for (int selectionIndex : this.listBox.getSelectionIndices()) {
-			selectedItems.add(this.listHolder.get(selectionIndex));
+			selectedItems.add(this.listModel.get(selectionIndex));
 		}
 		return selectedItems;
 	}

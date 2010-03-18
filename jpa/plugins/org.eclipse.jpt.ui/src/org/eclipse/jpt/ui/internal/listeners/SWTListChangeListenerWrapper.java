@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,9 +20,10 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another list change listener and forward events to it on the SWT
- * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * UI thread, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public class SWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -38,27 +39,51 @@ public class SWTListChangeListenerWrapper
 	}
 
 	public void itemsAdded(ListAddEvent event) {
-		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(ListRemoveEvent event) {
-		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void itemsMoved(ListMoveEvent event) {
-		this.executeOnUIThread(this.buildItemsMovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsMoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsMovedRunnable(event));
+		}
 	}
 
 	public void itemsReplaced(ListReplaceEvent event) {
-		this.executeOnUIThread(this.buildItemsReplacedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsReplaced_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsReplacedRunnable(event));
+		}
 	}
 
 	public void listCleared(ListClearEvent event) {
-		this.executeOnUIThread(this.buildListClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listCleared_(event);
+		} else {
+			this.executeOnUIThread(this.buildListClearedRunnable(event));
+		}
 	}
 
 	public void listChanged(ListChangeEvent event) {
-		this.executeOnUIThread(this.buildListChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.listChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildListChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final ListAddEvent event) {
@@ -133,9 +158,13 @@ public class SWTListChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return Display.getCurrent() != null;
+	}
+
 	/**
-	 * Display#asyncExec(Runnable) seems to work OK;
-	 * but using #syncExec(Runnable) can somtimes make things
+	 * {@link Display#asyncExec(Runnable)} seems to work OK;
+	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
 	 * more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnUIThread(Runnable r) {

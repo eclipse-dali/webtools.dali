@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -35,7 +35,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
  * </ul>
  * <strong>NB:</strong> The wrapped collection must not contain any duplicates
  * or this class will throw an exception.
- * <p>
  */
 public abstract class CompositePropertyValueModel<V>
 	extends CollectionPropertyValueModelAdapter<V>
@@ -58,7 +57,7 @@ public abstract class CompositePropertyValueModel<V>
 
 	/**
 	 * Construct a property value model that is a composite of the specified
-	 * property valuve models.
+	 * property value models.
 	 */
 	public CompositePropertyValueModel(PropertyValueModel<?>... collection) {
 		this(Arrays.asList(collection));
@@ -66,7 +65,7 @@ public abstract class CompositePropertyValueModel<V>
 
 	/**
 	 * Construct a property value model that is a composite of the specified
-	 * property valuve models.
+	 * property value models.
 	 */
 	public <E extends PropertyValueModel<?>> CompositePropertyValueModel(Collection<E> collection) {
 		this(new StaticCollectionValueModel<E>(collection));
@@ -74,10 +73,10 @@ public abstract class CompositePropertyValueModel<V>
 
 	/**
 	 * Construct a property value model that is a composite of the specified
-	 * property valuve models.
+	 * property value models.
 	 */
-	public CompositePropertyValueModel(CollectionValueModel<? extends PropertyValueModel<?>> collectionHolder) {
-		super(collectionHolder);
+	public CompositePropertyValueModel(CollectionValueModel<? extends PropertyValueModel<?>> collectionModel) {
+		super(collectionModel);
 		this.propertyChangeListener = this.buildPropertyChangeListener();
 	}
 
@@ -114,7 +113,7 @@ public abstract class CompositePropertyValueModel<V>
 	@Override
 	protected void engageModel_() {
 		super.engageModel_();
-		this.addComponentPVMs(this.getCollectionHolder());
+		this.addComponentPVMs(this.getCollectionModel());
 	}
 
 	protected <E extends PropertyValueModel<?>> void addComponentPVMs(Iterable<E> pvms) {
@@ -126,7 +125,7 @@ public abstract class CompositePropertyValueModel<V>
 
 	@Override
 	protected void disengageModel_() {
-		this.removeComponentPVMs(this.getCollectionHolder());
+		this.removeComponentPVMs(this.getCollectionModel());
 		super.disengageModel_();
 	}
 
@@ -164,7 +163,7 @@ public abstract class CompositePropertyValueModel<V>
 	@Override
 	protected void collectionChanged(CollectionChangeEvent event) {
 		this.removeAllComponentPVMs();
-		this.addComponentPVMs(this.getCollectionHolder());
+		this.addComponentPVMs(this.getCollectionModel());
 		super.collectionChanged(event);
 	}
 
@@ -176,8 +175,8 @@ public abstract class CompositePropertyValueModel<V>
 	 */
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
-	protected CollectionValueModel<? extends PropertyValueModel<?>> getCollectionHolder() {
-		return (CollectionValueModel<? extends PropertyValueModel<?>>) this.collectionHolder;
+	protected CollectionValueModel<? extends PropertyValueModel<?>> getCollectionModel() {
+		return (CollectionValueModel<? extends PropertyValueModel<?>>) this.collectionModel;
 	}
 
 	/**

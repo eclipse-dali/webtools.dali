@@ -23,7 +23,6 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * Here the layout of this pane:
@@ -111,14 +110,13 @@ public class Ordering2_0Composite extends AbstractOrderingComposite
 		);
 
 		// Custom Ordering text field
-		Text customOrderingText = addUnmanagedText(
+		addText(
 			addSubPane(container, 0, 16),
 			buildSpecifiedOrderByHolder(orderableHolder),
-			JpaHelpContextIds.MAPPING_ORDER_BY
+			JpaHelpContextIds.MAPPING_ORDER_BY,
+			buildCustomOrderingHolder(orderableHolder)
 		);
 
-		installCustomTextEnabler(customOrderingText, orderableHolder);
-		
 		
 		// Order Column Ordering radio button
 		addRadioButton(

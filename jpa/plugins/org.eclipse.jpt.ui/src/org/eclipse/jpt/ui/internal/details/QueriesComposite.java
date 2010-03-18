@@ -92,7 +92,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 	}
 	
 	protected AddQueryDialog buildAddQueryDialog() {
-		return new AddQueryDialog(getControl().getShell());
+		return new AddQueryDialog(getShell());
 	}
 
 	protected void addQueryFromDialog(AddQueryDialog dialog) {

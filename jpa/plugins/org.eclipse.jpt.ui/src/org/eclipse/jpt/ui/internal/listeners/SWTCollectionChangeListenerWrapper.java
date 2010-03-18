@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,10 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another collection change listener and forward events to it on the SWT
- * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * UI thread, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public class SWTCollectionChangeListenerWrapper
 	implements CollectionChangeListener
@@ -36,19 +37,35 @@ public class SWTCollectionChangeListenerWrapper
 	}
 
 	public void itemsAdded(CollectionAddEvent event) {
-		this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsAdded_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsAddedRunnable(event));
+		}
 	}
 
 	public void itemsRemoved(CollectionRemoveEvent event) {
-		this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.itemsRemoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildItemsRemovedRunnable(event));
+		}
 	}
 
 	public void collectionCleared(CollectionClearEvent event) {
-		this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.collectionCleared_(event);
+		} else {
+			this.executeOnUIThread(this.buildCollectionClearedRunnable(event));
+		}
 	}
 
 	public void collectionChanged(CollectionChangeEvent event) {
-		this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.collectionChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildCollectionChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildItemsAddedRunnable(final CollectionAddEvent event) {
@@ -99,9 +116,13 @@ public class SWTCollectionChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return Display.getCurrent() != null;
+	}
+
 	/**
-	 * Display#asyncExec(Runnable) seems to work OK;
-	 * but using #syncExec(Runnable) can somtimes make things
+	 * {@link Display#asyncExec(Runnable)} seems to work OK;
+	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
 	 * more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnUIThread(Runnable r) {

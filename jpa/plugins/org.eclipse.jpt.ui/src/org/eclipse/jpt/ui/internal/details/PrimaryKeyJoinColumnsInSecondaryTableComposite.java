@@ -298,18 +298,12 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<Seconda
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initialize() {
 		super.initialize();
 		joinColumnHolder = buildPrimaryKeyJoinColumnHolder();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
 
@@ -320,14 +314,13 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<Seconda
 		);
 
 		// Override Default check box
-		Button button = addCheckBox(
+		addCheckBox(
 			addSubPane(groupPane, 8),
 			JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_overrideDefaultPrimaryKeyJoinColumns,
 			buildOverrideDefaultJoinColumnHolder(),
-			null
+			null,
+			buildControlBooleanHolder()
 		);
-
-		installOverrideDefaultButtonEnabler(button);
 
 		// Primary Key Join Columns list pane
 		AddRemoveListPane<SecondaryTable> joinColumnsPane = new AddRemoveListPane<SecondaryTable>(
@@ -341,10 +334,6 @@ public class PrimaryKeyJoinColumnsInSecondaryTableComposite extends Pane<Seconda
 		);
 
 		installPrimaryKeyJoinColumnListPaneEnabler(joinColumnsPane);
-	}
-
-	private void installOverrideDefaultButtonEnabler(Button overrideDefaultButton) {
-		SWTTools.controlEnabledState(buildControlBooleanHolder(), overrideDefaultButton);
 	}
 
 	private void installPrimaryKeyJoinColumnListPaneEnabler(AddRemoveListPane<SecondaryTable> pkJoinColumnListPane) {

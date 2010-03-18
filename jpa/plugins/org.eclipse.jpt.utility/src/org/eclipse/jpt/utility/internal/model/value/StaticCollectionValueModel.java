@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
@@ -25,8 +26,8 @@ public class StaticCollectionValueModel<E>
 	extends AbstractModel
 	implements CollectionValueModel<E>
 {
-	/** The collection. */
-	protected final Collection<E> collection;
+	/** The elements. */
+	protected final Object[] elements;
 
 	private static final long serialVersionUID = 1L;
 
@@ -34,27 +35,31 @@ public class StaticCollectionValueModel<E>
 	/**
 	 * Construct a static collection value model for the specified array.
 	 */
-	public StaticCollectionValueModel(E... array) {
-		this(Arrays.asList(array));
+	public StaticCollectionValueModel(E... elements) {
+		super();
+		this.elements = elements.clone();
 	}
 
 	/**
-	 * Construct a static collection value model for the specified collection.
+	 * Construct a static collection value model for the specified elements.
 	 */
-	public StaticCollectionValueModel(Collection<? extends E> collection) {
+	public StaticCollectionValueModel(Iterable<? extends E> elements) {
 		super();
-		this.collection = new ArrayList<E>(collection);
+		this.elements = ArrayTools.array(elements);
 	}
 
 
 	// ********** CollectionValueModel implementation **********
 
 	public int size() {
-		return this.collection.size();
+		return this.elements.length;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Iterator<E> iterator() {
-		return this.collection.iterator();
+		// we can cast here since our constructors require the elements to be
+		// of type E and ArrayIterator is read-only
+		return (Iterator<E>) new ArrayIterator<Object>(this.elements);
 	}
 
 
@@ -62,7 +67,7 @@ public class StaticCollectionValueModel<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.collection);
+		sb.append(Arrays.toString(this.elements));
 	}
 
 }

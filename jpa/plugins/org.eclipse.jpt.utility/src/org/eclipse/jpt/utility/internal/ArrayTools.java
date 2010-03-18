@@ -29,6 +29,16 @@ public final class ArrayTools {
 	// ********** instantiation **********
 
 	/**
+	 * Return a new array with the same length
+	 * and the same component type as the specified array.
+	 * <p>
+	 * <code>Arrays.newArray(Object[] array)</code>
+	 */
+	public static <E> E[] newArray(E[] array) {
+		return newArray(array, array.length);
+	}
+
+	/**
 	 * Return a new array with the specified length
 	 * and the same component type as the specified array.
 	 * <p>

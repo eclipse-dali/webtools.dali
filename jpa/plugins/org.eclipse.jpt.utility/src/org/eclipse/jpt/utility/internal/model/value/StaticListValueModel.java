@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.utility.internal.model.value;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyIterator;
-import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
+
+import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 
@@ -28,48 +28,58 @@ public class StaticListValueModel<E>
 	extends AbstractModel
 	implements ListValueModel<E>
 {
-	/** The value. */
-	protected final List<E> list;
+	/** The elements. */
+	protected final Object[] elements;
 
 	private static final long serialVersionUID = 1L;
 
 
 	/**
-	 * Construct a static list value model for the specified array.
+	 * Construct a static list value model for the specified elements.
 	 */
-	public StaticListValueModel(E... array) {
-		this(Arrays.asList(array));
+	public StaticListValueModel(E... elements) {
+		super();
+		this.elements = elements.clone();
 	}
 
 	/**
-	 * Construct a static list value model for the specified list.
+	 * Construct a static list value model for the specified elements.
 	 */
-	public StaticListValueModel(List<? extends E> list) {
+	public StaticListValueModel(Iterable<? extends E> elements) {
 		super();
-		this.list = new ArrayList<E>(list);
+		this.elements = ArrayTools.array(elements);
 	}
 
 
 	// ********** ListValueModel implementation **********
 
+	@SuppressWarnings("unchecked")
 	public Iterator<E> iterator() {
-		return new ReadOnlyIterator<E>(this.list.iterator());
+		// we can cast here since our constructors require the elements to be
+		// of type E and ArrayIterator is read-only
+		return (Iterator<E>) new ArrayIterator<Object>(this.elements);
 	}
 
+	@SuppressWarnings("unchecked")
 	public ListIterator<E> listIterator() {
-		return new ReadOnlyListIterator<E>(this.list.listIterator());
+		// we can cast here since our constructors require the elements to be
+		// of type E and ArrayListIterator is read-only
+		return (ListIterator<E>) new ArrayListIterator<Object>(this.elements);
 	}
 
 	public int size() {
-		return this.list.size();
+		return this.elements.length;
 	}
 
+	@SuppressWarnings("unchecked")
 	public E get(int index) {
-		return this.list.get(index);
+		// we can cast here since our constructors require the elements to be
+		// of type E
+		return (E) this.elements[index];
 	}
 
 	public Object[] toArray() {
-		return this.list.toArray();
+		return this.elements.clone();
 	}
 
 
@@ -77,7 +87,7 @@ public class StaticListValueModel<E>
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.list);
+		sb.append(Arrays.toString(this.elements));
 	}
 
 }

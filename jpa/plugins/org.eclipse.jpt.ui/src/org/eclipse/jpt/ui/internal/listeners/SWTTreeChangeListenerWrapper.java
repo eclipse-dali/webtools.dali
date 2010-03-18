@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,9 +18,10 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another tree change listener and forward events to it on the SWT
- * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * UI thread, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public class SWTTreeChangeListenerWrapper
 	implements TreeChangeListener
@@ -36,19 +37,35 @@ public class SWTTreeChangeListenerWrapper
 	}
 
 	public void nodeAdded(TreeAddEvent event) {
-		this.executeOnUIThread(this.buildNodeAddedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeAdded_(event);
+		} else {
+			this.executeOnUIThread(this.buildNodeAddedRunnable(event));
+		}
 	}
 
 	public void nodeRemoved(TreeRemoveEvent event) {
-		this.executeOnUIThread(this.buildNodeRemovedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.nodeRemoved_(event);
+		} else {
+			this.executeOnUIThread(this.buildNodeRemovedRunnable(event));
+		}
 	}
 
 	public void treeCleared(TreeClearEvent event) {
-		this.executeOnUIThread(this.buildTreeClearedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeCleared_(event);
+		} else {
+			this.executeOnUIThread(this.buildTreeClearedRunnable(event));
+		}
 	}
 
 	public void treeChanged(TreeChangeEvent event) {
-		this.executeOnUIThread(this.buildTreeChangedRunnable(event));
+		if (this.isExecutingOnUIThread()) {
+			this.treeChanged_(event);
+		} else {
+			this.executeOnUIThread(this.buildTreeChangedRunnable(event));
+		}
 	}
 
 	private Runnable buildNodeAddedRunnable(final TreeAddEvent event) {
@@ -99,9 +116,13 @@ public class SWTTreeChangeListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return Display.getCurrent() != null;
+	}
+
 	/**
-	 * Display#asyncExec(Runnable) seems to work OK;
-	 * but using #syncExec(Runnable) can somtimes make things
+	 * {@link Display#asyncExec(Runnable)} seems to work OK;
+	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
 	 * more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnUIThread(Runnable r) {

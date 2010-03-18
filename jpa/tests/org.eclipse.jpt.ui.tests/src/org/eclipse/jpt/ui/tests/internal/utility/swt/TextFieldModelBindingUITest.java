@@ -7,14 +7,14 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.ui.tests.internal.swt;
+package org.eclipse.jpt.ui.tests.internal.utility.swt;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
+import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -34,7 +34,8 @@ import org.eclipse.swt.widgets.Text;
 /**
  * Play around with a set of entry fields.
  */
-public class TextFieldModelAdapterUITest
+@SuppressWarnings("nls")
+public class TextFieldModelBindingUITest
 	extends ApplicationWindow
 {
 	private final TestModel testModel;
@@ -45,14 +46,14 @@ public class TextFieldModelAdapterUITest
 
 
 	public static void main(String[] args) throws Exception {
-		Window window = new TextFieldModelAdapterUITest(args);
+		Window window = new TextFieldModelBindingUITest();
 		window.setBlockOnOpen(true);
 		window.open();
 		Display.getCurrent().dispose();
 		System.exit(0);
 	}
 
-	private TextFieldModelAdapterUITest(String[] args) {
+	private TextFieldModelBindingUITest() {
 		super(null);
 		this.testModel = new TestModel(DEFAULT_NAME);
 		this.testModelHolder = new SimplePropertyValueModel<TestModel>(this.testModel);
@@ -117,19 +118,19 @@ public class TextFieldModelAdapterUITest
 
 	private void buildNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
-		TextFieldModelAdapter.adapt(this.nameHolder, textField);
+		SWTTools.bind(this.nameHolder, textField);
 	}
 
 	private void buildReadOnlyNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		TextFieldModelAdapter.adapt(this.nameHolder, textField);
+		SWTTools.bind(this.nameHolder, textField);
 	}
 
 	private void buildAllCapsNameTextField(Composite parent) {
 		Text textField = new Text(parent, SWT.SINGLE);
 		textField.setEnabled(false);
-		TextFieldModelAdapter.adapt(this.allCapsNameHolder, textField);
+		SWTTools.bind(this.allCapsNameHolder, textField);
 	}
 
 	private void buildControlPanel(Composite parent, Control checkBoxPanel) {
@@ -156,7 +157,7 @@ public class TextFieldModelAdapterUITest
 		Action action = new Action("reset name", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				TextFieldModelAdapterUITest.this.resetName();
+				TextFieldModelBindingUITest.this.resetName();
 			}
 		};
 		action.setToolTipText("reset name");
@@ -175,7 +176,7 @@ public class TextFieldModelAdapterUITest
 		Action action = new Action("clear model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				TextFieldModelAdapterUITest.this.clearModel();
+				TextFieldModelBindingUITest.this.clearModel();
 			}
 		};
 		action.setToolTipText("clear model");
@@ -194,7 +195,7 @@ public class TextFieldModelAdapterUITest
 		Action action = new Action("restore model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				TextFieldModelAdapterUITest.this.restoreModel();
+				TextFieldModelBindingUITest.this.restoreModel();
 			}
 		};
 		action.setToolTipText("restore model");
@@ -213,7 +214,7 @@ public class TextFieldModelAdapterUITest
 		Action action = new Action("print model", IAction.AS_PUSH_BUTTON) {
 			@Override
 			public void run() {
-				TextFieldModelAdapterUITest.this.printModel();
+				TextFieldModelBindingUITest.this.printModel();
 			}
 		};
 		action.setToolTipText("print model");

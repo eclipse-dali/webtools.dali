@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -22,8 +21,6 @@ import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DateTime;
 import org.eclipse.swt.widgets.Group;
 
 /**
@@ -103,43 +100,44 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	protected void addTimeToLiveComposite(Composite parent) {
 		Composite container = this.addSubPane(parent, 3, 0, 10, 0, 0);
 
-
-		Control expireAfterLabel = addUnmanagedLabel(
+		PropertyValueModel<Boolean> ttlEnabled = buildTimeToLiveExpiryEnabler();
+		addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter
+			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter,
+			ttlEnabled
 		);
 	
-		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container);
+		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container, ttlEnabled);
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = false;
 		combo.getControl().setLayoutData(gridData);
 		
-		Control millisecondsLabel =	addUnmanagedLabel(
+		addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds
+			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds,
+			ttlEnabled
 		);
-		
-		SWTTools.controlEnabledState(buildTimeToLiveExpiryEnabler(), expireAfterLabel, combo.getCombo(), millisecondsLabel);
 	}
 	
 	protected void addTimeOfDayComposite(Composite parent) {
 		Composite container = this.addSubPane(parent, 2, 0, 10, 0, 0);
 
-
-		Control expireAtLabel = addUnmanagedLabel(
+		PropertyValueModel<Boolean> todEnabled = this.buildTimeOfDayExpiryEnabler();
+		addLabel(
 			container,
-			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeOfDayExpiryExpireAt
+			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeOfDayExpiryExpireAt,
+			todEnabled
 		);
 		
 		PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
-		DateTime dateTime = addUnmanagedDateTime(
+		addDateTime(
 			container, 
 			buildTimeOfDayExpiryHourHolder(timeOfDayExpiryHolder), 
 			buildTimeOfDayExpiryMinuteHolder(timeOfDayExpiryHolder),
 			buildTimeOfDayExpirySecondHolder(timeOfDayExpiryHolder),
-			null);
-
-		SWTTools.controlEnabledState(buildTimeOfDayExpiryEnabler(), expireAtLabel, dateTime);
+			null,
+			todEnabled
+		);
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildNoExpiryHolder() {
@@ -174,7 +172,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setExpiry(0);
+					this.subject.setExpiry(Integer.valueOf(0));
 				}
 			}
 		};
@@ -198,16 +196,25 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private IntegerCombo<EclipseLinkCaching> addTimeToLiveExpiryCombo(Composite container) {
-		return new IntegerCombo<EclipseLinkCaching>(this, container) {
+	private IntegerCombo<EclipseLinkCaching> addTimeToLiveExpiryCombo(Composite container, PropertyValueModel<Boolean> comboEnabled) {
+
+		class LocalCombo extends IntegerCombo<EclipseLinkCaching> {
+			private final PropertyValueModel<Boolean> comboEnabled;
+
+			LocalCombo(Pane<EclipseLinkCaching> parentPane, Composite container, PropertyValueModel<Boolean> comboEnabled) {
+				super(parentPane, container);
+				this.comboEnabled = comboEnabled;
+			}
 		
 			@Override
-			protected CCombo addIntegerCombo(Composite container) {
-				return this.addUnmanagedEditableCCombo(
+			protected CCombo addIntegerCombo(@SuppressWarnings("hiding") Composite container) {
+				return this.addEditableCCombo(
 						container,
 						buildDefaultListHolder(),
 						buildSelectedItemStringHolder(),
-						StringConverter.Default.<String>instance());
+						StringConverter.Default.<String>instance(),
+						this.comboEnabled
+					);
 			}
 		
 			@Override
@@ -245,7 +252,9 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 					}
 				};
 			}
-		};
+		}
+
+		return new LocalCombo(this, container, comboEnabled);
 	}
 	
 	private PropertyValueModel<Boolean> buildTimeToLiveExpiryEnabler() {

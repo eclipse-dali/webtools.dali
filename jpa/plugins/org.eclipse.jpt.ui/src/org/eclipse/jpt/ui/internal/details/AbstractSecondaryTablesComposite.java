@@ -107,7 +107,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 	}
 
 	protected SecondaryTableDialog buildSecondaryTableDialogForAdd() {
-		return new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultCatalog(), getSubject().getTable().getDefaultSchema());
+		return new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), getSubject().getTable().getDefaultCatalog(), getSubject().getTable().getDefaultSchema());
 	}
 	
 	protected AddRemoveListPane.Adapter buildSecondaryTablesAdapter() {
@@ -131,7 +131,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				SecondaryTable secondaryTable = (SecondaryTable) listSelectionModel.selectedValue();
-				SecondaryTableDialog dialog = new SecondaryTableDialog(getControl().getShell(), getSubject().getJpaProject(), secondaryTable);
+				SecondaryTableDialog dialog = new SecondaryTableDialog(getShell(), getSubject().getJpaProject(), secondaryTable);
 				editSecondaryTableFromDialog(dialog, secondaryTable);
 			}
 

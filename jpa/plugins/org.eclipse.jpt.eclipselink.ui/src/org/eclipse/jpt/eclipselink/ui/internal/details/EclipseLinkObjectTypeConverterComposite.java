@@ -275,7 +275,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 			@Override
 			public void optionOnSelection(ObjectListSelectionModel listSelectionModel) {
 				EclipseLinkConversionValue conversionValue = (EclipseLinkConversionValue) listSelectionModel.selectedValue();
-				EclipseLinkConversionValueDialog dialog = new EclipseLinkConversionValueDialog(getControl().getShell(), getSubject(), conversionValue);
+				EclipseLinkConversionValueDialog dialog = new EclipseLinkConversionValueDialog(getShell(), getSubject(), conversionValue);
 				editConversionValueFromDialog(dialog, conversionValue);
 			}
 
@@ -292,7 +292,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 
 
 	protected EclipseLinkConversionValueDialog buildConversionValueDialogForAdd() {
-		return new EclipseLinkConversionValueDialog(getControl().getShell(), getSubject());
+		return new EclipseLinkConversionValueDialog(getShell(), getSubject());
 	}
 
 	protected void addConversionValueFromDialog(EclipseLinkConversionValueDialog dialog, ObjectListSelectionModel listSelectionModel) {

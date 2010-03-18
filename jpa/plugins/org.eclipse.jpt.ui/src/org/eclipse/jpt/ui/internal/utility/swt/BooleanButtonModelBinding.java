@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -34,7 +34,7 @@ final class BooleanButtonModelBinding {
 
 	// ***** model
 	/** A value model on the underlying model boolean. */
-	private final WritablePropertyValueModel<Boolean> booleanHolder;
+	private final WritablePropertyValueModel<Boolean> booleanModel;
 
 	/**
 	 * A listener that allows us to synchronize the button's selection state with
@@ -70,19 +70,19 @@ final class BooleanButtonModelBinding {
 	// ********** constructor **********
 
 	/**
-	 * Constructor - the boolean holder and button are required.
+	 * Constructor - the boolean model and button are required.
 	 */
-	BooleanButtonModelBinding(WritablePropertyValueModel<Boolean> booleanHolder, Button button, boolean defaultValue) {
+	BooleanButtonModelBinding(WritablePropertyValueModel<Boolean> booleanModel, Button button, boolean defaultValue) {
 		super();
-		if ((booleanHolder == null) || (button == null)) {
+		if ((booleanModel == null) || (button == null)) {
 			throw new NullPointerException();
 		}
-		this.booleanHolder = booleanHolder;
+		this.booleanModel = booleanModel;
 		this.button = button;
 		this.defaultValue = defaultValue;
 
 		this.booleanChangeListener = this.buildBooleanChangeListener();
-		this.booleanHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
 
 		this.buttonSelectionListener = this.buildButtonSelectionListener();
 		this.button.addSelectionListener(this.buttonSelectionListener);
@@ -90,7 +90,7 @@ final class BooleanButtonModelBinding {
 		this.buttonDisposeListener = this.buildButtonDisposeListener();
 		this.button.addDisposeListener(this.buttonDisposeListener);
 
-		this.setButtonSelection(this.booleanHolder.getValue());
+		this.setButtonSelection(this.booleanModel.getValue());
 	}
 
 
@@ -116,7 +116,7 @@ final class BooleanButtonModelBinding {
 		return new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				BooleanButtonModelBinding.this.buttonSelected(event);
+				BooleanButtonModelBinding.this.buttonSelected();
 			}
 		    @Override
 			public String toString() {
@@ -128,7 +128,7 @@ final class BooleanButtonModelBinding {
 	private DisposeListener buildButtonDisposeListener() {
 		return new DisposeListener() {
 			public void widgetDisposed(DisposeEvent event) {
-				BooleanButtonModelBinding.this.buttonDisposed(event);
+				BooleanButtonModelBinding.this.buttonDisposed();
 			}
 		    @Override
 			public String toString() {
@@ -138,14 +138,14 @@ final class BooleanButtonModelBinding {
 	}
 
 
-	// ********** behavior **********
+	// ********** boolean model events **********
 
 	/**
 	 * The model has changed - synchronize the button.
 	 * If the new model value is null, use the binding's default value
 	 * (which is typically false).
 	 */
-	void booleanChanged(PropertyChangeEvent event) {
+	/* private */ void booleanChanged(PropertyChangeEvent event) {
 		this.setButtonSelection((Boolean) event.getNewValue());
 	}
 
@@ -156,31 +156,27 @@ final class BooleanButtonModelBinding {
 	}
 
 	private boolean booleanValue(Boolean b) {
-		return (b != null) ? b.booleanValue() : this.getDefaultValue();
+		return (b != null) ? b.booleanValue() : this.defaultValue;
 	}
 
-	private boolean getDefaultValue() {
-		return this.defaultValue;
-	}
+
+	// ********** button events **********
 
 	/**
 	 * The button has been "selected" - synchronize the model.
 	 */
-	void buttonSelected(@SuppressWarnings("unused") SelectionEvent event) {
+	/* private */ void buttonSelected() {
 		if ( ! this.button.isDisposed()) {
-			this.booleanHolder.setValue(Boolean.valueOf(this.button.getSelection()));
+			this.booleanModel.setValue(Boolean.valueOf(this.button.getSelection()));
 		}
 	}
 
-
-	// ********** dispose **********
-
-	void buttonDisposed(@SuppressWarnings("unused") DisposeEvent event) {
+	/* private */ void buttonDisposed() {
 		// the button is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.button.removeSelectionListener(this.buttonSelectionListener);
 		this.button.removeDisposeListener(this.buttonDisposeListener);
-		this.booleanHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
+		this.booleanModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.booleanChangeListener);
 	}
 
 
@@ -188,7 +184,7 @@ final class BooleanButtonModelBinding {
 
     @Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.booleanHolder);
+		return StringTools.buildToStringFor(this, this.booleanModel);
 	}
 
 }

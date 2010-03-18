@@ -14,13 +14,13 @@ import java.util.Collection;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.custom.CCombo;
@@ -112,15 +112,18 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		);
 
 		// Discrinator Value widgets
+		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
 		CCombo discriminatorValueCombo = addEditableCCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),
 			buildDiscriminatorValueHolder(),
-			buildDiscriminatorValueConverter()
+			buildDiscriminatorValueConverter(),
+			dvEnabled
 		);
 		Label discriminatorValueLabel = addLabel(
 			subPane, 
-			JptUiDetailsMessages.InheritanceComposite_discriminatorValue
+			JptUiDetailsMessages.InheritanceComposite_discriminatorValue,
+			dvEnabled
 		);
 		addLabeledComposite(
 			subPane,
@@ -130,8 +133,6 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);
 	
-		SWTTools.controlEnabledState(buildDiscriminatorValueEnabledHolder(), discriminatorValueCombo, discriminatorValueLabel);
-		
 		new DiscriminatorColumnComposite<Entity>(this, container);
 
 		// Primary Key Join Columns widgets

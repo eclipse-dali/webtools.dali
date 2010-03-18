@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -69,8 +69,8 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	@Override
 	protected void engageModel() {
 		this.engageModel_();
-		// synch our value *after* we start listening to the collection,
-		// since the collection's value might change when a listener is added
+		// synch our value *after* we start listening to the model,
+		// since the model's value might change when a listener is added
 		this.value = this.buildValue();
 	}
 
@@ -91,7 +91,7 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	@Override
 	protected void disengageModel() {
 		this.disengageModel_();
-		// clear out our value when we are not listening to the collection
+		// clear out our value when we are not listening to the model
 		this.value = null;
 	}
 
@@ -106,8 +106,7 @@ public abstract class AbstractPropertyValueModelAdapter<V>
 	 */
 	protected void propertyChanged() {
 		Object old = this.value;
-		this.value = this.buildValue();
-		this.firePropertyChanged(VALUE, old, this.value);
+		this.firePropertyChanged(VALUE, old, this.value = this.buildValue());
 	}
 
 	@Override

@@ -23,10 +23,9 @@ import org.eclipse.swt.widgets.Text;
  * @version 2.3
  * @since 1.0
  */
-public class OrmMappingNameChooser extends Pane<OrmAttributeMapping>
+public class OrmMappingNameChooser
+	extends Pane<OrmAttributeMapping>
 {
-	private Text text;
-
 	/**
 	 * Creates a new <code>XmlJavaAttributeChooser</code>.
 	 *
@@ -43,7 +42,7 @@ public class OrmMappingNameChooser extends Pane<OrmAttributeMapping>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		this.text = addLabeledText(
+		this.addLabeledText(
 			container,
 			JptUiDetailsOrmMessages.OrmMappingNameChooser_name,
 			buildNameHolder()
@@ -67,14 +66,5 @@ public class OrmMappingNameChooser extends Pane<OrmAttributeMapping>
 				this.subject.setName(value);
 			}
 		};
-	}
-
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-
-		if (!this.text.isDisposed()) {
-			this.text.setEnabled(enabled);
-		}
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public abstract class EnumFormComboViewer<T extends Model, V> extends EnumComboViewer<T, V>
+public abstract class EnumFormComboViewer<T extends Model, V>
+	extends EnumComboViewer<T, V>
 {
 	/**
 	 * Creates a new <code>EnumFormComboViewer</code>.
@@ -32,8 +33,8 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends EnumComboV
 	 * @param widgetFactory The factory used to create various widgets
 	 */
 	protected EnumFormComboViewer(Pane<? extends T> parentPane,
-	                              Composite parent) {
-
+	                              Composite parent
+	) {
 		super(parentPane, parent);
 	}
 
@@ -46,14 +47,11 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends EnumComboV
 	 */
 	protected EnumFormComboViewer(Pane<?> parentPane,
 	                              PropertyValueModel<? extends T> subjectHolder,
-	                              Composite parent) {
-
+	                              Composite parent
+	) {
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	ComboViewer addComboViewer(Composite container) {
 		ComboViewer comboViewer = addCComboViewer(container, buildLabelProvider());
@@ -61,17 +59,12 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends EnumComboV
 		return comboViewer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public void enableWidgets(boolean enabled) {
-
 		super.enableWidgets(enabled);
 
 		CCombo combo = getCombo();
-
-		if (combo.isDisposed()) {
+		if ( ! combo.isDisposed()) {
 			combo.setEnabled(enabled);
 		}
 	}
@@ -80,17 +73,11 @@ public abstract class EnumFormComboViewer<T extends Model, V> extends EnumComboV
 		return this.getComboViewer().getCCombo();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	void removeAll() {
 		getCombo().removeAll();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	void updateCursor() {
 		getCombo().setSelection(new Point(0, 0));

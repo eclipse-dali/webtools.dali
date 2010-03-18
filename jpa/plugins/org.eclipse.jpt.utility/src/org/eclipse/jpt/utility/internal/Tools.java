@@ -13,7 +13,7 @@ package org.eclipse.jpt.utility.internal;
  * Various utility methods.
  */
 @SuppressWarnings("nls")
-public class Tools {
+public final class Tools {
 
 	// ********** object comparison **********
 
@@ -21,7 +21,9 @@ public class Tools {
 	 * Return whether the specified values are equal, with the appropriate null checks.
 	 */
 	public static boolean valuesAreEqual(Object value1, Object value2) {
-		return (value1 == null) ? (value2 == null) : value1.equals(value2);
+		return (value1 == null) ?
+				(value2 == null) :
+				((value2 != null) && value1.equals(value2));
 	}
 
 	/**

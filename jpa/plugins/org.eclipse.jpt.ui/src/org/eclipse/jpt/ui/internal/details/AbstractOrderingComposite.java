@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details;
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -136,11 +135,6 @@ public abstract class AbstractOrderingComposite extends Pane<CollectionMapping>
 				this.subject.setSpecifiedOrderBy(value);
 			}
 		};
-	}
-
-	protected void installCustomTextEnabler(Text text, PropertyValueModel<Orderable> orderableHolder) {
-		PropertyValueModel<Boolean> enabler = buildCustomOrderingHolder(orderableHolder);
-		SWTTools.controlEnabledState(enabler, text);
 	}
 
 }

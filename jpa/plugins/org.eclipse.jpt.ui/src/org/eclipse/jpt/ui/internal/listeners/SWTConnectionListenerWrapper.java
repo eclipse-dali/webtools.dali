@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,9 +22,10 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another connection listener and forward events to it on the SWT
- * UI thread.
- * Forward *every* event asynchronously via the UI thread so the listener
- * receives in the same order they were generated.
+ * UI thread, asynchronously if necessary. If the event arrived on the UI
+ * thread that is probably because it was initiated by a UI widget; as a
+ * result, we want to loop back synchronously so the events can be
+ * short-circuited.
  */
 public class SWTConnectionListenerWrapper
 	implements ConnectionListener
@@ -41,52 +42,99 @@ public class SWTConnectionListenerWrapper
 	}
 
 	public void opened(ConnectionProfile profile) {
-		this.executeOnUIThread(this.buildOpenedRunnable(profile));
+		if (this.isExecutingOnUIThread()) {
+			this.opened_(profile);
+		} else {
+			this.executeOnUIThread(this.buildOpenedRunnable(profile));
+		}
 	}
 
 	public void modified(ConnectionProfile profile) {
-		this.executeOnUIThread(this.buildModifiedRunnable(profile));
+		if (this.isExecutingOnUIThread()) {
+			this.modified_(profile);
+		} else {
+			this.executeOnUIThread(this.buildModifiedRunnable(profile));
+		}
 	}
 
 	public boolean okToClose(ConnectionProfile profile) {
+		if (this.isExecutingOnUIThread()) {
+			return this.okToClose_(profile);
+		}
 		this.executeOnUIThread(this.buildOkToCloseRunnable(profile));
 		return true;
 	}
 
 	public void aboutToClose(ConnectionProfile profile) {
-		this.executeOnUIThread(this.buildAboutToCloseRunnable(profile));
+		if (this.isExecutingOnUIThread()) {
+			this.aboutToClose_(profile);
+		} else {
+			this.executeOnUIThread(this.buildAboutToCloseRunnable(profile));
+		}
 	}
 
 	public void closed(ConnectionProfile profile) {
-		this.executeOnUIThread(this.buildClosedRunnable(profile));
+		if (this.isExecutingOnUIThread()) {
+			this.closed_(profile);
+		} else {
+			this.executeOnUIThread(this.buildClosedRunnable(profile));
+		}
 	}
 
 	public void databaseChanged(ConnectionProfile profile, Database database) {
-		this.executeOnUIThread(this.buildDatabaseChangedRunnable(profile, database));
+		if (this.isExecutingOnUIThread()) {
+			this.databaseChanged_(profile, database);
+		} else {
+			this.executeOnUIThread(this.buildDatabaseChangedRunnable(profile, database));
+		}
 	}
 
 	public void catalogChanged(ConnectionProfile profile, Catalog catalog) {
-		this.executeOnUIThread(this.buildCatalogChangedRunnable(profile, catalog));
+		if (this.isExecutingOnUIThread()) {
+			this.catalogChanged_(profile, catalog);
+		} else {
+			this.executeOnUIThread(this.buildCatalogChangedRunnable(profile, catalog));
+		}
 	}
 
 	public void schemaChanged(ConnectionProfile profile, Schema schema) {
-		this.executeOnUIThread(this.buildSchemaChangedRunnable(profile, schema));
+		if (this.isExecutingOnUIThread()) {
+			this.schemaChanged_(profile, schema);
+		} else {
+			this.executeOnUIThread(this.buildSchemaChangedRunnable(profile, schema));
+		}
 	}
 
 	public void sequenceChanged(ConnectionProfile profile, Sequence sequence) {
-		this.executeOnUIThread(this.buildSequenceChangedRunnable(profile, sequence));
+		if (this.isExecutingOnUIThread()) {
+			this.sequenceChanged_(profile, sequence);
+		} else {
+			this.executeOnUIThread(this.buildSequenceChangedRunnable(profile, sequence));
+		}
 	}
 
 	public void tableChanged(ConnectionProfile profile, Table table) {
-		this.executeOnUIThread(this.buildTableChangedRunnable(profile, table));
+		if (this.isExecutingOnUIThread()) {
+			this.tableChanged_(profile, table);
+		} else {
+			this.executeOnUIThread(this.buildTableChangedRunnable(profile, table));
+		}
 	}
 
 	public void columnChanged(ConnectionProfile profile, Column column) {
-		this.executeOnUIThread(this.buildColumnChangedRunnable(profile, column));
+		if (this.isExecutingOnUIThread()) {
+			this.columnChanged_(profile, column);
+		} else {
+			this.executeOnUIThread(this.buildColumnChangedRunnable(profile, column));
+		}
 	}
 
 	public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
-		this.executeOnUIThread(this.buildForeignKeyChangedRunnable(profile, foreignKey));
+		if (this.isExecutingOnUIThread()) {
+			this.foreignKeyChanged_(profile, foreignKey);
+		} else {
+			this.executeOnUIThread(this.buildForeignKeyChangedRunnable(profile, foreignKey));
+		}
 	}
 
 	private Runnable buildOpenedRunnable(final ConnectionProfile profile) {
@@ -233,9 +281,13 @@ public class SWTConnectionListenerWrapper
 		};
 	}
 
+	private boolean isExecutingOnUIThread() {
+		return Display.getCurrent() != null;
+	}
+
 	/**
-	 * Display#asyncExec(Runnable) seems to work OK;
-	 * but using #syncExec(Runnable) can somtimes make things
+	 * {@link Display#asyncExec(Runnable)} seems to work OK;
+	 * but using {@link Display#syncExec(Runnable)} can somtimes make things
 	 * more predictable when debugging, at the risk of deadlocks.
 	 */
 	private void executeOnUIThread(Runnable r) {
@@ -251,8 +303,8 @@ public class SWTConnectionListenerWrapper
 		this.listener.modified(profile);
 	}
 
-	void okToClose_(ConnectionProfile profile) {
-		this.listener.okToClose(profile);
+	boolean okToClose_(ConnectionProfile profile) {
+		return this.listener.okToClose(profile);
 	}
 
 	void aboutToClose_(ConnectionProfile profile) {

@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -26,7 +25,6 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueM
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Composite;
 
 import com.ibm.icu.text.Collator;
@@ -67,14 +65,13 @@ public class TemporalTypeComposite extends Pane<TemporalConverter> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		CCombo combo = addCCombo(
+		this.addCombo(
 			container,
 			buildTemporalTypeListHolder(),
 			buildTemporalTypeHolder(),
-			buildTemporalTypeConverter()
+			buildTemporalTypeConverter(),
+			buildBooleanHolder()
 		);
-		
-		SWTTools.controlEnabledState(buildBooleanHolder(), combo);
 	}
 
 	private WritablePropertyValueModel<TemporalType> buildTemporalTypeHolder() {

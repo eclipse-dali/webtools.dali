@@ -23,15 +23,17 @@ import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.DateTimeModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.SpinnerModelAdapter;
-import org.eclipse.jpt.ui.internal.swt.TextFieldModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.TriStateCheckBoxModelAdapter;
 import org.eclipse.jpt.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.utility.internal.BooleanTransformer;
 import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
@@ -157,6 +159,12 @@ public abstract class Pane<T extends Model>
 	private ArrayList<Pane<?>> managedSubPanes;
 
 	/**
+	 * This model can be used by individually-enabled/disabled widgets to
+	 * coordinate with the pane's enablement.
+	 */
+	private final WritablePropertyValueModel<Boolean> enabledModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
+
+	/**
 	 * Creates a new <code>Pane</code>.
 	 *
 	 * @category Constructor
@@ -255,17 +263,15 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<?> parentPane,
-	                       PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets) {
-
-		this(subjectHolder,
-		     parent,
-		     parentPane.getWidgetFactory());
-
-		initialize(parentPane, automaticallyAlignWidgets, true);
+	protected Pane(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets
+	) {
+		this(parentPane, subjectHolder, parent, automaticallyAlignWidgets, true);
 	}
+
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -281,17 +287,15 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<?> parentPane,
-	                       PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets, 
-	                       boolean parentManagePane) {
-
-		this(subjectHolder,
-		     parent,
-		     parentPane.getWidgetFactory());
-
-		initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
+	protected Pane(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets, 
+			boolean parentManagePane
+	) {
+		this(subjectHolder, parent, parentPane.getWidgetFactory());
+		this.initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
 	}
 
 	/**
@@ -303,12 +307,12 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent,
-	                       WidgetFactory widgetFactory) {
-
+	protected Pane(
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory
+	) {
 		super();
-
 		this.initialize(subjectHolder, widgetFactory);
 		this.container = this.addContainer(parent);
 		this.initializeLayout(this.container);
@@ -316,13 +320,31 @@ public abstract class Pane<T extends Model>
 		this.engageListeners(getSubject());
 		this.populate();
 	}
-	
-	/**
-	 * Initializes this <code>Pane</code>.
-	 *
-	 * @category Initialization
-	 */
+
+
+	// ********** initialization **********
+
+	@SuppressWarnings("unchecked")
+	private void initialize(PropertyValueModel<? extends T> subjectHolder,
+	                        WidgetFactory widgetFactory)
+	{
+		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
+
+		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
+		this.widgetFactory         = widgetFactory;
+		this.subPanes              = new ArrayList<Pane<?>>();
+		this.managedWidgets        = new ArrayList<Control>();
+		this.managedSubPanes       = new ArrayList<Pane<?>>();
+		this.leftControlAligner    = new ControlAligner();
+		this.rightControlAligner   = new ControlAligner();
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.aspectChangeListener  = this.buildAspectChangeListener();
+		
+		this.initialize();
+	}
+
 	protected void initialize() {
+		// do nothing by default
 	}
 
 	/**
@@ -356,33 +378,6 @@ public abstract class Pane<T extends Model>
 			parentPane.leftControlAligner .add(this.leftControlAligner);
 			parentPane.rightControlAligner.add(this.rightControlAligner);
 		}
-	}
-
-	/**
-	 * Initializes this <code>Pane</code>.
-	 *
-	 * @param subjectHolder The holder of this pane's subject
-	 * @param widgetFactory The factory used to create various widgets
-	 *
-	 * @category Initialization
-	 */
-	@SuppressWarnings("unchecked")
-	private void initialize(PropertyValueModel<? extends T> subjectHolder,
-	                        WidgetFactory widgetFactory)
-	{
-		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
-
-		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
-		this.widgetFactory         = widgetFactory;
-		this.subPanes              = new ArrayList<Pane<?>>();
-		this.managedWidgets        = new ArrayList<Control>();
-		this.managedSubPanes       = new ArrayList<Pane<?>>();
-		this.leftControlAligner    = new ControlAligner();
-		this.rightControlAligner   = new ControlAligner();
-		this.subjectChangeListener = this.buildSubjectChangeListener();
-		this.aspectChangeListener  = this.buildAspectChangeListener();
-		
-		this.initialize();
 	}
 
 	/**
@@ -573,7 +568,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Button addUnmanagedButton(Composite container,
+	private Button addUnmanagedButton(Composite container,
 	                                   String text,
 	                                   String helpId,
 	                                   final Runnable buttonAction) {
@@ -709,33 +704,18 @@ public abstract class Pane<T extends Model>
 			SWT.CHECK);
 	}
 	
-	/**
-	 * Creates a new unmanaged checkbox <code>Button</code> widget.  Unmanaged means 
-	 * that this Pane will not handle the enabling/disabling of this widget.  
-	 * The owning object will handle it with its own PaneEnabler or ControlEnabler.
-	 *
-	 * @param parent The parent container
-	 * @param buttonText The button's text
-	 * @param booleanHolder The holder of the selection state
-	 * @param helpId The topic help ID to be registered for the new check box
-	 * @return The newly created <code>Button</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Button addUnmanagedCheckBox(Composite parent,
-	                                     String buttonText,
-	                                     WritablePropertyValueModel<Boolean> booleanHolder,
-	                                     String helpId) {
-
-		return this.addUnmanagedToggleButton(
-			parent,
-			buttonText,
-			booleanHolder,
-			helpId,
-			SWT.CHECK
-		);
+	protected final Button addCheckBox(
+			Composite parent,
+			String buttonText,
+			WritablePropertyValueModel<Boolean> booleanHolder,
+			String helpId,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		Button button = this.addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, SWT.CHECK);
+		this.controlEnabledState(enabledModel, button);
+		return button;
 	}
-
+	
 	/**
 	 * Creates a new <code>Section</code> that can be collapsed. A sub-pane is
 	 * automatically added as its client and is the returned <code>Composite</code>.
@@ -926,10 +906,22 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	protected final Combo addCombo(Composite container) {
+		Combo combo = this.addUnmanagedCombo(container);
+		this.manageWidget(combo);
+		return combo;
+	}
 
+	/**
+	 * Creates a new non-editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	private Combo addUnmanagedCombo(Composite container) {
 		Combo combo = this.widgetFactory.createCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		this.manageWidget(combo);
 		return combo;
 	}
 
@@ -959,6 +951,47 @@ public abstract class Pane<T extends Model>
 			stringConverter
 		);
 
+		return combo;
+	}
+
+	/**
+	 * Creates a new non-editable <code>Combo</code>.
+	 *
+	 * @param container The parent container
+	 * @param listHolder The <code>ListValueHolder</code>
+	 * @param selectedItemHolder The holder of the selected item
+	 * @param stringConverter The converter responsible to transform each item
+	 * into a string representation
+	 * @return The newly created <code>Combo</code>
+	 *
+	 * @category Layout
+	 */
+	private <V> Combo addUnmanagedCombo(Composite container,
+	                                     ListValueModel<V> listHolder,
+	                                     WritablePropertyValueModel<V> selectedItemHolder,
+	                                     StringConverter<V> stringConverter) {
+
+		Combo combo = this.addUnmanagedCombo(container);
+
+		ComboModelAdapter.adapt(
+			listHolder,
+			selectedItemHolder,
+			combo,
+			stringConverter
+		);
+
+		return combo;
+	}
+
+	protected final <V> Combo addCombo(
+			Composite container,
+			ListValueModel<V> listHolder,
+			WritablePropertyValueModel<V> selectedItemHolder,
+			StringConverter<V> stringConverter,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		Combo combo = this.addUnmanagedCombo(container, listHolder, selectedItemHolder, stringConverter);
+		this.controlEnabledState(enabledModel, combo);
 		return combo;
 	}
 
@@ -1030,6 +1063,18 @@ public abstract class Pane<T extends Model>
 		CCombo combo = addUnmanagedEditableCCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.manageWidget(combo);
 
+		return combo;
+	}
+
+	protected final <V> CCombo addEditableCCombo(
+			Composite container,
+			ListValueModel<V> listHolder,
+			WritablePropertyValueModel<V> selectedItemHolder,
+			StringConverter<V> stringConverter,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		CCombo combo = this.addUnmanagedEditableCCombo(container, listHolder, selectedItemHolder, stringConverter);
+		this.controlEnabledState(enabledModel, combo);
 		return combo;
 	}
 
@@ -1182,6 +1227,16 @@ public abstract class Pane<T extends Model>
 		return label;
 	}
 
+	protected final Label addLabel(
+			Composite container,
+			String labelText,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		Label label = this.addUnmanagedLabel(container, labelText);
+		this.controlEnabledState(enabledModel, label);
+		return label;
+	}
+
 	/**
 	 * Creates a new unmanaged <code>Label</code> widget.  Unmanaged means 
 	 * that this Pane will not handle the enabling/disabling of this widget.  
@@ -1192,7 +1247,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Label addUnmanagedLabel(Composite container,
+	private Label addUnmanagedLabel(Composite container,
 	                                 String labelText) {
 
 		return this.widgetFactory.createLabel(container, labelText);
@@ -2114,7 +2169,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Spinner addUnmanagedSpinner(Composite parent,
+	private Spinner addUnmanagedSpinner(Composite parent,
 	                                     WritablePropertyValueModel<Integer> numberHolder,
 	                                     int defaultValue,
 	                                     int minimumValue,
@@ -2160,6 +2215,18 @@ public abstract class Pane<T extends Model>
 		return dateTime;
 	}
 
+	protected final DateTime addDateTime(
+			Composite parent,
+			WritablePropertyValueModel<Integer> hoursHolder,
+			WritablePropertyValueModel<Integer> minutesHolder,
+			WritablePropertyValueModel<Integer> secondsHolder,
+			String helpId,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		DateTime dateTime = this.addUnmanagedDateTime(parent, hoursHolder, minutesHolder, secondsHolder, helpId);
+		this.controlEnabledState(enabledModel, dateTime);
+		return dateTime;
+	}
 
 	/**
 	 * Creates a new unmanaged DateTime of type SWT.TIME.  Unmanaged means that this Pane will
@@ -2175,7 +2242,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final DateTime addUnmanagedDateTime(Composite parent,
+	private DateTime addUnmanagedDateTime(Composite parent,
 											WritablePropertyValueModel<Integer> hoursHolder,
 											WritablePropertyValueModel<Integer> minutesHolder,
 											WritablePropertyValueModel<Integer> secondsHolder,
@@ -2203,7 +2270,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final <V> CCombo addUnmanagedEditableCCombo(Composite container,
+	private <V> CCombo addUnmanagedEditableCCombo(Composite container,
 	                                               ListValueModel<V> listHolder,
 	                                               WritablePropertyValueModel<V> selectedItemHolder,
 	                                               StringConverter<V> stringConverter) {
@@ -2229,7 +2296,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo addUnmanagedEditableCCombo(Composite container) {
+	private CCombo addUnmanagedEditableCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createEditableCCombo(container);
 		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -2425,7 +2492,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final List addUnmanagedList(Composite container,
+	private List addUnmanagedList(Composite container,
 	                               WritablePropertyValueModel<String> selectionHolder,
 	                               String helpId) {
 
@@ -2535,7 +2602,7 @@ public abstract class Pane<T extends Model>
 	                                        String helpId) {
 
 		Text text = this.addMultiLineText(container, lineCount, helpId);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		SWTTools.bind(textHolder, text);
 		return text;
 	}
 
@@ -2597,7 +2664,7 @@ public abstract class Pane<T extends Model>
 	                                       WritablePropertyValueModel<String> textHolder) {
 
 		Text text = this.addPasswordText(container);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		SWTTools.bind(textHolder, text);
 
 		return text;
 	}
@@ -3091,7 +3158,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text addUnmanagedText(Composite container) {
+	private Text addUnmanagedText(Composite container) {
 		Text text = this.widgetFactory.createText(container);
 		return text;
 	}
@@ -3128,7 +3195,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text addUnmanagedText(Composite container, String helpId) {
+	private Text addUnmanagedText(Composite container, String helpId) {
 
 		Text text = this.addUnmanagedText(container);
 		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -3170,11 +3237,22 @@ public abstract class Pane<T extends Model>
 	                               String helpId) {
 
 		Text text = this.addText(container, helpId);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		SWTTools.bind(textHolder, text);
 
 		return text;
 	}
 	
+	protected final Text addText(
+			Composite container,
+			WritablePropertyValueModel<String> textHolder,
+			String helpId,
+			PropertyValueModel<Boolean> enabledModel
+	) {
+		Text text = this.addUnmanagedText(container, textHolder, helpId);
+		this.controlEnabledState(enabledModel, text);
+		return text;
+	}
+
 	/**
 	 * Creates a new unmanaged <code>Text</code> widget.  Unmanaged means 
 	 * that this Pane will not handle the enabling/disabling of this widget.  
@@ -3187,12 +3265,12 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Text addUnmanagedText(Composite container,
+	private Text addUnmanagedText(Composite container,
 	                               WritablePropertyValueModel<String> textHolder,
 	                               String helpId) {
 
 		Text text = this.addUnmanagedText(container, helpId);
-		TextFieldModelAdapter.adapt(textHolder, text);
+		SWTTools.bind(textHolder, text);
 
 		return text;
 	}
@@ -3433,8 +3511,29 @@ public abstract class Pane<T extends Model>
 		for (Control control : this.managedWidgets) {
 			control.setEnabled(enabled);
 		}
+		this.enabledModel.setValue(Boolean.valueOf(enabled));
 	}
 
+	private void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
+		this.controlEnabledState_(this.wrapEnabledModel(booleanModel), controls);
+	}
+
+	/**
+	 * Assume the "enabled" models can return null (which is typical with aspect
+	 * adapters etc.).
+	 */
+	private PropertyValueModel<Boolean> wrapEnabledModel(PropertyValueModel<Boolean> booleanModel) {
+		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, BooleanTransformer.FALSE);
+	}
+	
+	private void controlEnabledState_(PropertyValueModel<Boolean> booleanModel, Control... controls) {
+		SWTTools.controlEnabledState(this.andEnabledModel(booleanModel), controls);
+	}
+	
+	private PropertyValueModel<Boolean> andEnabledModel(PropertyValueModel<Boolean> booleanModel) {
+		return CompositeBooleanPropertyValueModel.and(this.enabledModel, booleanModel);
+	}
+	
 	/**
 	 * Changes the enablement state of the widgets of this pane.
 	 *
@@ -3762,7 +3861,7 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @return The nearest window displaying this pane
 	 */
-	protected final Shell getShell() {
+	public final Shell getShell() {
 		return this.container.getShell();
 	}
 

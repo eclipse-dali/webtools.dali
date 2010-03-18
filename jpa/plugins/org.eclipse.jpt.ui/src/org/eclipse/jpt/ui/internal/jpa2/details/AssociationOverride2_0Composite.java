@@ -79,10 +79,4 @@ public class AssociationOverride2_0Composite
 			}
 		};
 	}
-	
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-//		this.joinColumnsComposite.enableWidgets(enabled);
-	}
 }

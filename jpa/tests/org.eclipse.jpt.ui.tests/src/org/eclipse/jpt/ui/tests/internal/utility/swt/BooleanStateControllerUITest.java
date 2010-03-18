@@ -33,6 +33,13 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * Play around with boolean state controllers ('enabled' and 'visible').
+ * <p>
+ * Note the behavior of composites:<ul>
+ * <li>When a composite is disabled, its children are disabled but <em>not</em>
+ *     grayed out.
+ * <li>When a composite is made invisible, its children are also made
+ *     invisible.
+ * </ul>
  */
 @SuppressWarnings("nls")
 public class BooleanStateControllerUITest
@@ -75,15 +82,15 @@ public class BooleanStateControllerUITest
 	@Override
 	protected Control createContents(Composite parent) {
 		((Shell) parent).setText(this.getClass().getSimpleName());
-		parent.setSize(500, 100);
+		parent.setSize(500, 150);
 		Composite mainPanel = new Composite(parent, SWT.NONE);
 		mainPanel.setLayout(new FormLayout());
-		Control widgetPanel = this.buildWidgetPanel(mainPanel);
+		Control widgetPanel = this.buildWidgetPanels(mainPanel);
 		this.buildControlPanel(mainPanel, widgetPanel);
 		return mainPanel;
 	}
 
-	private Control buildWidgetPanel(Composite parent) {
+	private Control buildWidgetPanels(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 
 		FormData fd = new FormData();
@@ -93,7 +100,17 @@ public class BooleanStateControllerUITest
 			fd.right = new FormAttachment(100);
 		panel.setLayoutData(fd);
 
-		panel.setLayout(new FillLayout());
+		panel.setLayout(new FillLayout(SWT.VERTICAL));
+
+		this.buildWidgetPanel1(panel);
+		this.buildWidgetPanel2(panel);
+
+		return panel;
+	}
+
+	private void buildWidgetPanel1(Composite parent) {
+		Composite panel = new Composite(parent, SWT.NONE);
+		panel.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Button enabledComboBoxCheckBox = this.buildEnabledComboBoxCheckBox(panel);
 		SWTTools.bind(this.enabledHolder, enabledComboBoxCheckBox);
@@ -106,19 +123,19 @@ public class BooleanStateControllerUITest
 		SWTTools.bind(this.listHolder, this.listSelectionHolder, comboBox);
 		SWTTools.controlEnabledState(this.enabledHolder, comboBoxLabel, comboBox);
 		SWTTools.controlVisibleState(this.visibleHolder, comboBoxLabel, comboBox);
-
-		return panel;
 	}
 
 	private Button buildEnabledComboBoxCheckBox(Composite parent) {
-		Button checkBox = new Button(parent, SWT.CHECK);
-		checkBox.setText("enabled");
-		return checkBox;
+		return this.buildCheckBox(parent, "enabled");
 	}
 
 	private Button buildVisibleComboBoxCheckBox(Composite parent) {
+		return this.buildCheckBox(parent, "visible");
+	}
+
+	private Button buildCheckBox(Composite parent, String text) {
 		Button checkBox = new Button(parent, SWT.CHECK);
-		checkBox.setText("visible");
+		checkBox.setText(text);
 		return checkBox;
 	}
 
@@ -130,6 +147,19 @@ public class BooleanStateControllerUITest
 
 	private Combo buildComboBox(Composite parent) {
 		return new Combo(parent, SWT.READ_ONLY);
+	}
+
+	private void buildWidgetPanel2(Composite parent) {
+		Composite panel = new Composite(parent, SWT.NONE);
+		panel.setLayout(new FillLayout(SWT.HORIZONTAL));
+
+		Button checkBox1 = this.buildCheckBox(panel, "one");
+		this.buildCheckBox(panel, "two");
+		this.buildCheckBox(panel, "three");
+		this.buildCheckBox(panel, "four");
+
+		SWTTools.controlEnabledState(this.enabledHolder, panel, checkBox1);
+		SWTTools.controlVisibleState(this.visibleHolder, panel);
 	}
 
 	private void buildControlPanel(Composite parent, Control widgetPanel) {

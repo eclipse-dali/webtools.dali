@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,7 +39,7 @@ public abstract class CollectionPropertyValueModelAdapter<V>
 	extends AbstractPropertyValueModelAdapter<V>
 {
 	/** The wrapped collection value model. */
-	protected final CollectionValueModel<?> collectionHolder;
+	protected final CollectionValueModel<?> collectionModel;
 
 	/** A listener that allows us to synch with changes to the wrapped collection holder. */
 	protected final CollectionChangeListener collectionChangeListener;
@@ -51,9 +51,9 @@ public abstract class CollectionPropertyValueModelAdapter<V>
 	 * Construct a property value model with the specified wrapped
 	 * collection value model.
 	 */
-	protected CollectionPropertyValueModelAdapter(CollectionValueModel<?> collectionHolder) {
+	protected CollectionPropertyValueModelAdapter(CollectionValueModel<?> collectionModel) {
 		super();
-		this.collectionHolder = collectionHolder;
+		this.collectionModel = collectionModel;
 		this.collectionChangeListener = this.buildCollectionChangeListener();
 	}
 
@@ -86,7 +86,7 @@ public abstract class CollectionPropertyValueModelAdapter<V>
 	 */
 	@Override
 	protected void engageModel_() {
-		this.collectionHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
+		this.collectionModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public abstract class CollectionPropertyValueModelAdapter<V>
 	 */
 	@Override
 	protected void disengageModel_() {
-		this.collectionHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
+		this.collectionModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.collectionChangeListener);
 	}
 
 	

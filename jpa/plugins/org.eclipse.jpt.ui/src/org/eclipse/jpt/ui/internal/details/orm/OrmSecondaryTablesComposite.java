@@ -183,7 +183,7 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		// defaultSchema and defaultCatalog should not be taken from the Table in this case.  
 		// The table default schema could be what is the specified schema on the java table.
 		return new SecondaryTableDialog(
-			getControl().getShell(), getSubject().getJpaProject(), 
+			getShell(), getSubject().getJpaProject(), 
 			getSubject().getMappingFileRoot().getCatalog(), 
 			getSubject().getMappingFileRoot().getSchema());
 	}

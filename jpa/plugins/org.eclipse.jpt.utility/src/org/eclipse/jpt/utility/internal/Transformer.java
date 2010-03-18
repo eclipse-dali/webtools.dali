@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2007 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,10 @@ public interface Transformer<T1, T2> {
 	T2 transform(T1 o);
 
 
+	/**
+	 * A "null" transformer will perform no transformation at all;
+	 * it will simply return the object "untransformed".
+	 */
 	final class Null<S1, S2> implements Transformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final Transformer INSTANCE = new Null();
@@ -52,6 +56,12 @@ public interface Transformer<T1, T2> {
 		}
 	}
 
+	/**
+	 * A "disabled" transformer will throw an exception if
+	 * {@link #transform(Object)} is called. This is useful in situations
+	 * where a transformer is optional and the default transformer should
+	 * not be used.
+	 */
 	final class Disabled<S1, S2> implements Transformer<S1, S2>, Serializable {
 		@SuppressWarnings("unchecked")
 		public static final Transformer INSTANCE = new Disabled();

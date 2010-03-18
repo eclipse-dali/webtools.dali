@@ -205,7 +205,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 	}
 	
 	protected EclipseLinkConverterDialog buildEclipseLinkConverterDialog() {
-		return new EclipseLinkConverterDialog(getControl().getShell());
+		return new EclipseLinkConverterDialog(getShell());
 	}
 
 	protected void addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog) {
