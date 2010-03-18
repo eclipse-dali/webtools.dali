@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
@@ -98,7 +98,7 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		return (this.converterClass != null)
-				&& JDTTools.typeIsSubTypeOf(this.converterClassAdapter.getExpression(astRoot), interfaceName);
+				&& ASTTools.typeIsSubTypeOf(this.converterClassAdapter.getExpression(astRoot), interfaceName);
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,14 +13,15 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 
-public class JDTToolsTests extends AnnotationTestCase {
+@SuppressWarnings("nls")
+public class ASTToolsTests extends AnnotationTestCase {
 
-	public JDTToolsTests(String name) {
+	public ASTToolsTests(String name) {
 		super(name);
 	}
 
@@ -41,7 +42,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
+		String actual = ASTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -54,7 +55,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
+		String actual = ASTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -67,7 +68,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name)daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
+		String actual = ASTTools.resolveEnum((Name)daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 
@@ -80,7 +81,7 @@ public class JDTToolsTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "foo");
 		JDTFieldAttribute field = this.idField(cu);
 
-		String actual = JDTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
+		String actual = ASTTools.resolveEnum((Name) daea.getExpression(field.getModifiedDeclaration(this.buildASTRoot(cu))));
 		assertEquals("enums.TestEnum.BAZ", actual);
 	}
 

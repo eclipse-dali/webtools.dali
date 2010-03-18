@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -180,7 +180,7 @@ public final class SourceCompilationUnit
 	}
 	
 	public CompilationUnit buildASTRoot() {
-		return JDTTools.buildASTRoot(this.compilationUnit);
+		return ASTTools.buildASTRoot(this.compilationUnit);
 	}
 
 

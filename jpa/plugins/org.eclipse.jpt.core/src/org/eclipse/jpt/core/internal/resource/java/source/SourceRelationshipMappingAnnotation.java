@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
@@ -137,7 +137,7 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	private String buildFullyQualifiedTargetEntityClassName(CompilationUnit astRoot) {
-		return (this.targetEntity == null) ? null : JDTTools.resolveFullyQualifiedName(this.targetEntityAdapter.getExpression(astRoot));
+		return (this.targetEntity == null) ? null : ASTTools.resolveFullyQualifiedName(this.targetEntityAdapter.getExpression(astRoot));
 	}
 
 	// ***** fetch

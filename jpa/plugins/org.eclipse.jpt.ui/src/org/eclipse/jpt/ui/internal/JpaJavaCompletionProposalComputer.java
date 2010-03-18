@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -56,32 +56,34 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 	}
 
 	/**
-	 * We fail silently here because (it seems) "expected" exceptions occur
-	 * more frequently than intermittent "unexpected" exceptions that might
+	 * We fail silently here because (it seems) <em>expected</em> exceptions occur
+	 * more frequently than intermittent <em>unexpected</em> exceptions that might
 	 * merit investigation (and a logged stacktrace might be the only hint as
 	 * to what happened).
-	 * 
-	 * We will get an "expected" exception (typically a NPE) here if the user:
-	 *   1. modifies the Java source file in a way that puts it drastically out
-	 *     of synch with the Dali context model (e.g. deleting a field or
+	 * <p>
+	 * We will get an <em>expected</em> exception (typically a {@link NullPointerException NPE})
+	 * here if the user:<ol>
+	 * <li>modifies the Java source file in a way that puts it drastically out
+	 *     of sync with the Dali context model (e.g. deleting a field or
 	 *     annotation)
-	 *   2. immediately invokes Content Assist (Ctrl+Space)
+	 * <li>immediately invokes Content Assist (typically <code>Ctrl+Space</code>)
+	 * </ol>
 	 * The AST we build here will be based on the just-modified Java source; but,
 	 * since the user moved quickly and we will not have yet received any Java
 	 * change notification (since we only get a Java change notification when
 	 * the user has paused typing for at least 0.5 seconds), the context model
 	 * will still be based on the unmodified Java source. As the new AST is
 	 * passed down through the context model to the resource model all the code
-	 * expects to find the AST in synch with the model. When this is not the
+	 * expects to find the AST in sync with the model. When this is not the
 	 * case (e.g. a field in the resource model is no longer present in the AST
 	 * because the user has deleted it or modified the code in such a way that
 	 * the parser can no longer detect the field) the model will probably choke
 	 * when it cannot find the corresponding AST node.
-	 * 
+	 * <p>
 	 * It seems reasonable, in these situations, to simply return no completion
 	 * proposals. If the user simply waits a moment and tries again, we will be
 	 * able to successfully calculate some proposals.
-	 * 
+	 * <p>
 	 * ~bjv
 	 */
 	private List<ICompletionProposal> computeCompletionProposals(JavaContentAssistInvocationContext context) {
@@ -137,7 +139,8 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 //		String snippet = source.substring(Math.max(0, tokenStart - 20), Math.min(source.length(), tokenEnd + 21));
 //		System.out.println("surrounding snippet: =>" + snippet + "<=");
 
-		CompilationUnit astRoot = JDTTools.buildASTRoot(cu);
+		// TODO move this parser call into the model...
+		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JpaStructureNode structureNode : rootStructureNodes) {
 			for (Iterator<String> stream = ((JavaPersistentType) structureNode).javaCompletionProposals(context.getInvocationOffset(), filter, astRoot); stream.hasNext(); ) {

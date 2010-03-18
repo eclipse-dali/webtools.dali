@@ -23,7 +23,7 @@ import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -74,7 +74,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 * called from {@link InitialAnnotationVisitor}
 	 */
 	/* private */ void addInitialAnnotation(org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot) {
-		String jdtAnnotationName = JDTTools.resolveAnnotation(node);
+		String jdtAnnotationName = ASTTools.resolveAnnotation(node);
 		if (jdtAnnotationName != null) {
 			this.addInitialAnnotation(jdtAnnotationName, astRoot);
 		}
@@ -325,7 +325,7 @@ abstract class SourcePersistentMember<E extends Member>
 	 * called from {@link SynchronizeAnnotationVisitor}
 	 */
 	/* private */ void addOrSyncAnnotation(org.eclipse.jdt.core.dom.Annotation node, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
-		String jdtAnnotationName = JDTTools.resolveAnnotation(node);
+		String jdtAnnotationName = ASTTools.resolveAnnotation(node);
 		if (jdtAnnotationName != null) {
 			this.addOrSyncAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
 		}

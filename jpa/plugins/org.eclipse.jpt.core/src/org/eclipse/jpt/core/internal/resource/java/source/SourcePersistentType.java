@@ -28,7 +28,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.GeneratedAnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
@@ -579,7 +579,7 @@ final class SourcePersistentType
 		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
-			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
 			int occurrence = counters.increment(signature);
 			this.methods.add(this.buildMethod(signature, occurrence, astRoot));
 		}
@@ -590,7 +590,7 @@ final class SourcePersistentType
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		HashSet<JavaResourcePersistentAttribute> methodsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.methods);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
-			MethodSignature signature = JDTTools.buildMethodSignature(methodDeclaration);
+			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
 			int occurrence = counters.increment(signature);
 
 			JavaResourcePersistentAttribute method = this.getMethod(signature, occurrence);

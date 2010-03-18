@@ -201,7 +201,7 @@ public abstract class JDTMember
 	}
 
 	protected CompilationUnit buildASTRoot() {
-		return JDTTools.buildASTRoot(this.compilationUnit);
+		return ASTTools.buildASTRoot(this.compilationUnit);
 	}
 
 

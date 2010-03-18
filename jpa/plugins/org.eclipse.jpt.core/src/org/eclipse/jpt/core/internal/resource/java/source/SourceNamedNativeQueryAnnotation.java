@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
@@ -148,7 +148,7 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	private String buildFullyQualifiedResultClassName(CompilationUnit astRoot) {
-		return (this.resultClass == null) ? null : JDTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
+		return (this.resultClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
 	}
 
 	// ***** result set mapping

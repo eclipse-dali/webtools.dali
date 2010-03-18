@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
@@ -105,7 +105,7 @@ public final class SourceIdClassAnnotation
 	}
 
 	private String buildFullyQualifiedClassName(CompilationUnit astRoot) {
-		return (this.value == null) ? null : JDTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
 	}
 
 

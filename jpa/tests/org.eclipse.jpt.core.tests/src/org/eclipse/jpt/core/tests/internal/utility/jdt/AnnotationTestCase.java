@@ -30,7 +30,7 @@ import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
@@ -300,7 +300,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 
 	protected CompilationUnit buildASTRoot(ICompilationUnit cu) {
-		return JDTTools.buildASTRoot(cu);
+		return ASTTools.buildASTRoot(cu);
 	}
 
 

@@ -33,18 +33,18 @@ import org.eclipse.jpt.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
 
 /**
- * Convenience methods for dealing with JDT objects.
+ * Convenience methods for dealing with JDT ASTs.
  */
-public class JDTTools {
+public class ASTTools {
 
 	/**
-	 * Build an AST for the specified compilation unit with its bindings
-	 * resolved (and the resultant performance hit).
+	 * Build an AST without method bodies for the specified compilation unit
+	 * with its bindings resolved (and the resultant performance hit).
 	 */
 	public static CompilationUnit buildASTRoot(ICompilationUnit compilationUnit) {
 		ASTParser parser = ASTParser.newParser(AST.JLS3);
 		parser.setSource(compilationUnit);
-		parser.setFocalPosition(0);  // we need only a "skeleton" AST
+		parser.setIgnoreMethodBodies(true);  // we don't need method bodies
 		parser.setResolveBindings(true);
 		parser.setBindingsRecovery(true);  // see bugs 196200, 222735
 		return (CompilationUnit) parser.createAST(null);
@@ -189,7 +189,7 @@ public class JDTTools {
 			ITypeBinding result = findTypeInHierarchy(interfaceBinding, searchTypeName, visited);
 			if (result != null) {
 				return result;
-			}			
+			}
 		}
 
 		ITypeBinding superBinding = typeBinding.getSuperclass();
