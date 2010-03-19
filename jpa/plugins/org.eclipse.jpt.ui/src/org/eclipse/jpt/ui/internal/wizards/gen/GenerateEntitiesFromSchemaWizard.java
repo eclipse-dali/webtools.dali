@@ -28,6 +28,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.resource.LocalResourceManager;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
@@ -68,7 +71,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	
 	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".GenerateEntitiesFromSchemaWizard"; //$NON-NLS-1$
 
-	private static final String DONT_SHOW_OVERWRITE_WARNING_DIALOG = "DONT_SHOW_OVERWRITE_WARNING_DIALOG";
+	private static final String DONT_SHOW_OVERWRITE_WARNING_DIALOG = "DONT_SHOW_OVERWRITE_WARNING_DIALOG"; //$NON-NLS-1$
 
 	private JpaProject jpaProject;
 
@@ -86,7 +89,10 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	
 	private TablesAndColumnsCustomizationWizardPage tablesAndColumnsCustomizationPage;
 	
+	protected final ResourceManager resourceManager;
+	
 	public GenerateEntitiesFromSchemaWizard() {
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 	
@@ -94,6 +100,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		super();
 		this.jpaProject = jpaProject;
 		this.selection = selection;
+		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 		this.setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
@@ -112,17 +119,17 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	}
 
 	private void addMainPages() {
-		this.tablesSelectorPage = new TablesSelectorWizardPage(this.jpaProject);
+		this.tablesSelectorPage = new TablesSelectorWizardPage(this.jpaProject, this.resourceManager);
 		this.addPage(this.tablesSelectorPage);
 		
-		this.tableAssociationsPage = new TableAssociationsWizardPage(this.jpaProject);
+		this.tableAssociationsPage = new TableAssociationsWizardPage(this.jpaProject, this.resourceManager);
 		this.addPage(this.tableAssociationsPage);
 
 		this.defaultTableGenerationPage = new DefaultTableGenerationWizardPage(this.jpaProject);
 		this.addPage(this.defaultTableGenerationPage);
 		this.defaultTableGenerationPage.init(this.selection);
 		
-		this.tablesAndColumnsCustomizationPage = new TablesAndColumnsCustomizationWizardPage(this.jpaProject);
+		this.tablesAndColumnsCustomizationPage = new TablesAndColumnsCustomizationWizardPage(this.jpaProject, this.resourceManager);
 		this.addPage(this.tablesAndColumnsCustomizationPage);
 		this.tablesAndColumnsCustomizationPage.init(this.selection);		
 	}
@@ -513,4 +520,9 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		this.setWindowTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_generateEntities);
 	}
 
+	@Override
+	public void dispose() {
+		this.resourceManager.dispose();
+		super.dispose();
+	}
 }

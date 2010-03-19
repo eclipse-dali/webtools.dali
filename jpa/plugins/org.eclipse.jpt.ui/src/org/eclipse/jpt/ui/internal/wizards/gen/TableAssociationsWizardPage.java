@@ -26,6 +26,7 @@ import org.eclipse.jdt.internal.ui.wizards.dialogfields.DialogField;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.IStringButtonAdapter;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.StringButtonDialogField;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jface.wizard.WizardPage;
@@ -89,13 +90,16 @@ public class TableAssociationsWizardPage extends WizardPage {
 	private Label joinConditionLabel;
 	private Text joinConditionText; 
 	
-	private Composite detailPanel ;
-	private StackLayout detailPanelStatckLayout ;
-	private Composite emptyPanel ;
+	private Composite detailPanel;
+	private StackLayout detailPanelStatckLayout;
+	private Composite emptyPanel;
 	
-	protected TableAssociationsWizardPage(JpaProject jpaProject ) {
+	protected final ResourceManager resourceManager;
+
+	protected TableAssociationsWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super("Table Associations"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
+		this.resourceManager = resourceManager;
 		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_title);
 		setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_desc);
 		
@@ -137,7 +141,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		
 		createAssociationLink = new Button(c, SWT.NONE);
 		createAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_newAssoc );
-		createAssociationLink.setImage( ImageRepository.getAddButtonImage() );
+		createAssociationLink.setImage( ImageRepository.getAddButtonImage(this.resourceManager) );
 		createAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
 			public void widgetSelected(SelectionEvent e) {
@@ -150,7 +154,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		Color foreground = new Color(Display.getDefault(), 0,0,255);
 		deleteAssociationLink.setForeground(foreground);
 		foreground.dispose();
-		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage()  );
+		deleteAssociationLink.setImage( ImageRepository.getDeleteButtonImage(this.resourceManager));
 		deleteAssociationLink.setToolTipText( JptUiEntityGenMessages.GenerateEntitiesWizard_assocPage_delAssoc );
 		deleteAssociationLink.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}	
@@ -230,7 +234,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		SWTUtil.fillColumnsWithIndent(referrerRoleCheckBox , columns-1, 20 );
 		newLabel(parent, "");//$NON-NLS-1$
 		
-		referrerRolePropertyLabel = newLabelWithIndent( parent,  JptUiEntityGenMessages.property, 40 ); //$NON-NLS-1$
+		referrerRolePropertyLabel = newLabelWithIndent( parent,  JptUiEntityGenMessages.property, 40 );
 		referrerRolePropertyField = new Text( parent, SWT.BORDER);
 		fillColumns(referrerRolePropertyField, 2);
 		referrerRolePropertyField.addModifyListener(new ModifyListener(){
@@ -258,7 +262,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 				}
 			}	
 		}) ;
-		referrerRoleCascadeField.setLabelText( JptUiEntityGenMessages.cascade ); //$NON-NLS-1$
+		referrerRoleCascadeField.setLabelText( JptUiEntityGenMessages.cascade );
 		referrerRoleCascadeField.setButtonLabel(""); //$NON-NLS-1$
 		referrerRoleCascadeField.doFillIntoGrid(parent, 3);
 		referrerRoleCascadeField.getTextControl(parent).setEditable(false);
@@ -266,7 +270,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		LayoutUtil.setWidthHint(referrerRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referrerRoleCascadeField.getChangeControl(null);
 		GridData data = (GridData)btn.getLayoutData();
-		btn.setImage( ImageRepository.getBrowseButtonImage() );
+		btn.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager) );
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;
 		btn.setLayoutData(data);
@@ -345,7 +349,7 @@ public class TableAssociationsWizardPage extends WizardPage {
 		SWTUtil.fillColumnsWithIndent( referencedRoleCheckBox , columns-1, 20 );
 		newLabel(parent, "");//$NON-NLS-1$
 		
-		referencedRolePropertyLabel = SWTUtil.newLabelWithIndent(parent,  JptUiEntityGenMessages.property, 40 ); //$NON-NLS-1$
+		referencedRolePropertyLabel = SWTUtil.newLabelWithIndent(parent,  JptUiEntityGenMessages.property, 40 );
 		
 		referencedRolePropertyField = new Text( parent, SWT.BORDER);
 		fillColumns(referencedRolePropertyField, 2);
@@ -378,14 +382,14 @@ public class TableAssociationsWizardPage extends WizardPage {
 				}
 			}	
 		}) ;
-		referencedRoleCascadeField.setLabelText( JptUiEntityGenMessages.cascade ); //$NON-NLS-1$
+		referencedRoleCascadeField.setLabelText( JptUiEntityGenMessages.cascade );
 		referencedRoleCascadeField.setButtonLabel(""); //$NON-NLS-1$
 		referencedRoleCascadeField.doFillIntoGrid(parent, 3);
 		referencedRoleCascadeField.getTextControl(parent).setEditable( false);
 		int maxFieldWidth = convertWidthInCharsToPixels(40);
 		LayoutUtil.setWidthHint(referencedRoleCascadeField.getTextControl(null), maxFieldWidth );
 		Button btn = referencedRoleCascadeField.getChangeControl(null);
-		btn.setImage( ImageRepository.getBrowseButtonImage() );
+		btn.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager) );
 		GridData data = (GridData)btn.getLayoutData();
 		data.horizontalAlignment = SWT.BEGINNING;
 		data.widthHint = 30;
@@ -509,12 +513,12 @@ public class TableAssociationsWizardPage extends WizardPage {
 		layoutData.heightHint = 400;
 		composite.setLayoutData(layoutData);
 		
-		associationList = new AssociationsListComposite(composite, this);
+		associationList = new AssociationsListComposite(composite, this, this.resourceManager);
 	}
 	
 	private void launchNewAssociationsWizard() {
 		ORMGenCustomizer customizer = getCustomizer();
-		NewAssociationWizard wizard = new NewAssociationWizard(this.jpaProject, customizer );
+		NewAssociationWizard wizard = new NewAssociationWizard(this.jpaProject, customizer, this.resourceManager);
 		
 		WizardDialog dialog = new WizardDialog( this.getShell(), wizard);
 		dialog.create();

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
@@ -78,10 +79,13 @@ class TablesSelectorWizardPage extends WizardPage{
 	private DatabaseGroup databaseGroup;
 	private CheckboxTableViewer tableTable;
 	private Button updatePersistenceXmlCheckBox;
+
+	protected final ResourceManager resourceManager;
 	
-	TablesSelectorWizardPage(JpaProject jpaProject ) {
+	TablesSelectorWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super("TablesSelectorWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
+		this.resourceManager = resourceManager;
 		this.schema = jpaProject.getDefaultDbSchema();
 		setTitle(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_selectTable );
 		setMessage(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_chooseEntityTable );
@@ -203,7 +207,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	}
 
 	private DatabaseGroup createDatabaseGroup(Composite parent, int widthHint) {
-		DatabaseGroup dbGroup = new DatabaseGroup(this.getContainer(), jpaProject, parent, widthHint);
+		DatabaseGroup dbGroup = new DatabaseGroup(this.getContainer(), jpaProject, parent, resourceManager, widthHint);
 		/**
 		 * listen for when the Database Connection changes its selected schema
 		 * so we can keep the page in synch
@@ -323,7 +327,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		Button selectAllButton = new Button(buttonComposite, SWT.PUSH);
 		selectAllButton.setToolTipText(JptUiMessages.General_selectAll);
-		selectAllButton.setImage( ImageRepository.getSelectAllButtonImage()  );
+		selectAllButton.setImage( ImageRepository.getSelectAllButtonImage(this.resourceManager)  );
 		GridData gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		selectAllButton.setLayoutData(gridData);
@@ -337,7 +341,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		Button deselectAllButton = new Button(buttonComposite, SWT.PUSH);
 		deselectAllButton.setToolTipText(JptUiMessages.General_deselectAll);
-		deselectAllButton.setImage( ImageRepository.getDeselectAllButtonImage() );
+		deselectAllButton.setImage( ImageRepository.getDeselectAllButtonImage(this.resourceManager) );
 		gridData =  new GridData();
 		gridData.horizontalAlignment = GridData.FILL;
 		deselectAllButton.setLayoutData(gridData);

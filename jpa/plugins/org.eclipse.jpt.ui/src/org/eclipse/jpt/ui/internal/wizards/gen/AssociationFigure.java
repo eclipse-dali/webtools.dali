@@ -21,6 +21,7 @@ import org.eclipse.draw2d.PolygonDecoration;
 import org.eclipse.draw2d.PolylineConnection;
 import org.eclipse.draw2d.XYLayout;
 import org.eclipse.draw2d.geometry.Rectangle;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.gen.internal.Association;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -53,7 +54,7 @@ class AssociationFigure extends Button {
 	Label referrerLabel ;
 	Label descriptionLabel ;
 	
-	AssociationFigure(Association association) {
+	AssociationFigure(Association association, ResourceManager resourceManager) {
 		this.association = association;
 		
 		XYLayout contentsLayout = new XYLayout();
@@ -61,8 +62,8 @@ class AssociationFigure extends Button {
 		setBorder( unselectedBorder );
 
 		//Create the figures for referrer table and referenced table
-		tableFig1 = new TableFigure( association.getReferrerTable().getName() ); 
-		tableFig2 = new TableFigure( association.getReferencedTable().getName() ); 
+		tableFig1 = new TableFigure( association.getReferrerTable().getName(), resourceManager); 
+		tableFig2 = new TableFigure( association.getReferencedTable().getName(), resourceManager); 
 		
 		contentsLayout.setConstraint(tableFig1, new Rectangle(10,10,150,20));
 		contentsLayout.setConstraint(tableFig2, new Rectangle(280, 10, 150, 20));

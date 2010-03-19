@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.internal.ui.wizards.dialogfields.LayoutUtil;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -61,10 +62,13 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 	private ORMGenTable selectedTable;
 	
 	private ORMGenCustomizer customizer;
+
+	protected final ResourceManager resourceManager;
 	
-	protected TablesAndColumnsCustomizationWizardPage(JpaProject jpaProject ) {
+	protected TablesAndColumnsCustomizationWizardPage(JpaProject jpaProject, ResourceManager resourceManager) {
 		super(true, "TablesAndColumnsCustomizationWizardPage"); //$NON-NLS-1$
 		this.jpaProject = jpaProject;
+		this.resourceManager = resourceManager;
 		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_tablesAndColumnsPage_title );
 		setMessage( JptUiEntityGenMessages.GenerateEntitiesWizard_tablesAndColumnsPage_desc);
 	}
@@ -325,12 +329,12 @@ public class TablesAndColumnsCustomizationWizardPage extends NewTypeWizardPage {
 		@Override
 		public Image getImage(Object element) {
 			if( element instanceof ORMGenTable ){
-				return ImageRepository.getTableImage();
+				return ImageRepository.getTableImage(resourceManager);
 			}else 	if( element instanceof ORMGenColumn ){
 				ORMGenColumn col = ( ORMGenColumn)element;
 				return col.isPrimaryKey() ?
-						ImageRepository.getKeyColumnImage() :
-						ImageRepository.getColumnImage();
+						ImageRepository.getKeyColumnImage(resourceManager) :
+						ImageRepository.getColumnImage(resourceManager);
 			}
 			return null;
 		}

@@ -18,6 +18,7 @@ import org.eclipse.draw2d.Figure;
 import org.eclipse.draw2d.FigureCanvas;
 import org.eclipse.draw2d.LineBorder;
 import org.eclipse.draw2d.ToolbarLayout;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.gen.internal.Association;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
@@ -34,10 +35,13 @@ public class AssociationsListComposite extends FigureCanvas {
 	TableAssociationsWizardPage tableAssociationsWizardPage; //the parent wizard page
 	AssociationFigure selectedAssociationFigure ;
 	
-	public AssociationsListComposite(Composite parent, TableAssociationsWizardPage tableAssociationsWizardPage){
+	protected final ResourceManager resourceManager;
+	
+	public AssociationsListComposite(Composite parent, TableAssociationsWizardPage tableAssociationsWizardPage, ResourceManager resourceManager){
 		super(parent);
 		this.tableAssociationsWizardPage = tableAssociationsWizardPage;
-
+		this.resourceManager = resourceManager;
+		
 		setBounds(10, 10 , 500, 200);
 		Color backgroundColor = new Color(Display.getDefault(), 255,255,255);
 		setBackground(backgroundColor);
@@ -59,7 +63,7 @@ public class AssociationsListComposite extends FigureCanvas {
 		if( associations != null ){
 			for( int i = 0; i <associations.size(); i ++ ){
 				Association association = associations.get(i);
-				AssociationFigure assocFigure = new AssociationFigure(association);
+				AssociationFigure assocFigure = new AssociationFigure(association, this.resourceManager);
 				assocFigure.addActionListener( listener );
 				figure.add(assocFigure);
 			}

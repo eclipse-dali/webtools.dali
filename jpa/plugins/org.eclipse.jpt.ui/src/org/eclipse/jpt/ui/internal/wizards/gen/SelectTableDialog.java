@@ -13,6 +13,7 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jpt.db.Schema;
@@ -27,10 +28,10 @@ import org.eclipse.ui.dialogs.ElementListSelectionDialog;
  */
 public class SelectTableDialog extends ElementListSelectionDialog {
 	
-	public SelectTableDialog(Shell shell){
+	public SelectTableDialog(Shell shell, final ResourceManager resourceManager){
 		super(shell, new ILabelProvider(){
 			public Image getImage(Object element) {
-				return ImageRepository.getTableImage();
+				return ImageRepository.getTableImage(resourceManager);
 			}
 
 			public String getText(Object element) {
@@ -50,8 +51,8 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 		this.setMessage( JptUiEntityGenMessages.selectTableDlgDesc);//
 	}
 	
-	public SelectTableDialog(Shell shell, Schema schema){
-		this(shell);
+	public SelectTableDialog(Shell shell, ResourceManager resourceManager, Schema schema){
+		this(shell, resourceManager);
 		
 		ArrayList<String> list = new ArrayList<String>();
 		for (Table table : schema.getTables()) {
@@ -59,14 +60,14 @@ public class SelectTableDialog extends ElementListSelectionDialog {
 		}
 		this.setElements( list.toArray() );
 		
-	}	
+	}
 	
-	public SelectTableDialog(Shell shell, List<String> tableNames){
-		this(shell);
+	public SelectTableDialog(Shell shell, ResourceManager resourceManager, List<String> tableNames){
+		this(shell, resourceManager);
 		this.setElements( tableNames.toArray() );
-	}	
-	public String getSelectedTable()
-	{
+	}
+	
+	public String getSelectedTable() {
 		String tableName = (String)this.getFirstResult();
 		return tableName ;
 	}

@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
@@ -41,10 +42,13 @@ public class NewAssociationWizard extends Wizard {
 	private JoinColumnsPage joinColumnsPage;
 	private CardinalityPage cardinalityPage;
 	
-	public NewAssociationWizard( JpaProject jpaProject, ORMGenCustomizer customizer ) {
+	protected final ResourceManager resourceManager;
+
+	public NewAssociationWizard( JpaProject jpaProject, ORMGenCustomizer customizer, ResourceManager resourceManager) {
 		super();
 		this.jpaProject = jpaProject;
 		this.customizer = customizer;
+		this.resourceManager = resourceManager;
 		this.setWindowTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_title);
 		
 		this.associationDataModel.put( NewAssociationWizard.ASSOCIATION_SCHEMA, this.customizer.getSchema());
@@ -55,7 +59,7 @@ public class NewAssociationWizard extends Wizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		this.associationTablesPage = new AssociationTablesPage( customizer );
+		this.associationTablesPage = new AssociationTablesPage( customizer, this.resourceManager);
 		addPage(this.associationTablesPage);
 		
 		this.joinColumnsPage = new JoinColumnsPage(customizer);

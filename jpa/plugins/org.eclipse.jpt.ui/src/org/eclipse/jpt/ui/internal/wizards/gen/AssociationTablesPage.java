@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,6 +15,7 @@ import static org.eclipse.jpt.ui.internal.wizards.gen.SWTUtil.createLabel;
 import static org.eclipse.jpt.ui.internal.wizards.gen.SWTUtil.createText;
 
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.gen.internal.Association;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.ui.internal.ImageRepository;
@@ -41,8 +42,11 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 	private Text joinTableTextField; 
 	private Button joinTableBrowse;
 	
-	public AssociationTablesPage(ORMGenCustomizer customizer) {
+	protected final ResourceManager resourceManager;
+	
+	public AssociationTablesPage(ORMGenCustomizer customizer, ResourceManager resourceManager) {
 		super(customizer,  "AssociationTablesPage");
+		this.resourceManager = resourceManager;
 		setTitle( JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_title);
 		setDescription(JptUiEntityGenMessages.GenerateEntitiesWizard_newAssoc_tablesPage_desc);
 	}
@@ -79,12 +83,12 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		table1TextField = createText(assocTablesGroup, 1);
 		
 		Button browser1 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser1.setImage( ImageRepository.getBrowseButtonImage()); 
+		browser1.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
 
 		browser1.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), customizer.getTableNames() );
+				SelectTableDialog dlg = new SelectTableDialog(Display.getDefault().getActiveShell(), resourceManager, customizer.getTableNames());
 				if( dlg.open() ==Dialog.OK ){
 					table1TextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_REFERRER_TABLE, table1TextField.getText());
@@ -98,12 +102,12 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		table2TextField = createText(assocTablesGroup, 1);
 		
 		Button browser2 = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		browser2.setImage( ImageRepository.getBrowseButtonImage()); 
+		browser2.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
 
 		browser2.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), customizer.getSchema() );
+				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getSchema() );
 				if( dlg.open() == Dialog.OK){
 					table2TextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_REFERENCED_TABLE, table2TextField.getText());
@@ -118,14 +122,14 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		joinTableTextField.setEnabled(false);
 
 		joinTableBrowse = createButton(assocTablesGroup, 1, "", SWT.NONE);
-		joinTableBrowse.setImage( ImageRepository.getBrowseButtonImage()); 
+		joinTableBrowse.setImage( ImageRepository.getBrowseButtonImage(this.resourceManager)); 
 		joinTableBrowse.setEnabled(false);
 		
 		joinTableBrowse.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
 			public void widgetSelected(SelectionEvent e) {
-				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), customizer.getSchema() );
+				SelectTableDialog dlg = new SelectTableDialog( Display.getDefault().getActiveShell(), resourceManager, customizer.getSchema() );
 				if( dlg.open() == Dialog.OK){
 					joinTableTextField.setText( dlg.getSelectedTable() );
 					getWizardDataModel().put( NewAssociationWizard.ASSOCIATION_JOIN_TABLE, joinTableTextField.getText() );
@@ -168,6 +172,7 @@ public class AssociationTablesPage extends NewAssociationWizardPage {
 		table1TextField.setFocus(); 
 	}
 
+	@Override
 	public boolean canFlipToNextPage() {
 		return isPageComplete();
 	}
