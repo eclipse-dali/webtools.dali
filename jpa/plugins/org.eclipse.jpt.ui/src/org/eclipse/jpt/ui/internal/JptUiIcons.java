@@ -29,7 +29,7 @@ public class JptUiIcons
 	 * @return a new grayed out image
 	 */
 	public static Image ghost(String key) {
-		Image existingImage = JptUiPlugin.getImage(key + "-gray");
+		Image existingImage = JptUiPlugin.instance().getImageRegistry().get(key + "-gray");
 		if (existingImage != null) {
 			return existingImage;
 		}
