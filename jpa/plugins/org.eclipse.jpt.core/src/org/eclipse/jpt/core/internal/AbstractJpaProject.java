@@ -1117,9 +1117,14 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * Return whether the specified Java element delta is for a CHANGED
-	 * (as opposed to ADDED or REMOVED) Java element and the specified flag is set.
-	 * (The delta flags are only significant if the delta "kind" is CHANGED.)
+	 * Return whether the specified Java element delta is for a
+	 * {@link IJavaElementDelta#CHANGED CHANGED}
+	 * (as opposed to {@link IJavaElementDelta#ADDED ADDED} or
+	 * {@link IJavaElementDelta#REMOVED REMOVED}) Java element
+	 * and the specified flag is set.
+	 * (The delta flags are only significant if the delta
+	 * {@link IJavaElementDelta#getKind() kind} is
+	 * {@link IJavaElementDelta#CHANGED CHANGED}.)
 	 */
 	protected boolean deltaFlagIsSet(IJavaElementDelta delta, int flag) {
 		return (delta.getKind() == IJavaElementDelta.CHANGED) &&
@@ -1173,7 +1178,8 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * pre-condition: delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
+	 * pre-condition:
+	 * delta.getElement().getElementType() == IJavaElement.JAVA_PROJECT
 	 */
 	protected boolean classpathHasChanged(IJavaElementDelta delta) {
 		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
@@ -1198,14 +1204,16 @@ public abstract class AbstractJpaProject
 	}
 
 	/**
-	 * pre-condition: delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
+	 * pre-condition:
+	 * delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
 	 */
 	protected boolean classpathEntryHasBeenAdded(IJavaElementDelta delta) {
 		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_ADDED_TO_CLASSPATH);
 	}
 
 	/**
-	 * pre-condition: delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
+	 * pre-condition:
+	 * delta.getElement().getElementType() == IJavaElement.PACKAGE_FRAGMENT_ROOT
 	 */
 	protected boolean classpathEntryHasBeenRemoved(IJavaElementDelta delta) {
 		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_REMOVED_FROM_CLASSPATH);
