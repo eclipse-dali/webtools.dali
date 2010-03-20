@@ -375,8 +375,8 @@ public abstract class Pane<T extends Model>
 		// Align the left and right controls with the controls from the parent
 		// pane
 		if (automaticallyAlignWidgets) {
-			parentPane.leftControlAligner .add(this.leftControlAligner);
-			parentPane.rightControlAligner.add(this.rightControlAligner);
+			parentPane.addAlignLeft(this);
+			parentPane.addAlignRight(this);
 		}
 	}
 
@@ -1431,7 +1431,7 @@ public abstract class Pane<T extends Model>
 
 		// Re-parent the left control to the new sub pane
 		leftControl.setParent(container);
-		this.leftControlAligner.add(leftControl);
+		this.addAlignLeft(leftControl);
 
 		// Center control
 		centerControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -1464,7 +1464,7 @@ public abstract class Pane<T extends Model>
 		gridData.grabExcessHorizontalSpace = false;
 
 		rightControl.setLayoutData(gridData);
-		this.rightControlAligner.add(rightControl);
+		this.addAlignRight(rightControl);
 
 		return container;
 	}
