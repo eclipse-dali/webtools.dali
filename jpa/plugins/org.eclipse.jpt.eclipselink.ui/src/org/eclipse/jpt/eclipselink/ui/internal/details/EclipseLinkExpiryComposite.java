@@ -47,11 +47,23 @@ import org.eclipse.swt.widgets.Group;
  * @since 2.1
  */
 public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
+	protected PropertyValueModel<Boolean> ttlEnabled;
 
 	public EclipseLinkExpiryComposite(Pane<? extends EclipseLinkCaching> parentPane,
 	                          Composite parent) {
 
 		super(parentPane, parent);
+	}
+
+	/**
+	 * lazy init because we need it while the superclass constructor is
+	 * executing
+	 */
+	protected PropertyValueModel<Boolean> getTtlEnabled() {
+		if (this.ttlEnabled == null) {
+			this.ttlEnabled = this.buildTimeToLiveExpiryEnabler();
+		}
+		return this.ttlEnabled;
 	}
 
 	@Override
@@ -100,14 +112,13 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 	protected void addTimeToLiveComposite(Composite parent) {
 		Composite container = this.addSubPane(parent, 3, 0, 10, 0, 0);
 
-		PropertyValueModel<Boolean> ttlEnabled = buildTimeToLiveExpiryEnabler();
 		addLabel(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryExpireAfter,
-			ttlEnabled
+			this.getTtlEnabled()
 		);
 	
-		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container, ttlEnabled);
+		IntegerCombo<?> combo = addTimeToLiveExpiryCombo(container);
 		GridData gridData = new GridData();
 		gridData.grabExcessHorizontalSpace = false;
 		combo.getControl().setLayoutData(gridData);
@@ -115,7 +126,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		addLabel(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkExpiryComposite_timeToLiveExpiryMilliseconds,
-			ttlEnabled
+			this.getTtlEnabled()
 		);
 	}
 	
@@ -196,24 +207,17 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private IntegerCombo<EclipseLinkCaching> addTimeToLiveExpiryCombo(Composite container, PropertyValueModel<Boolean> comboEnabled) {
-
-		class LocalCombo extends IntegerCombo<EclipseLinkCaching> {
-			private final PropertyValueModel<Boolean> comboEnabled;
-
-			LocalCombo(Pane<EclipseLinkCaching> parentPane, Composite container, PropertyValueModel<Boolean> comboEnabled) {
-				super(parentPane, container);
-				this.comboEnabled = comboEnabled;
-			}
+	private IntegerCombo<EclipseLinkCaching> addTimeToLiveExpiryCombo(Composite container) {
+		return new IntegerCombo<EclipseLinkCaching>(this, container) {
 		
 			@Override
-			protected CCombo addIntegerCombo(@SuppressWarnings("hiding") Composite container) {
+			protected CCombo addIntegerCombo(Composite container) {
 				return this.addEditableCCombo(
 						container,
 						buildDefaultListHolder(),
 						buildSelectedItemStringHolder(),
 						StringConverter.Default.<String>instance(),
-						this.comboEnabled
+						EclipseLinkExpiryComposite.this.getTtlEnabled()
 					);
 			}
 		
@@ -252,9 +256,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 					}
 				};
 			}
-		}
-
-		return new LocalCombo(this, container, comboEnabled);
+		};
 	}
 	
 	private PropertyValueModel<Boolean> buildTimeToLiveExpiryEnabler() {
