@@ -1171,10 +1171,37 @@ public abstract class AbstractJpaProject
 	 */
 	protected void removeDeadJpaFiles() {
 		for (JpaFile jpaFile : this.getJpaFiles()) {
-			if ( ! this.getJavaProject().isOnClasspath(jpaFile.getFile())) {
+			if (this.jpaFileIsDead(jpaFile)) {
 				this.removeJpaFile(jpaFile);
 			}
 		}
+	}
+
+	protected boolean jpaFileIsDead(JpaFile jpaFile) {
+		return ! this.jpaFileIsAlive(jpaFile);
+	}
+
+	/**
+	 * Sometimes (e.g. during tests), when a project has been deleted, we get a
+	 * Java change event that indicates the Java project is CHANGED (as
+	 * opposed to REMOVED, which is what typically happens). The event's delta
+	 * indicates that everything in the Java project has been deleted and the
+	 * classpath has changed. All entries in the classpath have been removed;
+	 * but single entry for the Java project's root folder has been added. (!)
+	 * This means any file in the project is on the Java project's classpath.
+	 * This classpath change is what triggers us to rebuild the JPA project; so
+	 * we put an extra check here to make sure the JPA file's resource file is
+	 * still present.
+	 * <p>
+	 * This would not be a problem if Dali received the resource change event
+	 * <em>before</em> JDT and simply removed the JPA project; but JDT receives
+	 * the resource change event first and converts it into the problematic
+	 * Java change event.... 
+	 */
+	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
+		IFile file = jpaFile.getFile();
+		return this.getJavaProject().isOnClasspath(file) &&
+				file.exists();
 	}
 
 	/**
