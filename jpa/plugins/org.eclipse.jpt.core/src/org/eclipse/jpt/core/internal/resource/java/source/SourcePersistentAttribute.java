@@ -110,13 +110,14 @@ final class SourcePersistentAttribute
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
+		ITypeBinding typeBinding = this.getTypeBinding(astRoot); //build once, minor performance tweak for major benefit
 		this.modifiers = this.buildModifiers(astRoot);
-		this.typeName = this.buildTypeName(astRoot);
-		this.typeIsInterface = this.buildTypeIsInterface(astRoot);
-		this.typeIsEnum = this.buildTypeIsEnum(astRoot);
-		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(astRoot));
-		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(astRoot));
-		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(astRoot));
+		this.typeName = this.buildTypeName(typeBinding);
+		this.typeIsInterface = this.buildTypeIsInterface(typeBinding);
+		this.typeIsEnum = this.buildTypeIsEnum(typeBinding);
+		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(typeBinding));
+		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(typeBinding));
+		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(typeBinding));
 	}
 
 
@@ -125,22 +126,24 @@ final class SourcePersistentAttribute
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
-		this.syncTypeName(this.buildTypeName(astRoot));
-		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
-		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
-		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
+		ITypeBinding typeBinding = this.getTypeBinding(astRoot);//build once, minor performance tweak for major benefit
+		this.syncTypeName(this.buildTypeName(typeBinding));
+		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
+		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
+		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
+		ITypeBinding typeBinding = this.getTypeBinding(astRoot);//build once, minor performance tweak for major benefit
 		this.syncModifiers(this.buildModifiers(astRoot));
-		this.syncTypeName(this.buildTypeName(astRoot));
-		this.syncTypeIsInterface(this.buildTypeIsInterface(astRoot));
-		this.syncTypeIsEnum(this.buildTypeIsEnum(astRoot));
-		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(astRoot));
-		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(astRoot));
-		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(astRoot));
+		this.syncTypeName(this.buildTypeName(typeBinding));
+		this.syncTypeIsInterface(this.buildTypeIsInterface(typeBinding));
+		this.syncTypeIsEnum(this.buildTypeIsEnum(typeBinding));
+		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
+		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
+		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
 	}
 
 	@Override
@@ -250,8 +253,7 @@ final class SourcePersistentAttribute
 	 * this can be an array (e.g. "java.lang.String[]");
 	 * but no generic type arguments
 	 */
-	private String buildTypeName(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private String buildTypeName(ITypeBinding typeBinding) {
 		return (typeBinding == null) ? null : typeBinding.getTypeDeclaration().getQualifiedName();
 	}
 
@@ -266,8 +268,7 @@ final class SourcePersistentAttribute
 		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, astTypeIsInterface);
 	}
 
-	private boolean buildTypeIsInterface(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private boolean buildTypeIsInterface(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isInterface();
 	}
 
@@ -282,8 +283,7 @@ final class SourcePersistentAttribute
 		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, astTypeIsEnum);
 	}
 
-	private boolean buildTypeIsEnum(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private boolean buildTypeIsEnum(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isEnum();
 	}
 
@@ -296,8 +296,7 @@ final class SourcePersistentAttribute
 		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
 	}
 
-	private List<String> buildTypeSuperclassNames(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private List<String> buildTypeSuperclassNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
 			return Collections.emptyList();
 		}
@@ -323,8 +322,7 @@ final class SourcePersistentAttribute
 		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
 	}
 
-	private Collection<String> buildTypeInterfaceNames(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private Collection<String> buildTypeInterfaceNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
 			return Collections.emptySet();
 		}
@@ -365,8 +363,7 @@ final class SourcePersistentAttribute
 	 * but they won't have any further nested generic type arguments
 	 * (e.g. "java.util.Collection<java.lang.String>")
 	 */
-	private List<String> buildTypeTypeArgumentNames(CompilationUnit astRoot) {
-		ITypeBinding typeBinding = this.getTypeBinding(astRoot);
+	private List<String> buildTypeTypeArgumentNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
 			return Collections.emptyList();
 		}
