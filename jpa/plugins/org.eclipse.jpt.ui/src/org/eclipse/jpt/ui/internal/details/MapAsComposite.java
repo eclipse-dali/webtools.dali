@@ -420,6 +420,12 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		styledText.setText(text);
 	}
 
+	@Override
+	public void dispose() {
+		this.styledText.dispose();
+		super.dispose();
+	}
+
 	/**
 	 * This handler is responsible to give the text information and to open the
 	 * mapping dialog if the user clicked on the mapping type.
