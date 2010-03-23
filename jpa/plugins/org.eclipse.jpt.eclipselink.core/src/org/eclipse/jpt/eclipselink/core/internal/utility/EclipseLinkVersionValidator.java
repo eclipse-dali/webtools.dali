@@ -8,7 +8,17 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.jpa2.details.java;
+package org.eclipse.jpt.eclipselink.core.internal.utility;
 
-public class JavaManyToOneMapping2_0Pane
-{}
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryProviderInstallOperationConfig;
+import org.eclipse.jst.common.project.facet.core.libprov.user.UserLibraryValidator;
+
+public class EclipseLinkVersionValidator extends UserLibraryValidator
+{
+	@Override
+	public IStatus validate(UserLibraryProviderInstallOperationConfig config) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
