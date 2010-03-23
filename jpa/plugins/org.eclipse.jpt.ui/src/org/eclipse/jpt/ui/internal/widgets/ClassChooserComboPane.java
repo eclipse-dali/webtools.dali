@@ -10,13 +10,10 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssistHelper;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -65,17 +62,10 @@ public abstract class ClassChooserComboPane<T extends Model> extends ClassChoose
 		super(parentPane, subjectHolder, parent);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected Control addMainControl(Composite container) {
 		Composite subPane = addSubPane(container);
     	Combo combo = this.addClassCombo(subPane);
-		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalIndent = image.getBounds().width;
-		combo.setLayoutData(data);
 
 		ControlContentAssistHelper.createComboContentAssistant(
 			combo,

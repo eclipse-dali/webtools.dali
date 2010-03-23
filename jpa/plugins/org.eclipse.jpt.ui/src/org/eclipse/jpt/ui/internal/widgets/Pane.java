@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -604,9 +606,25 @@ public abstract class Pane<T extends Model>
 	protected final CCombo addCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createCCombo(container);
-		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.setLayoutData(getFieldGridData());
 		this.manageWidget(combo);
 		return combo;
+	}
+
+	/**
+	 * This layout will leave space for decorations on widgets.
+	 * Whether decorated or not, all of the widgets need the same indent
+ 	 * so that they align properly.
+	 */
+	protected GridData getFieldGridData() {
+		int margin = FieldDecorationRegistry.getDefault()
+				.getMaximumDecorationWidth();
+		GridData data = new GridData();
+		data.horizontalAlignment = SWT.FILL;
+		data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH + margin;
+		data.horizontalIndent = margin;
+		data.grabExcessHorizontalSpace = true;
+		return data;
 	}
 
 	/**
@@ -921,7 +939,7 @@ public abstract class Pane<T extends Model>
 	 */
 	private Combo addUnmanagedCombo(Composite container) {
 		Combo combo = this.widgetFactory.createCombo(container);
-		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.setLayoutData(getFieldGridData());
 		return combo;
 	}
 
@@ -1108,7 +1126,7 @@ public abstract class Pane<T extends Model>
 	protected final Combo addEditableCombo(Composite container) {
 
 		Combo combo = this.widgetFactory.createEditableCombo(container);
-		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.setLayoutData(getFieldGridData());
 		this.manageWidget(combo);
 		return combo;
 	}
@@ -1433,8 +1451,6 @@ public abstract class Pane<T extends Model>
 		leftControl.setParent(container);
 		this.addAlignLeft(leftControl);
 
-		// Center control
-		centerControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		// Re-parent the center control to the new sub pane
 		centerControl.setParent(container);
@@ -2179,7 +2195,9 @@ public abstract class Pane<T extends Model>
 		Spinner spinner = this.widgetFactory.createSpinner(parent);
 		spinner.setMinimum(minimumValue);
 		spinner.setMaximum(maximumValue);
-		spinner.setLayoutData(new GridData(GridData.BEGINNING));
+		GridData gridData = getFieldGridData();
+		gridData.grabExcessHorizontalSpace = false;
+		spinner.setLayoutData(gridData);
 
 		SpinnerModelAdapter.adapt(numberHolder, spinner, defaultValue);
 
@@ -2299,7 +2317,7 @@ public abstract class Pane<T extends Model>
 	private CCombo addUnmanagedEditableCCombo(Composite container) {
 
 		CCombo combo = this.widgetFactory.createEditableCCombo(container);
-		combo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		combo.setLayoutData(getFieldGridData());
 		return combo;
 	}
 
@@ -2536,7 +2554,8 @@ public abstract class Pane<T extends Model>
 	 */
 	protected final Text addMultiLineText(Composite container) {
 
-		Text text = this.widgetFactory.createMultiLineText(container);		
+		Text text = this.widgetFactory.createMultiLineText(container);
+		text.setLayoutData(getFieldGridData());
 		this.manageWidget(text);
 
 		return text;
@@ -2558,7 +2577,7 @@ public abstract class Pane<T extends Model>
 
 		Text text = this.addMultiLineText(container);
 		
-		GridData gridData   = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gridData   = getFieldGridData();
 		gridData.heightHint = text.getLineHeight() * lineCount;
 		text.setLayoutData(gridData);
 
@@ -2681,7 +2700,7 @@ public abstract class Pane<T extends Model>
 	protected final Text addPasswordText(Composite container) {
 
 		Text text = this.widgetFactory.createPasswordText(container);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		text.setLayoutData(getFieldGridData());
 
 		this.manageWidget(text);
 		return text;
@@ -3160,6 +3179,7 @@ public abstract class Pane<T extends Model>
 	 */
 	private Text addUnmanagedText(Composite container) {
 		Text text = this.widgetFactory.createText(container);
+		text.setLayoutData(getFieldGridData());
 		return text;
 	}
 
@@ -3175,7 +3195,6 @@ public abstract class Pane<T extends Model>
 	protected final Text addText(Composite container, String helpId) {
 
 		Text text = this.addText(container);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(text, helpId);
@@ -3198,7 +3217,6 @@ public abstract class Pane<T extends Model>
 	private Text addUnmanagedText(Composite container, String helpId) {
 
 		Text text = this.addUnmanagedText(container);
-		text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		if (helpId != null) {
 			getHelpSystem().setHelp(text, helpId);

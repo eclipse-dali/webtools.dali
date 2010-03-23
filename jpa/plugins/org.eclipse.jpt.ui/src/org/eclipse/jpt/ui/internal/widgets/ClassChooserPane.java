@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.Collections;
 import java.util.List;
-
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -25,7 +24,6 @@ import org.eclipse.jdt.internal.ui.wizards.NewClassCreationWizard;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
-import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -37,8 +35,6 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
@@ -240,11 +236,6 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	protected Control addMainControl(Composite container) {
 		Composite subPane = addSubPane(container);
 		Text text = addText(subPane, buildTextHolder());
-
-		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalIndent = image.getBounds().width;
-		text.setLayoutData(data);
 
 		ControlContentAssistHelper.createTextContentAssistant(
 			text,
