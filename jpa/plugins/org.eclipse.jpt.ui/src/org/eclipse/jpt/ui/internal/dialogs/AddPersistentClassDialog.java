@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,7 +24,9 @@ import org.eclipse.jdt.internal.ui.refactoring.contentassist.ControlContentAssis
 import org.eclipse.jdt.internal.ui.refactoring.contentassist.JavaTypeCompletionProcessor;
 import org.eclipse.jdt.ui.IJavaElementSearchConstants;
 import org.eclipse.jdt.ui.JavaUI;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.StatusDialog;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -86,11 +88,11 @@ public class AddPersistentClassDialog extends StatusDialog
 		
 		Composite composite = new Composite(dialogArea, SWT.NULL);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(3, false));
 		
-		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_classLabel);
+		createLabel(composite, JptUiMessages.AddPersistentClassDialog_classLabel);
 			
-		this.classText = createText(composite, 1);
+		this.classText = createText(composite);
 		this.classText.addModifyListener(
 				new ModifyListener() {
 					public void modifyText(ModifyEvent e) {
@@ -99,7 +101,7 @@ public class AddPersistentClassDialog extends StatusDialog
 				}
 			);
 		
-		this.classBrowseButton = createButton(composite, 1, JptUiMessages.General_browse);
+		this.classBrowseButton = createButton(composite, JptUiMessages.General_browse);
 		this.classBrowseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				IType type = chooseType();
@@ -112,7 +114,7 @@ public class AddPersistentClassDialog extends StatusDialog
 			}
 		});
 		
-		createLabel(composite, 2, JptUiMessages.AddPersistentClassDialog_mappingLabel);
+		createLabel(composite, JptUiMessages.AddPersistentClassDialog_mappingLabel);
 		
 		this.mappingCombo = new ComboViewer(createCombo(composite, 2));
 		this.mappingCombo.setContentProvider(
@@ -155,16 +157,13 @@ public class AddPersistentClassDialog extends StatusDialog
 		return dialogArea;
 	}
 	
-	private Label createLabel(Composite container, int span, String text) {
+	private Label createLabel(Composite container, String text) {
 		Label label = new Label(container, SWT.NONE);
 		label.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = span;
-		label.setLayoutData(gd);
 		return label;
 	}
 	
-	private Text createText(Composite container, int span) {
+	private Text createText(Composite container) {
 		// TODO bug 156185 - when this is fixed there should be api for this
 		JavaTypeCompletionProcessor javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
 		javaTypeCompletionProcessor.setPackageFragment(getPackageFragmentRoot().getPackageFragment(""));
@@ -176,12 +175,21 @@ public class AddPersistentClassDialog extends StatusDialog
 			javaTypeCompletionProcessor
 		);
 		
-		GridData gd = new GridData();
-		gd.horizontalSpan = span;
-		gd.widthHint = 250;
-		text.setLayoutData(gd);
+		text.setLayoutData(getFieldGridData());
 		return text;
 	}
+	
+	protected GridData getFieldGridData() {
+		int margin = FieldDecorationRegistry.getDefault()
+				.getMaximumDecorationWidth();
+		GridData data = new GridData();
+		data.horizontalAlignment = SWT.FILL;
+		data.widthHint = IDialogConstants.ENTRY_FIELD_WIDTH + margin;
+		data.horizontalIndent = margin;
+		data.grabExcessHorizontalSpace = true;
+		return data;
+	}
+
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
 		IProject project = getJpaProject().getProject();
 		IJavaProject root = JavaCore.create(project);
@@ -196,18 +204,15 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 
 	
-	private Button createButton(Composite container, int span, String text) {
+	private Button createButton(Composite container, String text) {
 		Button button = new Button(container, SWT.NONE);
 		button.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = span;
-		button.setLayoutData(gd);
 		return button;
 	}
 	
 	private Combo createCombo(Composite container, int span) {
 		Combo combo = new Combo(container, SWT.BORDER | SWT.SINGLE | SWT.READ_ONLY);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gd = getFieldGridData();
 		gd.horizontalSpan = span;
 		combo.setLayoutData(gd);
 		return combo;
