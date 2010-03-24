@@ -16,6 +16,8 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -32,6 +34,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
+import org.eclipse.jpt.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -97,7 +100,29 @@ public class OrmEclipseLinkEntityImpl
 	public boolean calculateDefaultCacheable() {
 		return ((CacheableHolder2_0) getCaching()).calculateDefaultCacheable();
 	}
+
 	
+	@Override
+	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
+		return super.buildSpecifiedDiscriminatorColumnIsAllowed() && !classExtractorIsUsed();
+	}
+	
+	protected boolean classExtractorIsUsed() {
+		return getResourceClassExtractor() != null || getClassExtractorAnnotation() != null;
+	}
+	
+	protected XmlClassReference getResourceClassExtractor() {
+		return getResourceTypeMapping().getClassExtractor();
+	}
+
+	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
+		if (getJavaEntityForDefaults() != null) {
+			JavaResourcePersistentType jrpt = getJavaPersistentType().getResourcePersistentType();
+			return (EclipseLinkClassExtractorAnnotation2_1) jrpt.getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
+		}
+		return null;
+	}
+
 	// **************** resource-context interaction ***************************
 	
 	@Override

@@ -25,6 +25,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHol
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -105,7 +106,20 @@ public class JavaEclipseLinkEntityImpl
 		this.changeTracking.update(jrpt);
 	}
 	
+	@Override
+	protected boolean buildSpecifiedDiscriminatorColumnIsAllowed() {
+		return super.buildSpecifiedDiscriminatorColumnIsAllowed() && !classExtractorIsUsed();
+	}
 	
+	protected boolean classExtractorIsUsed() {
+		return getClassExtractorAnnotation() != null;
+	}
+	
+	protected EclipseLinkClassExtractorAnnotation2_1 getClassExtractorAnnotation() {
+		return (EclipseLinkClassExtractorAnnotation2_1) 
+					getResourcePersistentType().getAnnotation(EclipseLinkClassExtractorAnnotation2_1.ANNOTATION_NAME);
+	}
+
 	//********** Validation ********************************************
 
 	@Override

@@ -10,9 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_1;
 
+import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
+import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory.EclipseLinkVersion;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaFactory;
@@ -47,12 +50,12 @@ public class EclipseLink2_1JpaPlatformFactory
 				JptCorePlugin.JPA_FACET_VERSION_2_0);
 	}
 	
-//	@Override
-//	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
-//		return new GenericJpaAnnotationProvider(
-//			Generic2_0JpaAnnotationDefinitionProvider.instance(),
-//			EclipseLinkJpaAnnotationDefinitionProvider.instance());
-//	}
+	@Override
+	protected JpaAnnotationProvider buildJpaAnnotationProvider() {
+		return new GenericJpaAnnotationProvider(
+			Generic2_0JpaAnnotationDefinitionProvider.instance(),
+			EclipseLink2_1JpaAnnotationDefinitionProvider.instance());
+	}
 	
 //	@Override
 //	protected JpaPlatformVariation buildJpaVariation() {
