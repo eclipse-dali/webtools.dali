@@ -643,7 +643,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	protected void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (getMapKey() != null) {
+		if (getMapKeyAnnotation() != null) {//If MapKey annotation specified, no other MapKey* annotations can be specified, don't validate them
 			//TODO validate that the map key refers to an existing attribute
 			return;
 		}

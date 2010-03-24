@@ -39,6 +39,8 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.MapKey;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -594,7 +596,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 
 	public void validateMapKey(List<IMessage> messages, IReporter reporter) {
-		if (getMapKey() != null) {
+		if (getMapKey() != null || getMapKeyAnnotation() != null) {
 			//TODO validate that the map key refers to an existing attribute
 			return;
 		}
@@ -609,6 +611,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 			getMapKeyAttributeOverrideContainer().validate(messages, reporter);
 			//validate map key association overrides
 		}
+	}
+	protected MapKeyAnnotation getMapKeyAnnotation() {
+		if (!isVirtual()) {
+			return null;
+		}
+		JavaResourcePersistentAttribute jrpa = getJavaResourcePersistentAttribute();
+		return jrpa == null ? null : (MapKeyAnnotation) jrpa.getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
 
