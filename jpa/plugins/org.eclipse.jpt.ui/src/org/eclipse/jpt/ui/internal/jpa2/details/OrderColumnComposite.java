@@ -18,7 +18,6 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -318,10 +317,6 @@ public class OrderColumnComposite extends Pane<OrderColumn2_0> {
 		);
 
 		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
-	}
-	
-	protected void installPaneEnabler(PropertyValueModel<Boolean> booleanHolder) {
-		new PaneEnabler(booleanHolder, this);
 	}
 
 	protected class DetailsComposite extends Pane<OrderColumn2_0> {
