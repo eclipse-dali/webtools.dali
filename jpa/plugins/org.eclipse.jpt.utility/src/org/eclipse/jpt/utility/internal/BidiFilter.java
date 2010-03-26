@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,7 +30,7 @@ public interface BidiFilter<T> extends Filter<T> {
 
 
 	final class Null<S> implements BidiFilter<S>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
 		public static <R> BidiFilter<R> instance() {
@@ -60,7 +60,7 @@ public interface BidiFilter<T> extends Filter<T> {
 	}
 
 	final class Opaque<S> implements BidiFilter<S>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Opaque();
 		@SuppressWarnings("unchecked")
 		public static <R> BidiFilter<R> instance() {
@@ -90,7 +90,7 @@ public interface BidiFilter<T> extends Filter<T> {
 	}
 
 	final class Disabled<S> implements BidiFilter<S>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final BidiFilter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
 		public static <R> BidiFilter<R> instance() {

@@ -29,7 +29,7 @@ public final class EmptyIterable<E>
 	implements Iterable<E>, Serializable
 {
 	// singleton
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final Iterable INSTANCE = new EmptyIterable();
 
 	/**

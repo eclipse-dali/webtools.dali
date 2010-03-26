@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -137,7 +137,7 @@ public interface Bag<E> extends java.util.Collection<E> {
 
 
 	final class Empty<E> extends AbstractCollection<E> implements Bag<E>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final Bag INSTANCE = new Empty();
 		@SuppressWarnings("unchecked")
 		public static <T> Bag<T> instance() {

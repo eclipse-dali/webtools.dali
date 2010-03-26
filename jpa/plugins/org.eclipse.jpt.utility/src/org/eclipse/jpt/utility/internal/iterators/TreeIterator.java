@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -194,7 +194,7 @@ public class TreeIterator<E>
 
 
 		final class Null<S> implements Midwife<S> {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			public static final Midwife INSTANCE = new Null();
 			@SuppressWarnings("unchecked")
 			public static <R> Midwife<R> instance() {
@@ -224,7 +224,7 @@ public class TreeIterator<E>
 		 * method is overridden.
 		 */
 		final class Disabled<S> implements Midwife<S> {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			public static final Midwife INSTANCE = new Disabled();
 			@SuppressWarnings("unchecked")
 			public static <R> Midwife<R> instance() {

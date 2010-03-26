@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import java.io.Serializable;
  * Used by various "pluggable" classes to transform objects
  * into strings.
  */
-public interface StringConverter<T> extends Serializable {
+public interface StringConverter<T> {
 
 	/**
 	 * Convert the specified object into a string.
@@ -26,7 +26,7 @@ public interface StringConverter<T> extends Serializable {
 
 
 	final class Default<S> implements StringConverter<S>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final StringConverter INSTANCE = new Default();
 		@SuppressWarnings("unchecked")
 		public static <R> StringConverter<R> instance() {
@@ -52,7 +52,7 @@ public interface StringConverter<T> extends Serializable {
 	}
 
 	final class Disabled<S> implements StringConverter<S>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final StringConverter INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
 		public static <R> StringConverter<R> instance() {

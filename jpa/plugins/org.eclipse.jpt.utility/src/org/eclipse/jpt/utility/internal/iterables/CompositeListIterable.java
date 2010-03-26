@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -52,9 +52,8 @@ public class CompositeListIterable<E>
 	 * Construct a list iterable with the specified object prepended
 	 * to the specified list.
 	 */
-	@SuppressWarnings("unchecked")
 	public CompositeListIterable(E object, List<E> list) {
-		this(object, new ListListIterable(list));
+		this(object, new ListListIterable<E>(list));
 	}
 
 	/**
@@ -70,9 +69,8 @@ public class CompositeListIterable<E>
 	 * Construct a list iterable with the specified object appended
 	 * to the specified list.
 	 */
-	@SuppressWarnings("unchecked")
 	public CompositeListIterable(List<E> list, E object) {
-		this(new ListListIterable(list), object);
+		this(new ListListIterable<E>(list), object);
 	}
 
 	/**

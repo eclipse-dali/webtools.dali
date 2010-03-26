@@ -22,7 +22,7 @@ public final class EmptyEnumeration<E>
 {
 
 	// singleton
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final EmptyEnumeration INSTANCE = new EmptyEnumeration();
 
 	/**

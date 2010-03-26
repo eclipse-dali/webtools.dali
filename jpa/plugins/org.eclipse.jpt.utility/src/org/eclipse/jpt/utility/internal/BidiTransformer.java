@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,7 +29,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 
 
 	final class Null<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final BidiTransformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
 		public static <R1, R2> BidiTransformer<R1, R2> instance() {
@@ -61,7 +61,7 @@ public interface BidiTransformer<T1, T2> extends Transformer<T1, T2> {
 	}
 
 	final class Disabled<S1, S2> implements BidiTransformer<S1, S2>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final BidiTransformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
 		public static <R1, R2> BidiTransformer<R1, R2> instance() {

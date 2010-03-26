@@ -30,7 +30,7 @@ public interface Transformer<T1, T2> {
 	 * it will simply return the object "untransformed".
 	 */
 	final class Null<S1, S2> implements Transformer<S1, S2>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Null();
 		@SuppressWarnings("unchecked")
 		public static <R1, R2> Transformer<R1, R2> instance() {
@@ -63,7 +63,7 @@ public interface Transformer<T1, T2> {
 	 * not be used.
 	 */
 	final class Disabled<S1, S2> implements Transformer<S1, S2>, Serializable {
-		@SuppressWarnings("unchecked")
+		@SuppressWarnings("rawtypes")
 		public static final Transformer INSTANCE = new Disabled();
 		@SuppressWarnings("unchecked")
 		public static <R1, R2> Transformer<R1, R2> instance() {

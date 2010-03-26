@@ -417,9 +417,9 @@ public class IdentityHashBag<E>
 	}
 
 	// minimize scope of suppressed warnings
-	@SuppressWarnings("unchecked")
-	private <T> Entry<E> buildEntry(int hash, Object o, int cnt, Entry<T> next) {
-		return new Entry(hash, o, cnt, next);
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	private Entry<E> buildEntry(int hash, Object o, int cnt, Entry next) {
+		return new Entry<E>(hash, (E) o, cnt, (Entry<E>) next);
 	}
 
 	/**
@@ -559,7 +559,7 @@ public class IdentityHashBag<E>
 			if ( ! (o instanceof Bag.Entry<?>)) {
 				return false;
 			}
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			Bag.Entry e = (Bag.Entry) o;
 			return (this.object == e.getElement())
 					&& (this.count == e.getCount());
@@ -602,10 +602,10 @@ public class IdentityHashBag<E>
 	/**
 	 * Empty iterator that does just about nothing.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final Iterator EMPTY_ITERATOR = new EmptyIterator();
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static class EmptyIterator implements Iterator {
 
 		EmptyIterator() {

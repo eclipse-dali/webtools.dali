@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.Filter;
 public final class NotNullFilter<T>
 	implements Filter<T>, Serializable
 {
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public static final Filter INSTANCE = new NotNullFilter();
 
 	@SuppressWarnings("unchecked")

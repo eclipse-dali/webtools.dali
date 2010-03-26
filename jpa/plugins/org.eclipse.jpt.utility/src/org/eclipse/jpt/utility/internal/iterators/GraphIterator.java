@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -226,7 +226,7 @@ public class GraphIterator<E>
 		
 		
 		final class Null<S> implements MisterRogers<S> {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			public static final MisterRogers INSTANCE = new Null();
 			@SuppressWarnings("unchecked")
 			public static <R> MisterRogers<R> instance() {
@@ -253,7 +253,7 @@ public class GraphIterator<E>
 
 		/** The Mr. Rogers used when the {@link GraphIterator#neighbors(Object)} method is overridden. */
 		final class Disabled<S> implements MisterRogers<S> {
-			@SuppressWarnings("unchecked")
+			@SuppressWarnings("rawtypes")
 			public static final MisterRogers INSTANCE = new Disabled();
 			@SuppressWarnings("unchecked")
 			public static <R> MisterRogers<R> instance() {
