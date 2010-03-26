@@ -21,7 +21,6 @@ import org.eclipse.jdt.core.IJavaModel;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
@@ -31,7 +30,6 @@ import org.eclipse.jdt.ui.JavaElementComparator;
 import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
@@ -240,6 +238,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		IJavaElement initElement= getPackageFragmentRoot();
 		Class[] acceptedClasses= new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
+			@Override
 			public boolean isSelectedValid(Object element) {
 				try {
 					if (element instanceof IJavaProject) {
@@ -259,6 +258,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 		acceptedClasses= new Class[] { IJavaModel.class, IPackageFragmentRoot.class, IJavaProject.class };
 		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
+			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IPackageFragmentRoot) {
 					try {
@@ -280,7 +280,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		dialog.setTitle(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_title);
 		dialog.setMessage(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_description);
 		dialog.addFilter(filter);
-		dialog.setInput(JavaCore.create( jpaProject.getProject()));
+		dialog.setInput(jpaProject.getJavaProject());
 		dialog.setInitialSelection(initElement);
 		dialog.setHelpAvailable(false);
 
