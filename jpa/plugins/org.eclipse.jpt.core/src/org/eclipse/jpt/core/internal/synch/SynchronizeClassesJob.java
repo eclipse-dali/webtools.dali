@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,9 +17,7 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -117,14 +115,10 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	
 	protected IType findType(JpaProject jpaProject, String typeName) {
 		try {
-			return getJavaProject(jpaProject).findType(typeName);
+			return jpaProject.getJavaProject().findType(typeName);
 		} catch (JavaModelException ex) {
 			return null;  // ignore exception?
 		}
-	}
-
-	public IJavaProject getJavaProject(JpaProject jpaProject) {
-		return JavaCore.create(jpaProject.getProject());
 	}
 
 	boolean mappingFileContains(JpaProject jpaProject, String fullyQualifiedTypeName) {
