@@ -31,7 +31,7 @@ import org.eclipse.jpt.ui.internal.util.LabeledButton;
 import org.eclipse.jpt.ui.internal.util.LabeledControlUpdater;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.utility.internal.BooleanTransformer;
+import org.eclipse.jpt.utility.internal.NonNullBooleanTransformer;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeBooleanPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -3541,7 +3541,7 @@ public abstract class Pane<T extends Model>
 	 * adapters etc.).
 	 */
 	private PropertyValueModel<Boolean> wrapEnabledModel(PropertyValueModel<Boolean> booleanModel) {
-		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, BooleanTransformer.FALSE);
+		return new TransformationPropertyValueModel<Boolean, Boolean>(booleanModel, NonNullBooleanTransformer.FALSE);
 	}
 	
 	private void controlEnabledState_(PropertyValueModel<Boolean> booleanModel, Control... controls) {
