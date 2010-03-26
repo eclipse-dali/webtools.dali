@@ -22,6 +22,8 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
+import com.ibm.icu.text.Collator;
+
 /**
  * Here the layout of this pane:
  * <pre>
@@ -67,6 +69,7 @@ public class MappedByPane
 			JpaHelpContextIds.MAPPING_MAPPED_BY);
 	}
 	
+	@SuppressWarnings("unchecked")
 	protected ListValueModel<String> buildCandidateAttributesListValueModel() {
 		return new SortedListValueModelAdapter<String>(
 			new CollectionAspectAdapter<MappedByJoiningStrategy, String>(
@@ -75,7 +78,9 @@ public class MappedByPane
 				protected Iterator<String> iterator_() {
 					return this.subject.candidateMappedByAttributeNames();
 				}
-			});
+			},
+			Collator.getInstance()
+		);
 	}
 	
 	protected WritablePropertyValueModel<String> buildAttributePropertyValueModel() {
