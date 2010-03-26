@@ -51,7 +51,7 @@ final class ListBoxSelectionBinding<E>
 	/**
 	 * A writable value model on the underlying model selections.
 	 */
-	private final WritableCollectionValueModel<E> selectedItemsHolder;
+	private final WritableCollectionValueModel<E> selectedItemsModel;
 
 	/**
 	 * A listener that allows us to synchronize the list box's selection with
@@ -79,19 +79,19 @@ final class ListBoxSelectionBinding<E>
 	 */
 	ListBoxSelectionBinding(
 			ListValueModel<E> listModel,
-			WritableCollectionValueModel<E> selectedItemsHolder,
+			WritableCollectionValueModel<E> selectedItemsModel,
 			List listBox
 	) {
 		super();
-		if ((listModel == null) || (selectedItemsHolder == null) || (listBox == null)) {
+		if ((listModel == null) || (selectedItemsModel == null) || (listBox == null)) {
 			throw new NullPointerException();
 		}
 		this.listModel = listModel;
-		this.selectedItemsHolder = selectedItemsHolder;
+		this.selectedItemsModel = selectedItemsModel;
 		this.listBox = listBox;
 
 		this.selectedItemsChangeListener = this.buildSelectedItemsChangeListener();
-		this.selectedItemsHolder.addCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
+		this.selectedItemsModel.addCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
 
 		this.listBoxSelectionListener = this.buildListBoxSelectionListener();
 		this.listBox.addSelectionListener(this.listBoxSelectionListener);
@@ -150,10 +150,10 @@ final class ListBoxSelectionBinding<E>
 	 * Pre-condition: The list-box is not disposed.
 	 */
 	public void synchronizeListWidgetSelection() {
-		int selectedItemsSize = this.selectedItemsHolder.size();
+		int selectedItemsSize = this.selectedItemsModel.size();
 		int[] select = new int[selectedItemsSize];
 		int i = 0;
-		for (E item : this.selectedItemsHolder) {
+		for (E item : this.selectedItemsModel) {
 			select[i++] = this.indexOf(item);
 		}
 
@@ -176,7 +176,7 @@ final class ListBoxSelectionBinding<E>
 
 	public void dispose() {
 		this.listBox.removeSelectionListener(this.listBoxSelectionListener);
-		this.selectedItemsHolder.removeCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
+		this.selectedItemsModel.removeCollectionChangeListener(CollectionValueModel.VALUES, this.selectedItemsChangeListener);
 	}
 
 
@@ -263,8 +263,8 @@ final class ListBoxSelectionBinding<E>
 				return i;
 			}
 		}
-		// explicitly catch any model bugs
-		throw new IllegalStateException("selected item not found: " + item);
+		// see comment in DropDownListBoxSelectionBinding.indexOf(E)
+		return -1;
 	}
 
 
@@ -283,7 +283,7 @@ final class ListBoxSelectionBinding<E>
 	}
 
 	private void listBoxSelectionChanged_(@SuppressWarnings("unused") SelectionEvent event) {
-		this.selectedItemsHolder.setValues(this.getListBoxSelectedItems());
+		this.selectedItemsModel.setValues(this.getListBoxSelectedItems());
 	}
 
 	private Iterable<E> getListBoxSelectedItems() {
@@ -299,7 +299,7 @@ final class ListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.selectedItemsHolder);
+		return StringTools.buildToStringFor(this, this.selectedItemsModel);
 	}
 
 }

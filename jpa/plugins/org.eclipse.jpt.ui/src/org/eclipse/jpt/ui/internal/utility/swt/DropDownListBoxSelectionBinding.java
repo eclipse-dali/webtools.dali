@@ -26,9 +26,9 @@ import org.eclipse.swt.events.SelectionListener;
  * drop-down list box or the model, so changes must be coordinated.
  * <p>
  * <strong>NB:</strong> A selected item value of <code>null</code> can be used
- * to clear the drop-down list box's selection; but if <code>null</code> is a
- * valid item in the model list, there will be <em>no</em> way to clear the
- * selection.
+ * to clear the drop-down list box's selection. If <code>null</code> is a
+ * valid item in the model list, an invalid selected item can be used to clear
+ * the selection.
  * 
  * @see ListValueModel
  * @see WritablePropertyValueModel
@@ -48,7 +48,7 @@ final class DropDownListBoxSelectionBinding<E>
 	/**
 	 * A writable value model on the underlying model selection.
 	 */
-	private final WritablePropertyValueModel<E> selectedItemHolder;
+	private final WritablePropertyValueModel<E> selectedItemModel;
 
 	/**
 	 * A listener that allows us to synchronize the drop-down list box's
@@ -77,19 +77,19 @@ final class DropDownListBoxSelectionBinding<E>
 	 */
 	DropDownListBoxSelectionBinding(
 			ListValueModel<E> listModel,
-			WritablePropertyValueModel<E> selectedItemHolder,
+			WritablePropertyValueModel<E> selectedItemModel,
 			DropDownListBox dropdownListBox
 	) {
 		super();
-		if ((listModel == null) || (selectedItemHolder == null) || (dropdownListBox == null)) {
+		if ((listModel == null) || (selectedItemModel == null) || (dropdownListBox == null)) {
 			throw new NullPointerException();
 		}
 		this.listModel = listModel;
-		this.selectedItemHolder = selectedItemHolder;
+		this.selectedItemModel = selectedItemModel;
 		this.dropdownListBox = dropdownListBox;
 
 		this.selectedItemChangeListener = this.buildSelectedItemChangeListener();
-		this.selectedItemHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
+		this.selectedItemModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
 
 		this.dropdownListBoxSelectionListener = this.buildDropDownListBoxSelectionListener();
 		this.dropdownListBox.addSelectionListener(this.dropdownListBoxSelectionListener);
@@ -140,7 +140,7 @@ final class DropDownListBoxSelectionBinding<E>
 	 */
 	public void synchronizeListWidgetSelection() {
 		int oldIndex = this.dropdownListBox.getSelectionIndex();
-		E value = this.selectedItemHolder.getValue();
+		E value = this.selectedItemModel.getValue();
 		int newIndex = this.indexOf(value);
 		if ((oldIndex != -1) && (newIndex != -1) && (newIndex != oldIndex)) {
 			this.dropdownListBox.deselect(oldIndex);
@@ -156,7 +156,7 @@ final class DropDownListBoxSelectionBinding<E>
 
 	public void dispose() {
 		this.dropdownListBox.removeSelectionListener(this.dropdownListBoxSelectionListener);
-		this.selectedItemHolder.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
+		this.selectedItemModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.selectedItemChangeListener);
 	}
 
 
@@ -187,8 +187,19 @@ final class DropDownListBoxSelectionBinding<E>
 		if (item == null) {
 			return -1;
 		}
-		// explicitly catch any model bugs
-		throw new IllegalStateException("selected item not found: " + item);
+		// We can get here via one of the following:
+		// 1. The selected item model is invalid and not in sync with the list
+		//    model. This is not good and we don't make this (programming
+		//    error) obvious (e.g. via an exception). :-(
+		// 2. If both the selected item model and the list model are dependent
+		//    on the same underlying model, the selected item model may receive
+		//    its event first, resulting in a missing item. This will resolve
+		//    itself once the list model receives its event and synchronizes
+		//    with the same underlying model. This situation is acceptable.
+		return -1;
+
+// This is what we used to do:
+//		throw new IllegalStateException("selected item not found: " + item);
 	}
 
 
@@ -207,7 +218,7 @@ final class DropDownListBoxSelectionBinding<E>
 	}
 
 	private void dropDownListBoxSelectionChanged_(@SuppressWarnings("unused") SelectionEvent event) {
-		this.selectedItemHolder.setValue(this.getDropDownListBoxSelectedItem());
+		this.selectedItemModel.setValue(this.getDropDownListBoxSelectedItem());
 	}
 
 	private E getDropDownListBoxSelectedItem() {
@@ -220,7 +231,7 @@ final class DropDownListBoxSelectionBinding<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this, this.selectedItemHolder);
+		return StringTools.buildToStringFor(this, this.selectedItemModel);
 	}
 
 

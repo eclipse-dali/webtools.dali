@@ -61,8 +61,8 @@ import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.BitTools;
-import org.eclipse.jpt.utility.internal.BooleanTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.NotBooleanTransformer;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -79,7 +79,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModel
 import org.eclipse.jpt.utility.internal.model.value.SetCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
@@ -95,10 +95,10 @@ import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -113,6 +113,8 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+
+import com.ibm.icu.text.Collator;
 
 /**
  * Way more complicated UI than you would think....
@@ -153,6 +155,10 @@ public class JpaProjectPropertiesPage
 	private final ListValueModel<String> javaSourceFolderChoicesModel;
 
 	private final ChangeListener validationListener;
+
+
+	@SuppressWarnings("unchecked")
+	/* private */ static final Comparator<String> STRING_COMPARATOR = Collator.getInstance();
 
 
 	// ************ construction ************
@@ -250,15 +256,20 @@ public class JpaProjectPropertiesPage
 	/**
 	 * Add the default catalog if it is not on the list from the database
 	 */
-	@SuppressWarnings("unchecked")
 	private ListValueModel<String> buildCatalogChoicesModel() {
-		return new SortedListValueModelAdapter<String>(
-				new SetCollectionValueModel<String>(
-						new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
-								new PropertyCollectionValueModelAdapter<String>(this.defaultCatalogModel),
-								this.buildDatabaseCatalogChoicesModel()
-						)
-				)
+		return new SortedListValueModelAdapter<String>(this.buildUnsortedCatalogChoicesModel(), STRING_COMPARATOR);
+	}
+
+	/**
+	 * Add the default catalog if it is not on the list from the database
+	 */
+	@SuppressWarnings("unchecked")
+	private CollectionValueModel<String> buildUnsortedCatalogChoicesModel() {
+		return new SetCollectionValueModel<String>(
+					new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
+							new PropertyCollectionValueModelAdapter<String>(this.defaultCatalogModel),
+							this.buildDatabaseCatalogChoicesModel()
+					)
 			);
 	}
 
@@ -290,14 +301,16 @@ public class JpaProjectPropertiesPage
 	/**
 	 * Add the default catalog if it is not on the list from the database
 	 */
-	@SuppressWarnings("unchecked")
 	private ListValueModel<String> buildSchemaChoicesModel() {
-		return new SortedListValueModelAdapter<String>(
-				new SetCollectionValueModel<String>(
-						new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
-								new PropertyCollectionValueModelAdapter<String>(this.defaultSchemaModel),
-								this.buildDatabaseSchemaChoicesModel()
-						)
+		return new SortedListValueModelAdapter<String>(this.buildUnsortedSchemaChoicesModel(), STRING_COMPARATOR);
+	}
+
+	@SuppressWarnings("unchecked")
+	private CollectionValueModel<String> buildUnsortedSchemaChoicesModel() {
+		return new SetCollectionValueModel<String>(
+				new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
+						new PropertyCollectionValueModelAdapter<String>(this.defaultSchemaModel),
+						this.buildDatabaseSchemaChoicesModel()
 				)
 			);
 	}
@@ -311,10 +324,13 @@ public class JpaProjectPropertiesPage
 		return new BufferedWritablePropertyValueModel<Boolean>(new DiscoverAnnotatedClassesModel(this.jpaProjectModel), this.trigger);
 	}
 
+	/**
+	 * The opposite of the "discover annotated classes" flag.
+	 */
 	private WritablePropertyValueModel<Boolean> buildListAnnotatedClassesModel() {
-		return new ListAnnotatedClassesModel(this.discoverAnnotatedClassesModel);
+		return new TransformationWritablePropertyValueModel<Boolean, Boolean>(this.discoverAnnotatedClassesModel, NotBooleanTransformer.instance());
 	}
-
+	
 	// ***** JPA 2.0 project flag
 	private PropertyValueModel<Boolean> buildJpa2_0ProjectFlagModel() {
 		return new Jpa2_0ProjectFlagModel<JpaProject>(this.jpaProjectModel);
@@ -329,7 +345,8 @@ public class JpaProjectPropertiesPage
 		// by default, ExtendedListValueModelWrapper puts a null at the top of the list
 		return new ExtendedListValueModelWrapper<String>(
 					new SortedListValueModelAdapter<String>(
-						new JavaSourceFolderChoicesModel(this.jpaProjectModel)
+						new JavaSourceFolderChoicesModel(this.jpaProjectModel),
+						STRING_COMPARATOR
 					)
 				);
 	}
@@ -349,7 +366,7 @@ public class JpaProjectPropertiesPage
 		return flagIsSet(this.userOverrideDefaultCatalogFlagModel);
 	}
 
-	static boolean flagIsSet(PropertyValueModel<Boolean> flagModel) {
+	/* private */ static boolean flagIsSet(PropertyValueModel<Boolean> flagModel) {
 		Boolean flag = flagModel.getValue();
 		return (flag != null) && flag.booleanValue();
 	}
@@ -389,8 +406,7 @@ public class JpaProjectPropertiesPage
 	protected Control createPageContents(Composite parent) {
 		this.projectModel.setValue(this.getProject());
 
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		Composite composite = new Composite(sc, SWT.NULL);
+		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
 		layout.marginHeight = 0;
@@ -410,11 +426,17 @@ public class JpaProjectPropertiesPage
 
 		this.updateValidation();
 
-		sc.setContent(composite);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		sc.setMinSize(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		return sc;
+		return composite;
+	}
+
+	/**
+	 * Don't allow {@link org.eclipse.jface.preference.PreferencePage#computeSize()}
+	 * to cache the page's size, since the size of the "Library" panel can
+	 * change depending on the user's selection from the drop-down list.
+	 */
+	@Override
+	public Point computeSize() {
+		return this.doComputeSize();
 	}
 
 
@@ -435,18 +457,41 @@ public class JpaProjectPropertiesPage
 		);
 	}
 
+	/**
+	 * Add the project's JPA platform if it is not on the list of valid
+	 * platforms.
+	 * <p>
+	 * This is probably only useful if the project is corrupted
+	 * and has a platform that exists in the registry but is not on the
+	 * list of valid platforms for the project's JPA facet version.
+	 * Because, if the project's JPA platform is completely invalid, there
+	 * would be no JPA project!
+	 */
+	@SuppressWarnings("unchecked")
 	private ListValueModel<String> buildPlatformChoicesModel() {
+		return new SortedListValueModelAdapter<String>(
+				new SetCollectionValueModel<String>(
+						new CompositeCollectionValueModel<CollectionValueModel<String>, String>(
+								new PropertyCollectionValueModelAdapter<String>(this.platformIdModel),
+								this.buildRegistryPlatformsModel()
+						)
+				),
+				JPA_PLATFORM_COMPARATOR
+			);
+	}
+
+	private CollectionValueModel<String> buildRegistryPlatformsModel() {
 		String jpaFacetVersion = this.getProjectFacetVersion().getVersionString();
 		Iterable<String> enabledPlatformIds = JpaPlatformRegistry.instance().getJpaPlatformIdsForJpaFacetVersion(jpaFacetVersion);
-		return new StaticListValueModel<String>(
-				CollectionTools.sort(
-					CollectionTools.list(enabledPlatformIds), JPA_PLATFORM_COMPARATOR));
+		return new StaticCollectionValueModel<String>(enabledPlatformIds);
 	}
 
 	private static final Comparator<String> JPA_PLATFORM_COMPARATOR =
 			new Comparator<String>() {
 				public int compare(String id1, String id2) {
-					return getJpaPlatformLabel(id1).compareTo(getJpaPlatformLabel(id2));
+					String label1 = getJpaPlatformLabel(id1);
+					String label2 = getJpaPlatformLabel(id2);
+					return STRING_COMPARATOR.compare(label1, label2);
 				}
 			};
 
@@ -457,7 +502,7 @@ public class JpaProjectPropertiesPage
 				}
 			};
 
-	static String getJpaPlatformLabel(String id) {
+	/* private */ static String getJpaPlatformLabel(String id) {
 		return JpaPlatformRegistry.instance().getJpaPlatformLabel(id);
 	}
 
@@ -688,7 +733,7 @@ public class JpaProjectPropertiesPage
 		};
 	}
 
-	IWorkspaceRunnable buildOkWorkspaceRunnable() {
+	/* private */ IWorkspaceRunnable buildOkWorkspaceRunnable() {
 		return new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) throws CoreException {
 				JpaProjectPropertiesPage.this.performOk_(monitor);
@@ -1062,7 +1107,8 @@ public class JpaProjectPropertiesPage
 	private static final ListValueModel<String> CONNECTION_CHOICES_MODEL =
 			new ExtendedListValueModelWrapper<String>(
 					new SortedListValueModelAdapter<String>(
-							new ConnectionChoicesModel()
+							new ConnectionChoicesModel(),
+							STRING_COMPARATOR
 					)
 			);
 
@@ -1253,28 +1299,6 @@ public class JpaProjectPropertiesPage
 			this.subject.setDiscoversAnnotatedClasses(value.booleanValue());
 		}
 	}
-
-	/**
-	 * The negative of the "discover annotated classes" flag.
-	 */
-	static class ListAnnotatedClassesModel
-		extends TransformationWritablePropertyValueModel<Boolean, Boolean>
-	{
-		ListAnnotatedClassesModel(WritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel) {
-			super(discoverAnnotatedClassesModel);
-		}
-
-		@Override
-		protected Boolean transform_(Boolean value) {
-			return BooleanTools.not(value);
-		}
-
-		@Override
-		protected Boolean reverseTransform_(Boolean value) {
-			return BooleanTools.not(value);
-		}
-	}
-
 
 	/**
 	 * The folder where the source for the generated Canonical Metamodel
