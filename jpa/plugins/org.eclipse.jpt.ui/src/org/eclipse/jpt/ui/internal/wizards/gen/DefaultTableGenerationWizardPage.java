@@ -142,20 +142,22 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		}
 	}	
 	
-	private IPackageFragmentRoot getSourceFolder(String srcFodler){
-		IPackageFragmentRoot packageFragmentRoot=null;
-		// Copied from org.eclipse.pde.internal.ui.editor.plugin.JavaAttributeWizardPage
+	private IPackageFragmentRoot getSourceFolder(String srcFolder) {
+		IPackageFragmentRoot packageFragmentRoot = null;
+		srcFolder = '/' + srcFolder;
 		try {
-			IJavaProject javaProject = jpaProject.getJavaProject();
+			IJavaProject javaProject = this.jpaProject.getJavaProject();
 
 			IPackageFragmentRoot[] roots = javaProject.getPackageFragmentRoots();
 			for (int i = 0; i < roots.length; i++) {
 				if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE) {
-					//Save the default source root
-					if(i==0) packageFragmentRoot = roots[i];
-					//find alternative source root match the saved value
-					if( roots[i].getPath().toString().equals("/"+srcFodler)){
-						packageFragmentRoot=roots[i];
+					//Save the first source root in case we don't find one that matches the saved value
+					if (packageFragmentRoot == null) {
+						packageFragmentRoot = roots[i];
+					}
+					//check for alternative source root that matches the saved value
+					if (roots[i].getPath().toString().equals(srcFolder)){
+						packageFragmentRoot = roots[i];
 						break;
 					}
 				}
