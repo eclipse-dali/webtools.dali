@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -86,7 +86,7 @@ public abstract class SimpleFilter<T, S>
 
 	@Override
 	public boolean equals(Object o) {
-		if ( ! (o instanceof SimpleFilter)) {
+		if ( ! (o instanceof SimpleFilter<?, ?>)) {
 			return false;
 		}
 		SimpleFilter<?, ?> other = (SimpleFilter<?, ?>) o;

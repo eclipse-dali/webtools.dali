@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -47,19 +47,19 @@ public class SimpleListBrowser
 		}
 	}
 	
-	protected Object message(JComboBox comboBox) {
+	protected Object message(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 	
-	protected String title(JComboBox comboBox) {
+	protected String title(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 	
-	protected int messageType(JComboBox comboBox) {
+	protected int messageType(@SuppressWarnings("unused") JComboBox comboBox) {
 		return JOptionPane.QUESTION_MESSAGE;
 	}
 	
-	protected Icon icon(JComboBox comboBox) {
+	protected Icon icon(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 	

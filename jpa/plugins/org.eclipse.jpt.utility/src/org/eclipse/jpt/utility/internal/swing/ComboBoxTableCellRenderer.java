@@ -107,7 +107,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 		// can use them to paint non-selected cells
 		if (height == -1) {
 			JComboBox cb = new JComboBox();
-			cb.addItem("m");
+			cb.addItem("m"); //$NON-NLS-1$
 
 			// add in space for the border top and bottom
 			height = cb.getPreferredSize().height + 2;
@@ -117,7 +117,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 		}
 	}
 
-    static JLabel prototypeLabel = new JLabel("Prototype", new EmptyIcon(16), SwingConstants.LEADING);
+    static JLabel prototypeLabel = new JLabel("Prototype", new EmptyIcon(16), SwingConstants.LEADING); //$NON-NLS-1$
 
     protected JComboBox buildComboBox() {
 
@@ -162,7 +162,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 
 		};
 		// stole this code from javax.swing.DefaultCellEditor
-		result.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+		result.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE); //$NON-NLS-1$
 		result.addActionListener(this.buildActionListener());
 		result.addPopupMenuListener(this.buildPopupMenuListener());
 		
@@ -176,7 +176,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	
     
     private JList getListBox(JComboBox result) {
-        return (JList) ReflectionTools.getFieldValue(result.getUI(), "listBox");
+        return (JList) ReflectionTools.getFieldValue(result.getUI(), "listBox"); //$NON-NLS-1$
     }
 
 	
@@ -270,7 +270,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's foreground color.
 	 */
-	protected Color foregroundColor(JTable table, Object val, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color foregroundColor(JTable table, @SuppressWarnings("unused") Object val, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
 				return defaultForeground;
@@ -283,7 +283,7 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's background color.
 	 */
-	protected Color backgroundColor(JTable table, Object val, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color backgroundColor(JTable table, @SuppressWarnings("unused") Object val, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
 				return defaultBackground;
@@ -296,9 +296,9 @@ public class ComboBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's border.
 	 */
-	protected Border border(JTable table, Object val, boolean selected, boolean hasFocus, int row, int column) {
+	protected Border border(@SuppressWarnings("unused") JTable table, @SuppressWarnings("unused") Object val, @SuppressWarnings("unused") boolean selected, boolean hasFocus, @SuppressWarnings("unused") int row, @SuppressWarnings("unused") int column) {
 		return hasFocus ?
-			UIManager.getBorder("Table.focusCellHighlightBorder")
+			UIManager.getBorder("Table.focusCellHighlightBorder") //$NON-NLS-1$
 		:
 			NO_FOCUS_BORDER;
 	}

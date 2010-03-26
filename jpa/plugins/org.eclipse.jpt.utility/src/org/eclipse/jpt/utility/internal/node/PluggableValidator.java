@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -59,14 +59,14 @@ public class PluggableValidator
 
 	public synchronized void pause() {
 		if (this.pause) {
-			throw new IllegalStateException("already paused");
+			throw new IllegalStateException("already paused"); //$NON-NLS-1$
 		}
 		this.pause = true;
 	}
 
 	public synchronized void resume() {
 		if ( ! this.pause) {
-			throw new IllegalStateException("not paused");
+			throw new IllegalStateException("not paused"); //$NON-NLS-1$
 		}
 		this.pause = false;
 		// validate any changes that occurred while the validation was paused
@@ -112,7 +112,7 @@ public class PluggableValidator
 			}
 			@Override
 			public String toString() {
-				return "PluggableValidator.Delegate.Null";
+				return "PluggableValidator.Delegate.Null"; //$NON-NLS-1$
 			}
 		}
 

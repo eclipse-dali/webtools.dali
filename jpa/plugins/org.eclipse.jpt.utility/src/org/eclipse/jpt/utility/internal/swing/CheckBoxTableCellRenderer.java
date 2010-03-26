@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -113,10 +113,10 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's foreground color.
 	 */
-	protected Color foregroundColor(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color foregroundColor(JTable table, @SuppressWarnings("unused") Object value, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
-				return UIManager.getColor("Table.focusCellForeground");
+				return UIManager.getColor("Table.focusCellForeground"); //$NON-NLS-1$
 			}
 			return table.getSelectionForeground();
 		}
@@ -126,10 +126,10 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's background color.
 	 */
-	protected Color backgroundColor(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected Color backgroundColor(JTable table, @SuppressWarnings("unused") Object value, boolean selected, boolean hasFocus, int row, int column) {
 		if (selected) {
 			if (hasFocus && table.isCellEditable(row, column)) {
-				return UIManager.getColor("Table.focusCellBackground");
+				return UIManager.getColor("Table.focusCellBackground"); //$NON-NLS-1$
 			}
 			return table.getSelectionBackground();
 		}
@@ -139,8 +139,8 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	/**
 	 * Return the cell's border.
 	 */
-	protected Border border(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
-		return hasFocus ?  UIManager.getBorder("Table.focusCellHighlightBorder") : NO_FOCUS_BORDER;
+	protected Border border(@SuppressWarnings("unused") JTable table, @SuppressWarnings("unused") Object value, @SuppressWarnings("unused") boolean selected, boolean hasFocus, @SuppressWarnings("unused") int row, @SuppressWarnings("unused") int column) {
+		return hasFocus ?  UIManager.getBorder("Table.focusCellHighlightBorder") : NO_FOCUS_BORDER; //$NON-NLS-1$
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class CheckBoxTableCellRenderer implements TableCellEditorAdapter.Rendere
 	 * and table is opaque, we don't need to paint the background -
 	 * the table will do it.
 	 */
-	protected boolean cellIsOpaqueIn(JTable table, Object value, boolean selected, boolean hasFocus, int row, int column) {
+	protected boolean cellIsOpaqueIn(JTable table, @SuppressWarnings("unused") Object value, @SuppressWarnings("unused") boolean selected, @SuppressWarnings("unused") boolean hasFocus, @SuppressWarnings("unused") int row, @SuppressWarnings("unused") int column) {
 		Color cellBackground = this.checkBox.getBackground();
 		Color tableBackground = table.getBackground();
 		return ! (table.isOpaque() && cellBackground.equals(tableBackground));

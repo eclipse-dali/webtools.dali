@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -60,7 +60,7 @@ public class SimpleListCellRenderer
 	 * value and other settings. (Even more settings are
 	 * accessible via inherited getters: hasFocus, isEnabled, etc.)
 	 */
-	protected Icon buildIcon(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected Icon buildIcon(@SuppressWarnings("unused") JList list, Object value, @SuppressWarnings("unused") int index, @SuppressWarnings("unused") boolean isSelected, @SuppressWarnings("unused") boolean cellHasFocus) {
 		return this.buildIcon(value);
 	}
 
@@ -79,7 +79,7 @@ public class SimpleListCellRenderer
 	 * value and other settings. (Even more settings are
 	 * accessible via inherited getters: hasFocus, isEnabled, etc.)
 	 */
-	protected String buildText(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected String buildText(@SuppressWarnings("unused") JList list, Object value, @SuppressWarnings("unused") int index, @SuppressWarnings("unused") boolean isSelected, @SuppressWarnings("unused") boolean cellHasFocus) {
 		return this.buildText(value);
 	}
 
@@ -90,21 +90,21 @@ public class SimpleListCellRenderer
 	 * value itself is an icon, in which case no text is displayed.
 	 */
 	protected String buildText(Object value) {
-		return (value instanceof Icon) ? "" : ((value == null) ? "" : value.toString());
+		return (value instanceof Icon) ? "" : ((value == null) ? "" : value.toString()); //$NON-NLS-1$ //$NON-NLS-2$
 	}
 
 	/**
 	 * Return the text displayed when the cursor lingers over the specified cell.
 	 * (Even more settings are accessible via inherited getters: hasFocus, isEnabled, etc.)
 	 */
-	protected String buildToolTipText(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected String buildToolTipText(@SuppressWarnings("unused") JList list, Object value, @SuppressWarnings("unused") int index, @SuppressWarnings("unused") boolean isSelected, @SuppressWarnings("unused") boolean cellHasFocus) {
 		return this.buildToolTipText(value);
 	}
 
 	/**
 	 * Return the text displayed when the cursor lingers over the specified cell.
 	 */
-	protected String buildToolTipText(Object value) {
+	protected String buildToolTipText(@SuppressWarnings("unused") Object value) {
 		return null;
 	}
 
@@ -113,7 +113,7 @@ public class SimpleListCellRenderer
 	 * the given value and other settings. (Even more settings are accessible via
 	 * inherited getters: hasFocus, isEnabled, etc.)
 	 */
-	protected String buildAccessibleName(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+	protected String buildAccessibleName(@SuppressWarnings("unused") JList list, Object value, @SuppressWarnings("unused") int index, @SuppressWarnings("unused") boolean isSelected, @SuppressWarnings("unused") boolean cellHasFocus) {
 		return this.buildAccessibleName(value);
 	}
 
@@ -121,7 +121,7 @@ public class SimpleListCellRenderer
 	 * Return the accessible name to be given to the component used to render
 	 * the given value.
 	 */
-	protected String buildAccessibleName(Object value) {
+	protected String buildAccessibleName(@SuppressWarnings("unused") Object value) {
 		return null;
 	}
 

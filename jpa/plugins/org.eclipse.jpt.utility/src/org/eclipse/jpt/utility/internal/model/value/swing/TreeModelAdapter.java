@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -435,13 +435,13 @@ public class TreeModelAdapter<T>
 	 */
 	private void removeNode(int index, TreeNodeValueModel<T> node) {
 		new NodeChangePolicy(node).removeChildren();
-		this.removeNodeFromInternalTree(node.parent(), index, node, node.childrenModel());
+		this.removeNodeFromInternalTree(node.parent(), index, node.childrenModel());
 	}
 
 	/**
 	 * Remove the specified node from our internal tree.
 	 */
-	private void removeNodeFromInternalTree(TreeNodeValueModel<T> parent, int index, TreeNodeValueModel<T> node, ListValueModel<TreeNodeValueModel<T>> childrenModel) {
+	private void removeNodeFromInternalTree(TreeNodeValueModel<T> parent, int index, ListValueModel<TreeNodeValueModel<T>> childrenModel) {
 		this.parents.remove(childrenModel);
 
 		List<TreeNodeValueModel<T>> siblings = this.childrenLists.get(parent);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -61,7 +61,7 @@ public class FilteringListBrowser<T>
 		}
 		
 		// clear the text field so the list box is re-filtered
-		this.panel.textField().setText("");
+		this.panel.textField().setText(""); //$NON-NLS-1$
 	}
 	
 	protected void initializeCellRenderer(JComboBox comboBox) {
@@ -78,27 +78,27 @@ public class FilteringListBrowser<T>
 		return this.panel;
 	}
 
-	protected String title(JComboBox comboBox) {
+	protected String title(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 
-	protected int optionType(JComboBox comboBox) {
+	protected int optionType(@SuppressWarnings("unused") JComboBox comboBox) {
 		return JOptionPane.OK_CANCEL_OPTION;
 	}
 
-	protected int messageType(JComboBox comboBox) {
+	protected int messageType(@SuppressWarnings("unused") JComboBox comboBox) {
 		return JOptionPane.QUESTION_MESSAGE;
 	}
 
-	protected Icon icon(JComboBox comboBox) {
+	protected Icon icon(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 
-	protected Object[] selectionValues(JComboBox comboBox) {
+	protected Object[] selectionValues(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 
-	protected Object initialSelectionValue(JComboBox comboBox) {
+	protected Object initialSelectionValue(@SuppressWarnings("unused") JComboBox comboBox) {
 		return null;
 	}
 
