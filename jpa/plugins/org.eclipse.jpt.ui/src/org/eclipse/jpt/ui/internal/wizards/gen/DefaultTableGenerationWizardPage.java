@@ -140,8 +140,10 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 				setPackageFragmentRoot(root, true/*canBeModified*/);
 			}
 		}
-	}	
+	}
 	
+	//search for the source folder with the given name or return the first
+	//source folder if not found.
 	private IPackageFragmentRoot getSourceFolder(String srcFolder) {
 		IPackageFragmentRoot packageFragmentRoot = null;
 		srcFolder = '/' + srcFolder;
@@ -172,7 +174,6 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		if( packageName == null || packageName.length() == 0 || packageFragmentRoot==null) {
 			return;
 		}
-		//IJavaProject javaProject = jpaProject.getJavaProject();
 		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(packageName);
 		setPackageFragment(packageFragment, true/*canBeModified*/);
 	}
