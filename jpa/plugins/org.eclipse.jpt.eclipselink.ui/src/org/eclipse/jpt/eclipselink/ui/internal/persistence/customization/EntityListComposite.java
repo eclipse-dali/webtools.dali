@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2009 Oracle. All rights reserved.
+* Copyright (c) 2007, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,12 +10,9 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
 import java.util.ListIterator;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.search.IJavaSearchScope;
 import org.eclipse.jdt.core.search.SearchEngine;
@@ -134,12 +131,8 @@ public class EntityListComposite extends Pane<Customization>
 	}
 	
 	private IType chooseEntity() {
-
-		IPackageFragmentRoot root = getPackageFragmentRoot();
-		if (root == null) {
-			return null;
-		}
-		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
+		IJavaProject javaProject = getJavaProject();
+		IJavaElement[] elements = new IJavaElement[] { javaProject };
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 		IProgressService service = PlatformUI.getWorkbench().getProgressService();
 		SelectionDialog typeSelectionDialog;
@@ -167,17 +160,8 @@ public class EntityListComposite extends Pane<Customization>
 		return null;
 	}
 
-	private IPackageFragmentRoot getPackageFragmentRoot() {
-		IProject project = getSubject().getJpaProject().getProject();
-		IJavaProject root = JavaCore.create(project);
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptEclipseLinkUiPlugin.log(e);
-		}
-		return null;
+	private IJavaProject getJavaProject() {
+		return getSubject().getJpaProject().getJavaProject();
 	}
 
 	private ILabelProvider buildEntityLabelProvider() {
