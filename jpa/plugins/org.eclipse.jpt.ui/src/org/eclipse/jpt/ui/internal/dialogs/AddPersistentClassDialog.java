@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.dialogs;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -36,6 +35,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -164,7 +164,10 @@ public class AddPersistentClassDialog extends StatusDialog
 	private Text createText(Composite container) {
 		// TODO bug 156185 - when this is fixed there should be api for this
 		JavaTypeCompletionProcessor javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
-		javaTypeCompletionProcessor.setPackageFragment(getPackageFragmentRoot().getPackageFragment(""));
+		IPackageFragmentRoot pfr = getPackageFragmentRoot();
+		if (pfr != null) {
+			javaTypeCompletionProcessor.setPackageFragment(pfr.getPackageFragment(""));
+		}
 		
 		Text text = new Text(container, SWT.BORDER | SWT.SINGLE);
 
@@ -188,18 +191,8 @@ public class AddPersistentClassDialog extends StatusDialog
 		return data;
 	}
 
-	//the code completion handle doesn't care which package fragment root it is given, 
-	//so just give it the first?
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		IJavaProject root = getJpaProject().getJavaProject();
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-		}
-		return null;
+		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
 	}
 
 	

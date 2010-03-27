@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008  Oracle. 
+ *  Copyright (c) 2008, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -188,7 +189,7 @@ public class MappingFileWizard extends DataModelWizard
 			if (packageFragmentRoot == null) {
 				return null;
 			}
-			if (packageFragmentRoot.getKind() == IPackageFragmentRoot.K_SOURCE) {
+			if (JDTTools.packageFragmentRootIsSourceFolder(packageFragmentRoot)) {
 				return (IFolder) packageFragmentRoot.getResource();
 			}
 		}
@@ -237,6 +238,7 @@ public class MappingFileWizard extends DataModelWizard
 		return null;
 	}
 	
+	@Override
 	protected void postPerformFinish() throws InvocationTargetException {      
         try {
         	String projectName = (String) getDataModel().getProperty(OrmFileCreationDataModelProperties.PROJECT_NAME);

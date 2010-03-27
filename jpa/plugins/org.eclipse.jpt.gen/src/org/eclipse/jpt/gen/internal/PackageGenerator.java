@@ -38,7 +38,6 @@ import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -296,7 +295,7 @@ public class PackageGenerator {
 	}
 	
 	public IFolder getJavaPackageFolder(ORMGenTable table, IProgressMonitor monitor) throws CoreException {
-		IPackageFragmentRoot root = getDefaultJavaSrouceLocation ( getJavaProject() , table.getSourceFolder()) ;
+		IPackageFragmentRoot root = getJavaSourceLocation(getJavaProject(), table.getSourceFolder());
 		String packageName = table.getPackage();
 		if( packageName==null ) packageName ="";
 		IPackageFragment packageFragment = root.getPackageFragment(packageName);
@@ -305,37 +304,12 @@ public class PackageGenerator {
 		}		
 		return (IFolder)packageFragment.getResource();
 	}
-	
+
 	private IJavaProject getJavaProject(){
 		return this.jpaProject.getJavaProject();
 	}
-	
-	private IPackageFragmentRoot getDefaultJavaSrouceLocation(IJavaProject jproject, String sourceFolder){
-		IPackageFragmentRoot defaultSrcPath = null;
-		if (jproject != null) {
-			try {
-				if (jproject.exists()) {
-					IPackageFragmentRoot[] roots = jproject.getPackageFragmentRoots();
-					for (int i= 0; i < roots.length; i++) {
-						if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE ){
-							if( i == 0 ) 
-								defaultSrcPath = roots[i];
-							String path = roots[i].getPath().toString(); 
-							if( path.equals( "/"+sourceFolder )) {
-								return roots[i] ; 
-							}
-						}
-					}							
-				}
-			} catch (JavaModelException e) {
-				JptGenPlugin.logException(e);
-			}
-		}
-		return defaultSrcPath;
+
+	private IPackageFragmentRoot getJavaSourceLocation(IJavaProject javaProject, String sourceFolder) {
+		return javaProject.getPackageFragmentRoot(javaProject.getProject().getFolder(sourceFolder));
 	}
-
-	
-	// ********** annotation name builder **********
-
-	
 }

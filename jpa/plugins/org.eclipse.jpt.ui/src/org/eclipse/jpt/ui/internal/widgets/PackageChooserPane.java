@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -20,6 +19,7 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -57,6 +57,8 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	private JavaPackageCompletionProcessor javaPackageCompletionProcessor;
 
+	private PropertyChangeListener subjectChangeListener;
+
 	/**
 	 * Creates a new <code>PackageChooserPane</code>.
 	 *
@@ -91,6 +93,30 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		this.javaPackageCompletionProcessor = new JavaPackageCompletionProcessor(
 			new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_ROOT)
 		);
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		this.packageChooserSubjectChanged(getSubject());
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener_() {
+		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
+			public void propertyChanged(PropertyChangeEvent e) {
+				PackageChooserPane.this.packageChooserSubjectChanged((T) e.getNewValue());
+			}
+		};
+	}
+
+	protected void packageChooserSubjectChanged(T newSubject) {
+		IPackageFragmentRoot root = null;
+		if (newSubject != null) {
+			root = getPackageFragmentRoot();
+		}
+		this.javaPackageCompletionProcessor.setPackageFragmentRoot(root);
 	}
 
 	@Override
@@ -105,14 +131,8 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	@Override
 	protected Control addMainControl(Composite container) {
 		Composite subPane = addSubPane(container);
-		WritablePropertyValueModel<String> textHolder = buildTextHolder();
 
-		textHolder.addPropertyChangeListener(
-			PropertyValueModel.VALUE,
-			buildTextChangeListener()
-		);
-
-		Text text = addText(subPane, textHolder);
+		Text text = addText(subPane, buildTextHolder());
 
 		Image image = FieldDecorationRegistry.getDefault().getFieldDecoration(FieldDecorationRegistry.DEC_CONTENT_PROPOSAL).getImage();
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
@@ -125,24 +145,6 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		);
 
 		return subPane;
-	}
-
-	private PropertyChangeListener buildTextChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(buildTextChangeListener_());
-	}
-
-	private PropertyChangeListener buildTextChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (getSubject() != null) {
-					IPackageFragmentRoot root = getPackageFragmentRoot();
-
-					if (root != null) {
-						javaPackageCompletionProcessor.setPackageFragmentRoot(root);
-					}
-				}
-			}
-		};
 	}
 
 	/**
@@ -189,34 +191,6 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
-	private IPackageFragment getPackageFragment() {
-		String packageName = getPackageName();
-
-		if (packageName == null) {
-			return null;
-		}
-
-		return getPackageFragmentRoot().getPackageFragment(packageName);
-	}
-
-	/**
-	 * Retrieves the ??
-	 *
-	 * @return Either the root of the package fragment or <code>null</code> if it
-	 * can't be retrieved
-	 */
-	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		IJavaProject root = getJpaProject().getJavaProject();
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-		}
-		return null;
-	}
-
 	protected abstract JpaProject getJpaProject();
 
 	/**
@@ -240,4 +214,24 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	}
 	
 	protected abstract void setPackageName(String packageName);
+
+	private IPackageFragment getPackageFragment() {
+		String packageName = getPackageName();
+
+		if (packageName == null) {
+			return null;
+		}
+
+		return getPackageFragmentRoot().getPackageFragment(packageName);
+	}
+
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
+	}
+
+	@Override
+	public void dispose() {
+		this.getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		super.dispose();
+	}
 }

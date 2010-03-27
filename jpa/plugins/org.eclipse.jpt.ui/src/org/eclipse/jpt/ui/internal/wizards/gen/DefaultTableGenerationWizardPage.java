@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,7 +21,6 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
 import org.eclipse.jdt.internal.ui.wizards.TypedViewerFilter;
@@ -36,6 +34,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal.ORMGenTable;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -147,25 +146,18 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	private IPackageFragmentRoot getSourceFolder(String srcFolder) {
 		IPackageFragmentRoot packageFragmentRoot = null;
 		srcFolder = '/' + srcFolder;
-		try {
-			IJavaProject javaProject = this.jpaProject.getJavaProject();
+		IJavaProject javaProject = this.jpaProject.getJavaProject();
 
-			IPackageFragmentRoot[] roots = javaProject.getPackageFragmentRoots();
-			for (int i = 0; i < roots.length; i++) {
-				if (roots[i].getKind() == IPackageFragmentRoot.K_SOURCE) {
-					//Save the first source root in case we don't find one that matches the saved value
-					if (packageFragmentRoot == null) {
-						packageFragmentRoot = roots[i];
-					}
-					//check for alternative source root that matches the saved value
-					if (roots[i].getPath().toString().equals(srcFolder)){
-						packageFragmentRoot = roots[i];
-						break;
-					}
-				}
+		for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+			//Save the first source root in case we don't find one that matches the saved value
+			if (packageFragmentRoot == null) {
+				packageFragmentRoot = root;
 			}
-		} catch (CoreException e) {
-			JptUiPlugin.log(e);
+			//check for alternative source root that matches the saved value
+			if (root.getPath().toString().equals(srcFolder)){
+				packageFragmentRoot = root;
+				break;
+			}
 		}
 		return packageFragmentRoot;
 	}
@@ -238,8 +230,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	 */
 	@Override
 	protected IPackageFragmentRoot chooseContainer() {
-		IJavaElement initElement= getPackageFragmentRoot();
-		Class[] acceptedClasses= new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
+		Class<?>[] acceptedClasses = new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
 		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
 			@Override
 			public boolean isSelectedValid(Object element) {
@@ -249,11 +240,11 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 						IPath path= jproject.getProject().getFullPath();
 						return (jproject.findPackageFragmentRoot(path) != null);
 					} else if (element instanceof IPackageFragmentRoot) {
-						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+						return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
 					}
 					return true;
 				} catch (JavaModelException e) {
-					JavaPlugin.log(e.getStatus()); // just log, no UI in validation
+					JptUiPlugin.log(e); // just log, no UI in validation
 				}
 				return false;
 			}
@@ -264,12 +255,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IPackageFragmentRoot) {
-					try {
-						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
-					} catch (JavaModelException e) {
-						JavaPlugin.log(e.getStatus()); // just log, no UI in validation
-						return false;
-					}
+					return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
 				}
 				return super.select(viewer, parent, element);
 			}
@@ -284,7 +270,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		dialog.setMessage(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_description);
 		dialog.addFilter(filter);
 		dialog.setInput(jpaProject.getJavaProject());
-		dialog.setInitialSelection(initElement);
+		dialog.setInitialSelection(getPackageFragmentRoot());
 		dialog.setHelpAvailable(false);
 
 		if (dialog.open() == Window.OK) {

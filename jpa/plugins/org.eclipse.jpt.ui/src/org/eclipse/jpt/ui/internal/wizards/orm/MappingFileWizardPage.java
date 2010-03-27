@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009 Oracle. 
+ *  Copyright (c) 2008, 2010 Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -16,7 +16,8 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -26,9 +27,9 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -251,11 +252,9 @@ public class MappingFileWizardPage extends DataModelWizardPage
 					IFolder folder = (IFolder) element;
 					// only show source folders
 					IProject project = ProjectUtilities.getProject(model.getStringProperty(PROJECT_NAME));
-					IPackageFragmentRoot[] sourceFolders = J2EEProjectUtilities.getSourceContainers(project);
-					for (int i = 0; i < sourceFolders.length; i++) {
-						if (sourceFolders[i].getResource()!= null && sourceFolders[i].getResource().equals(folder)) {
-							return true;
-						}
+					IJavaProject javaProject = JavaCore.create(project);
+					if (JDTTools.packageFragmentRootIsSourceFolder(javaProject.getPackageFragmentRoot(folder))) {
+						return true;
 					}
 				}
 				return false;

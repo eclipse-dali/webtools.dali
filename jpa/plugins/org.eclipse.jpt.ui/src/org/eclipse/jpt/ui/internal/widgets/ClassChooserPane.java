@@ -10,9 +10,10 @@
 package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -28,11 +29,15 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
+import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -55,7 +60,7 @@ import org.eclipse.ui.forms.widgets.Hyperlink;
  * |        ---------------------------------------------------- ------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 @SuppressWarnings("nls")
@@ -65,6 +70,8 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * The code completion manager.
 	 */
 	protected JavaTypeCompletionProcessor javaTypeCompletionProcessor;
+
+	private PropertyChangeListener subjectChangeListener;
 
 	/**
 	 * Creates a new <code>ClassChooserPane</code>.
@@ -98,6 +105,35 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 
 		// TODO bug 156185 - when this is fixed there should be api for this
 		this.javaTypeCompletionProcessor = new JavaTypeCompletionProcessor(false, false);
+
+		this.subjectChangeListener = this.buildSubjectChangeListener();
+		this.getSubjectHolder().addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+
+		this.classChooserSubjectChanged(getSubject());
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener() {
+		return new SWTPropertyChangeListenerWrapper(this.buildSubjectChangeListener_());
+	}
+
+	private PropertyChangeListener buildSubjectChangeListener_() {
+		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
+			public void propertyChanged(PropertyChangeEvent e) {
+				ClassChooserPane.this.classChooserSubjectChanged((T) e.getNewValue());
+			}
+		};
+	}
+
+	protected void classChooserSubjectChanged(T newSubject) {
+		IPackageFragment packageFragment = null;
+		if (newSubject != null) {
+			IPackageFragmentRoot root = getPackageFragmentRoot();
+			if (root != null) {
+				packageFragment = root.getPackageFragment("");
+			}
+		}
+		this.javaTypeCompletionProcessor.setPackageFragment(packageFragment);
 	}
 
 	@Override
@@ -145,17 +181,20 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 	
 	protected void createType() {
+		StructuredSelection selection = new StructuredSelection(getJpaProject().getProject());
+
 		NewClassWizardPage newClassWizardPage = new NewClassWizardPage();
+		newClassWizardPage.init(selection);
 		newClassWizardPage.setSuperClass(getSuperclassName(), true);
 		newClassWizardPage.setSuperInterfaces(getSuperInterfaceNames(), true);
-		newClassWizardPage.setPackageFragmentRoot(getPackageFragmentRoot(), true);
 		if (!StringTools.stringIsEmpty(getClassName())) {
 			newClassWizardPage.setTypeName(ClassName.getSimpleName(getClassName()), true);
 			String packageName = ClassName.getPackageName(getClassName());
-			newClassWizardPage.setPackageFragment(getPackageFragmentRoot().getPackageFragment(packageName), true);
+			newClassWizardPage.setPackageFragment(getFirstJavaSourceFolder().getPackageFragment(packageName), true);
 		}
 		NewClassCreationWizard wizard = new NewClassCreationWizard(newClassWizardPage, false);
-		wizard.init(PlatformUI.getWorkbench(), new StructuredSelection(getJpaProject().getProject()));//TODO StructuredSelection
+		wizard.init(PlatformUI.getWorkbench(), selection);
+
 		WizardDialog dialog = new WizardDialog(getShell(), wizard);
 		dialog.create();
 		int dResult = dialog.open();
@@ -259,14 +298,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * cancelled the dialog
 	 */
 	protected IType chooseType() {
-
-		IPackageFragmentRoot root = getPackageFragmentRoot();
-
-		if (root == null) {
-			return null;
-		}
-
-		IJavaElement[] elements = new IJavaElement[] { root.getJavaProject() };
+		IJavaElement[] elements = new IJavaElement[] { getJpaProject().getJavaProject() };
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 		SelectionDialog typeSelectionDialog;
 
@@ -306,28 +338,9 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 */
 	protected abstract String getClassName();
 
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		updatePackageFragment();
-	}
-
-	/**
-	 * Retrieves the ??
-	 *
-	 * @return Either the root of the package fragment or <code>null</code> if it
-	 * can't be retrieved
-	 */
-	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		IJavaProject root = getJpaProject().getJavaProject();
-
-		try {
-			return root.getAllPackageFragmentRoots()[0];
-		}
-		catch (JavaModelException e) {
-			JptUiPlugin.log(e);
-		}
-		return null;
+	protected IPackageFragmentRoot getFirstJavaSourceFolder() {
+		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(getJpaProject().getJavaProject()).iterator();
+		return i.hasNext() ? i.next() : null;
 	}
 
 	/**
@@ -342,18 +355,14 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 			setClassName(className);
 		}
 	}
-	
-	private void updatePackageFragment() {
 
-		if (getSubject() != null) {
-			IPackageFragmentRoot root = getPackageFragmentRoot();
+	protected IPackageFragmentRoot getPackageFragmentRoot() {
+		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
+	}
 
-			if (root != null) {
-				this.javaTypeCompletionProcessor.setPackageFragment(root.getPackageFragment(""));
-				return;
-			}
-		}
-
-		this.javaTypeCompletionProcessor.setPackageFragment(null);
+	@Override
+	public void dispose() {
+		this.getSubjectHolder().removePropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
+		super.dispose();
 	}
 }
