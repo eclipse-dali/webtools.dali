@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.0"?><!--
+<?eclipse version="3.0"?>
+<!--
   Copyright (c) 2007, 2010 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
@@ -217,9 +218,9 @@
 		</provider>
 		
 		<provider 
-			id="jpa-generic-user-library-provider" 
+			id="jpa-generic1_0-user-library-provider" 
 			extends="wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jst.common.project.facet.core.libprov.user.KeyClassesValidator"/>
+			<param name="validator" value="org.eclipse.jpt.core.internal.utility.KeyClassesValidator"/>
 			<param name="validator.param.0" value="javax.persistence.Entity"/>
 			<enablement>
 				<and>
@@ -227,10 +228,25 @@
 						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
 					</with>
 					<with variable="jpaPlatform">
-						<or>
-							<equals value="generic"/>
-							<equals value="generic2_0"/>
-						</or>
+						<equals value="generic"/>
+					</with>
+				</and>
+			</enablement>
+		</provider>
+		
+		<provider 
+			id="jpa-generic2_0-user-library-provider" 
+			extends="wtp-user-library-provider">
+			<param name="validator" value="org.eclipse.jpt.core.internal.utility.KeyClassesValidator"/>
+			<param name="validator.param.0" value="javax.persistence.Entity"/>
+			<param name="validator.param.1" value="javax.persistence.ElementCollection"/>
+			<enablement>
+				<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
+					</with>
+					<with variable="jpaPlatform">
+						<equals value="generic2_0"/>
 					</with>
 				</and>
 			</enablement>
