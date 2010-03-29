@@ -64,7 +64,7 @@ public class SessionCustomizersComposite extends Pane<Customization>
 		IType type = chooseType();
 
 		if (type != null) {
-			String className = type.getFullyQualifiedName('.');
+			String className = type.getFullyQualifiedName('$');
 			if( ! this.getSubject().sessionCustomizerExists(className)) {
 				
 				String classRef = this.getSubject().addSessionCustomizer(className);
