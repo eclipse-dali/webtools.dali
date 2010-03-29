@@ -36,7 +36,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -204,13 +203,8 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		return getOverrideNamed(name, overrides) != null;
 	}
 	
-
 	protected Iterator<String> allOverridableAssociationNames() {
-		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
-		if (overridableTypeMapping != null) {
-			return overridableTypeMapping.allOverridableAssociationNames();
-		}
-		return EmptyIterator.instance();
+		return getOwner().allOverridableNames();
 	}
 	
 	protected void initializeVirtualAssociationOverrides() {

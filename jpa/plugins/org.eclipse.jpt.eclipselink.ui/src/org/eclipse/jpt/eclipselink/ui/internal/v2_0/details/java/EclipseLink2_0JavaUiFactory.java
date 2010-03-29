@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java.EclipseLink1_1J
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -35,7 +37,7 @@ public class EclipseLink2_0JavaUiFactory
 	public EclipseLink2_0JavaUiFactory() {
 		super();
 	}
-
+	
 	
 	// **************** java type mapping composites ***************************
 	
@@ -53,12 +55,23 @@ public class EclipseLink2_0JavaUiFactory
 		return new JavaEclipseLinkMappedSuperclass2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
+	
+	// **************** java attribute mapping composites **********************
+	
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
 			PropertyValueModel<JavaIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new JavaEclipseLinkIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
+	@Override
+	public JpaComposite createJavaEmbeddedIdMappingComposite(
+			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new EmbeddedIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaElementCollectionMapping2_0Composite(
@@ -99,5 +112,4 @@ public class EclipseLink2_0JavaUiFactory
 			WidgetFactory widgetFactory) {
 		return new JavaEclipseLinkManyToManyMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
-
 }

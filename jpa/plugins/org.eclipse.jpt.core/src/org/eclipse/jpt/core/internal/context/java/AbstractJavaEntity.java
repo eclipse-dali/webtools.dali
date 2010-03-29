@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -55,6 +56,7 @@ import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnot
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
@@ -74,6 +76,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -1490,16 +1493,24 @@ public abstract class AbstractJavaEntity
 	
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner
+		implements JavaAssociationOverrideContainer.Owner
+	{	
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaEntity.this.getTypeMapping();
+		}
 		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaEntity.this.getOverridableTypeMapping();
 		}
 		
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaEntity.this.getTypeMapping();
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+					: typeMapping.allOverridableAssociationNames();
 		}
-
+		
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
 			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
@@ -1511,7 +1522,7 @@ public abstract class AbstractJavaEntity
 		public Iterator<String> candidateTableNames() {
 			return AbstractJavaEntity.this.associatedTableNamesIncludingInherited();
 		}
-
+		
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return AbstractJavaEntity.this.getDbTable(tableName);
 		}
@@ -1519,24 +1530,24 @@ public abstract class AbstractJavaEntity
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
-
+		
 		public String getPossiblePrefix() {
 			return null;
 		}
-
+		
 		public String getWritePrefix() {
 			return null;
 		}
-
+		
 		public boolean isRelevant(String overrideName) {
 			//no prefix, so always true
 			return true;
 		}
-
+		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -1552,7 +1563,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -1566,7 +1577,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -1589,7 +1600,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedReferencedColumnNameMessage(override.getName(), column, textRange);
@@ -1612,7 +1623,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
@@ -1625,7 +1636,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -1648,6 +1659,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
+		
 		protected IMessage buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -1661,15 +1673,63 @@ public abstract class AbstractJavaEntity
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements JavaAttributeOverrideContainer.Owner {
+	class AttributeOverrideContainerOwner
+		implements JavaAttributeOverrideContainer.Owner 
+	{
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaEntity.this.getTypeMapping();
+		}
+		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaEntity.this.getOverridableTypeMapping();
 		}
 		
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaEntity.this.getTypeMapping();
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+				: allOverridableAttributeNames_(typeMapping);
 		}
-
+		
+		/* assumes the type mapping is not null */
+		protected Iterator allOverridableAttributeNames_(TypeMapping typeMapping) {
+			final Collection mappedByRelationshipAttributes = CollectionTools.collection(
+					new TransformationIterator<SingleRelationshipMapping2_0, String>(getMapsIdRelationships()) {
+						@Override
+						protected String transform(SingleRelationshipMapping2_0 next) {
+							return next.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue();
+						}
+					});
+			return new FilteringIterator<String>(typeMapping.allOverridableAttributeNames()) {
+				@Override
+				protected boolean accept(String o) {
+					if (mappedByRelationshipAttributes.isEmpty()) {
+						return true;
+					}
+					// overrideable names are (usually?) qualified with a container mapping, 
+					// which may also be the one mapped by a relationship
+					String qualifier = 
+							(o.indexOf('.') > 0) ?
+								o.substring(0, o.indexOf('.'))
+								: o;
+					return ! mappedByRelationshipAttributes.contains(qualifier);
+				}
+			};
+		}
+		
+		protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
+			return new FilteringIterable<SingleRelationshipMapping2_0>(
+					new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
+						new CompositeIterable<AttributeMapping>(
+							getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+							getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+				@Override
+				protected boolean accept(SingleRelationshipMapping2_0 o) {
+					return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+				}
+			};
+		}
+		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
@@ -1677,11 +1737,11 @@ public abstract class AbstractJavaEntity
 		public boolean tableNameIsInvalid(String tableName) {
 			return AbstractJavaEntity.this.tableNameIsInvalid(tableName);
 		}
-
+		
 		public Iterator<String> candidateTableNames() {
 			return AbstractJavaEntity.this.associatedTableNamesIncludingInherited();
 		}
-
+		
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return AbstractJavaEntity.this.getDbTable(tableName);
 		}
@@ -1689,24 +1749,24 @@ public abstract class AbstractJavaEntity
 		public String getDefaultTableName() {
 			return AbstractJavaEntity.this.getPrimaryTableName();
 		}
-
+		
 		public String getPossiblePrefix() {
 			return null;
 		}
-
+		
 		public String getWritePrefix() {
 			return null;
 		}
-
+		
 		public boolean isRelevant(String overrideName) {
 			//no prefix, so always true
 			return true;
 		}
-
+		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -1729,7 +1789,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -1745,7 +1805,7 @@ public abstract class AbstractJavaEntity
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

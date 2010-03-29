@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -21,7 +19,8 @@ package org.eclipse.jpt.core.context;
  * @version 2.3
  * @since 2.0
  */
-public interface AttributeOverride extends BaseOverride, Column.Owner
+public interface AttributeOverride
+	extends BaseOverride, Column.Owner
 {
 	Column getColumn();
 	

@@ -17,54 +17,19 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | - Attribute Overrides --------------------------------------------------- |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | AddRemoveListPane                                                 | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | |                                                                       | |
- * | |   x Override Default                                                  | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | PageBook (AttributeOverrideComposite/AssociationOverrideComposite)| | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see Entity
- * @see Entity2_0Composite - The parent container
- * @see AttributeOverrideComposite
- * @see AssociationOverride2_0Composite
- *
- * @version 3.0
- * @since 2.2
- */
-public class Entity2_0OverridesComposite extends AbstractEntityOverridesComposite
+public class Entity2_0OverridesComposite
+	extends AbstractEntityOverridesComposite
 {
-
-	/**
-	 * Creates a new <code>OverridesComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 */
-	public Entity2_0OverridesComposite(Pane<? extends Entity> parentPane,
-	                          Composite parent) {
-
+	public Entity2_0OverridesComposite(
+			Pane<? extends Entity> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
+	
 	@Override
 	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
 		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
 	}
-
 }

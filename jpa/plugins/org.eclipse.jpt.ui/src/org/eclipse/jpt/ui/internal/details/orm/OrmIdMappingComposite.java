@@ -13,19 +13,21 @@ import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmIdMappingComposite extends AbstractIdMappingComposite<OrmIdMapping>
+public class OrmIdMappingComposite
+	extends AbstractIdMappingComposite<OrmIdMapping>
 {
-	public OrmIdMappingComposite(PropertyValueModel<? extends OrmIdMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
+	public OrmIdMappingComposite(
+			PropertyValueModel<? extends OrmIdMapping> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeIdSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);

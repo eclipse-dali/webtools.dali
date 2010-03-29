@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -30,113 +29,40 @@ import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnCombo                                                           | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TableCombo                                                            | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * | > Details                                                                 |
- * |                                                                           |
- * |   x Insertable                                                            |
- * |                                                                           |
- * |   x Updatable                                                             |
- * |                                                                           |
- * |   x Unique                                                                |
- * |                                                                           |
- * |   x Nullable                                                              |
- * |                                                                           |
- * |                      ---------------                                      |
- * |   Length:            | I         |I|  Default (XXX)                       |
- * |                      ---------------                                      |
- * |                      ---------------                                      |
- * |   Precision:         | I         |I|  Default (XXX)                       |
- * |                      ---------------                                      |
- * |                      ---------------                                      |
- * |   Scale:             | I         |I|  Default (XXX)                       |
- * |                      ---------------                                      |
- * |                      ---------------------------------------------------- |
- * |   Column Definition: | I                                                | |
- * |                      ---------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see Column
- * @see ColumnCombo
- * @see TableCombo
- * @see BasicMappingComposite - A container of this pane
- * @see EmbeddedMappingOverridesComposite - A container of this pane
- * @see IdMappingComposite - A container of this pane
- * @see VersionMappingComposite - A container of this pane
- *
- * @version 2.0
- * @since 1.0
- */
-public class ColumnComposite extends Pane<Column> {
-
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>IColumn</code>
-	 * @param parent The parent container
-	 */
-	public ColumnComposite(Pane<?> parentPane,
-	                       PropertyValueModel<? extends Column> subjectHolder,
-	                       Composite parent) {
-
+public class ColumnComposite
+	extends Pane<Column>
+{
+	public ColumnComposite(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends Column> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent, false);
 	}
-
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>IColumn</code>
-	 * @param parent The parent container
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
-	 * <code>false</code> to not align them
-	 */
-	public ColumnComposite(Pane<?> parentPane,
-	                       PropertyValueModel<? extends Column> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets) {
-
+	
+	public ColumnComposite(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends Column> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets) {
+		
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets);
 	}
 	
-	/**
-	 * Creates a new <code>ColumnComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param subjectHolder The holder of the subject <code>IColumn</code>
-	 * @param parent The parent container
-	 * @param automaticallyAlignWidgets <code>true</code> to make the widgets
-	 * this pane aligned with the widgets of the given parent controller;
-	 * <code>false</code> to not align them
-	 */
-	public ColumnComposite(Pane<?> parentPane,
-	                       PropertyValueModel<? extends Column> subjectHolder,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets,
-	                       boolean parentManagePane) {
-
+	public ColumnComposite(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends Column> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets,
+			boolean parentManagePane) {
+		
 		super(parentPane, subjectHolder, parent, automaticallyAlignWidgets, parentManagePane);
 	}
-
+	
+	
 	private ColumnCombo<Column> addColumnCombo(Composite container) {
-
+		
 		return new ColumnCombo<Column>(this, container) {
-
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
@@ -145,7 +71,7 @@ public class ColumnComposite extends Pane<Column> {
 				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
 				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
-
+			
 			@Override
 			protected void propertyChanged(String propertyName) {
 				if (propertyName == BaseColumn.DEFAULT_TABLE_PROPERTY ||
@@ -155,40 +81,48 @@ public class ColumnComposite extends Pane<Column> {
 					super.propertyChanged(propertyName);
 				}
 			}
-
+			
 			@Override
 			protected String getDefaultValue() {
 				return getSubject().getDefaultName();
 			}
-
+			
 			@Override
 			protected void setValue(String value) {
 				getSubject().setSpecifiedName(value);
 			}
-
+			
 			@Override
 			protected Table getDbTable_() {
 				return getSubject().getDbTable();
 			}
-
+			
 			@Override
 			protected String getValue() {
 				return getSubject().getSpecifiedName();
 			}
+			
+			@Override
+			protected String buildNullDefaultValueEntry() {
+				return NLS.bind(
+						JptUiDetailsMessages.DefaultWithOneParam,
+						JptUiDetailsMessages.NoneSelected);
+			}
+			
 			@Override
 			public String toString() {
 				return "ColumnComposite.columnCombo"; //$NON-NLS-1$
 			}
 		};
 	}
-
+	
 	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
 		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
 			}
-
+			
 			@Override
 			protected void setValue_(String value) {
 				if (value.length() == 0) {
@@ -212,7 +146,7 @@ public class ColumnComposite extends Pane<Column> {
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<String> buildInsertableStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
 			@Override
@@ -228,10 +162,10 @@ public class ColumnComposite extends Pane<Column> {
 	
 	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-			BaseColumn.DEFAULT_INSERTABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+				BaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				if (this.subject.getSpecifiedInsertable() != null) {
@@ -241,24 +175,24 @@ public class ColumnComposite extends Pane<Column> {
 			}
 		};
 	}
-
+	
 	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedNullable();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedNullable(value);
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<String> buildNullableStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
 			@Override
@@ -274,10 +208,10 @@ public class ColumnComposite extends Pane<Column> {
 	
 	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-			BaseColumn.DEFAULT_NULLABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				if (this.subject.getSpecifiedNullable() != null) {
@@ -287,69 +221,77 @@ public class ColumnComposite extends Pane<Column> {
 			}
 		};
 	}
-
+	
 	private Pane<Column> addTableCombo(Composite container) {
-
+		
 		return new DatabaseObjectCombo<Column>(this, container) {
-
+			
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
 				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
 				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
-
+			
 			@Override
 			protected String getDefaultValue() {
 				return this.getSubject().getDefaultTable();
 			}
-
+			
 			@Override
 			protected void setValue(String value) {
 				this.getSubject().setSpecifiedTable(value);
 			}
-
+			
 			@Override
 			protected String getValue() {
 				return this.getSubject().getSpecifiedTable();
 			}
-
+			
 			@Override
 			protected Iterable<String> getValues_() {
 				return CollectionTools.iterable(this.values());
 			}
-
+			
 			protected Iterator<String> values() {
 				return this.getSubject().candidateTableNames();
 			}
+			
+			@Override
+			protected String buildNullDefaultValueEntry() {
+				return NLS.bind(
+						JptUiDetailsMessages.DefaultWithOneParam,
+						JptUiDetailsMessages.NoneSelected);
+			}
+			
 			@Override
 			public String toString() {
 				return "ColumnComposite.tableCombo"; //$NON-NLS-1$
 			}
 		};
 	}
-
+	
 	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_UNIQUE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedUnique();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUnique(value);
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<String> buildUniqueStringHolder() {
-
+		
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
-
+			
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -363,10 +305,10 @@ public class ColumnComposite extends Pane<Column> {
 	
 	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
-			BaseColumn.DEFAULT_UNIQUE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
+				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				if (this.subject.getSpecifiedUnique() != null) {
@@ -376,29 +318,29 @@ public class ColumnComposite extends Pane<Column> {
 			}
 		};
 	}
-
+	
 	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedUpdatable();
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				this.subject.setSpecifiedUpdatable(value);
 			}
 		};
 	}
-
+	
 	private PropertyValueModel<String> buildUpdatableStringHolder() {
-
+		
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
-
+			
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -412,10 +354,10 @@ public class ColumnComposite extends Pane<Column> {
 	
 	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
 		return new PropertyAspectAdapter<Column, Boolean>(
-			getSubjectHolder(),
-			BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-			BaseColumn.DEFAULT_UPDATABLE_PROPERTY)
-		{
+				getSubjectHolder(),
+				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
+			
 			@Override
 			protected Boolean buildValue_() {
 				if (this.subject.getSpecifiedUpdatable() != null) {
@@ -425,115 +367,104 @@ public class ColumnComposite extends Pane<Column> {
 			}
 		};
 	}
-
+	
 	@Override
 	protected void initializeLayout(Composite container) {
-
 		// Column group pane
 		container = addTitledGroup(
-			container,
-			JptUiDetailsMessages.ColumnComposite_columnSection
-		);
-
+				container,
+				JptUiDetailsMessages.ColumnComposite_columnSection);
+		
 		// Column widgets
 		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.ColumnComposite_name,
-			addColumnCombo(container),
-			JpaHelpContextIds.MAPPING_COLUMN
-		);
-
+				container,
+				JptUiDetailsMessages.ColumnComposite_name,
+				addColumnCombo(container),
+				JpaHelpContextIds.MAPPING_COLUMN);
+		
 		// Table widgets
 		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.ColumnComposite_table,
-			addTableCombo(container),
-			JpaHelpContextIds.MAPPING_COLUMN_TABLE
-		);
-
+				container,
+				JptUiDetailsMessages.ColumnComposite_table,
+				addTableCombo(container),
+				JpaHelpContextIds.MAPPING_COLUMN_TABLE);
+		
 		// Details sub-pane
 		container = addCollapsibleSubSection(
-			container,
-			JptUiDetailsMessages.ColumnComposite_details,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
-
+				container,
+				JptUiDetailsMessages.ColumnComposite_details,
+				new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
+		
 		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 	}
 	
 	protected class DetailsComposite extends Pane<Column> {
 				
-		public DetailsComposite(Pane<?> parentPane,
-            PropertyValueModel<? extends Column> subjectHolder,
-            Composite parent) {
-
+		public DetailsComposite(
+				Pane<?> parentPane,
+	            PropertyValueModel<? extends Column> subjectHolder,
+	            Composite parent) {
+			
 			super(parentPane, subjectHolder, parent, false);
 		}
-
+		
 		@Override
 		protected void initializeLayout(Composite container) {
-
 			// Insertable tri-state check box
 			addTriStateCheckBoxWithDefault(
-				addSubPane(container, 4),
-				JptUiDetailsMessages.ColumnComposite_insertable,
-				buildInsertableHolder(),
-				buildInsertableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE
-			);
-
+					addSubPane(container, 4),
+					JptUiDetailsMessages.ColumnComposite_insertable,
+					buildInsertableHolder(),
+					buildInsertableStringHolder(),
+					JpaHelpContextIds.MAPPING_COLUMN_INSERTABLE);
+			
 			// Updatable tri-state check box
 			addTriStateCheckBoxWithDefault(
-				container,
-				JptUiDetailsMessages.ColumnComposite_updatable,
-				buildUpdatableHolder(),
-				buildUpdatableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE
-			);
-
+					container,
+					JptUiDetailsMessages.ColumnComposite_updatable,
+					buildUpdatableHolder(),
+					buildUpdatableStringHolder(),
+					JpaHelpContextIds.MAPPING_COLUMN_UPDATABLE);
+			
 			// Unique tri-state check box
 			addTriStateCheckBoxWithDefault(
-				container,
-				JptUiDetailsMessages.ColumnComposite_unique,
-				buildUniqueHolder(),
-				buildUniqueStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_UNIQUE
-			);
-
+					container,
+					JptUiDetailsMessages.ColumnComposite_unique,
+					buildUniqueHolder(),
+					buildUniqueStringHolder(),
+					JpaHelpContextIds.MAPPING_COLUMN_UNIQUE);
+			
 			// Nullable tri-state check box
 			addTriStateCheckBoxWithDefault(
-				container,
-				JptUiDetailsMessages.ColumnComposite_nullable,
-				buildNullableHolder(),
-				buildNullableStringHolder(),
-				JpaHelpContextIds.MAPPING_COLUMN_NULLABLE
-			);
-
+					container,
+					JptUiDetailsMessages.ColumnComposite_nullable,
+					buildNullableHolder(),
+					buildNullableStringHolder(),
+					JpaHelpContextIds.MAPPING_COLUMN_NULLABLE);
+			
 			addLengthCombo(container);
 			addPrecisionCombo(container);
 			addScaleCombo(container);
-
+			
 			// Column Definition widgets
 			addLabeledText(
-				container,
-				JptUiDetailsMessages.ColumnComposite_columnDefinition,
-				buildColumnDefinitionHolder()
-			);
+					container,
+					JptUiDetailsMessages.ColumnComposite_columnDefinition,
+					buildColumnDefinitionHolder());
 		}
-
+		
 		private void addLengthCombo(Composite container) {
 			new IntegerCombo<Column>(this, container) {
-				
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_length;
 				}
-			
+				
 				@Override
 				protected String getHelpId() {
 					return JpaHelpContextIds.MAPPING_COLUMN_LENGTH;
 				}
-
+				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
@@ -551,7 +482,7 @@ public class ColumnComposite extends Pane<Column> {
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedLength();
 						}
-
+						
 						@Override
 						protected void setValue_(Integer value) {
 							this.subject.setSpecifiedLength(value);
@@ -560,20 +491,19 @@ public class ColumnComposite extends Pane<Column> {
 				}
 			};
 		}
-
+		
 		private void addPrecisionCombo(Composite container) {
-			new IntegerCombo<Column>(this, container) {
-				
+			new IntegerCombo<Column>(this, container) {	
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_precision;
 				}
-			
+				
 				@Override
 				protected String getHelpId() {
 					return JpaHelpContextIds.MAPPING_COLUMN_PRECISION;
 				}
-
+				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
@@ -591,7 +521,7 @@ public class ColumnComposite extends Pane<Column> {
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedPrecision();
 						}
-
+						
 						@Override
 						protected void setValue_(Integer value) {
 							this.subject.setSpecifiedPrecision(value);
@@ -600,20 +530,19 @@ public class ColumnComposite extends Pane<Column> {
 				}
 			};
 		}
-
+		
 		private void addScaleCombo(Composite container) {
-			new IntegerCombo<Column>(this, container) {
-				
+			new IntegerCombo<Column>(this, container) {	
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_scale;
 				}
-			
+				
 				@Override
 				protected String getHelpId() {
 					return JpaHelpContextIds.MAPPING_COLUMN_SCALE;
 				}
-
+				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
 					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
@@ -631,7 +560,7 @@ public class ColumnComposite extends Pane<Column> {
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedScale();
 						}
-
+						
 						@Override
 						protected void setValue_(Integer value) {
 							this.subject.setSpecifiedScale(value);

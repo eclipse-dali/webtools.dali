@@ -713,23 +713,32 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		}
 	}
 
-	class MapKeyAttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
+	class MapKeyAttributeOverrideContainerOwner
+		implements OrmAttributeOverrideContainer.Owner
+	{
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
 		}
-	
+		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
 		}
-
+		
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+					: typeMapping.allOverridableAttributeNames();
+		}
+		
 		protected JavaAttributeOverride getJavaAttributeOverrideNamed(String attributeName) {
 			return AbstractOrmMultiRelationshipMapping.this.getJavaMapKeyAttributeOverrideNamed(attributeName);
 		}
-
+		
 		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
 			return AbstractOrmMultiRelationshipMapping.this.resourceAttributeMapping.getMapKeyAttributeOverrides();
 		}
-
+		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				JavaAttributeOverride javaAttributeOverride = getJavaAttributeOverrideNamed(attributeOverrideName);
@@ -739,12 +748,12 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 			}
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
-
+		
 		
 		public XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete) {
 			return new VirtualXmlAttributeOverrideColumn(overridableColumn);
 		}
-
+		
 		protected OrmJoiningStrategy getPredominantJoiningStrategy() {
 			return getRelationshipReference().getPredominantJoiningStrategy();
 		}
@@ -752,15 +761,15 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		public String getDefaultTableName() {
 			return getPredominantJoiningStrategy().getTableName();
 		}
-
+		
 		public Table getDbTable(String tableName) {
 			return getPredominantJoiningStrategy().getDbTable(tableName);
 		}
-
+		
 		public java.util.Iterator<String> candidateTableNames() {
 			return EmptyIterator.instance();
 		}
-
+		
 		/**
 		 * If there is a specified table name it needs to be the same
 		 * the default table name.  the table is always the collection table
@@ -768,7 +777,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		public boolean tableNameIsInvalid(String tableName) {
 			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -786,7 +795,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -800,7 +809,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -813,7 +822,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -832,7 +841,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 					textRange
 				);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -847,7 +856,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -861,7 +870,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 				textRange
 			);
 		}
-
+		
 		public TextRange getValidationTextRange() {
 			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}

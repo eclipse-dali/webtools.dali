@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -26,6 +27,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.IdMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.IdAnnotation;
@@ -37,6 +40,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -45,12 +51,15 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaIdMapping
 	extends AbstractJavaAttributeMapping<IdAnnotation>
-	implements JavaIdMapping
+	implements JavaIdMapping, IdMapping2_0
 {
 	protected final JavaColumn column;
-
+	
+	/* 2.0 feature - a relationship may map this id */
+	protected boolean mappedByRelationship;
+	
 	protected JavaGeneratedValue generatedValue;
-
+	
 	protected final JavaGeneratorContainer generatorContainer;
 	
 	protected JavaConverter converter;
@@ -65,38 +74,45 @@ public abstract class AbstractJavaIdMapping
 		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
 		this.converter = this.nullConverter;
 	}
-
+	
+	
 	@Override
 	protected void initialize() {
 		super.initialize();
 		this.column.initialize(this.getResourceColumn());
+		this.mappedByRelationship = calculateMappedByRelationship();
 		this.generatorContainer.initialize(this.getResourcePersistentAttribute());
 		this.initializeGeneratedValue();
 		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
-
+	
 	protected void initializeGeneratedValue() {
 		GeneratedValueAnnotation resourceGeneratedValue = this.getResourceGeneratedValue();
 		if (resourceGeneratedValue != null) {
 			this.generatedValue = this.buildGeneratedValue(resourceGeneratedValue);
 		}
 	}
-
+	
 	public ColumnAnnotation getResourceColumn() {
 		return (ColumnAnnotation) this.getResourcePersistentAttribute().
 				getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
-
+	
+	protected boolean isColumnSpecified() {
+		return getResourcePersistentAttribute().getAnnotation(ColumnAnnotation.ANNOTATION_NAME) != null;
+	}
+	
 	private JavaGeneratorContainer buildGeneratorContainer() {
 		return this.getJpaFactory().buildJavaGeneratorContainer(this);
 	}
-
+	
+	
 	//************** JavaAttributeMapping implementation ***************
-
+	
 	public String getKey() {
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
-
+	
 	public String getAnnotationName() {
 		return IdAnnotation.ANNOTATION_NAME;
 	}
@@ -111,26 +127,29 @@ public abstract class AbstractJavaIdMapping
 		names.add(JPA.SEQUENCE_GENERATOR);
 	}
 	
+	
 	//************** NamedColumn.Owner implementation ***************
 	
 	public String getDefaultColumnName() {
-		return getName();
+		return (isMappedByRelationship() && ! isColumnSpecified()) ? null : getName();
 	}
+	
 	
 	//************** BaseColumn.Owner implementation ***************
 	
 	public String getDefaultTableName() {
-		return getTypeMapping().getPrimaryTableName();
+		return (isMappedByRelationship() && ! isColumnSpecified()) ? null : getTypeMapping().getPrimaryTableName();
 	}
 	
 	public boolean tableNameIsInvalid(String tableName) {
 		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
-
+	
 	public Iterator<String> candidateTableNames() {
 		return getTypeMapping().associatedTableNamesIncludingInherited();
 	}
-
+	
+	
 	//************** IdMapping implementation ***************
 	
 	public JavaColumn getColumn() {
@@ -209,6 +228,7 @@ public abstract class AbstractJavaIdMapping
 	protected void update() {
 		super.update();
 		this.column.update(this.getResourceColumn());
+		setMappedByRelationship(calculateMappedByRelationship());
 		this.generatorContainer.update(this.getResourcePersistentAttribute());
 		this.updateGeneratedValue();
 		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
@@ -219,7 +239,7 @@ public abstract class AbstractJavaIdMapping
 			setConverter(javaConverter);
 		}
 	}
-
+	
 	protected void updateGeneratedValue() {
 		GeneratedValueAnnotation resourceGeneratedValue = getResourceGeneratedValue();
 		if (resourceGeneratedValue == null) {
@@ -242,7 +262,7 @@ public abstract class AbstractJavaIdMapping
 		gv.initialize(resourceGeneratedValue);
 		return gv;
 	}
-
+	
 	protected TableGeneratorAnnotation getResourceTableGenerator() {
 		return (TableGeneratorAnnotation) this.getResourcePersistentAttribute().
 				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
@@ -274,9 +294,45 @@ public abstract class AbstractJavaIdMapping
 		}
 		return Converter.NO_CONVERTER;
 	}
-
+	
+	
+	// **************** IdMapping2_0 impl *************************************
+	
+	public boolean isMappedByRelationship() {
+		return this.mappedByRelationship;
+	}
+	
+	protected void setMappedByRelationship(boolean newValue) {
+		boolean oldValue = this.mappedByRelationship;
+		this.mappedByRelationship = newValue;
+		firePropertyChanged(MAPPED_BY_RELATIONSHIP_PROPERTY, oldValue, newValue);
+	}
+	
+	protected boolean calculateMappedByRelationship() {
+		for (SingleRelationshipMapping2_0 each : getMapsIdRelationships()) {
+			if (getName().equals(each.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue())) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(
+				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
+					new CompositeIterable<AttributeMapping>(
+						getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+						getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+			@Override
+			protected boolean accept(SingleRelationshipMapping2_0 o) {
+				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+			}
+		};
+	}
+	
+	
 	// ********** code assist **********
-
+	
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
@@ -303,7 +359,8 @@ public abstract class AbstractJavaIdMapping
 		}
 		return null;
 	}
-
+	
+	
 	// ********** code assist: generator 
 	
 	protected boolean generatorTouches(int pos, CompilationUnit astRoot) {
@@ -327,34 +384,55 @@ public abstract class AbstractJavaIdMapping
 	protected Iterator<String> persistenceGeneratorNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.generatorNames(filter));
 	}
-
+	
+	
 	// *************************************************************************
 	
 	@Override
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getName();
 	}
-
+	
 	@Override
 	public boolean isOverridableAttributeMapping() {
 		return true;
 	}
 	
-
+	
 	//*********** Validation ************
 	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		this.getColumn().validate(messages, reporter, astRoot);
+		// [JPA 2.0] if the column is specified, or if the id is not mapped by a relationship,
+		// then the column is validated.
+		// (In JPA 1.0, the column will always be validated, since the id is never mapped by a
+		//  relationship)
+		if (isColumnSpecified() || ! isMappedByRelationship()) {
+			this.getColumn().validate(messages, reporter, astRoot);
+		}
+		
+		// [JPA 2.0] if the column is specified and the id is mapped by a relationship, 
+		// then that is an error
+		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
+		if (isColumnSpecified() && isMappedByRelationship()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
+						new String[] {},
+						getColumn(),
+						getColumn().getValidationTextRange(astRoot)));
+		}
+		
 		if (this.getGeneratedValue() != null) {
 			this.getGeneratedValue().validate(messages, reporter, astRoot);
 		}
 		this.getGeneratorContainer().validate(messages, reporter, astRoot);
 		this.getConverter().validate(messages, reporter, astRoot);
 	}
-
+	
 	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
@@ -367,7 +445,7 @@ public abstract class AbstractJavaIdMapping
 			textRange
 		);
 	}
-
+	
 	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,

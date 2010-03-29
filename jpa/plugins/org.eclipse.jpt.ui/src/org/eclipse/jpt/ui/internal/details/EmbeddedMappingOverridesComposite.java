@@ -17,46 +17,16 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * |   x Override Default                                                      |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedMapping
- * @see EmbeddedMappingComposite - The parent container
- * @see ColumnComposite
- *
- * @version 2.3
- * @since 1.0
- */
-public class EmbeddedMappingOverridesComposite extends AbstractEmbeddedMappingOverridesComposite<BaseEmbeddedMapping>
+public class EmbeddedMappingOverridesComposite
+	extends AbstractEmbeddedMappingOverridesComposite<BaseEmbeddedMapping>
 {
-	
-	/**
-	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public EmbeddedMappingOverridesComposite(Pane<? extends BaseEmbeddedMapping> parentPane,
-	                                           Composite parent) {
-
+	public EmbeddedMappingOverridesComposite(
+			Pane<? extends BaseEmbeddedMapping> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
+	
 	
 	@Override
 	protected boolean supportsAssociationOverrides() {
@@ -77,5 +47,4 @@ public class EmbeddedMappingOverridesComposite extends AbstractEmbeddedMappingOv
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
 		throw new UnsupportedOperationException();
 	}
-
 }

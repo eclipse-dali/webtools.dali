@@ -22,21 +22,17 @@ import org.eclipse.swt.widgets.Composite;
 
 //Remove the Converters section from 1.0 orm id mappings.
 //This is supported in EclipseLink in version 1.1, but not 1.0
-public class OrmEclipseLinkIdMappingComposite extends EclipseLinkIdMappingComposite<OrmIdMapping>
+public class OrmEclipseLinkIdMappingComposite
+	extends EclipseLinkIdMappingComposite<OrmIdMapping>
 {
-	/**
-	 * Creates a new <code>EclipseLinkOrmIdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEclipseLinkIdMappingComposite(PropertyValueModel<? extends OrmIdMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
+	public OrmEclipseLinkIdMappingComposite(
+			PropertyValueModel<? extends OrmIdMapping> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeIdSection(Composite container) {		
@@ -44,7 +40,7 @@ public class OrmEclipseLinkIdMappingComposite extends EclipseLinkIdMappingCompos
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
 	}	
-
+	
 	@Override
 	//everything but the 'Define Converter' section.  This is not supported in eclipselink 1.0, but is in 1.1
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {

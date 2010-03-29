@@ -23,41 +23,45 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class ColumnCombo<T extends JpaNode>
 	extends DatabaseObjectCombo<T>
 {
-	public ColumnCombo(Pane<? extends T> parentPane, Composite parent) {
+	public ColumnCombo(
+			Pane<? extends T> parentPane, 
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
 	public ColumnCombo(
-						Pane<?> parentPane,
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent
-	) {
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
+	
 	public ColumnCombo(
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent,
-						WidgetFactory widgetFactory
-	) {
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected Iterable<String> getValues_() {
 		Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String>instance();
 	}
-
+	
 	protected Table getDbTable() {
 		return (this.getSubject() == null) ? null : this.getDbTable_();
 	}
-
+	
 	/**
 	 * Assume the subject is not null.
 	 */
 	protected abstract Table getDbTable_();
-
+	
 	@Override
 	protected void tableChanged_(Table table) {
 		super.tableChanged_(table);
@@ -65,5 +69,4 @@ public abstract class ColumnCombo<T extends JpaNode>
 			this.doPopulate();
 		}
 	}
-
 }

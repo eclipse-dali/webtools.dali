@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -18,40 +17,19 @@ import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EmbeddedAttributeOverridesComposite                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedMapping
- *
- * @version 2.3
- * @since 1.0
- */
 public abstract class AbstractEmbeddedIdMappingComposite<T extends EmbeddedIdMapping> 
 	extends Pane<T>
 	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EmbeddedMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>EmbeddedMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	protected AbstractEmbeddedIdMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                                Composite parent,
-	                                WidgetFactory widgetFactory) {
-
+	protected AbstractEmbeddedIdMappingComposite(
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeEmbeddedIdCollapsibleSection(container);
@@ -59,18 +37,12 @@ public abstract class AbstractEmbeddedIdMappingComposite<T extends EmbeddedIdMap
 	
 	protected void initializeEmbeddedIdCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.EmbeddedIdSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
-
+				container,
+				JptUiDetailsMessages.EmbeddedIdSection_title,
+				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
+		
 		this.initializeEmbeddedIdSection(container);
 	}
 	
-	protected void initializeEmbeddedIdSection(Composite container) {
-		new EmbeddedMappingOverridesComposite(
-			this,
-			container
-		);
-	}
+	protected abstract void initializeEmbeddedIdSection(Composite container);
 }

@@ -21,45 +21,16 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | AddRemoveListPane                                                     | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * |                                                                           |
- * |   x Override Default                                                      |
- * |                                                                           |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedMapping
- * @see ColumnComposite
- *
- * @version 2.3
- * @since 2.3
- */
-public class EmbeddedMapping2_0OverridesComposite extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping>
+public class EmbeddedMapping2_0OverridesComposite
+	extends AbstractEmbeddedMappingOverridesComposite<EmbeddedMapping>
 {
-	
-	/**
-	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	public EmbeddedMapping2_0OverridesComposite(Pane<? extends EmbeddedMapping> parentPane,
-	                                           Composite parent) {
-
+	public EmbeddedMapping2_0OverridesComposite(
+			Pane<? extends EmbeddedMapping> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
+	
 	
 	@Override
 	protected boolean supportsAssociationOverrides() {
@@ -75,7 +46,7 @@ public class EmbeddedMapping2_0OverridesComposite extends AbstractEmbeddedMappin
 			}
 		};
 	}
-
+	
 	@Override
 	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
 		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
@@ -90,5 +61,4 @@ public class EmbeddedMapping2_0OverridesComposite extends AbstractEmbeddedMappin
 			}
 		};
 	}
-
 }

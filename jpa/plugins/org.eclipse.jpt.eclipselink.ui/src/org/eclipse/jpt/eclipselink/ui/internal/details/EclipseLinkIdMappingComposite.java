@@ -18,7 +18,6 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.details.IdMappingGenerationComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -30,52 +29,19 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | GenerationComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see IdMapping
- * @see ColumnComposite
- * @see TemporalTypeComposite
- * @see IdMappingGenerationComposite
- *
- * @version 2.3
- * @since 2.1
- */
-public class EclipseLinkIdMappingComposite<T extends IdMapping> extends AbstractIdMappingComposite<T>
-                                implements JpaComposite
+public class EclipseLinkIdMappingComposite<T extends IdMapping>
+	extends AbstractIdMappingComposite<T>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>IdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public EclipseLinkIdMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
+	public EclipseLinkIdMappingComposite(
+			PropertyValueModel<? extends T> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeIdSection(Composite container) {
 		new ColumnComposite(this, buildColumnHolder(), container);
@@ -85,7 +51,7 @@ public class EclipseLinkIdMappingComposite<T extends IdMapping> extends Abstract
 	@Override
 	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
-
+		
 		// No converter
 		Button noConverterButton = addRadioButton(
 			container, 
@@ -110,18 +76,18 @@ public class EclipseLinkIdMappingComposite<T extends IdMapping> extends Abstract
 			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
-
+		
 		Pane<EclipseLinkConvert> convertComposite = buildConvertComposite(buildEclipseLinkConverterHolder(converterHolder), container);
 		GridData gridData = (GridData) convertComposite.getControl().getLayoutData();
 		gridData.horizontalSpan = 2;
 		gridData.horizontalIndent = 20;
 		registerSubPane(convertComposite);
 	}
-
+	
 	protected Pane<EclipseLinkConvert> buildConvertComposite(PropertyValueModel<EclipseLinkConvert> convertHolder, Composite container) {
 		return new EclipseLinkConvertComposite(convertHolder, container, getWidgetFactory());
 	}
-
+	
 	protected PropertyValueModel<EclipseLinkConvert> buildEclipseLinkConverterHolder(PropertyValueModel<Converter> converterHolder) {
 		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
 			@Override
@@ -130,7 +96,7 @@ public class EclipseLinkIdMappingComposite<T extends IdMapping> extends Abstract
 			}
 		};
 	}
-
+	
 	protected PropertyValueModel<EclipseLinkMutable> buildMutableHolder() {
 		return new PropertyAspectAdapter<T, EclipseLinkMutable>(getSubjectHolder()) {
 			@Override

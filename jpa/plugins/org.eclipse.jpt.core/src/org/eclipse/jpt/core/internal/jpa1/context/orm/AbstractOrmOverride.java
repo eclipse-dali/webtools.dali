@@ -50,7 +50,9 @@ public class AbstractOrmOverride extends AbstractOrmXmlContextNode
 		this.setName_(this.getResourceName());
 	}
 	
+	
 	// ********************* name ****************
+	
 	public String getName() {
 		return this.name;
 	}

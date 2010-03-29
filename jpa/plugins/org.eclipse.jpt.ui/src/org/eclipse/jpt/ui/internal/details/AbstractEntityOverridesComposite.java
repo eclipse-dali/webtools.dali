@@ -17,50 +17,16 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * |                                                                           |
- * | - Attribute Overrides --------------------------------------------------- |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | AddRemoveListPane                                                 | | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | |                                                                       | |
- * | |   x Override Default                                                  | |
- * | |                                                                       | |
- * | | --------------------------------------------------------------------- | |
- * | | |                                                                   | | |
- * | | | PageBook (AttributeOverrideComposite/AssociationOverrideComposite)| | |
- * | | |                                                                   | | |
- * | | --------------------------------------------------------------------- | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see Entity
- * @see EntityComposite - The parent container
- * @see AttributeOverrideComposite
- * @see AssociationOverrideComposite
- *
- * @version 3.0
- * @since 1.0
- */
-public abstract class AbstractEntityOverridesComposite extends AbstractOverridesComposite<Entity>
+public abstract class AbstractEntityOverridesComposite
+	extends AbstractOverridesComposite<Entity>
 {
-
-	/**
-	 * Creates a new <code>OverridesComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 */
-	protected AbstractEntityOverridesComposite(Pane<? extends Entity> parentPane,
-	                          Composite parent) {
-
+	protected AbstractEntityOverridesComposite(
+			Pane<? extends Entity> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
+	
 	
 	@Override
 	protected boolean supportsAssociationOverrides() {
@@ -76,7 +42,7 @@ public abstract class AbstractEntityOverridesComposite extends AbstractOverrides
 			}
 		};
 	}
-
+	
 	@Override
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
 		return new PropertyAspectAdapter<Entity, AssociationOverrideContainer>(getSubjectHolder()) {
@@ -86,5 +52,4 @@ public abstract class AbstractEntityOverridesComposite extends AbstractOverrides
 			}
 		};
 	}
-
 }

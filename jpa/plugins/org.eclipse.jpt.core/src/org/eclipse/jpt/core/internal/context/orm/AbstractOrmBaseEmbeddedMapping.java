@@ -43,21 +43,29 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedded> extends AbstractOrmAttributeMapping<T> implements OrmBaseEmbeddedMapping
+public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedded>
+	extends AbstractOrmAttributeMapping<T>
+	implements OrmBaseEmbeddedMapping
 {
 	protected OrmAttributeOverrideContainer attributeOverrideContainer;
-
-	private Embeddable targetEmbeddable;//TODO hmm, why no property change notification for setting this??
+	
+	private Embeddable targetEmbeddable;
+	
 	
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.targetEmbeddable = embeddableFor(this.getJavaPersistentAttribute());
-		this.attributeOverrideContainer =
-			getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(
-						this,
-						new AttributeOverrideContainerOwner());
+		this.attributeOverrideContainer 
+				= getXmlContextNodeFactory().buildOrmAttributeOverrideContainer(
+					this,
+					buildAttributeOverrideContainerOwner());
 	}
-
+	
+	
+	protected OrmAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
+		return new AttributeOverrideContainerOwner();
+	}
+	
 	@Override
 	public void initializeFromOrmBaseEmbeddedMapping(OrmBaseEmbeddedMapping oldMapping) {
 		super.initializeFromOrmBaseEmbeddedMapping(oldMapping);
@@ -213,17 +221,31 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements OrmAttributeOverrideContainer.Owner {
+	protected class AttributeOverrideContainerOwner
+		implements OrmAttributeOverrideContainer.Owner
+	{
+		public OrmTypeMapping getTypeMapping() {
+			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
+		}
+		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractOrmBaseEmbeddedMapping.this.getTargetEmbeddable();
 		}
-
+		
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+				: allOverridableAttributeNames_(typeMapping);
+		}
+		
+		/* assumes the type mapping is not null */
+		protected Iterator<String> allOverridableAttributeNames_(TypeMapping typeMapping) {
+			return typeMapping.allOverridableAttributeNames();
+		}
+		
 		public EList<XmlAttributeOverride> getResourceAttributeOverrides() {
 			return AbstractOrmBaseEmbeddedMapping.this.resourceAttributeMapping.getAttributeOverrides();
-		}
-
-		public OrmTypeMapping getTypeMapping() {
-			return AbstractOrmBaseEmbeddedMapping.this.getTypeMapping();
 		}
 		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
@@ -247,7 +269,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		public Iterator<String> candidateTableNames() {
 			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
-
+		
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getTypeMapping().getDbTable(tableName);
 		}
@@ -255,7 +277,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeUnresolvedColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -271,7 +293,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeUnresolvedColumnTableNotValidMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -298,7 +320,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 				textRange
 				);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -317,7 +339,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 					textRange
 				);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -332,7 +354,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -346,7 +368,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 				textRange
 			);
 		}
-
+		
 		public TextRange getValidationTextRange() {
 			return AbstractOrmBaseEmbeddedMapping.this.getValidationTextRange();
 		}

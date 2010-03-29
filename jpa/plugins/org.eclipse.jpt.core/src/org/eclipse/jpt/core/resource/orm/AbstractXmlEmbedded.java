@@ -210,11 +210,11 @@ public abstract class AbstractXmlEmbedded extends AbstractXmlAttributeMapping im
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
-
+	
+	
 	// ********** translators **********
-
+	
 	protected static Translator buildAttributeOverrideTranslator() {
 		return XmlAttributeOverride.buildTranslator(JPA.ATTRIBUTE_OVERRIDE, OrmPackage.eINSTANCE.getXmlAttributeOverrideContainer_AttributeOverrides());
 	}
-
-} // BaseXmlEmbedded
+}

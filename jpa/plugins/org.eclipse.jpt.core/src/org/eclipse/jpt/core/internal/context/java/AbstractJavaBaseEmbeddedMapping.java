@@ -46,14 +46,23 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	implements JavaBaseEmbeddedMapping
 {
 	protected final JavaAttributeOverrideContainer attributeOverrideContainer;
-
+	
 	private Embeddable targetEmbeddable;
-
+	
+	
 	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.attributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new AttributeOverrideContainerOwner());
+		this.attributeOverrideContainer = 
+				this.getJpaFactory().buildJavaAttributeOverrideContainer(
+					this, 
+					buildAttributeOverrideContainerOwner());
 	}
-
+	
+	
+	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
+		return new AttributeOverrideContainerOwner();
+	}
+	
 	public JavaAttributeOverrideContainer getAttributeOverrideContainer() {
 		return this.attributeOverrideContainer;
 	}
@@ -61,6 +70,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	public TypeMapping getOverridableTypeMapping() {
 		return this.targetEmbeddable;
 	}
+	
 	
 	//****************** JavaAttributeMapping implementation *******************
 
@@ -211,13 +221,27 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner implements JavaAttributeOverrideContainer.Owner {
+	protected class AttributeOverrideContainerOwner
+		implements JavaAttributeOverrideContainer.Owner
+	{
+		public TypeMapping getTypeMapping() {
+			return AbstractJavaBaseEmbeddedMapping.this.getTypeMapping();
+		}
+		
 		public TypeMapping getOverridableTypeMapping() {
 			return AbstractJavaBaseEmbeddedMapping.this.getOverridableTypeMapping();
 		}
 		
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaBaseEmbeddedMapping.this.getTypeMapping();
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ?
+				EmptyIterator.<String>instance()
+				: allOverridableAttributeNames_(typeMapping);
+		}
+		
+		/* assumes the type mapping is not null */
+		protected Iterator<String> allOverridableAttributeNames_(TypeMapping typeMapping) {
+			return typeMapping.allOverridableAttributeNames();
 		}
 		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
@@ -239,24 +263,24 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
 		}
-
+		
 		public String getPossiblePrefix() {
 			return null;
 		}
-
+		
 		public String getWritePrefix() {
 			return null;
 		}
-
+		
 		public boolean isRelevant(String overrideName) {
 			//no prefix, so always true
 			return true;
 		}
-
+		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -272,7 +296,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -286,7 +310,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -299,7 +323,7 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -26,6 +27,8 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.context.IdMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -33,15 +36,21 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractOrmIdMapping<T extends XmlId>
 	extends AbstractOrmAttributeMapping<T>
-	implements OrmIdMapping
+	implements OrmIdMapping, IdMapping2_0
 {
 	protected final OrmColumn column;
-
+	
+	/* 2.0 feature - a relationship may map this id */
+	protected boolean mappedByRelationship;
+	
 	protected OrmGeneratedValue generatedValue;
 	
 	protected OrmConverter converter;
@@ -49,18 +58,20 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	protected final OrmConverter nullConverter;
 	
 	protected final OrmGeneratorContainer generatorContainer;
-
+	
 	
 	protected AbstractOrmIdMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
 		this.column.initialize(this.resourceAttributeMapping.getColumn());//TODO pass in to constructor
+		this.mappedByRelationship = calculateMappedByRelationship();
 		this.generatorContainer = buildGeneratorContainer();
 		this.initializeGeneratedValue();
 		this.nullConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
 		this.converter = this.buildConverter(this.getResourceConverterType());
 	}
-
+	
+	
 	protected OrmGeneratorContainer buildGeneratorContainer() {
 		return getXmlContextNodeFactory().buildOrmGeneratorContainer(this, this.resourceAttributeMapping);
 	}
@@ -68,21 +79,20 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public String getKey() {
 		return MappingKeys.ID_ATTRIBUTE_MAPPING_KEY;
 	}
-
+	
 	public int getXmlSequence() {
 		return 0;
 	}
-
+	
 	public void initializeOn(OrmAttributeMapping newMapping) {
 		newMapping.initializeFromOrmIdMapping(this);
 	}
-
+	
 	@Override
 	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
 		super.initializeFromOrmColumnMapping(oldMapping);
 		getColumn().initializeFrom(oldMapping.getColumn());
 	}
-
 	
 	public OrmColumn getColumn() {
 		return this.column;
@@ -118,7 +128,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		this.converter = newConverter;
 		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
-
+	
 	public OrmGeneratedValue addGeneratedValue() {
 		if (getGeneratedValue() != null) {
 			throw new IllegalStateException("gemeratedValue already exists"); //$NON-NLS-1$
@@ -153,12 +163,12 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public OrmGeneratorContainer getGeneratorContainer() {
 		return this.generatorContainer;
 	}
-
+	
 	@Override
 	public String getPrimaryKeyColumnName() {
 		return this.getColumn().getName();
 	}
-
+	
 	@Override
 	public boolean isOverridableAttributeMapping() {
 		return true;
@@ -171,31 +181,88 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public void removeFromResourceModel(Attributes resourceAttributes) {
 		resourceAttributes.getIds().remove(this.resourceAttributeMapping);
 	}
-
+	
+	
+	//***************** XmlColumn.Owner implementation ****************
+	
+	public XmlColumn getResourceColumn() {
+		return this.resourceAttributeMapping.getColumn();
+	}
+	
+	protected boolean isColumnSpecified() {
+		return ! isVirtual() && getResourceColumn() != null;
+	}
+	
+	public void addResourceColumn() {
+		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
+	}
+	
+	public void removeResourceColumn() {
+		this.resourceAttributeMapping.setColumn(null);
+	}
+	
+	
 	//************** NamedColumn.Owner implementation ***************
 	
 	public Table getDbTable(String tableName) {
 		return getTypeMapping().getDbTable(tableName);
 	}
-
+	
 	public String getDefaultColumnName() {		
-		return getName();
+		return (isMappedByRelationship() && ! isColumnSpecified()) ? null : getName();
 	}
-
+	
+	
 	//************** BaseColumn.Owner implementation ***************
 	
 	public String getDefaultTableName() {
-		return getTypeMapping().getPrimaryTableName();
+		return (isMappedByRelationship() && ! isColumnSpecified()) ? null : getTypeMapping().getPrimaryTableName();
 	}
-
+	
 	public boolean tableNameIsInvalid(String tableName) {
 		return getTypeMapping().tableNameIsInvalid(tableName);
 	}
-
+	
 	public Iterator<String> candidateTableNames() {
 		return getTypeMapping().associatedTableNamesIncludingInherited();
 	}
-
+	
+	
+	// **************** IdColumn2_0 impl **************************************
+	
+	public boolean isMappedByRelationship() {
+		return this.mappedByRelationship;
+	}
+	
+	protected void setMappedByRelationship(boolean newValue) {
+		boolean oldValue = this.mappedByRelationship;
+		this.mappedByRelationship = newValue;
+		firePropertyChanged(MAPPED_BY_RELATIONSHIP_PROPERTY, oldValue, newValue);
+	}
+	
+	protected boolean calculateMappedByRelationship() {
+		for (SingleRelationshipMapping2_0 each : getMapsIdRelationships()) {
+			if (each.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getResolvedAttributeMappingValue() == this) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(
+				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
+					new CompositeIterable<AttributeMapping>(
+						getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+						getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+			@Override
+			protected boolean accept(SingleRelationshipMapping2_0 o) {
+				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
+			}
+		};
+	}
+	
+	
 	protected void initializeGeneratedValue() {
 		if (this.resourceAttributeMapping.getGeneratedValue() != null) {
 			this.generatedValue = buildGeneratedValue(this.resourceAttributeMapping.getGeneratedValue());
@@ -210,6 +277,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public void update() {
 		super.update();
 		this.column.update(getResourceColumn());
+		setMappedByRelationship(calculateMappedByRelationship());
 		this.generatorContainer.update();
 		this.updateGeneratedValue();
 		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
@@ -219,7 +287,6 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 			setConverter(buildConverter(getResourceConverterType()));
 		}
 	}
-	
 	
 	protected void updateGeneratedValue() {
 		if (this.resourceAttributeMapping.getGeneratedValue() == null) {
@@ -253,20 +320,7 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		}
 		return Converter.NO_CONVERTER;
 	}
-
-	//***************** XmlColumn.Owner implementation ****************
 	
-	public XmlColumn getResourceColumn() {
-		return this.resourceAttributeMapping.getColumn();
-	}
-	
-	public void addResourceColumn() {
-		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
-	}
-	
-	public void removeResourceColumn() {
-		this.resourceAttributeMapping.setColumn(null);
-	}
 	
 	// ****************** validation ****************
 
@@ -274,7 +328,27 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		this.getColumn().validate(messages, reporter);
+		// [JPA 2.0] if the column is specified, or if the id is not mapped by a relationship,
+		// then the column is validated.
+		// (In JPA 1.0, the column will always be validated, since the id is never mapped by a
+		//  relationship)
+		if (isColumnSpecified() || ! isMappedByRelationship()) {
+			getColumn().validate(messages, reporter);
+		}
+		
+		// [JPA 2.0] if the column is specified and the id is mapped by a relationship, 
+		// then that is an error
+		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
+		if (isColumnSpecified() && isMappedByRelationship()) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
+						new String[] {},
+						getColumn(),
+						getColumn().getValidationTextRange()));
+		}
+		
 		if (this.generatedValue != null) {
 			this.generatedValue.validate(messages, reporter);
 		}

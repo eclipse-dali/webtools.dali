@@ -14,50 +14,17 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | GenerationComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see IdMapping
- * @see ColumnComposite
- * @see TemporalTypeComposite
- * @see IdMappingGenerationComposite
- *
- * @version 2.3
- * @since 1.0
- */
-public class IdMappingComposite extends AbstractIdMappingComposite<IdMapping>
+public class IdMappingComposite
+	extends AbstractIdMappingComposite<IdMapping>
 {
-	/**
-	 * Creates a new <code>IdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public IdMappingComposite(PropertyValueModel<? extends IdMapping> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
+	public IdMappingComposite(
+			PropertyValueModel<? extends IdMapping> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeIdSection(Composite container) {

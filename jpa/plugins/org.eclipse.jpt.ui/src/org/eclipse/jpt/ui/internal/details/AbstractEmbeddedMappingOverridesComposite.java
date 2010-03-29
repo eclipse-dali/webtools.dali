@@ -16,25 +16,17 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * @version 3.0
- * @since 3.0
- */
-public abstract class AbstractEmbeddedMappingOverridesComposite<T extends BaseEmbeddedMapping> extends AbstractOverridesComposite<T>
+public abstract class AbstractEmbeddedMappingOverridesComposite<T extends BaseEmbeddedMapping>
+	extends AbstractOverridesComposite<T>
 {
-	
-	/**
-	 * Creates a new <code>EmbeddedAttributeOverridesComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
-	protected AbstractEmbeddedMappingOverridesComposite(Pane<? extends T> parentPane,
-	                                           Composite parent) {
-
+	protected AbstractEmbeddedMappingOverridesComposite(
+			Pane<? extends T> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-		
+	
+	
 	@Override
 	protected PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder() {
 		return new PropertyAspectAdapter<T, AttributeOverrideContainer>(getSubjectHolder()) {
@@ -44,6 +36,4 @@ public abstract class AbstractEmbeddedMappingOverridesComposite<T extends BaseEm
 			}
 		};
 	}
-
-
 }

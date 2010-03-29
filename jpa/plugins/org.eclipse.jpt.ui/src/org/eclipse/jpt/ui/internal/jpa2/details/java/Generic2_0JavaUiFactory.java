@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
+import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -41,6 +43,7 @@ public class Generic2_0JavaUiFactory
 	extends BaseJavaUiFactory
 	implements JavaUiFactory2_0
 {
+	// **************** java type mapping composites ***************************
 	
 	@Override
 	public JpaComposite createJavaMappedSuperclassComposite(
@@ -62,7 +65,10 @@ public class Generic2_0JavaUiFactory
 			Composite parent, WidgetFactory widgetFactory) {
 		return new JavaEmbeddable2_0Composite(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
+	// **************** java attribute mapping composites **********************
+	
 	@Override
 	public JpaComposite createJavaIdMappingComposite(
 			PropertyValueModel<JavaIdMapping> subjectHolder,
@@ -71,6 +77,14 @@ public class Generic2_0JavaUiFactory
 		return new JavaIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 
+	@Override
+	public JpaComposite createJavaEmbeddedIdMappingComposite(
+			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		return new EmbeddedIdMapping2_0Composite(subjectHolder, parent, widgetFactory);
+	}
+	
 	@Override
 	public JpaComposite createJavaEmbeddedMappingComposite(
 			PropertyValueModel<JavaEmbeddedMapping> subjectHolder,

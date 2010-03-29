@@ -16,22 +16,27 @@ import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
 import org.eclipse.jpt.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmIdMapping2_0Composite extends AbstractIdMappingComposite<OrmIdMapping>
+public class OrmIdMapping2_0Composite
+	extends AbstractIdMappingComposite<OrmIdMapping>
 {
-	public OrmIdMapping2_0Composite(PropertyValueModel<? extends OrmIdMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
+	public OrmIdMapping2_0Composite(
+			PropertyValueModel<? extends OrmIdMapping> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeIdSection(Composite container) {
+		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
 		new ColumnComposite(this, buildColumnHolder(), container);
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);

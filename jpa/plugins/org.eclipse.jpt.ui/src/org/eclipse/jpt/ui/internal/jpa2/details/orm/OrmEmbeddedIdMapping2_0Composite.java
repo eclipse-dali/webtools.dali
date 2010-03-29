@@ -17,53 +17,31 @@ import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedIdMapping2_0MappedByRelationshipPane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here's the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EmbeddedAttributeOverridesComposite                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedIdMapping
- * @see BaseJavaUiFactory - The factory creating this pane
- *
- * @version 2.3
- * @since 2.2
- */
-public class OrmEmbeddedIdMapping2_0Composite extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
-                                        implements JpaComposite
+public class OrmEmbeddedIdMapping2_0Composite
+	extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>EclipseLink1_1OrmEmbeddedIdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>EmbeddedIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public OrmEmbeddedIdMapping2_0Composite(PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
-
+	public OrmEmbeddedIdMapping2_0Composite(
+			PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
+	
 	
 	@Override
 	protected void initializeEmbeddedIdSection(Composite container) {
 		new OrmMappingNameChooser(this, getSubjectHolder(), container);
 		new AccessTypeComposite(this, buildAccessHolderHolder(), container);
-
-		new EmbeddedMappingOverridesComposite(
-			this,
-			container
-		);
+		
+		new EmbeddedIdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		new EmbeddedMappingOverridesComposite(this, container);
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {

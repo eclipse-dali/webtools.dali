@@ -753,28 +753,34 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		extends OverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner
 	{
-	
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
+		}
+		
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+					: typeMapping.allOverridableAttributeNames();
+		}
+		
 		public String getPossiblePrefix() {
 			return "key."; //$NON-NLS-1$
 		}
-
+		
 		public String getWritePrefix() {
 			return this.getPossiblePrefix();
 		}
-
+		
 		//since only the key can be an embeddable on a 1-m or m-m, all overrides are relevant
 		public boolean isRelevant(String overrideName) {
 			return true;
 		}
-	
-		public TypeMapping getOverridableTypeMapping() {
-			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
-		}
-	
+		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
-	
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -797,7 +803,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 				textRange
 			);
 		}
-	
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -810,7 +816,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 				textRange
 			);
 		}
-	
+		
 		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

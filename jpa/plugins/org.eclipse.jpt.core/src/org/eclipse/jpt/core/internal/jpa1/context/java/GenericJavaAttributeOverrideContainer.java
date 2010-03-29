@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.VirtualAttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -35,7 +36,6 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -236,13 +236,8 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 
 	protected Iterator<String> allOverridableAttributeNames() {
-		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
-		if (overridableTypeMapping != null) {
-			return overridableTypeMapping.allOverridableAttributeNames();
-		}
-		return EmptyIterator.instance();
+		return getOwner().allOverridableNames();
 	}
-
 	
 	public void initialize(JavaResourcePersistentMember resourcePersistentMember) {
 		this.javaResourcePersistentMember = resourcePersistentMember;
@@ -386,9 +381,16 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getOwner().getValidationTextRange(astRoot);
+		Annotation annotation = 
+				this.javaResourcePersistentMember.getAnnotation(AttributeOverridesAnnotation.ANNOTATION_NAME);
+		if (annotation == null) {
+			annotation = this.javaResourcePersistentMember.getAnnotation(AttributeOverrideAnnotation.ANNOTATION_NAME);
+		}
+		
+		return (annotation == null) ?
+				getOwner().getValidationTextRange(astRoot)
+				: annotation.getTextRange(astRoot);
 	}
-
 	
 	
 	// ********** attribute override owner **********

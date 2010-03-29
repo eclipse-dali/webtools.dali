@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -39,6 +38,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -188,16 +188,24 @@ public class GenericJavaEmbeddedMapping
 
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner implements JavaAssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner
+		implements JavaAssociationOverrideContainer.Owner
+	{	
+		public TypeMapping getTypeMapping() {
+			return GenericJavaEmbeddedMapping.this.getTypeMapping();
+		}
 		
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericJavaEmbeddedMapping.this.getOverridableTypeMapping();
 		}
 		
-		public TypeMapping getTypeMapping() {
-			return GenericJavaEmbeddedMapping.this.getTypeMapping();
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+					: typeMapping.allOverridableAssociationNames();
 		}
-
+		
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
 			return MappingTools.resolveRelationshipReference(getOverridableTypeMapping(), associationOverrideName);
 		}
@@ -205,11 +213,11 @@ public class GenericJavaEmbeddedMapping
 		public boolean tableNameIsInvalid(String tableName) {
 			return getTypeMapping().tableNameIsInvalid(tableName);
 		}
-
+		
 		public Iterator<String> candidateTableNames() {
 			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
-
+		
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getTypeMapping().getDbTable(tableName);
 		}
@@ -217,24 +225,24 @@ public class GenericJavaEmbeddedMapping
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
 		}
-
+		
 		public String getPossiblePrefix() {
 			return null;
 		}
-
+		
 		public String getWritePrefix() {
 			return null;
 		}
-
+		
 		//no prefix, so always true
 		public boolean isRelevant(String overrideName) {
 			return true;
 		}
-
+		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return GenericJavaEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -250,7 +258,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -264,7 +272,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -277,7 +285,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -287,7 +295,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualColumnUnresolvedReferencedColumnNameMessage(override.getName(), column, textRange);
@@ -300,7 +308,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualColumnUnresolvedReferencedColumnNameMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -310,7 +318,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
@@ -323,7 +331,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -333,7 +341,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (override.isVirtual()) {
 				return this.buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
@@ -346,7 +354,7 @@ public class GenericJavaEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

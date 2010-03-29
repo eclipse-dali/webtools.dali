@@ -9,65 +9,37 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
-import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkIdMappingComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
-import org.eclipse.jpt.ui.internal.details.IdMappingGenerationComposite;
-import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
+import org.eclipse.jpt.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
 import org.eclipse.jpt.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | GenerationComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see IdMapping
- * @see JavaUiFactory - The factory creating this pane
- * @see ColumnComposite
- * @see TemporalTypeComposite
- * @see IdMappingGenerationComposite
- *
- * @version 2.3
- * @since 2.1
- */
-public class JavaEclipseLinkIdMapping2_0Composite extends EclipseLinkIdMappingComposite<JavaIdMapping>
-                                implements JpaComposite
+public class JavaEclipseLinkIdMapping2_0Composite
+	extends EclipseLinkIdMappingComposite<JavaIdMapping>
+	implements JpaComposite
 {
-	/**
-	 * Creates a new <code>IdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public JavaEclipseLinkIdMapping2_0Composite(PropertyValueModel<? extends JavaIdMapping> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
+	public JavaEclipseLinkIdMapping2_0Composite(
+			PropertyValueModel<? extends JavaIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
+	@Override
+	protected void initializeIdSection(Composite container) {
+		new IdMapping2_0MappedByRelationshipPane(this, getSubjectHolder(), container);
+		new ColumnComposite(this, buildColumnHolder(), container);
+		new EclipseLinkMutableComposite(this, buildMutableHolder(), container);
+	}	
+	
 	@Override
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		new IdMappingGeneration2_0Composite(this, container);

@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -221,19 +220,28 @@ public class GenericOrmEmbeddedMapping
 	
 	//********** OrmAssociationOverrideContainer.Owner implementation *********	
 	
-	class AssociationOverrideContainerOwner implements OrmAssociationOverrideContainer.Owner {
+	class AssociationOverrideContainerOwner
+		implements OrmAssociationOverrideContainer.Owner
+	{
+		public OrmTypeMapping getTypeMapping() {
+			return GenericOrmEmbeddedMapping.this.getTypeMapping();
+		}
+		
 		public TypeMapping getOverridableTypeMapping() {
 			return GenericOrmEmbeddedMapping.this.getTargetEmbeddable();
 		}
 		
-		public OrmTypeMapping getTypeMapping() {
-			return GenericOrmEmbeddedMapping.this.getTypeMapping();
+		public Iterator<String> allOverridableNames() {
+			TypeMapping typeMapping = getOverridableTypeMapping();
+			return (typeMapping == null) ? 
+					EmptyIterator.<String>instance()
+					: typeMapping.allOverridableAssociationNames();
 		}
-
+		
 		public EList<XmlAssociationOverride> getResourceAssociationOverrides() {
 			return GenericOrmEmbeddedMapping.this.resourceAttributeMapping.getAssociationOverrides();
 		}
-
+		
 		public RelationshipReference resolveRelationshipReference(String associationOverrideName) {
 			if (getPersistentAttribute().isVirtual() && !getTypeMapping().isMetadataComplete()) {
 				JavaAssociationOverride javaAssociationOverride = getJavaAssociationOverrideNamed(associationOverrideName);
@@ -251,7 +259,7 @@ public class GenericOrmEmbeddedMapping
 		public Iterator<String> candidateTableNames() {
 			return getTypeMapping().associatedTableNamesIncludingInherited();
 		}
-
+		
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getTypeMapping().getDbTable(tableName);
 		}
@@ -259,11 +267,11 @@ public class GenericOrmEmbeddedMapping
 		public String getDefaultTableName() {
 			return getTypeMapping().getPrimaryTableName();
 		}
-
+		
 		public TextRange getValidationTextRange() {
 			return GenericOrmEmbeddedMapping.this.getValidationTextRange();
 		}
-
+		
 		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnTableNotValidMessage(override.getName(), column, textRange);
@@ -282,7 +290,7 @@ public class GenericOrmEmbeddedMapping
 					textRange
 				);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -297,7 +305,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualOverrideColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -311,7 +319,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedNameMessage(override.getName(), column, textRange);
@@ -327,7 +335,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -354,7 +362,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 				);
 		}
-
+		
 		public IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeColumnUnresolvedReferencedColumnNameMessage(override.getName(), column, textRange);
@@ -372,7 +380,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeColumnUnresolvedReferencedColumnNameMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -415,7 +423,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
@@ -435,7 +443,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange) {
 			if (isVirtual()) {
 				return this.buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(override.getName(), column, textRange);
@@ -451,7 +459,7 @@ public class GenericOrmEmbeddedMapping
 				textRange
 			);
 		}
-
+		
 		protected IMessage buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(String overrideName, BaseJoinColumn column, TextRange textRange) {
 			return DefaultJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,

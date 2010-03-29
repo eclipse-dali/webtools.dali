@@ -27,53 +27,19 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | ColumnComposite                                                       | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | TemporalTypeComposite                                                 | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | GenerationComposite                                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see IdMapping
- * @see ColumnComposite
- * @see TemporalTypeComposite
- * @see IdMappingGenerationComposite
- *
- * @version 2.3
- * @since 1.0
- */
 public abstract class AbstractIdMappingComposite<T extends IdMapping>
 	extends Pane<T>
     implements JpaComposite
 {
-	/**
-	 * Creates a new <code>IdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>IIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public AbstractIdMappingComposite(PropertyValueModel<? extends T> subjectHolder,
-	                          Composite parent,
-	                          WidgetFactory widgetFactory) {
-
+	public AbstractIdMappingComposite(
+			PropertyValueModel<? extends T> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeLayout(Composite container) {
 		initializeIdCollapsibleSection(container);
@@ -83,49 +49,47 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 	
 	protected void initializeIdCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.IdSection_title,
-			new SimplePropertyValueModel<Boolean>(Boolean.TRUE)
-		);
+				container,
+				JptUiDetailsMessages.IdSection_title,
+				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 
 		this.initializeIdSection(container);
 	}
-
+	
 	protected abstract void initializeIdSection(Composite container);
-
+	
 	protected void initializeTypeCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
-			container,
-			JptUiDetailsMessages.TypeSection_type
-		);
+				container,
+				JptUiDetailsMessages.TypeSection_type);
 		this.initializeTypeSection(container);
 	}
 	
 	protected void initializeTypeSection(Composite container) {
 		((GridLayout) container.getLayout()).numColumns = 2;
-
+		
 		// No converter
 		Button noConverterButton = addRadioButton(
-			container, 
-			JptUiDetailsMessages.TypeSection_default, 
-			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
-			null);
+				container, 
+				JptUiDetailsMessages.TypeSection_default, 
+				buildConverterBooleanHolder(Converter.NO_CONVERTER), 
+				null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
 		PropertyValueModel<Converter> converterHolder = buildConverterHolder();
 		// Temporal
 		addRadioButton(
-			container, 
-			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
-			null);
+				container, 
+				JptUiDetailsMessages.TypeSection_temporal, 
+				buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
+				null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
-
+	
 	protected void initializeGenerationCollapsibleSection(Composite container) {
 		new IdMappingGenerationComposite(this, container);
 	}
-
+	
 	protected PropertyValueModel<? extends Column> buildColumnHolder() {
 		return new TransformationPropertyValueModel<T, Column>(getSubjectHolder())  {
 			@Override
@@ -134,7 +98,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 			}
 		};
 	}
-
+	
 	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
@@ -142,7 +106,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 				Converter converter = this.subject.getConverter();
 				return Boolean.valueOf(converter.getType() == converterType);
 			}
-
+			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
@@ -151,8 +115,7 @@ public abstract class AbstractIdMappingComposite<T extends IdMapping>
 			}
 		};
 	}
-
-
+	
 	protected PropertyValueModel<Converter> buildConverterHolder() {
 		return new PropertyAspectAdapter<T, Converter>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override

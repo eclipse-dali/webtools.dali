@@ -38,7 +38,6 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -99,14 +98,9 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	}
 
 	protected Iterator<String> allOverridableAssociationNames() {
-		TypeMapping overridableTypeMapping = getOwner().getOverridableTypeMapping();
-		if (overridableTypeMapping != null) {
-			return overridableTypeMapping.allOverridableAssociationNames();
-		}
-		return EmptyIterator.instance();
+		return getOwner().allOverridableNames();
 	}
-
-
+	
 	@SuppressWarnings("unchecked")
 	public ListIterator<JavaAssociationOverride> associationOverrides() {
 		return new CompositeListIterator<JavaAssociationOverride>(specifiedAssociationOverrides(), virtualAssociationOverrides());

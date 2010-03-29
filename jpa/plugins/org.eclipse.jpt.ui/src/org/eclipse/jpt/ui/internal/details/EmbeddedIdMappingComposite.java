@@ -11,40 +11,25 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-/**
- * Here's the layout of this pane:
- * <pre>
- * -----------------------------------------------------------------------------
- * | ------------------------------------------------------------------------- |
- * | |                                                                       | |
- * | | EmbeddedAttributeOverridesComposite                                   | |
- * | |                                                                       | |
- * | ------------------------------------------------------------------------- |
- * -----------------------------------------------------------------------------</pre>
- *
- * @see EmbeddedIdMapping
- *
- * @version 2.3
- * @since 1.0
- */
-public class EmbeddedIdMappingComposite extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
-                                        implements JpaComposite
+public class EmbeddedIdMappingComposite
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
 {
-	/**
-	 * Creates a new <code>EmbeddedIdMappingComposite</code>.
-	 *
-	 * @param subjectHolder The holder of the subject <code>EmbeddedIdMapping</code>
-	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
-	 */
-	public EmbeddedIdMappingComposite(PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
-	                                  Composite parent,
-	                                  WidgetFactory widgetFactory) {
-
+	public EmbeddedIdMappingComposite(
+			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
+	}
+	
+	
+	@Override
+	protected void initializeEmbeddedIdSection(Composite container) {
+		new EmbeddedMappingOverridesComposite(
+				this,
+				container);
 	}
 }

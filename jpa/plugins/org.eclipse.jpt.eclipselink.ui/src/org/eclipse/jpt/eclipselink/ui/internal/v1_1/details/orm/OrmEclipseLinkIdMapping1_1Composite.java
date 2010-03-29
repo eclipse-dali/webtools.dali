@@ -22,15 +22,18 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkIdMapping1_1Composite extends EclipseLinkIdMappingComposite<OrmIdMapping>
+public class OrmEclipseLinkIdMapping1_1Composite
+	extends EclipseLinkIdMappingComposite<OrmIdMapping>
 {
-	public OrmEclipseLinkIdMapping1_1Composite(PropertyValueModel<? extends OrmIdMapping> subjectHolder,
-	                               Composite parent,
-	                               WidgetFactory widgetFactory) {
-
+	public OrmEclipseLinkIdMapping1_1Composite(
+			PropertyValueModel<? extends OrmIdMapping> subjectHolder,
+	        Composite parent,
+	        WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected void initializeIdSection(Composite container) {		
 		new ColumnComposite(this, buildColumnHolder(), container);

@@ -21,50 +21,16 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.PageBook;
 
-/**
- * Here is the layout of this pane:
- * <pre>
- * --------------------------------------------------------------------------------
- * |                                                                              |
- * | - Attribute Overrides ------------------------------------------------------ |
- * | | ------------------------------------------------------------------------ | |
- * | | |                                                                      | | |
- * | | | AddRemoveListPane                                                    | | |
- * | | |                                                                      | | |
- * | | ------------------------------------------------------------------------ | |
- * | |                                                                          | |
- * | |   x Override Default                                                     | |
- * | |                                                                          | |
- * | | ------------------------------------------------------------------------ | |
- * | | |                                                                      | | |
- * | | | PageBook (AttributeOverrideComposite/AssociationOverride2_0Composite)| | |
- * | | |                                                                      | | |
- * | | ------------------------------------------------------------------------ | |
- * | ---------------------------------------------------------------------------- |
- * --------------------------------------------------------------------------------</pre>
- *
- * @see ElementCollectionMapping2_0
- * @see AbstractElementCollectionMapping2_0Composite - The parent container
- * @see AttributeOverrideComposite
- * @see AssociationOverride2_0Composite
- *
- * @version 3.0
- * @since 3.0
- */
-public final class ElementCollectionValueOverridesComposite extends AbstractOverridesComposite<ElementCollectionMapping2_0>
+public final class ElementCollectionValueOverridesComposite
+	extends AbstractOverridesComposite<ElementCollectionMapping2_0>
 {
-
-	/**
-	 * Creates a new <code>OverridesComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 */
-	public ElementCollectionValueOverridesComposite(Pane<? extends ElementCollectionMapping2_0> parentPane,
-	                          Composite parent) {
-
+	public ElementCollectionValueOverridesComposite(
+			Pane<? extends ElementCollectionMapping2_0> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
+	
 	
 	@Override
 	protected boolean supportsAssociationOverrides() {
@@ -85,7 +51,7 @@ public final class ElementCollectionValueOverridesComposite extends AbstractOver
 			}
 		};
 	}
-
+	
 	@Override
 	protected PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder() {
 		return new PropertyAspectAdapter<ElementCollectionMapping2_0, AssociationOverrideContainer>(getSubjectHolder()) {
@@ -95,5 +61,4 @@ public final class ElementCollectionValueOverridesComposite extends AbstractOver
 			}
 		};
 	}
-
 }

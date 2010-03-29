@@ -23,32 +23,36 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class TableCombo<T extends JpaNode>
 	extends DatabaseObjectCombo<T>
 {
-	public TableCombo(Pane<? extends T> parentPane, Composite parent) {
+	public TableCombo(
+			Pane<? extends T> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
 	public TableCombo(
-						Pane<?> parentPane,
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent
-	) {
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
+	
 	public TableCombo(
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent,
-						WidgetFactory widgetFactory
-	) {
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		super(subjectHolder, parent, widgetFactory);
 	}
-
+	
+	
 	@Override
 	protected Iterable<String> getValues_() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.getSortedTableIdentifiers() : EmptyIterable.<String>instance();
 	}
-
+	
 	protected Schema getDbSchema() {
 		return (this.getSubject() == null) ? null : this.getDbSchema_();
 	}
