@@ -11,6 +11,8 @@ package org.eclipse.jpt.jaxb.core.schemagen;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -24,14 +26,15 @@ import javax.xml.transform.Result;
  *  
  * Current command-line arguments:
  *     [-s schema.xsd] - specifies the target schema
- *     [-p packageName] - specifies the source package 
- * 
- *  Required JRE 1.6 and eclipselink.jar to run
+ *     [-c className] - specifies the fully qualified class name
+ *     
+ *     [-p packageName] - specifies the source package // @deprecated
  */
 public class Main
 {
-	private String sourcePackageName;
+	private String[] sourceClassNames;
 	private String targetSchemaName;
+	@SuppressWarnings("unused")
 	private boolean isDebugMode;
 
 	static public String NO_FACTORY_CLASS = "doesnt contain ObjectFactory.class";   //$NON-NLS-1$
@@ -56,22 +59,35 @@ public class Main
 		
 		this.generate();
 	}
-		
-    private void generate() {
+
+	// ********** internal methods **********
+    
+	private void initializeWith(String[] args) {
+    	this.sourceClassNames = this.getSourceClassNames(args);
+    	this.targetSchemaName = this.getTargetSchemaName(args);
+
+		this.isDebugMode = this.getDebugMode(args);
+	}
+
+	private void generate() {
         // Create the JAXBContext
         JAXBContext jaxbContext = null;
 		try {
-			jaxbContext = JAXBContext.newInstance(this.sourcePackageName);
+			ClassLoader loader = Thread.currentThread().getContextClassLoader();
+			
+			Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
+			
+			jaxbContext = JAXBContext.newInstance(sourceClasses);
 		}
 		catch (JAXBException e) {
 			String message = e.getMessage();
 			if(message.indexOf(NO_FACTORY_CLASS) > -1) {
-				System.out.println(message);
+				System.err.println(message);
 			}
 			else {
 				e.printStackTrace();
 			}
-			System.out.println("\nSchema " + this.targetSchemaName + " not created");
+			System.err.println("\nSchema " + this.targetSchemaName + " not created");
 			return;
 		}
         // Generate an XML Schema
@@ -88,18 +104,28 @@ public class Main
 		System.out.println("\nSchema " + this.targetSchemaName + " generated");
     }
     
-	private void initializeWith(String[] args) {
-    	this.sourcePackageName = this.getSourcePackageName(args);
-    	this.targetSchemaName = this.getTargetSchemaName(args);
+    private Class[] buildSourceClasses(String[] classNames, ClassLoader loader) {
 
-		this.isDebugMode = this.getDebugMode(args);
-	}
+		ArrayList<Class> sourceClasses = new ArrayList<Class>(classNames.length);
+		for(String className: classNames) {
+			try {
+				sourceClasses.add(loader.loadClass(className));
+//				if(this.isDebugMode) {
+					System.out.println("\t" + className);
+//				}
+			}
+			catch (ClassNotFoundException e) {
+				System.err.println("\n\t" + className + " not found");
+			}
+		}
+		return sourceClasses.toArray(new Class[0]);
+    }
 
 	// ********** argument queries **********
     
-	private String getSourcePackageName(String[] args) {
+	private String[] getSourceClassNames(String[] args) {
 
-		return this.getArgumentValue("-p", args);
+		return this.getAllArgumentValue("-c", args);
 	}
 	
 	private String getTargetSchemaName(String[] args) {
@@ -112,10 +138,10 @@ public class Main
 		return this.argumentExists("-debug", args);
 	}
 	
-	private String getArgumentValue(String argument, String[] args) {
+	private String getArgumentValue(String argName, String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
-			if (arg.toLowerCase().equals(argument)) {
+			if (arg.toLowerCase().equals(argName)) {
 				int j = i + 1;
 				if (j < args.length) {
 					return args[j];
@@ -125,10 +151,25 @@ public class Main
 		return null;
 	}
 	
-	private boolean argumentExists(String argument, String[] args) {
+	private String[] getAllArgumentValue(String argName, String[] args) {
+		List<String> argValues = new ArrayList<String>();
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
-			if (arg.toLowerCase().equals(argument)) {
+			if (arg.toLowerCase().equals(argName)) {
+				int j = i + 1;
+				if (j < args.length) {
+					argValues.add(args[j]);
+					i++;
+				}
+			}
+		}
+		return argValues.toArray(new String[0]);
+	}
+	
+	private boolean argumentExists(String argName, String[] args) {
+		for (int i = 0; i < args.length; i++) {
+			String arg = args[i];
+			if (arg.toLowerCase().equals(argName)) {
 				return true;
 			}
 		}
@@ -136,6 +177,8 @@ public class Main
 	}
 
 }
+
+// ********** inner class **********
 
 class JptSchemaOutputResolver extends SchemaOutputResolver {
 	
