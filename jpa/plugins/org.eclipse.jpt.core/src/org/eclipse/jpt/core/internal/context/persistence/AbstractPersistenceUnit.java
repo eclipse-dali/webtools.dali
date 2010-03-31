@@ -1637,7 +1637,7 @@ public abstract class AbstractPersistenceUnit
 
 	public boolean specifiesPersistentType(String className) {
 		for (ClassRef classRef : this.getSpecifiedClassRefs()) {
-			if (className.equals(classRef.getClassName())) {
+			if (classRef.isFor(className)) {
 				return true;
 			}
 		}

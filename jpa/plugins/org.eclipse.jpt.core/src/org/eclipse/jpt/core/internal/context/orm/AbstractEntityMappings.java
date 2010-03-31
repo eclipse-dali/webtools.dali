@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -36,6 +36,7 @@ import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
@@ -202,6 +203,52 @@ public abstract class AbstractEntityMappings
 			}
 		}
 		return null;
+	}
+
+	public boolean containsPersistentType(String fullyQualifiedTypeName) {
+		return getPersistentType(fullyQualifiedTypeName) != null;
+	}
+
+	public PersistentType resolvePersistentType(String className) {
+		if (className == null) {
+			return null;
+		}
+
+		//static inner class listed in orm.xml will use '$', replace with '.'
+		className = className.replace('$', '.');
+
+		// first try to resolve using only the locally specified name...
+		PersistentType mapKeyPersistentType = getPersistenceUnit().getPersistentType(className);
+		if (mapKeyPersistentType != null) {
+			return mapKeyPersistentType;
+		}
+
+		// ...then try to resolve by prepending the global package name
+		if (getPackage() == null) {
+			return null;
+		}
+		return getPersistenceUnit().getPersistentType(getPackage() + '.' + className);
+	}
+
+	public JavaResourcePersistentType resolveJavaResourcePersistentType(String className) {
+		if (className == null) {
+			return null;
+		}
+
+		//static inner class listed in orm.xml will use '$', replace with '.'
+		className = className.replace('$', '.');
+
+		// first try to resolve using only the locally specified name...
+		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(className);
+		if (jrpt != null) {
+			return jrpt;
+		}
+
+		// ...then try to resolve by prepending the global package name
+		if (getPackage() == null) {
+			return null;
+		}
+		return getJpaProject().getJavaResourcePersistentType(getPackage() + '.' +  className);
 	}
 
 	public PersistenceUnitMetadata getPersistenceUnitMetadata() {
@@ -529,18 +576,6 @@ public abstract class AbstractEntityMappings
 
 
 	// ********** misc **********
-
-	//TODO what about qualified name?  package + class
-	//this needs to be handled both for className and persistentType.getName().
-	//moving on for now since I am just trying to get the ui compiled!  just a warning that this isn't good api
-	public boolean containsPersistentType(String className) {
-		for (OrmPersistentType persistentType : this.getPersistentTypes()) {
-			if (persistentType.getName().equals(className)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
 		return this.persistenceUnitMetadata.getPersistenceUnitDefaults();

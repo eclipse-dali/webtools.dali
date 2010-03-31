@@ -58,8 +58,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.cascade = buildCascade();
 		this.specifiedTargetEntity = getResourceTargetEntity();
 		this.defaultTargetEntity = buildDefaultTargetEntity();
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.resolvedTargetEntity = buildResolvedTargetEntity();
+		this.resolvedTargetType = this.resolveTargetType();
+		this.resolvedTargetEntity = this.resolveTargetEntity();
 		this.specifiedFetch = getResourceFetch();
 	}
 	
@@ -70,8 +70,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.cascade.update();
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
+		this.resolvedTargetType = this.resolveTargetType();
+		this.setResolvedTargetEntity(this.resolveTargetEntity());
 		this.setSpecifiedFetch_(this.getResourceFetch());
 	}
 	
@@ -167,24 +167,8 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		return this.resolvedTargetType;
 	}
 
-	protected PersistentType buildResolvedTargetType() {
-		String targetEntityName = this.getTargetEntity();
-		if (targetEntityName == null) {
-			return null;
-		}
-
-		// first try to resolve using only the locally specified name...
-		PersistentType targetEntity = this.getPersistentType(targetEntityName);
-		if (targetEntity != null) {
-			return targetEntity;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackageName = this.getDefaultPackageName();
-		if (defaultPackageName == null) {
-			return null;
-		}
-		return this.getPersistentType(defaultPackageName + '.' + targetEntityName);
+	protected PersistentType resolveTargetType() {
+		return this.resolvePersistentType(this.getTargetEntity());
 	}
 
 	protected String getResourceTargetEntity() {
@@ -200,24 +184,12 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	protected abstract String getResourceDefaultTargetEntity();
 
-	protected Entity buildResolvedTargetEntity() {
+	protected Entity resolveTargetEntity() {
 		if (this.resolvedTargetType == null) {
 			return null;
 		}
 		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
 		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
-	}
-
-	protected String getDefaultPackageName() {
-		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
-	}
-
-	protected Entity getEntity(String typeName) {
-		return this.getPersistenceUnit().getEntity(typeName);
-	}
-
-	protected PersistentType getPersistentType(String typeName) {
-		return this.getPersistenceUnit().getPersistentType(typeName);
 	}
 
 

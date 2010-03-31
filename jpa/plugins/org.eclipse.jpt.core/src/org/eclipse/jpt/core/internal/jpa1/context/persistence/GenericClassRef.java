@@ -120,7 +120,7 @@ public class GenericClassRef
 	// ********** queries **********
 
 	public boolean isFor(String typeName) {
-		return (this.className != null) && this.className.equals(typeName);
+		return (this.className != null) && this.className.replace('$', '.').equals(typeName);
 	}
 
 	public boolean isVirtual() {

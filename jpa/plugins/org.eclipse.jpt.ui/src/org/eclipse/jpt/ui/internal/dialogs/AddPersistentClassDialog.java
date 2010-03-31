@@ -259,10 +259,11 @@ public class AddPersistentClassDialog extends StatusDialog
 					JptUiMessages.AddPersistentClassDialog_noClassError));
 			return;
 		}
+		className = className.replace('$', '.');
 		
 		IType type;
 		try {
-			type = getJpaProject().getJavaProject().findType(className.replace('$', '.'));
+			type = getJpaProject().getJavaProject().findType(className);
 		}
 		catch (JavaModelException jme) {
 			type = null;

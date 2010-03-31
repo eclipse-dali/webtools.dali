@@ -15,9 +15,11 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
@@ -99,6 +101,14 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	
 	public OrmPersistentAttribute getPersistentAttribute() {
 		return (OrmPersistentAttribute) getParent();
+	}
+
+	protected EntityMappings getEntityMappings() {
+		return this.getPersistentAttribute().getOwningPersistentType().getParent();
+	}
+
+	protected PersistentType resolvePersistentType(String className) {
+		return this.getEntityMappings().resolvePersistentType(className);
 	}
 
 	public boolean isDefault() {

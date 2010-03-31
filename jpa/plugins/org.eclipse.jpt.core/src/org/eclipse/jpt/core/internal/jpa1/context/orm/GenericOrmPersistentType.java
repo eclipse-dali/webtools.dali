@@ -138,7 +138,8 @@ public class GenericOrmPersistentType
 	// ********** name **********
 
 	public String getName() {
-		return this.mapping.getClass_();
+		String className = this.mapping.getClass_();
+		return className != null ? className.replace('$', '.') : null;
 	}
 
 	public String getShortName(){
@@ -683,28 +684,11 @@ public class GenericOrmPersistentType
 	}
 
 	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		String className = this.getName();
-		if (className == null) {
-			return null;
-		}
-		className = className.replace('$', '.');
-
-		// first try to resolve using only the locally specified name...
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType(className);
-		if (jrpt != null) {
-			return jrpt;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackage = this.getDefaultPackage();
-		if (defaultPackage == null) {
-			return null;
-		}
-		return this.getJavaResourcePersistentType(defaultPackage + '.' +  className);
+		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getName());
 	}
 
-	protected JavaResourcePersistentType getJavaResourcePersistentType(String className) {
-		return this.getJpaProject().getJavaResourcePersistentType(className);
+	protected JavaResourcePersistentType getJavaResourcePersistentType(String qualifiedClassName) {
+		return this.getJpaProject().getJavaResourcePersistentType(qualifiedClassName);
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
@@ -920,7 +904,7 @@ public class GenericOrmPersistentType
 	}
 
 	public String getDefaultPackage() {
-		return this.getEntityMappings().getDefaultPersistentTypePackage();
+		return this.getEntityMappings().getPackage();
 	}
 
 	public boolean isDefaultMetadataComplete() {

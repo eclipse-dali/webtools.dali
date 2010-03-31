@@ -127,8 +127,8 @@ public class GenericOrmElementCollectionMapping2_0
 		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, buildOrderableOwner());
 		this.specifiedTargetClass = getResourceTargetClass();
 		this.defaultTargetClass = buildDefaultTargetClass();
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.resolvedTargetEmbeddable = buildResolvedTargetEmbeddable();
+		this.resolvedTargetType = this.resolveTargetType();
+		this.resolvedTargetEmbeddable = resolveTargetEmbeddable();
 		this.collectionTable = getXmlContextNodeFactory().buildOrmCollectionTable(this, getResourceCollectionTable());
 		this.valueType = this.buildValueType();
 		this.valueColumn = getXmlContextNodeFactory().buildOrmColumn(this, new ValueColumnOwner());
@@ -136,9 +136,9 @@ public class GenericOrmElementCollectionMapping2_0
 		this.valueConverter = this.buildConverter(this.getResourceConverterType());
 		this.valueAssociationOverrideContainer = buildValueAssociationOverrideContainer();
 		this.valueAttributeOverrideContainer = buildValueAttributeOverrideContainer();
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();
-		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
-		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
+		this.resolvedMapKeyType = this.resolveMapKeyType();
+		this.resolvedMapKeyEmbeddable = this.resolveMapKeyEmbeddable();
+		this.resolvedMapKeyEntity = this.resolveMapKeyEntity();
 		this.initializeMapKey();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
@@ -151,8 +151,8 @@ public class GenericOrmElementCollectionMapping2_0
 		super.update();
 		this.setSpecifiedTargetClass_(this.getResourceTargetClass());
 		this.setDefaultTargetClass(this.buildDefaultTargetClass());
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.setResolvedTargetEmbeddable(this.buildResolvedTargetEmbeddable());
+		this.resolvedTargetType = this.resolveTargetType();
+		this.setResolvedTargetEmbeddable(this.resolveTargetEmbeddable());
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.orderable.update();
 		this.collectionTable.update();
@@ -161,9 +161,9 @@ public class GenericOrmElementCollectionMapping2_0
 		this.valueAttributeOverrideContainer.update();
 		this.valueAssociationOverrideContainer.update();
 		this.updateValueConverter();
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
-		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
+		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.setResolvedMapKeyEmbeddable(this.resolveMapKeyEmbeddable());
+		this.setResolvedMapKeyEntity(this.resolveMapKeyEntity());
 		this.setKeyType(buildKeyType()); 
 		this.updateMapKey();
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
@@ -274,42 +274,17 @@ public class GenericOrmElementCollectionMapping2_0
 		return null;
 	}
 	
-	protected PersistentType buildResolvedTargetType() {
-		String targetClassName = this.getTargetClass();
-		if (targetClassName == null) {
-			return null;
-		}
-
-		// first try to resolve using only the locally specified name...
-		PersistentType targetPersistentType = this.getPersistentType(targetClassName);
-		if (targetPersistentType != null) {
-			return targetPersistentType;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackageName = this.getDefaultPackageName();
-		if (defaultPackageName == null) {
-			return null;
-		}
-		return this.getPersistentType(defaultPackageName + '.' + targetClassName);
+	protected PersistentType resolveTargetType() {
+		return this.resolvePersistentType(this.getTargetClass());
 	}
 
-	protected Embeddable buildResolvedTargetEmbeddable() {
+	protected Embeddable resolveTargetEmbeddable() {
 		if (this.resolvedTargetType == null) {
 			return null;
 		}
 		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
-
-	protected String getDefaultPackageName() {
-		return this.getPersistentAttribute().getOwningPersistentType().getDefaultPackage();
-	}
-
-	protected PersistentType getPersistentType(String typeName) {
-		return this.getPersistenceUnit().getPersistentType(typeName);
-	}
-
 	
 	//************* Fetchable *************
 	
@@ -1004,27 +979,11 @@ public class GenericOrmElementCollectionMapping2_0
 		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
 	}
 	
-	protected PersistentType buildResolvedMapKeyType() {
-		String mapKeyClassName = this.getMapKeyClass();
-		if (mapKeyClassName == null) {
-			return null;
-		}
-
-		// first try to resolve using only the locally specified name...
-		PersistentType mapKeyPersistentType = this.getPersistentType(mapKeyClassName);
-		if (mapKeyPersistentType != null) {
-			return mapKeyPersistentType;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackageName = this.getDefaultPackageName();
-		if (defaultPackageName == null) {
-			return null;
-		}
-		return this.getPersistentType(defaultPackageName + '.' + mapKeyClassName);
+	protected PersistentType resolveMapKeyType() {
+		return this.resolvePersistentType(this.getMapKeyClass());
 	}
 
-	protected Embeddable buildResolvedMapKeyEmbeddable() {
+	protected Embeddable resolveMapKeyEmbeddable() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}
@@ -1032,7 +991,7 @@ public class GenericOrmElementCollectionMapping2_0
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
-	protected Entity buildResolvedMapKeyEntity() {
+	protected Entity resolveMapKeyEntity() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}
@@ -1149,7 +1108,7 @@ public class GenericOrmElementCollectionMapping2_0
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 							new String[] {this.getName(), this.getTargetClass()}, 
 							this, 
-							this.getTargetClassTextRange()
+							this.getValidationTextRange()
 						)
 					);
 				}

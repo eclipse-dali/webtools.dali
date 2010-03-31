@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -100,7 +101,12 @@ public interface EntityMappings
 	void removePersistentType(int index);
 	void removePersistentType(OrmPersistentType persistentType);
 	//void movePersistentType(int targetIndex, int sourceIndex);
-	boolean containsPersistentType(String className);
+	boolean containsPersistentType(String fullyQualifiedTypeName);
+	/**
+	 * Return the {@link OrmPersistentType) listed in this mapping file
+	 * with the given fully qualified type name. Return null if none exists.
+	 */
+	OrmPersistentType getPersistentType(String fullyQualifiedTypeName);
 		String PERSISTENT_TYPES_LIST = "persistentTypes"; //$NON-NLS-1$
 	
 	ListIterable<OrmSequenceGenerator> getSequenceGenerators();
@@ -122,13 +128,7 @@ public interface EntityMappings
 	OrmQueryContainer getQueryContainer();
 	
 	OrmPersistenceUnitDefaults getPersistenceUnitDefaults();
-	
-	/**
-	 * Return the {@link OrmPersistentType) listed in this mapping file
-	 * with the given type name. Return null if none exists.
-	 */
-	OrmPersistentType getPersistentType(String typeName);
-	
+
 	/**
 	 * Return the default package to be used for persistent types in this context
 	 */
@@ -142,7 +142,25 @@ public interface EntityMappings
 	void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping);
 	
 	boolean containsOffset(int textOffset);
-	
+
+	/**
+	 * Return the JavaResourcePersistentType for the given class name found in the JPA project.
+	 * First look for one with this exact class name (since it might be fully qualified)
+	 * and then prepend the default package name and attempt to resolve.
+	 * 
+	 * @see getPackage()
+	 */
+	JavaResourcePersistentType resolveJavaResourcePersistentType(String className);
+
+	/**
+	 * Return the PersistentType for the given class name found in the persistence unit.
+	 * First look for one with this exact class name (since it might be fully qualified)
+	 * and then prepend the default package name and attempt to resolve.
+	 * 
+	 * @see getPackage()
+	 */
+	PersistentType resolvePersistentType(String className);
+
 	/**
 	 * Update the EntityMappings context model object to match the XmlEntityMappings 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
