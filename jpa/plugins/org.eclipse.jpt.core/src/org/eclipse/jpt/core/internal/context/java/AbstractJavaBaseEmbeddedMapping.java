@@ -198,11 +198,12 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		validateTargetEmbeddable(messages, reporter, astRoot);
-		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
+		if (validateTargetEmbeddable(messages, reporter, astRoot)) {
+			validateOverrides(messages, reporter, astRoot);
+		}
 	}
-	
-	protected void validateTargetEmbeddable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+
+	protected boolean validateTargetEmbeddable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (getTargetEmbeddable() == null) {
 			String targetEmbeddableTypeName = getPersistentAttribute().getTypeName();
 			// if the type isn't resolveable, there'll already be a java error
@@ -215,10 +216,15 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 							this, 
 							this.getValidationTextRange(astRoot)));
 			}
+			return false;
 		}
+		return true;
 	}
-	
-	
+
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
+	}
+
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
 	protected class AttributeOverrideContainerOwner

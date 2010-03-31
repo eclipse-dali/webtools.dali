@@ -34,7 +34,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
@@ -59,7 +58,7 @@ public class GenericOrmEmbeddedMapping
 	public GenericOrmEmbeddedMapping(OrmPersistentAttribute parent, XmlEmbedded resourceMapping) {
 		super(parent, resourceMapping);
 		this.associationOverrideContainer = 
-			((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
+			getXmlContextNodeFactory().
 				buildOrmAssociationOverrideContainer(
 					this,
 					new AssociationOverrideContainerOwner());
@@ -212,8 +211,8 @@ public class GenericOrmEmbeddedMapping
 
 	// ********** validation **********
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter) {
+		super.validateOverrides(messages, reporter);
 		this.getAssociationOverrideContainer().validate(messages, reporter);
 	}
 

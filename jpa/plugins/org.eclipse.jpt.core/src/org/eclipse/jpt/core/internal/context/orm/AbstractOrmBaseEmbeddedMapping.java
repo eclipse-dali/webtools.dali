@@ -192,11 +192,12 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		validateTargetEmbeddable(messages, reporter);
-		getAttributeOverrideContainer().validate(messages, reporter);
+		if (validateTargetEmbeddable(messages, reporter)) {
+			validateOverrides(messages, reporter);
+		}
 	}
 
-	protected void validateTargetEmbeddable(List<IMessage> messages, IReporter reporter) {
+	protected boolean validateTargetEmbeddable(List<IMessage> messages, IReporter reporter) {
 		if (getTargetEmbeddable() == null) {
 			String targetEmbeddableTypeName = getPersistentAttribute().getTypeName();
 			// if the type isn't resolveable, there'll already be a java error
@@ -209,7 +210,13 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 							this, 
 							this.getValidationTextRange()));
 			}
+			return false;
 		}
+		return true;
+	}
+
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter) {
+		getAttributeOverrideContainer().validate(messages, reporter);
 	}
 
 	//************ static methods ************

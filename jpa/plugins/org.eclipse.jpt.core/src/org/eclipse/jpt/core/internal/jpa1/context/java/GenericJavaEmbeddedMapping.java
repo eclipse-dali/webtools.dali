@@ -179,9 +179,10 @@ public class GenericJavaEmbeddedMapping
 
 
 	// ********** validation **********
+
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	protected void validateOverrides(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validateOverrides(messages, reporter, astRoot);
 		this.getAssociationOverrideContainer().validate(messages, reporter, astRoot);
 	}
 

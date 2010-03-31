@@ -107,12 +107,11 @@ public class GenericJavaAttributeOverride
 	
 	public String getDefaultTableName() {
 		Column column = resolveOverriddenColumn();
-		if (column == null) {
-			return null;
-		}
-		String tableName = column.getSpecifiedTable();
-		if (tableName != null) {
-			return tableName;
+		if (column != null) {
+			String tableName = column.getSpecifiedTable();
+			if (tableName != null) {
+				return tableName;
+			}
 		}
 		return getOwner().getDefaultTableName();
 	}
