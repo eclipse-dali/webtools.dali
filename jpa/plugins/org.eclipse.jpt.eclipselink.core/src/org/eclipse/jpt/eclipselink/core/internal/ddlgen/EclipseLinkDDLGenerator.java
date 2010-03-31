@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -45,6 +44,7 @@ import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
@@ -172,13 +172,21 @@ public class EclipseLinkDDLGenerator
 		catch (CoreException e) {
 			throw new RuntimeException(e);
 		}
-		//reconnect since we disconnected in preGenerate(), 
+		this.reconnect();
+		this.validateProject();
+	}
+
+	//reconnect since we disconnected in preGenerate(),
+	//use the synchronous JPA project updater so we can ensure
+	//the project is fully updated before validating. bug 277236
+	protected void reconnect() {
+		JpaProject.Updater updater = getJpaProject().getUpdater();
+		getJpaProject().setUpdater(new SynchronousJpaProjectUpdater(getJpaProject()));
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.connect();
 		}
-		
-		this.validateProject();
+		getJpaProject().setUpdater(updater);
 	}
 
 	protected void validateProject() {
