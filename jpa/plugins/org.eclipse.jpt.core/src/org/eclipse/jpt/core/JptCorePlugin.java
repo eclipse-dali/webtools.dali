@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
@@ -98,11 +98,24 @@ public class JptCorePlugin extends Plugin {
 	private static final String JPA_PLATFORM_PREF_KEY = PLUGIN_ID_ + "platform";  //$NON-NLS-1$
 
 	/**
-	 * The key for storing the default JPA platform ID in the workspace
-	 * preferences.
+	 * The old key for storing the default JPA platform ID in the workspace preferences.
+	 * @deprecated  As of version 2.3.  Instead use {@link #DEFAULT_JPA_PLATFORM_1_0_PREF_KEY} or 
+	 * 		{@link #DEFAULT_JPA_PLATFORM_2_0_PREF_KEY}
 	 */
-	private static final String DEFAULT_JPA_PLATFORM_PREF_KEY = "defaultJpaPlatform"; //$NON-NLS-1$
-
+	public static final String DEFAULT_JPA_PLATFORM_PREF_KEY = "defaultJpaPlatform"; //$NON-NLS-1$
+	
+	/**
+	 * The key for storing the default JPA platform ID for JPA 1.0 in the workspace preferences.
+	 */
+	public static final String DEFAULT_JPA_PLATFORM_1_0_PREF_KEY = 
+			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JPA_FACET_VERSION_1_0; //$NON-NLS-1$
+	
+	/**
+	 * The key for storing the default JPA platform ID for JPA 2.0 in the workspace preferences.
+	 */
+	public static final String DEFAULT_JPA_PLATFORM_2_0_PREF_KEY = 
+			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JPA_FACET_VERSION_2_0; //$NON-NLS-1$
+	
 	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
 	 * project's preferences.
@@ -366,12 +379,18 @@ public class JptCorePlugin extends Plugin {
 	public static void initializeDefaultPreferences() {
 		IEclipsePreferences node = getDefaultPreferences();
 
-		// default JPA platform
-		String defaultPlatformId = JpaPlatformRegistry.instance().getDefaultJpaPlatformId();
-		if (StringTools.stringIsEmpty(defaultPlatformId)) {
-			defaultPlatformId = GenericJpaPlatformProvider.ID;
+		// default JPA platforms
+		String defaultPlatformId_1_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JPA_FACET_VERSION_1_0);
+		if (StringTools.stringIsEmpty(defaultPlatformId_1_0)) {
+			defaultPlatformId_1_0 = GenericJpaPlatformProvider.ID;
 		}
-		node.put(DEFAULT_JPA_PLATFORM_PREF_KEY, defaultPlatformId);
+		node.put(DEFAULT_JPA_PLATFORM_1_0_PREF_KEY, defaultPlatformId_1_0);
+		
+		String defaultPlatformId_2_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JPA_FACET_VERSION_2_0);
+		if (StringTools.stringIsEmpty(defaultPlatformId_2_0)) {
+			defaultPlatformId_1_0 = Generic2_0JpaPlatformProvider.ID;
+		}
+		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatformId_2_0);
 	}
 
 	/**
@@ -407,29 +426,49 @@ public class JptCorePlugin extends Plugin {
 	 * Return the default JPA Platform ID for new JPA projects with the given JPA facet version.
 	 */
 	public static String getDefaultJpaPlatformId(String jpaFacetVersion) {
-		String platformId = getDefaultJpaPlatformId(getWorkspacePreferences(), getDefaultPreferences());
-		if (jpaPlatformIdIsValid(platformId) 
-				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(platformId, jpaFacetVersion)) {
-			return platformId;
+		String defaultPlatformId = 
+				getDefaultJpaPlatformId(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences());
+		if (defaultPlatformId == null) {
+			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
+			defaultPlatformId = getDefaultJpaPlatformId(jpaFacetVersion, getDefaultPreferences());
 		}
-		// if the platform ID stored in the workspace prefs is invalid, look in the default prefs
-		platformId = getDefaultJpaPlatformId(getDefaultPreferences());
-		if (jpaPlatformIdIsValid(platformId)
-				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(platformId, jpaFacetVersion)) {
-			return platformId;
-		}
-		// if the platform ID stored in the default prefs is invalid, use the Generic platform ID
-		if (jpaFacetVersion.equals(JPA_FACET_VERSION_1_0)) {
-			return GenericJpaPlatformProvider.ID;
-		}
-		if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
-			return Generic2_0JpaPlatformProvider.ID;
-		}
-		throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
+		return defaultPlatformId;
 	}
 	
-	private static String getDefaultJpaPlatformId(Preferences... nodes) {
-		return Platform.getPreferencesService().get(DEFAULT_JPA_PLATFORM_PREF_KEY, GenericJpaPlatformProvider.ID, nodes);
+	private static String getDefaultJpaPlatformId(String jpaFacetVersion, Preferences ... nodes) {
+		String defaultDefaultPlatformId = 
+				getDefaultJpaPlatformId(jpaFacetVersion, DEFAULT_JPA_PLATFORM_PREF_KEY, null, nodes);
+		String preferenceKey = null;
+		if (jpaFacetVersion.equals(JPA_FACET_VERSION_1_0)) {
+			if (defaultDefaultPlatformId == null) {
+				defaultDefaultPlatformId = GenericJpaPlatformProvider.ID;
+			}
+			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY; 
+		}
+		else if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
+			if (defaultDefaultPlatformId == null) {
+				defaultDefaultPlatformId = Generic2_0JpaPlatformProvider.ID;
+			}
+			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
+		}
+		else {
+			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
+		}
+		return getDefaultJpaPlatformId(jpaFacetVersion, preferenceKey, defaultDefaultPlatformId, nodes);
+	}
+	
+	private static String getDefaultJpaPlatformId(
+			String jpaFacetVersion, String preferenceKey, String defaultDefault, Preferences ... nodes) {	
+		String defaultPlatformId = Platform.getPreferencesService().get(preferenceKey, defaultDefault, nodes);
+		if (jpaPlatformIdIsValid(defaultPlatformId)
+				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(defaultPlatformId, jpaFacetVersion)) {
+			return defaultPlatformId;
+		}
+		else if (jpaPlatformIdIsValid(defaultDefault)
+				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(defaultDefault, jpaFacetVersion)) {
+			return defaultDefault;
+		}
+		return null;
 	}
 	
 	private static boolean jpaPlatformIdIsValid(String platformId) {
@@ -439,9 +478,19 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Set the default JPA platform ID for creating new JPA projects
 	 */
-	public static void setDefaultJpaPlatformId(String platformId) {
+	public static void setDefaultJpaPlatformId(String jpaFacetVersion, String platformId) {
 		IEclipsePreferences prefs = getWorkspacePreferences();
-		prefs.put(DEFAULT_JPA_PLATFORM_PREF_KEY, platformId);
+		String preferenceKey = null;
+		if (JPA_FACET_VERSION_1_0.equals(jpaFacetVersion)) {
+			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY;
+		}
+		else if (JPA_FACET_VERSION_2_0.equals(jpaFacetVersion)) {
+			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
+		}
+		else {
+			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion);
+		}
+		prefs.put(preferenceKey, platformId);
 		flush(prefs);
 	}
 

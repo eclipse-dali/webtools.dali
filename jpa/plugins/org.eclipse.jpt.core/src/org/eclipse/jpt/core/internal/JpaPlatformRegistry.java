@@ -203,11 +203,13 @@ public class JpaPlatformRegistry {
 	 * Returns null if there are no such registered platforms.
 	 * Returns the first platform ID if there are multiple such registered platforms.
 	 */
-	public String getDefaultJpaPlatformId() {
+	public String getDefaultJpaPlatformId(String jpaFacetVersion) {
 		for (Map.Entry<String, IConfigurationElement> entry: this.jpaPlatformConfigurationElements.entrySet()) {
 			String defaultFlag = entry.getValue().getAttribute(DEFAULT_ATTRIBUTE_NAME);
-			if ((defaultFlag != null) && defaultFlag.equals("true")) { //$NON-NLS-1$
-				return entry.getKey();
+			String platformId = entry.getKey();
+			if ((defaultFlag != null) && defaultFlag.equals("true")
+					&& platformSupportsJpaFacetVersion(platformId, jpaFacetVersion)) { //$NON-NLS-1$
+				return platformId;
 			}
 		}
 		return null;

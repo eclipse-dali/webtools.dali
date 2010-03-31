@@ -67,7 +67,7 @@ public abstract class JpaFacetActionDelegate
 		JptCorePlugin.setDiscoverAnnotatedClasses(project, dataModel.getBooleanProperty(DISCOVER_ANNOTATED_CLASSES));
 		
 		// defaults settings
-		JptCorePlugin.setDefaultJpaPlatformId(dataModel.getStringProperty(PLATFORM_ID));
+		JptCorePlugin.setDefaultJpaPlatformId(fv.getVersionString(), dataModel.getStringProperty(PLATFORM_ID));
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath
 		((LibraryInstallDelegate) dataModel.getProperty(JpaFacetInstallDataModelProperties.LIBRARY_PROVIDER_DELEGATE)).execute(new NullProgressMonitor());
