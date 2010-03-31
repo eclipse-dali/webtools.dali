@@ -18,12 +18,12 @@ import org.eclipse.jpt.core.resource.orm.TemporalType;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -172,7 +172,7 @@ public class VirtualEclipseLinkXmlVersion extends XmlVersion
 		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
-				return new VirtualEclipseLinkXmlConverter(this.ormTypeMapping, (EclipseLinkCustomConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlConverter(this.ormTypeMapping, (JavaEclipseLinkCustomConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
 			}
 		}
 		return null;
@@ -189,7 +189,7 @@ public class VirtualEclipseLinkXmlVersion extends XmlVersion
 		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-				return new VirtualEclipseLinkXmlObjectTypeConverter(this.ormTypeMapping, (EclipseLinkObjectTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlObjectTypeConverter(this.ormTypeMapping, (JavaEclipseLinkObjectTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
 			}
 		}
 		return null;
@@ -206,7 +206,7 @@ public class VirtualEclipseLinkXmlVersion extends XmlVersion
 		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
-				return new VirtualEclipseLinkXmlStructConverter(this.ormTypeMapping, (EclipseLinkStructConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlStructConverter(this.ormTypeMapping, (JavaEclipseLinkStructConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
 			}
 		}
 		return null;
@@ -223,7 +223,7 @@ public class VirtualEclipseLinkXmlVersion extends XmlVersion
 		if (this.javaAttributeMapping.getConverter().getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) {
 			EclipseLinkConverter converter = ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter();
 			if (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) {
-				return new VirtualEclipseLinkXmlTypeConverter(this.ormTypeMapping, (EclipseLinkTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
+				return new VirtualEclipseLinkXmlTypeConverter(this.ormTypeMapping, (JavaEclipseLinkTypeConverter) ((EclipseLinkConvert) this.javaAttributeMapping.getConverter()).getConverter());
 			}
 		}
 		return null;

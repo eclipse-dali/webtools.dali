@@ -151,7 +151,7 @@ public class VirtualXmlOneToOne extends XmlOneToOne
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.getDefaultTargetEntity();
 		}
-		return this.javaAttributeMapping.getTargetEntity();
+		return this.javaAttributeMapping.getFullyQualifiedTargetEntity();
 	}
 
 	@Override

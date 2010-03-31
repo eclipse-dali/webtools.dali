@@ -39,4 +39,11 @@ public interface JavaElementCollectionMapping2_0
 	
 	JavaAssociationOverrideContainer getValueAssociationOverrideContainer();
 
+	/**
+	 * If the target class is specified, this will return it fully qualified. If not
+	 * specified, it returns the default target class, which is always fully qualified
+	 */
+	String getFullyQualifiedTargetClass();
+		String FULLY_QUALIFIED_TARGET_CLASS_PROPERTY = "fullyQualifiedTargetClass"; //$NON-NLS-1$
+	
 }

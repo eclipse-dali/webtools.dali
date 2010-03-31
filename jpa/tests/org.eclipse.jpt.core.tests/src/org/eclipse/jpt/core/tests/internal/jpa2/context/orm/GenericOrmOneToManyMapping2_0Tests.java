@@ -540,13 +540,13 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OrmOneToManyMapping2_0 ormOneToManyMapping = (OrmOneToManyMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		JavaOneToManyMapping2_0 javaOneToManyMapping = (JavaOneToManyMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		assertEquals("java.lang.String", ormOneToManyMapping.getMapKeyClass());
-		assertEquals(null, ormOneToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.String", ormOneToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormOneToManyMapping.getDefaultMapKeyClass());
 
 		//set pk mapKey in the java, verify virtual orm mapping updates
 		javaOneToManyMapping.setSpecifiedMapKeyClass("Integer");
-		assertEquals("Integer", ormOneToManyMapping.getMapKeyClass());
-		assertEquals("Integer", ormOneToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.Integer", ormOneToManyMapping.getMapKeyClass());
+		assertEquals("java.lang.Integer", ormOneToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormOneToManyMapping.getDefaultMapKeyClass());
 	}
 	

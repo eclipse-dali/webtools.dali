@@ -27,6 +27,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
@@ -145,9 +146,9 @@ public class OrmEclipseLinkEntityImpl
 		return (javaEntity == null) ? null : javaEntity.getReadOnly();
 	}
 	
-	protected EclipseLinkCustomizer getJavaCustomizer() {
+	protected JavaEclipseLinkCustomizer getJavaCustomizer() {
 		JavaEclipseLinkEntity javaEntity = getJavaEntityForDefaults();
-		return (javaEntity == null) ? null : javaEntity.getCustomizer();
+		return (javaEntity == null) ? null : (JavaEclipseLinkCustomizer) javaEntity.getCustomizer();
 	}
 	
 	protected EclipseLinkChangeTracking getJavaChangeTracking() {

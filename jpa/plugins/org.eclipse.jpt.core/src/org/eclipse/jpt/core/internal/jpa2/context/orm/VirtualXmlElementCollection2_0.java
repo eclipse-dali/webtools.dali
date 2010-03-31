@@ -132,7 +132,7 @@ public class VirtualXmlElementCollection2_0 extends XmlElementCollection
 		if (this.isOrmMetadataComplete()) {
 			return this.javaAttributeMapping.getDefaultTargetClass();
 		}
-		return this.javaAttributeMapping.getTargetClass();
+		return this.javaAttributeMapping.getFullyQualifiedTargetClass();
 	}
 
 	@Override

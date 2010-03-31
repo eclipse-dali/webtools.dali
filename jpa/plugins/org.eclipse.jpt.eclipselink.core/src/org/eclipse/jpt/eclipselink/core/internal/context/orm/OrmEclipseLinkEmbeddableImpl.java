@@ -17,6 +17,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
@@ -82,9 +83,9 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 	
 	
-	protected EclipseLinkCustomizer getJavaCustomizer() {
+	protected JavaEclipseLinkCustomizer getJavaCustomizer() {
 		JavaEclipseLinkEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
-		return (javaEmbeddable == null) ? null : javaEmbeddable.getCustomizer();
+		return (javaEmbeddable == null) ? null : (JavaEclipseLinkCustomizer) javaEmbeddable.getCustomizer();
 	}
 	
 	protected EclipseLinkChangeTracking getJavaChangeTracking() {

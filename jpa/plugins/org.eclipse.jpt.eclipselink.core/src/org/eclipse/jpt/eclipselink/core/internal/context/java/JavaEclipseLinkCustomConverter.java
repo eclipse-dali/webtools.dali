@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,6 +27,9 @@ public class JavaEclipseLinkCustomConverter extends JavaEclipseLinkConverter
 {
 	private String converterClass;
 	
+	private String fullyQualifiedConverterClass;
+		public static final String FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY = "fullyQualifiedConverterClass"; //$NON-NLS-1$
+
 	public JavaEclipseLinkCustomConverter(JavaJpaContextNode parent) {
 		super(parent);
 	}
@@ -66,19 +69,39 @@ public class JavaEclipseLinkCustomConverter extends JavaEclipseLinkConverter
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
 
+	public String getFullyQualifiedConverterClass() {
+		return this.fullyQualifiedConverterClass;
+	}
+
+	protected void setFullyQualifiedConverterClass(String converterClass) {
+		String old = this.fullyQualifiedConverterClass;
+		this.fullyQualifiedConverterClass = converterClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_CONVERTER_CLASS_PROPERTY, old, converterClass);
+	}
+
+	protected String buildFullyQualifiedConverterClass(EclipseLinkConverterAnnotation resourceConverter) {
+		return resourceConverter == null ?
+				null :
+					resourceConverter.getFullyQualifiedConverterClassName();
+	}
+
 	
 	// **************** resource interaction ***********************************
 	
 	@Override
 	protected void initialize(JavaResourcePersistentMember jrpm) {
 		super.initialize(jrpm);
-		this.converterClass = this.converterClass(getAnnotation());
+		EclipseLinkConverterAnnotation resourceConverter = getAnnotation();
+		this.converterClass = this.converterClass(resourceConverter);
+		this.fullyQualifiedConverterClass = this.buildFullyQualifiedConverterClass(resourceConverter);
 	}
 	
 	@Override
 	public void update(JavaResourcePersistentMember jrpm) {
 		super.update(jrpm);
-		this.setConverterClass_(this.converterClass(getAnnotation()));
+		EclipseLinkConverterAnnotation resourceConverter = getAnnotation();
+		this.setConverterClass_(this.converterClass(resourceConverter));
+		this.setFullyQualifiedConverterClass(this.buildFullyQualifiedConverterClass(resourceConverter));
 	}
 	
 	protected String converterClass(EclipseLinkConverterAnnotation resourceConverter) {

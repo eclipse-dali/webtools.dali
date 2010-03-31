@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
@@ -27,9 +27,9 @@ public class VirtualEclipseLinkXmlObjectTypeConverter extends XmlObjectTypeConve
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected EclipseLinkObjectTypeConverter javaConverter;
+	protected JavaEclipseLinkObjectTypeConverter javaConverter;
 	
-	public VirtualEclipseLinkXmlObjectTypeConverter(OrmTypeMapping ormTypeMapping, EclipseLinkObjectTypeConverter javaConverter) {
+	public VirtualEclipseLinkXmlObjectTypeConverter(OrmTypeMapping ormTypeMapping, JavaEclipseLinkObjectTypeConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;
@@ -57,7 +57,7 @@ public class VirtualEclipseLinkXmlObjectTypeConverter extends XmlObjectTypeConve
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaConverter.getDataType();
+		return this.javaConverter.getFullyQualifiedDataType();
 	}
 	
 	@Override
@@ -70,7 +70,7 @@ public class VirtualEclipseLinkXmlObjectTypeConverter extends XmlObjectTypeConve
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaConverter.getObjectType();
+		return this.javaConverter.getFullyQualifiedObjectType();
 	}
 	
 	@Override

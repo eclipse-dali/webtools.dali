@@ -28,4 +28,11 @@ public interface JavaIdClassReference
 	void initialize();
 	
 	void update();
+
+	/**
+	 * Return the fully qualified name of the id class, taking into consideration the default value if applicable
+	 */
+	String getFullyQualifiedIdClassName();
+		String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
+
 }

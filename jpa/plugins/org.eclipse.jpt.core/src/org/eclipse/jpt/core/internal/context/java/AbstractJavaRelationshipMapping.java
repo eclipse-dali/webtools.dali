@@ -46,6 +46,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
+	protected String fullyQualifiedTargetEntity;
 	protected PersistentType resolvedTargetType;
 	protected Entity resolvedTargetEntity;
 	
@@ -66,25 +67,27 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.relationshipReference.initialize();
 		this.specifiedFetch = this.getResourceFetch();
 		this.cascade.initialize();
+		this.defaultTargetEntity = this.buildDefaultTargetEntity();
 		this.specifiedTargetEntity = this.getResourceTargetEntity();
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
+		this.fullyQualifiedTargetEntity = this.buildFullyQualifiedTargetEntity();
+		this.resolvedTargetType = this.resolveTargetType();
+		this.resolvedTargetEntity = this.resolveTargetEntity();
 	}
 	
 	@Override
 	protected void update() {
 		super.update();
-		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.relationshipReference.update();
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.cascade.update();
+		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.setResolvedTargetEntity(this.buildResolvedTargetEntity());
+		this.setFullyQualifiedTargetEntity(this.buildFullyQualifiedTargetEntity());
+		this.resolvedTargetType = this.resolveTargetType();
+		this.setResolvedTargetEntity(this.resolveTargetEntity());
 	}
 	
 	
@@ -127,15 +130,28 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	protected abstract String buildDefaultTargetEntity();
 
+	public String getFullyQualifiedTargetEntity() {
+		return this.fullyQualifiedTargetEntity;
+	}
+
+	protected void setFullyQualifiedTargetEntity(String targetEntity) {
+		String old = this.fullyQualifiedTargetEntity;
+		this.fullyQualifiedTargetEntity = targetEntity;
+		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
+	}
+
+	protected String buildFullyQualifiedTargetEntity() {
+		return (this.specifiedTargetEntity == null) ?
+			this.defaultTargetEntity :
+			this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
+	}
+
 	public PersistentType getResolvedTargetType() {
 		return this.resolvedTargetType;
 	}
 
-	protected PersistentType buildResolvedTargetType() {
-		String targetEntityClassName = (this.specifiedTargetEntity == null) ?
-						this.defaultTargetEntity :
-						this.mappingAnnotation.getFullyQualifiedTargetEntityClassName();
-		return (targetEntityClassName == null) ? null : this.getPersistenceUnit().getPersistentType(targetEntityClassName);
+	protected PersistentType resolveTargetType() {
+		return (this.fullyQualifiedTargetEntity == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetEntity);
 	}
 	
 	public Entity getResolvedTargetEntity() {
@@ -148,7 +164,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 		this.firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, old, entity);
 	}
 
-	protected Entity buildResolvedTargetEntity() {
+	protected Entity resolveTargetEntity() {
 		if (this.resolvedTargetType == null) {
 			return null;
 		}

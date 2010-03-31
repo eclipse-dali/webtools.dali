@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.TypeStringExpressionConverter;
@@ -32,11 +33,12 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> dataTypeAdapter;
 	String dataType;
+	String fullyQualifiedDataType;
 
 	final DeclarationAnnotationElementAdapter<String> objectTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> objectTypeAdapter;
 	String objectType;
-
+	String fullyQualifiedObjectType;
 
 	SourceBaseEclipseLinkTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
@@ -56,14 +58,18 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.dataType = this.buildDataType(astRoot);
+		this.fullyQualifiedDataType = this.buildFullyQualifiedDataType(astRoot);
 		this.objectType = this.buildObjectType(astRoot);
+		this.fullyQualifiedObjectType = this.buildFullyQualifiedObjectType(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncDataType(this.buildDataType(astRoot));
+		this.syncFullyQualifiedDataType(this.buildFullyQualifiedDataType(astRoot));
 		this.syncObjectType(this.buildObjectType(astRoot));
+		this.syncFullyQualifiedObjectType(this.buildFullyQualifiedObjectType(astRoot));
 	}
 
 
@@ -97,6 +103,21 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 
 	abstract String getDataTypeElementName();
 
+	// ***** fully-qualified data type
+	public String getFullyQualifiedDataType() {
+		return this.fullyQualifiedDataType;
+	}
+
+	private void syncFullyQualifiedDataType(String name) {
+		String old = this.fullyQualifiedDataType;
+		this.fullyQualifiedDataType = name;
+		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, name);
+	}
+
+	private String buildFullyQualifiedDataType(CompilationUnit astRoot) {
+		return (this.dataType == null) ? null : ASTTools.resolveFullyQualifiedName(this.dataTypeAdapter.getExpression(astRoot));
+	}
+
 	// ***** object type
 	public String getObjectType() {
 		return this.objectType;
@@ -124,5 +145,20 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	}
 
 	abstract String getObjectTypeElementName();
+
+	// ***** fully-qualified object type
+	public String getFullyQualifiedObjectType() {
+		return this.fullyQualifiedObjectType;
+	}
+
+	private void syncFullyQualifiedObjectType(String name) {
+		String old = this.fullyQualifiedObjectType;
+		this.fullyQualifiedObjectType = name;
+		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, name);
+	}
+
+	private String buildFullyQualifiedObjectType(CompilationUnit astRoot) {
+		return (this.objectType == null) ? null : ASTTools.resolveFullyQualifiedName(this.objectTypeAdapter.getExpression(astRoot));
+	}
 
 }

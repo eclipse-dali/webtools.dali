@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 
 /**
@@ -21,9 +21,9 @@ public class VirtualEclipseLinkXmlConverter extends XmlConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected EclipseLinkCustomConverter javaConverter;
+	protected JavaEclipseLinkCustomConverter javaConverter;
 	
-	public VirtualEclipseLinkXmlConverter(OrmTypeMapping ormTypeMapping, EclipseLinkCustomConverter javaConverter) {
+	public VirtualEclipseLinkXmlConverter(OrmTypeMapping ormTypeMapping, JavaEclipseLinkCustomConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;
@@ -38,7 +38,7 @@ public class VirtualEclipseLinkXmlConverter extends XmlConverter
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaConverter.getConverterClass();
+		return this.javaConverter.getFullyQualifiedConverterClass();
 	}
 	
 	@Override

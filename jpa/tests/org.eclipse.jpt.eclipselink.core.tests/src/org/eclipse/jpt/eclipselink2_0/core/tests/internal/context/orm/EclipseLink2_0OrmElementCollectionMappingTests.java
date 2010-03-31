@@ -316,7 +316,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormElementCollectionMapping.getName());
 		assertEquals(FetchType.EAGER, ormElementCollectionMapping.getSpecifiedFetch());
-		assertEquals("String", ormElementCollectionMapping.getSpecifiedTargetClass());
+		assertEquals("java.lang.String", ormElementCollectionMapping.getSpecifiedTargetClass());
 		
 		ormPersistentAttribute.makeSpecified();
 		ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
@@ -846,14 +846,14 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		JavaElementCollectionMapping2_0 javaElementCollectionMapping = (JavaElementCollectionMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
-		assertEquals(null, ormElementCollectionMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.String", ormElementCollectionMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormElementCollectionMapping.getMapKeyClass());
 		assertEquals("java.lang.String", ormElementCollectionMapping.getDefaultMapKeyClass());
 		
 		//set pk mapKey in the java, verify virtual orm mapping updates
 		javaElementCollectionMapping.setSpecifiedMapKeyClass("Integer");
-		assertEquals("Integer", ormElementCollectionMapping.getMapKeyClass());
-		assertEquals("Integer", ormElementCollectionMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.Integer", ormElementCollectionMapping.getMapKeyClass());
+		assertEquals("java.lang.Integer", ormElementCollectionMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormElementCollectionMapping.getDefaultMapKeyClass());
 	}
 	
@@ -882,7 +882,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
-		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		Orderable2_0 orderable = elementCollectionMapping.getOrderable();
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 		
@@ -905,7 +905,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
-		Orderable2_0 orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		Orderable2_0 orderable = elementCollectionMapping.getOrderable();
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 		
@@ -918,7 +918,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		ormPersistentAttribute.makeVirtual();		
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		orderable = ((Orderable2_0) elementCollectionMapping.getOrderable());
+		orderable = elementCollectionMapping.getOrderable();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(false, orderable.isNoOrdering());
 		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());

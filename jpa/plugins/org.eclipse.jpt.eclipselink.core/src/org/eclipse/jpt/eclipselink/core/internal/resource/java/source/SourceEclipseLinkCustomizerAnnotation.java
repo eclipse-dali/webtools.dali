@@ -38,6 +38,7 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
+	private String fullyQualifiedCustomizerClassName;
 
 	public SourceEclipseLinkCustomizerAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
@@ -50,10 +51,12 @@ public final class SourceEclipseLinkCustomizerAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
+		this.fullyQualifiedCustomizerClassName = this.buildFullyQualifiedCustomizerClassName(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
+		this.syncFullyQualifiedCustomizerClassName(this.buildFullyQualifiedCustomizerClassName(astRoot));
 	}
 
 	@Override
@@ -93,6 +96,22 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	public boolean customizerClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		return (this.value != null)
 				&& ASTTools.typeIsSubTypeOf(this.valueAdapter.getExpression(astRoot), interfaceName);
+	}
+
+
+	// ***** fully-qualified customizer class name
+	public String getFullyQualifiedCustomizerClassName() {
+		return this.fullyQualifiedCustomizerClassName;
+	}
+
+	private void syncFullyQualifiedCustomizerClassName(String name) {
+		String old = this.fullyQualifiedCustomizerClassName;
+		this.fullyQualifiedCustomizerClassName = name;
+		this.firePropertyChanged(FULLY_QUALIFIED_CUSTOMIZER_CLASS_NAME_PROPERTY, old, name);
+	}
+
+	private String buildFullyQualifiedCustomizerClassName(CompilationUnit astRoot) {
+		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
 	}
 
 

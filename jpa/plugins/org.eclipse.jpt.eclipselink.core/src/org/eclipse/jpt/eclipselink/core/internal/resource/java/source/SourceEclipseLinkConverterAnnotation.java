@@ -37,6 +37,7 @@ public final class SourceEclipseLinkConverterAnnotation
 	private final AnnotationElementAdapter<String> converterClassAdapter;
 	private String converterClass;
 
+	private String fullyQualifiedConverterClassName;
 
 	public SourceEclipseLinkConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
@@ -51,12 +52,14 @@ public final class SourceEclipseLinkConverterAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.converterClass = this.buildConverterClass(astRoot);
+		this.fullyQualifiedConverterClassName = this.buildFullyQualifiedConverterClassName(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncConverterClass(this.buildConverterClass(astRoot));
+		this.syncFullyQualifiedConverterClassName(this.buildFullyQualifiedConverterClassName(astRoot));
 	}
 
 
@@ -99,6 +102,21 @@ public final class SourceEclipseLinkConverterAnnotation
 	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		return (this.converterClass != null)
 				&& ASTTools.typeIsSubTypeOf(this.converterClassAdapter.getExpression(astRoot), interfaceName);
+	}
+
+	// ***** fully-qualified converter class name
+	public String getFullyQualifiedConverterClassName() {
+		return this.fullyQualifiedConverterClassName;
+	}
+
+	private void syncFullyQualifiedConverterClassName(String name) {
+		String old = this.fullyQualifiedConverterClassName;
+		this.fullyQualifiedConverterClassName = name;
+		this.firePropertyChanged(FULLY_QUALIFIED_CONVERTER_CLASS_NAME_PROPERTY, old, name);
+	}
+
+	private String buildFullyQualifiedConverterClassName(CompilationUnit astRoot) {
+		return (this.converterClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.converterClassAdapter.getExpression(astRoot));
 	}
 
 

@@ -86,11 +86,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
 		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, this.buildOrderableOwner());
-		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
 		this.valueType = this.buildValueType();
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();
-		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
-		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
+		this.resolvedMapKeyType = this.resolveMapKeyType();
+		this.resolvedMapKeyEmbeddable = this.resolveMapKeyEmbeddable();
+		this.resolvedMapKeyEntity = this.resolveMapKeyEntity();
 		this.initializeMapKey();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
@@ -102,13 +102,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	public void update() {
 		super.update();
 		this.orderable.update();
-		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
 		this.updateValueType();
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
-		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
+		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.setResolvedMapKeyEmbeddable(this.resolveMapKeyEmbeddable());
+		this.setResolvedMapKeyEntity(this.resolveMapKeyEntity());
 		this.updateKeyType();
 		this.updateMapKey();
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
@@ -146,7 +146,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	// ********** CollectionMapping implementation **********  
 
-	protected Embeddable buildResolvedTargetEmbeddable() {
+	protected Embeddable resolveTargetEmbeddable() {
 		if (this.resolvedTargetType == null) {
 			return null;
 		}
@@ -178,27 +178,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
 	}
 	
-	protected PersistentType buildResolvedMapKeyType() {
-		String mapKeyClassName = this.getMapKeyClass();
-		if (mapKeyClassName == null) {
-			return null;
-		}
-
-		// first try to resolve using only the locally specified name...
-		PersistentType mapKeyPersistentType = this.getPersistentType(mapKeyClassName);
-		if (mapKeyPersistentType != null) {
-			return mapKeyPersistentType;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		String defaultPackageName = this.getDefaultPackageName();
-		if (defaultPackageName == null) {
-			return null;
-		}
-		return this.getPersistentType(defaultPackageName + '.' + mapKeyClassName);
+	protected PersistentType resolveMapKeyType() {
+		return this.resolvePersistentType(this.getMapKeyClass());
 	}
 
-	protected Embeddable buildResolvedMapKeyEmbeddable() {
+	protected Embeddable resolveMapKeyEmbeddable() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}
@@ -206,7 +190,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
-	protected Entity buildResolvedMapKeyEntity() {
+	protected Entity resolveMapKeyEntity() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}

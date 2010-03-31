@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,6 +28,9 @@ public class JavaEclipseLinkCustomizer extends AbstractJavaJpaContextNode implem
 	private JavaResourcePersistentType resourcePersistentType;
 	
 	private String customizerClass;
+	
+	private String fullyQualifiedCustomizerClass;
+		public static final String FULLY_QUALIFIED_CUSTOMIZER_CLASS_PROPERTY = "fullyQualifiedCustomizerClass"; //$NON-NLS-1$
 	
 	public JavaEclipseLinkCustomizer(JavaJpaContextNode parent) {
 		super(parent);
@@ -74,6 +77,22 @@ public class JavaEclipseLinkCustomizer extends AbstractJavaJpaContextNode implem
 		return this.customizerClass;
 	}
 
+	public String getFullyQualifiedCustomizerClass() {
+		return this.fullyQualifiedCustomizerClass;
+	}
+
+	protected void setFullyQualifiedCustomizerClass(String customizerClass) {
+		String old = this.fullyQualifiedCustomizerClass;
+		this.fullyQualifiedCustomizerClass = customizerClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_CUSTOMIZER_CLASS_PROPERTY, old, customizerClass);
+	}
+
+	protected String buildFullyQualifiedCustomizerClass(EclipseLinkCustomizerAnnotation resourceCustomizer) {
+		return resourceCustomizer == null ?
+				null :
+				resourceCustomizer.getFullyQualifiedCustomizerClassName();
+	}
+
 	public void setSpecifiedCustomizerClass(String newCustomizerClass) {
 		if (attributeValueHasNotChanged(this.customizerClass, newCustomizerClass)) {
 			return;
@@ -102,12 +121,14 @@ public class JavaEclipseLinkCustomizer extends AbstractJavaJpaContextNode implem
 		this.resourcePersistentType = jrpt;
 		EclipseLinkCustomizerAnnotation resourceCustomizer = getResourceCustomizer();
 		this.customizerClass = this.customizerClass(resourceCustomizer);
+		this.fullyQualifiedCustomizerClass = this.buildFullyQualifiedCustomizerClass(resourceCustomizer);
 	}
 	
 	public void update(JavaResourcePersistentType jrpt) {
 		this.resourcePersistentType = jrpt;
 		EclipseLinkCustomizerAnnotation resourceCustomizer = getResourceCustomizer();
 		this.setCustomizerClass_(this.customizerClass(resourceCustomizer));
+		this.setFullyQualifiedCustomizerClass(this.buildFullyQualifiedCustomizerClass(resourceCustomizer));
 	}
 	
 	protected String customizerClass(EclipseLinkCustomizerAnnotation resourceCustomizer) {

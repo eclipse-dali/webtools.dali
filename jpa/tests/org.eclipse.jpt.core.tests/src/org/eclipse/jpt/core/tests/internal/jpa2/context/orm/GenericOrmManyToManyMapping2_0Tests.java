@@ -489,13 +489,13 @@ public class GenericOrmManyToManyMapping2_0Tests
 		OrmManyToManyMapping2_0 ormManyToManyMapping = (OrmManyToManyMapping2_0) ormPersistentType.getAttributeNamed("addresses").getMapping();
 		JavaManyToManyMapping2_0 javaManyToManyMapping = (JavaManyToManyMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("addresses").getMapping();
 		assertEquals("java.lang.String", ormManyToManyMapping.getMapKeyClass());
-		assertEquals(null, ormManyToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.String", ormManyToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormManyToManyMapping.getDefaultMapKeyClass());
 		
 		//set pk mapKey in the java, verify virtual orm mapping updates
 		javaManyToManyMapping.setSpecifiedMapKeyClass("Integer");
-		assertEquals("Integer", ormManyToManyMapping.getMapKeyClass());
-		assertEquals("Integer", ormManyToManyMapping.getSpecifiedMapKeyClass());
+		assertEquals("java.lang.Integer", ormManyToManyMapping.getMapKeyClass());
+		assertEquals("java.lang.Integer", ormManyToManyMapping.getSpecifiedMapKeyClass());
 		assertEquals("java.lang.String", ormManyToManyMapping.getDefaultMapKeyClass());
 	}
 	

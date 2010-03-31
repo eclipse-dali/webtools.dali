@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -58,6 +58,10 @@ abstract class BinaryBaseEclipseLinkTypeConverterAnnotation
 		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, dataType);
 	}
 
+	public String getFullyQualifiedDataType() {
+		return this.dataType;
+	}
+
 	private String buildDataType() {
 		return (String) this.getJdtMemberValue(this.getDataTypeElementName());
 	}
@@ -81,6 +85,10 @@ abstract class BinaryBaseEclipseLinkTypeConverterAnnotation
 		String old = this.objectType;
 		this.objectType = objectType;
 		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, objectType);
+	}
+
+	public String getFullyQualifiedObjectType() {
+		return this.objectType;
 	}
 
 	private String buildObjectType() {

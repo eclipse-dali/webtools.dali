@@ -33,4 +33,11 @@ public interface JavaCollectionMapping2_0
 	
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 
+	/**
+	 * If the map key class is specified, this will return it fully qualified. If not
+	 * specified, it returns the default map key class, which is always fully qualified
+	 */
+	String getFullyQualifiedMapKeyClass();
+		String FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY = "fullyQualifiedMapKeyClass"; //$NON-NLS-1$
+
 }

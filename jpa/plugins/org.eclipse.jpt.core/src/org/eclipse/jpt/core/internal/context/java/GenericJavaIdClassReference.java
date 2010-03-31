@@ -24,6 +24,8 @@ public class GenericJavaIdClassReference
 	implements JavaIdClassReference
 {
 	protected String idClassName;
+
+	protected String fullyQualifiedIdClassName;
 	
 	protected JavaPersistentType idClass;
 	
@@ -141,11 +143,24 @@ public class GenericJavaIdClassReference
 	}
 	
 	protected JavaResourcePersistentType getResourceIdClass() {
+		return (this.fullyQualifiedIdClassName == null) ?
+				null : getJpaProject().getJavaResourcePersistentType(this.fullyQualifiedIdClassName);
+	}
+
+	public String getFullyQualifiedIdClassName() {
+		return this.fullyQualifiedIdClassName;
+	}
+
+	protected void setFullyQualifiedIdClassName(String idClass) {
+		String old = this.fullyQualifiedIdClassName;
+		this.fullyQualifiedIdClassName = idClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_ID_CLASS_PROPERTY, old, idClass);
+	}
+
+	protected String buildFullyQualifiedIdClassName() {
 		IdClassAnnotation annotation = getIdClassAnnotation();
-		String className = (annotation == null) ?
+		return (annotation == null) ?
 				null : annotation.getFullyQualifiedClassName();
-		return (className == null) ?
-				null : getJpaProject().getJavaResourcePersistentType(className);
 	}
 	
 	public char getIdClassEnclosingTypeSeparator() {
@@ -154,11 +169,13 @@ public class GenericJavaIdClassReference
 	
 	public void initialize() {
 		this.idClassName = buildIdClassName();
+		this.fullyQualifiedIdClassName = this.buildFullyQualifiedIdClassName();
 		this.idClass = buildIdClass();
 	}	
 	
 	public void update() {
 		setIdClassName_(buildIdClassName());
+		this.setFullyQualifiedIdClassName(this.buildFullyQualifiedIdClassName());
 		updateIdClass();
 	}
 	

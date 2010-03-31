@@ -14,6 +14,7 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -116,7 +117,7 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected String buildDefaultIdClassName(JavaIdClassReference javaIdClassReference) {
-		return (javaIdClassReference == null) ? null : javaIdClassReference.getIdClassName();
+		return (javaIdClassReference == null) ? null : javaIdClassReference.getFullyQualifiedIdClassName();
 	}
 	
 	public String getIdClassName() {
@@ -171,25 +172,13 @@ public class GenericOrmIdClassReference
 		XmlClassReference element = getIdClassElement();
 		String className = (element == null) ?
 				null : element.getClassName();
-		if (className == null) {
-			return null;
-		}
-		
-		className = className.replace('$', '.');
-		
-		// first try to resolve using only the locally specified name...
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(className);
-		if (jrpt != null) {
-			return jrpt;
-		}
-		
-		// ...then try to resolve by prepending the global package name
-		String defaultPackage = getPersistentType().getDefaultPackage();
-		className = defaultPackage + '.' +  className;
-		return (defaultPackage == null) ?
-				null : getJpaProject().getJavaResourcePersistentType(className);
+		return getEntityMappings().resolveJavaResourcePersistentType(className);
 	}
 	
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) getMappingFileRoot();
+	}
+
 	public char getIdClassEnclosingTypeSeparator() {
 		return '$';
 	}

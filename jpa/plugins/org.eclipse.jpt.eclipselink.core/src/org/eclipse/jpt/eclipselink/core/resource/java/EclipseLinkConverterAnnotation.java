@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public interface EclipseLinkConverterAnnotation
@@ -42,6 +42,17 @@ public interface EclipseLinkConverterAnnotation
 	 * Set to null to remove the element.
 	 */
 	void setConverterClass(String value);
+
+	/**
+	 * Return the fully-qualified customizer class name as resolved by the AST's bindings.
+	 * <pre>
+	 *     &#64;Converter(GenderConverter.class)
+	 * </pre>
+	 * will return "model.GenderConverter" if there is an import for model.GenderConverter.
+	 * @return
+	 */
+	String getFullyQualifiedConverterClassName();
+		String FULLY_QUALIFIED_CONVERTER_CLASS_NAME_PROPERTY = "fullyQualifiedConverterClassName"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the 'converterClass' element. If the element 

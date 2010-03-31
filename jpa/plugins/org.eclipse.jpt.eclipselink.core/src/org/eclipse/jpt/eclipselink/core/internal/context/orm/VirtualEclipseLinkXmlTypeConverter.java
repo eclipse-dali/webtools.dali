@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 
 /**
@@ -21,9 +21,9 @@ public class VirtualEclipseLinkXmlTypeConverter extends XmlTypeConverter
 {
 	protected OrmTypeMapping ormTypeMapping;
 	
-	protected EclipseLinkTypeConverter javaConverter;
+	protected JavaEclipseLinkTypeConverter javaConverter;
 	
-	public VirtualEclipseLinkXmlTypeConverter(OrmTypeMapping ormTypeMapping, EclipseLinkTypeConverter javaConverter) {
+	public VirtualEclipseLinkXmlTypeConverter(OrmTypeMapping ormTypeMapping, JavaEclipseLinkTypeConverter javaConverter) {
 		super();
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaConverter = javaConverter;
@@ -51,7 +51,7 @@ public class VirtualEclipseLinkXmlTypeConverter extends XmlTypeConverter
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaConverter.getDataType();
+		return this.javaConverter.getFullyQualifiedDataType();
 	}
 	
 	@Override
@@ -64,7 +64,7 @@ public class VirtualEclipseLinkXmlTypeConverter extends XmlTypeConverter
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaConverter.getObjectType();
+		return this.javaConverter.getFullyQualifiedObjectType();
 	}
 	
 	@Override

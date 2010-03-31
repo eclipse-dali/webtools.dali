@@ -9,21 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 
 public class VirtualMapKeyClassReference extends XmlClassReference
 {
-	CollectionMapping2_0 javaCollectionMapping;
+	JavaCollectionMapping2_0 javaCollectionMapping;
 
-	public VirtualMapKeyClassReference(CollectionMapping2_0 collectionMapping) {
+	public VirtualMapKeyClassReference(JavaCollectionMapping2_0 collectionMapping) {
 		super();
 		this.javaCollectionMapping = collectionMapping;
 	}
 
 	@Override
 	public String getClassName() {
-		return this.javaCollectionMapping.getSpecifiedMapKeyClass();
+		return this.javaCollectionMapping.getFullyQualifiedMapKeyClass();
 	}
 
 	@Override

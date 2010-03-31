@@ -30,4 +30,12 @@ public interface JavaRelationshipMapping
 	RelationshipMappingAnnotation getMappingAnnotation();
 	
 	JavaCascade getCascade();
+
+	/**
+	 * If the target entity is specified, this will return it fully qualified. If not
+	 * specified, it returns the default target entity, which is always fully qualified
+	 */
+	String getFullyQualifiedTargetEntity();
+		String FULLY_QUALIFIED_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntity"; //$NON-NLS-1$
+
 }

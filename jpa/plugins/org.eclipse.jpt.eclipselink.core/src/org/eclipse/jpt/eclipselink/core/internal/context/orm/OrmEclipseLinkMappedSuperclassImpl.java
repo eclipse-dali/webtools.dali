@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperc
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
@@ -119,9 +120,9 @@ public class OrmEclipseLinkMappedSuperclassImpl
 		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getReadOnly();
 	}
 	
-	protected EclipseLinkCustomizer getJavaCustomizer() {
+	protected JavaEclipseLinkCustomizer getJavaCustomizer() {
 		JavaEclipseLinkMappedSuperclass javaMappedSuperclass = getJavaMappedSuperclassForDefaults();
-		return (javaMappedSuperclass == null) ? null : javaMappedSuperclass.getCustomizer();
+		return (javaMappedSuperclass == null) ? null : (JavaEclipseLinkCustomizer) javaMappedSuperclass.getCustomizer();
 	}
 	
 	protected EclipseLinkChangeTracking getJavaChangeTracking() {

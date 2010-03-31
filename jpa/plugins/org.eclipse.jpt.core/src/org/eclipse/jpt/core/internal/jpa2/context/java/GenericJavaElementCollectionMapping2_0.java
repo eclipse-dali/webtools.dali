@@ -81,6 +81,7 @@ public class GenericJavaElementCollectionMapping2_0
 {
 	protected String specifiedTargetClass;
 	protected String defaultTargetClass;
+	protected String fullyQualifiedTargetClass;
 	protected PersistentType resolvedTargetType;
 	protected Embeddable resolvedTargetEmbeddable;
 	protected Entity resolvedTargetEntity;
@@ -114,6 +115,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected String fullyQualifiedMapKeyClass;
 	protected PersistentType resolvedMapKeyType;
 	protected Embeddable resolvedMapKeyEmbeddable;
 	protected Entity resolvedMapKeyEntity;
@@ -143,10 +145,11 @@ public class GenericJavaElementCollectionMapping2_0
 	@Override
 	protected void initialize() {
 		super.initialize();
-		this.defaultTargetClass = this.buildDefaultTargetClass();
 		this.specifiedFetch = this.getResourceFetch();
 		this.orderable.initialize();
+		this.defaultTargetClass = this.buildDefaultTargetClass();
 		this.specifiedTargetClass = this.getResourceTargetClass();
+		this.fullyQualifiedTargetClass = this.buildFullyQualifiedTargetClass();
 		this.resolvedTargetType = this.buildResolvedTargetType();
 		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
 		this.resolvedTargetEntity = this.buildResolvedTargetEntity();
@@ -158,6 +161,7 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueAssociationOverrideContainer.initialize(getResourcePersistentAttribute());
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
 		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
+		this.fullyQualifiedMapKeyClass = this.buildFullyQualifiedMapKeyClass();
 		this.resolvedMapKeyType = this.buildResolvedMapKeyType();
 		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
 		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
@@ -170,10 +174,11 @@ public class GenericJavaElementCollectionMapping2_0
 	@Override
 	protected void update() {
 		super.update();
-		this.setDefaultTargetClass(this.buildDefaultTargetClass());
 		this.setSpecifiedFetch_(this.getResourceFetch());
 		this.orderable.update();
+		this.setDefaultTargetClass(this.buildDefaultTargetClass());
 		this.setSpecifiedTargetClass_(this.getResourceTargetClass());
+		this.setFullyQualifiedTargetClass(this.buildFullyQualifiedTargetClass());
 		this.resolvedTargetType = this.buildResolvedTargetType();//no need for change notification, use resolved target embeddable change notification instead?
 		this.setResolvedTargetEmbeddable(this.buildResolvedTargetEmbeddable());
 		this.updateCollectionTable();
@@ -184,6 +189,7 @@ public class GenericJavaElementCollectionMapping2_0
 		this.valueAssociationOverrideContainer.update(getResourcePersistentAttribute());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
 		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
+		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
 		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
 		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
 		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
@@ -277,6 +283,22 @@ public class GenericJavaElementCollectionMapping2_0
 		return this.getPersistentAttribute().getMultiReferenceTargetTypeName();
 	}
 
+	public String getFullyQualifiedTargetClass() {
+		return this.fullyQualifiedTargetClass;
+	}
+
+	protected void setFullyQualifiedTargetClass(String targetClass) {
+		String old = this.fullyQualifiedTargetClass;
+		this.fullyQualifiedTargetClass = targetClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_CLASS_PROPERTY, old, targetClass);
+	}
+
+	protected String buildFullyQualifiedTargetClass() {
+		return (this.specifiedTargetClass == null) ?
+			this.defaultTargetClass :
+			this.mappingAnnotation.getFullyQualifiedTargetClassName();
+	}
+
 	public Embeddable getResolvedTargetEmbeddable() {
 		return this.resolvedTargetEmbeddable;
 	}
@@ -292,10 +314,7 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 	
 	protected PersistentType buildResolvedTargetType() {
-		String targetTypeClassName = (this.specifiedTargetClass == null) ?
-						this.defaultTargetClass :
-						this.mappingAnnotation.getFullyQualifiedTargetClassName();
-		return (targetTypeClassName == null) ? null : this.getPersistenceUnit().getPersistentType(targetTypeClassName);
+		return (this.fullyQualifiedTargetClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedTargetClass);
 	}
 
 	protected Embeddable buildResolvedTargetEmbeddable() {
@@ -809,6 +828,22 @@ public class GenericJavaElementCollectionMapping2_0
 		return this.getPersistentAttribute().getMultiReferenceMapKeyTypeName();
 	}
 
+	public String getFullyQualifiedMapKeyClass() {
+		return this.fullyQualifiedMapKeyClass;
+	}
+
+	protected void setFullyQualifiedMapKeyClass(String mapKeyClass) {
+		String old = this.fullyQualifiedMapKeyClass;
+		this.fullyQualifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String buildFullyQualifiedMapKeyClass() {
+		return (this.specifiedMapKeyClass == null) ?
+			this.defaultMapKeyClass :
+			this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
+	}
+
 	public char getMapKeyClassEnclosingTypeSeparator() {
 		return '.';
 	}
@@ -850,10 +885,7 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 	protected PersistentType buildResolvedMapKeyType() {
-		String mapKeyClassName = (this.specifiedMapKeyClass == null) ?
-						this.defaultMapKeyClass :
-						this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
-		return (mapKeyClassName == null) ? null : this.getPersistenceUnit().getPersistentType(mapKeyClassName);
+		return (this.fullyQualifiedMapKeyClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedMapKeyClass);
 	}
 
 	protected Embeddable buildResolvedMapKeyEmbeddable() {

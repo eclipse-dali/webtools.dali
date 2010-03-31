@@ -74,6 +74,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
+	protected String fullyQualifiedMapKeyClass;
 	protected PersistentType resolvedMapKeyType;
 	protected Embeddable resolvedMapKeyEmbeddable;
 	protected Entity resolvedMapKeyEntity;
@@ -93,14 +94,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	protected void initialize() {
 		super.initialize();
 		this.orderable.initialize();
-		this.resolvedTargetType = this.buildResolvedTargetType();
-		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.resolvedTargetType = this.resolveTargetType();
+		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
 		this.initializeValueType();
-		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
 		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.resolvedMapKeyEmbeddable = this.buildResolvedMapKeyEmbeddable();
-		this.resolvedMapKeyEntity = this.buildResolvedMapKeyEntity();
+		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
+		this.fullyQualifiedMapKeyClass = this.buildFullyQualifiedMapKeyClass();
+		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.resolvedMapKeyEmbeddable = this.resolveMapKeyEmbeddable();
+		this.resolvedMapKeyEntity = this.resolveMapKeyEntity();
 		this.initializeKeyType();
 		this.initializeMapKey();
 		this.initializeMapKeyColumn();
@@ -111,14 +113,15 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	protected void update() {
 		super.update();
 		this.orderable.update();
-		this.resolvedTargetType = this.buildResolvedTargetType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.resolvedTargetEmbeddable = this.buildResolvedTargetEmbeddable();
+		this.resolvedTargetType = this.resolveTargetType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
 		this.updateValueType();
-		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
-		this.resolvedMapKeyType = this.buildResolvedMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.setResolvedMapKeyEmbeddable(this.buildResolvedMapKeyEmbeddable());
-		this.setResolvedMapKeyEntity(this.buildResolvedMapKeyEntity());
+		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
+		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
+		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
+		this.setResolvedMapKeyEmbeddable(this.resolveMapKeyEmbeddable());
+		this.setResolvedMapKeyEntity(this.resolveMapKeyEntity());
 		this.updateKeyType();
 		this.updateMapKey();
 		this.updateMapKeyColumn();
@@ -180,7 +183,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	// ********** CollectionMapping implementation **********  
 
-	protected Embeddable buildResolvedTargetEmbeddable() {
+	protected Embeddable resolveTargetEmbeddable() {
 		if (this.resolvedTargetType == null) {
 			return null;
 		}
@@ -274,14 +277,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
 	}
 
-	protected PersistentType buildResolvedMapKeyType() {
-		String mapKeyClassName = (this.specifiedMapKeyClass == null) ?
-						this.defaultMapKeyClass :
-						this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
-		return (mapKeyClassName == null) ? null : this.getPersistenceUnit().getPersistentType(mapKeyClassName);
+	protected PersistentType resolveMapKeyType() {
+		return (this.fullyQualifiedMapKeyClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedMapKeyClass);
 	}
 
-	protected Embeddable buildResolvedMapKeyEmbeddable() {
+	protected Embeddable resolveMapKeyEmbeddable() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}
@@ -289,7 +289,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
 	}
 
-	protected Entity buildResolvedMapKeyEntity() {
+	protected Entity resolveMapKeyEntity() {
 		if (this.resolvedMapKeyType == null) {
 			return null;
 		}
@@ -515,14 +515,30 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		return this.defaultMapKeyClass;
 	}
 
-	protected void setDefaultMapKeyClass(String targetClass) {
+	protected void setDefaultMapKeyClass(String mapKeyClass) {
 		String old = this.defaultMapKeyClass;
-		this.defaultMapKeyClass = targetClass;
-		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, targetClass);
+		this.defaultMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(DEFAULT_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
 	}
 
 	protected String buildDefaultMapKeyClass() {
 		return this.getPersistentAttribute().getMultiReferenceMapKeyTypeName();
+	}
+
+	public String getFullyQualifiedMapKeyClass() {
+		return this.fullyQualifiedMapKeyClass;
+	}
+
+	protected void setFullyQualifiedMapKeyClass(String mapKeyClass) {
+		String old = this.fullyQualifiedMapKeyClass;
+		this.fullyQualifiedMapKeyClass = mapKeyClass;
+		this.firePropertyChanged(FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+	}
+
+	protected String buildFullyQualifiedMapKeyClass() {
+		return (this.specifiedMapKeyClass == null) ?
+			this.defaultMapKeyClass :
+			this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
 	}
 
 	public char getMapKeyClassEnclosingTypeSeparator() {
