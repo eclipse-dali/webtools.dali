@@ -408,8 +408,9 @@
 		
 		<template id="jpt.jpa.template">
 			<label>%JPA_TEMPLATE_LABEL</label>
-			<fixed facet="jst.java"/>
 			<fixed facet="jpt.jpa"/>
+			<fixed facet="jst.java"/>
+			<fixed facet="jst.utility"/>
 			<preset id="jpt.jpa.2_0.preset"/>
 		</template>
 		
