@@ -765,7 +765,11 @@ public class TableAssociationsWizardPage extends WizardPage {
 	
 	@Override
 	public void dispose() {
-		this.associationList.dispose();
+		//when the JPA project wizard page is shown first, the other wizard pages are lazily built, thus
+		//associationList can be null - bug 307894
+		if (this.associationList != null) {
+			this.associationList.dispose();
+		}
 		super.dispose();
 	}
 }
