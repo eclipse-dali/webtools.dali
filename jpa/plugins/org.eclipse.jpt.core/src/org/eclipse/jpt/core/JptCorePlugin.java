@@ -102,6 +102,7 @@ public class JptCorePlugin extends Plugin {
 	 * @deprecated  As of version 2.3.  Instead use {@link #DEFAULT_JPA_PLATFORM_1_0_PREF_KEY} or 
 	 * 		{@link #DEFAULT_JPA_PLATFORM_2_0_PREF_KEY}
 	 */
+	@Deprecated
 	public static final String DEFAULT_JPA_PLATFORM_PREF_KEY = "defaultJpaPlatform"; //$NON-NLS-1$
 	
 	/**
@@ -388,7 +389,7 @@ public class JptCorePlugin extends Plugin {
 		
 		String defaultPlatformId_2_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JPA_FACET_VERSION_2_0);
 		if (StringTools.stringIsEmpty(defaultPlatformId_2_0)) {
-			defaultPlatformId_1_0 = Generic2_0JpaPlatformProvider.ID;
+			defaultPlatformId_2_0 = Generic2_0JpaPlatformProvider.ID;
 		}
 		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatformId_2_0);
 	}
