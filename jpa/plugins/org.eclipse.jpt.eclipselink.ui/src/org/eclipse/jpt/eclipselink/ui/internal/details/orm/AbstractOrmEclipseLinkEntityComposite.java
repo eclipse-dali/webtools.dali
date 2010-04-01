@@ -46,7 +46,7 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 	
 	protected void initializeCachingCollapsibleSectionPane(Composite container) {
 		container = addCollapsibleSection(
-				addSubPane(container, 5),
+				container,
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		initializeCachingSection(container, buildCachingHolder());
 	}

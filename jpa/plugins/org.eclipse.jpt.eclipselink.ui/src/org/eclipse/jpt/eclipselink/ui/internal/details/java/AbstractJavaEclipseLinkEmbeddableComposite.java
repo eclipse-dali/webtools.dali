@@ -57,7 +57,7 @@ public abstract class AbstractJavaEclipseLinkEmbeddableComposite extends Abstrac
 	protected void initializeConvertersCollapsibleSection(Composite container) {
 
 		container = addCollapsibleSection(
-			addSubPane(container, 5),
+			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters
 		);
 		initializeConvertersSection(container, this.buildConverterHolderValueModel());

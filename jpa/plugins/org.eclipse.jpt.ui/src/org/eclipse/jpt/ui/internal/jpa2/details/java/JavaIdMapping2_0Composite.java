@@ -38,6 +38,6 @@ public class JavaIdMapping2_0Composite
 	
 	@Override
 	protected void initializeGenerationCollapsibleSection(Composite container) {
-		new IdMappingGeneration2_0Composite(this, addSubPane(container, 10));
+		new IdMappingGeneration2_0Composite(this, container);
 	}
 }

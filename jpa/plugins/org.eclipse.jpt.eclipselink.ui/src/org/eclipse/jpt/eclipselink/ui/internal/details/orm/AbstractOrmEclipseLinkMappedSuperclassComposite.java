@@ -56,7 +56,7 @@ public abstract class AbstractOrmEclipseLinkMappedSuperclassComposite<T extends 
 
 	protected void initializeCachingCollapsibleSection(Composite container) {
 		container = addCollapsibleSection(
-				addSubPane(container, 5),
+				container,
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		this.initializeCachingSection(container, buildCachingHolder());
 	}

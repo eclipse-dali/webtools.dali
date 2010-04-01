@@ -66,7 +66,7 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 	
 	protected void initializeCachingCollapsibleSectionPane(Composite container) {
 		container = addCollapsibleSection(
-				addSubPane(container, 5),
+				container,
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_caching);
 		initializeCachingSection(container, buildCachingHolder());
 	}
