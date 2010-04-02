@@ -20,7 +20,9 @@ import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 public class DerivedIdentity2_0Pane
@@ -40,6 +42,7 @@ public class DerivedIdentity2_0Pane
 		Composite composite = addCollapsibleSection(
 				container,
 				JptUiDetailsMessages2_0.DerivedIdentity_title);
+		((GridLayout) composite.getLayout()).numColumns = 2;
 		
 		addNullDerivedIdentityPane(composite);
 		addIdDerivedIdentityPane(composite);
@@ -47,11 +50,12 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected void addNullDerivedIdentityPane(Composite parent) {
-		addRadioButton(
+		Button button = addRadioButton(
 				parent,
 				JptUiDetailsMessages2_0.DerivedIdentity_nullDerivedIdentity,
 				buildUsesNullDerivedIdentityStrategyHolder(),
 				null);
+		((GridData) button.getLayoutData()).horizontalSpan = 2;
 	}
 	
 	protected WritablePropertyValueModel<Boolean> buildUsesNullDerivedIdentityStrategyHolder() {
@@ -74,11 +78,12 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected void addIdDerivedIdentityPane(Composite parent) {
-		addRadioButton(
+		Button button = addRadioButton(
 				parent,
 				JptUiDetailsMessages2_0.DerivedIdentity_idDerivedIdentity,
 				buildUsesIdDerivedIdentityStrategyHolder(),
 				null);
+		((GridData) button.getLayoutData()).horizontalSpan = 2;
 	}
 	
 	protected WritablePropertyValueModel<Boolean> buildUsesIdDerivedIdentityStrategyHolder() {
@@ -101,7 +106,32 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected void addMapsIdDerivedIdentityPane(Composite parent) {
-		addPaneForAlignment(buildMapsIdValueComboPane(parent));
+		addRadioButton(
+			parent,
+			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
+			buildUsesMapsIdDerivedIdentityStrategyHolder(),
+			null);
+
+		buildMapsIdValueComboPane(parent);
+	}
+	
+	protected WritablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
+		return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
+				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
+			
+			@Override
+			protected Boolean buildValue_() {
+				return this.subject.usesMapsIdDerivedIdentityStrategy();
+			}
+			
+			@Override
+			protected void setValue_(Boolean value) {
+				// radio button - should only have true values here
+				if (value) {
+					this.subject.setMapsIdDerivedIdentityStrategy();
+				}
+			}
+		};
 	}
 	
 	protected ComboPane buildMapsIdValueComboPane(Composite parent) {
@@ -132,50 +162,12 @@ public class DerivedIdentity2_0Pane
 		
 		@Override
 		protected void initializeLayout(Composite container) {
-			container = addContainer(container);
-			((GridLayout) container.getLayout()).numColumns = 2;
-			
-			WritablePropertyValueModel<Boolean> usesMapsIdHolder = 
-					buildUsesMapsIdDerivedIdentityStrategyHolder();
-			
-			addRadioButton(
-					container,
-					JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
-					usesMapsIdHolder,
-					null);
-			
 			super.initializeLayout(container);
-			
+			WritablePropertyValueModel<Boolean> usesMapsIdHolder = 
+				buildUsesMapsIdDerivedIdentityStrategyHolder();
+					
 			this.comboBox.setEnabled(false);
 			SWTTools.controlEnabledState(usesMapsIdHolder, this.comboBox);
-		}
-		
-		protected WritablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
-			return new PropertyAspectAdapter<DerivedIdentity2_0, Boolean>(
-					buildDerivedIdentityHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
-				
-				@Override
-				protected Boolean buildValue_() {
-					return this.subject.usesMapsIdDerivedIdentityStrategy();
-				}
-				
-				@Override
-				protected void setValue_(Boolean value) {
-					// radio button - should only have true values here
-					if (value) {
-						this.subject.setMapsIdDerivedIdentityStrategy();
-					}
-				}
-			};
-		}
-		
-		protected PropertyValueModel<DerivedIdentity2_0> buildDerivedIdentityHolder() {
-			return new PropertyAspectAdapter<MapsIdDerivedIdentityStrategy2_0, DerivedIdentity2_0>(getSubjectHolder()) {
-				@Override
-				protected DerivedIdentity2_0 buildValue_() {
-					return this.subject.getDerivedIdentity();
-				}
-			};
 		}
 		
 		@Override
