@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -102,17 +101,7 @@ public abstract class PersistenceUnitGeneralComposite extends Pane<PersistenceUn
 	 */
 	@Override
 	protected Composite addContainer(Composite parent) {
-
-		GridLayout layout = new GridLayout(1, true);
-		layout.marginHeight    = 0;
-		layout.marginWidth     = 0;
-		layout.marginTop       = 0;
-		layout.marginLeft      = 0;
-		layout.marginBottom    = 0;
-		layout.marginRight     = 0;
-		layout.verticalSpacing = 15;
-
-		Composite container = addPane(parent, layout);
+		Composite container = addSubPane(parent);
 		updateGridData(container);
 
 		return container;
