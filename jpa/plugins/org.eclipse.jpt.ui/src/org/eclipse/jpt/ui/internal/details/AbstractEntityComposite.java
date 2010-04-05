@@ -137,7 +137,7 @@ public abstract class AbstractEntityComposite<T extends Entity>
 	protected void initializeEntitySection(Composite container) {
 		new TableComposite(this, container);
 		new EntityNameComposite(this, container);
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 	}
 	
 	protected PropertyValueModel<IdClassReference> buildIdClassReferenceHolder() {

@@ -65,7 +65,7 @@ public abstract class AbstractOrmEntityComposite extends AbstractEntityComposite
 		new TableComposite(this, container);
 		new EntityNameComposite(this, container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
 	

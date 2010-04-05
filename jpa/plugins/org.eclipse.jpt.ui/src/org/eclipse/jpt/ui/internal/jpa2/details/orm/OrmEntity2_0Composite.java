@@ -60,7 +60,7 @@ public class OrmEntity2_0Composite
 		new TableComposite(this, container);
 		new EntityNameComposite(this, container);
 		new AccessTypeComposite(this, buildAccessHolder(), container);
-		new IdClassComposite(this, buildIdClassReferenceHolder(), container, false);
+		new IdClassComposite(this, buildIdClassReferenceHolder(), container);
 		new Cacheable2_0Pane(this, buildCacheableHolder(), container);
 		new MetadataCompleteComposite(this, getSubjectHolder(), container);
 	}
