@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -35,9 +36,10 @@ public class JdbcWriteConnectionPropertiesComposite<T extends Connection>
 	@Override
 	protected void initializeLayout(Composite container) {
 
-		container = this.addSection(
+		container = this.addCollapsibleSubSection(
 			container,
-			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle
+			EclipseLinkUiMessages.PersistenceXmlConnectionTab_writeConnectionsSectionTitle,
+			new SimplePropertyValueModel<Boolean>(Boolean.TRUE) //exapanded
 		);
 
 		GridData data = (GridData) container.getLayoutData();
