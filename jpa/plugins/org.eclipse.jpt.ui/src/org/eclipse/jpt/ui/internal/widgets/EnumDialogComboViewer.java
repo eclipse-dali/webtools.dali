@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Point;
@@ -50,13 +49,6 @@ public abstract class EnumDialogComboViewer<T extends Model, V>
 	                                Composite parent
 	) {
 		super(parentPane, subjectHolder, parent);
-	}
-
-	@Override
-	ComboViewer addComboViewer(Composite container) {
-		ComboViewer comboViewer = addComboViewer(container, buildLabelProvider());
-		comboViewer.getCombo().setVisibleItemCount(Integer.MAX_VALUE);
-		return comboViewer;
 	}
 
 	@Override

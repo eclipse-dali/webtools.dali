@@ -52,9 +52,11 @@ public interface WidgetFactory {
 	/**
 	 * Creates a new non-editable custom <code>Combo</code>.
 	 *
+	 * @deprecated
 	 * @param parent The parent container
 	 * @return A new <code>CCombo</code>
 	 */
+	@Deprecated
 	CCombo createCCombo(Composite parent);
 
 	/**
@@ -95,9 +97,11 @@ public interface WidgetFactory {
 	/**
 	 * Creates a new editable custom <code>CCombo</code>.
 	 *
+	 * @deprecated
 	 * @param parent The parent container
 	 * @return A new <code>CCombo</code>
 	 */
+	@Deprecated
 	CCombo createEditableCCombo(Composite parent);
 
 	/**

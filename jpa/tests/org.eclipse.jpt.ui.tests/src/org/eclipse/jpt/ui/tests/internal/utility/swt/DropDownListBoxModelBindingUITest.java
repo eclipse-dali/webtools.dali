@@ -31,7 +31,6 @@ import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -97,30 +96,29 @@ public class DropDownListBoxModelBindingUITest
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FormLayout());
-		this.buildTaskListPanel(panel, false);  // false = native (Combo)
-		this.buildTaskListPanel(panel, true);  // true = custom (CCombo)
+		this.buildTaskListPanel_(panel);  // false = native (Combo)
 
 		return panel;
 	}
 
-	private Control buildTaskListPanel(Composite parent, boolean custom) {
+	private Control buildTaskListPanel_(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 
 		FormData fd = new FormData();
-			fd.top = new FormAttachment(custom ? 50 : 0);
-			fd.bottom = new FormAttachment(custom ? 100 : 50);
+			fd.top = new FormAttachment(0);
+			fd.bottom = new FormAttachment(50);
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FormLayout());
-		this.buildPrimitiveTaskListPanel(panel, custom);
-		this.buildObjectTaskListPanel(panel, custom);
+		this.buildPrimitiveTaskListPanel(panel);
+		this.buildObjectTaskListPanel(panel);
 
 		return panel;
 	}
 
-	private void buildPrimitiveTaskListPanel(Composite parent, boolean custom) {
+	private void buildPrimitiveTaskListPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 
 		FormData fd = new FormData();
@@ -131,12 +129,12 @@ public class DropDownListBoxModelBindingUITest
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FillLayout());
-		this.buildUnsortedPrimitiveListPanel(panel, custom);
-		this.buildStandardSortedPrimitiveListPanel(panel, custom);
-		this.buildCustomSortedPrimitiveListPanel(panel, custom);
+		this.buildUnsortedPrimitiveListPanel(panel);
+		this.buildStandardSortedPrimitiveListPanel(panel);
+		this.buildCustomSortedPrimitiveListPanel(panel);
 	}
 
-	private void buildObjectTaskListPanel(Composite parent, boolean custom) {
+	private void buildObjectTaskListPanel(Composite parent) {
 		Composite panel = new Composite(parent, SWT.NONE);
 
 		FormData fd = new FormData();
@@ -147,45 +145,39 @@ public class DropDownListBoxModelBindingUITest
 		panel.setLayoutData(fd);
 
 		panel.setLayout(new FillLayout());
-		this.buildUnsortedObjectListPanel(panel, custom);
-		this.buildStandardSortedObjectListPanel(panel, custom);
-		this.buildCustomSortedObjectListPanel(panel, custom);
+		this.buildUnsortedObjectListPanel(panel);
+		this.buildStandardSortedObjectListPanel(panel);
+		this.buildCustomSortedObjectListPanel(panel);
 	}
 
-	private void buildUnsortedPrimitiveListPanel(Composite parent, boolean custom) {
+	private void buildUnsortedPrimitiveListPanel(Composite parent) {
 		String label = "primitive unsorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildUnsortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildUnsortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter());
 	}
 
-	private void buildStandardSortedPrimitiveListPanel(Composite parent, boolean custom) {
+	private void buildStandardSortedPrimitiveListPanel(Composite parent) {
 		String label = "primitive sorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildStandardSortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildStandardSortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter());
 	}
 
-	private void buildCustomSortedPrimitiveListPanel(Composite parent, boolean custom) {
+	private void buildCustomSortedPrimitiveListPanel(Composite parent) {
 		String label = "primitive reverse sorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildCustomSortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildCustomSortedPrimitiveListModel(), this.buildPriorityTaskNameAdapter());
 	}
 
-	private void buildUnsortedObjectListPanel(Composite parent, boolean custom) {
+	private void buildUnsortedObjectListPanel(Composite parent) {
 		String label = "object unsorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildUnsortedObjectListModel(), this.buildPriorityTaskAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildUnsortedObjectListModel(), this.buildPriorityTaskAdapter());
 	}
 
-	private void buildStandardSortedObjectListPanel(Composite parent, boolean custom) {
+	private void buildStandardSortedObjectListPanel(Composite parent) {
 		String label = "object sorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildStandardSortedObjectListModel(), this.buildPriorityTaskAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildStandardSortedObjectListModel(), this.buildPriorityTaskAdapter());
 	}
 
-	private void buildCustomSortedObjectListPanel(Composite parent, boolean custom) {
+	private void buildCustomSortedObjectListPanel(Composite parent) {
 		String label = "object reverse sorted";
-		if (custom) label += " (custom)";
-		this.buildComboBoxPanel(parent, label, this.buildCustomSortedObjectListModel(), this.buildPriorityTaskAdapter(), custom);
+		this.buildComboBoxPanel(parent, label, this.buildCustomSortedObjectListModel(), this.buildPriorityTaskAdapter());
 	}
 
 	private ListValueModel<String> buildUnsortedPrimitiveListModel() {
@@ -212,7 +204,7 @@ public class DropDownListBoxModelBindingUITest
 		return new SortedListValueModelWrapper<Task>(this.buildObjectTaskListAdapter(), this.buildCustomTaskComparator());
 	}
 
-	private <E> void buildComboBoxPanel(Composite parent, String label, ListValueModel<E> model, WritablePropertyValueModel<E> selectedItemModel, boolean custom) {
+	private <E> void buildComboBoxPanel(Composite parent, String label, ListValueModel<E> model, WritablePropertyValueModel<E> selectedItemModel) {
 		Composite panel = new Composite(parent, SWT.NONE);
 		panel.setLayout(new FormLayout());
 
@@ -225,23 +217,18 @@ public class DropDownListBoxModelBindingUITest
 			fd.right = new FormAttachment(100);
 		comboBoxLabel.setLayoutData(fd);
 
-		Control comboBox = this.buildComboBox(panel, custom);
+		Combo comboBox = this.buildComboBox(panel);
 		fd = new FormData();
 			fd.top = new FormAttachment(comboBoxLabel);
 			fd.bottom = new FormAttachment(100);
 			fd.left = new FormAttachment(0);
 			fd.right = new FormAttachment(100);
 		comboBox.setLayoutData(fd);
-		if (custom) {
-			SWTTools.bind(model, selectedItemModel, (CCombo) comboBox);  // use #toString()
-		} else {
-			SWTTools.bind(model, selectedItemModel, (Combo) comboBox);  // use #toString()
-		}
+		SWTTools.bind(model, selectedItemModel, comboBox);  // use #toString()
 	}
 
-	private Control buildComboBox(Composite parent, boolean custom) {
-		int style = SWT.READ_ONLY;
-		return custom ? new CCombo(parent, style) : new Combo(parent, style);
+	private Combo buildComboBox(Composite parent) {
+		return new Combo(parent, SWT.READ_ONLY);
 	}
 
 	private Comparator<String> buildCustomStringComparator() {

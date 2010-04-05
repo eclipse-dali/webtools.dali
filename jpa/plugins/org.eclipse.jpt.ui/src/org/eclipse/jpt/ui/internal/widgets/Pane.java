@@ -21,7 +21,6 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.swt.CComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.ComboModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.DateTimeModelAdapter;
 import org.eclipse.jpt.ui.internal.swt.SpinnerModelAdapter;
@@ -43,7 +42,6 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -596,22 +594,6 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Creates a new non-editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final CCombo addCCombo(Composite container) {
-
-		CCombo combo = this.widgetFactory.createCCombo(container);
-		combo.setLayoutData(getFieldGridData());
-		this.manageWidget(combo);
-		return combo;
-	}
-
-	/**
 	 * This layout will leave space for decorations on widgets.
 	 * Whether decorated or not, all of the widgets need the same indent
  	 * so that they align properly.
@@ -625,76 +607,6 @@ public abstract class Pane<T extends Model>
 		data.horizontalIndent = margin;
 		data.grabExcessHorizontalSpace = true;
 		return data;
-	}
-
-	/**
-	 * Creates a new non-editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addCCombo(Composite container,
-	                                       ListValueModel<V> listHolder,
-	                                       WritablePropertyValueModel<V> selectedItemHolder) {
-
-		return this.addCCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance()
-		);
-	}
-
-	/**
-	 * Creates a new non-editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param stringConverter The converter responsible to transform each item
-	 * into a string representation
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addCCombo(Composite container,
-	                                       ListValueModel<V> listHolder,
-	                                       WritablePropertyValueModel<V> selectedItemHolder,
-	                                       StringConverter<V> stringConverter) {
-
-		CCombo combo = this.addCCombo(container);
-
-		CComboModelAdapter.adapt(
-			listHolder,
-			selectedItemHolder,
-			combo,
-			stringConverter
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new <code>ComboViewer</code> using a <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param labelProvider The provider responsible to convert the combo's items
-	 * into human readable strings
-	 * @return The newly created <code>ComboViewer</code>
-	 *
-	 * @category Layout
-	 */
-	protected final ComboViewer addCComboViewer(Composite container,
-	                                              IBaseLabelProvider labelProvider) {
-
-		CCombo combo = this.addCCombo(container);
-		ComboViewer viewer = new ComboViewer(combo);
-		viewer.setLabelProvider(labelProvider);
-		return viewer;
 	}
 
 	/**
@@ -1046,73 +958,16 @@ public abstract class Pane<T extends Model>
 		return this.addSubPane(parent);
 	}
 
-	/**
-	 * Creates a new editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final CCombo addEditableCCombo(Composite container) {
-
-		CCombo combo = addUnmanagedEditableCCombo(container);
-		this.manageWidget(combo);
-		return combo;
-	}
-
-	/**
-	 * Creates a new editable <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param stringConverter The converter responsible to transform each item
-	 * into a string representation
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addEditableCCombo(Composite container,
-	                                               ListValueModel<V> listHolder,
-	                                               WritablePropertyValueModel<V> selectedItemHolder,
-	                                               StringConverter<V> stringConverter) {
-
-		CCombo combo = addUnmanagedEditableCCombo(container, listHolder, selectedItemHolder, stringConverter);
-		this.manageWidget(combo);
-
-		return combo;
-	}
-
-	protected final <V> CCombo addEditableCCombo(
+	protected final <V> Combo addEditableCombo(
 			Composite container,
 			ListValueModel<V> listHolder,
 			WritablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
 			PropertyValueModel<Boolean> enabledModel
 	) {
-		CCombo combo = this.addUnmanagedEditableCCombo(container, listHolder, selectedItemHolder, stringConverter);
+		Combo combo = this.addUnmanagedEditableCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.controlEnabledState(enabledModel, combo);
 		return combo;
-	}
-
-	/**
-	 * Creates a new editable <code>ComboViewer</code> using a <code>CCombo</code>.
-	 *
-	 * @param container The parent container
-	 * @param labelProvider The provider responsible to convert the combo's items
-	 * into human readable strings
-	 * @return The newly created <code>ComboViewer</code>
-	 *
-	 * @category Layout
-	 */
-	protected final ComboViewer addEditableCComboViewer(Composite container,
-	                                                      IBaseLabelProvider labelProvider) {
-
-		CCombo combo = this.addEditableCCombo(container);
-		ComboViewer viewer = new ComboViewer(combo);
-		viewer.setLabelProvider(labelProvider);
-		return viewer;
 	}
 
 	/**
@@ -1282,80 +1137,6 @@ public abstract class Pane<T extends Model>
 	 * @param rightControl The control shown to the right of the main widget
 	 * @param helpId The topic help ID to be registered for the given center
 	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addLabeledCCombo(Composite container,
-	                                              String labelText,
-	                                              ListValueModel<V> listHolder,
-	                                              WritablePropertyValueModel<V> selectedItemHolder,
-	                                              StringConverter<V> stringConverter,
-	                                              Control rightControl,
-	                                              String helpId) {
-
-		CCombo combo = this.addCCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			stringConverter
-		);
-
-		this.addLabeledComposite(
-			container,
-			labelText,
-			(combo.getParent() != container) ? combo.getParent() : combo,
-			rightControl,
-			helpId
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new container that will have a non-editable combo labeled with
-	 * the given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addLabeledCCombo(Composite container,
-	                                              String labelText,
-	                                              ListValueModel<V> listHolder,
-	                                              WritablePropertyValueModel<V> selectedItemHolder,
-	                                              StringConverter<V> stringConverter,
-	                                              String helpId) {
-
-		return this.addLabeledCCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			stringConverter,
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have a non-editable combo labeled with
-	 * the given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
 	 * @return The container of the label and the given center control
 	 *
 	 * @category Layout
@@ -1439,7 +1220,7 @@ public abstract class Pane<T extends Model>
 	                                                String helpId) {
 
 		// Container for the label and main composite
-		container = this.addSubPane(container, 3, 5, 0, 0, 0);
+		container = this.addSubPane(container, 3, 0, 0, 0, 0);
 
 		// Left control
 		GridData gridData = new GridData();
@@ -1621,114 +1402,6 @@ public abstract class Pane<T extends Model>
 	}
 
 	/**
-	 * Creates a new container that will have an editable combo labeled with the
-	 * given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
-	                                                      String labelText,
-	                                                      ListValueModel<V> listHolder,
-	                                                      WritablePropertyValueModel<V> selectedItemHolder,
-	                                                      String helpId) {
-
-		return this.addLabeledEditableCCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			StringConverter.Default.<V>instance(),
-			null,
-			helpId
-		);
-	}
-
-	/**
-	 * Creates a new container that will have the given center control labeled
-	 * with the given label.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param stringConverter The converter responsible to transform each item
-	 * into a string representation
-	 * @param rightControl The control shown to the right of the main widget
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
-	                                                      String labelText,
-	                                                      ListValueModel<V> listHolder,
-	                                                      WritablePropertyValueModel<V> selectedItemHolder,
-	                                                      StringConverter<V> stringConverter,
-	                                                      Control rightControl,
-	                                                      String helpId) {
-
-		CCombo combo = this.addEditableCCombo(
-			container,
-			listHolder,
-			selectedItemHolder,
-			stringConverter
-		);
-
-		this.addLabeledComposite(
-			container,
-			labelText,
-			(combo.getParent() != container) ? combo.getParent() : combo,
-			rightControl,
-			helpId
-		);
-
-		return combo;
-	}
-
-	/**
-	 * Creates a new container that will have an editable combo labeled with the
-	 * given text.
-	 *
-	 * @param container The parent container
-	 * @param labelText The text of the label
-	 * @param listHolder The <code>ListValueHolder</code>
-	 * @param selectedItemHolder The holder of the selected item
-	 * @param stringConverter The converter responsible to transform each item
-	 * into a string representation
-	 * @param helpId The topic help ID to be registered for the given center
-	 * compositer
-	 * @return The newly created <code>CCombo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final <V> CCombo addLabeledEditableCCombo(Composite container,
-	                                                      String labelText,
-	                                                      ListValueModel<V> listHolder,
-	                                                      WritablePropertyValueModel<V> selectedItemHolder,
-	                                                      StringConverter<V> stringConverter,
-	                                                      String helpId) {
-
-		return this.addLabeledEditableCCombo(
-			container,
-			labelText,
-			listHolder,
-			selectedItemHolder,
-			stringConverter,
-			null,
-			helpId
-		);
-	}
-
-	/**
 	 * Creates a new container that will have the given center control labeled
 	 * with the given label.
 	 *
@@ -1742,13 +1415,13 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo addLabeledEditableCCombo(Composite container,
+	protected final Combo addLabeledEditableCombo(Composite container,
 	                                                  String labelText,
 	                                                  ModifyListener comboListener,
 	                                                  Control rightControl,
 	                                                  String helpId) {
 
-		CCombo combo = this.addEditableCCombo(container);
+		Combo combo = this.addEditableCombo(container);
 		combo.addModifyListener(comboListener);
 
 		this.addLabeledComposite(
@@ -1776,12 +1449,12 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo addLabeledEditableCCombo(Composite container,
+	protected final Combo addLabeledEditableCombo(Composite container,
 	                                                  String labelText,
 	                                                  ModifyListener comboListener,
 	                                                  String helpId) {
 
-		return this.addLabeledEditableCCombo(
+		return this.addLabeledEditableCombo(
 			container,
 			labelText,
 			comboListener,
@@ -1806,19 +1479,19 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo addLabeledEditableCComboViewer(Composite container,
+	protected final Combo addLabeledEditableComboViewer(Composite container,
 	                                                        String labelText,
 	                                                        ModifyListener comboListener,
 	                                                        ILabelProvider labelProvider,
 	                                                        Control rightControl,
 	                                                        String helpId) {
 
-		ComboViewer comboViewer = this.addEditableCComboViewer(
+		ComboViewer comboViewer = this.addEditableComboViewer(
 			container,
 			labelProvider
 		);
 
-		CCombo combo = comboViewer.getCCombo();
+		Combo combo = comboViewer.getCombo();
 		combo.addModifyListener(comboListener);
 
 		this.addLabeledComposite(
@@ -1848,13 +1521,13 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final CCombo addLabeledEditableCComboViewer(Composite container,
+	protected final Combo addLabeledEditableComboViewer(Composite container,
 	                                                        String labelText,
 	                                                        ModifyListener comboListener,
 	                                                        ILabelProvider labelProvider,
 	                                                        String helpId) {
 
-		return this.addLabeledEditableCComboViewer(
+		return this.addLabeledEditableComboViewer(
 			container,
 			labelText,
 			comboListener,
@@ -2277,7 +1950,7 @@ public abstract class Pane<T extends Model>
 		return dateTime;
 	}
 	/**
-	 * Creates a new editable <code>CCombo</code>.
+	 * Creates a new editable <code>Combo</code>.
 	 *
 	 * @param container The parent container
 	 * @param listHolder The <code>ListValueHolder</code>
@@ -2288,14 +1961,14 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	private <V> CCombo addUnmanagedEditableCCombo(Composite container,
+	private <V> Combo addUnmanagedEditableCombo(Composite container,
 	                                               ListValueModel<V> listHolder,
 	                                               WritablePropertyValueModel<V> selectedItemHolder,
 	                                               StringConverter<V> stringConverter) {
 
-		CCombo combo = addUnmanagedEditableCCombo(container);
+		Combo combo = addUnmanagedEditableCombo(container);
 
-		CComboModelAdapter.adapt(
+		ComboModelAdapter.adapt(
 			listHolder,
 			selectedItemHolder,
 			combo,
@@ -2307,16 +1980,16 @@ public abstract class Pane<T extends Model>
 
 	
 	/**
-	 * Creates a new editable <code>CCombo</code>.
+	 * Creates a new editable <code>Combo</code>.
 	 *
 	 * @param container The parent container
 	 * @return The newly created <code>CCombo</code>
 	 *
 	 * @category Layout
 	 */
-	private CCombo addUnmanagedEditableCCombo(Composite container) {
+	private Combo addUnmanagedEditableCombo(Composite container) {
 
-		CCombo combo = this.widgetFactory.createEditableCCombo(container);
+		Combo combo = this.widgetFactory.createEditableCombo(container);
 		combo.setLayoutData(getFieldGridData());
 		return combo;
 	}

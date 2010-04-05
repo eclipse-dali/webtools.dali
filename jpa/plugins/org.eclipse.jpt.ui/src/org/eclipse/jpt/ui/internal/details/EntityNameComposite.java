@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -56,7 +56,7 @@ public class EntityNameComposite
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		CCombo combo = addLabeledEditableCCombo(
+		Combo combo = addLabeledEditableCombo(
 			container,
 			JptUiDetailsMessages.EntityNameComposite_name,
 			buildDefaultEntityNameListHolder(),

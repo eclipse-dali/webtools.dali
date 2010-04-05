@@ -9,17 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jface.viewers.ComboViewer;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
  * This <code>EnumComboViewer</code> should be used within a form pane.
  *
- * @version 2.0
+ * @version 2.3
  * @since 1.0
  */
 public abstract class EnumFormComboViewer<T extends Model, V>
@@ -53,24 +52,17 @@ public abstract class EnumFormComboViewer<T extends Model, V>
 	}
 
 	@Override
-	ComboViewer addComboViewer(Composite container) {
-		ComboViewer comboViewer = addCComboViewer(container, buildLabelProvider());
-		comboViewer.getCCombo().setVisibleItemCount(Integer.MAX_VALUE);
-		return comboViewer;
-	}
-
-	@Override
 	public void enableWidgets(boolean enabled) {
 		super.enableWidgets(enabled);
 
-		CCombo combo = getCombo();
+		Combo combo = getCombo();
 		if ( ! combo.isDisposed()) {
 			combo.setEnabled(enabled);
 		}
 	}
 
-	protected final CCombo getCombo() {
-		return this.getComboViewer().getCCombo();
+	protected final Combo getCombo() {
+		return this.getComboViewer().getCombo();
 	}
 
 	@Override

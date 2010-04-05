@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
@@ -113,7 +113,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 		// Discrinator Value widgets
 		PropertyValueModel<Boolean> dvEnabled = this.buildDiscriminatorValueEnabledHolder();
-		CCombo discriminatorValueCombo = addEditableCCombo(
+		Combo discriminatorValueCombo = addEditableCombo(
 			subPane,
 			buildDiscriminatorValueListHolder(),
 			buildDiscriminatorValueHolder(),
@@ -128,7 +128,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 		addLabeledComposite(
 			subPane,
 			discriminatorValueLabel,
-			discriminatorValueCombo.getParent(),
+			discriminatorValueCombo,
 			null,
 			JpaHelpContextIds.ENTITY_INHERITANCE_DISCRIMINATOR_VALUE
 		);

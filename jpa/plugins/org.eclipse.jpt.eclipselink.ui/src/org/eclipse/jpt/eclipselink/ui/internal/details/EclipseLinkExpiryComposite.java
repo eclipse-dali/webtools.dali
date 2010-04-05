@@ -17,9 +17,9 @@ import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
@@ -211,8 +211,8 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		return new IntegerCombo<EclipseLinkCaching>(this, container) {
 		
 			@Override
-			protected CCombo addIntegerCombo(Composite container) {
-				return this.addEditableCCombo(
+			protected Combo addIntegerCombo(Composite container) {
+				return this.addEditableCombo(
 						container,
 						buildDefaultListHolder(),
 						buildSelectedItemStringHolder(),

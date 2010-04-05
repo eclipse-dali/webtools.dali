@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -88,18 +88,12 @@ public class DropDdlFileNameComposite extends Pane<SchemaGeneration>
 				defaultValue
 			);
 		}
-		else {
-			return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultEmpty;
-		}
+		return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultEmpty;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected void initializeLayout(Composite container) {
-
-		CCombo combo = addLabeledEditableCCombo(
+		Combo combo = addLabeledEditableCombo(
 			container,
 			EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_dropDdlFileNameLabel,
 			this.buildDefaultDropDdlFileNameListHolder(),

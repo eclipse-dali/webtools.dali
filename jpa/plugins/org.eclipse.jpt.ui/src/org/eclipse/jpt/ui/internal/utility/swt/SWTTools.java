@@ -21,7 +21,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Control;
@@ -164,32 +163,6 @@ public final class SWTTools {
 	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, Combo dropDownListBox, StringConverter<E> stringConverter) {
 		checkForReadOnlyStyle(dropDownListBox);
 		SWTComboAdapter comboAdapter = new SWTComboAdapter(dropDownListBox);
-		bind(
-			listModel,
-			comboAdapter,
-			stringConverter,
-			new DropDownListBoxSelectionBinding<E>(listModel, selectedItemModel, comboAdapter)
-		);
-	}
-
-	/**
-	 * Bind the specified model list and selection to the specified drop-down list box.
-	 * Use the default string converter to convert the model items to strings
-	 * to be displayed in the drop-down list box, which calls {@link Object#toString()}
-	 * on the items in the model list.
-	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, CCombo dropDownListBox) {
-		bind(listModel, selectedItemModel, dropDownListBox, StringConverter.Default.<E>instance());
-	}
-
-	/**
-	 * Adapt the specified model list and selection to the specified drop-down list box.
-	 * Use the specified string converter to convert the model items to strings
-	 * to be displayed in the drop-down list box.
-	 */
-	public static <E> void bind(ListValueModel<E> listModel, WritablePropertyValueModel<E> selectedItemModel, CCombo dropDownListBox, StringConverter<E> stringConverter) {
-		checkForReadOnlyStyle(dropDownListBox);
-		SWTCComboAdapter comboAdapter = new SWTCComboAdapter(dropDownListBox);
 		bind(
 			listModel,
 			comboAdapter,

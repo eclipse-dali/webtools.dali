@@ -18,7 +18,6 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
@@ -58,20 +57,6 @@ public class SWTUtil {
 	 */
 	public static void asyncExec(Runnable runnable) {
 		getStandardDisplay().asyncExec(runnable);
-	}
-
-	/**
-	 * Tweaks the given <code>CCombo</code> to remove the default value when the
-	 * widget receives the focus and to show the default when the widget loses
-	 * the focus.
-	 *
-	 * @param combo The widget having a default value that is always at the
-	 * beginning of the list
-	 */
-	public static void attachDefaultValueHandler(CCombo combo) {
-		CComboHandler handler = new CComboHandler();
-		combo.addFocusListener(handler);
-		combo.addModifyListener(handler);
 	}
 
 	/**
@@ -381,94 +366,6 @@ public class SWTUtil {
 		return widget.getDisplay().getThread() == Thread.currentThread();
 	}
 
-	/**
-	 * This handler is responsible for removing the default value when the combo
-	 * has the focus or when the selected item is the default value and to select
-	 * it when the combo loses the focus.
-	 */
-	private static class CComboHandler implements ModifyListener,
-	                                              FocusListener {
-
-
-		public void focusGained(FocusEvent e) {
-			CCombo combo = (CCombo) e.widget;
-			
-			if (combo.getSelectionIndex() == 0) {
-				// The text selection has to be changed outside of the context of this
-				// listener otherwise the combo won't update because it's currently
-				// notifying its listeners
-				asyncExec(new SelectText(combo));
-			}
-		}
-
-		public void focusLost(FocusEvent e) {
-			//do nothing
-		}
-
-		public void modifyText(ModifyEvent e) {
-
-			CCombo combo = (CCombo) e.widget;
-
-			if (combo.isFocusControl() &&
-			    combo.getSelectionIndex() <= 0) {
-
-				// Make sure the current text is the default value
-				String currentValue = combo.getText();
-
-				if (currentValue.length() > 0 &&
-				    combo.getItemCount()  > 0 &&
-				    !currentValue.equals(combo.getItem(0))) {
-
-					return;
-				}
-
-				// The text has to be changed outside of the context of this
-				// listener otherwise the combo won't update because it's currently
-				// notifying its listeners
-				asyncExec(new ModifyText(combo));
-			}
-		}
-		
-		private class SelectText implements Runnable {
-			private final CCombo combo;
-
-			public SelectText(CCombo combo) {
-				super();
-				this.combo = combo;
-			}
-
-			public void run() {
-				if (this.combo.isDisposed()) {
-					return;
-				}
-				String text = this.combo.getText();
-				this.combo.setSelection(new Point(0, text.length()));
-			}
-		}
-
-		private class ModifyText implements Runnable {
-			private final CCombo combo;
-
-			public ModifyText(CCombo combo) {
-				super();
-				this.combo = combo;
-			}
-
-			public void run() {
-				if (this.combo.isDisposed()) {
-					return;
-				}
-				String text = this.combo.getText();
-
-				if (text.length() == 0) {
-					text = this.combo.getItem(0);
-					this.combo.setText(text);
-				}
-
-				this.combo.setSelection(new Point(0, text.length()));
-			}
-		}
-	}
 
 	/**
 	 * This handler is responsible for removing the default value when the combo

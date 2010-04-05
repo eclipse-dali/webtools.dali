@@ -20,10 +20,10 @@ import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -37,7 +37,7 @@ public abstract class IntegerCombo<T extends Model>
 	/**
 	 * The main (only) widget of this pane.
 	 */
-	private CCombo comboBox;
+	private Combo comboBox;
 
 
 	private PropertyValueModel<String> defaultValueHolder;
@@ -59,7 +59,7 @@ public abstract class IntegerCombo<T extends Model>
 		super(parentPane, subjectHolder, parent);
 	}
 
-	public CCombo getCombo() {
+	public Combo getCombo() {
 		return this.comboBox;
 	}
 	
@@ -81,8 +81,8 @@ public abstract class IntegerCombo<T extends Model>
 		SWTUtil.attachDefaultValueHandler(this.comboBox);
 	}
 	
-	protected CCombo addIntegerCombo(Composite container) {
-		return this.addLabeledEditableCCombo(
+	protected Combo addIntegerCombo(Composite container) {
+		return this.addLabeledEditableCombo(
 				container,
 				getLabelText(),
 				buildDefaultListHolder(),
@@ -106,6 +106,13 @@ public abstract class IntegerCombo<T extends Model>
 	
 	private PropertyValueModel<String> buildDefaultStringHolder() {
 		return new TransformationPropertyValueModel<Integer, String>(buildDefaultHolder()) {
+			@Override
+			protected String transform(Integer value) {
+				if (value == null) {
+					return JptUiDetailsMessages.NoneSelected;
+				}
+				return super.transform(value);
+			}
 			@Override
 			protected String transform_(Integer value) {
 				return getDefaultValueString(value);

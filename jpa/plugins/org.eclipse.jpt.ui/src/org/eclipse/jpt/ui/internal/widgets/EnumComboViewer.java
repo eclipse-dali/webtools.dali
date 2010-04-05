@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -128,7 +128,9 @@ abstract class EnumComboViewer<T extends Model, V> extends Pane<T>
 	 * @param container The container of the combo
 	 * @return A new <code>ComboViewer</code> containing the right combo widget
 	 */
-	abstract ComboViewer addComboViewer(Composite container);
+	protected ComboViewer addComboViewer(Composite container) {
+		return addComboViewer(container, buildLabelProvider());
+	}
 
 	private Comparator<Object> buildComparator() {
 		return new Comparator<Object>() {

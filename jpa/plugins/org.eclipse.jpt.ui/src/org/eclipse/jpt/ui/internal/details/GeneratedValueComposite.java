@@ -29,9 +29,9 @@ import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -57,7 +57,7 @@ import org.eclipse.swt.widgets.Composite;
 public class GeneratedValueComposite extends Pane<IdMapping>
 {
 	private PropertyChangeListener generatedValuePropertyChangeListener;
-	private CCombo generatorNameCombo;
+	private Combo generatorNameCombo;
 	private PropertyChangeListener generatorNamePropertyChangeListener;
 	private ListChangeListener generatorsListChangeListener;
 
@@ -106,7 +106,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 					return;
 				}
 
-				String generatorName = ((CCombo) e.getSource()).getText();
+				String generatorName = ((Combo) e.getSource()).getText();
 				GeneratedValue generatedValue = getSubject().getGeneratedValue();
 
 				if (StringTools.stringIsEmpty(generatorName)) {
@@ -289,7 +289,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		);
 
 		// Generator Name widgets
-		this.generatorNameCombo = addLabeledEditableCCombo(
+		this.generatorNameCombo = addLabeledEditableCombo(
 			container,
 			JptUiDetailsMessages.GeneratedValueComposite_generatorName,
 			buildGeneratorNameModifyListener(),

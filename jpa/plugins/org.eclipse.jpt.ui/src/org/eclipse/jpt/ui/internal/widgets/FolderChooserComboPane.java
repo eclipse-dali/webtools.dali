@@ -66,7 +66,7 @@ public abstract class FolderChooserComboPane<T extends Model> extends FolderChoo
 	@Override
 	protected Control addMainControl(Composite container) {
 		
-		return addEditableCCombo(
+		return addEditableCombo(
 			container,
 			this.buildListHolder(),
 			this.getTextHolder(),

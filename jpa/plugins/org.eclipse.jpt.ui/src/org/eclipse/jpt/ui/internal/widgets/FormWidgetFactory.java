@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -117,6 +117,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Deprecated
 	public CCombo createCCombo(Composite parent) {
 		return createCCombo(parent, SWT.READ_ONLY);
 	}
@@ -153,16 +154,14 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * {@inheritDoc}
 	 */
 	public Combo createCombo(Composite parent) {
-		return new Combo(parent, SWT.READ_ONLY);
+		return new Combo(parent, SWT.READ_ONLY | SWT.FLAT);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	public Composite createComposite(Composite parent) {
-		Composite composite = widgetFactory.createComposite(parent);
-		widgetFactory.paintBordersFor(composite);
-		return composite;
+		return this.widgetFactory.createComposite(parent);
 	}
 	/**
 	 * {@inheritDoc}
@@ -180,6 +179,7 @@ public class FormWidgetFactory implements WidgetFactory {
 	/**
 	 * {@inheritDoc}
 	 */
+	@Deprecated
 	public CCombo createEditableCCombo(Composite parent) {
 		return createCCombo(parent, SWT.NULL);
 	}
@@ -196,10 +196,8 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * {@inheritDoc}
 	 */
 	public Group createGroup(Composite parent, String title) {
-		Group group = new Group(parent, SWT.SHADOW_NONE);
+		Group group = new Group(parent, SWT.NULL);
 		group.setText(title);
-		group.setBackground(widgetFactory.getColors().getBackground());
-		group.setForeground(widgetFactory.getColors().getForeground());
 		return group;
 	}
 
@@ -314,11 +312,11 @@ public class FormWidgetFactory implements WidgetFactory {
 	 * {@inheritDoc}
 	 */
 	public Text createText(Composite parent) {
-		return createText(parent, SWT.NULL);
+		return createText(parent, SWT.NONE);
 	}
 
 	protected Text createText(Composite parent, int style) {
-		return widgetFactory.createText(parent, null, SWT.FLAT | style);
+		return widgetFactory.createText(parent, null, SWT.BORDER | SWT.FLAT | style);
 	}
 
 	/**

@@ -85,7 +85,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 		
 		addConversionValuesTable(container);
 
-		addLabeledEditableCCombo(
+		addLabeledEditableCombo(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkObjectTypeConverterComposite_defaultObjectValueLabel,
 			buildDefaultObjectValueListHolder(),
