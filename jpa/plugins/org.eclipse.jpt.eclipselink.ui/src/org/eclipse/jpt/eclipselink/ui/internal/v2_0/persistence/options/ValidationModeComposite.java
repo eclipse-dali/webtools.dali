@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -44,7 +44,7 @@ public class ValidationModeComposite extends Pane<PersistenceUnit2_0>
 	protected void initializeLayout(Composite parent) {
 		this.addLabeledComposite(
 			parent,
-				Jpt2_0UiMessages.ValidationModeComposite_validationModeLabel,
+				JptUiPersistence2_0Messages.ValidationModeComposite_validationModeLabel,
 				this.addValidationModeCombo(parent),
 				null			// TODO
 		);
@@ -76,7 +76,7 @@ public class ValidationModeComposite extends Pane<PersistenceUnit2_0>
 
 			@Override
 			protected String displayString(ValidationMode value) {
-				return this.buildDisplayString(Jpt2_0UiMessages.class, ValidationModeComposite.this, value);
+				return this.buildDisplayString(JptUiPersistence2_0Messages.class, ValidationModeComposite.this, value);
 			}
 
 			@Override

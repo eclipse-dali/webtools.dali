@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -125,13 +125,13 @@ public class DataSourcePropertiesComposite extends Pane<JpaConnection2_0>
 
 		// JTA Data Source
 		PropertyValueModel<Boolean> jtaEnabled = this.buildJTADataSourceHolder();
-		Label jtaLabel = this.addLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_jtaDataSourceLabel, jtaEnabled);
+		Label jtaLabel = this.addLabel(container, JptUiPersistence2_0Messages.DataSourcePropertiesComposite_jtaDataSourceLabel, jtaEnabled);
 		Text jtaText = this.addText(container, this.buildJtaDataSourceHolder(), this.getHelpID(), jtaEnabled);
 		this.addLabeledComposite(container, jtaLabel, jtaText, this.getHelpID());
 
 		// Non-JTA Data Source
 		PropertyValueModel<Boolean> nonJTAEnabled = this.buildNonJTADataSourceHolder();
-		Label nonJtaLabel = this.addLabel(container, Jpt2_0UiMessages.DataSourcePropertiesComposite_nonJtaDataSourceLabel, nonJTAEnabled);
+		Label nonJtaLabel = this.addLabel(container, JptUiPersistence2_0Messages.DataSourcePropertiesComposite_nonJtaDataSourceLabel, nonJTAEnabled);
 		Text nonJtaText = this.addText(container, this.buildNonJtaDataSourceHolder(), this.getHelpID(), nonJTAEnabled);
 		this.addLabeledComposite(container, nonJtaLabel, nonJtaText, this.getHelpID());
 	}

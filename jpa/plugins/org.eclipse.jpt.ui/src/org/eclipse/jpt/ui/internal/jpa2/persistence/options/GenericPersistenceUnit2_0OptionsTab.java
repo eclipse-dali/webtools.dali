@@ -13,7 +13,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
@@ -85,6 +85,6 @@ public class GenericPersistenceUnit2_0OptionsTab extends Pane<JpaOptions2_0>
 	}
 
 	public String getPageText() {
-		return Jpt2_0UiMessages.GenericPersistenceUnit2_0OptionsTab_title;
+		return JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsTab_title;
 	}
 }

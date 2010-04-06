@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -50,21 +50,21 @@ public class ValidationConfigurationComposite extends Pane<JpaOptions2_0>
 		// GroupPrePersist
 		this.addLabeledText(
 			parent,
-			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPrePersistLabel,
+			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPrePersistLabel,
 			this.buildValidationGroupPrePersistHolder()
 		);
 
 		// ValidationGroupPreUpdate
 		this.addLabeledText(
 			parent,
-			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPreUpdateLabel,
+			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreUpdateLabel,
 			this.buildValidationGroupPreUpdateHolder()
 		);
 
 		// ValidationGroupPreRemove
 		this.addLabeledText(
 			parent,
-			Jpt2_0UiMessages.ValidationConfigurationComposite_groupPreRemoveLabel,
+			JptUiPersistence2_0Messages.ValidationConfigurationComposite_groupPreRemoveLabel,
 			this.buildValidationGroupPreRemoveHolder()
 		);
 	}

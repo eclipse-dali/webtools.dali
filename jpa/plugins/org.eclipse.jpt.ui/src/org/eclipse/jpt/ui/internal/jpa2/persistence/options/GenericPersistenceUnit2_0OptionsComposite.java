@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -39,8 +39,8 @@ public class GenericPersistenceUnit2_0OptionsComposite extends Pane<JpaOptions2_
 		this.updateGridData(container.getParent());
 		
 		Composite composite = this.addSection(container, 
-			Jpt2_0UiMessages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionTitle,
-			Jpt2_0UiMessages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionDescription);
+			JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionTitle,
+			JptUiPersistence2_0Messages.GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionDescription);
 		
 		this.updateGridData(composite);
 		this.updateGridData(composite.getParent());

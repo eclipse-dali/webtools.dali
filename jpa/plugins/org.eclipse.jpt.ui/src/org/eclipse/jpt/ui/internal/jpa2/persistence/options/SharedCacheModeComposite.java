@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -45,7 +45,7 @@ public class SharedCacheModeComposite extends Pane<PersistenceUnit2_0>
 		
 		this.addLabeledComposite(
 			parent,
-			Jpt2_0UiMessages.SharedCacheModeComposite_sharedCacheModeLabel,
+			JptUiPersistence2_0Messages.SharedCacheModeComposite_sharedCacheModeLabel,
 			this.addSharedCacheModeCombo(parent),
 			null			// TODO
 		);
@@ -77,7 +77,7 @@ public class SharedCacheModeComposite extends Pane<PersistenceUnit2_0>
 
 			@Override
 			protected String displayString(SharedCacheMode value) {
-				return this.buildDisplayString(Jpt2_0UiMessages.class, SharedCacheModeComposite.this, value);
+				return this.buildDisplayString(JptUiPersistence2_0Messages.class, SharedCacheModeComposite.this, value);
 			}
 
 			@Override

@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -66,7 +66,7 @@ public class TransactionTypeComposite extends Pane<JpaConnection2_0>
 
 			@Override
 			protected String displayString(PersistenceUnitTransactionType value) {
-				return this.buildDisplayString(Jpt2_0UiMessages.class, TransactionTypeComposite.this, value);
+				return this.buildDisplayString(JptUiPersistence2_0Messages.class, TransactionTypeComposite.this, value);
 			}
 
 			@Override
@@ -115,7 +115,7 @@ public class TransactionTypeComposite extends Pane<JpaConnection2_0>
 
 		this.addLabeledComposite(
 			container,
-			Jpt2_0UiMessages.TransactionTypeComposite_transactionTypeLabel,
+			JptUiPersistence2_0Messages.TransactionTypeComposite_transactionTypeLabel,
 			this.buildTransactionTypeCombo( container),
 			JpaHelpContextIds.PERSISTENCE_XML_CONNECTION	// TODO - Review for JPA 2.0
 		);

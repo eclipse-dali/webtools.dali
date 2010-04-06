@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.persistence.options;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
-import org.eclipse.jpt.ui.internal.jpa2.Jpt2_0UiMessages;
+import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -48,7 +48,7 @@ public class LockingConfigurationComposite extends Pane<JpaOptions2_0>
 			
 			@Override
 			protected String getLabelText() {
-				return Jpt2_0UiMessages.LockingConfigurationComposite_lockTimeoutLabel;
+				return JptUiPersistence2_0Messages.LockingConfigurationComposite_lockTimeoutLabel;
 			}
 		
 			@Override
