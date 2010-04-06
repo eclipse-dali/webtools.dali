@@ -220,7 +220,7 @@ public class CallbackChangeSupport
 
 	@Override
 	protected void fireItemsRemoved_(String listName, int index, List<?> removedItems) {
-		super.fireItemRemoved(listName, index, removedItems);
+		super.fireItemsRemoved_(listName, index, removedItems);
 		this.aspectChanged(listName);
 	}
 
