@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.properties;
 
+import static org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi.createInstallLibraryPanel;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -414,8 +415,12 @@ public class JpaProjectPropertiesPage
 
 		this.buildPlatformGroup(composite);
 
-		Control libraryProviderComposite = super.createPageContents(composite);
-		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		Control libraryProviderComposite = createInstallLibraryPanel(
+				composite, 
+				this.getLibraryInstallDelegate(), 
+				JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
+
+ 		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		this.buildConnectionGroup(composite);
 		this.buildPersistentClassManagementGroup(composite);
