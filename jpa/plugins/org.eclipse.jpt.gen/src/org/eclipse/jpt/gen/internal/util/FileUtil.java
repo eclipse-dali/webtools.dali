@@ -26,7 +26,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+
+import org.eclipse.jpt.gen.internal.JptGenMessages;
+
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 
 /**
@@ -36,10 +40,6 @@ import org.osgi.framework.Bundle;
 public class FileUtil
 {
 	
-	private static String DELETE_FOLDER_ERR = "The directory %s could not be deleted.";
-	private static String DELETE_FILE_ERR = "The file %s could not be deleted.";
-	private static String FILE_READONLY_ERR = "The file %s could not be modified because write access is denied.\nPlease make sure that the file is not marked as readonly in the file system.";
-
 	public static void deleteFolder(File folder)
 		throws IOException
 	{
@@ -61,8 +61,8 @@ public class FileUtil
 		throws IOException
 	{
 		if (!f.delete()) {
-			String msgId = f.isDirectory() ?  DELETE_FOLDER_ERR :  DELETE_FILE_ERR;
-			throw new IOException( String.format(msgId,f.getPath()));
+			String msgId = f.isDirectory() ?  JptGenMessages.Delete_Folder_Error :  JptGenMessages.Delete_File_Error;
+			throw new IOException( NLS.bind(msgId,f.getPath()));
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class FileUtil
 		throws IOException
 	{
 		if (dest.exists() && !dest.canWrite())
-			throw new IOException( FILE_READONLY_ERR );  //throw with a clear error because otherwise FileOutputStream throws FileNotFoundException!
+			throw new IOException( NLS.bind(JptGenMessages.File_Read_Only_Error, dest.getPath()));  //throw with a clear error because otherwise FileOutputStream throws FileNotFoundException!
 		java.io.FileOutputStream fout = new java.io.FileOutputStream(dest.getPath(), false/*append*/);
 		try {
 			fout.write(bytes);
