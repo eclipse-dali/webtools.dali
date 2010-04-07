@@ -261,7 +261,7 @@ public abstract class AbstractJavaPersistentType
 		}
 
 		if (this.superPersistentType != null) {
-			accessType = this.superPersistentType.getDefaultAccess();
+			accessType = this.superPersistentType.getAccess();
 			if (accessType != null) {
 				return accessType;
 			}
