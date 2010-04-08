@@ -12,7 +12,10 @@ package org.eclipse.jpt.ui.internal.preferences;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -62,6 +65,12 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
 @SuppressWarnings({"restriction", "nls"})
 public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
+	/**
+	 * Severity level state is stored in this Map and is either committed or discarded
+	 * based on user action.
+	 */
+	private Map<String, String> severityLevels;
+	
 	/**
 	 * The list of <code>Combo</code>s is cached in order to perform a revert of
 	 * the properties.
@@ -156,6 +165,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.combos = new ArrayList<Combo>();
 		this.expandablePanes = new ArrayList<ExpandableComposite>();
 		this.severityDisplayStrings = buildSeverityDisplayStrings();
+		this.severityLevels = new HashMap<String, String>();
 	}
 
 	@Override
@@ -577,7 +587,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 				Combo combo = (Combo) e.widget;
 				String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
 				String value = convertToPreferenceValue(combo.getSelectionIndex());
-				updatePreference(preferenceKey, value);
+				severityLevels.put(preferenceKey, value);
 			}
 		};
 	}
@@ -757,7 +767,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		for (Combo combo : this.combos) {
 			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
 			String value = convertToPreferenceValue(defaultValue);
-			updatePreference(preferenceKey, value);
+			severityLevels.put(preferenceKey, value);
 			combo.select(defaultValue);
 		}
 	}
@@ -785,6 +795,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	public boolean performOk() {
 		super.performOk();
 
+		for (String validationPreferenceKey : this.severityLevels.keySet()) {
+			updatePreference(validationPreferenceKey, this.severityLevels.get(validationPreferenceKey));
+		}
 		try {
 			// true=fork; false=uncancellable
 			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
