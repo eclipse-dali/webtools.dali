@@ -79,4 +79,11 @@ public interface RelationshipReference
 	 */
 	boolean isParentVirtual();
 
+	/**
+	 * Return whether this relationship is a target foreign key relationship.
+	 * A one-to-many mapping with a join column will have the foreign key
+	 * in the target table.
+	 */
+	boolean isTargetForeignKeyRelationship();
+
 }

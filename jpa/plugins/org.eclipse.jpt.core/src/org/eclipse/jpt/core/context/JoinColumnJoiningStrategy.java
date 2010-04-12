@@ -34,9 +34,27 @@ public interface JoinColumnJoiningStrategy
 	void initializeFrom(JoinColumnJoiningStrategy oldStrategy);
 	
 	/**
-	 * Return the TypeMapping in which this join column is contained.
+	 * The source of the relationship will usually be the owning type mapping.
+	 * In the case of a target foreign key relationship the source and target
+	 * are swapped.
+	 * @see isTargetForeignKeyRelationship()
 	 */
-	TypeMapping getTypeMapping();
+	TypeMapping getRelationshipSource();
+
+	/**
+	 * The target of the relationship will usually be the target entity.
+	 * In the case of a target foreign key relationship the source and target
+	 * are swapped.
+	 * @see isTargetForeignKeyRelationship()
+	 */
+	TypeMapping getRelationshipTarget();
+
+	/**
+	 * Return whether this relationship is a target foreign key relationship.
+	 * A one-to-many mapping with a join column will have the foreign key
+	 * in the target table.
+	 */
+	boolean isTargetForeignKeyRelationship();
 
 	/**
 	 * Return a list iterator of the join columns whether specified or default.

@@ -65,6 +65,10 @@ public abstract class AbstractJavaAssociationOverrideRelationshipReference exten
 		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 
+	public boolean isTargetForeignKeyRelationship() {
+		return false;
+	}
+
 	// **************** RelationshipMapping implementation *******************************
 	
 	public boolean isParentVirtual() {

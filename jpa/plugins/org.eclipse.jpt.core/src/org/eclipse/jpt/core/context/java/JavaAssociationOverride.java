@@ -41,6 +41,8 @@ public interface JavaAssociationOverride
 	 */
 	void update(AssociationOverrideAnnotation associationOverride);
 
+	JavaAssociationOverride.Owner getOwner();
+
 	interface Owner extends AssociationOverride.Owner, JavaOverride.Owner
 	{
 		//nothing yet

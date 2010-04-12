@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmOneToManyRelationshipReference;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -35,7 +34,7 @@ public class GenericOrmOneToManyRelationshipReference2_0
 	
 	@Override
 	protected OrmJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
-		return new GenericOrmJoinColumnJoiningStrategy(this, getResourceMapping());
+		return new GenericOrmTargetForiegnKeyJoinColumnJoiningStrategy(this, getResourceMapping());
 	}
 
 	@Override

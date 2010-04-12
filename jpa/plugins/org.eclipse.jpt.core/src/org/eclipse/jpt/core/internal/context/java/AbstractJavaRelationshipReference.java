@@ -51,7 +51,11 @@ public abstract class AbstractJavaRelationshipReference
 	public boolean isParentVirtual() {
 		return getRelationshipMapping().getPersistentAttribute().isVirtual();
 	}
-	
+
+	public boolean isTargetForeignKeyRelationship() {
+		return false;
+	}
+
 	// **************** predominant joining strategy ***************************
 	
 	public JoiningStrategy getPredominantJoiningStrategy() {

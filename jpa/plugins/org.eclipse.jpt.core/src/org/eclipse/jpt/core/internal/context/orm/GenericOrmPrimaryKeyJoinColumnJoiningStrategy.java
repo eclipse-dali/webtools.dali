@@ -226,7 +226,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getTableName();
 		}
 		
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			return getRelationshipMapping().getResolvedTargetEntity();
 		}
 		
@@ -262,8 +262,8 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public Table getReferencedColumnDbTable() {
-			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
+			Entity relationshipTarget = getRelationshipTarget();
+			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

@@ -173,7 +173,7 @@ public class GenericJavaCollectionTable2_0
 			return EmptyIterator.instance();
 		}
 
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			return GenericJavaCollectionTable2_0.this.getParent().getEntity();
 		}
 

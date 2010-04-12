@@ -288,7 +288,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 			return GenericJavaPrimaryKeyJoinColumnJoiningStrategy.this.getTableName();
 		}
 		
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			return getRelationshipMapping().getResolvedTargetEntity();
 		}
 		
@@ -320,7 +320,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 		}
 		
 		public Table getReferencedColumnDbTable() {
-			Entity targetEntity = getTargetEntity();
+			Entity targetEntity = getRelationshipTarget();
 			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
 		}
 		

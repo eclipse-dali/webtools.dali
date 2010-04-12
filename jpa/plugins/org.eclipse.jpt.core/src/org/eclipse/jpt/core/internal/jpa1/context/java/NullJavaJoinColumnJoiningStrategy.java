@@ -56,7 +56,14 @@ public class NullJavaJoinColumnJoiningStrategy
 		//do nothing, no join column to remove
 	}
 	
-	
+	public boolean isTargetForeignKeyRelationship() {
+		return false;
+	}
+
+	public TypeMapping getRelationshipTarget() {
+		return null;
+	}
+
 	// **************** join columns *******************************************
 	
 	public ListIterator<JavaJoinColumn> joinColumns() {
@@ -129,6 +136,10 @@ public class NullJavaJoinColumnJoiningStrategy
 		throw new UnsupportedOperationException();
 	}
 
+	public Table getReferencedColumnDbTable() {
+		throw new UnsupportedOperationException();
+	}
+
 	public String getTableName() {
 		return null;
 	}
@@ -141,7 +152,7 @@ public class NullJavaJoinColumnJoiningStrategy
 		throw new UnsupportedOperationException();
 	}
 
-	public TypeMapping getTypeMapping() {
+	public TypeMapping getRelationshipSource() {
 		return getRelationshipMapping().getTypeMapping();
 	}
 }

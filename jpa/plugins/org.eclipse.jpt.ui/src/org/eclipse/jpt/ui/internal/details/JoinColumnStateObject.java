@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,6 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
@@ -105,8 +103,6 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 		return this.nullable;
 	}
 
-	protected abstract Schema getDbSchema();
-
 	public Boolean getUnique() {
 		return this.unique;
 	}
@@ -171,11 +167,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 
 	@Override
 	public ListIterator<String> tables() {
-		Schema schema = getDbSchema();
-		if (schema == null) {
-			return EmptyListIterator.instance();
-		}
-		return CollectionTools.list(schema.getSortedTableIdentifiers()).listIterator();
+		return EmptyListIterator.instance();
 	}
 
 	@Override

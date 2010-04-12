@@ -460,7 +460,7 @@ public class GenericJavaJoinTable
 			super();
 		}
 
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			return GenericJavaJoinTable.this.getParent().getRelationshipReference().getEntity();
 		}
 
@@ -538,7 +538,7 @@ public class GenericJavaJoinTable
 			super();
 		}
 
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			RelationshipMapping relationshipMapping = GenericJavaJoinTable.this.getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
 		}
@@ -549,8 +549,8 @@ public class GenericJavaJoinTable
 		}
 
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
-			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
+			Entity relationshipTarget = getRelationshipTarget();
+			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 		}
 
 		public boolean isVirtual(BaseJoinColumn joinColumn) {

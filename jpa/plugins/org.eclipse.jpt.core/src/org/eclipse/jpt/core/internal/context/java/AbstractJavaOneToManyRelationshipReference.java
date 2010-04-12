@@ -70,7 +70,12 @@ public abstract class AbstractJavaOneToManyRelationshipReference
 	public boolean isOwnedBy(RelationshipMapping mapping) {
 		return this.mappedByJoiningStrategy.relationshipIsOwnedBy(mapping);
 	}
-	
+
+	@Override
+	public boolean isTargetForeignKeyRelationship() {
+		return getJoinColumnJoiningStrategy().isTargetForeignKeyRelationship();
+	}
+
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);

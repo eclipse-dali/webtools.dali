@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
@@ -26,7 +25,7 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
  * @see JoinTable
  * @see InverseJoinColumnInJoinTableDialog
  *
- * @version 2.0
+ * @version 2.3
  * @since 2.0
  */
 public class InverseJoinColumnInJoinTableStateObject 
@@ -76,11 +75,6 @@ public class InverseJoinColumnInJoinTableStateObject
 			return null;
 		}
 		return targetEntity.getPrimaryDbTable();
-	}
-	
-	@Override
-	protected Schema getDbSchema() {
-		return null;
 	}
 	
 	@Override

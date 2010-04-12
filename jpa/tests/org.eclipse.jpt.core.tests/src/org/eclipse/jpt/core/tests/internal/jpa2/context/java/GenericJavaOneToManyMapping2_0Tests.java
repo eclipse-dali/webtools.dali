@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -942,23 +943,102 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getDefaultName());
 	}
 
+	public void testTargetForeignKeyJoinColumnStrategy() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		oneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
+
+		JoinColumn joinColumn = oneToManyMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+
+		assertEquals("addresses_id", joinColumn.getDefaultName());
+		assertEquals("Address", joinColumn.getDefaultTable());//target table name
+
+		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
+		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
+		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTable());
+
+		joinColumn.setSpecifiedName("FOO");
+		assertEquals("addresses_id", joinColumn.getDefaultName());
+		assertEquals("FOO", joinColumn.getSpecifiedName());
+		assertEquals("ADDRESS_PRIMARY_TABLE", joinColumn.getDefaultTable());
+	}
+
+	//target foreign key case
+	public void testGetMapKeyColumnJoinColumnStrategy() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		oneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
+
+		assertNull(oneToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getName());
+		assertEquals("Address", oneToManyMapping.getMapKeyColumn().getTable());//target table name
+
+		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
+		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
+		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getTable());
+
+		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		MapKeyColumn2_0Annotation column = (MapKeyColumn2_0Annotation) attributeResource.addAnnotation(JPA2_0.MAP_KEY_COLUMN);
+		column.setName("foo");
+		getJpaProject().synchronizeContextModel();
+
+		assertEquals("foo", oneToManyMapping.getMapKeyColumn().getSpecifiedName());
+		assertEquals("foo", oneToManyMapping.getMapKeyColumn().getName());
+		assertEquals("addresses_KEY", oneToManyMapping.getMapKeyColumn().getDefaultName());
+		assertEquals("ADDRESS_PRIMARY_TABLE", oneToManyMapping.getMapKeyColumn().getDefaultTable());
+	}
+
+	//target foreign key case
+	public void testOrderColumnDefaultsJoinColumnStrategy() throws Exception {
+		createTestEntityWithValidGenericMapOneToManyMapping();
+		createTestTargetEntityAddress();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		addXmlClassRef(PACKAGE_NAME + ".Address");
+
+		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
+		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
+		oneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
+		oneToManyMapping.getOrderable().setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = oneToManyMapping.getOrderable().getOrderColumn();
+
+
+		assertNull(orderColumn.getSpecifiedName());
+		assertEquals("addresses_ORDER", orderColumn.getName());
+		assertEquals("Address", orderColumn.getTable());//target table name
+
+		Entity addressEntity = getPersistenceUnit().getEntity("test.Address");
+		addressEntity.getTable().setSpecifiedName("ADDRESS_PRIMARY_TABLE");
+		assertEquals("ADDRESS_PRIMARY_TABLE", orderColumn.getTable());
+	}
+
 	public void testModifyPredominantJoiningStrategy() throws Exception {
 		createTestEntityWithValidOneToManyMapping();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		
+
 		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
 		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
 		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 mapping = (OneToManyMapping2_0) contextAttribute.getMapping();
 		OneToManyRelationshipReference2_0 relationshipReference = mapping.getRelationshipReference();
-		
+
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
 		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
 		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
 		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
-		
+
 		relationshipReference.setJoinColumnJoiningStrategy();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
@@ -966,7 +1046,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
 		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
 		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
-		
+
 		relationshipReference.setMappedByJoiningStrategy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
@@ -974,7 +1054,7 @@ public class GenericJavaOneToManyMapping2_0Tests
 		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
 		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
 		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
-		
+
 		relationshipReference.setJoinTableJoiningStrategy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));

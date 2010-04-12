@@ -14,7 +14,6 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
@@ -69,11 +68,6 @@ public class JoinColumnInReferenceTableStateObject
 	@Override
 	public Table getReferencedNameTable() {
 		return getTypeMapping().getPrimaryDbTable();
-	}
-	
-	@Override
-	protected Schema getDbSchema() {
-		return null;
 	}
 	
 	@Override

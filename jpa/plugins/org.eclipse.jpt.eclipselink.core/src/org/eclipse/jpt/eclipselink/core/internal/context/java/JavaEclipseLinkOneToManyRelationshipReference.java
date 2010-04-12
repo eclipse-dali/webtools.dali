@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyRelationshipReference;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaTargetForiegnKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkOneToManyRelationshipReference2_0;
 
 public class JavaEclipseLinkOneToManyRelationshipReference
@@ -30,7 +30,7 @@ public class JavaEclipseLinkOneToManyRelationshipReference
 	
 	@Override
 	protected JavaJoinColumnJoiningStrategy buildJoinColumnJoiningStrategy() {
-		return new GenericJavaJoinColumnJoiningStrategy(this);
+		return new GenericJavaTargetForiegnKeyJoinColumnJoiningStrategy(this);
 	}
 	
 	@Override

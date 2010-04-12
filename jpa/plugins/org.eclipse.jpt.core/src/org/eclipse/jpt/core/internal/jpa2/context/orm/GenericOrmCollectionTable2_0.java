@@ -181,7 +181,7 @@ public class GenericOrmCollectionTable2_0
 			return GenericOrmCollectionTable2_0.this.getValidationTextRange();
 		}
 
-		public Entity getTargetEntity() {
+		public Entity getRelationshipTarget() {
 			return GenericOrmCollectionTable2_0.this.getParent().getEntity();
 		}
 

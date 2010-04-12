@@ -72,6 +72,10 @@ public abstract class AbstractOrmAssociationOverrideRelationshipReference extend
 	public boolean isParentVirtual() {
 		return getAssociationOverride().isVirtual();
 	}
+
+	public boolean isTargetForeignKeyRelationship() {
+		return false;
+	}
 	
 	// **************** predominant joining strategy ***************************
 	

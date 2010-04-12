@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
@@ -46,20 +47,73 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		return new JoinColumnOwner();
 	}
 	
-	public TypeMapping getTypeMapping() {
-		return getAssociationOverride().getOwner().getTypeMapping();
+	public boolean isTargetForeignKeyRelationship() {
+		RelationshipMapping relationshipMapping = getRelationshipMapping();
+		if (relationshipMapping != null) {
+			return relationshipMapping.getRelationshipReference().isTargetForeignKeyRelationship();
+		}
+		return false;
 	}
 
-	public String getTableName() {
-		return getAssociationOverride().getOwner().getDefaultTableName();
+	public TypeMapping getRelationshipSource() {
+		if (isTargetForeignKeyRelationship()) {
+			return getRelationshipMapping().getResolvedTargetEntity();
+		}
+		return getAssociationOverrideOwner().getTypeMapping();
 	}
 
-	public Table getDbTable(String tableName) {
-		return getAssociationOverride().getOwner().getDbTable(tableName);
+	public TypeMapping getRelationshipTarget() {
+		if (isTargetForeignKeyRelationship()) {
+			return getAssociationOverrideOwner().getTypeMapping();
+		}
+		RelationshipMapping relationshipMapping = getRelationshipMapping();
+		return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
+	}
+
+	protected Entity getRelationshipTargetEntity() {
+		TypeMapping relationshipTarget = getRelationshipTarget();
+		return (relationshipTarget != null) && (relationshipTarget.getKey() == MappingKeys.ENTITY_TYPE_MAPPING_KEY) ? (Entity) relationshipTarget : null;
+	}
+
+	@Override
+	public RelationshipMapping getRelationshipMapping() {
+		return getAssociationOverrideOwner().getRelationshipMapping(getAttributeName());
 	}
 	
+	protected String getAttributeName() {
+		return this.getAssociationOverride().getName();
+	}
+
+	@Override
+	public String getTableName() {
+		if (isTargetForeignKeyRelationship()) {
+			return super.getTableName();
+		}
+		return getAssociationOverrideOwner().getDefaultTableName();
+	}
+
+	@Override
 	public boolean tableNameIsInvalid(String tableName) {
-		return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
+		if (isTargetForeignKeyRelationship()) {
+			return super.tableNameIsInvalid(tableName);
+		}
+		return getAssociationOverrideOwner().tableNameIsInvalid(tableName);
+	}
+
+	@Override
+	public Iterator<String> candidateTableNames() {
+		if (isTargetForeignKeyRelationship()) {
+			return super.candidateTableNames();
+		}
+		return getAssociationOverrideOwner().candidateTableNames();
+	}
+
+	@Override
+	public Table getDbTable(String tableName) {
+		if (isTargetForeignKeyRelationship()) {
+			return super.getDbTable(tableName);
+		}
+		return getAssociationOverrideOwner().getDbTable(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -74,6 +128,10 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		return this.getRelationshipReference().getAssociationOverride();
 	}
 	
+	protected JavaAssociationOverride.Owner getAssociationOverrideOwner() {
+		return getAssociationOverride().getOwner();
+	}
+
 	@Override
 	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {
 		return (JavaAssociationOverrideRelationshipReference) super.getRelationshipReference();
@@ -136,48 +194,38 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 			//built in MappingTools.buildJoinColumnDefaultName()
 			return null;
 		}
-		
-		public Entity getTargetEntity() {
-			RelationshipMapping relationshipMapping = getRelationshipMapping();
-			return relationshipMapping == null ? null : relationshipMapping.getResolvedTargetEntity();
-		}
 
 		public String getAttributeName() {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName();
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getAttributeName();
 		}
 		
 		public PersistentAttribute getPersistentAttribute() {
 			RelationshipMapping relationshipMapping = getRelationshipMapping();
 			return relationshipMapping == null ? null : relationshipMapping.getPersistentAttribute();
 		}
+
+		public TypeMapping getTypeMapping() {
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipSource();
+		}
 		
-		public RelationshipMapping getRelationshipMapping() {
-			return getAssociationOverride().getOwner().getRelationshipMapping(GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getName());
+		public Entity getRelationshipTarget() {
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipTargetEntity();
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return getAssociationOverride().getOwner().tableNameIsInvalid(tableName);
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.tableNameIsInvalid(tableName);
 		}
 
 		public Iterator<String> candidateTableNames() {
-			return getAssociationOverride().getOwner().candidateTableNames();
-		}
-
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange(astRoot);
-		}
-
-		public TypeMapping getTypeMapping() {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getAssociationOverride().getOwner().getTypeMapping();
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.candidateTableNames();
 		}
 
 		public Table getDbTable(String tableName) {
-			return getAssociationOverride().getOwner().getDbTable(tableName);
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getDbTable(tableName);
 		}
 
 		public Table getReferencedColumnDbTable() {
-			Entity targetEntity = getTargetEntity();
-			return (targetEntity == null) ? null : targetEntity.getPrimaryDbTable();
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getReferencedColumnDbTable();
 		}
 		
 		public boolean isVirtual(BaseJoinColumn joinColumn) {
@@ -185,27 +233,31 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 		}
 
 		public int joinColumnsSize() {
-			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumnsSize();
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.joinColumnsSize();
+		}
+
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange(astRoot);
 		}
 
 		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return getAssociationOverride().getOwner().buildColumnUnresolvedNameMessage(getAssociationOverride(), column, textRange);
+			return getAssociationOverrideOwner().buildColumnUnresolvedNameMessage(getAssociationOverride(), column, textRange);
 		}
 
 		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			return getAssociationOverride().getOwner().buildColumnTableNotValidMessage(getAssociationOverride(), column, textRange);
+			return getAssociationOverrideOwner().buildColumnTableNotValidMessage(getAssociationOverride(), column, textRange);
 		}
 
 		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverride().getOwner().buildColumnUnresolvedReferencedColumnNameMessage(getAssociationOverride(), column, textRange);
+			return getAssociationOverrideOwner().buildColumnUnresolvedReferencedColumnNameMessage(getAssociationOverride(), column, textRange);
 		}
 
 		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverride().getOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
+			return getAssociationOverrideOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
 		}
 
 		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverride().getOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
+			return getAssociationOverrideOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
 		}
 	}
 

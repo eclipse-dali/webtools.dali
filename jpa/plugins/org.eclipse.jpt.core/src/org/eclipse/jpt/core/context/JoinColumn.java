@@ -34,9 +34,11 @@ public interface JoinColumn
 	{
 
 		/**
-		 * return the entity referenced by the join column
+		 * The target of the relationship will usually be the target entity.
+		 * In the case of a target foreign key relationship the source and target
+		 * are swapped.
 		 */
-		Entity getTargetEntity();
+		Entity getRelationshipTarget();
 
 		/**
 		 * return the join column's attribute name

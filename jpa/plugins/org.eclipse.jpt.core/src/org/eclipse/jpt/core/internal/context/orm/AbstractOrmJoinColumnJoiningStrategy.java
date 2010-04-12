@@ -17,14 +17,17 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumnsMapping;
+import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -88,6 +91,26 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 		return this.getRelationshipReference().getRelationshipMapping();
 	}
 	
+	public String getTableName() {
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? null : getRelationshipSource().getPrimaryTableName();
+	}
+
+	public Table getDbTable(String tableName) {
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? null : typeMapping.getDbTable(tableName);
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? false : typeMapping.tableNameIsInvalid(tableName);
+	}
+
+	protected Iterator<String> candidateTableNames() {
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? EmptyIterator.<String> instance() : typeMapping.associatedTableNamesIncludingInherited();
+	}
+	
 	public void addStrategy() {
 		if (specifiedJoinColumnsSize() == 0) {
 			addSpecifiedJoinColumn(0);
@@ -98,6 +121,11 @@ public abstract class AbstractOrmJoinColumnJoiningStrategy
 		for (JoinColumn each : CollectionTools.iterable(specifiedJoinColumns())) {
 			removeSpecifiedJoinColumn(each);
 		}
+	}
+
+	public Table getReferencedColumnDbTable() {
+		TypeMapping relationshipTarget = getRelationshipTarget();
+		return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 	}
 	
 	

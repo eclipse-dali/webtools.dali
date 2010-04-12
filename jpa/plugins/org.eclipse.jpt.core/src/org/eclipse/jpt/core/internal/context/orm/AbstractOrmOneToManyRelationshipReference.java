@@ -105,7 +105,12 @@ public abstract class AbstractOrmOneToManyRelationshipReference
 		return this.mappedByJoiningStrategy.relationshipIsOwnedBy(mapping);
 	}
 	
-	
+	@Override
+	public boolean isTargetForeignKeyRelationship() {
+		return getJoinColumnJoiningStrategy().isTargetForeignKeyRelationship();
+	}
+
+
 	// **************** mapped by **********************************************
 	
 	public OrmMappedByJoiningStrategy getMappedByJoiningStrategy() {

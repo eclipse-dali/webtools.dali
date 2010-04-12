@@ -31,6 +31,7 @@ public interface CollectionMapping2_0
 	extends CollectionMapping
 {
 
+	Orderable2_0 getOrderable();
 
 	// **************** map key class **************************************
 	

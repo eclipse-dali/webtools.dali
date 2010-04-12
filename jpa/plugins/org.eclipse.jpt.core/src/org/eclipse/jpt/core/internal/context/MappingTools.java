@@ -138,7 +138,7 @@ public class MappingTools {
 		}
 		String prefix = owner.getAttributeName();
 		if (prefix == null) {
-			Entity targetEntity = owner.getTargetEntity();
+			Entity targetEntity = owner.getRelationshipTarget();
 			if (targetEntity == null) {
 				return null;
 			}
@@ -169,11 +169,19 @@ public class MappingTools {
 		if (joinColumnOwner.joinColumnsSize() != 1) {
 			return null;
 		}
-		Entity targetEntity = joinColumnOwner.getTargetEntity();
+		Entity targetEntity = joinColumnOwner.getRelationshipTarget();
 		if (targetEntity == null) {
 			return null;
 		}
 		return targetEntity.getPrimaryKeyColumnName();
+//spec states: 
+//The same name as the primary key column of the referenced table.
+//If we do this instead I think we would need the call to convertNameToIdentifier in buildJoinColumnDefaultName
+//		Table refDbTable = joinColumnOwner.getReferencedColumnDbTable();
+//		if (refDbTable != null && refDbTable.getPrimaryKeyColumnsSize() == 1) {
+//			return refDbTable.getPrimaryKeyColumn().getName();
+//		}
+//		return null;
 	}
 
 	public static ColumnMapping getColumnMapping(String attributeName, PersistentType persistentType) {

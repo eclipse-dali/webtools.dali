@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Entity;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * The state object used to create or edit a primary key join column on a
@@ -26,7 +25,7 @@ import org.eclipse.jpt.db.Table;
  * @see JoinColumnJoiningStrategy
  * @see JoinColumnInJoiningStrategyDialog
  *
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  */
 public class JoinColumnInJoiningStrategyStateObject 
@@ -50,63 +49,46 @@ public class JoinColumnInJoiningStrategyStateObject
 	public JoinColumnJoiningStrategy getOwner() {
 		return (JoinColumnJoiningStrategy) super.getOwner();
 	}
-	
-	private RelationshipReference getRelationshipReference() {
-		return getOwner().getRelationshipReference();
+
+	@Override
+	public ListIterator<String> tables() {
+		Schema schema = getDbSchema();
+		return schema == null ? super.tables() : CollectionTools.list(schema.getSortedTableIdentifiers()).listIterator();
 	}
 	
-	private RelationshipMapping getRelationshipMapping() {
-		return getRelationshipReference().getRelationshipMapping();
+	protected Schema getDbSchema() {
+		return getRelationshipSource().getDbSchema();
+	}
+
+	protected TypeMapping getRelationshipSource() {
+		return getOwner().getRelationshipSource();
 	}
 	
-	private TypeMapping getTypeMapping() {
-		return getOwner().getTypeMapping();
+	protected TypeMapping getRelationshipTarget() {
+		return getOwner().getRelationshipTarget();
 	}
 	
 	@Override
 	public String getDefaultTable() {
 		JoinColumn joinColumn = getJoinColumn();
-		
+
 		if (joinColumn != null) {
 			return joinColumn.getDefaultTable();
 		}
 		
-		return getTypeMapping().getPrimaryTableName();
+		return getRelationshipSource().getPrimaryTableName();
 	}
 	
 	@Override
 	public Table getNameTable() {
-		Schema schema = this.getDbSchema();
-		if (schema == null) {
-			return null;
-		}
-
-		String tableIdentifier = this.getTable();
-		if (tableIdentifier == null) {
-			tableIdentifier = this.getDefaultTable();
-		}
-
-		return schema.getTableForIdentifier(tableIdentifier);
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? null : typeMapping.getPrimaryDbTable();
 	}
 	
 	@Override
 	public Table getReferencedNameTable() {
-		RelationshipMapping relationshipMapping = getRelationshipMapping();
-
-		if (relationshipMapping == null){
-			return null;
-		}
-		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
-
-		if (targetEntity != null) {
-			return targetEntity.getPrimaryDbTable();
-		}
-
-		return null;
+		TypeMapping relationshipTarget = getRelationshipTarget();
+		return relationshipTarget == null ? null : relationshipTarget.getPrimaryDbTable();
 	}
-	
-	@Override
-	public Schema getDbSchema() {
-		return getTypeMapping().getDbSchema();
-	}
+
 }
