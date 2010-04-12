@@ -153,7 +153,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		return this.settingsGroup.getBindingsFileNames();
 	}
 	
-	protected Boolean usesMoxy() {
+	protected boolean usesMoxy() {
 		return this.usesMoxy;
 	}
 	
