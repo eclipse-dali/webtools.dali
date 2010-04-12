@@ -97,7 +97,7 @@ public class GenericJavaAttributeOverride
 	public String getDefaultColumnName() {
 		Column column = resolveOverriddenColumn();
 		if (column == null) {
-			return null;
+			return getName();
 		}
 		return column.getName();
 	}
@@ -117,7 +117,7 @@ public class GenericJavaAttributeOverride
 	}
 	
 	protected Column resolveOverriddenColumn() {
-		return getOwner().resolveOverriddenColumn(getName());
+		return isVirtual() ? getOwner().resolveOverriddenColumn(getName()) : null;
 	}
 	
 	public boolean tableNameIsInvalid(String tableName) {
