@@ -88,7 +88,7 @@ public abstract class AbstractJpaNode
 
 	// ********** IAdaptable implementation **********
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class adapter) {
 		return Platform.getAdapterManager().getAdapter(this, adapter);
 	}
