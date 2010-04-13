@@ -64,23 +64,23 @@ public interface JpaProject2_0
 
 	/**
 	 * Return the JPA project's generated metamodel Java resource persistent
-	 * types.
+	 * top-level types.
 	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourcePersistentType#isGeneratedMetamodel(IPackageFragmentRoot)
 	 */
-	Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes();
+	Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTopLevelTypes();
 
 	/**
-	 * Return the generated metamodel Java resource persistent type in the
-	 * specified file. Return null if any of the following is true:<ul>
+	 * Return the top-level generated metamodel Java resource persistent type
+	 * in the specified file. Return null if any of the following is true:<ul>
 	 * <li>the file is not a Java source file
-	 * <li>the file does not contain the source for one and only one Java class
-	 * <li>the Java class is not annotated with the appropriate
-	 *     <code>javax.persistence.metamodel.StaticMetamodel</code> annotation
-	 * <li>the Java class is not annotated with the appropriate
+	 * <li>the top-level Java class is not annotated with the appropriate
 	 *     <code>javax.annotation.Generated</code> annotation
+	 * <li>neither the top-level Java class nor any of its nested classes
+	 *     is annotated with the appropriate
+	 *     <code>javax.persistence.metamodel.StaticMetamodel</code> annotation
 	 * <ul>
 	 */
-	JavaResourcePersistentType2_0 getGeneratedMetamodelType(IFile file);
+	JavaResourcePersistentType2_0 getGeneratedMetamodelTopLevelType(IFile file);
 
 
 	// ********** construction config **********

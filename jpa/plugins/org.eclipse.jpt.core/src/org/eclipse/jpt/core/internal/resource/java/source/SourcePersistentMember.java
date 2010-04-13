@@ -40,11 +40,11 @@ import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 /**
  * Java source persistent member (annotations, "persistable")
  */
-abstract class SourcePersistentMember<E extends Member>
+abstract class SourcePersistentMember<M extends Member>
 	extends SourceNode
 	implements JavaResourcePersistentMember
 {
-	final E member;
+	final M member;
 
 	/**
 	 * annotations; no duplicates (java compiler has an error for duplicates)
@@ -56,7 +56,7 @@ abstract class SourcePersistentMember<E extends Member>
 
 	// ********** construction/initialization **********
 
-	SourcePersistentMember(JavaResourceNode parent, E member) {
+	SourcePersistentMember(JavaResourceNode parent, M member) {
 		super(parent);
 		this.member = member;
 	}

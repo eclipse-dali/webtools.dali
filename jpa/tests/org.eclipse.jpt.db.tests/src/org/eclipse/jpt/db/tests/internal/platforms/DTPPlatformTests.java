@@ -57,8 +57,8 @@ import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.db.ForeignKey.ColumnPair;
 import org.eclipse.jpt.db.tests.internal.JptDbTestsPlugin;
+import org.eclipse.jpt.utility.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
-import org.eclipse.jpt.utility.internal.IndentingPrintWriter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.ResultSetIterator;
 

@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -60,7 +60,7 @@ public interface JpaFactory2_0
 	 */
 	DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource);
 
-	PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType);
+	MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType);
 
 	
 	// ********** Java Context Model **********

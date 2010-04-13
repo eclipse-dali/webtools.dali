@@ -924,7 +924,7 @@ public abstract class AbstractJpaProject
 
 	// ********** metamodel **********
 
-	public Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes() {
+	public Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTopLevelTypes() {
 		if (this.metamodelSourceFolderName == null) {
 			return EmptyIterable.instance();
 		}
@@ -932,25 +932,23 @@ public abstract class AbstractJpaProject
 		return new FilteringIterable<JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes2_0()) {
 			@Override
 			protected boolean accept(JavaResourcePersistentType2_0 jrpt) {
-				return jrpt.isGeneratedMetamodel(genSourceFolder);
+				return jrpt.isGeneratedMetamodelTopLevelType(genSourceFolder);
 			}
 		};
 	}
 
-	public JavaResourcePersistentType2_0 getGeneratedMetamodelType(IFile file) {
+	public JavaResourcePersistentType2_0 getGeneratedMetamodelTopLevelType(IFile file) {
 		JavaResourceCompilationUnit jrcu = this.getJavaResourceCompilationUnit(file);
 		if (jrcu == null) {
 			return null;  // hmmm...
 		}
+		// TODO add API to JRCU to get top-level persistent type
 		Iterator<JavaResourcePersistentType> types = jrcu.persistentTypes();
 		if ( ! types.hasNext()) {
 			return null;  // no types in the file
 		}
 		JavaResourcePersistentType2_0 jrpt = (JavaResourcePersistentType2_0) types.next();
-		if (types.hasNext()) {
-			return null;  // should have only a single type in the file
-		}
-		return jrpt.isGeneratedMetamodel() ? jrpt : null;
+		return jrpt.isGeneratedMetamodelTopLevelType() ? jrpt : null;
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {

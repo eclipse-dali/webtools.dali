@@ -62,6 +62,8 @@ final class SourcePersistentType
 
 	private String superclassQualifiedName;
 
+	private String declaringTypeName;
+
 	private boolean abstract_;  // 'abstract' is a reserved word
 
 	private final Vector<JavaResourcePersistentType> types;
@@ -134,6 +136,7 @@ final class SourcePersistentType
 		this.name = this.buildName(astRoot);
 		this.qualifiedName = this.buildQualifiedName(astRoot);
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(astRoot);
+		this.declaringTypeName = this.buildDeclaringTypeName(astRoot);
 		this.abstract_ = this.buildAbstract(astRoot);
 		this.initializeTypes(astRoot);
 		this.initializeFields(astRoot);
@@ -173,6 +176,7 @@ final class SourcePersistentType
 		this.syncName(this.buildName(astRoot));
 		this.syncQualifiedName(this.buildQualifiedName(astRoot));
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
+		this.syncDeclaringTypeName(this.buildDeclaringTypeName(astRoot));
 		this.syncAbstract(this.buildAbstract(astRoot));
 		this.syncTypes(astRoot);
 		this.syncFields(astRoot);
@@ -308,6 +312,27 @@ final class SourcePersistentType
 		ITypeBinding superclass = binding.getSuperclass();
 		return (superclass == null) ? null : superclass.getTypeDeclaration().getQualifiedName();
 	}
+
+	// ***** declaring type name
+	public String getDeclaringTypeName() {
+		return this.declaringTypeName;
+	}
+
+	private void syncDeclaringTypeName(String astDeclaringTypeName) {
+		String old = this.declaringTypeName;
+		this.declaringTypeName = astDeclaringTypeName;
+		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, astDeclaringTypeName);
+	}
+
+	private String buildDeclaringTypeName(CompilationUnit astRoot) {
+		ITypeBinding binding = this.member.getBinding(astRoot);
+		if (binding == null) {
+			return null;
+		}
+		ITypeBinding declaringClass = binding.getDeclaringClass();
+		return (declaringClass == null) ? null : declaringClass.getTypeDeclaration().getQualifiedName();
+	}
+
 
 	// ***** abstract
 	public boolean isAbstract() {
@@ -654,29 +679,50 @@ final class SourcePersistentType
 	/**
 	 * The type must be:<ul>
 	 * <li>in the specified source folder
-	 * <li>annotated with <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
-	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with the appropriate
-	 *     <code>value</code>
+	 * <li>a top-level type
+	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with
+	 *     the appropriate <code>value</code> and <code>date</code>
+	 * <li>either itself or one of its nested types annotated with
+	 *     <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
 	 * </ul>
 	 */
-	public boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder) {
+	public boolean isGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {
 		if ( ! this.getSourceFolder().equals(sourceFolder)) {
 			return false;
 		}
-		return this.isGeneratedMetamodel();
+		return this.isGeneratedMetamodelTopLevelType();
 	}
 
 	/**
 	 * The type must be:<ul>
-	 * <li>annotated with <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
-	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with the appropriate
-	 *     <code>value</code> and <code>date</code>
+	 * <li>a top-level type
+	 * <li>annotated with <code>&#64;javax.annotation.Generated</code> with
+	 *     the appropriate <code>value</code> and <code>date</code>
+	 * <li>either itself or one of its nested types annotated with
+	 *     <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>
 	 * </ul>
 	 */
-	public boolean isGeneratedMetamodel() {
-		if (this.staticMetamodelAnnotation == null) {
+	public boolean isGeneratedMetamodelTopLevelType() {
+		if ( !  this.isGenerated()) {
 			return false;
 		}
+		// if we get here we know we have a top-level type, since only top-level
+		// types are annotated @Generated; now see if anything is a metamodel
+		for (Iterator<JavaResourcePersistentType> stream = this.allTypes(); stream.hasNext(); ) {
+			JavaResourcePersistentType2_0 type = (JavaResourcePersistentType2_0) stream.next();
+			if (type.isMetamodel()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * The type must be annotated with
+	 * <code>&#64;javax.annotation.Generated</code> with the appropriate
+	 * <code>value</code> and <code>date</code>.
+	 */
+	protected boolean isGenerated() {
 		if (this.generatedAnnotation == null) {
 			return false;
 		}
@@ -690,6 +736,14 @@ final class SourcePersistentType
 			return false;
 		}
 		return true;
+	}
+
+	/**
+	 * The type must be annotated with
+	 * <code>&#64;javax.persistence.metamodel.StaticMetamodel</code>.
+	 */
+	public boolean isMetamodel() {
+		return this.staticMetamodelAnnotation != null;
 	}
 
 	private IPackageFragmentRoot getSourceFolder() {

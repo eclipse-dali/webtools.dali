@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
 
 /**
  * JPA 2.0 context persistent type.
@@ -26,28 +24,14 @@ import org.eclipse.jpt.core.jpa2.MetamodelSynchronizer;
  * @since 2.3
  */
 public interface PersistentType2_0
-	extends PersistentType, MetamodelSynchronizer
+	extends PersistentType, MetamodelSourceType
 {
 	/**
-	 * Return the file generated as a result of the metamodel synchronization.
+	 * Return the name of the persistent type's "declaring type".
+	 * Return <code>null</code> if the persistent type is a top-level type.
+	 * The declaring type may or may not be a persistent type.
 	 */
-	IFile getMetamodelFile();
-
-	/**
-	 * This interface is used by the persistent type to synchonize the metamodel
-	 * as required by changes to the context model.
-	 */
-	interface MetamodelSynchronizer {
-		/**
-		 * Return the file generated as a result of the metamodel synchronization.
-		 */
-		IFile getFile();
-
-		/**
-		 * Synchronize the metamodel with the current state of the persistent
-		 * type.
-		 */
-		void synchronize();
-	}
+	String getDeclaringTypeName();
+		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
 
 }

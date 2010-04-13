@@ -48,6 +48,8 @@ final class BinaryPersistentType
 
 	private String superclassQualifiedName;
 
+	private String declaringTypeName;
+
 	private boolean abstract_;  // 'abstract' is a reserved word
 
 	private final Vector<JavaResourcePersistentAttribute> fields;
@@ -64,6 +66,7 @@ final class BinaryPersistentType
 		this.name = this.buildName();
 		this.qualifiedName = this.buildQualifiedName();
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName();
+		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.abstract_ = this.buildAbstract();
 		this.fields = this.buildFields();
 		this.methods = this.buildMethods();
@@ -80,6 +83,7 @@ final class BinaryPersistentType
 		this.setName(this.buildName());
 		this.setQualifiedName(this.buildQualifiedName());
 		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName());
+		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.setAbstract(this.buildAbstract());
 		this.updateFields();
 		this.updateMethods();
@@ -175,6 +179,22 @@ final class BinaryPersistentType
 			JptCorePlugin.log(ex);
 			return null;
 		}
+	}
+
+	// ***** declaring type name
+	public String getDeclaringTypeName() {
+		return this.declaringTypeName;
+	}
+
+	private void setDeclaringTypeName(String declaringTypeName) {
+		String old = this.declaringTypeName;
+		this.declaringTypeName = declaringTypeName;
+		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, declaringTypeName);
+	}
+
+	private String buildDeclaringTypeName() {
+		IType declaringType = this.getMember().getDeclaringType();
+		return (declaringType == null) ? null : declaringType.getFullyQualifiedName('.');  // no parameters are included here
 	}
 
 	// ***** abstract
@@ -544,11 +564,15 @@ final class BinaryPersistentType
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder) {
+	public boolean isGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean isGeneratedMetamodel() {
+	public boolean isGeneratedMetamodelTopLevelType() {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isMetamodel() {
 		throw new UnsupportedOperationException();
 	}
 

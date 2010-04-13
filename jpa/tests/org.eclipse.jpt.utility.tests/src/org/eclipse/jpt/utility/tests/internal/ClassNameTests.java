@@ -69,6 +69,9 @@ public class ClassNameTests extends TestCase {
 		assertEquals("Object[]", ClassName.getSimpleName(java.lang.Object[].class.getName()));
 		assertEquals("Object[][]", ClassName.getSimpleName(java.lang.Object[][].class.getName()));
 
+		assertEquals(java.util.Map.class.getSimpleName(), ClassName.getSimpleName(java.util.Map.class.getName()));
+		assertEquals(java.util.Map.Entry.class.getSimpleName(), ClassName.getSimpleName(java.util.Map.Entry.class.getName()));
+
 		assertEquals("int", ClassName.getSimpleName(int.class.getName()));
 		assertEquals("int[]", ClassName.getSimpleName(int[].class.getName()));
 		assertEquals("int[][]", ClassName.getSimpleName(int[][].class.getName()));
@@ -86,9 +89,12 @@ public class ClassNameTests extends TestCase {
 	}
 
 	public void testGetPackageName() throws Exception {
-		assertEquals("java.lang", ClassName.getPackageName(java.lang.Object.class.getName()));
+		assertEquals(java.lang.Object.class.getPackage().getName(), ClassName.getPackageName(java.lang.Object.class.getName()));
 		assertEquals("", ClassName.getPackageName(java.lang.Object[].class.getName()));
 		assertEquals("", ClassName.getPackageName(java.lang.Object[][].class.getName()));
+
+		assertEquals(java.util.Map.class.getPackage().getName(), ClassName.getPackageName(java.util.Map.class.getName()));
+		assertEquals(java.util.Map.Entry.class.getPackage().getName(), ClassName.getPackageName(java.util.Map.Entry.class.getName()));
 
 		assertEquals("", ClassName.getPackageName(int.class.getName()));
 		assertEquals("", ClassName.getPackageName(int[].class.getName()));

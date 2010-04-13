@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
@@ -39,7 +40,8 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
-import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
+import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentType2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -48,6 +50,7 @@ import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.xml.EmfTools;
+import org.eclipse.jpt.core.utility.BodySourceWriter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -90,9 +93,11 @@ public class GenericOrmPersistentType
 
 	protected PersistentType superPersistentType;
 
+	protected String declaringTypeName;
+
 	protected JavaPersistentType javaPersistentType;
 
-	protected final PersistentType2_0.MetamodelSynchronizer metamodelSynchronizer;
+	protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
 
 
 	public GenericOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping) {
@@ -102,12 +107,15 @@ public class GenericOrmPersistentType
 		this.defaultAccess = this.buildDefaultAccess();
 		this.javaPersistentType = this.buildJavaPersistentType();
 		this.superPersistentType = this.buildSuperPersistentType();
+		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.initializeAttributes();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 	}
 
-	protected PersistentType2_0.MetamodelSynchronizer buildMetamodelSynchronizer() {
-		return ((JpaFactory2_0) this.getJpaFactory()).buildPersistentTypeMetamodelSynchronizer(this);
+	protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+		return this.isJpa2_0Compatible() ?
+				((JpaFactory2_0) this.getJpaFactory()).buildMetamodelSynchronizer(this) :
+				null;
 	}
 
 
@@ -119,6 +127,7 @@ public class GenericOrmPersistentType
 		this.mapping.update();
 		this.updateJavaPersistentType();
 		this.updateSuperPersistentType();
+		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.updateAttributes();
 	}
 
@@ -138,8 +147,9 @@ public class GenericOrmPersistentType
 	// ********** name **********
 
 	public String getName() {
-		String className = this.mapping.getClass_();
-		return className != null ? className.replace('$', '.') : null;
+		String name = this.mapping.getClass_();
+		// nested class names are specified with a '$' in orm.xml
+		return (name == null) ? null : name.replace('$', '.');
 	}
 
 	public String getShortName(){
@@ -687,8 +697,8 @@ public class GenericOrmPersistentType
 		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getName());
 	}
 
-	protected JavaResourcePersistentType getJavaResourcePersistentType(String qualifiedClassName) {
-		return this.getJpaProject().getJavaResourcePersistentType(qualifiedClassName);
+	protected JavaResourcePersistentType getJavaResourcePersistentType(String className) {
+		return this.getJpaProject().getJavaResourcePersistentType(className);
 	}
 
 	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
@@ -757,6 +767,28 @@ public class GenericOrmPersistentType
 	}
 
 
+	// ********** declaring type name **********
+
+	public String getDeclaringTypeName() {
+		return this.declaringTypeName;
+	}
+
+	protected void setDeclaringTypeName(String declaringTypeName) {
+		String old = this.declaringTypeName;
+		this.declaringTypeName = declaringTypeName;
+		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, declaringTypeName);
+	}
+
+	protected String buildDeclaringTypeName() {
+		return this.isJpa2_0Compatible() ? buildDeclaringTypeName_() : null;
+	}
+
+	protected String buildDeclaringTypeName_() {
+		return (this.javaPersistentType == null) ?
+				null : ((JavaPersistentType2_0) this.javaPersistentType).getDeclaringTypeName();
+	}
+
+
 	// ********** metamodel **********
 
 	public IFile getMetamodelFile() {
@@ -767,13 +799,23 @@ public class GenericOrmPersistentType
 		// do nothing - probably shouldn't be called...
 	}
 
+	public boolean isManaged() {
+		return true;
+	}
+
 	/**
 	 * All orm.xml persistent types must be able to generate a static metamodel
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml files.
 	 */
-	public void synchronizeMetamodel() {
+	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
 		if (this.javaPersistentType != null) {
-			this.metamodelSynchronizer.synchronize();
+			this.metamodelSynchronizer.synchronize(memberTypeTree);
+		}
+	}
+
+	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+		if (this.javaPersistentType != null) {
+			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 		}
 	}
 

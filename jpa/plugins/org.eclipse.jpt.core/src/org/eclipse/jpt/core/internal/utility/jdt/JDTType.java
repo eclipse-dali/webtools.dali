@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,10 +98,12 @@ public class JDTType
 	 */
 	public TypeDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		Type declaringType = this.getDeclaringType();
-		return (declaringType == null) ?
-				this.getTopLevelTypeDeclaration(astRoot)
-			:
-				this.getNestedTypeDeclaration(declaringType.getBodyDeclaration(astRoot));
+		if (declaringType == null) {
+			return this.getTopLevelTypeDeclaration(astRoot);
+		}
+		TypeDeclaration typeDeclaration = declaringType.getBodyDeclaration(astRoot);
+		// the type declaration can be null when the source is completely hosed
+		return (typeDeclaration == null) ? null : this.getNestedTypeDeclaration(typeDeclaration);
 	}
 
 	public boolean isPersistable(CompilationUnit astRoot) {

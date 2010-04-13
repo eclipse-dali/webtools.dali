@@ -78,15 +78,15 @@ public class GenericOrmIdClassReference
 		String oldClassName = this.specifiedIdClassName;
 		this.specifiedIdClassName = newClassName;
 		if (valuesAreDifferent(oldClassName, newClassName)) {
-			if (getIdClassElement() != null) {
-				getIdClassElement().setClassName(newClassName);
-				if (getIdClassElement().isUnset()) {
+			if (getIdXmlClassRef() != null) {
+				getIdXmlClassRef().setClassName(newClassName);
+				if (getIdXmlClassRef().isUnset()) {
 					removeIdClassElement();
 				}
 			}
 			else if (newClassName != null) {
 				addIdClassElement();
-				getIdClassElement().setClassName(newClassName);
+				getIdXmlClassRef().setClassName(newClassName);
 			}
 		}
 		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
@@ -99,11 +99,8 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected String buildSpecifiedIdClassName() {
-		XmlClassReference element = getIdClassElement();
-		if (element != null) {
-			return element.getClassName();
-		}
-		return null;
+		XmlClassReference idXmlClassRef = this.getIdXmlClassRef();
+		return (idXmlClassRef == null) ? null : idXmlClassRef.getClassName();
 	}
 	
 	public String getDefaultIdClassName() {
@@ -156,8 +153,8 @@ public class GenericOrmIdClassReference
 		return (XmlIdClassContainer) getResourceTypeMapping();
 	}
 	
-	protected XmlClassReference getIdClassElement() {
-		return getResourceIdClassContainer().getIdClass();
+	protected XmlClassReference getIdXmlClassRef() {
+		return this.getResourceIdClassContainer().getIdClass();
 	}
 	
 	protected void addIdClassElement() {
@@ -169,10 +166,17 @@ public class GenericOrmIdClassReference
 	}
 	
 	protected JavaResourcePersistentType getResourceIdClass() {
-		XmlClassReference element = getIdClassElement();
-		String className = (element == null) ?
-				null : element.getClassName();
-		return getEntityMappings().resolveJavaResourcePersistentType(className);
+		XmlClassReference idXmlClassRef = this.getIdXmlClassRef();
+		if (idXmlClassRef == null) {
+			return null;
+		}
+
+		String className = idXmlClassRef.getClassName();
+		if (className == null) {
+			return null;
+		}
+		
+		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
 	}
 	
 	protected EntityMappings getEntityMappings() {
@@ -208,9 +212,10 @@ public class GenericOrmIdClassReference
 	// **************** validation ********************************************
 	
 	public TextRange getValidationTextRange() {
-		XmlClassReference element = getIdClassElement();
-		return (element == null) ?
-			getTypeMapping().getValidationTextRange() : element.getClassNameTextRange();
+		XmlClassReference idXmlClassRef = getIdXmlClassRef();
+		return (idXmlClassRef == null) ?
+				this.getTypeMapping().getValidationTextRange() :
+				idXmlClassRef.getClassNameTextRange();
 	}
 	
 	@Override

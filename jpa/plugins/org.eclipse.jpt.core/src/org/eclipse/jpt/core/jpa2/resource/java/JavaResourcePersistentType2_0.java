@@ -36,15 +36,22 @@ public interface JavaResourcePersistentType2_0
 	GeneratedAnnotation getGeneratedAnnotation();
 
 	/**
-	 * Return whether the type is a metamodel type generated in the specified
-	 * source folder.
+	 * Return whether the type is a metamodel top-level type generated in the
+	 * specified source folder.
 	 */
-	boolean isGeneratedMetamodel(IPackageFragmentRoot sourceFolder);
+	boolean isGeneratedMetamodelTopLevelType(IPackageFragmentRoot sourceFolder);
 
 	/**
-	 * Return whether the type is a generated metamodel type.
+	 * Return whether the type is a generated metamodel top-level type.
+	 * The type is generated and either it or one of its nested types is a
+	 * metamodel type.
 	 */
-	boolean isGeneratedMetamodel();
+	boolean isGeneratedMetamodelTopLevelType();
+
+	/**
+	 * Return whether the type is a metamodel type.
+	 */
+	boolean isMetamodel();
 
 	/**
 	 * The value used to tag a generated type:

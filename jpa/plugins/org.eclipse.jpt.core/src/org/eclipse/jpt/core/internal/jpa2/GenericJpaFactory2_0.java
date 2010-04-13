@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
@@ -27,7 +28,6 @@ import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
@@ -48,7 +48,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -89,8 +89,8 @@ public class GenericJpaFactory2_0
 	}
 	
 	@Override
-	public PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {
-		return new GenericPersistentTypeMetamodelSynchronizer(persistentType);
+	public MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType) {
+		return new GenericMetamodelSynchronizer(sourceType);
 	}
 	
 	

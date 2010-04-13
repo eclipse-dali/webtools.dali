@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaColumn;
-import org.eclipse.jpt.core.internal.jpa2.GenericPersistentTypeMetamodelSynchronizer;
+import org.eclipse.jpt.core.internal.jpa2.GenericMetamodelSynchronizer;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
@@ -40,6 +40,7 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaPersistentType
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenerator2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
@@ -81,8 +82,8 @@ public class EclipseLink2_0JpaFactory
 	}
 	
 	@Override
-	public PersistentType2_0.MetamodelSynchronizer buildPersistentTypeMetamodelSynchronizer(PersistentType2_0 persistentType) {
-		return new GenericPersistentTypeMetamodelSynchronizer(persistentType);
+	public MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType) {
+		return new GenericMetamodelSynchronizer(sourceType);
 	}
 	
 	// ********** Java Context Model **********

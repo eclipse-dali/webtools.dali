@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -120,7 +121,7 @@ public class GenericClassRef
 	// ********** queries **********
 
 	public boolean isFor(String typeName) {
-		return (this.className != null) && this.className.replace('$', '.').equals(typeName);
+		return Tools.valuesAreEqual(typeName, this.getJavaClassName());
 	}
 
 	public boolean isVirtual() {
@@ -153,6 +154,14 @@ public class GenericClassRef
 		String old = this.className;
 		this.className = newClassName;
 		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, newClassName);
+	}
+
+	/**
+	 * Nested classes will be qualified with a '$'; the Java name is qualified
+	 * with a '.'. Like <code>className</code>, this can be <code>null</code>.
+	 */
+	protected String getJavaClassName() {
+		return StringTools.stringIsEmpty(this.className) ? null : this.className.replace('$', '.');
 	}
 
 
@@ -194,7 +203,8 @@ public class GenericClassRef
 	}
 
 	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		return (this.className == null) ? null : this.getJpaProject().getJavaResourcePersistentType(this.className.replace('$', '.'));
+		String javaClassName = this.getJavaClassName();
+		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourcePersistentType(javaClassName);
 	}
 
 
@@ -247,7 +257,7 @@ public class GenericClassRef
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-					new String[] {this.className}, 
+					new String[] {this.getJavaClassName()}, 
 					this, 
 					this.getValidationTextRange()
 				)
@@ -255,16 +265,18 @@ public class GenericClassRef
 			return;
 		}
 
-		// 190062 validate Java class only if this is the only reference to it
+		// 190062 validate Java class only if this is the only reference to it;
+		// i.e. the persistence.xml ref is the only ref - none of the mapping
+		// files reference the same class
 		boolean validateJavaPersistentType = true;
-		for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.className); stream.hasNext(); ) {
+		for (Iterator<MappingFileRef> stream = this.getPersistenceUnit().mappingFileRefsContaining(this.getJavaClassName()); stream.hasNext(); ) {
 			validateJavaPersistentType = false;
 			MappingFileRef mappingFileRef = stream.next();
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.LOW_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS,
-					new String[] {this.className, mappingFileRef.getFileName()},
+					new String[] {this.getJavaClassName(), mappingFileRef.getFileName()},
 					this,
 					this.getValidationTextRange()
 				)
@@ -289,7 +301,7 @@ public class GenericClassRef
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.className);
+		sb.append(this.getJavaClassName());
 	}
 
 }

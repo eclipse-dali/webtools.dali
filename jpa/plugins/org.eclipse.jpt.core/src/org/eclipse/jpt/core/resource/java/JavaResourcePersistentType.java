@@ -45,6 +45,13 @@ public interface JavaResourcePersistentType
 		String SUPERCLASS_QUALIFIED_NAME_PROPERTY = "superclassQualifiedName"; //$NON-NLS-1$
 
 	/**
+	 * Return the name of the type's "declaring type".
+	 * Return <code>null</code> if the type is a top-level type.
+	 */
+	String getDeclaringTypeName();
+		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
+	
+	/**
 	 * Return whether the type is abstract.
 	 */
 	boolean isAbstract();

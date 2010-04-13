@@ -10,17 +10,22 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -28,6 +33,7 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -42,13 +48,16 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
+import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.ValidationMode;
 import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -56,6 +65,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperties;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
+import org.eclipse.jpt.core.utility.BodySourceWriter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
@@ -70,6 +80,7 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -1690,7 +1701,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected Iterable<IFile> getGeneratedMetamodelFiles() {
-		return new TransformationIterable<JavaResourcePersistentType2_0, IFile>(this.getGeneratedMetamodelTypes()) {
+		return new TransformationIterable<JavaResourcePersistentType2_0, IFile>(this.getGeneratedMetamodelTopLevelTypes()) {
 			@Override
 			protected IFile transform(JavaResourcePersistentType2_0 jrpt) {
 				return jrpt.getFile();
@@ -1698,26 +1709,97 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 
-	protected Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTypes() {
-		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelTypes();
+	protected Iterable<JavaResourcePersistentType2_0> getGeneratedMetamodelTopLevelTypes() {
+		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelTopLevelTypes();
 	}
 
 	/**
-	 * If we have the same persistent type in multiple locations, the last one
-	 * we encounter wins (i.e. the classes in the orm.xml take precedence).
+	 * Not the prettiest code....
 	 */
 	public void synchronizeMetamodel() {
-		// gather the persistent unit's types (eliminating duplicates, ignoring case)
-		HashMap<String, PersistentType2_0> persistentTypes = new HashMap<String, PersistentType2_0>();
-		this.addContainerPersistentTypesTo(this.getJarFileRefs(), persistentTypes);
-		this.addPersistentTypesTo(this.getNonNullClassRefPersistentTypes(), persistentTypes);
-		this.addContainerPersistentTypesTo(this.getMappingFileRefs(), persistentTypes);
+		// gather up the persistent unit's types, eliminating duplicates;
+		// if we have persistent types with the same name in multiple locations,
+		// the last one we encounter wins (i.e. the classes in the orm.xml take
+		// precedence)
+		HashMap<String, PersistentType2_0> allPersistentTypes = new HashMap<String, PersistentType2_0>();
+		this.addPersistentTypesTo_(this.getJarFileRefs(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getNonNullClassRefPersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo_(this.getMappingFileRefs(), allPersistentTypes);
+
+		// build a list of the top-level types and a tree of their associated
+		// member types etc.
+		ArrayList<MetamodelSourceType> topLevelTypes = new ArrayList<MetamodelSourceType>(allPersistentTypes.size());
+		HashMap<String, Collection<MetamodelSourceType>> memberTypeTree = new HashMap<String, Collection<MetamodelSourceType>>();
+		for (PersistentType2_0 type : allPersistentTypes.values()) {
+			String declaringTypeName = type.getDeclaringTypeName();
+			MetamodelSourceType memberType = type;
+			while (true) {
+				if (declaringTypeName == null) {
+					topLevelTypes.add(memberType);
+					break;  // stop at the top-level type
+				}
+
+				// associate the member type with its declaring type
+				Collection<MetamodelSourceType> memberTypes = memberTypeTree.get(declaringTypeName);
+				if (memberTypes == null) {
+					memberTypes = new ArrayList<MetamodelSourceType>();
+					memberTypeTree.put(declaringTypeName, memberTypes);
+				}
+				memberTypes.add(memberType);
+
+				// move out to the member type's declaring type
+				String memberTypeName = declaringTypeName;
+				// check for a context persistent type
+				memberType = allPersistentTypes.get(memberTypeName);
+				if (memberType != null) {
+					break;  // stop - this will be processed in the outer 'for' loop
+				}
+				// check for a Java resource persistent type
+				JavaResourcePersistentType jrpt = this.getJpaProject().getJavaResourcePersistentType(memberTypeName);
+				if (jrpt != null) {
+					declaringTypeName = jrpt.getDeclaringTypeName();
+				} else {
+					// check for a JDT type
+					IType jdtType = this.findJdtType(memberTypeName);
+					if (jdtType != null) {
+						IType jdtDeclaringType = jdtType.getDeclaringType();
+						declaringTypeName = (jdtDeclaringType == null) ? null : jdtDeclaringType.getFullyQualifiedName('.');
+					} else {
+						// assume we have a non-persistent top-level type...?
+						declaringTypeName = null;
+					}
+				}
+				if (declaringTypeName == null) {
+					memberType = this.selectSourceType(topLevelTypes, memberTypeName);
+				} else {
+					memberType = this.selectSourceType(memberTypeTree.get(declaringTypeName), memberTypeName);
+				}
+				if (memberType != null) {
+					break;  // stop - this type has already been processed
+				}
+				memberType = this.buildNonPersistentMetamodelSourceType(memberTypeName);
+			}
+		}
+
+		// remove any top-level type whose name differs from another only by case,
+		// since, on Windows, file names are case-insensitive :-(
+		// sort the original list so we end up with the same top-level type
+		// remaining every time (i.e. the one that sorts out first)
+		Collections.sort(topLevelTypes, MetamodelSourceType.COMPARATOR);
+		HashSet<String> names = new HashSet<String>(topLevelTypes.size());
+		for (Iterator<MetamodelSourceType> stream = topLevelTypes.iterator(); stream.hasNext(); ) {
+			MetamodelSourceType topLevelType = stream.next();
+			// hopefully this is case-insensitive enough...
+			if ( ! names.add(topLevelType.getName().toLowerCase())) {
+				stream.remove();
+			}
+		}
 
 		// copy the list of metamodel files...
 		HashSet<IFile> deadMetamodelFiles = new HashSet<IFile>(this.metamodelFiles);
 		this.metamodelFiles.clear();
-		for (PersistentType2_0 persistentType : persistentTypes.values()) {
-			IFile metamodelFile = persistentType.getMetamodelFile();
+		for (MetamodelSourceType topLevelType : topLevelTypes) {
+			IFile metamodelFile = topLevelType.getMetamodelFile();
 			// ...remove whatever files are still present...
 			deadMetamodelFiles.remove(metamodelFile);
 			// ...rebuild the list of metamodel files...
@@ -1732,13 +1814,14 @@ public abstract class AbstractPersistenceUnit
 		for (IFile deadMetamodelFile : deadMetamodelFiles) {
 			this.deleteMetamodelFile(deadMetamodelFile);
 		}
+
 		// now generate the metamodel classes
-		for (PersistentType2_0 persistentType : persistentTypes.values()) {
-			persistentType.synchronizeMetamodel();
+		for (MetamodelSourceType topLevelType : topLevelTypes) {
+			topLevelType.synchronizeMetamodel(memberTypeTree);
 		}
 	}
 
-	protected void addContainerPersistentTypesTo(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType2_0> persistentTypeMap) {
+	protected void addPersistentTypesTo_(Iterable<? extends PersistentTypeContainer> ptContainers, HashMap<String, PersistentType2_0> persistentTypeMap) {
 		for (PersistentTypeContainer ptContainer : ptContainers) {
 			this.addPersistentTypesTo(ptContainer.getPersistentTypes(), persistentTypeMap);
 		}
@@ -1747,9 +1830,32 @@ public abstract class AbstractPersistenceUnit
 	protected void addPersistentTypesTo(Iterable<? extends PersistentType> persistentTypes, HashMap<String, PersistentType2_0> persistentTypeMap) {
 		for (PersistentType persistentType : persistentTypes) {
 			if (persistentType.getName() != null) {
-				// hopefully this is case-insensitive enough...
-				persistentTypeMap.put(persistentType.getName().toLowerCase(), (PersistentType2_0) persistentType);
+				persistentTypeMap.put(persistentType.getName(), (PersistentType2_0) persistentType);
 			}
+		}
+	}
+
+	protected MetamodelSourceType selectSourceType(Iterable<MetamodelSourceType> types, String typeName) {
+		if (types != null) {
+			for (MetamodelSourceType type : types) {
+				if (type.getName().equals(typeName)) {
+					return type;
+				}
+			}
+		}
+		return null;
+	}
+
+	protected MetamodelSourceType buildNonPersistentMetamodelSourceType(String nonPersistentTypeName) {
+		return new NonPersistentMetamodelSourceType(nonPersistentTypeName, this.getJpaProject());
+	}
+
+	protected IType findJdtType(String typeName) {
+		try {
+			return this.getJpaProject().getJavaProject().findType(typeName);
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return null;
 		}
 	}
 
@@ -1768,11 +1874,67 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected boolean fileIsGeneratedMetamodel(IFile file) {
-		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelType(file) != null;
+		return ((JpaProject2_0) this.getJpaProject()).getGeneratedMetamodelTopLevelType(file) != null;
 	}
 
 	public void disposeMetamodel() {
 		this.metamodelFiles.clear();
+	}
+
+	// ***** Metamodel source for non-persistent types
+	protected static class NonPersistentMetamodelSourceType
+		implements MetamodelSourceType
+	{
+		protected final String name;
+		protected final JpaProject jpaProject;
+		protected final MetamodelSourceType.Synchronizer metamodelSynchronizer;
+
+		protected NonPersistentMetamodelSourceType(String name, JpaProject jpaProject) {
+			super();
+			this.name = name;
+			this.jpaProject = jpaProject;
+			this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
+		}
+
+		protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+			return this.getJpaFactory().buildMetamodelSynchronizer(this);
+		}
+
+		protected JpaFactory2_0 getJpaFactory() {
+			return (JpaFactory2_0) this.getJpaProject().getJpaPlatform().getJpaFactory();
+		}
+
+		public String getName() {
+			return this.name;
+		}
+
+		public boolean isManaged() {
+			return false;
+		}
+
+		public PersistentType getSuperPersistentType() {
+			return null;
+		}
+
+		public <T extends PersistentAttribute> ListIterator<T> attributes() {
+			return EmptyListIterator.instance();
+		}
+
+		public IFile getMetamodelFile() {
+			return this.metamodelSynchronizer.getFile();
+		}
+
+		public JpaProject getJpaProject() {
+			return this.jpaProject;
+		}
+
+		public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+			this.metamodelSynchronizer.synchronize(memberTypeTree);
+		}
+
+		public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
+			this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
+		}
 	}
 
 }
