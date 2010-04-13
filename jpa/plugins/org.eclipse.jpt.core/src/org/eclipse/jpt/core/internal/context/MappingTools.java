@@ -163,7 +163,10 @@ public class MappingTools {
 
 	/**
 	 * If appropriate, return the name of the single primary key column of the
-	 * target entity.
+	 * relationship target.
+	 * Spec states:<br>
+	 *     "The same name as the primary key column of the referenced table."<br>
+	 * We are assuming that the primary key column is defined by the mappings instead of the database.
 	 */
 	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
 		if (joinColumnOwner.joinColumnsSize() != 1) {
@@ -174,14 +177,6 @@ public class MappingTools {
 			return null;
 		}
 		return targetEntity.getPrimaryKeyColumnName();
-//spec states: 
-//The same name as the primary key column of the referenced table.
-//If we do this instead I think we would need the call to convertNameToIdentifier in buildJoinColumnDefaultName
-//		Table refDbTable = joinColumnOwner.getReferencedColumnDbTable();
-//		if (refDbTable != null && refDbTable.getPrimaryKeyColumnsSize() == 1) {
-//			return refDbTable.getPrimaryKeyColumn().getName();
-//		}
-//		return null;
 	}
 
 	public static ColumnMapping getColumnMapping(String attributeName, PersistentType persistentType) {
