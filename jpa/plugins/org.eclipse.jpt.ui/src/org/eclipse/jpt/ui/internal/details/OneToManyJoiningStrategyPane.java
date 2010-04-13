@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link MappedByStrategyPane}
  * @see {@link JoinTableStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class OneToManyJoiningStrategyPane 
@@ -60,8 +60,21 @@ public class OneToManyJoiningStrategyPane
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_mappedByLabel,
+			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new MappedByJoiningStrategyPane(this, composite);
 		
+		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinTableJoiningLabel,
+			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new JoinTableJoiningStrategyPane(this, composite);
 		
 		addSubPane(composite, 5);

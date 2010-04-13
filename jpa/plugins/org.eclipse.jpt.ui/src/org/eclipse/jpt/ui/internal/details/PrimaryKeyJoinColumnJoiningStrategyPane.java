@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link PrimaryKeyJoinColumnJoiningStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
@@ -43,12 +43,31 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 			Composite parent) {
 		super(parentPane, parent);
 	}
-	
-	
+
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
+		return buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder());
+	}
+
+	protected PropertyValueModel<PrimaryKeyJoinColumnJoiningStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
+		return new PropertyAspectAdapter
+				<PrimaryKeyJoinColumnEnabledRelationshipReference, PrimaryKeyJoinColumnJoiningStrategy>(
+					getSubjectHolder()) {
+			@Override
+			protected PrimaryKeyJoinColumnJoiningStrategy buildValue_() {
+				return this.subject.getPrimaryKeyJoinColumnJoiningStrategy();
+			}
+		};
+	}
+
+	@Override
+	protected Composite buildStrategyDetailsComposite(Composite parent) {
+		return null;
+	}
+
+	public static WritablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnEnabledRelationshipReference> subjectHolder) {
 		return new PropertyAspectAdapter<PrimaryKeyJoinColumnEnabledRelationshipReference, Boolean>(
-				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
@@ -65,27 +84,5 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 				}
 			}
 		};
-	}
-	
-	@Override
-	protected PropertyValueModel<PrimaryKeyJoinColumnJoiningStrategy> buildJoiningStrategyHolder() {
-		return new PropertyAspectAdapter
-				<PrimaryKeyJoinColumnEnabledRelationshipReference, PrimaryKeyJoinColumnJoiningStrategy>(
-					getSubjectHolder()) {
-			@Override
-			protected PrimaryKeyJoinColumnJoiningStrategy buildValue_() {
-				return this.subject.getPrimaryKeyJoinColumnJoiningStrategy();
-			}
-		};
-	}
-	
-	@Override
-	protected String getStrategyLabelKey() {
-		return JptUiDetailsMessages.Joining_primaryKeyJoinColumnJoiningLabel;
-	}
-	
-	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		return null;
 	}
 }

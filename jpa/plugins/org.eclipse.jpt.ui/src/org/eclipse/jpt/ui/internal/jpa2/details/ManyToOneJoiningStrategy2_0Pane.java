@@ -62,9 +62,21 @@ public class ManyToOneJoiningStrategy2_0Pane extends Pane<ManyToOneRelationshipR
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		JoinColumnJoiningStrategyPane.
 			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, composite);
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinTableJoiningLabel,
+			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new JoinTableJoiningStrategyPane(this, composite);
 
 		addSubPane(composite, 5);

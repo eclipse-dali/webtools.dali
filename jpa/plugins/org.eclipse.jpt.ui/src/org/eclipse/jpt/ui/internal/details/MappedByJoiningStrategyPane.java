@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OneToManyJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
@@ -52,12 +52,30 @@ public class MappedByJoiningStrategyPane
 			Composite parent) {
 		super(parentPane, parent);
 	}
-	
-	
+
+	@Override
+	protected Composite buildStrategyDetailsComposite(Composite parent) {
+		return new MappedByPane(this, this.buildMappedByJoiningStrategyHolder(), parent).getControl();
+	}	
+
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
+		return buildUsesMappedByJoiningStrategyHolder(getSubjectHolder());
+	}
+
+	protected PropertyValueModel<MappedByJoiningStrategy> buildMappedByJoiningStrategyHolder() {
+		return new PropertyAspectAdapter<OwnableRelationshipReference, MappedByJoiningStrategy>(
+				getSubjectHolder()) {
+			@Override
+			protected MappedByJoiningStrategy buildValue_() {
+				return this.subject.getMappedByJoiningStrategy();
+			}
+		};
+	}
+
+	public static WritablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends OwnableRelationshipReference> subjectHolder) {
 		return new PropertyAspectAdapter<OwnableRelationshipReference, Boolean>(
-				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
@@ -74,26 +92,5 @@ public class MappedByJoiningStrategyPane
 				}
 			}
 		};
-	}
-	
-	@Override
-	protected PropertyValueModel<MappedByJoiningStrategy> buildJoiningStrategyHolder() {
-		return new PropertyAspectAdapter<OwnableRelationshipReference, MappedByJoiningStrategy>(
-				getSubjectHolder()) {
-			@Override
-			protected MappedByJoiningStrategy buildValue_() {
-				return this.subject.getMappedByJoiningStrategy();
-			}
-		};
-	}
-	
-	@Override
-	protected String getStrategyLabelKey() {
-		return JptUiDetailsMessages.Joining_mappedByLabel;
-	}
-	
-	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		return new MappedByPane(this, this.joiningStrategyHolder, parent).getControl();
 	}
 }

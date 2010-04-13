@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link ManyToOneMappingComposite}
  * @see {@link JoinColumnStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class ManyToOneJoiningStrategyPane extends Pane<ManyToOneRelationshipReference>
@@ -54,6 +54,12 @@ public class ManyToOneJoiningStrategyPane extends Pane<ManyToOneRelationshipRefe
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		JoinColumnJoiningStrategyPane.
 			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, composite);
 		

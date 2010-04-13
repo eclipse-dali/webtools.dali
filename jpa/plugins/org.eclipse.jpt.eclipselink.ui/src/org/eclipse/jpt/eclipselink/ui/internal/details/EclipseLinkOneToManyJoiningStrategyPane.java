@@ -38,11 +38,29 @@ public class EclipseLinkOneToManyJoiningStrategyPane
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_mappedByLabel,
+			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new MappedByJoiningStrategyPane(this, composite);
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		JoinColumnJoiningStrategyPane.
 			buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, composite);
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinTableJoiningLabel,
+			JoinTableJoiningStrategyPane.buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new JoinTableJoiningStrategyPane(this, composite);
 		
 		addSubPane(composite, 5);

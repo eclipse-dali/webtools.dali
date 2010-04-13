@@ -43,7 +43,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link JoinColumnStrategyPane}
  * @see {@link PrimaryKeyJoinColumnStrategyPane}
  *
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  */
 public class OneToOneJoiningStrategyPane 
@@ -65,10 +65,29 @@ public class OneToOneJoiningStrategyPane
 				JptUiDetailsMessages.Joining_title,
 				new SimplePropertyValueModel<Boolean>(Boolean.TRUE));
 		
+		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_mappedByLabel,
+			MappedByJoiningStrategyPane.buildUsesMappedByJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new MappedByJoiningStrategyPane(this, composite);
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_primaryKeyJoinColumnJoiningLabel,
+			PrimaryKeyJoinColumnJoiningStrategyPane.buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		new PrimaryKeyJoinColumnJoiningStrategyPane(this, composite);
 		
+		addRadioButton(
+			composite,
+			JptUiDetailsMessages.Joining_joinColumnJoiningLabel,
+			JoinColumnJoiningStrategyPane.buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder()),
+			null);
+
 		JoinColumnJoiningStrategyPane.
 				buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(this, composite);
 		

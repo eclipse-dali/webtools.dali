@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link ManyToOneJoiningStrategyPane}
  *
- * @version 3.0
+ * @version 2.3
  * @since 2.1
  */
 public class JoinColumnJoiningStrategyPane
@@ -91,22 +91,46 @@ public class JoinColumnJoiningStrategyPane
 		this.includeOverrideCheckBox = includeOverrideCheckBox;
 		initializeLayout2(getControl());
 	}
-	
-	
+
 	@Override
 	protected void initializeLayout(Composite container) {
 		//see initializeLayout2
 	}
-	
+
 	protected void initializeLayout2(Composite container) {
 		super.initializeLayout(container); 
 		//just call super, we are delaying the initializeLayout because of the includeOverrideCheckBox boolean
 	}
-	
+
+	@Override
+	protected Composite buildStrategyDetailsComposite(Composite parent) {
+		PropertyValueModel<JoinColumnJoiningStrategy> joiningStrategyHolder = this.buildJoinColumnJoiningStrategyHolder();
+
+		if (this.includeOverrideCheckBox) {
+			return new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, joiningStrategyHolder, parent).getControl();
+		}
+		return new JoiningStrategyJoinColumnsComposite(this, joiningStrategyHolder, parent).getControl();
+	}
+
 	@Override
 	protected WritablePropertyValueModel<Boolean> buildUsesStrategyHolder() {
+		return buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder());
+	}
+
+	protected PropertyValueModel<JoinColumnJoiningStrategy> buildJoinColumnJoiningStrategyHolder() {
+		return new PropertyAspectAdapter
+				<JoinColumnEnabledRelationshipReference, JoinColumnJoiningStrategy>(
+					getSubjectHolder()) {
+			@Override
+			protected JoinColumnJoiningStrategy buildValue_() {
+				return this.subject.getJoinColumnJoiningStrategy();
+			}
+		};
+	}
+
+	public static WritablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends JoinColumnEnabledRelationshipReference> subjectHolder) {
 		return new PropertyAspectAdapter<JoinColumnEnabledRelationshipReference, Boolean>(
-				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
@@ -123,30 +147,5 @@ public class JoinColumnJoiningStrategyPane
 				}
 			}
 		};
-	}
-	
-	@Override
-	protected PropertyValueModel<JoinColumnJoiningStrategy> buildJoiningStrategyHolder() {
-		return new PropertyAspectAdapter
-				<JoinColumnEnabledRelationshipReference, JoinColumnJoiningStrategy>(
-					getSubjectHolder()) {
-			@Override
-			protected JoinColumnJoiningStrategy buildValue_() {
-				return this.subject.getJoinColumnJoiningStrategy();
-			}
-		};
-	}
-	
-	@Override
-	protected String getStrategyLabelKey() {
-		return JptUiDetailsMessages.Joining_joinColumnJoiningLabel;
-	}
-	
-	@Override
-	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		if (this.includeOverrideCheckBox) {
-			return new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, this.joiningStrategyHolder, parent).getControl();
-		}
-		return new JoiningStrategyJoinColumnsComposite(this, this.joiningStrategyHolder, parent).getControl();
 	}
 }

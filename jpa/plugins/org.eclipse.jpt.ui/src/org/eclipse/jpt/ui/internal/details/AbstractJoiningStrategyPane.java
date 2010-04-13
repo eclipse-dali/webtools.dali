@@ -39,17 +39,13 @@ import org.eclipse.ui.part.PageBook;
  * @see {@link MappedByJoiningStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
- * @version 3.0
+ * @version 2.3
  * @since 2.1
  */
 public abstract class AbstractJoiningStrategyPane
 		<R extends RelationshipReference, S extends JoiningStrategy> 
 	extends Pane<R>
 {
-	protected WritablePropertyValueModel<Boolean> usesStrategyHolder;
-	
-	protected PropertyValueModel<S> joiningStrategyHolder;
-	
 	protected Composite strategyDetailsComposite;
 	
 	
@@ -72,26 +68,11 @@ public abstract class AbstractJoiningStrategyPane
 		super(parentPane, subjectHolder, parent);
 	}
 	
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.usesStrategyHolder = buildUsesStrategyHolder();
-		this.joiningStrategyHolder = buildJoiningStrategyHolder();
-	}
-	
 	protected abstract WritablePropertyValueModel<Boolean> buildUsesStrategyHolder();
 	
-	protected abstract PropertyValueModel<S> buildJoiningStrategyHolder();
 	
 	@Override
 	protected void initializeLayout(Composite container) {
-		addRadioButton(
-			container,
-			getStrategyLabelKey(),
-			this.usesStrategyHolder,
-			null);
-		
 		PageBook pageBook = new PageBook(container, SWT.NULL);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		gd.horizontalIndent = 5;
@@ -99,10 +80,8 @@ public abstract class AbstractJoiningStrategyPane
 		
 		this.strategyDetailsComposite = buildStrategyDetailsComposite(pageBook);
 		
-		new ControlSwitcher(this.usesStrategyHolder, buildPageBookTransformer(), pageBook);
+		new ControlSwitcher(this.buildUsesStrategyHolder(), buildPageBookTransformer(), pageBook);
 	}
-	
-	protected abstract String getStrategyLabelKey();
 	
 	protected abstract Composite buildStrategyDetailsComposite(Composite parent);
 	
