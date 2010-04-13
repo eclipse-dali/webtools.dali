@@ -33,10 +33,6 @@ public class NullJavaAssociationOverrideContainer extends AbstractJavaJpaContext
 	public void update(JavaResourcePersistentMember jrpm) {
 		// no-op
 	}
-	
-	protected Owner getOwner() {
-		return null;
-	}
 
 	public JavaAssociationOverride getAssociationOverrideNamed(String name) {
 		return null;

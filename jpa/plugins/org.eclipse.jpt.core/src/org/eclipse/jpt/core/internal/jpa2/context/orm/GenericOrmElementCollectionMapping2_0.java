@@ -673,9 +673,7 @@ public class GenericOrmElementCollectionMapping2_0
 
 	@Override
 	public Iterator<String> allOverrideableAttributeMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAttributeMappingNames() :
-				super.allOverrideableAttributeMappingNames();
+		return this.embeddableOverrideableAttributeMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
@@ -690,9 +688,7 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	@Override
 	public Iterator<String> allOverrideableAssociationMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAssociationMappingNames() :
-				super.allOverrideableAssociationMappingNames();
+		return this.embeddableOverrideableAssociationMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
@@ -723,20 +719,18 @@ public class GenericOrmElementCollectionMapping2_0
 		if (getName() == null) {
 			return null;
 		}
-		if (this.isJpa2_0Compatible()) {
-			int dotIndex = attributeName.indexOf('.');
-			if (dotIndex != -1) {
-				if (getName().equals(attributeName.substring(0, dotIndex))) {
-					attributeName = attributeName.substring(dotIndex + 1);
-					AttributeOverride override = getValueAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-					if (override != null && !override.isVirtual()) {
-						return override.getColumn();
-					}
-					if (this.getResolvedTargetEmbeddable() == null) {
-						return null;
-					}
-					return this.getResolvedTargetEmbeddable().resolveOverriddenColumn(attributeName);
+		int dotIndex = attributeName.indexOf('.');
+		if (dotIndex != -1) {
+			if (getName().equals(attributeName.substring(0, dotIndex))) {
+				attributeName = attributeName.substring(dotIndex + 1);
+				AttributeOverride override = getValueAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
+				if (override != null && !override.isVirtual()) {
+					return override.getColumn();
 				}
+				if (this.getResolvedTargetEmbeddable() == null) {
+					return null;
+				}
+				return this.getResolvedTargetEmbeddable().resolveOverriddenColumn(attributeName);
 			}
 		}
 		return null;
@@ -788,20 +782,18 @@ public class GenericOrmElementCollectionMapping2_0
 		if (getName() == null) {
 			return null;
 		}
-		if (this.isJpa2_0Compatible()) {
-			int dotIndex = attributeName.indexOf('.');
-			if (dotIndex != -1) {
-				if (getName().equals(attributeName.substring(0, dotIndex))) {
-					attributeName = attributeName.substring(dotIndex + 1);
-					AssociationOverride override = getValueAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
-					if (override != null && !override.isVirtual()) {
-						return override.getRelationshipReference();
-					}
-					if (this.getResolvedTargetEmbeddable() == null) {
-						return null;
-					}
-					return this.getResolvedTargetEmbeddable().resolveRelationshipReference(attributeName);
+		int dotIndex = attributeName.indexOf('.');
+		if (dotIndex != -1) {
+			if (getName().equals(attributeName.substring(0, dotIndex))) {
+				attributeName = attributeName.substring(dotIndex + 1);
+				AssociationOverride override = getValueAssociationOverrideContainer().getAssociationOverrideNamed(attributeName);
+				if (override != null && !override.isVirtual()) {
+					return override.getRelationshipReference();
 				}
+				if (this.getResolvedTargetEmbeddable() == null) {
+					return null;
+				}
+				return this.getResolvedTargetEmbeddable().resolveRelationshipReference(attributeName);
 			}
 		}
 		return null;
