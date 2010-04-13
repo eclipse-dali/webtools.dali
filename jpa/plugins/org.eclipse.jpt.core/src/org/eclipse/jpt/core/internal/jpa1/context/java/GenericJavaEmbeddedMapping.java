@@ -51,7 +51,7 @@ public class GenericJavaEmbeddedMapping
 
 	public GenericJavaEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.associationOverrideContainer = ((JpaFactory2_0) this.getJpaFactory()).buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		this.associationOverrideContainer = this.buildAssociationOverrideContainer();
 	}
 	
 	@Override
@@ -157,6 +157,12 @@ public class GenericJavaEmbeddedMapping
 	
 	
 	//****************** association overrides - 2.0 supports this *******************
+	
+	protected JavaAssociationOverrideContainer buildAssociationOverrideContainer() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaAssociationOverrideContainer(this, new AssociationOverrideContainerOwner()) : 
+			new NullJavaAssociationOverrideContainer(this);
+	}
 
 	public JavaAssociationOverrideContainer getAssociationOverrideContainer() {
 		return this.associationOverrideContainer;

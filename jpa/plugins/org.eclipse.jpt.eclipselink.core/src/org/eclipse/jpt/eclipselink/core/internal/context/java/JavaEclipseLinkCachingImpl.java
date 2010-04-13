@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
@@ -64,7 +65,7 @@ public class JavaEclipseLinkCachingImpl
 	
 	public JavaEclipseLinkCachingImpl(JavaTypeMapping parent) {
 		super(parent);
-		this.cacheable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this);
+		this.cacheable = this.buildCacheable();
 	}
 	
 	@Override
@@ -427,6 +428,12 @@ public class JavaEclipseLinkCachingImpl
 		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
 	}
 	
+	protected JavaCacheable2_0 buildCacheable() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this) : 
+			new NullJavaCacheable2_0(this);
+	}
+
 	public JavaCacheable2_0 getCacheable() {
 		return this.cacheable;
 	}

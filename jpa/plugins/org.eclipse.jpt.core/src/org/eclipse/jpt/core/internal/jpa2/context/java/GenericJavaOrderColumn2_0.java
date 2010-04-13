@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
@@ -65,10 +64,6 @@ public class GenericJavaOrderColumn2_0
 	@Override
 	public JavaOrderable2_0 getParent() {
 		return (JavaOrderable2_0) super.getParent();
-	}
-
-	protected TypeMapping getTypeMapping() {
-		return getParent().getTypeMapping();
 	}
 
 	@Override

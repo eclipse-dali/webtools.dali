@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
@@ -25,7 +26,7 @@ public class GenericJavaEntity
 
 	public GenericJavaEntity(JavaPersistentType parent) {
 		super(parent);
-		this.cacheable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this);
+		this.cacheable = this.buildCacheable();
 	}
 	
 	@Override
@@ -41,6 +42,12 @@ public class GenericJavaEntity
 	}
 	
 	//****************** Entity2_0 implementation *******************
+
+	protected JavaCacheable2_0 buildCacheable() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaCacheable(this) : 
+			new NullJavaCacheable2_0(this);
+	}
 
 	public JavaCacheable2_0 getCacheable() {
 		return this.cacheable;

@@ -511,9 +511,6 @@ public class GenericJavaElementCollectionMapping2_0
 	}
 
 	public MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
-		if (!this.isJpa2_0Compatible()) {
-			return null;
-		}
 		return (MapKeyColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
@@ -1008,9 +1005,7 @@ public class GenericJavaElementCollectionMapping2_0
 
 	@Override
 	public Iterator<String> allOverrideableAttributeMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAttributeMappingNames() :
-				super.allOverrideableAttributeMappingNames();
+		return this.embeddableOverrideableAttributeMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
@@ -1025,9 +1020,7 @@ public class GenericJavaElementCollectionMapping2_0
 	
 	@Override
 	public Iterator<String> allOverrideableAssociationMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAssociationMappingNames() :
-				super.allOverrideableAssociationMappingNames();
+		return this.embeddableOverrideableAssociationMappingNames();
 	}
 	
 	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
@@ -1058,15 +1051,13 @@ public class GenericJavaElementCollectionMapping2_0
 		if (resolvedMapping != null) {
 			return resolvedMapping;
 		}
-		if (this.isJpa2_0Compatible()) {
-			int dotIndex = name.indexOf('.');
-			if (dotIndex != -1) {
-				if (getName().equals(name.substring(0, dotIndex))) {
-					for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
-						resolvedMapping = attributeMapping.resolveAttributeMapping(name.substring(dotIndex + 1));
-						if (resolvedMapping != null) {
-							return resolvedMapping;
-						}
+		int dotIndex = name.indexOf('.');
+		if (dotIndex != -1) {
+			if (getName().equals(name.substring(0, dotIndex))) {
+				for (AttributeMapping attributeMapping : CollectionTools.iterable(embeddableAttributeMappings())) {
+					resolvedMapping = attributeMapping.resolveAttributeMapping(name.substring(dotIndex + 1));
+					if (resolvedMapping != null) {
+						return resolvedMapping;
 					}
 				}
 			}

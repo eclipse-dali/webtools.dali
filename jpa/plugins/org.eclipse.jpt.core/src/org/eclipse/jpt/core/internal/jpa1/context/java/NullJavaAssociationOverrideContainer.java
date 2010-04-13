@@ -22,11 +22,8 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 public class NullJavaAssociationOverrideContainer extends AbstractJavaJpaContextNode
 	implements JavaAssociationOverrideContainer
 {
-	protected final JavaAssociationOverrideContainer.Owner owner;
-	
-	public NullJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner) {
+	public NullJavaAssociationOverrideContainer(JavaJpaContextNode parent) {
 		super(parent);
-		this.owner = owner;
 	}
 
 	public void initialize(JavaResourcePersistentMember jrpm) {
@@ -38,14 +35,13 @@ public class NullJavaAssociationOverrideContainer extends AbstractJavaJpaContext
 	}
 	
 	protected Owner getOwner() {
-		return this.owner;
+		return null;
 	}
 
 	public JavaAssociationOverride getAssociationOverrideNamed(String name) {
 		return null;
 	}
 
-	@SuppressWarnings("unchecked")
 	public ListIterator<JavaAssociationOverride> associationOverrides() {
 		return EmptyListIterator.instance();
 	}

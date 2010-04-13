@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 
@@ -25,7 +24,7 @@ import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
  * @since 2.3
  */
 public interface JavaOrderable2_0
-	extends Orderable2_0, JavaOrderable, JavaNamedColumn.Owner
+	extends Orderable2_0, JavaOrderable
 {
 	JavaOrderColumn2_0 getOrderColumn();
 

@@ -16,6 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
@@ -105,7 +106,9 @@ public abstract class AbstractJavaSingleRelationshipMapping<T extends Relationsh
 	// ********** 2.0 derived identity **********
 	
 	protected JavaDerivedIdentity2_0 buildDerivedIdentity() {
-		return ((JpaFactory2_0) getJpaFactory()).buildJavaDerivedIdentity(this);
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaDerivedIdentity(this) : 
+			new NullJavaDerivedIdentity2_0(this);
 	}
 	
 	public JavaDerivedIdentity2_0 getDerivedIdentity() {

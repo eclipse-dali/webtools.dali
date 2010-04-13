@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -85,8 +86,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.orderable = ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrderable(this, buildOrderableOwner());
-		this.mapKeyColumn = ((JpaFactory2_0) this.getJpaFactory()).buildJavaMapKeyColumn(parent, this.buildMapKeyColumnOwner());
+		this.orderable = this.buildOrderable();
+		this.mapKeyColumn = this.buildMapKeyColumn();
 		this.mapKeyAttributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new MapKeyAttributeOverrideContainerOwner());
 	}
 
@@ -158,6 +159,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 
 	// ********** ordering **********  
+	
+	protected JavaOrderable2_0 buildOrderable() {
+		//TODO
+		return ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrderable(this, buildOrderableOwner());
+	}
 
 	public JavaOrderable2_0 getOrderable() {
 		return this.orderable;
@@ -557,7 +563,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
-	// ********** map key column **********
+	// ********** map key column - JPA 2.0 **********
+	
+	protected JavaColumn buildMapKeyColumn() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaMapKeyColumn(this, this.buildMapKeyColumnOwner()) : 
+			new NullJavaMapKeyColumn2_0(this);
+	}
 
 	public JavaColumn getMapKeyColumn() {
 		return this.mapKeyColumn;

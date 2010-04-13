@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Vector;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
@@ -31,7 +32,7 @@ public abstract class AbstractJavaOneToOneMapping
 	// ********** constructor **********
 	protected AbstractJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.orphanRemoval = ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrphanRemoval(this);
+		this.orphanRemoval = this.buildOrphanRemoval();
 	}
 
 	// ********** initialize/update **********
@@ -81,6 +82,12 @@ public abstract class AbstractJavaOneToOneMapping
 	}
 
 	// ********** JavaOrphanRemovalHolder2_0 implementation **********
+
+	protected JavaOrphanRemovable2_0 buildOrphanRemoval() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) this.getJpaFactory()).buildJavaOrphanRemoval(this) : 
+			new NullJavaOrphanRemoval2_0(this);
+	}
 
 	public JavaOrphanRemovable2_0 getOrphanRemoval() {
 		return this.orphanRemoval;

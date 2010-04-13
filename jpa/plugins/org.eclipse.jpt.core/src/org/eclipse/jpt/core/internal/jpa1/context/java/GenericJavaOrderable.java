@@ -16,8 +16,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
+import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -38,25 +40,21 @@ public class GenericJavaOrderable
 	extends AbstractJavaJpaContextNode
 	implements JavaOrderable2_0
 {
-	private final Orderable2_0.Owner owner;
 
 	protected String specifiedOrderBy = null;
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
 	protected boolean customOrdering = false;
-	
+
+	//JPA 2.0
+	protected final Orderable2_0.Owner owner;
 	protected boolean orderColumnOrdering = false;
 	protected final JavaOrderColumn2_0 orderColumn;
-
-	protected String specifiedMapKey;
-	protected boolean noMapKey = false;
-	protected boolean pkMapKey = false;
-	protected boolean customMapKey = false;
 
 
 	public GenericJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
 		super(parent);
-		this.orderColumn = ((JpaFactory2_0) getJpaFactory()).buildJavaOrderColumn(this, this);
+		this.orderColumn = buildOrderColumn();
 		this.owner = owner;
 	}
 
@@ -90,18 +88,6 @@ public class GenericJavaOrderable
 
 	public String getDefaultTableName() {
 		return getOwner().getTableName();
-	}
-	
-	public Table getDbTable(String tableName) {
-		return getOwner().getDbTable(tableName);
-	}
-
-	public String getDefaultColumnName() {
-		return getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
-	}
-
-	public TypeMapping getTypeMapping() {
-		return getPersistentAttribute().getOwningTypeMapping();
 	}
 	
 	// ********** order by **********  
@@ -279,6 +265,12 @@ public class GenericJavaOrderable
 
 	// ********** order column 2.0 **********  
 
+	protected JavaOrderColumn2_0 buildOrderColumn() {
+		return this.isJpa2_0Compatible() ? 
+			((JpaFactory2_0) getJpaFactory()).buildJavaOrderColumn(this, new OrderColumnOwner()) : 
+			new NullJavaOrderColumn2_0(this, new OrderColumnOwner());
+	}
+
 	public boolean isOrderColumnOrdering() {
 		return this.orderColumnOrdering;
 	}
@@ -369,13 +361,38 @@ public class GenericJavaOrderable
 		}
 	}
 
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
-			new String[] {column.getName(), column.getDbTable().getName()},
-			column, 
-			textRange
-		);
+	// ********** JavaBaseColumn.Owner implementation **********  
+
+	class OrderColumnOwner implements JavaNamedColumn.Owner {
+			
+		public String getDefaultTableName() {
+			return GenericJavaOrderable.this.getDefaultTableName();
+		}
+		
+		public Table getDbTable(String tableName) {
+			return getOwner().getDbTable(tableName);
+		}
+	
+		public String getDefaultColumnName() {
+			return getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
+		}
+	
+		public TypeMapping getTypeMapping() {
+			return getPersistentAttribute().getOwningTypeMapping();
+		}
+	
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaOrderable.this.getValidationTextRange(astRoot);
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
 	}
 }

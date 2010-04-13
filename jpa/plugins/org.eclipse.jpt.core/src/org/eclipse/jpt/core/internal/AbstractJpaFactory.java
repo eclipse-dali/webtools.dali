@@ -119,16 +119,10 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTemporalConver
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaDerivedIdentity2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
@@ -325,10 +319,6 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
-		return new NullJavaAssociationOverrideContainer(parent, owner);
-	}
-	
 	public JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, JavaAttributeOverride.Owner owner) {
 		return new GenericJavaAttributeOverride(parent, owner);
 	}
@@ -385,8 +375,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaOrderable(parent, (Orderable2_0.Owner) owner);
 	}
 	
+	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
+		throw new UnsupportedOperationException();
+	}
+	
 	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
-		return new NullJavaDerivedIdentity2_0(parent);
+		throw new UnsupportedOperationException();
 	}
 	
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
@@ -394,15 +388,15 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
-		return new NullJavaCacheable2_0(parent);
+		throw new UnsupportedOperationException();
 	}
 	
 	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
-		return new NullJavaOrphanRemoval2_0(parent);
+		throw new UnsupportedOperationException();
 	}
 	
 	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
-		return new NullJavaOrderColumn2_0(parent, owner);
+		throw new UnsupportedOperationException();
 	}
 	
 	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent) {
@@ -410,6 +404,6 @@ public abstract class AbstractJpaFactory
 	}
 
 	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
-		return new NullJavaMapKeyColumn2_0(parent);
+		throw new UnsupportedOperationException();
 	}
 }
