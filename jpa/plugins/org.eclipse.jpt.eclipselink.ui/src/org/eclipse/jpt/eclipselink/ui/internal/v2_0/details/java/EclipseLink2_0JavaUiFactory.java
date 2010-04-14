@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java.EclipseLink1_1JavaUiFactory;
+import org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java.EclipseLink1_2JavaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  *  EclipseLink2_0JpaUiFactory
  */
 public class EclipseLink2_0JavaUiFactory
-	extends EclipseLink1_1JavaUiFactory
+	extends EclipseLink1_2JavaUiFactory
 	implements JavaUiFactory2_0
 {
 	public EclipseLink2_0JavaUiFactory() {

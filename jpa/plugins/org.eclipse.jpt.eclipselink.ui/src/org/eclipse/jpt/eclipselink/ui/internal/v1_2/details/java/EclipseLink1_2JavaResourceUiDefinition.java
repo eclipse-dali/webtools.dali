@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.java;
+package org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -42,10 +42,10 @@ import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition
 import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
-public class EclipseLink1_1JavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
+public class EclipseLink1_2JavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
 {
 	// singleton
-	private static final ResourceUiDefinition INSTANCE = new EclipseLink1_1JavaResourceUiDefinition();
+	private static final ResourceUiDefinition INSTANCE = new EclipseLink1_2JavaResourceUiDefinition();
 
 	/**
 	 * Return the singleton.
@@ -53,20 +53,20 @@ public class EclipseLink1_1JavaResourceUiDefinition extends AbstractJavaResource
 	public static ResourceUiDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * zero-argument constructor
 	 */
-	protected EclipseLink1_1JavaResourceUiDefinition() {
+	protected EclipseLink1_2JavaResourceUiDefinition() {
 		super();
 	}
-	
+
 	@Override
 	protected JavaUiFactory buildJavaUiFactory() {
-		return new EclipseLink1_1JavaUiFactory();
+		return new EclipseLink1_2JavaUiFactory();
 	}
-	
+
 	@Override
 	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
 		definitions.add(JavaIdMappingUiDefinition.instance());
@@ -84,7 +84,7 @@ public class EclipseLink1_1JavaResourceUiDefinition extends AbstractJavaResource
 		definitions.add(JavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 		definitions.add(JavaEclipseLinkTransformationMappingUiDefinition.instance());
 	}
-	
+
 	@Override
 	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
 		definitions.add(DefaultBasicMappingUiDefinition.instance());
@@ -94,7 +94,7 @@ public class EclipseLink1_1JavaResourceUiDefinition extends AbstractJavaResource
 		definitions.add(DefaultJavaEclipseLinkOneToManyMappingUiDefinition.instance());
 		definitions.add(DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition.instance());
 	}
-	
+
 	@Override
 	protected void addSpecifiedTypeMappingUiDefinitionsTo(List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
 		definitions.add(JavaEntityUiDefinition.instance());
