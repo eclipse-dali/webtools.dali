@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
@@ -40,10 +39,6 @@ public class GenericOrmOrderColumn2_0
 	@Override
 	public OrmOrderable2_0 getParent() {
 		return (OrmOrderable2_0) super.getParent();
-	}
-
-	protected TypeMapping getTypeMapping() {
-		return getParent().getTypeMapping();
 	}
 
 	protected PersistentAttribute getPersistentAttribute() {
