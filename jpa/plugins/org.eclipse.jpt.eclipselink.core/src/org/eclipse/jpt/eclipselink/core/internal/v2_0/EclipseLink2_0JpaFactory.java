@@ -41,7 +41,6 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaSequenceGenera
 import org.eclipse.jpt.core.internal.jpa2.context.java.VirtualAssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
