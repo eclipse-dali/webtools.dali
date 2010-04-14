@@ -31,7 +31,7 @@ public interface AttributeMapping
 	String getName();
 
 	boolean isDefault();
-
+	
 	/**
 	 * Return a unique key for the attribute mapping.  If this is defined in
 	 * an extension they should be equal.
