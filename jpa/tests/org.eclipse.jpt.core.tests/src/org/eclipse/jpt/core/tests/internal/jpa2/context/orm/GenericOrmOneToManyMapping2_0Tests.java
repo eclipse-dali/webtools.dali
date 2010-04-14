@@ -1091,8 +1091,8 @@ public class GenericOrmOneToManyMapping2_0Tests
 		OrmOneToManyMapping2_0 oneToManyMapping = (OrmOneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
 		JavaOneToManyMapping2_0 javaOneToManyMapping = (JavaOneToManyMapping2_0) persistentAttribute.getJavaPersistentAttribute().getSpecifiedMapping();
 		javaOneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
-		javaOneToManyMapping.getOrderable().setOrderColumnOrdering(true);
-		OrderColumn2_0 orderColumn = oneToManyMapping.getOrderable().getOrderColumn();
+		((Orderable2_0) javaOneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 		assertEquals("addresses_ORDER", orderColumn.getSpecifiedName());
 		assertEquals("Address", orderColumn.getTable());//target table name
@@ -1109,9 +1109,9 @@ public class GenericOrmOneToManyMapping2_0Tests
 		assertFalse(oneToManyMapping.getRelationshipReference().usesJoinColumnJoiningStrategy());
 
 		oneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
-		assertFalse(oneToManyMapping.getOrderable().isOrderColumnOrdering());
-		oneToManyMapping.getOrderable().setOrderColumnOrdering(true);
-		orderColumn = oneToManyMapping.getOrderable().getOrderColumn();
+		assertFalse(((Orderable2_0) oneToManyMapping.getOrderable()).isOrderColumnOrdering());
+		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 		assertNull(orderColumn.getSpecifiedName());
 		assertEquals("addresses_ORDER", orderColumn.getName());

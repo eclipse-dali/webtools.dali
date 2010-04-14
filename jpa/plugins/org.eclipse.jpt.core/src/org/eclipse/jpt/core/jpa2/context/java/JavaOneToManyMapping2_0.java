@@ -29,6 +29,4 @@ public interface JavaOneToManyMapping2_0
 	OneToMany2_0Annotation getMappingAnnotation();
 	
 	JavaOneToManyRelationshipReference2_0 getRelationshipReference();
-
-	JavaOrderable2_0 getOrderable();
 }

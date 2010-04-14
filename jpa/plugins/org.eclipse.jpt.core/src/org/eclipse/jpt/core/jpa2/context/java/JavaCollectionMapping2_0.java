@@ -28,8 +28,6 @@ import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 public interface JavaCollectionMapping2_0
 	extends CollectionMapping2_0, JavaAttributeMapping
 {
-
-	JavaOrderable2_0 getOrderable();
 	
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 

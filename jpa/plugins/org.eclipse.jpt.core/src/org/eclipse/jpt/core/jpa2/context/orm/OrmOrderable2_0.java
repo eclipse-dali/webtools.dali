@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 
@@ -26,7 +25,7 @@ import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
  * @since 2.3
  */
 public interface OrmOrderable2_0
-	extends Orderable2_0, OrmOrderable, OrmNamedColumn.Owner
+	extends Orderable2_0, OrmOrderable
 {
 	OrmAttributeMapping getParent();
 

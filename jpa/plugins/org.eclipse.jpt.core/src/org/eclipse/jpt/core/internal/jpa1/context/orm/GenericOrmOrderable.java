@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -20,7 +22,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.resource.orm.XmlOrderable;
@@ -37,27 +38,21 @@ public class GenericOrmOrderable
 	extends AbstractOrmXmlContextNode
 	implements OrmOrderable2_0
 {
-	private final Orderable2_0.Owner owner;
 
 	protected String specifiedOrderBy;
 	protected boolean noOrdering = false;
 	protected boolean pkOrdering = false;
 	protected boolean customOrdering = false;
 	
+	//JPA 2.0
+	protected final Orderable.Owner owner; //the owner is only used for 2.0 projects
 	protected boolean orderColumnOrdering = false;
 	protected final OrmOrderColumn2_0 orderColumn;
 	
-
-	protected String specifiedMapKey;
-	protected boolean noMapKey = false;
-	protected boolean pkMapKey = false;
-	protected boolean customMapKey = false;
-
-
-	public GenericOrmOrderable(OrmAttributeMapping parent, Orderable2_0.Owner owner) {
+	public GenericOrmOrderable(OrmAttributeMapping parent, Orderable.Owner owner) {
 		super(parent);
-		this.orderColumn = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmOrderColumn(this, this);
 		this.owner = owner;
+		this.orderColumn = getXmlContextNodeFactory().buildOrmOrderColumn(this, new OrderColumnOwner());
 		this.initializeOrdering();
 	}
 
@@ -76,10 +71,6 @@ public class GenericOrmOrderable
 
 	protected XmlOrderable getResourceOrderable() {
 		return (XmlOrderable) getParent().getResourceAttributeMapping();
-	}
-	
-	public Orderable2_0.Owner getOwner() {
-		return this.owner;
 	}
 
 	// **************** order by ***********************************************
@@ -218,6 +209,7 @@ public class GenericOrmOrderable
 		this.firePropertyChanged(CUSTOM_ORDERING_PROPERTY, old, customOrdering);
 	}
 
+	// ********** Orderable2_0 implementation **********  
 	// **************** order column ordering ***********************************************
 	
 	public boolean isOrderColumnOrdering() {
@@ -251,24 +243,16 @@ public class GenericOrmOrderable
 	protected void removeXmlOrderColumn() {
 		((XmlOrderable_2_0) getResourceOrderable()).setOrderColumn(null);
 	}
-	
-
-	// ********** OrderColumn OrmBaseColumn.Owner implementation **********  
 
 	public String getDefaultTableName() {
 		return getOwner().getTableName();
 	}
-
-	public Table getDbTable(String tableName) {
-		return getOwner().getDbTable(tableName);
-	}
-
-	public String getDefaultColumnName() {
-		return getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
-	}
-
-	public TypeMapping getTypeMapping() {
-		return getPersistentAttribute().getOwningTypeMapping();
+	
+	/**
+	 * Only call this for 2.0 projects
+	 */
+	protected Orderable2_0.Owner getOwner() {
+		return (Orderable2_0.Owner) this.owner;
 	}
 	
 	
@@ -293,34 +277,60 @@ public class GenericOrmOrderable
 		return JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME;
 	}
 
-	protected boolean isPersistentAttributeVirtual() {
-		return getPersistentAttribute().isVirtual();
-	}
 
-	protected String getPersistentAttributeName() {
-		return getPersistentAttribute().getName();
-	}
+	// ********** OrmNamedColumn implementation **********  
 
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		if (isPersistentAttributeVirtual()) {
-			return this.buildVirtualUnresolvedNameMessage(column, textRange);
+	class OrderColumnOwner implements OrmNamedColumn.Owner {
+			
+		public String getDefaultTableName() {
+			return GenericOrmOrderable.this.getDefaultTableName();
 		}
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
-			new String[] {column.getName(), column.getDbTable().getName()}, 
-			column,
-			textRange
-		);
-	}
 
-	protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,
-			new String[] {getPersistentAttributeName(), column.getName(), column.getDbTable().getName()},
-			column, 
-			textRange
-		);
+		public Table getDbTable(String tableName) {
+			return getOwner().getDbTable(tableName);
+		}
+
+		public String getDefaultColumnName() {
+			return getPersistentAttribute().getName() + "_ORDER"; //$NON-NLS-1$
+		}
+
+		public TypeMapping getTypeMapping() {
+			return getPersistentAttribute().getOwningTypeMapping();
+		}
+
+		public TextRange getValidationTextRange() {
+			return GenericOrmOrderable.this.getValidationTextRange();
+		}
+
+		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			if (isPersistentAttributeVirtual()) {
+				return this.buildVirtualUnresolvedNameMessage(column, textRange);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
+				new String[] {column.getName(), column.getDbTable().getName()}, 
+				column,
+				textRange
+			);
+		}
+
+		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_ATTRIBUTE_ORDER_COLUMN_UNRESOLVED_NAME,
+				new String[] {getPersistentAttributeName(), column.getName(), column.getDbTable().getName()},
+				column, 
+				textRange
+			);
+		}
+
+		protected boolean isPersistentAttributeVirtual() {
+			return getPersistentAttribute().isVirtual();
+		}
+
+		protected String getPersistentAttributeName() {
+			return getPersistentAttribute().getName();
+		}
 	}
 }

@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -37,7 +39,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
@@ -61,7 +62,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	extends AbstractOrmRelationshipMapping<T>
 	implements OrmMultiRelationshipMapping, OrmCollectionMapping2_0
 {
-	protected final OrmOrderable2_0 orderable;
+	protected final OrmOrderable orderable;
 		
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -85,7 +86,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	protected AbstractOrmMultiRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
 		super(parent, resourceMapping);
-		this.orderable = getXmlContextNodeFactory().buildOrmOrderable(this, this.buildOrderableOwner());
+		this.orderable = this.buildOrderable();
 		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
 		this.valueType = this.buildValueType();
 		this.resolvedMapKeyType = this.resolveMapKeyType();
@@ -129,7 +130,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	
 	// **************** order by ***********************************************
 
-	public OrmOrderable2_0 getOrderable() {
+	protected OrmOrderable buildOrderable() {
+		return this.isJpa2_0Compatible() ? 
+			this.getXmlContextNodeFactory().buildOrmOrderable(this, this.buildOrderableOwner()) : 
+			this.getXmlContextNodeFactory().buildOrmOrderable(this, new Orderable.Owner() {/*nothing*/});
+	}
+
+	public OrmOrderable getOrderable() {
 		return this.orderable;
 	}
 

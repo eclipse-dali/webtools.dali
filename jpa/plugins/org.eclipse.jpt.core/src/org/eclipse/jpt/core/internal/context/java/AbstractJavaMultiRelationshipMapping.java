@@ -22,12 +22,14 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
+import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -37,7 +39,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -61,7 +62,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	extends AbstractJavaRelationshipMapping<T> 
 	implements JavaMultiRelationshipMapping, JavaCollectionMapping2_0
 {
-	protected final JavaOrderable2_0 orderable;
+	protected final JavaOrderable orderable;
 
 	protected Embeddable resolvedTargetEmbeddable;
 
@@ -160,12 +161,13 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 
 	// ********** ordering **********  
 	
-	protected JavaOrderable2_0 buildOrderable() {
-		//TODO
-		return ((JpaFactory2_0) this.getJpaFactory()).buildJavaOrderable(this, buildOrderableOwner());
+	protected JavaOrderable buildOrderable() {
+		return this.isJpa2_0Compatible() ? 
+			this.getJpaFactory().buildJavaOrderable(this, this.buildOrderableOwner()) : 
+			this.getJpaFactory().buildJavaOrderable(this, new Orderable.Owner() {/*nothing*/});
 	}
 
-	public JavaOrderable2_0 getOrderable() {
+	public JavaOrderable getOrderable() {
 		return this.orderable;
 	}
 

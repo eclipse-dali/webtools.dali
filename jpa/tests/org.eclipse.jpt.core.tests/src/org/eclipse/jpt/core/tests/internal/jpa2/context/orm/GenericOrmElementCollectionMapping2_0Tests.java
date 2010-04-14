@@ -896,7 +896,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
-		Orderable2_0 orderable = elementCollectionMapping.getOrderable();
+		Orderable2_0 orderable = (Orderable2_0) elementCollectionMapping.getOrderable();
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 		
@@ -919,7 +919,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY, "addresses");
 		OrmElementCollectionMapping2_0 elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
 
-		Orderable2_0 orderable = elementCollectionMapping.getOrderable();
+		Orderable2_0 orderable = (Orderable2_0) elementCollectionMapping.getOrderable();
 		assertEquals(false, orderable.isOrderColumnOrdering());
 		assertEquals(true, orderable.isNoOrdering());
 		
@@ -932,7 +932,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		ormPersistentAttribute.makeVirtual();		
 		ormPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		elementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();
-		orderable = elementCollectionMapping.getOrderable();
+		orderable = (Orderable2_0) elementCollectionMapping.getOrderable();
 		assertEquals(true, orderable.isOrderColumnOrdering());
 		assertEquals(false, orderable.isNoOrdering());
 		assertEquals(TYPE_NAME + "_addresses", orderable.getOrderColumn().getTable());

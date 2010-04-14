@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
@@ -47,15 +48,14 @@ public class GenericJavaOrderable
 	protected boolean customOrdering = false;
 
 	//JPA 2.0
-	protected final Orderable2_0.Owner owner;
+	protected final Orderable.Owner owner; //the owner is only used for 2.0 projects
 	protected boolean orderColumnOrdering = false;
 	protected final JavaOrderColumn2_0 orderColumn;
 
-
-	public GenericJavaOrderable(JavaAttributeMapping parent, Orderable2_0.Owner owner) {
+	public GenericJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner) {
 		super(parent);
-		this.orderColumn = buildOrderColumn();
 		this.owner = owner;
+		this.orderColumn = buildOrderColumn();
 	}
 
 	public void initialize() {
@@ -79,15 +79,18 @@ public class GenericJavaOrderable
 		return this.getPersistentAttribute().getResourcePersistentAttribute();
 	}
 
-	protected Orderable2_0.Owner getOwner() {
-		return this.owner;
-	}
-
 	
-	// ********** JavaBaseColumn.Owner implementation **********  
+	// ********** Orderable2_0 implementation **********  
 
 	public String getDefaultTableName() {
 		return getOwner().getTableName();
+	}
+
+	/**
+	 * Only call this for 2.0 projects
+	 */
+	protected Orderable2_0.Owner getOwner() {
+		return (Orderable2_0.Owner) this.owner;
 	}
 	
 	// ********** order by **********  
@@ -361,7 +364,7 @@ public class GenericJavaOrderable
 		}
 	}
 
-	// ********** JavaBaseColumn.Owner implementation **********  
+	// ********** JavaNamedColumn.Owner implementation- JPA 2.0 **********  
 
 	class OrderColumnOwner implements JavaNamedColumn.Owner {
 			

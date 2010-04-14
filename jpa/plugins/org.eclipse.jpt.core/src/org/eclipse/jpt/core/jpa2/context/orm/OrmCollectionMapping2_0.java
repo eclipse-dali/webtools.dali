@@ -28,6 +28,5 @@ public interface OrmCollectionMapping2_0
 	extends CollectionMapping2_0, OrmAttributeMapping
 {
 
-	OrmOrderable2_0 getOrderable();
 
 }

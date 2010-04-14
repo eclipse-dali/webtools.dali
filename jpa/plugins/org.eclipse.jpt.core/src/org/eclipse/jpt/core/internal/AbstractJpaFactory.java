@@ -27,7 +27,6 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
@@ -69,6 +68,7 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
@@ -125,7 +125,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistence
 import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
@@ -372,7 +371,7 @@ public abstract class AbstractJpaFactory
 	}
 	
 	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner) {
-		return new GenericJavaOrderable(parent, (Orderable2_0.Owner) owner);
+		return new GenericJavaOrderable(parent, owner);
 	}
 	
 	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {

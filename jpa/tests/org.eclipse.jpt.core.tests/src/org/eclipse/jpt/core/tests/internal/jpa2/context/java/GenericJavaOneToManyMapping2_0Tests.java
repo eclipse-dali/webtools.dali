@@ -1009,8 +1009,8 @@ public class GenericJavaOneToManyMapping2_0Tests
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		OneToManyMapping2_0 oneToManyMapping = (OneToManyMapping2_0) persistentAttribute.getSpecifiedMapping();
 		oneToManyMapping.getRelationshipReference().setJoinColumnJoiningStrategy();
-		oneToManyMapping.getOrderable().setOrderColumnOrdering(true);
-		OrderColumn2_0 orderColumn = oneToManyMapping.getOrderable().getOrderColumn();
+		((Orderable2_0) oneToManyMapping.getOrderable()).setOrderColumnOrdering(true);
+		OrderColumn2_0 orderColumn = ((Orderable2_0) oneToManyMapping.getOrderable()).getOrderColumn();
 
 
 		assertNull(orderColumn.getSpecifiedName());
