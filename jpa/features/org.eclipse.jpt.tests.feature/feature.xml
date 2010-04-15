@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.eclipse.jpt.tests.feature"
-      label="Dali Java Persistence Tools JUnit Tests"
+      label="%featureName"
       version="2.3.0.qualifier"
-      provider-name="Eclipse.org">
+      provider-name="%providerName">
 
    <description>
       %description
