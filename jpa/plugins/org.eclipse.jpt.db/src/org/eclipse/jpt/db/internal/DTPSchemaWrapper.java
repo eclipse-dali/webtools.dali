@@ -12,6 +12,7 @@ package org.eclipse.jpt.db.internal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
 import org.eclipse.jpt.db.DatabaseObject;
@@ -110,7 +111,9 @@ final class DTPSchemaWrapper
 	}
 
 	private boolean hack() {
-		String hack = Platform.getProduct().getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
+		// the product is null during junit testing
+		IProduct product = Platform.getProduct();
+		String hack = (product == null) ? null : product.getProperty(PERSISTENT_AND_VIEW_TABLES_ONLY);
 		return (hack != null) && hack.equals("true"); //$NON-NLS-1$
 	}
 
