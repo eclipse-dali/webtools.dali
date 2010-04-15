@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ColumnMapping;
@@ -43,7 +44,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -336,8 +337,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public String getMetamodelTypeName() {
-		JavaPersistentAttribute2_0 jpa = (JavaPersistentAttribute2_0) this.getPersistentAttribute().getJavaPersistentAttribute();
-		return (jpa == null) ? MetamodelField.DEFAULT_TYPE_NAME : jpa.getMetamodelTypeName();
+		return ((OrmPersistentAttribute2_0) this.getPersistentAttribute()).getMetamodelTypeName();
 	}
 
 	protected String getMetamodelFieldName() {

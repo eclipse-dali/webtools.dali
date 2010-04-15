@@ -254,7 +254,17 @@ final class SourcePersistentAttribute
 	 * but no generic type arguments
 	 */
 	private String buildTypeName(ITypeBinding typeBinding) {
-		return (typeBinding == null) ? null : typeBinding.getTypeDeclaration().getQualifiedName();
+		if (typeBinding == null) {
+			return null;
+		}
+		// a type variable is what is declared by a generic type
+		// (e.g. "E" is a type variable declared in "public interface Collection<E>")
+		if (typeBinding.isTypeVariable()) {
+			// e.g. "E extends Collection" has an erasure of "Collection"
+			typeBinding = typeBinding.getErasure();
+		}
+		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
+		return (tbName.length() == 0) ? null : tbName;
 	}
 
 	// ***** type is interface

@@ -346,8 +346,11 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	@Override
 	public String getMetamodelTypeName() {
-		String targetEntity = this.getTargetEntity();
-		return (targetEntity != null) ? targetEntity : MetamodelField.DEFAULT_TYPE_NAME;
+		if (this.resolvedTargetType == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		String targetTypeName = this.resolvedTargetType.getName();
+		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 }

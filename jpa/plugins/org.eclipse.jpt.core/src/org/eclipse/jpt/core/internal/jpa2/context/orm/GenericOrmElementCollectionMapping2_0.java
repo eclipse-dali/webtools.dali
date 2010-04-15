@@ -1000,8 +1000,11 @@ public class GenericOrmElementCollectionMapping2_0
 	
 	@Override
 	public String getMetamodelTypeName() {
-		String targetClass = this.getTargetClass();
-		return (targetClass != null) ? targetClass : MetamodelField.DEFAULT_TYPE_NAME;
+		if (this.resolvedTargetType == null) {
+			return MetamodelField.DEFAULT_TYPE_NAME;
+		}
+		String targetTypeName = this.resolvedTargetType.getName();
+		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 	@Override

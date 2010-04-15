@@ -1092,8 +1092,7 @@ public class GenericJavaElementCollectionMapping2_0
 	
 	@Override
 	public String getMetamodelTypeName() {
-		String targetClass = this.getTargetClass();
-		return (targetClass != null) ? targetClass : MetamodelField.DEFAULT_TYPE_NAME;
+		return (this.fullyQualifiedTargetClass != null) ? this.fullyQualifiedTargetClass : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 	@Override

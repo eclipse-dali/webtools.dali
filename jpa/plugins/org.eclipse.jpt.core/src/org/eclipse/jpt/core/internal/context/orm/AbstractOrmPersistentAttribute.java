@@ -304,8 +304,8 @@ public abstract class AbstractOrmPersistentAttribute
 	}
 
 	public String getMetamodelTypeName() {
-		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) getJavaPersistentAttribute();
-		return javaAttribute == null ? MetamodelField.DEFAULT_TYPE_NAME : javaAttribute.getMetamodelTypeName();
+		JavaPersistentAttribute2_0 javaAttribute = (JavaPersistentAttribute2_0) this.getJavaPersistentAttribute();
+		return (javaAttribute == null) ? MetamodelField.DEFAULT_TYPE_NAME : javaAttribute.getMetamodelTypeName();
 	}
 
 	protected JavaPersistentAttribute.JpaContainer getJpaContainer() {

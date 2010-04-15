@@ -342,8 +342,7 @@ public abstract class AbstractJavaRelationshipMapping<T extends RelationshipMapp
 
 	@Override
 	public String getMetamodelTypeName() {
-		String targetEntity = this.getTargetEntity();
-		return (targetEntity != null) ? targetEntity : MetamodelField.DEFAULT_TYPE_NAME;
+		return (this.fullyQualifiedTargetEntity != null) ? this.fullyQualifiedTargetEntity : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 
 }
