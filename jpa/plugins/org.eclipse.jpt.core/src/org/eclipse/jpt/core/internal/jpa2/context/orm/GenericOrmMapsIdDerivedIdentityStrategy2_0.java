@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -134,7 +135,7 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	public AttributeMapping getResolvedAttributeMappingValue() {
 		if (getValue() != null) {
 			for (AttributeMapping each : getAllAttributeMappingChoices()) {
-				if (each.getName().equals(getValue())) {
+				if (Tools.valuesAreEqual(each.getName(), getValue())) {
 					return each;
 				}
 			}

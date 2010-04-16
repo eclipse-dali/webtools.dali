@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
@@ -89,7 +90,7 @@ public class GenericOrmEmbeddedIdMapping
 	
 	protected boolean calculateMappedByRelationship() {
 		for (SingleRelationshipMapping2_0 each : getMapsIdRelationships()) {
-			if (getName().equals(each.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue())) {
+			if (Tools.valuesAreEqual(getName(), each.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue())) {
 				return true;
 			}
 		}
