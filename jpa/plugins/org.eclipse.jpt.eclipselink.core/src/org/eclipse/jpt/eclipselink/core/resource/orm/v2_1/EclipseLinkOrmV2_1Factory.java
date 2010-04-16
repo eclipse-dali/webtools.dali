@@ -97,6 +97,8 @@ public class EclipseLinkOrmV2_1Factory extends EFactoryImpl
 		{
 			case EclipseLinkOrmV2_1Package.CACHE_KEY_TYPE_21:
 				return createCacheKeyType_2_1FromString(eDataType, initialValue);
+			case EclipseLinkOrmV2_1Package.BATCH_FETCH_TYPE_21:
+				return createBatchFetchType_2_1FromString(eDataType, initialValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -114,6 +116,8 @@ public class EclipseLinkOrmV2_1Factory extends EFactoryImpl
 		{
 			case EclipseLinkOrmV2_1Package.CACHE_KEY_TYPE_21:
 				return convertCacheKeyType_2_1ToString(eDataType, instanceValue);
+			case EclipseLinkOrmV2_1Package.BATCH_FETCH_TYPE_21:
+				return convertBatchFetchType_2_1ToString(eDataType, instanceValue);
 			default:
 				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
@@ -137,6 +141,28 @@ public class EclipseLinkOrmV2_1Factory extends EFactoryImpl
 	 * @generated
 	 */
 	public String convertCacheKeyType_2_1ToString(EDataType eDataType, Object instanceValue)
+	{
+		return instanceValue == null ? null : instanceValue.toString();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public BatchFetchType_2_1 createBatchFetchType_2_1FromString(EDataType eDataType, String initialValue)
+	{
+		BatchFetchType_2_1 result = BatchFetchType_2_1.get(initialValue);
+		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		return result;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String convertBatchFetchType_2_1ToString(EDataType eDataType, Object instanceValue)
 	{
 		return instanceValue == null ? null : instanceValue.toString();
 	}

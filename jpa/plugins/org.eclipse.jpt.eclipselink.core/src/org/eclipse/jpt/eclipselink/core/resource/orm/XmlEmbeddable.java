@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEmbeddable_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -35,7 +36,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  * 
  * <!-- end-user-doc -->
@@ -54,8 +55,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddable implements XmlEmbeddable_2_1, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlConvertersHolder, XmlPropertyContainer
 {
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
+
 	/**
 	 * The cached value of the '{@link #getCustomizer() <em>Customizer</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -195,6 +206,66 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_EMBEDDABLE;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Access Methods</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Access Methods</em>' containment reference.
+	 * @see #setAccessMethods(XmlAccessMethods)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethodsHolder_AccessMethods()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlAccessMethods getAccessMethods()
+	{
+		return accessMethods;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAccessMethods(XmlAccessMethods newAccessMethods, NotificationChain msgs)
+	{
+		XmlAccessMethods oldAccessMethods = accessMethods;
+		accessMethods = newAccessMethods;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS, oldAccessMethods, newAccessMethods);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable#getAccessMethods <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Access Methods</em>' containment reference.
+	 * @see #getAccessMethods()
+	 * @generated
+	 */
+	public void setAccessMethods(XmlAccessMethods newAccessMethods)
+	{
+		if (newAccessMethods != accessMethods)
+		{
+			NotificationChain msgs = null;
+			if (accessMethods != null)
+				msgs = ((InternalEObject)accessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS, null, msgs);
+			if (newAccessMethods != null)
+				msgs = ((InternalEObject)newAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS, null, msgs);
+			msgs = basicSetAccessMethods(newAccessMethods, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS, newAccessMethods, newAccessMethods));
 	}
 
 	/**
@@ -657,6 +728,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -691,6 +764,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
+				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return getCustomizer();
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -728,6 +803,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)newValue);
 				return;
@@ -780,6 +858,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				setCustomizer((XmlClassReference)null);
 				return;
@@ -827,6 +908,8 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS:
+				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CUSTOMIZER:
 				return customizer != null;
 			case EclipseLinkOrmPackage.XML_EMBEDDABLE__CHANGE_TRACKING:
@@ -861,6 +944,21 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEmbeddable_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlCustomizerHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -907,6 +1005,21 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_EMBEDDABLE__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEmbeddable_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlCustomizerHolder.class)
 		{
 			switch (baseFeatureID)
@@ -979,6 +1092,7 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 			buildMetadataCompleteTranslator(),
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
+			buildAccessMethodsTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildConverterTranslator(),
@@ -1035,4 +1149,9 @@ public class XmlEmbeddable extends org.eclipse.jpt.core.resource.orm.XmlEmbeddab
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
+
+	protected static Translator buildAccessMethodsTranslator() {
+		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+	}
+
 }

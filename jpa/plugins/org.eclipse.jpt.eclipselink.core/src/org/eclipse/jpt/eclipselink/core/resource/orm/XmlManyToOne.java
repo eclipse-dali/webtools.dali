@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,6 +20,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlManyToOne_2_1;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -36,7 +38,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  * 
  * <!-- end-user-doc -->
@@ -46,8 +48,18 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne implements XmlAttributeMapping, XmlJoinFetch
+public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne implements XmlManyToOne_2_1, XmlAttributeMapping, XmlJoinFetch
 {
+	/**
+	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBatchFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlBatchFetch batchFetch;
+
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -103,6 +115,66 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_MANY_TO_ONE;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Batch Fetch</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Batch Fetch</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #setBatchFetch(XmlBatchFetch)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBatchFetchHolder_BatchFetch()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlBatchFetch getBatchFetch()
+	{
+		return batchFetch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetBatchFetch(XmlBatchFetch newBatchFetch, NotificationChain msgs)
+	{
+		XmlBatchFetch oldBatchFetch = batchFetch;
+		batchFetch = newBatchFetch;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH, oldBatchFetch, newBatchFetch);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToOne#getBatchFetch <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #getBatchFetch()
+	 * @generated
+	 */
+	public void setBatchFetch(XmlBatchFetch newBatchFetch)
+	{
+		if (newBatchFetch != batchFetch)
+		{
+			NotificationChain msgs = null;
+			if (batchFetch != null)
+				msgs = ((InternalEObject)batchFetch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH, null, msgs);
+			if (newBatchFetch != null)
+				msgs = ((InternalEObject)newBatchFetch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH, null, msgs);
+			msgs = basicSetBatchFetch(newBatchFetch, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH, newBatchFetch, newBatchFetch));
 	}
 
 	/**
@@ -236,6 +308,8 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH:
+				return basicSetBatchFetch(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PROPERTIES:
@@ -254,6 +328,8 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH:
+				return getBatchFetch();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PROPERTIES:
@@ -275,6 +351,9 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -299,6 +378,9 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -322,6 +404,8 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH:
+				return batchFetch != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE__PROPERTIES:
@@ -340,6 +424,21 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH: return EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToOne_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -382,6 +481,21 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH: return EclipseLinkOrmPackage.XML_MANY_TO_ONE__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToOne_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -461,6 +575,7 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
 			buildJoinFetchTranslator(),
+			buildBatchFetchTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
@@ -481,4 +596,9 @@ public class XmlManyToOne extends org.eclipse.jpt.core.resource.orm.XmlManyToOne
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
+
+	protected static Translator buildBatchFetchTranslator() {
+		return XmlBatchFetch.buildTranslator(EclipseLink2_1.BATCH_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlBatchFetchHolder_BatchFetch());
+	}
+
 }

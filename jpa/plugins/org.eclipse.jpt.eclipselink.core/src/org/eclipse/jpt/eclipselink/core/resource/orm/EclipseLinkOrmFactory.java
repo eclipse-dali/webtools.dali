@@ -86,6 +86,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_BASIC: return (EObject)createXmlBasic();
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP: return (EObject)createXmlBasicMap();
+			case EclipseLinkOrmPackage.XML_BATCH_FETCH: return (EObject)createXmlBatchFetch();
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_CLONE_COPY_POLICY: return (EObject)createXmlCloneCopyPolicy();
@@ -113,6 +114,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
 			case EclipseLinkOrmPackage.XML_OPTIMISTIC_LOCKING: return (EObject)createXmlOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
+			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY: return (EObject)createXmlPrimaryKey();
 			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
@@ -242,6 +244,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlBasicMap xmlBasicMap = new XmlBasicMap();
 		return xmlBasicMap;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlBatchFetch createXmlBatchFetch()
+	{
+		XmlBatchFetch xmlBatchFetch = new XmlBatchFetch();
+		return xmlBatchFetch;
 	}
 
 	/**
@@ -539,6 +552,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlOrderColumn xmlOrderColumn = new XmlOrderColumn();
 		return xmlOrderColumn;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPersistenceUnitDefaults createXmlPersistenceUnitDefaults()
+	{
+		XmlPersistenceUnitDefaults xmlPersistenceUnitDefaults = new XmlPersistenceUnitDefaults();
+		return xmlPersistenceUnitDefaults;
 	}
 
 	/**

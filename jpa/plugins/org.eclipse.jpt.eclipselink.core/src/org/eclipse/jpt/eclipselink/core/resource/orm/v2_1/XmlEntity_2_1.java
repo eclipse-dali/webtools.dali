@@ -12,10 +12,20 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_1;
 
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Entity 21</b></em>'.
+ *  
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
  * <!-- end-user-doc -->
  *
  * <p>
@@ -29,7 +39,7 @@ import org.eclipse.jpt.core.resource.orm.XmlClassReference;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlEntity_2_1 extends XmlFetchGroupContainer_2_1
+public interface XmlEntity_2_1 extends XmlAccessMethodsHolder, XmlFetchGroupContainer_2_1
 {
 	/**
 	 * Returns the value of the '<em><b>Class Extractor</b></em>' containment reference.

@@ -35,11 +35,23 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Pack
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlElementCollection_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlElementCollection_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Element Collection</b></em>'.
+ *  
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.1
  * <!-- end-user-doc -->
  *
  *
@@ -47,7 +59,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0
+public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0, XmlElementCollection_2_1
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -198,6 +210,52 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	 * @ordered
 	 */
 	protected String mapKeyConvert = MAP_KEY_CONVERT_EDEFAULT;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBatchFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlBatchFetch batchFetch;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -729,6 +787,139 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Join Fetch</b></em>' attribute.
+	 * The literals are from the enumeration {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Join Fetch</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Join Fetch</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType
+	 * @see #setJoinFetch(XmlJoinFetchType)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlJoinFetch_JoinFetch()
+	 * @model
+	 * @generated
+	 */
+	public XmlJoinFetchType getJoinFetch()
+	{
+		return joinFetch;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection#getJoinFetch <em>Join Fetch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Join Fetch</em>' attribute.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType
+	 * @see #getJoinFetch()
+	 * @generated
+	 */
+	public void setJoinFetch(XmlJoinFetchType newJoinFetch)
+	{
+		XmlJoinFetchType oldJoinFetch = joinFetch;
+		joinFetch = newJoinFetch == null ? JOIN_FETCH_EDEFAULT : newJoinFetch;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH, oldJoinFetch, joinFetch));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Batch Fetch</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Batch Fetch</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #setBatchFetch(XmlBatchFetch)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBatchFetchHolder_BatchFetch()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlBatchFetch getBatchFetch()
+	{
+		return batchFetch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetBatchFetch(XmlBatchFetch newBatchFetch, NotificationChain msgs)
+	{
+		XmlBatchFetch oldBatchFetch = batchFetch;
+		batchFetch = newBatchFetch;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH, oldBatchFetch, newBatchFetch);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection#getBatchFetch <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #getBatchFetch()
+	 * @generated
+	 */
+	public void setBatchFetch(XmlBatchFetch newBatchFetch)
+	{
+		if (newBatchFetch != batchFetch)
+		{
+			NotificationChain msgs = null;
+			if (batchFetch != null)
+				msgs = ((InternalEObject)batchFetch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH, null, msgs);
+			if (newBatchFetch != null)
+				msgs = ((InternalEObject)newBatchFetch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH, null, msgs);
+			msgs = basicSetBatchFetch(newBatchFetch, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH, newBatchFetch, newBatchFetch));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_1_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -760,6 +951,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				return ((InternalEList<?>)getStructConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getMapKeyAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
+				return basicSetBatchFetch(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -800,6 +993,12 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				return getMapKeyAssociationOverrides();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
 				return getMapKeyConvert();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
+				return getJoinFetch();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
+				return getBatchFetch();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				return getAttributeType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -860,6 +1059,15 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
 				setMapKeyConvert((String)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
+				setJoinFetch((XmlJoinFetchType)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -913,6 +1121,15 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
 				setMapKeyConvert(MAP_KEY_CONVERT_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
+				setJoinFetch(JOIN_FETCH_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -953,6 +1170,12 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				return mapKeyAssociationOverrides != null && !mapKeyAssociationOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__MAP_KEY_CONVERT:
 				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH:
+				return joinFetch != JOIN_FETCH_EDEFAULT;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH:
+				return batchFetch != null;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1038,6 +1261,30 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 		{
 			switch (derivedFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinFetch.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH: return EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlElementCollection_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE;
 				default: return -1;
 			}
 		}
@@ -1128,6 +1375,30 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlJoinFetch.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__JOIN_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlElementCollection_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1146,6 +1417,10 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 		result.append(convert);
 		result.append(", mapKeyConvert: ");
 		result.append(mapKeyConvert);
+		result.append(", joinFetch: ");
+		result.append(joinFetch);
+		result.append(", attributeType: ");
+		result.append(attributeType);
 		result.append(')');
 		return result.toString();
 	}
@@ -1172,6 +1447,10 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 		return getElementTextRange(EclipseLink.CONVERT);
 	}
 	
+	public TextRange getJoinFetchTextRange() {
+		return getElementTextRange(EclipseLink.JOIN_FETCH);
+	}
+	
 	
 	// ********** translators **********
 	
@@ -1189,6 +1468,7 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			buildTargetClassTranslator(),
 			buildFetchTranslator(),
 			buildAccessTranslator(),
+			buildAttributeTypeTranslator(),
 			buildOrderByTranslator(),
 			buildOrderColumnTranslator(),		
 			buildMapKeyTranslator(),
@@ -1212,6 +1492,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			XmlConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
 			XmlConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
+			buildJoinFetchTranslator(),
+			buildBatchFetchTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
@@ -1236,4 +1518,17 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	protected static Translator buildMapKeyAssociationOverrideTranslator() {
 		return XmlAssociationOverride.buildTranslator(EclipseLink2_0.MAP_KEY_ASSOCIATION_OVERRIDE, EclipseLinkOrmV2_0Package.eINSTANCE.getXmlMapKeyAssociationOverrideContainer_2_0_MapKeyAssociationOverrides());
 	}
+
+	protected static Translator buildAttributeTypeTranslator() {
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlElementCollection_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildJoinFetchTranslator() {
+		return new Translator(EclipseLink.JOIN_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlJoinFetch_JoinFetch());
+	}
+	
+	protected static Translator buildBatchFetchTranslator() {
+		return XmlBatchFetch.buildTranslator(EclipseLink2_1.BATCH_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlBatchFetchHolder_BatchFetch());
+	}
+
 }

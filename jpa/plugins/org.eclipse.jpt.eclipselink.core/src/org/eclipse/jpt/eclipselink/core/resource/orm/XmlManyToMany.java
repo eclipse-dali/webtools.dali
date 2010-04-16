@@ -31,6 +31,9 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Pack
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlCollectionMapping_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOverrideContainer_2_0;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlManyToMany_2_1;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -44,7 +47,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  * 
  * <!-- end-user-doc -->
@@ -54,44 +57,8 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlAttributeMapping, XmlJoinFetch, XmlManyToMany_2_0
+public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMany implements XmlManyToMany_2_0, XmlManyToMany_2_1, XmlAttributeMapping, XmlJoinFetch
 {
-	/**
-	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getAccessMethods()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlAccessMethods accessMethods;
-
-	/**
-	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getProperties()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlProperty> properties;
-
-	/**
-	 * changed this to null and removed the generated flag so emf won't generate over it
-	 * we don't want a default for enums, just null if the tag does not exist
-	 */
-	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = null;
-
-	/**
-	 * The cached value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getJoinFetch()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
-
 	/**
 	 * The cached value of the '{@link #getConverter() <em>Converter</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -161,6 +128,72 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	 * @ordered
 	 */
 	protected String mapKeyConvert = MAP_KEY_CONVERT_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getBatchFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlBatchFetch batchFetch;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The cached value of the '{@link #getProperties() <em>Properties</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getProperties()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlProperty> properties;
+
+	/**
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
+	 */
+	protected static final XmlJoinFetchType JOIN_FETCH_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getJoinFetch() <em>Join Fetch</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getJoinFetch()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlJoinFetchType joinFetch = JOIN_FETCH_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -520,6 +553,101 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Batch Fetch</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Batch Fetch</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #setBatchFetch(XmlBatchFetch)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBatchFetchHolder_BatchFetch()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlBatchFetch getBatchFetch()
+	{
+		return batchFetch;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetBatchFetch(XmlBatchFetch newBatchFetch, NotificationChain msgs)
+	{
+		XmlBatchFetch oldBatchFetch = batchFetch;
+		batchFetch = newBatchFetch;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH, oldBatchFetch, newBatchFetch);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getBatchFetch <em>Batch Fetch</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Batch Fetch</em>' containment reference.
+	 * @see #getBatchFetch()
+	 * @generated
+	 */
+	public void setBatchFetch(XmlBatchFetch newBatchFetch)
+	{
+		if (newBatchFetch != batchFetch)
+		{
+			NotificationChain msgs = null;
+			if (batchFetch != null)
+				msgs = ((InternalEObject)batchFetch).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH, null, msgs);
+			if (newBatchFetch != null)
+				msgs = ((InternalEObject)newBatchFetch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH, null, msgs);
+			msgs = basicSetBatchFetch(newBatchFetch, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH, newBatchFetch, newBatchFetch));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlManyToMany_2_1_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlManyToMany#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -612,10 +740,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
-				return basicSetAccessMethods(null, msgs);
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
-				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return basicSetConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -626,6 +750,12 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return basicSetStructConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_ASSOCIATION_OVERRIDES:
 				return ((InternalEList<?>)getMapKeyAssociationOverrides()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
+				return basicSetBatchFetch(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
+				return ((InternalEList<?>)getProperties()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -640,12 +770,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
-				return getAccessMethods();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
-				return getProperties();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
-				return getJoinFetch();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return getConverter();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -658,6 +782,16 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return getMapKeyAssociationOverrides();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
 				return getMapKeyConvert();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
+				return getBatchFetch();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE:
+				return getAttributeType();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
+				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
+				return getProperties();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
+				return getJoinFetch();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -673,16 +807,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
-				getProperties().clear();
-				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
-				setJoinFetch((XmlJoinFetchType)newValue);
-				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)newValue);
 				return;
@@ -702,6 +826,22 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
 				setMapKeyConvert((String)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
+				getProperties().clear();
+				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
+				setJoinFetch((XmlJoinFetchType)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -716,15 +856,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
-				setAccessMethods((XmlAccessMethods)null);
-				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
-				getProperties().clear();
-				return;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
-				setJoinFetch(JOIN_FETCH_EDEFAULT);
-				return;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				setConverter((XmlConverter)null);
 				return;
@@ -743,6 +874,21 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
 				setMapKeyConvert(MAP_KEY_CONVERT_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
+				setBatchFetch((XmlBatchFetch)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
+				getProperties().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
+				setJoinFetch(JOIN_FETCH_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -757,12 +903,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	{
 		switch (featureID)
 		{
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
-				return accessMethods != null;
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
-				return properties != null && !properties.isEmpty();
-			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
-				return joinFetch != JOIN_FETCH_EDEFAULT;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__CONVERTER:
 				return converter != null;
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__TYPE_CONVERTER:
@@ -775,6 +915,16 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				return mapKeyAssociationOverrides != null && !mapKeyAssociationOverrides.isEmpty();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__MAP_KEY_CONVERT:
 				return MAP_KEY_CONVERT_EDEFAULT == null ? mapKeyConvert != null : !MAP_KEY_CONVERT_EDEFAULT.equals(mapKeyConvert);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH:
+				return batchFetch != null;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS:
+				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES:
+				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH:
+				return joinFetch != JOIN_FETCH_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -787,37 +937,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPropertyContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (derivedFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlJoinFetch.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -852,6 +971,53 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH: return EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_MANY_TO_MANY_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES: return EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAttributeMapping.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinFetch.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH: return EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH;
+				default: return -1;
+			}
+		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -863,37 +1029,6 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlAccessMethodsHolder.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlPropertyContainer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlAttributeMapping.class)
-		{
-			switch (baseFeatureID)
-			{
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlJoinFetch.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH;
-				default: return -1;
-			}
-		}
 		if (baseClass == XmlConverterHolder.class)
 		{
 			switch (baseFeatureID)
@@ -928,6 +1063,53 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBatchFetchHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BATCH_FETCH_HOLDER__BATCH_FETCH: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__BATCH_FETCH;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlManyToMany_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_MANY_TO_MANY_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPropertyContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_PROPERTY_CONTAINER__PROPERTIES: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__PROPERTIES;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAttributeMapping.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlJoinFetch.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_JOIN_FETCH__JOIN_FETCH: return EclipseLinkOrmPackage.XML_MANY_TO_MANY__JOIN_FETCH;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -942,10 +1124,12 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (joinFetch: ");
-		result.append(joinFetch);
-		result.append(", mapKeyConvert: ");
+		result.append(" (mapKeyConvert: ");
 		result.append(mapKeyConvert);
+		result.append(", attributeType: ");
+		result.append(attributeType);
+		result.append(", joinFetch: ");
+		result.append(joinFetch);
 		result.append(')');
 		return result.toString();
 	}
@@ -972,6 +1156,7 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			buildFetchTranslator(),
 			buildAccessTranslator(),
 			buildMappedByTranslator(),
+			buildAttributeTypeTranslator(),
 			buildOrderByTranslator(),
 			XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn()),		
 			buildMapKeyTranslator(),
@@ -990,6 +1175,7 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
 			buildJoinFetchTranslator(),
+			buildBatchFetchTranslator(),
 			buildPropertyTranslator(),
 			buildAccessMethodsTranslator()
 		};
@@ -1034,4 +1220,13 @@ public class XmlManyToMany extends org.eclipse.jpt.core.resource.orm.XmlManyToMa
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
+
+	protected static Translator buildAttributeTypeTranslator() {
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlManyToMany_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildBatchFetchTranslator() {
+		return XmlBatchFetch.buildTranslator(EclipseLink2_1.BATCH_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlBatchFetchHolder_BatchFetch());
+	}
+
 }

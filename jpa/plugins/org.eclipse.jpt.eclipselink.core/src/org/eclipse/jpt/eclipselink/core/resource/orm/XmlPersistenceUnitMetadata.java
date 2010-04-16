@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -28,7 +30,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  *
  * <!-- end-user-doc -->
@@ -221,7 +223,7 @@ public class XmlPersistenceUnitMetadata extends org.eclipse.jpt.core.resource.or
 			buildDescriptionTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),
 			buildExcludeDefaultMappingsTranslator(),
-			buildXmlPersistenceUnitDefaultsTranslator(),
+			XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
 		};
 	}
 	

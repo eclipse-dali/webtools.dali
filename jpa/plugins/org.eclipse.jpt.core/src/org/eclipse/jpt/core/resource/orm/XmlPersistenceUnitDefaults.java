@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -693,12 +693,12 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Xm
 			buildDelimitedIdentifiersTranslator(),
 			buildAccessTranslator(),
 			buildCascadePersistTranslator(),
-			EntityListeners.buildTranslator(JPA2_0.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners())
+			buildEntityListenersTranslator()
 		};
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_2_0_Description());
+		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlPersistenceUnitDefaults_2_0_Description());
 	}
 	
 	protected static Translator buildSchemaTranslator() {
@@ -719,5 +719,9 @@ public class XmlPersistenceUnitDefaults extends AbstractJpaEObject implements Xm
 	
 	protected static Translator buildCascadePersistTranslator() {
 		return new EmptyTagBooleanTranslator(JPA.CASCADE_PERSIST, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_CascadePersist());
+	}
+
+	protected static Translator buildEntityListenersTranslator() {
+		return EntityListeners.buildTranslator(JPA.ENTITY_LISTENERS, OrmPackage.eINSTANCE.getXmlPersistenceUnitDefaults_EntityListeners());
 	}
 }

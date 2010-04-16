@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,13 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Access Methods</b></em>'.
+ * 
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ *
  * <!-- end-user-doc -->
  *
  * <p>
@@ -268,7 +275,12 @@ public class XmlAccessMethods extends AbstractJpaEObject implements JpaEObject
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
-		return new SimpleTranslator(elementName, structuralFeature, buildTranslatorChildren());
+		return new SimpleTranslator(
+			elementName,
+			structuralFeature,
+			Translator.END_TAG_NO_INDENT,
+			buildTranslatorChildren()
+		);
 	}
 
 	private static Translator[] buildTranslatorChildren() {

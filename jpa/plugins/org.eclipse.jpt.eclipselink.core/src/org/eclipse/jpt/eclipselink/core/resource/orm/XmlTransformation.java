@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,9 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlTransformation_2_1;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -42,8 +45,28 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlTransformation extends AbstractXmlAttributeMapping implements XmlAttributeMapping
+public class XmlTransformation extends AbstractXmlAttributeMapping implements XmlTransformation_2_1, XmlAttributeMapping
 {
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -85,6 +108,41 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 		return EclipseLinkOrmPackage.Literals.XML_TRANSFORMATION;
 	}
 	
+	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlTransformation_2_1_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlTransformation#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
 	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
@@ -196,6 +254,8 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__PROPERTIES:
@@ -215,6 +275,9 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -236,6 +299,9 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -256,6 +322,8 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION__PROPERTIES:
@@ -272,6 +340,14 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlTransformation_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_TRANSFORMATION_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -306,6 +382,14 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlTransformation_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_TRANSFORMATION_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_TRANSFORMATION__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -332,6 +416,23 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (attributeType: ");
+		result.append(attributeType);
+		result.append(')');
+		return result.toString();
+	}
+
 	public String getMappingKey() {
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
@@ -350,6 +451,7 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 //			buildOptionalTranslator(),
 			buildAccessTranslator(),
 //			buildMutableTranslator(),
+			buildAttributeTypeTranslator(),
 //			buildReadTransformerTranslator(),
 //			buildWriteTransformerTranslator(),
 			buildPropertyTranslator(),
@@ -364,4 +466,9 @@ public class XmlTransformation extends AbstractXmlAttributeMapping implements Xm
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
 	}
+
+	protected static Translator buildAttributeTypeTranslator() {
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlTransformation_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
 }

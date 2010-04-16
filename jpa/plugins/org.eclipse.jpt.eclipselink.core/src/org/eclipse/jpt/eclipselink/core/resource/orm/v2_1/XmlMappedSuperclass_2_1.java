@@ -17,11 +17,21 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverrideContainer;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratorContainer;
 import org.eclipse.jpt.core.resource.orm.XmlQueryContainer;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethodsHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryRedirectors;
 
 /**
  * <!-- begin-user-doc -->
  * A representation of the model object '<em><b>Xml Mapped Superclass 21</b></em>'.
+ *  
+ * Provisional API: This interface is part of an interim API that is still
+ * under development and expected to change significantly before reaching
+ * stability. It is available at this early stage to solicit feedback from
+ * pioneering adopters on the understanding that any code that uses this API
+ * will almost certainly be broken (repeatedly) as the API evolves.
+ * 
+ * @version 2.3
+ * @since 2.3
  * <!-- end-user-doc -->
  *
  * <p>
@@ -36,7 +46,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryRedirectors;
  * @model kind="class" interface="true" abstract="true"
  * @generated
  */
-public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryContainer
+public interface XmlMappedSuperclass_2_1 extends XmlAssociationOverrideContainer, XmlAttributeOverrideContainer, XmlFetchGroupContainer_2_1, XmlGeneratorContainer, XmlQueryContainer, org.eclipse.jpt.eclipselink.core.resource.orm.XmlQueryContainer, XmlAccessMethodsHolder
 {
 	/**
 	 * Returns the value of the '<em><b>Sql Result Set Mappings</b></em>' containment reference list.

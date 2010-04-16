@@ -380,16 +380,12 @@ public class XmlPersistenceUnitMetadata extends AbstractJpaEObject implements Xm
 		return new Translator[] {
 			buildDescriptionTranslator(),
 			buildXmlMappingMetadataCompleteTranslator(),
-			XmlPersistenceUnitDefaults.buildTranslator(JPA2_0.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
+			XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults())
 		};
 	}
 	
 	protected static Translator buildDescriptionTranslator() {
-		return new Translator(JPA2_0.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlPersistenceUnitMetadata_2_0_Description());
-	}
-
-	protected static Translator buildXmlPersistenceUnitDefaultsTranslator() {
-		return XmlPersistenceUnitDefaults.buildTranslator(JPA.PERSISTENCE_UNIT_DEFAULTS, OrmPackage.eINSTANCE.getXmlPersistenceUnitMetadata_PersistenceUnitDefaults());
+		return new Translator(JPA.DESCRIPTION, OrmV2_0Package.eINSTANCE.getXmlPersistenceUnitMetadata_2_0_Description());
 	}
 
 	protected static Translator buildXmlMappingMetadataCompleteTranslator() {

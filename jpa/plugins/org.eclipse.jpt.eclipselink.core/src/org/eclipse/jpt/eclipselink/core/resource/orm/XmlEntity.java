@@ -47,7 +47,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  * 
  * <!-- end-user-doc -->
@@ -98,6 +98,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected XmlQueryRedirectors queryRedirectors;
+
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
 
 	/**
 	 * The cached value of the '{@link #getFetchGroups() <em>Fetch Groups</em>}' containment reference list.
@@ -1139,6 +1149,66 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Access Methods</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Access Methods</em>' containment reference.
+	 * @see #setAccessMethods(XmlAccessMethods)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethodsHolder_AccessMethods()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlAccessMethods getAccessMethods()
+	{
+		return accessMethods;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAccessMethods(XmlAccessMethods newAccessMethods, NotificationChain msgs)
+	{
+		XmlAccessMethods oldAccessMethods = accessMethods;
+		accessMethods = newAccessMethods;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS, oldAccessMethods, newAccessMethods);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getAccessMethods <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Access Methods</em>' containment reference.
+	 * @see #getAccessMethods()
+	 * @generated
+	 */
+	public void setAccessMethods(XmlAccessMethods newAccessMethods)
+	{
+		if (newAccessMethods != accessMethods)
+		{
+			NotificationChain msgs = null;
+			if (accessMethods != null)
+				msgs = ((InternalEObject)accessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS, null, msgs);
+			if (newAccessMethods != null)
+				msgs = ((InternalEObject)newAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS, null, msgs);
+			msgs = basicSetAccessMethods(newAccessMethods, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS, newAccessMethods, newAccessMethods));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Fetch Groups</b></em>' containment reference list.
 	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlFetchGroup}.
 	 * <!-- begin-user-doc -->
@@ -1272,6 +1342,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return basicSetCacheInterceptor(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return basicSetQueryRedirectors(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return ((InternalEList<?>)getFetchGroups()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
@@ -1322,6 +1394,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getCacheInterceptor();
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return getQueryRedirectors();
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return getFetchGroups();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
@@ -1381,6 +1455,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				getFetchGroups().clear();
@@ -1466,6 +1543,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				setQueryRedirectors((XmlQueryRedirectors)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				getFetchGroups().clear();
 				return;
@@ -1540,6 +1620,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return cacheInterceptor != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS:
 				return queryRedirectors != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS:
+				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__FETCH_GROUPS:
 				return fetchGroups != null && !fetchGroups.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
@@ -1602,6 +1684,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR;
 				case EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS: return EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
 				default: return -1;
 			}
 		}
@@ -1706,6 +1796,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			{
 				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__CACHE_INTERCEPTOR: return EclipseLinkOrmPackage.XML_ENTITY__CACHE_INTERCEPTOR;
 				case EclipseLinkOrmV2_0Package.XML_ENTITY_20__QUERY_REDIRECTORS: return EclipseLinkOrmPackage.XML_ENTITY__QUERY_REDIRECTORS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ENTITY__ACCESS_METHODS;
 				default: return -1;
 			}
 		}
@@ -1834,6 +1932,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildExistenceCheckingTranslator(),
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
+			buildAccessMethodsTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildTableTranslator(),
@@ -1962,4 +2061,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected static Translator buildPropertyTranslator() {
 		return XmlProperty.buildTranslator(EclipseLink.PROPERTY, EclipseLinkOrmPackage.eINSTANCE.getXmlPropertyContainer_Properties());
 	}
+	
+	protected static Translator buildAccessMethodsTranslator() {
+		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+	}
+
 }

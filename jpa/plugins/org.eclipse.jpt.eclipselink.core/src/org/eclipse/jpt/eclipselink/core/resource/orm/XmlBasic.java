@@ -46,7 +46,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 2.3
  * @since 2.1
  * 
  * <!-- end-user-doc -->
@@ -56,8 +56,82 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlAttributeMapping, XmlMutable, XmlConvertibleMapping, XmlBasic_2_1
+public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlBasic_2_1, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
 {
+	/**
+	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getSequenceGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlSequenceGenerator sequenceGenerator;
+	/**
+	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getTableGenerator()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlTableGenerator tableGenerator;
+	/**
+	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getGeneratedValue()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlGeneratedValue generatedValue;
+
+	/**
+	 * The cached value of the '{@link #getReturnInsert() <em>Return Insert</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnInsert()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlReturnInsert returnInsert;
+	/**
+	 * The default value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean RETURN_UPDATE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReturnUpdate()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean returnUpdate = RETURN_UPDATE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String ATTRIBUTE_TYPE_EDEFAULT = null;
+	/**
+	 * The cached value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAttributeType()
+	 * @generated
+	 * @ordered
+	 */
+	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
 	 * <!-- begin-user-doc -->
@@ -148,62 +222,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	 * @ordered
 	 */
 	protected String convert = CONVERT_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getSequenceGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlSequenceGenerator sequenceGenerator;
-	/**
-	 * The cached value of the '{@link #getTableGenerator() <em>Table Generator</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getTableGenerator()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlTableGenerator tableGenerator;
-	/**
-	 * The cached value of the '{@link #getGeneratedValue() <em>Generated Value</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getGeneratedValue()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlGeneratedValue generatedValue;
-
-	/**
-	 * The cached value of the '{@link #getReturnInsert() <em>Return Insert</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturnInsert()
-	 * @generated
-	 * @ordered
-	 */
-	protected XmlReturnInsert returnInsert;
-	/**
-	 * The default value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturnUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final Boolean RETURN_UPDATE_EDEFAULT = null;
-	/**
-	 * The cached value of the '{@link #getReturnUpdate() <em>Return Update</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getReturnUpdate()
-	 * @generated
-	 * @ordered
-	 */
-	protected Boolean returnUpdate = RETURN_UPDATE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -572,6 +590,41 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Attribute Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Attribute Type</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Attribute Type</em>' attribute.
+	 * @see #setAttributeType(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasic_2_1_AttributeType()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getAttributeType()
+	{
+		return attributeType;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic#getAttributeType <em>Attribute Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Attribute Type</em>' attribute.
+	 * @see #getAttributeType()
+	 * @generated
+	 */
+	public void setAttributeType(String newAttributeType)
+	{
+		String oldAttributeType = attributeType;
+		attributeType = newAttributeType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -904,6 +957,14 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return basicSetSequenceGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return basicSetTableGenerator(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return basicSetGeneratedValue(null, msgs);
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return basicSetReturnInsert(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -916,14 +977,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return basicSetObjectTypeConverter(null, msgs);
 			case EclipseLinkOrmPackage.XML_BASIC__STRUCT_CONVERTER:
 				return basicSetStructConverter(null, msgs);
-			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
-				return basicSetSequenceGenerator(null, msgs);
-			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
-				return basicSetTableGenerator(null, msgs);
-			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
-				return basicSetGeneratedValue(null, msgs);
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
-				return basicSetReturnInsert(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
@@ -938,6 +991,18 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return getSequenceGenerator();
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return getTableGenerator();
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return getGeneratedValue();
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return getReturnInsert();
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				return getReturnUpdate();
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				return getAttributeType();
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -954,16 +1019,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return getStructConverter();
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				return getConvert();
-			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
-				return getSequenceGenerator();
-			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
-				return getTableGenerator();
-			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
-				return getGeneratedValue();
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
-				return getReturnInsert();
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
-				return getReturnUpdate();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -979,6 +1034,24 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				setReturnInsert((XmlReturnInsert)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				setReturnUpdate((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				setAttributeType((String)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
 				return;
@@ -1004,21 +1077,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				setConvert((String)newValue);
 				return;
-			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
-				setTableGenerator((XmlTableGenerator)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
-				setReturnInsert((XmlReturnInsert)newValue);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
-				setReturnUpdate((Boolean)newValue);
-				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1033,6 +1091,24 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				setSequenceGenerator((XmlSequenceGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				setTableGenerator((XmlTableGenerator)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				setGeneratedValue((XmlGeneratedValue)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				setReturnInsert((XmlReturnInsert)null);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				setReturnUpdate(RETURN_UPDATE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -1057,21 +1133,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				setConvert(CONVERT_EDEFAULT);
 				return;
-			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
-				setSequenceGenerator((XmlSequenceGenerator)null);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
-				setTableGenerator((XmlTableGenerator)null);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
-				setGeneratedValue((XmlGeneratedValue)null);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
-				setReturnInsert((XmlReturnInsert)null);
-				return;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
-				setReturnUpdate(RETURN_UPDATE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1086,6 +1147,18 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
+				return sequenceGenerator != null;
+			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
+				return tableGenerator != null;
+			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
+				return generatedValue != null;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
+				return returnInsert != null;
+			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
+				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
+			case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE:
+				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
 			case EclipseLinkOrmPackage.XML_BASIC__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_BASIC__PROPERTIES:
@@ -1102,16 +1175,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				return structConverter != null;
 			case EclipseLinkOrmPackage.XML_BASIC__CONVERT:
 				return CONVERT_EDEFAULT == null ? convert != null : !CONVERT_EDEFAULT.equals(convert);
-			case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR:
-				return sequenceGenerator != null;
-			case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR:
-				return tableGenerator != null;
-			case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE:
-				return generatedValue != null;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT:
-				return returnInsert != null;
-			case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE:
-				return RETURN_UPDATE_EDEFAULT == null ? returnUpdate != null : !RETURN_UPDATE_EDEFAULT.equals(returnUpdate);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1124,6 +1187,33 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
+				case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_1_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE: return EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT;
+				case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE;
+				case EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -1174,32 +1264,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlGeneratorContainer.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR;
-				case EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR: return OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlBasic_1_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE: return EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlBasic_2_1.class)
-		{
-			switch (derivedFeatureID)
-			{
-				case EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT;
-				case EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE: return EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE;
-				default: return -1;
-			}
-		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
@@ -1211,6 +1275,33 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlGeneratorContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR;
+				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_1_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE: return EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasic_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT: return EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT;
+				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE: return EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE;
+				case EclipseLinkOrmV2_1Package.XML_BASIC_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_BASIC__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -1261,32 +1352,6 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlGeneratorContainer.class)
-		{
-			switch (baseFeatureID)
-			{
-				case OrmPackage.XML_GENERATOR_CONTAINER__SEQUENCE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__SEQUENCE_GENERATOR;
-				case OrmPackage.XML_GENERATOR_CONTAINER__TABLE_GENERATOR: return EclipseLinkOrmPackage.XML_BASIC__TABLE_GENERATOR;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlBasic_1_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE: return EclipseLinkOrmPackage.XML_BASIC__GENERATED_VALUE;
-				default: return -1;
-			}
-		}
-		if (baseClass == XmlBasic_2_1.class)
-		{
-			switch (baseFeatureID)
-			{
-				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_INSERT: return EclipseLinkOrmPackage.XML_BASIC__RETURN_INSERT;
-				case EclipseLinkOrmV2_1Package.XML_BASIC_21__RETURN_UPDATE: return EclipseLinkOrmPackage.XML_BASIC__RETURN_UPDATE;
-				default: return -1;
-			}
-		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1301,12 +1366,14 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (mutable: ");
+		result.append(" (returnUpdate: ");
+		result.append(returnUpdate);
+		result.append(", attributeType: ");
+		result.append(attributeType);
+		result.append(", mutable: ");
 		result.append(mutable);
 		result.append(", convert: ");
 		result.append(convert);
-		result.append(", returnUpdate: ");
-		result.append(returnUpdate);
 		result.append(')');
 		return result.toString();
 	}
@@ -1336,6 +1403,7 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			buildOptionalTranslator(),
 			buildAccessTranslator(),
 			buildMutableTranslator(),
+			buildAttributeTypeTranslator(),
 			buildColumnTranslator(), 
 			buildGeneratedValueTranslator(), 
 			buildLobTranslator(),
@@ -1405,4 +1473,9 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	protected static Translator buildReturnUpdateTranslator() {
 		return new Translator(EclipseLink2_1.RETURN_UPDATE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlBasic_2_1_ReturnUpdate());	
 	}
+
+	protected static Translator buildAttributeTypeTranslator() {
+		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlBasic_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
+	}
+
 }
