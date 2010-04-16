@@ -10,7 +10,6 @@
 package org.eclipse.jpt.ui.internal.details.db;
 
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
@@ -21,26 +20,22 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class CatalogCombo<T extends JpaNode>
 	extends DatabaseObjectCombo<T>
 {
-	public CatalogCombo(Pane<? extends T> parentPane, Composite parent) {
+	public CatalogCombo(
+			Pane<? extends T> parentPane,
+			Composite parent) {
+		
 		super(parentPane, parent);
 	}
-
+	
 	public CatalogCombo(
-						Pane<?> parentPane,
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent
-	) {
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent) {
+		
 		super(parentPane, subjectHolder, parent);
 	}
-
-	public CatalogCombo(
-						PropertyValueModel<? extends T> subjectHolder,
-						Composite parent,
-						WidgetFactory widgetFactory
-	) {
-		super(subjectHolder, parent, widgetFactory);
-	}
-
+	
+	
 	@Override
 	protected Iterable<String> getValues_() {
 		return this.getDatabase().getSortedCatalogIdentifiers();

@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details.db;
 
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -36,14 +35,6 @@ public abstract class ColumnCombo<T extends JpaNode>
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
-	}
-	
-	public ColumnCombo(
-			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
 	}
 	
 	

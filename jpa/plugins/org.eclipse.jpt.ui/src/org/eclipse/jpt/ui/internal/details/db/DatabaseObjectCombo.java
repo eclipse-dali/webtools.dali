@@ -21,7 +21,6 @@ import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Sequence;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.Tracing;
 import org.eclipse.jpt.ui.internal.listeners.SWTConnectionListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -71,14 +70,6 @@ public abstract class DatabaseObjectCombo<T extends JpaNode>
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
-	}
-	
-	protected DatabaseObjectCombo(
-			PropertyValueModel<? extends T> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
 	}
 	
 	
