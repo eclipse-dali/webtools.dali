@@ -206,7 +206,7 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue();
+		return this.javaAttributeMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue();
 	}
 	
 	@Override
