@@ -257,10 +257,11 @@ final class SourcePersistentAttribute
 		if (typeBinding == null) {
 			return null;
 		}
-		// a type variable is what is declared by a generic type
-		// (e.g. "E" is a type variable declared in "public interface Collection<E>")
+		// a type variable is what is declared by a generic type;
+		// e.g. "E" is a type variable declared by the generic type "Collection" in
+		//     public interface Collection<E>
 		if (typeBinding.isTypeVariable()) {
-			// e.g. "E extends Collection" has an erasure of "Collection"
+			// e.g. "E extends Number" has an erasure of "Number"
 			typeBinding = typeBinding.getErasure();
 		}
 		String tbName = typeBinding.getTypeDeclaration().getQualifiedName();
@@ -388,7 +389,9 @@ final class SourcePersistentAttribute
 			if (typeArgument == null) {
 				names.add(null);
 			} else {
-				names.add(typeArgument.getTypeDeclaration().getQualifiedName());
+				// e.g. "? extends Number" has an erasure of "Number"
+				ITypeBinding erasure = typeArgument.getErasure();
+				names.add(erasure.getTypeDeclaration().getQualifiedName());
 			}
 		}
 		return names;
