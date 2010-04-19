@@ -359,6 +359,16 @@ public class ClassName {
 		}
 		return null;
 	}
+	
+	/**
+	 * Return whether the two class names are equivalent, given autoboxing.
+	 * (e.g. "java.lang.Integer" and "int" should be equivalent)
+	 */
+	public static boolean areAutoboxEquivalents(String className1, String className2) {
+		return Tools.valuesAreEqual(className1, className2)
+			|| Tools.valuesAreEqual(getPrimitiveClassName(className1), className2)
+			|| Tools.valuesAreEqual(getWrapperClassName(className1), className2);
+	}
 
 
 	// ********** primitive codes **********

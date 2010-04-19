@@ -11,9 +11,7 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
-
 import junit.framework.TestCase;
-
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 
@@ -308,7 +306,15 @@ public class ClassNameTests extends TestCase {
 
 		assertNull(ClassName.getPrimitiveClassName(java.lang.String.class.getName()));
 	}
-
+	
+	public void testAreAutoboxEquivalents() {
+		assertTrue(ClassName.areAutoboxEquivalents(Integer.class.getName(), Integer.class.getName()));
+		assertTrue(ClassName.areAutoboxEquivalents(int.class.getName(), Integer.class.getName()));
+		assertTrue(ClassName.areAutoboxEquivalents(Integer.class.getName(), int.class.getName()));
+		assertFalse(ClassName.areAutoboxEquivalents(int.class.getName(), Boolean.class.getName()));
+		assertTrue(ClassName.areAutoboxEquivalents(String.class.getName(), String.class.getName()));
+	}
+	
 	public void testForCode() {
 		assertEquals("byte", ClassName.forCode('B'));
 		assertEquals("char", ClassName.forCode('C'));

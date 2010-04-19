@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -144,7 +145,9 @@ public abstract class AbstractPrimaryKeyValidator
 			AttributeMapping resolvedAttributeMapping = 
 					mapsIdRelationshipMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getResolvedAttributeMappingValue();
 			if (resolvedAttributeMapping != null 
-					&& ! resolvedAttributeMapping.getPersistentAttribute().getTypeName().equals(getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
+					&& ! ClassName.areAutoboxEquivalents(
+						resolvedAttributeMapping.getPersistentAttribute().getTypeName(), 
+						getTargetEntityPrimaryKeyTypeName(mapsIdRelationshipMapping))) {
 				messages.add(DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TYPE_MAPPING_MAPS_ID_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
@@ -188,7 +191,7 @@ public abstract class AbstractPrimaryKeyValidator
 					String attributeMappingTypeName = getTypeNameForIdClass(attributeMapping);
 					if (attributeMappingTypeName != null 	// if it's null, there should be 
 																// another failing validation elsewhere
-							&& ! idClassAttributeTypeName.equals(attributeMappingTypeName)) {
+							&& ! ClassName.areAutoboxEquivalents(idClassAttributeTypeName, attributeMappingTypeName)) {
 						messages.add(DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
 								JpaValidationMessages.TYPE_MAPPING_ID_CLASS_ATTRIBUTE_TYPE_DOES_NOT_AGREE,
