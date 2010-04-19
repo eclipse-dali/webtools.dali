@@ -60,7 +60,7 @@ import org.osgi.framework.Bundle;
  *  ClassesGeneratorWizardPage
  */
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
-	static public String JPT_JAXB_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.jaxb.ui";   //$NON-NLS-1$
+	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
 
 	private final JpaProject jpaProject;
 
@@ -168,7 +168,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	}
 	
 	private Bundle getJptEclipseLinkJaxbBundle() {
-		return Platform.getBundle(JPT_JAXB_ECLIPSELINK_UI_PLUGIN_ID);	// Cannot reference directly EL plugin.
+		return Platform.getBundle(JPT_ECLIPSELINK_UI_PLUGIN_ID);	// Cannot reference directly EL plugin.
 	}
 	
 	private void validateProjectClasspath() {
