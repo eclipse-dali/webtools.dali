@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlJoinTable;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlManyToOne;
+import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneMapping2_0;
 import org.eclipse.jpt.core.resource.orm.AccessType;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
@@ -165,7 +166,13 @@ public class VirtualXmlManyToOne2_0 extends XmlManyToOne
 		if (isOrmMetadataComplete()) {
 			return null;
 		}
-		return this.javaAttributeMapping.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue();
+		DerivedIdentity2_0 derivedIdentity = this.javaAttributeMapping.getDerivedIdentity();
+		if (derivedIdentity.usesMapsIdDerivedIdentityStrategy()) {
+			return derivedIdentity.getMapsIdDerivedIdentityStrategy().getValue();
+		}
+		else {
+			return derivedIdentity.getMapsIdDerivedIdentityStrategy().getSpecifiedValue();
+		}
 	}
 	
 	@Override
