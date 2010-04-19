@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -53,11 +52,12 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	}
 	
 	protected ComboPane(
+			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
-			WidgetFactory widgetFactory) {
-		
-		super(subjectHolder, parent, widgetFactory);
+			PropertyValueModel<Boolean> enabledModel) {
+	
+		super(parentPane, subjectHolder, parent, enabledModel);
 	}
 	
 	
@@ -106,15 +106,6 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	
 	
 	// **************** overrides *********************************************
-	
-	@Override
-	public void enableWidgets(boolean enabled) {
-		super.enableWidgets(enabled);
-
-		if ( ! this.comboBox.isDisposed()) {
-			this.comboBox.setEnabled(enabled);
-		}
-	}
 	
 	@Override
 	protected void propertyChanged(String propertyName) {

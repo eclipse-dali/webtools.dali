@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.widgets;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
@@ -159,11 +158,16 @@ public abstract class Pane<T extends Model>
 	private ArrayList<Pane<?>> managedSubPanes;
 
 	/**
-	 * This model can be used by individually-enabled/disabled widgets to
+	 * This base enabled model can be used by individually-enabled/disabled widgets to
 	 * coordinate with the pane's enablement.
+	 * It can also be combined with additional enablement that defines the *pane's* enablement logic.
+	 * @see #getCombinedEnabledModel()
 	 */
-	private final WritablePropertyValueModel<Boolean> enabledModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
-
+	private final WritablePropertyValueModel<Boolean> baseEnabledModel 
+			= new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
+	
+	private PropertyValueModel<Boolean> combinedEnabledModel;
+	
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -182,9 +186,10 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<? extends T> parentPane,
-	                       Composite parent) {
-
+	protected Pane(
+			Pane<? extends T> parentPane,
+	        Composite parent) {
+		
 		this(parentPane, parent, true);
 	}
 
@@ -200,14 +205,16 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<? extends T> parentPane,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets) {
-
-		this(parentPane,
-		     parentPane.getSubjectHolder(),
-		     parent,
-		     automaticallyAlignWidgets);
+	protected Pane(
+			Pane<? extends T> parentPane,
+	        Composite parent,
+	        boolean automaticallyAlignWidgets) {
+		
+		this(
+			parentPane,
+			parentPane.getSubjectHolder(),
+			parent,
+			automaticallyAlignWidgets);
 	}
 
 	/**
@@ -222,16 +229,18 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<? extends T> parentPane,
-	                       Composite parent,
-	                       boolean automaticallyAlignWidgets,
-	                       boolean parentManagePane) {
-
-		this(parentPane,
-		     parentPane.getSubjectHolder(),
-		     parent,
-		     automaticallyAlignWidgets,
-		     parentManagePane);
+	protected Pane(
+			Pane<? extends T> parentPane,
+	        Composite parent,
+	        boolean automaticallyAlignWidgets,
+	        boolean parentManagePane) {
+		
+		this(
+			parentPane,
+			parentPane.getSubjectHolder(),
+			parent,
+			automaticallyAlignWidgets,
+			parentManagePane);
 	}
 
 	/**
@@ -243,11 +252,21 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Constructor
 	 */
-	protected Pane(Pane<?> parentPane,
-	                       PropertyValueModel<? extends T> subjectHolder,
-	                       Composite parent) {
-
+	protected Pane(
+			Pane<?> parentPane,
+	        PropertyValueModel<? extends T> subjectHolder,
+	        Composite parent) {
+		
 		this(parentPane, subjectHolder, parent, true);
+	}
+	
+	protected Pane(
+			Pane<?> parentPane,
+	        PropertyValueModel<? extends T> subjectHolder,
+	        Composite parent,
+	        PropertyValueModel<Boolean> enabledModel) {
+		
+		this(parentPane, subjectHolder, parent, true, enabledModel);
 	}
 
 	/**
@@ -267,11 +286,21 @@ public abstract class Pane<T extends Model>
 			Pane<?> parentPane,
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
-			boolean automaticallyAlignWidgets
-	) {
+			boolean automaticallyAlignWidgets) {
+		
 		this(parentPane, subjectHolder, parent, automaticallyAlignWidgets, true);
 	}
-
+	
+	protected Pane(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets,
+			PropertyValueModel<Boolean> enabledModel) {
+		
+		this(parentPane, subjectHolder, parent, automaticallyAlignWidgets, true, enabledModel);
+	}
+	
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -292,12 +321,25 @@ public abstract class Pane<T extends Model>
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
 			boolean automaticallyAlignWidgets, 
-			boolean parentManagePane
-	) {
+			boolean parentManagePane) {
+		
 		this(subjectHolder, parent, parentPane.getWidgetFactory());
 		this.initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
 	}
-
+	
+	protected Pane(
+			Pane<?> parentPane,
+			PropertyValueModel<? extends T> subjectHolder,
+			Composite parent,
+			boolean automaticallyAlignWidgets, 
+			boolean parentManagePane,
+			PropertyValueModel<Boolean> enabledModel) {
+		
+		this(subjectHolder, parent, parentPane.getWidgetFactory());
+		this.initialize(parentPane, automaticallyAlignWidgets, parentManagePane);
+		this.initializeEnabledModel(enabledModel);
+	}
+	
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *
@@ -310,8 +352,8 @@ public abstract class Pane<T extends Model>
 	protected Pane(
 			PropertyValueModel<? extends T> subjectHolder,
 			Composite parent,
-			WidgetFactory widgetFactory
-	) {
+			WidgetFactory widgetFactory) {
+		
 		super();
 		this.initialize(subjectHolder, widgetFactory);
 		this.container = this.addContainer(parent);
@@ -359,15 +401,16 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Initialization
 	 */
-	private void initialize(Pane<?> parentPane,
-	                        boolean automaticallyAlignWidgets,
-	                        boolean parentManagePane) {
-
+	private void initialize(
+			Pane<?> parentPane,
+			boolean automaticallyAlignWidgets,
+	        boolean parentManagePane) {
+		
 		// Register this pane with the parent pane, it will call the methods
 		// automatically (engageListeners(), disengageListeners(), populate(),
 		// dispose(), etc)
 		parentPane.registerSubPane(this);
-
+		
 		if (parentManagePane) {
 			parentPane.manageSubPane(this);
 		}
@@ -379,7 +422,11 @@ public abstract class Pane<T extends Model>
 			parentPane.addAlignRight(this);
 		}
 	}
-
+	
+	private void initializeEnabledModel(PropertyValueModel<Boolean> enabledModel) {
+		this.combinedEnabledModel = CompositeBooleanPropertyValueModel.and(this.baseEnabledModel, enabledModel);
+	}
+	
 	/**
 	 * Initializes the layout of this pane.
 	 *
@@ -639,8 +686,8 @@ public abstract class Pane<T extends Model>
 			String buttonText,
 			WritablePropertyValueModel<Boolean> booleanHolder,
 			String helpId,
-			PropertyValueModel<Boolean> enabledModel
-	) {
+			PropertyValueModel<Boolean> enabledModel) {
+		
 		Button button = this.addUnmanagedToggleButton(parent, buttonText, booleanHolder, helpId, SWT.CHECK);
 		this.controlEnabledState(enabledModel, button);
 		return button;
@@ -656,14 +703,14 @@ public abstract class Pane<T extends Model>
 	 *
 	 * @category Layout
 	 */
-	protected final Composite addCollapsibleSection(Composite container,
-	                                                  String sectionText) {
-
+	protected final Composite addCollapsibleSection(
+			Composite container,
+	        String sectionText) {
+		
 		return this.addCollapsibleSection(
-			container,
-			sectionText,
-			new SimplePropertyValueModel<Boolean>(Boolean.FALSE)
-		);
+				container,
+				sectionText,
+				new SimplePropertyValueModel<Boolean>(Boolean.FALSE));
 	}
 	
 	/**
@@ -918,8 +965,8 @@ public abstract class Pane<T extends Model>
 			ListValueModel<V> listHolder,
 			WritablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
-			PropertyValueModel<Boolean> enabledModel
-	) {
+			PropertyValueModel<Boolean> enabledModel) {
+		
 		Combo combo = this.addUnmanagedCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.controlEnabledState(enabledModel, combo);
 		return combo;
@@ -957,35 +1004,28 @@ public abstract class Pane<T extends Model>
 	protected Composite addContainer(Composite parent) {
 		return this.addSubPane(parent);
 	}
-
+	
 	protected final <V> Combo addEditableCombo(
 			Composite container,
 			ListValueModel<V> listHolder,
 			WritablePropertyValueModel<V> selectedItemHolder,
 			StringConverter<V> stringConverter,
-			PropertyValueModel<Boolean> enabledModel
-	) {
+			PropertyValueModel<Boolean> enabledModel) {
+		
 		Combo combo = this.addUnmanagedEditableCombo(container, listHolder, selectedItemHolder, stringConverter);
 		this.controlEnabledState(enabledModel, combo);
 		return combo;
 	}
-
-	/**
-	 * Creates a new editable <code>Combo</code>.
-	 *
-	 * @param container The parent container
-	 * @return The newly created <code>Combo</code>
-	 *
-	 * @category Layout
-	 */
-	protected final Combo addEditableCombo(Composite container) {
-
+	
+	protected final Combo addEditableCombo(
+			Composite container) {
+		
 		Combo combo = this.widgetFactory.createEditableCombo(container);
 		combo.setLayoutData(getFieldGridData());
 		this.manageWidget(combo);
 		return combo;
 	}
-
+	
 	/**
 	 * Creates a new editable <code>Combo</code>.
 	 *
@@ -3202,7 +3242,7 @@ public abstract class Pane<T extends Model>
 		for (Control control : this.managedWidgets) {
 			control.setEnabled(enabled);
 		}
-		this.enabledModel.setValue(Boolean.valueOf(enabled));
+		this.baseEnabledModel.setValue(Boolean.valueOf(enabled));
 	}
 
 	private void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
@@ -3221,8 +3261,12 @@ public abstract class Pane<T extends Model>
 		SWTTools.controlEnabledState(this.andEnabledModel(booleanModel), controls);
 	}
 	
+	private PropertyValueModel<Boolean> getCombinedEnabledModel() {
+		return (this.combinedEnabledModel != null) ? this.combinedEnabledModel : this.baseEnabledModel;
+	}
+	
 	private PropertyValueModel<Boolean> andEnabledModel(PropertyValueModel<Boolean> booleanModel) {
-		return CompositeBooleanPropertyValueModel.and(this.enabledModel, booleanModel);
+		return CompositeBooleanPropertyValueModel.and(getCombinedEnabledModel(), booleanModel);
 	}
 	
 	/**

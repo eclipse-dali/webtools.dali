@@ -10,10 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import java.util.Collection;
-
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.MapsIdDerivedIdentityStrategy2_0;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.ComboPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -106,13 +104,14 @@ public class DerivedIdentity2_0Pane
 	}
 	
 	protected void addMapsIdDerivedIdentityPane(Composite parent) {
+		WritablePropertyValueModel<Boolean> usesMapsIdModel = buildUsesMapsIdDerivedIdentityStrategyHolder();
 		addRadioButton(
 			parent,
 			JptUiDetailsMessages2_0.DerivedIdentity_mapsIdDerivedIdentity,
-			buildUsesMapsIdDerivedIdentityStrategyHolder(),
+			usesMapsIdModel,
 			null);
 
-		buildMapsIdValueComboPane(parent);
+		buildMapsIdValueComboPane(parent, usesMapsIdModel);
 	}
 	
 	protected WritablePropertyValueModel<Boolean> buildUsesMapsIdDerivedIdentityStrategyHolder() {
@@ -134,8 +133,8 @@ public class DerivedIdentity2_0Pane
 		};
 	}
 	
-	protected ComboPane buildMapsIdValueComboPane(Composite parent) {
-		return new MapsIdValueComboPane(this, buildMapsIdStrategyHolder(), parent);
+	protected ComboPane buildMapsIdValueComboPane(Composite parent, PropertyValueModel<Boolean> usesMapsIdModel) {
+		return new MapsIdValueComboPane(this, buildMapsIdStrategyHolder(), parent, usesMapsIdModel);
 	}
 	
 	protected PropertyValueModel<MapsIdDerivedIdentityStrategy2_0> buildMapsIdStrategyHolder() {
@@ -154,21 +153,12 @@ public class DerivedIdentity2_0Pane
 		public MapsIdValueComboPane(
 				Pane<?> parentPane,
 				PropertyValueModel<? extends MapsIdDerivedIdentityStrategy2_0> subjectHolder,
-				Composite parent) {
+				Composite parent,
+				PropertyValueModel<Boolean> enabledModel) {
 			
-			super(parentPane, subjectHolder, parent);
+			super(parentPane, subjectHolder, parent, enabledModel);
 		}
 		
-		
-		@Override
-		protected void initializeLayout(Composite container) {
-			super.initializeLayout(container);
-			WritablePropertyValueModel<Boolean> usesMapsIdHolder = 
-				buildUsesMapsIdDerivedIdentityStrategyHolder();
-					
-			this.comboBox.setEnabled(false);
-			SWTTools.controlEnabledState(usesMapsIdHolder, this.comboBox);
-		}
 		
 		@Override
 		protected void addPropertyNames(Collection<String> propertyNames) {
