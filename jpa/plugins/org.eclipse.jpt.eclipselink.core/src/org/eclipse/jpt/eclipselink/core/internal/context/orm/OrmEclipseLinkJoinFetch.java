@@ -52,7 +52,7 @@ public class OrmEclipseLinkJoinFetch extends AbstractOrmXmlContextNode
 	
 	// **************** initialize/update **************************************
 	
-	protected void update() {
+	public void update() {
 		setValue_(getResourceJoinFetch());
 	}
 	

@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java.EclipseLink1_2JavaUiFactory;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -78,7 +77,7 @@ public class EclipseLink2_0JavaUiFactory
 			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
-		return new ElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
+		return new JavaEclipseLinkElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 	
 	@Override

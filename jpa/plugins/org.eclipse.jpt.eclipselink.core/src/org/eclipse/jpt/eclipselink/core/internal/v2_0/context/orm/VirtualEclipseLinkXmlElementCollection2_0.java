@@ -25,8 +25,11 @@ import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAccessMethods;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlProperty;
 
 /**
@@ -246,4 +249,19 @@ public class VirtualEclipseLinkXmlElementCollection2_0 extends XmlElementCollect
 	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
 		return this.virtualXmlElementCollection.getMapKeyAttributeOverrides();
 	}
+	
+	
+	@Override
+	public XmlJoinFetchType getJoinFetch() {
+		if (isOrmMetadataComplete()) {
+			return null; //don't return default value, it only applies for an empty @JoinFetch
+		}
+		return EclipseLinkJoinFetchType.toOrmResourceModel(((JavaEclipseLinkElementCollectionMapping2_0) this.javaAttributeMapping).getJoinFetch().getValue());
+	}
+	
+	@Override
+	public void setJoinFetch(XmlJoinFetchType value) {
+		throw new UnsupportedOperationException("cannot set values on a virtual mapping"); //$NON-NLS-1$
+	}
+
 }

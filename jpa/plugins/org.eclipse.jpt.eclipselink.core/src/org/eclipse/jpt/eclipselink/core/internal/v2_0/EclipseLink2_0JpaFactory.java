@@ -32,7 +32,6 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaAssociationOve
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCacheable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaCollectionTable2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaDerivedIdentity2_0;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaNamedQuery2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOrphanRemoval2_0;
@@ -57,6 +56,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkManyToOneMapping2_0;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkOneToOneMapping2_0;
 
@@ -114,7 +114,7 @@ public class EclipseLink2_0JpaFactory
 	
 	@Override
 	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
-		return new GenericJavaElementCollectionMapping2_0(parent);
+		return new JavaEclipseLinkElementCollectionMapping2_0(parent);
 	}
 	
 	@Override

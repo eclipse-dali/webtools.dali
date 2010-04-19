@@ -11,6 +11,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.v2_1.context.orm;
 
 import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm.EclipseLinkOrmXml2_0Definition;
@@ -44,10 +45,10 @@ public class EclipseLinkOrmXml2_1Definition
 //		return EclipseLinkOrmFactory.eINSTANCE;
 //	}
 	
-//	@Override
-//	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
-//		return new EclipseLinkOrmXml2_0ContextNodeFactory();
-//	}
+	@Override
+	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
+		return new EclipseLinkOrmXml2_1ContextNodeFactory();
+	}
 	
 	@Override
 	public JpaResourceType getResourceType() {
