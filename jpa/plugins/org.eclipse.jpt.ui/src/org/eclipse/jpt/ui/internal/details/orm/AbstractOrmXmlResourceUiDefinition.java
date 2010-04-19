@@ -14,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -81,8 +83,11 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-	public Iterator<MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions() {
-		return new ArrayIterator<MappingUiDefinition<? extends TypeMapping>>(getOrmTypeMappingUiDefinitions());
+	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> 
+			typeMappingUiDefinitions() {
+		
+		return new ArrayIterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>>(
+				getOrmTypeMappingUiDefinitions());
 	}
 	
 	protected synchronized OrmTypeMappingUiDefinition<? extends TypeMapping>[] getOrmTypeMappingUiDefinitions() {
@@ -104,11 +109,11 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 		OrmTypeMappingUiDefinition<? extends TypeMapping>[] definitionArray = definitions.toArray(new OrmTypeMappingUiDefinition[definitions.size()]);
 		return definitionArray;
 	}
-
-
-	protected abstract void addOrmTypeMappingUiDefinitionsTo(List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions);
 	
-	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition() {
+	protected abstract void addOrmTypeMappingUiDefinitionsTo(
+			List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions);
+	
+	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition() {
 		//there is no way to choose an type in the orm.xml that doesn't have a specified mapping so we can return null here
 		return null;
 	}
@@ -136,8 +141,9 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 		return UnsupportedOrmMappingUiDefinition.instance();
 	}
 	
-	public ListIterator<MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions() {
-		return new ArrayListIterator<MappingUiDefinition<? extends AttributeMapping>>(getOrmAttributeMappingUiDefinitions());
+	public ListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions() {
+		return new ArrayListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>>(
+				getOrmAttributeMappingUiDefinitions());
 	}
 	
 	protected synchronized OrmAttributeMappingUiDefinition<? extends AttributeMapping>[] getOrmAttributeMappingUiDefinitions() {
@@ -158,11 +164,11 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 		OrmAttributeMappingUiDefinition<? extends AttributeMapping>[] definitionArray = definitions.toArray(new OrmAttributeMappingUiDefinition[definitions.size()]);
 		return definitionArray;
 	}
-
-
-	protected abstract void addOrmAttributeMappingUiDefinitionsTo(List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions);
-
-	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key) {
+	
+	protected abstract void addOrmAttributeMappingUiDefinitionsTo(
+			List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions);
+	
+	public DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key) {
 		return null;
 	}
 }

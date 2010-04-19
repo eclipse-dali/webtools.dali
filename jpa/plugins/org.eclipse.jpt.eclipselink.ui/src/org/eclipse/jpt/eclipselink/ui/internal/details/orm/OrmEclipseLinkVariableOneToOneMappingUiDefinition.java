@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkVariableOneToOneMappingUiDefinition
-	extends EclipseLinkVariableOneToOneMappingUiDefinition<OrmEclipseLinkVariableOneToOneMapping>
+	extends AbstractEclipseLinkVariableOneToOneMappingUiDefinition<PersistentAttribute, OrmEclipseLinkVariableOneToOneMapping>
 	implements OrmAttributeMappingUiDefinition<OrmEclipseLinkVariableOneToOneMapping>
 {
 	// singleton
 	private static final OrmEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = 
-		new OrmEclipseLinkVariableOneToOneMappingUiDefinition();
+			new OrmEclipseLinkVariableOneToOneMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -42,11 +44,13 @@ public class OrmEclipseLinkVariableOneToOneMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmEclipseLinkVariableOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

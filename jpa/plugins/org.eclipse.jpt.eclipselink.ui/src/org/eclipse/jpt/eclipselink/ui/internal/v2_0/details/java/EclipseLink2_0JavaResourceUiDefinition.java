@@ -32,7 +32,6 @@ import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddableUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddedIdMappingUDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaEmbeddedMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaEntityUiDefinition;
-import org.eclipse.jpt.ui.internal.details.java.JavaIdMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaManyToManyMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaManyToOneMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaMappedSuperclassUiDefinition;
@@ -43,11 +42,13 @@ import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.jpa2.details.java.JavaElementCollectionMapping2_0UiDefinition;
 
-public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
+public class EclipseLink2_0JavaResourceUiDefinition
+	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLink2_0JavaResourceUiDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
@@ -63,14 +64,17 @@ public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResource
 		super();
 	}
 	
+	
 	@Override
 	protected JavaUiFactory buildJavaUiFactory() {
 		return new EclipseLink2_0JavaUiFactory();
 	}
 	
 	@Override
-	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
-		definitions.add(JavaIdMappingUiDefinition.instance());
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(
+			List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+		
+		definitions.add(JavaEclipseLinkIdMapping2_0UiDefinition.instance());
 		definitions.add(JavaEmbeddedIdMappingUDefinition.instance());
 		definitions.add(JavaBasicMappingUiDefinition.instance());
 		definitions.add(JavaVersionMappingUiDefinition.instance());
@@ -90,7 +94,9 @@ public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResource
 	}
 	
 	@Override
-	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
+	protected void addDefaultAttributeMappingUiDefinitionsTo(
+			List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
+		
 		definitions.add(DefaultBasicMappingUiDefinition.instance());
 		definitions.add(DefaultEmbeddedMappingUiDefinition.instance());
 		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
@@ -100,7 +106,9 @@ public class EclipseLink2_0JavaResourceUiDefinition extends AbstractJavaResource
 	}
 	
 	@Override
-	protected void addSpecifiedTypeMappingUiDefinitionsTo(List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+	protected void addSpecifiedTypeMappingUiDefinitionsTo(
+			List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+		
 		definitions.add(JavaEntityUiDefinition.instance());
 		definitions.add(JavaMappedSuperclassUiDefinition.instance());
 		definitions.add(JavaEmbeddableUiDefinition.instance());

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,13 +20,14 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEntityUiDefinition
-	extends AbstractEntityUiDefinition<JavaEntity>
+	extends AbstractEntityUiDefinition<PersistentType, JavaEntity>
 	implements JavaTypeMappingUiDefinition<JavaEntity>
 {
 	// singleton
 	private static final JavaEntityUiDefinition INSTANCE = 
-		new JavaEntityUiDefinition();
-
+			new JavaEntityUiDefinition();
+	
+	
 	/**
 	 * Return the singleton.
 	 */
@@ -41,11 +43,13 @@ public class JavaEntityUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildTypeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaEntity> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }

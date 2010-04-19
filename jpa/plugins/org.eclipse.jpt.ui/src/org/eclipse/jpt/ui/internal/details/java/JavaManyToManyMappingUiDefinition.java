@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaManyToManyMappingUiDefinition
-	extends AbstractManyToManyMappingUiDefinition<JavaManyToManyMapping>
+	extends AbstractManyToManyMappingUiDefinition<PersistentAttribute, JavaManyToManyMapping>
 	implements JavaAttributeMappingUiDefinition<JavaManyToManyMapping>
 {
 	// singleton
 	private static final JavaManyToManyMappingUiDefinition INSTANCE = 
-		new JavaManyToManyMappingUiDefinition();
+			new JavaManyToManyMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,11 +43,13 @@ public class JavaManyToManyMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaManyToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaManyToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

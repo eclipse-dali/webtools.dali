@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,11 +20,12 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEmbeddableUiDefinition 
-	extends AbstractEmbeddableUiDefinition<JavaEmbeddable>
+	extends AbstractEmbeddableUiDefinition<PersistentType, JavaEmbeddable>
 	implements JavaTypeMappingUiDefinition<JavaEmbeddable>
 {
 	// singleton
 	private static final JavaEmbeddableUiDefinition INSTANCE = new JavaEmbeddableUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -40,11 +42,13 @@ public class JavaEmbeddableUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildTypeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaEmbeddable> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaEmbeddableComposite(subjectHolder, parent, widgetFactory);
 	}
 }

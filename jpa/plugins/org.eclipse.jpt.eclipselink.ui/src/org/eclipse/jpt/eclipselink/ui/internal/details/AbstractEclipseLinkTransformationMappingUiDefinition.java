@@ -10,34 +10,33 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTransformationMapping;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class EclipseLinkBasicMapMappingUiDefinition<T extends EclipseLinkBasicMapMapping>
-	implements MappingUiDefinition<T>
+public abstract class AbstractEclipseLinkTransformationMappingUiDefinition<M, T extends EclipseLinkTransformationMapping>
+	extends AbstractMappingUiDefinition<M, T>
 {
-	
-	protected EclipseLinkBasicMapMappingUiDefinition() {
+	protected AbstractEclipseLinkTransformationMappingUiDefinition() {
 		super();
 	}
+	
 	
 	public Image getImage() {
 		return JptUiPlugin.getImage(JptUiIcons.JPA_CONTENT);
 	}
 	
 	public String getLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicMapMappingUiProvider_label;
+		return EclipseLinkUiDetailsMessages.EclipseLinkTransformationMappingUiProvider_label;
 	}
 	
 	public String getLinkLabel() {
-		return EclipseLinkUiDetailsMessages.EclipseLinkBasicMapMappingUiProvider_linkLabel;
+		return EclipseLinkUiDetailsMessages.EclipseLinkTransformationMappingUiProvider_linkLabel;
 	}
 	
 	public String getKey() {
-		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
+		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
-
 }

@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details;
 
-import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
-import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.swt.graphics.Image;
 
 /**
  * A UI provider is responsible to provide the support for displaying the
  * information for a certain mapping type.
+ * 
+ * T represents the type of the mapping the definition represents
+ * M represents the type of the object being mapped
  *
- * @see JavaAttributeMappingUiDefinition
- * @see JavaTypeMappingUiDefinition
- *
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  * 
  * Provisional API: This interface is part of an interim API that is still
@@ -29,7 +27,7 @@ import org.eclipse.swt.graphics.Image;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface MappingUiDefinition<T>
+public interface MappingUiDefinition<M, T>
 {
 	/**
 	 * Returns a unique string that corresponds to the key of the mapping in the
@@ -58,4 +56,10 @@ public interface MappingUiDefinition<T>
 	 * is required
 	 */
 	Image getImage();
+	
+	/**
+	 * Return whether the mapping type represented by this definition is enabled for the given
+	 * mappable object.  This is almost always true.
+	 */
+	boolean isEnabledFor(M mappableObject);
 }

@@ -40,7 +40,8 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmElementCollectionMapping2_0UiDefinition;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
-public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
+public class EclipseLinkOrmXml2_0UiDefinition
+	extends AbstractOrmXmlResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkOrmXml2_0UiDefinition();
@@ -77,7 +78,9 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 	}
 	
 	@Override
-	protected void addOrmAttributeMappingUiDefinitionsTo(List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+	protected void addOrmAttributeMappingUiDefinitionsTo(
+			List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+		
 		definitions.add(OrmIdMappingUiDefinition.instance());
 		definitions.add(OrmEmbeddedIdMappingUiDefinition.instance());
 		definitions.add(OrmBasicMappingUiDefinition.instance());
@@ -98,7 +101,9 @@ public class EclipseLinkOrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDe
 	}
 	
 	@Override
-	protected void addOrmTypeMappingUiDefinitionsTo(List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+	protected void addOrmTypeMappingUiDefinitionsTo(
+			List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+		
 		definitions.add(OrmEntityUiDefinition.instance());
 		definitions.add(OrmMappedSuperclassUiDefinition.instance());
 		definitions.add(OrmEmbeddableUiDefinition.instance());

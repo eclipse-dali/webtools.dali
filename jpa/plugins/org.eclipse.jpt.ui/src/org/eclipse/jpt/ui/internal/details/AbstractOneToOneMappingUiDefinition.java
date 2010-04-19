@@ -12,12 +12,11 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class AbstractOneToOneMappingUiDefinition<T extends OneToOneMapping>
-	implements MappingUiDefinition<T>
+public abstract class AbstractOneToOneMappingUiDefinition<M, T extends OneToOneMapping>
+	extends AbstractMappingUiDefinition<M, T>
 {
 	protected AbstractOneToOneMappingUiDefinition() {
 		super();

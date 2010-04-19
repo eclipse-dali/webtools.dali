@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkBasicMapMappingUiDefinition
-	extends EclipseLinkBasicMapMappingUiDefinition<OrmEclipseLinkBasicMapMapping>
+	extends AbstractEclipseLinkBasicMapMappingUiDefinition<PersistentAttribute, OrmEclipseLinkBasicMapMapping>
 	implements OrmAttributeMappingUiDefinition<OrmEclipseLinkBasicMapMapping>
 {
 	// singleton
 	private static final OrmEclipseLinkBasicMapMappingUiDefinition INSTANCE = 
-		new OrmEclipseLinkBasicMapMappingUiDefinition();
+			new OrmEclipseLinkBasicMapMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -42,11 +44,13 @@ public class OrmEclipseLinkBasicMapMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmEclipseLinkBasicMapMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return new EclipseLinkBasicMapMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

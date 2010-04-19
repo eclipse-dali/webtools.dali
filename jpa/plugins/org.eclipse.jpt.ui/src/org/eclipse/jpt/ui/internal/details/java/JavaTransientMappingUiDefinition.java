@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaTransientMappingUiDefinition
-	extends AbstractTransientMappingUiDefinition<JavaTransientMapping>
+	extends AbstractTransientMappingUiDefinition<PersistentAttribute, JavaTransientMapping>
 	implements JavaAttributeMappingUiDefinition<JavaTransientMapping>
 {
 	// singleton
 	private static final JavaTransientMappingUiDefinition INSTANCE = 
-		new JavaTransientMappingUiDefinition();
+			new JavaTransientMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,11 +43,13 @@ public class JavaTransientMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaTransientMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaTransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

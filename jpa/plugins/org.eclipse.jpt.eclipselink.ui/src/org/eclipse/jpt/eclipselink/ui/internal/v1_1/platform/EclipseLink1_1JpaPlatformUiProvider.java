@@ -26,27 +26,29 @@ import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProv
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
 
-public class EclipseLink1_1JpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
+public class EclipseLink1_1JpaPlatformUiProvider
+	extends AbstractJpaPlatformUiProvider
 {
-
 	// singleton
 	private static final JpaPlatformUiProvider INSTANCE = new EclipseLink1_1JpaPlatformUiProvider();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static JpaPlatformUiProvider instance() {
 		return INSTANCE;
 	}
-
+	
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private EclipseLink1_1JpaPlatformUiProvider() {
 		super();
 	}
-
-
+	
+	
 	// ********** details providers **********
 	
 	@Override

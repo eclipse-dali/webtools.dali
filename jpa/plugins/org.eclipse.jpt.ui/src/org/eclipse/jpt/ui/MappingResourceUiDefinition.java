@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -28,37 +30,43 @@ import org.eclipse.swt.widgets.Composite;
  */
 public interface MappingResourceUiDefinition extends ResourceUiDefinition
 {
-	
 	/**
 	 * 
 	 */
-	JpaComposite buildAttributeMappingComposite(String key, PropertyValueModel<AttributeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory);
-
+	JpaComposite buildAttributeMappingComposite(
+			String key, 
+			PropertyValueModel<AttributeMapping> mappingHolder, 
+			Composite parent, WidgetFactory widgetFactory);
+	
 	/**
 	 * Return an iterator of attribute mapping ui definitions appropriate for this file type
 	 */
-	Iterator<MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions();
+	Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> 
+			attributeMappingUiDefinitions();
 	
-
 	/**
 	 * Return a default attribute mapping ui definition for the given key or null
 	 */
-	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key);
-
+	DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> 
+			getDefaultAttributeMappingUiDefinition(String key);
 	
 	/**
 	 * 
 	 */
-	JpaComposite buildTypeMappingComposite(String key, PropertyValueModel<TypeMapping> mappingHolder, Composite parent, WidgetFactory widgetFactory);
-
+	JpaComposite buildTypeMappingComposite(
+			String key, 
+			PropertyValueModel<TypeMapping> mappingHolder, 
+			Composite parent, WidgetFactory widgetFactory);
+	
 	/**
 	 * 
 	 */
-	Iterator<MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions();
-
+	Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> 
+			typeMappingUiDefinitions();
+	
 	/**
 	 * Return a default type mapping ui provider or null
 	 */
-	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition();
-
+	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> 
+			getDefaultTypeMappingUiDefinition();
 }

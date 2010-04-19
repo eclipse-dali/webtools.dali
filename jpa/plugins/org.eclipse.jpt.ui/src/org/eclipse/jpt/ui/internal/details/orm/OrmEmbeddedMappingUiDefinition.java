@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEmbeddedMappingUiDefinition
-	extends AbstractEmbeddedMappingUiDefinition<OrmEmbeddedMapping>
+	extends AbstractEmbeddedMappingUiDefinition<PersistentAttribute, OrmEmbeddedMapping>
 	implements OrmAttributeMappingUiDefinition<OrmEmbeddedMapping>
 {
 	// singleton
 	private static final OrmEmbeddedMappingUiDefinition INSTANCE = 
-		new OrmEmbeddedMappingUiDefinition();
+			new OrmEmbeddedMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -42,11 +44,13 @@ public class OrmEmbeddedMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmEmbeddedMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createOrmEmbeddedMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

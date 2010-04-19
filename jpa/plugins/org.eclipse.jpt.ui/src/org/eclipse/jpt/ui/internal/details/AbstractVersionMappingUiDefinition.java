@@ -12,12 +12,11 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class AbstractVersionMappingUiDefinition<T extends VersionMapping>
-	implements MappingUiDefinition<T>
+public abstract class AbstractVersionMappingUiDefinition<M, T extends VersionMapping>
+	extends AbstractMappingUiDefinition<M, T>
 {
 	protected AbstractVersionMappingUiDefinition() {
 		super();

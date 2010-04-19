@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaBasicMappingUiDefinition
-	extends AbstractBasicMappingUiDefinition<JavaBasicMapping>
+	extends AbstractBasicMappingUiDefinition<PersistentAttribute, JavaBasicMapping>
 	implements JavaAttributeMappingUiDefinition<JavaBasicMapping>
 {
 	// singleton
 	private static final JavaBasicMappingUiDefinition INSTANCE = 
 		new JavaBasicMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -40,12 +42,14 @@ public class JavaBasicMappingUiDefinition
 	private JavaBasicMappingUiDefinition() {
 		super();
 	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaBasicMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

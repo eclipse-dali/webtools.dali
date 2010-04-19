@@ -12,17 +12,17 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.swt.graphics.Image;
 
 
-public abstract class AbstractEmbeddedIdMappingUiDefinition<T extends EmbeddedIdMapping>
-	implements MappingUiDefinition<T>
+public abstract class AbstractEmbeddedIdMappingUiDefinition<M, T extends EmbeddedIdMapping>
+	extends AbstractMappingUiDefinition<M, T>
 {
 	protected AbstractEmbeddedIdMappingUiDefinition() {
 		super();
 	}
+	
 	
 	public String getKey() {
 		return MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY;

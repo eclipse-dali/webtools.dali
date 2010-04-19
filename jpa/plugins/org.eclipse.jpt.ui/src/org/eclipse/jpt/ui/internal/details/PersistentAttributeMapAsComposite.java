@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
@@ -79,38 +78,38 @@ public class PersistentAttributeMapAsComposite
 
 				return getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
-
-			public void morphMapping(MappingUiDefinition<?> definition) {
+			
+			public void morphMapping(MappingUiDefinition definition) {
 				getSubject().setSpecifiedMappingKey(definition.getKey());
 			}
-
+			
 			public String getName() {
 				return getSubject().getName();
 			}
-
-			public Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions() {
+			
+			public Iterator<? extends MappingUiDefinition<? extends PersistentAttribute, ?>> mappingUiDefinitions() {
 				return attributeMappingUiDefinitions();
 			}
 		};
 	}
 	
-	protected Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions() {
+	protected Iterator<? extends MappingUiDefinition<? extends PersistentAttribute, ?>> attributeMappingUiDefinitions() {
 		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
+	protected DefaultMappingUiDefinition getDefaultDefinition() {
 		return getDefaultDefinition(getSubject().getDefaultMappingKey());
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey) {
+	protected DefaultMappingUiDefinition getDefaultDefinition(String mappingKey) {
 		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
 	}
 
 	@Override
-	protected MappingUiDefinition<?> getMappingUiDefinition(String mappingKey) {
-		MappingUiDefinition<?> definition = super.getMappingUiDefinition(mappingKey);
+	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
+		MappingUiDefinition definition = super.getMappingUiDefinition(mappingKey);
 		if (definition != null) {
 			return definition;
 		}

@@ -35,11 +35,13 @@ import org.eclipse.jpt.ui.internal.details.java.JavaTransientMappingUiDefinition
 import org.eclipse.jpt.ui.internal.details.java.JavaVersionMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.NullJavaAttributeMappingUiDefinition;
 
-public class EclipseLinkJavaResourceUiDefinition extends AbstractJavaResourceUiDefinition
+public class EclipseLinkJavaResourceUiDefinition
+	extends AbstractJavaResourceUiDefinition
 {
 	// singleton
 	private static final ResourceUiDefinition INSTANCE = new EclipseLinkJavaResourceUiDefinition();
-
+	
+	
 	/**
 	 * Return the singleton.
 	 */
@@ -55,13 +57,16 @@ public class EclipseLinkJavaResourceUiDefinition extends AbstractJavaResourceUiD
 		super();
 	}
 	
+	
 	@Override
 	protected JavaUiFactory buildJavaUiFactory() {
 		return new EclipseLinkJavaUiFactory();
 	}
 	
 	@Override
-	protected void addSpecifiedAttributeMappingUiDefinitionsTo(List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+	protected void addSpecifiedAttributeMappingUiDefinitionsTo(
+			List<JavaAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+		
 		definitions.add(JavaIdMappingUiDefinition.instance());
 		definitions.add(JavaEmbeddedIdMappingUDefinition.instance());
 		definitions.add(JavaBasicMappingUiDefinition.instance());
@@ -79,7 +84,9 @@ public class EclipseLinkJavaResourceUiDefinition extends AbstractJavaResourceUiD
 	}
 	
 	@Override
-	protected void addDefaultAttributeMappingUiDefinitionsTo(List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
+	protected void addDefaultAttributeMappingUiDefinitionsTo(
+			List<DefaultJavaAttributeMappingUiDefinition<?>> definitions) {
+		
 		definitions.add(DefaultBasicMappingUiDefinition.instance());
 		definitions.add(DefaultEmbeddedMappingUiDefinition.instance());
 		definitions.add(NullJavaAttributeMappingUiDefinition.instance());
@@ -89,7 +96,9 @@ public class EclipseLinkJavaResourceUiDefinition extends AbstractJavaResourceUiD
 	}
 	
 	@Override
-	protected void addSpecifiedTypeMappingUiDefinitionsTo(List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+	protected void addSpecifiedTypeMappingUiDefinitionsTo(
+			List<JavaTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+		
 		definitions.add(JavaEntityUiDefinition.instance());
 		definitions.add(JavaMappedSuperclassUiDefinition.instance());
 		definitions.add(JavaEmbeddableUiDefinition.instance());

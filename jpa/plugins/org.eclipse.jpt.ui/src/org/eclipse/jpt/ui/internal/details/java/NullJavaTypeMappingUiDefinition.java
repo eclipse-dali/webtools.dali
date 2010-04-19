@@ -9,28 +9,32 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.DefaultJavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
-public class NullJavaTypeMappingUiDefinition implements DefaultJavaTypeMappingUiDefinition<TypeMapping>
+public class NullJavaTypeMappingUiDefinition
+	extends AbstractMappingUiDefinition<PersistentType, JavaTypeMapping>
+	implements DefaultJavaTypeMappingUiDefinition<JavaTypeMapping>
 {
-
 	// singleton
 	private static final NullJavaTypeMappingUiDefinition INSTANCE = new NullJavaTypeMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaTypeMappingUiDefinition<TypeMapping> instance() {
+	public static DefaultJavaTypeMappingUiDefinition<JavaTypeMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -41,19 +45,20 @@ public class NullJavaTypeMappingUiDefinition implements DefaultJavaTypeMappingUi
 	private NullJavaTypeMappingUiDefinition() {
 		super();
 	}
-
+	
+	
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForTypeMapping(null);
 	}
-
+	
 	public String getLabel() {
 		return JptUiDetailsMessages.NullTypeMappingUiProvider_label;
 	}
-
+	
 	public String getLinkLabel() {
 		return null;
 	}
-
+	
 	public String getKey() {
 		return null;
 	}
@@ -62,22 +67,28 @@ public class NullJavaTypeMappingUiDefinition implements DefaultJavaTypeMappingUi
 		return null;
 	}
 	
-	public JpaComposite buildTypeMappingComposite(JavaUiFactory factory, PropertyValueModel<TypeMapping> subjectHolder, Composite parent, WidgetFactory widgetFactory) {
+	public JpaComposite buildTypeMappingComposite(
+			JavaUiFactory factory, 
+			PropertyValueModel<JavaTypeMapping> subjectHolder, 
+			Composite parent, 
+			WidgetFactory widgetFactory) {
+		
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
 	
-	
 	public static class NullComposite 
-		extends Pane<TypeMapping>
+		extends Pane<JavaTypeMapping>
 		implements JpaComposite 
 	{
 		NullComposite(
-				PropertyValueModel<TypeMapping> subjectHolder,
+				PropertyValueModel<JavaTypeMapping> subjectHolder,
 				Composite parent,
 			    WidgetFactory widgetFactory) {
+			
 			super(subjectHolder, parent, widgetFactory);
 		}
-
+		
+		
 		@Override
 		protected void initializeLayout(Composite container) {}
 	}

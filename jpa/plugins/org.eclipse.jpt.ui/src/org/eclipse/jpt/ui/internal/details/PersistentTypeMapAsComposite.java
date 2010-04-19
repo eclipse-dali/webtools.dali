@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -28,7 +27,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.0
  */
-public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
+public class PersistentTypeMapAsComposite
+	extends MapAsComposite<PersistentType>
 {
 	/**
 	 * Creates a new <code>PersistentTypeMapAsComposite</code>.
@@ -73,15 +73,16 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 				return getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
 
-			public void morphMapping(MappingUiDefinition<?> definition) {
+			public void morphMapping(MappingUiDefinition definition) {
 				getSubject().setMappingKey(definition.getKey());
 			}
 
 			public String getName() {
 				return getSubject().getShortName();
 			}
-
-			public Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions() {
+			
+			@SuppressWarnings("unchecked")
+			public Iterator<? extends MappingUiDefinition<? extends PersistentType, ?>> mappingUiDefinitions() {
 				return typeMappingUiDefinitions();
 			}
 		};
@@ -92,17 +93,17 @@ public class PersistentTypeMapAsComposite extends MapAsComposite<PersistentType>
 	 *
 	 * @return The supported types of mapping
 	 */
-	protected Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions() {
+	protected Iterator<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
 		return getJpaPlatformUi().typeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultDefinition() {
+	protected DefaultMappingUiDefinition getDefaultDefinition() {
 		return getJpaPlatformUi().getDefaultTypeMappingUiDefinition(getSubject().getResourceType());
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey) {
+	protected DefaultMappingUiDefinition getDefaultDefinition(String mappingKey) {
 		return getDefaultDefinition();
 	}
 	

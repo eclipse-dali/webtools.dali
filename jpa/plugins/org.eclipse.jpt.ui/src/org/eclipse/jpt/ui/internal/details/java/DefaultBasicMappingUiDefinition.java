@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -23,12 +24,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultBasicMappingUiDefinition
-	extends AbstractBasicMappingUiDefinition<JavaBasicMapping>
+	extends AbstractBasicMappingUiDefinition<PersistentAttribute, JavaBasicMapping>
 	implements DefaultJavaAttributeMappingUiDefinition<JavaBasicMapping>
 {
 	// singleton
 	private static final DefaultBasicMappingUiDefinition INSTANCE = 
 		new DefaultBasicMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -44,6 +46,7 @@ public class DefaultBasicMappingUiDefinition
 	private DefaultBasicMappingUiDefinition() {
 		super();
 	}
+	
 	
 	@Override
 	public String getKey() {
@@ -70,10 +73,11 @@ public class DefaultBasicMappingUiDefinition
 	}
 
 	public JpaComposite buildAttributeMappingComposite(
-			JavaUiFactory factory,
-			PropertyValueModel<JavaBasicMapping> subjectHolder,
-			Composite parent,
-			WidgetFactory widgetFactory) {
+				JavaUiFactory factory,
+				PropertyValueModel<JavaBasicMapping> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		
 		return factory.createJavaBasicMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -12,13 +12,11 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
 import org.eclipse.swt.graphics.Image;
 
-
-public abstract class AbstractBasicMappingUiDefinition<T extends BasicMapping>
-	implements MappingUiDefinition<T>
+public abstract class AbstractBasicMappingUiDefinition<M, T extends BasicMapping>
+	extends AbstractMappingUiDefinition<M, T>
 {
 	protected AbstractBasicMappingUiDefinition() {
 		super();

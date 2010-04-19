@@ -15,23 +15,34 @@ import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class UnsupportedOrmMappingUiDefinition
+	extends AbstractMappingUiDefinition
 	implements OrmAttributeMappingUiDefinition
 {
 	// singleton
 	private static final UnsupportedOrmMappingUiDefinition INSTANCE = 
-		new UnsupportedOrmMappingUiDefinition();
+			new UnsupportedOrmMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
 	 */
 	public static OrmAttributeMappingUiDefinition instance() {
 		return INSTANCE;
+	}
+	
+	
+	/**
+	 * Ensure single instance.
+	 */
+	private UnsupportedOrmMappingUiDefinition() {
+		super();
 	}
 	
 	
@@ -50,18 +61,13 @@ public class UnsupportedOrmMappingUiDefinition
 	public String getKey() {
 		return null;
 	}	
-	/**
-	 * Ensure single instance.
-	 */
-	private UnsupportedOrmMappingUiDefinition() {
-		super();
-	}
 	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return new NullComposite(subjectHolder, parent, widgetFactory);
 	}
 	
@@ -72,8 +78,10 @@ public class UnsupportedOrmMappingUiDefinition
 				PropertyValueModel<JavaAttributeMapping> subjectHolder,
 		        Composite parent,
 		        WidgetFactory widgetFactory) {
+			
 			super(subjectHolder, parent, widgetFactory);
 		}
+		
 		
 		@Override
 		protected void initializeLayout(Composite container) {}

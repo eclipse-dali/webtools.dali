@@ -10,12 +10,14 @@
 package org.eclipse.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -23,6 +25,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class NullJavaAttributeMappingUiDefinition
+	extends AbstractMappingUiDefinition<PersistentAttribute, JavaAttributeMapping>
 	implements DefaultJavaAttributeMappingUiDefinition<JavaAttributeMapping>
 {
 	// singleton

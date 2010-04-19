@@ -58,7 +58,9 @@ public class OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinition
 	}
 	
 	@Override
-	protected void addOrmAttributeMappingUiDefinitionsTo(List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+	protected void addOrmAttributeMappingUiDefinitionsTo(
+			List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions) {
+		
 		definitions.add(OrmIdMappingUiDefinition.instance());
 		definitions.add(OrmEmbeddedIdMappingUiDefinition.instance());
 		definitions.add(OrmBasicMappingUiDefinition.instance());
@@ -72,7 +74,9 @@ public class OrmXmlUiDefinition extends AbstractOrmXmlResourceUiDefinition
 	}
 	
 	@Override
-	protected void addOrmTypeMappingUiDefinitionsTo(List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+	protected void addOrmTypeMappingUiDefinitionsTo(
+			List<OrmTypeMappingUiDefinition<? extends TypeMapping>> definitions) {
+		
 		definitions.add(OrmEntityUiDefinition.instance());
 		definitions.add(OrmMappedSuperclassUiDefinition.instance());
 		definitions.add(OrmEmbeddableUiDefinition.instance());

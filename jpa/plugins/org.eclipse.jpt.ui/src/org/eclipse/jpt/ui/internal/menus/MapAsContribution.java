@@ -26,6 +26,7 @@ import org.eclipse.jpt.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.ui.ISources;
 import org.eclipse.ui.actions.CompoundContributionItem;
@@ -47,7 +48,8 @@ import com.ibm.icu.text.Collator;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class MapAsContribution extends CompoundContributionItem
+public abstract class MapAsContribution<T extends JpaStructureNode>
+	extends CompoundContributionItem
 	implements IWorkbenchContribution
 {
 	/**
@@ -80,13 +82,13 @@ public abstract class MapAsContribution extends CompoundContributionItem
 		
 		// Assume that all nodes are in the same project (which is very safe)
 		// and retrieve the mapping UI providers just from the first item
-		JpaStructureNode node = (JpaStructureNode) currentSelection.getFirstElement();
+		T node = (T) currentSelection.getFirstElement();
 		
 		return 
 			ArrayTools.array(
-				new TransformationIterator<MappingUiDefinition<?>, IContributionItem>(mappingUiDefinitions(node)) {
+				new TransformationIterator<MappingUiDefinition<T, ?>, IContributionItem>(mappingUiDefinitions(node)) {
 					@Override
-					protected IContributionItem transform(MappingUiDefinition<?> next) {
+					protected IContributionItem transform(MappingUiDefinition<T, ?> next) {
 						return createContributionItem(next);
 					}
 				},
@@ -94,9 +96,9 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	}
 	
 
-	protected Comparator<MappingUiDefinition<?>> getDefinitionsComparator() {
-		return new Comparator<MappingUiDefinition<?>>() {
-			public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
+	protected Comparator<MappingUiDefinition<T, ?>> getDefinitionsComparator() {
+		return new Comparator<MappingUiDefinition<T, ?>>() {
+			public int compare(MappingUiDefinition<T, ?> item1, MappingUiDefinition<T, ?> item2) {
 				String displayString1 = item1.getLabel();
 				String displayString2 = item2.getLabel();
 				return Collator.getInstance().compare(displayString1, displayString2);
@@ -112,18 +114,24 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * of providers to return
 	 * @return The list of registered {@link MappingUiDefinition}s
 	 */
-	protected Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions(JpaStructureNode node) {
+	protected <U extends T> Iterator<? extends MappingUiDefinition<T, ?>> mappingUiDefinitions(final T node) {
 		JpaPlatform jpaPlatform = node.getJpaProject().getJpaPlatform();
 		JpaPlatformUi jpaPlatformUi = JptUiPlugin.instance().getJpaPlatformUi(jpaPlatform);
 		
-		Iterator<? extends MappingUiDefinition<?>> sortedMappingUiDefinitions = 
-			CollectionTools.sort(
-				mappingUiDefinitions(jpaPlatformUi, node.getResourceType()), 
-				getDefinitionsComparator());
+		Iterator<? extends MappingUiDefinition<T, ?>> sortedMappingUiDefinitions = 
+				CollectionTools.sort(
+					new FilteringIterator<MappingUiDefinition<T, ?>>(
+							mappingUiDefinitions(jpaPlatformUi, node.getResourceType())) {
+						 @Override
+						protected boolean accept(MappingUiDefinition<T, ?> o) {
+							return o.isEnabledFor(node);
+						}
+					},
+					getDefinitionsComparator());
 		
-		DefaultMappingUiDefinition<?> defaultDefinition = getDefaultMappingUiDefinition(jpaPlatformUi, node);
+		DefaultMappingUiDefinition<T, ?> defaultDefinition = getDefaultMappingUiDefinition(jpaPlatformUi, node);
 		if (defaultDefinition != null) {
-			return new CompositeIterator<MappingUiDefinition<?>>(defaultDefinition, sortedMappingUiDefinitions);
+			return new CompositeIterator<MappingUiDefinition<T, ?>>(defaultDefinition, sortedMappingUiDefinitions);
 		}
 		return sortedMappingUiDefinitions;
 	}
@@ -138,7 +146,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	* @param node A test node to determine type of providers to return
 	* @return The list of registered {@link MappingUiDefinition}s
 	*/
-	protected abstract Iterator<? extends MappingUiDefinition<?>> 
+	protected abstract Iterator<? extends MappingUiDefinition<T, ?>> 
 		mappingUiDefinitions(JpaPlatformUi platformUi, JpaResourceType resourceType);
 	
 	/**
@@ -147,13 +155,13 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	*
 	* @return A provider that acts as a default mapping provider
 	*/
-	protected abstract DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(JpaPlatformUi platformUi, JpaStructureNode node);
+	protected abstract DefaultMappingUiDefinition<T, ?> getDefaultMappingUiDefinition(JpaPlatformUi platformUi, T node);
 			
-	protected IContributionItem createContributionItem(MappingUiDefinition<?> mappingUiProvider) {
+	protected IContributionItem createContributionItem(MappingUiDefinition<T, ?> mappingUiProvider) {
 		return new CommandContributionItem(createParameter(mappingUiProvider));
 	}
 	
-	protected CommandContributionItemParameter createParameter(MappingUiDefinition<?> mappingUiDefinition) {
+	protected CommandContributionItemParameter createParameter(MappingUiDefinition<T, ?> mappingUiDefinition) {
 		CommandContributionItemParameter parameter =
 			new CommandContributionItemParameter(
 					this.serviceLocator, 
@@ -190,7 +198,7 @@ public abstract class MapAsContribution extends CompoundContributionItem
 	 * "<commandId>.<mappingKey>"  
 	 * (for example "org.eclipse.jpt.core.ui.persistentTypeMapAs.entity")
 	 */
-	protected String createCommandContributionItemId(MappingUiDefinition<?> mappingUiDefinition) {
+	protected String createCommandContributionItemId(MappingUiDefinition<T, ?> mappingUiDefinition) {
 		return getCommandId() + "." + mappingUiDefinition.getKey();
 	}
 }

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEmbeddedIdMappingUDefinition
-	extends AbstractEmbeddedIdMappingUiDefinition<JavaEmbeddedIdMapping>
+	extends AbstractEmbeddedIdMappingUiDefinition<PersistentAttribute, JavaEmbeddedIdMapping>
 	implements JavaAttributeMappingUiDefinition<JavaEmbeddedIdMapping>
 {
 	// singleton
 	private static final JavaEmbeddedIdMappingUDefinition INSTANCE = 
-		new JavaEmbeddedIdMappingUDefinition();
+			new JavaEmbeddedIdMappingUDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,11 +43,13 @@ public class JavaEmbeddedIdMappingUDefinition
 		super();
 	}	
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaEmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaEmbeddedIdMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

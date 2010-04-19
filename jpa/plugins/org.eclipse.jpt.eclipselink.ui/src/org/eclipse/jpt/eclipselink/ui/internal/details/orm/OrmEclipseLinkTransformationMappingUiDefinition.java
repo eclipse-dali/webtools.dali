@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkTransformationMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkTransformationMappingUiDefinition
-	extends EclipseLinkTransformationMappingUiDefinition<OrmEclipseLinkTransformationMapping>
+	extends AbstractEclipseLinkTransformationMappingUiDefinition<PersistentAttribute, OrmEclipseLinkTransformationMapping>
 	implements OrmAttributeMappingUiDefinition<OrmEclipseLinkTransformationMapping>
 {
 	// singleton
 	private static final OrmEclipseLinkTransformationMappingUiDefinition INSTANCE = 
-		new OrmEclipseLinkTransformationMappingUiDefinition();
+			new OrmEclipseLinkTransformationMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,6 +43,7 @@ public class OrmEclipseLinkTransformationMappingUiDefinition
 	private OrmEclipseLinkTransformationMappingUiDefinition() {
 		super();
 	}
+	
 	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,

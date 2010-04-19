@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmTransientMappingUiDefinition
-	extends AbstractTransientMappingUiDefinition<OrmTransientMapping>
+	extends AbstractTransientMappingUiDefinition<PersistentAttribute, OrmTransientMapping>
 	implements OrmAttributeMappingUiDefinition<OrmTransientMapping>
 {
 	// singleton
 	private static final OrmTransientMappingUiDefinition INSTANCE = 
-		new OrmTransientMappingUiDefinition();
+			new OrmTransientMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,12 +43,14 @@ public class OrmTransientMappingUiDefinition
 	private OrmTransientMappingUiDefinition() {
 		super();
 	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmTransientMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createOrmTransientMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

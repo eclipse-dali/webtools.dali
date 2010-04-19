@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmManyToOneMappingUiDefinition
-	extends AbstractManyToOneMappingUiDefinition<OrmManyToOneMapping>
+	extends AbstractManyToOneMappingUiDefinition<PersistentAttribute, OrmManyToOneMapping>
 	implements OrmAttributeMappingUiDefinition<OrmManyToOneMapping>
 {
 	// singleton
 	private static final OrmManyToOneMappingUiDefinition INSTANCE = 
-		new OrmManyToOneMappingUiDefinition();
+			new OrmManyToOneMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -42,11 +44,13 @@ public class OrmManyToOneMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmManyToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createOrmManyToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

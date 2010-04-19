@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -23,12 +24,13 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
-	extends AbstractOneToManyMappingUiDefinition<JavaOneToManyMapping>
+	extends AbstractOneToManyMappingUiDefinition<PersistentAttribute, JavaOneToManyMapping>
 	implements DefaultJavaAttributeMappingUiDefinition<JavaOneToManyMapping>
 {
 	// singleton
 	private static final DefaultJavaEclipseLinkOneToManyMappingUiDefinition INSTANCE = 
-		new DefaultJavaEclipseLinkOneToManyMappingUiDefinition();
+			new DefaultJavaEclipseLinkOneToManyMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -45,6 +47,7 @@ public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
 		super();
 	}
 	
+	
 	@Override
 	public String getKey() {
 		return null;
@@ -58,12 +61,12 @@ public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
 	public String getLabel() {
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToManyMappingUiProvider_label;
 	}
-
+	
 	@Override
 	public String getLinkLabel() {
 		return EclipseLinkUiDetailsMessages.DefaultEclipseLinkOneToManyMappingUiProvider_linkLabel;
 	}
-
+	
 	@Override
 	public Image getImage() {
 		return JpaMappingImageHelper.imageForAttributeMapping(getDefaultKey());
@@ -74,6 +77,7 @@ public class DefaultJavaEclipseLinkOneToManyMappingUiDefinition
 			PropertyValueModel<JavaOneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaOneToManyMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 }

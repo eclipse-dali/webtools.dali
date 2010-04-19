@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaMappedSuperclassUiDefinition
-	extends AbstractMappedSuperclassUiDefinition<JavaMappedSuperclass>
+	extends AbstractMappedSuperclassUiDefinition<PersistentType, JavaMappedSuperclass>
 	implements JavaTypeMappingUiDefinition<JavaMappedSuperclass>
 {
 	// singleton
 	private static final JavaMappedSuperclassUiDefinition INSTANCE = 
-		new JavaMappedSuperclassUiDefinition();
+			new JavaMappedSuperclassUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,12 +43,13 @@ public class JavaMappedSuperclassUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildTypeMappingComposite(
-		JavaUiFactory factory,
-		PropertyValueModel<JavaMappedSuperclass> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
-
+			JavaUiFactory factory,
+			PropertyValueModel<JavaMappedSuperclass> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
+		
 		return factory.createJavaMappedSuperclassComposite(subjectHolder, parent, widgetFactory);
 	}
 }

@@ -70,7 +70,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	protected boolean dragEvent;
 	protected boolean enabled;
 	protected Cursor handCursor;
-	protected MappingChangeHandler mappingChangeHandler;
+	protected MappingChangeHandler<T> mappingChangeHandler;
 	protected int mappingTypeLength;
 	protected int mappingTypeStart;
 	protected boolean mouseDown;
@@ -111,19 +111,19 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * Return null if there is not a default provider
 	 * @return A provider that acts as a default mapping provider
 	 */
-	protected abstract DefaultMappingUiDefinition<?> getDefaultDefinition();
+	protected abstract DefaultMappingUiDefinition getDefaultDefinition();
 
-	protected abstract DefaultMappingUiDefinition<?> getDefaultDefinition(String mappingKey);
+	protected abstract DefaultMappingUiDefinition getDefaultDefinition(String mappingKey);
 	
-	protected MappingUiDefinition<?> getMappingUiDefinition(String mappingKey) {
-		for (MappingUiDefinition<?> provider : CollectionTools.iterable(this.mappingChangeHandler.mappingUiDefinitions())) {
+	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
+		for (MappingUiDefinition<T, ?> provider : CollectionTools.iterable(this.mappingChangeHandler.mappingUiDefinitions())) {
 			if (provider.getKey() == mappingKey) {
 				return provider;
 			}
 		}
 		return null;		
 	}
-
+	
 	/**
 	 * Creates the handler responsible to give the information required for
 	 * completing the behavior of this pane.
@@ -131,12 +131,12 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * @return A new <code>MappingChangeHandler</code>
 	 */
 	protected abstract MappingChangeHandler buildMappingChangeHandler();
-
+	
 	private MouseListener buildMouseListener() {
 		return new MouseListener() {
 			public void mouseDoubleClick(MouseEvent e) {
 			}
-
+			
 			public void mouseDown(MouseEvent e) {
 				if (e.button == 1) {
 					mouseDown = true;
@@ -202,7 +202,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 			public void execute(MappingSelectionDialog dialog) {
 
 				if (dialog.getReturnCode() == IDialogConstants.OK_ID) {
-					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) dialog.getFirstResult();
+					MappingUiDefinition definition = (MappingUiDefinition) dialog.getFirstResult();
 					morphMapping(definition);
 				}
 			}
@@ -295,10 +295,10 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * @return The <code>MappingUiProvider</code> representing the type of the
 	 * mapping being edited
 	 */
-	protected MappingUiDefinition<?> initialSelection() {
+	protected MappingUiDefinition initialSelection() {
 
-		for (Iterator<? extends MappingUiDefinition<?>> iter = this.mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
-			MappingUiDefinition<?> definition = iter.next();
+		for (Iterator<? extends MappingUiDefinition> iter = this.mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
+			MappingUiDefinition definition = iter.next();
 
 			if (getMappingKey() == definition.getKey()) {
 				return definition;
@@ -336,7 +336,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * @param provider The provider used to determine the mapping type used for
 	 * morphing the mapping being edited
 	 */
-	protected void morphMapping(MappingUiDefinition<?> definition) {
+	protected void morphMapping(MappingUiDefinition definition) {
 		mappingChangeHandler.morphMapping(definition);
 	}
 
@@ -430,7 +430,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 	 * This handler is responsible to give the text information and to open the
 	 * mapping dialog if the user clicked on the mapping type.
 	 */
-	protected interface MappingChangeHandler {
+	protected interface MappingChangeHandler<T> {
 
 		/**
 		 * Returns the entire text describing the mapping (entity or mapping) and
@@ -453,7 +453,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		 *
 		 * @param provider The definition that was selected for changing the mapping
 		 */
-		void morphMapping(MappingUiDefinition<?> definition);
+		void morphMapping(MappingUiDefinition<T, ?> definition);
 
 		/**
 		 * Returns the name of the current mapping.
@@ -467,17 +467,17 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		 *
 		 * @return The supported types of mapping
 		 */
-		Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions();
+		Iterator<MappingUiDefinition<T, ?>> mappingUiDefinitions();
 	}
 
 	/**
 	 * This dialog shows the list of possible mapping types and lets the user
 	 * the option to filter them using a search field.
 	 */
-	protected class MappingSelectionDialog extends FilteredItemsSelectionDialog {
-
-		private MappingUiDefinition<?> defaultDefinition;
-
+	protected class MappingSelectionDialog extends FilteredItemsSelectionDialog 
+	{
+		private MappingUiDefinition defaultDefinition;
+		
 		/**
 		 * Creates a new <code>MappingSelectionDialog</code>.
 		 */
@@ -499,18 +499,17 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 						return null;
 					}
 
-					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) element;
+					MappingUiDefinition definition = (MappingUiDefinition) element;
 					return definition.getImage();
 				}
 
 				@Override
 				public String getText(Object element) {
-
 					if (element == null) {
 						return "";
 					}
-
-					MappingUiDefinition<?> definition = (MappingUiDefinition<?>) element;
+					
+					MappingUiDefinition definition = (MappingUiDefinition) element;
 					return definition.getLabel();
 				}
 			};
@@ -527,10 +526,11 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 		}
 
 		@Override
-		protected void fillContentProvider(AbstractContentProvider provider,
-		                                   ItemsFilter itemsFilter,
-		                                   IProgressMonitor monitor) throws CoreException {
-
+		protected void fillContentProvider(
+				AbstractContentProvider provider,
+				ItemsFilter itemsFilter,
+				IProgressMonitor monitor) throws CoreException {
+			
 			monitor.beginTask(null, -1);
 
 			try {
@@ -542,9 +542,11 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 				}
 
 				// Add the registered mapping providers to the dialog
-				for (Iterator<? extends MappingUiDefinition<?>> iter = mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
-					MappingUiDefinition<?> mappingDefinition = iter.next();
-					provider.add(mappingDefinition, itemsFilter);
+				for (Iterator<MappingUiDefinition<T, ?>> iter = mappingChangeHandler.mappingUiDefinitions(); iter.hasNext(); ) {
+					MappingUiDefinition mappingDefinition = iter.next();
+					if (mappingDefinition.isEnabledFor(getSubject())) {
+						provider.add(mappingDefinition, itemsFilter);
+					}
 				}
 			}
 			finally {
@@ -567,14 +569,14 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 		@Override
 		public String getElementName(Object object) {
-			MappingUiDefinition<?> definition = (MappingUiDefinition<?>) object;
+			MappingUiDefinition definition = (MappingUiDefinition) object;
 			return definition.getLabel();
 		}
 
 		@Override
-		protected Comparator<MappingUiDefinition<?>> getItemsComparator() {
-			return new Comparator<MappingUiDefinition<?>>() {
-				public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
+		protected Comparator<MappingUiDefinition> getItemsComparator() {
+			return new Comparator<MappingUiDefinition>() {
+				public int compare(MappingUiDefinition item1, MappingUiDefinition item2) {
 
 					if (item1 == defaultDefinition) {
 						return -1;
@@ -628,7 +630,7 @@ public abstract class MapAsComposite<T extends JpaNode> extends Pane<T> {
 
 			@Override
 			public boolean matchItem(Object item) {
-				MappingUiDefinition<?> definition = (MappingUiDefinition<?>) item;
+				MappingUiDefinition definition = (MappingUiDefinition) item;
 				return matches(definition.getLabel());
 			}
 		}

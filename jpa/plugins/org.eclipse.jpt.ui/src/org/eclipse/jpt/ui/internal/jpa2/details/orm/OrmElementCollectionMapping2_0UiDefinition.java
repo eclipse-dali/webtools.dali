@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -21,12 +22,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmElementCollectionMapping2_0UiDefinition
-	extends AbstractElementCollectionMapping2_0UiDefinition<OrmElementCollectionMapping2_0>
+	extends AbstractElementCollectionMapping2_0UiDefinition<PersistentAttribute, OrmElementCollectionMapping2_0>
 	implements OrmAttributeMappingUiDefinition<OrmElementCollectionMapping2_0>
 {
 	// singleton
 	private static final OrmElementCollectionMapping2_0UiDefinition INSTANCE = 
 		new OrmElementCollectionMapping2_0UiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -48,6 +50,7 @@ public class OrmElementCollectionMapping2_0UiDefinition
 			PropertyValueModel<OrmElementCollectionMapping2_0> subjectHolder, 
 			Composite parent, 
 			WidgetFactory widgetFactory) {
+		
 		return ((OrmXmlUiFactory2_0) factory).createOrmElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

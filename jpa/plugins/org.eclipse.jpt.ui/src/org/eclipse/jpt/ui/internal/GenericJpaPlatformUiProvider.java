@@ -17,9 +17,9 @@ import org.eclipse.jpt.ui.internal.details.java.GenericJavaResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.java.JavaPersistentTypeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsDetailsProvider;
-import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentAttributeDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.orm.OrmPersistentTypeDetailsProvider;
+import org.eclipse.jpt.ui.internal.details.orm.OrmXmlUiDefinition;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiDefinition;
 
 /**

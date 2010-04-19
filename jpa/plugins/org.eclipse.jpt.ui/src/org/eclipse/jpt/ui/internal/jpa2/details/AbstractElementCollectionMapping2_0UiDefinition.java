@@ -12,14 +12,13 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
+import org.eclipse.jpt.ui.internal.details.AbstractMappingUiDefinition;
 import org.eclipse.swt.graphics.Image;
 
-public abstract class AbstractElementCollectionMapping2_0UiDefinition<T extends ElementCollectionMapping2_0>
-	implements MappingUiDefinition<T>
+public abstract class AbstractElementCollectionMapping2_0UiDefinition<M, T extends ElementCollectionMapping2_0>
+	extends AbstractMappingUiDefinition<M, T>
 {
-
 	protected AbstractElementCollectionMapping2_0UiDefinition() {
 		super();
 	}

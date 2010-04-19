@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -82,7 +84,13 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return ArrayTools.array(
 						CollectionTools.sort(
-							((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType()),
+							new FilteringIterator<MappingUiDefinition<PersistentAttribute, ?>>(
+									((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType())) {
+								@Override
+								protected boolean accept(MappingUiDefinition<PersistentAttribute, ?> o) {
+									return o.isEnabledFor(AddPersistentAttributeToXmlAndMapDialog.this.unmappedPersistentAttribute);
+								}
+							},
 							getProvidersComparator()));
 				}
 				
@@ -92,7 +100,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 			new LabelProvider() {
 				@Override
 				public String getText(Object element) {
-					return ((MappingUiDefinition<?>) element).getLabel();
+					return ((MappingUiDefinition) element).getLabel();
 				}
 			});
 		mappingCombo.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -115,9 +123,9 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 		return dialogArea;
 	}
 	
-	protected Comparator<MappingUiDefinition<?>> getProvidersComparator() {
-		return new Comparator<MappingUiDefinition<?>>() {
-			public int compare(MappingUiDefinition<?> item1, MappingUiDefinition<?> item2) {
+	protected Comparator<MappingUiDefinition> getProvidersComparator() {
+		return new Comparator<MappingUiDefinition>() {
+			public int compare(MappingUiDefinition item1, MappingUiDefinition item2) {
 				String displayString1 = item1.getLabel();
 				String displayString2 = item2.getLabel();
 				return Collator.getInstance().compare(displayString1, displayString2);
@@ -157,7 +165,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	public String getMappingKey() {
 		StructuredSelection selection = (StructuredSelection) mappingCombo.getSelection();
-		return (selection.isEmpty()) ? null : ((MappingUiDefinition<?>) selection.getFirstElement()).getKey();
+		return (selection.isEmpty()) ? null : ((MappingUiDefinition) selection.getFirstElement()).getKey();
 	}
 
 	private void validate() {

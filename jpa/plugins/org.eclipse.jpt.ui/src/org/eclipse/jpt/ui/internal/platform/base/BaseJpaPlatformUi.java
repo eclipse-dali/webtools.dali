@@ -18,6 +18,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
@@ -128,19 +130,19 @@ public abstract class BaseJpaPlatformUi
 				mappingKey, mappingHolder, parent, widgetFactory);
 	}
 	
-	public DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
+	public DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
 		return getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 	
-	public Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
+	public Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).attributeMappingUiDefinitions();
 	}
 	
-	public DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(JpaResourceType resourceType) {
+	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JpaResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
 	}
 	
-	public Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(JpaResourceType resourceType) {
+	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> typeMappingUiDefinitions(JpaResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).typeMappingUiDefinitions();
 	}
 	

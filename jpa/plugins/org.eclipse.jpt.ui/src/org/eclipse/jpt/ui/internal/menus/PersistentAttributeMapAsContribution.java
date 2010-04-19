@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
@@ -30,7 +29,8 @@ import org.eclipse.ui.menus.CommandContributionItemParameter;
  * @version 2.2
  * @since 2.0
  */
-public class PersistentAttributeMapAsContribution extends MapAsContribution
+public class PersistentAttributeMapAsContribution
+	extends MapAsContribution<PersistentAttribute>
 {
 	/**
 	 * Creates a new <code>PersistentAttributeMapAsContribution</code>.
@@ -50,26 +50,26 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 	}
 	
 	@Override
-	protected CommandContributionItemParameter createParameter(MappingUiDefinition<?> mappingUiProvider) {
+	protected CommandContributionItemParameter createParameter(MappingUiDefinition<PersistentAttribute, ?> mappingUiProvider) {
 		CommandContributionItemParameter parameter = super.createParameter(mappingUiProvider);
 		String defaultKey = null;
-		if (mappingUiProvider instanceof DefaultMappingUiDefinition<?>) {
-			defaultKey = ((DefaultMappingUiDefinition<?>) mappingUiProvider).getDefaultKey();
+		if (mappingUiProvider instanceof DefaultMappingUiDefinition<?, ?>) {
+			defaultKey = ((DefaultMappingUiDefinition<? extends PersistentAttribute, ?>) mappingUiProvider).getDefaultKey();
 		}
 		parameter.parameters.put(PersistentAttributeMapAsHandler.DEFAULT_MAPPING_COMMAND_PARAMETER_ID, defaultKey);
 		return parameter;
 	}
 	
 	@Override
-	protected Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions(
+	protected Iterator<? extends MappingUiDefinition<PersistentAttribute, ?>> mappingUiDefinitions(
 			JpaPlatformUi jpaPlatformUi, JpaResourceType resourceType) {
 		
 		return jpaPlatformUi.attributeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
+	protected DefaultMappingUiDefinition<PersistentAttribute, ?> getDefaultMappingUiDefinition(
+			JpaPlatformUi jpaPlatformUi, PersistentAttribute node) {
 		
 		return getDefaultMappingUiDefinition(
 				jpaPlatformUi, 
@@ -77,7 +77,7 @@ public class PersistentAttributeMapAsContribution extends MapAsContribution
 				node.getResourceType());
 	}
 	
-	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(
+	protected DefaultMappingUiDefinition<PersistentAttribute, ?> getDefaultMappingUiDefinition(
 			JpaPlatformUi jpaPlatformUi, String defaultMappingKey, JpaResourceType resourceType) {
 		
 		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);

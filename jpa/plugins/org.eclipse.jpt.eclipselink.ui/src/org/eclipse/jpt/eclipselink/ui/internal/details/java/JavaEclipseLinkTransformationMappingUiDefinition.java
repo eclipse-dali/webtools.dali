@@ -9,9 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTransformationMapping;
+import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
-import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkTransformationMappingUiDefinition
-	extends EclipseLinkTransformationMappingUiDefinition<EclipseLinkTransformationMapping>
+	extends AbstractEclipseLinkTransformationMappingUiDefinition<PersistentAttribute, EclipseLinkTransformationMapping>
 	implements JavaAttributeMappingUiDefinition<EclipseLinkTransformationMapping>
 {
 	// singleton
 	private static final JavaEclipseLinkTransformationMappingUiDefinition INSTANCE = 
-		new JavaEclipseLinkTransformationMappingUiDefinition();
+			new JavaEclipseLinkTransformationMappingUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -42,11 +44,12 @@ public class JavaEclipseLinkTransformationMappingUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildAttributeMappingComposite(
-		JavaUiFactory factory,
-		PropertyValueModel<EclipseLinkTransformationMapping> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory) {
+			JavaUiFactory factory,
+			PropertyValueModel<EclipseLinkTransformationMapping> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory) {
 		
 		return new EclipseLinkTransformationMappingComposite(subjectHolder, parent, widgetFactory);
 	}

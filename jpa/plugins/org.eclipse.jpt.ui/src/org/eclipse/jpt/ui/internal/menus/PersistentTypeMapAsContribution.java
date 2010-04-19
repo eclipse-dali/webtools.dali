@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.menus;
 import java.util.Iterator;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
@@ -28,7 +27,8 @@ import org.eclipse.jpt.ui.internal.commands.PersistentTypeMapAsHandler;
  * @see JpaPlatformUi
  * @see PersistentType
  */
-public class PersistentTypeMapAsContribution extends MapAsContribution
+public class PersistentTypeMapAsContribution
+	extends MapAsContribution<PersistentType>
 {
 	/**
 	 * Creates a new <code>PersistentTypeMapAsContribution</code>.
@@ -49,15 +49,15 @@ public class PersistentTypeMapAsContribution extends MapAsContribution
 	}
 	
 	@Override
-	protected Iterator<? extends MappingUiDefinition<?>> mappingUiDefinitions(
+	protected Iterator<? extends MappingUiDefinition<PersistentType, ?>> mappingUiDefinitions(
 			JpaPlatformUi jpaPlatformUi, JpaResourceType resourceType) {
 		
 		return jpaPlatformUi.typeMappingUiDefinitions(resourceType);
 	}
 	
 	@Override
-	protected DefaultMappingUiDefinition<?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, JpaStructureNode node) {
+	protected DefaultMappingUiDefinition<PersistentType, ?> getDefaultMappingUiDefinition(
+			JpaPlatformUi jpaPlatformUi, PersistentType node) {
 		
 		return jpaPlatformUi.getDefaultTypeMappingUiDefinition(node.getResourceType());
 	}

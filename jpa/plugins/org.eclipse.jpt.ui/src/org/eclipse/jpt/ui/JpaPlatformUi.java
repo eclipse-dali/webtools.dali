@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -89,11 +91,11 @@ public interface JpaPlatformUi
 			PropertyValueModel<TypeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
 	
-	DefaultMappingUiDefinition<? extends TypeMapping> getDefaultTypeMappingUiDefinition(
-			JpaResourceType resourceType);
+	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping>
+			getDefaultTypeMappingUiDefinition(JpaResourceType resourceType);
 	
-	Iterator<? extends MappingUiDefinition<? extends TypeMapping>> typeMappingUiDefinitions(
-			JpaResourceType resourceType);
+	Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>>
+			typeMappingUiDefinitions(JpaResourceType resourceType);
 	
 	
 	// ********** attribute mappings **********
@@ -105,11 +107,11 @@ public interface JpaPlatformUi
 			PropertyValueModel<AttributeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
 	
-	DefaultMappingUiDefinition<? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(
-			JpaResourceType resourceType, String mappingKey);
+	DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> 
+			getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey);
 	
-	Iterator<? extends MappingUiDefinition<? extends AttributeMapping>> attributeMappingUiDefinitions(
-			JpaResourceType resourceType);
+	Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>>
+			attributeMappingUiDefinitions(JpaResourceType resourceType);
 	
 	
 	// ********** entity generation **********

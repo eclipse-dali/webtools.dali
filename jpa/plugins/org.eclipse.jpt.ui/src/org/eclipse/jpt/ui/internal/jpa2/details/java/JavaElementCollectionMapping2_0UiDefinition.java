@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -20,12 +21,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaElementCollectionMapping2_0UiDefinition
-	extends AbstractElementCollectionMapping2_0UiDefinition<JavaElementCollectionMapping2_0>
+	extends AbstractElementCollectionMapping2_0UiDefinition<PersistentAttribute, JavaElementCollectionMapping2_0>
 	implements JavaAttributeMappingUiDefinition<JavaElementCollectionMapping2_0>
 {
 	// singleton
 	private static final JavaElementCollectionMapping2_0UiDefinition INSTANCE = 
-		new JavaElementCollectionMapping2_0UiDefinition();
+			new JavaElementCollectionMapping2_0UiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,12 +43,14 @@ public class JavaElementCollectionMapping2_0UiDefinition
 	private JavaElementCollectionMapping2_0UiDefinition() {
 		super();
 	}
-
+	
+	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
 			PropertyValueModel<JavaElementCollectionMapping2_0> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return ((JavaUiFactory2_0) factory).createJavaElementCollectionMapping2_0Composite(subjectHolder, parent, widgetFactory);
 	}
 }

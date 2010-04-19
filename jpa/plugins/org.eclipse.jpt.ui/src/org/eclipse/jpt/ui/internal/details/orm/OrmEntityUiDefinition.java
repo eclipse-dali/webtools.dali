@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -19,12 +20,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEntityUiDefinition
-	extends AbstractEntityUiDefinition<OrmEntity>
+	extends AbstractEntityUiDefinition<PersistentType, OrmEntity>
 	implements OrmTypeMappingUiDefinition<OrmEntity>
 {
 	// singleton
 	private static final OrmEntityUiDefinition INSTANCE = 
-		new OrmEntityUiDefinition();
+			new OrmEntityUiDefinition();
+	
 	
 	/**
 	 * Return the singleton.
@@ -41,11 +43,13 @@ public class OrmEntityUiDefinition
 		super();
 	}
 	
+	
 	public JpaComposite buildTypeMappingComposite(
 			OrmXmlUiFactory factory,
 			PropertyValueModel<OrmEntity> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
+		
 		return factory.createOrmEntityComposite(subjectHolder, parent, widgetFactory);
 	}
 }

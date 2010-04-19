@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.details.java;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
@@ -17,15 +18,14 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- *
- *
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface JavaAttributeMappingUiDefinition<T extends AttributeMapping> extends MappingUiDefinition<T>
+public interface JavaAttributeMappingUiDefinition<T extends AttributeMapping>
+	extends MappingUiDefinition<PersistentAttribute, T>
 {
 	/**
 	 * Creates <code>JpaComposite</code> that corresponds to this mapping type.
@@ -41,8 +41,8 @@ public interface JavaAttributeMappingUiDefinition<T extends AttributeMapping> ex
 	 * @return The composite displaying the information for a certain mapping
 	 */
 	JpaComposite buildAttributeMappingComposite(
-		JavaUiFactory factory,
-		PropertyValueModel<T> subjectHolder,
-		Composite parent,
-		WidgetFactory widgetFactory);
+			JavaUiFactory factory,
+			PropertyValueModel<T> subjectHolder,
+			Composite parent,
+			WidgetFactory widgetFactory);
 }
