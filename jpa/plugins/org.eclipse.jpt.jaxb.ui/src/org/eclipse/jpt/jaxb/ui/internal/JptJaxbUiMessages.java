@@ -17,7 +17,8 @@ import org.eclipse.osgi.util.NLS;
  * @version 2.3
  */
 public class JptJaxbUiMessages {
-
+	
+	// ClassesGenerator
 	public static String ClassesGeneratorWizard_title;
 	public static String ClassesGeneratorWizard_errorDialogTitle;
 	public static String ClassesGeneratorWizard_couldNotCreate;
@@ -38,6 +39,29 @@ public class JptJaxbUiMessages {
 	
 	public static String ClassesGeneratorWizardPage_moxyLibrariesNotAvailable;
 
+	// SchemaGenerator
+	public static String SchemaGeneratorWizard_title;
+	public static String SchemaGeneratorWizard_generatingSchema;
+
+	public static String ProjectWizardPage_desc;
+	public static String ProjectWizardPage_project;
+
+	public static String SchemaGeneratorWizardPage_title;
+	public static String SchemaGeneratorWizardPage_desc;
+	
+	public static String SchemaGeneratorWizardPage_settingsGoupTitle;
+	public static String SchemaGeneratorWizardPage_shemaLocation;
+	public static String SchemaGeneratorWizardPage_shema;
+	public static String SchemaGeneratorWizardPage_packages;
+	public static String SchemaGeneratorWizardPage_browse;
+	
+	public static String SchemaGeneratorWizardPage_directoryDialogTitle;
+	public static String SchemaGeneratorWizardPage_directoryDialogDesc;
+	
+	public static String SchemaGeneratorWizardPage_errorNoSchema;
+	public static String SchemaGeneratorWizardPage_errorNoPackage;
+	
+	
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbUiMessages.class;
 	static {

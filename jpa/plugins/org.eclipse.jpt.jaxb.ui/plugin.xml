@@ -3,6 +3,25 @@
 <plugin>
 
 	<extension
+		point="org.eclipse.ui.newWizards">
+		
+		<category
+			id="org.eclipse.jpt.jaxb"
+			name="%jpaWizardCategoryName"/>
+ 			
+ 		<wizard
+            id="org.eclipse.jpt.jaxb.ui.wizard.generateSchemaFromClasses"
+			name="%generateSchemaFromClassesName"
+ 			category="org.eclipse.jpt.jaxb"
+ 			class="org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.SchemaGeneratorWizard"
+			icon="icons/full/etool16/NewXSD.gif">
+				<description>%generateSchemaFromClassesDesc</description>
+				<selection class="org.eclipse.core.resources.IResource"/> 
+		</wizard>
+      
+	</extension>
+
+	<extension
 		point="org.eclipse.ui.popupMenus">
 
 	<!-- contributions to the "Generate" submenu -->
