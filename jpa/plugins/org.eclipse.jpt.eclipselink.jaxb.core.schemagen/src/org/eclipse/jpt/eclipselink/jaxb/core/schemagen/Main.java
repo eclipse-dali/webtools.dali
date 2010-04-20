@@ -68,7 +68,7 @@ public class Main
 	}
 
 	private void generate() {
-		System.out.println("MOXy:");    //$NON-NLS-1$
+		System.out.println("MOXy generating schema...");    //$NON-NLS-1$
 		
         // Create the JAXBContext
         JAXBContext jaxbContext = this.buildJaxbContext();
@@ -113,9 +113,7 @@ public class Main
 		for(String className: classNames) {
 			try {
 				sourceClasses.add(loader.loadClass(className));
-//				if(this.isDebugMode) {
 					System.out.println(className);   //$NON-NLS-1$
-//				}
 			}
 			catch (ClassNotFoundException e) {
 				System.err.println("\n\tNot found: " + className);   //$NON-NLS-1$
