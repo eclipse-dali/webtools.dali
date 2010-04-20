@@ -23,7 +23,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.ClassesGeneratorWizard;
+import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -39,7 +39,7 @@ public class ClassesGeneratorUi {
 	
 	public static void generate(IFile xsdFile) {
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(xsdFile.getProject());
-		if (jpaProject == null) {
+		if(jpaProject == null) {
 			return;
 		}
 		IPath xmlSchema = xsdFile.getProjectRelativePath();
@@ -50,7 +50,7 @@ public class ClassesGeneratorUi {
 	// ********** constructors **********
 	private ClassesGeneratorUi(JpaProject project, String xmlSchemaName) {
 		super();
-		if (project == null || StringTools.stringIsEmpty(xmlSchemaName)) {
+		if(project == null || StringTools.stringIsEmpty(xmlSchemaName)) {
 			throw new NullPointerException();
 		}
 		this.project = project;
