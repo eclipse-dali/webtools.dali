@@ -173,7 +173,10 @@
 		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
 	</context>
 	<context id="mapping_orderBy">
-		<description>Specify the default order for objects returned from a query.</description>
+		<description>Specify the default order for objects returned from a query.  	
+orderby_list::= orderby_item [,orderby_item]     
+orderby_item::= [property_or_field_name] [ASC | DESC]     
+For example: "lastName ASC ,salary DESC"	</description>
 		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
 		<topic label="Mapping an Entity" href="task_mapping.htm"/>
 	</context>
@@ -611,9 +614,23 @@
 
 <!-- Added for 3.0 -->
 	<context id="properties_canonicalMetamodel">
-		<description>                               </description>
+		<description>Specifies if the project model uses the Canonical Metamodel. </description>
 		<topic label="Project properties" href="ref_project_properties"/>
 		<topic label="Understanding persistence" href="concept_persistence.htm"/>
 	</context>
+	<context id="entity_cachable">
+		<description>Specify if the entity uses the @Cachable annotation. Default is @Cachable(false).</description>
+		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<topic label="Understanding persistence" href="concept_persistence.htm"/>
+	</context>
+	<context id="entity_primaryKeyClass">
+		<description>Click Browse and select the primary key for the entity. Clicking the field name, which is represented as a hyperlink, allows you to create a new class.</description>
+		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
+		<topic label="Primary Key Generation information" href="ref_primary_key.htm"/>
+	</context>
+	
+	
+	
+	
 	
 </contexts>
