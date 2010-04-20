@@ -42,7 +42,7 @@ public abstract class ObjectAction extends ActionDelegate implements IObjectActi
 	@Override
 	public void run(IAction action) {
 		if (this.currentSelection instanceof ITreeSelection) {
-			for (Iterator stream = ((ITreeSelection) this.currentSelection).iterator(); stream.hasNext(); ) {
+			for (Iterator<?> stream = ((ITreeSelection) this.currentSelection).iterator(); stream.hasNext(); ) {
 				this.execute(stream.next());
 			}
 		}
