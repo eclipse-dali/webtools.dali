@@ -70,30 +70,14 @@ public class Main
 	}
 
 	private void generate() {
+		System.out.println("generating schema...");    //$NON-NLS-1$
         // Create the JAXBContext
-        JAXBContext jaxbContext = null;
-		try {
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			
-			Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
-			
-			jaxbContext = JAXBContext.newInstance(sourceClasses);
-		}
-		catch (JAXBException e) {
-			String message = e.getMessage();
-			if(message.indexOf(NO_FACTORY_CLASS) > -1) {
-				System.err.println(message);
-			}
-			else {
-				e.printStackTrace();
-			}
-			System.err.println("\nSchema " + this.targetSchemaName + " not created");
-			return;
-		}
+		JAXBContext jaxbContext = this.buildJaxbContext();
+
         // Generate an XML Schema
 		SchemaOutputResolver schemaOutputResolver = 
 			new JptSchemaOutputResolver(this.targetSchemaName);
-		
+
 		try {
 			jaxbContext.generateSchema(schemaOutputResolver);
 		}
@@ -103,6 +87,28 @@ public class Main
 		}
 		System.out.println("\nSchema " + this.targetSchemaName + " generated");
     }
+	
+	private JAXBContext buildJaxbContext() {
+		 JAXBContext jaxbContext = null;
+			try {
+				ClassLoader loader = Thread.currentThread().getContextClassLoader();
+				
+				Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
+				
+				jaxbContext = JAXBContext.newInstance(sourceClasses);
+			}
+			catch (JAXBException e) {
+				String message = e.getMessage();
+				if(message.indexOf(NO_FACTORY_CLASS) > -1) {
+					System.err.println(message);
+				}
+				else {
+					e.printStackTrace();
+				}
+				System.err.println("\nSchema " + this.targetSchemaName + " not created");
+			}
+			return jaxbContext;
+	 }
     
     private Class[] buildSourceClasses(String[] classNames, ClassLoader loader) {
 
@@ -110,12 +116,10 @@ public class Main
 		for(String className: classNames) {
 			try {
 				sourceClasses.add(loader.loadClass(className));
-//				if(this.isDebugMode) {
-					System.out.println("\t" + className);
-//				}
+					System.out.println(className);
 			}
 			catch (ClassNotFoundException e) {
-				System.err.println("\n\t" + className + " not found");
+				System.err.println("\n\tNot found: " + className);
 			}
 		}
 		return sourceClasses.toArray(new Class[0]);
