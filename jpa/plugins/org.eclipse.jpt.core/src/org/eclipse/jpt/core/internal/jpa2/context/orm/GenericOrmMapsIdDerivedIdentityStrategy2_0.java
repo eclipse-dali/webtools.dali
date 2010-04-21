@@ -11,19 +11,23 @@
 
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
@@ -31,6 +35,7 @@ import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -164,7 +169,8 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 	
 	public TextRange getValidationTextRange() {
-		return this.resource.getMapsIdTextRange();
+		TextRange textRange = this.resource.getMapsIdTextRange();
+		return (textRange == null) ? getDerivedIdentity().getValidationTextRange() : textRange;
 	}
 	
 	@Override
@@ -208,7 +214,15 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	}
 	
 	protected IMessage buildMessage(String msgID, String[] params) {
+		String attributeDescString;
+		PersistentAttribute attribute = getDerivedIdentity().getMapping().getPersistentAttribute();
+		if (attribute.isVirtual()) {
+			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC, attribute.getName());
+		}
+		else {
+			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		}
 		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY, msgID, params, this, getValidationTextRange());
+				IMessage.HIGH_SEVERITY, msgID, ArrayTools.add(params, 0, attributeDescString), this, getValidationTextRange());
 	}
 }

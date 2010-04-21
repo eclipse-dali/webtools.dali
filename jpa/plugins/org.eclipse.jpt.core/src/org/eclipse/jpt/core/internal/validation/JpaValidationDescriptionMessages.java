@@ -16,6 +16,9 @@ public class JpaValidationDescriptionMessages {
 	public static String DOES_NOT_MATCH_JOIN_TABLE;
 	public static String DOES_NOT_MATCH_COLLECTION_TABLE;
 	public static String NOT_VALID_FOR_THIS_ENTITY;
+	
+	public static String ATTRIBUTE_DESC;
+	public static String VIRTUAL_ATTRIBUTE_DESC;
 
 	
 	private static final String BUNDLE_NAME = "jpa_validation_description"; //$NON-NLS-1$

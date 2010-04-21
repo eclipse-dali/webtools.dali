@@ -161,6 +161,7 @@ public abstract class AbstractJpaEObject
 	}
 	
 	protected IDOMNode getTextNode() {
+		if (this.node == null) return null; // virtual objects have no node
 		NodeList children = this.node.getChildNodes();
 		for (int i = 0; i < children.getLength(); i ++) {
 			IDOMNode child = (IDOMNode) children.item(i);
@@ -182,7 +183,8 @@ public abstract class AbstractJpaEObject
 	}
 	
 	protected IDOMNode getAttributeNode(String attributeName) {
-		return (IDOMNode) this.node.getAttributes().getNamedItem(attributeName);
+		return (this.node == null) ? // virtual objects have no node
+			null : (IDOMNode) this.node.getAttributes().getNamedItem(attributeName);
 	}
 	
 	/**
@@ -199,6 +201,7 @@ public abstract class AbstractJpaEObject
 	 * Returns the first element node with the given name, if one exists
 	 */
 	protected IDOMNode getElementNode(String elementName) {
+		if (this.node == null) return null; // virtual objects have no node
 		NodeList children = this.node.getChildNodes();
 		for (int i = 0; i < children.getLength(); i ++) {
 			IDOMNode child = (IDOMNode) children.item(i);
