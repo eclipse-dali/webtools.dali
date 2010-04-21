@@ -11,7 +11,6 @@
 
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
