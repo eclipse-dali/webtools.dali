@@ -110,6 +110,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -154,6 +155,7 @@ public class JpaProjectPropertiesPage
 
 	private final BufferedWritablePropertyValueModel<String> metamodelSourceFolderModel;
 	private final ListValueModel<String> javaSourceFolderChoicesModel;
+	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage";
 
 	private final ChangeListener validationListener;
 
@@ -384,6 +386,10 @@ public class JpaProjectPropertiesPage
 		return this.userOverrideDefaultSchemaModel.getValue();
 	}
 
+	private IWorkbenchPreferenceContainer getWorkbenchPreferenceContainer() {
+		IWorkbenchPreferenceContainer container= (IWorkbenchPreferenceContainer) getContainer();
+		return container;
+	}
 
 	// ********** LibraryFacetPropertyPage implementation **********
 
@@ -630,7 +636,8 @@ public class JpaProjectPropertiesPage
 		group.setLayout(new GridLayout(3, false));
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label metamodelSourceFolderLabel = this.buildLabel(group, JptUiMessages.JpaFacetWizardPage_metamodelSourceFolderLabel);
+		Link metamodelSourceFolderLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_metamodelSourceFolderLink);
+		metamodelSourceFolderLink.addSelectionListener(buildMetamodelSourceFolderLinkListener());
 		Combo metamodelSourceFolderDropDown = this.buildDropDown(group);
 		SWTTools.bind(
 				this.javaSourceFolderChoicesModel,
@@ -639,10 +646,27 @@ public class JpaProjectPropertiesPage
 				SIMPLE_STRING_CONVERTER
 		);
 
-		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLabel, metamodelSourceFolderDropDown);
+		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
 	}
 
+	private SelectionListener buildMetamodelSourceFolderLinkListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				JpaProjectPropertiesPage.this.openJavaBuildPathPage();
+			}
+			@Override
+			public String toString() {
+				return "metamodel source folder link listener"; //$NON-NLS-1$
+			}
+		};
+	}
 
+	void openJavaBuildPathPage() {
+		IWorkbenchPreferenceContainer container = getWorkbenchPreferenceContainer();
+		container.openPage(BUILD_PATHS_PROPERTY_PAGE_ID, null);
+	}
+	
 	// ********** widgets **********
 
 	private Button buildCheckBox(Composite parent, int horizontalSpan, String text) {
