@@ -59,10 +59,10 @@ import org.eclipse.ui.forms.widgets.ExpandableComposite;
  * This page shows the Java Persistence validation options. It supports
  * workspace and project levels severities.
  *
- * @version 2.2
+ * @version 2.3
  * @since 2.2
  */
-@SuppressWarnings({"restriction", "nls"})
+@SuppressWarnings("restriction")
 public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	/**
@@ -70,6 +70,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * based on user action.
 	 */
 	private Map<String, String> severityLevels;
+
+	private Map<String, String> defaultSeverities;
 	
 	/**
 	 * The list of <code>Combo</code>s is cached in order to perform a revert of
@@ -86,17 +88,17 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	/**
 	 * The position of the "Error" choice in the combo's model.
 	 */
-	private static final int DEFAULT_INDEX = 0;
-
-	/**
-	 * The position of the "Error" choice in the combo's model.
-	 */
-	private static final int ERROR_INDEX = 1;
+	private static final int ERROR_INDEX = 0;
 
 	/**
 	 * The position of the "Warning" choice in the combo's model.
 	 */
-	private static final int WARNING_INDEX = 2;
+	private static final int WARNING_INDEX = 1;
+
+	/**
+	 * The position of the "Info" choice in the combo's model.
+	 */
+	private static final int INFO_INDEX = 2;
 
 	/**
 	 * The position of the "Ignore" choice in the combo's model.
@@ -104,27 +106,22 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	private static final int IGNORE_INDEX = 3;
 
 	/**
-	 * The position of the "Info" choice in the combo's model.
-	 */
-	private static final int INFO_INDEX = 4;
-
-	/**
 	 * The unique identifier for this page when it is shown in the IDE
 	 * preferences dialog.
 	 */
-	private static final String JPT_PREFERENCES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.preferences.problemSeverities";
+	private static final String JPT_PREFERENCES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.preferences.problemSeverities"; //$NON-NLS-1$
 
 	/**
 	 * The unique identifier for this page when it is shown in the project
 	 * preferences dialog.
 	 */
-	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.propertyPages.problemSeverities";
+	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.propertyPages.problemSeverities"; //$NON-NLS-1$
 
 	/**
 	 * A constant used to store and retrieve the preference key (message ID) from
 	 * the combo.
 	 */
-	private static final String PREFERENCE_KEY = "preferenceKey";
+	private static final String PREFERENCE_KEY = "preferenceKey"; //$NON-NLS-1$
 
 	/**
 	 * The scrollable pane used to show the content of this page.
@@ -139,13 +136,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	/**
 	 * Constant used to store the expansion state of each expandable pane.
 	 */
-	public static final String SETTINGS_EXPANDED = "expanded";
+	public static final String SETTINGS_EXPANDED = "expanded"; //$NON-NLS-1$
 
 	/**
 	 * The preference key used to retrieve the dialog settings where the expansion
 	 * states have been stored.
 	 */
-	public static final String SETTINGS_SECTION_NAME = "JpaProblemSeveritiesPage";
+	public static final String SETTINGS_SECTION_NAME = "JpaProblemSeveritiesPage"; //$NON-NLS-1$
 
 	/**
 	 * Creates a new <code>JpaProblemSeveritiesPage</code>.
@@ -166,6 +163,29 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.expandablePanes = new ArrayList<ExpandableComposite>();
 		this.severityDisplayStrings = buildSeverityDisplayStrings();
 		this.severityLevels = new HashMap<String, String>();
+		this.defaultSeverities = buildDefaultSeverties();
+	}
+
+	//since most of our problems have a default severity of ERROR, we are just defining the WARNING and INFO cases
+	protected Map<String, String> buildDefaultSeverties() {
+		 Map<String, String> defaultSeverities = new HashMap<String, String>();
+
+		 defaultSeverities.put(JpaValidationMessages.PROJECT_NO_CONNECTION, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PROJECT_INVALID_CONNECTION, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PROJECT_INACTIVE_CONNECTION, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.ENTITY_ABSTRACT_DISCRIMINATOR_VALUE_DEFINED, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, JpaValidationPreferences.WARNING);
+
+		 defaultSeverities.put(JpaValidationMessages.XML_VERSION_NOT_LATEST, JpaValidationPreferences.INFO);
+		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_UNIT_REDUNDANT_CLASS, JpaValidationPreferences.INFO);
+
+		 return defaultSeverities;
 	}
 
 	@Override
@@ -560,11 +580,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * @param preferenceKey The key used to retrieve and to store the value
 	 * associated with the validation problem
 	 */
-	private void addLabeledCombo(Composite parent,
-	                             String labelText,
-	                             String preferenceKey) {
-
-
+	private void addLabeledCombo(Composite parent, String labelText, String preferenceKey) {
 		Label label = new Label(parent, SWT.NONE);
 		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		label.setText(labelText);
@@ -573,7 +589,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		combo.setItems(this.severityDisplayStrings);
 		combo.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
 		combo.setData(PREFERENCE_KEY, preferenceKey);
-		combo.select(convertPreferenceValueToIndex(preferenceKey));
+		combo.select(convertPreferenceKeyToComboIndex(preferenceKey));
 		combo.addSelectionListener(buildComboSelectionListener());
 
 		this.scrollable.adaptChild(combo);
@@ -587,7 +603,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 				Combo combo = (Combo) e.widget;
 				String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
 				String value = convertToPreferenceValue(combo.getSelectionIndex());
-				severityLevels.put(preferenceKey, value);
+				JpaProblemSeveritiesPage.this.severityLevels.put(preferenceKey, value);
 			}
 		};
 	}
@@ -602,42 +618,43 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	protected String[] buildSeverityDisplayStrings() {
-		String[] severities = new String[5];
-		severities[DEFAULT_INDEX] = JptUiMessages.JpaProblemSeveritiesPage_Default;
+		String[] severities = new String[4];
 		severities[ERROR_INDEX]   = JptUiMessages.JpaProblemSeveritiesPage_Error;
 		severities[WARNING_INDEX] = JptUiMessages.JpaProblemSeveritiesPage_Warning;
-		severities[IGNORE_INDEX]  = JptUiMessages.JpaProblemSeveritiesPage_Ignore;
 		severities[INFO_INDEX]    = JptUiMessages.JpaProblemSeveritiesPage_Info;
+		severities[IGNORE_INDEX]  = JptUiMessages.JpaProblemSeveritiesPage_Ignore;
 		return severities;
 	}
 
-	protected int convertPreferenceValueToIndex(String preferenceKey) {
-		String severity = preferenceValue(preferenceKey);
-
-		if (JpaValidationPreferences.HIGH_SEVERITY.equals(severity)) {
+	protected int convertPreferenceKeyToComboIndex(String preferenceKey) {
+		return convertPreferenceValueToComboIndex(getPreferenceValue(preferenceKey));
+	}
+	
+	protected int convertPreferenceValueToComboIndex(String preferenceValue) {
+		if (JpaValidationPreferences.ERROR.equals(preferenceValue)) {
 			return ERROR_INDEX;
 		}
 
-		if (JpaValidationPreferences.NORMAL_SEVERITY.equals(severity)) {
+		if (JpaValidationPreferences.WARNING.equals(preferenceValue)) {
 			return WARNING_INDEX;
 		}
 
-		if (JpaValidationPreferences.LOW_SEVERITY.equals(severity)) {
+		if (JpaValidationPreferences.INFO.equals(preferenceValue)) {
 			return INFO_INDEX;
 		}
 
-		if (JpaValidationPreferences.IGNORE.equals(severity)) {
+		if (JpaValidationPreferences.IGNORE.equals(preferenceValue)) {
 			return IGNORE_INDEX;
 		}
 
-		return DEFAULT_INDEX;
+		throw new IllegalStateException();
 	}
 
 	protected String convertToPreferenceValue(int selectionIndex) {
 		switch (selectionIndex) {
-			case ERROR_INDEX:   return JpaValidationPreferences.HIGH_SEVERITY;
-			case WARNING_INDEX: return JpaValidationPreferences.NORMAL_SEVERITY;
-			case INFO_INDEX:    return JpaValidationPreferences.LOW_SEVERITY;
+			case ERROR_INDEX:   return JpaValidationPreferences.ERROR;
+			case WARNING_INDEX: return JpaValidationPreferences.WARNING;
+			case INFO_INDEX:    return JpaValidationPreferences.INFO;
 			case IGNORE_INDEX:  return JpaValidationPreferences.IGNORE;
 			default:            return null;
 		}
@@ -737,11 +754,20 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		}
 	}
 
-	protected String preferenceValue(String preferenceKey) {
-		if (isProjectPreferencePage()) {
-			return JpaValidationPreferences.getProjectLevelProblemPreference(getProject(), preferenceKey);
+	protected String getPreferenceValue(String preferenceKey) {
+		String preference = null;
+		if (hasProjectSpecificOptions(getProject())) { //useProjectSettings() won't work since the page is being built
+			preference = JpaValidationPreferences.getProjectLevelProblemPreference(getProject(), preferenceKey);
 		}
-		return JpaValidationPreferences.getWorkspaceLevelProblemPreference(preferenceKey);
+		if (preference == null) {
+			preference = getDefaultPreferenceValue(preferenceKey);
+		}
+		return preference;
+	}
+
+	protected String getDefaultPreferenceValue(String preferenceKey) {
+		String preference = this.defaultSeverities.get(preferenceKey);
+		return preference == null ? JpaValidationPreferences.ERROR : preference;
 	}
 
 	protected void restoreSectionExpansionStates(IDialogSettings settings) {
@@ -761,19 +787,16 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	}
 
 	protected void revertToDefault() {
-
-		int defaultValue = DEFAULT_INDEX;
-
 		for (Combo combo : this.combos) {
 			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
-			String value = convertToPreferenceValue(defaultValue);
-			severityLevels.put(preferenceKey, value);
-			combo.select(defaultValue);
+			String defaultValue = getDefaultPreferenceValue(preferenceKey);
+			combo.select(convertPreferenceKeyToComboIndex(defaultValue));
+			//silly combo doesn't fire a selection event, so we can't expect our listener to set this
+			this.severityLevels.put(preferenceKey, null);
 		}
 	}
 
 	protected void storeSectionExpansionStates(IDialogSettings settings) {
-
 		for (int index = this.expandablePanes.size(); --index >= 0; ) {
 			ExpandableComposite expandablePane = this.expandablePanes.get(index);
 			settings.put(SETTINGS_EXPANDED + index, expandablePane.isExpanded());
@@ -794,7 +817,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	@Override
 	public boolean performOk() {
 		super.performOk();
-
 		for (String validationPreferenceKey : this.severityLevels.keySet()) {
 			updatePreference(validationPreferenceKey, this.severityLevels.get(validationPreferenceKey));
 		}

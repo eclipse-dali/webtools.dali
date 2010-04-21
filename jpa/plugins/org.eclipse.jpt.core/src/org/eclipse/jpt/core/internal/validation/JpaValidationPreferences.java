@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,12 +21,12 @@ import org.osgi.service.prefs.BackingStoreException;
 //TODO:  Probably want to merge the behavior in this class into JptCorePlugin
 public class JpaValidationPreferences {
 	
-	public static String HIGH_SEVERITY = "error";
-	public static String NORMAL_SEVERITY = "warning";
-	public static String LOW_SEVERITY = "info";
-	public static String IGNORE = "ignore";
+	public static final String ERROR = "error"; //$NON-NLS-1$
+	public static final String WARNING = "warning"; //$NON-NLS-1$
+	public static final String INFO = "info"; //$NON-NLS-1$
+	public static final String IGNORE = "ignore"; //$NON-NLS-1$
 	
-	static int NO_SEVERITY_PREFERENCE = -1;
+	static final int NO_SEVERITY_PREFERENCE = -1;
 	
 	/**
 	 * Returns only the severity level of a given problem preference.  This does not
@@ -37,13 +37,13 @@ public class JpaValidationPreferences {
 		IProject project = getProject(targetObject);
 		String problemPreference = getPreference(project, messageId);
 		
-		if (problemPreference==null){
+		if (problemPreference == null){
 			return NO_SEVERITY_PREFERENCE;
-		}else if (problemPreference.equals(HIGH_SEVERITY)){
+		} else if (problemPreference.equals(ERROR)){
 			return IMessage.HIGH_SEVERITY;
-		} else if (problemPreference.equals(NORMAL_SEVERITY)){
+		} else if (problemPreference.equals(WARNING)){
 			return IMessage.NORMAL_SEVERITY;
-		} else if (problemPreference.equals(LOW_SEVERITY)){
+		} else if (problemPreference.equals(INFO)){
 			return IMessage.LOW_SEVERITY;
 		}
 		return NO_SEVERITY_PREFERENCE;
@@ -62,9 +62,7 @@ public class JpaValidationPreferences {
 	 */
 	public static boolean isProblemIgnored(IProject project, String messageId){
 		String problemPreference = getPreference(project, messageId);
-		if (problemPreference==null){
-			return false;
-		}else if(problemPreference.equals(IGNORE)){
+		if (problemPreference != null && problemPreference.equals(IGNORE)){
 			return true;
 		}
 		return false;
@@ -74,7 +72,7 @@ public class JpaValidationPreferences {
 		String problemPreference = null;
 		problemPreference = getProjectLevelProblemPreference(project, messageId);
 		//if severity is still null, check the workspace preferences
-		if(problemPreference==null) {
+		if (problemPreference == null) {
 			problemPreference = getWorkspaceLevelProblemPreference(messageId);
 		}
 		return problemPreference;
@@ -90,7 +88,7 @@ public class JpaValidationPreferences {
 	
 	public static void setProjectLevelProblemPreference(IProject project, String messageId, String problemPreference) {
 		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-		if (problemPreference==null){
+		if (problemPreference == null){
 			projectPreferences.remove(messageId);
 		}
 		else {
@@ -109,15 +107,14 @@ public class JpaValidationPreferences {
 	
 	public static void setWorkspaceLevelProblemPreference(String messageId, String problemPreference) {
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
-		if (problemPreference==null){
+		if (problemPreference == null){
 			workspacePreferences.remove(messageId);
 		}
 		else {
 			workspacePreferences.put(messageId, problemPreference);
 		}
 		flush(workspacePreferences);
-	}	
-	
+	}
 	
 	private static void flush(IEclipsePreferences prefs) {
 		try {
