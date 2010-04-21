@@ -13,7 +13,7 @@ package org.eclipse.jpt.utility.internal;
  * Convenience methods related to Java class names as returned by
  * {@link java.lang.Class#getName()}.
  */
-public class ClassName {
+public final class ClassName {
 
 	public static final String VOID_CLASS_NAME = ReflectionTools.VOID_CLASS.getName();
 	public static final String VOID_WRAPPER_CLASS_NAME = ReflectionTools.VOID_WRAPPER_CLASS.getName();

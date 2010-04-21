@@ -154,11 +154,7 @@ public class GenericPersistenceXml
 				setPersistence(buildPersistence(newXmlPersistence));
 			}
 			
-			JpaFile jpaFile = getJpaFile();
-			if (jpaFile == null) {
-				System.out.print("Jpa file is null");
-			}
-			jpaFile.addRootStructureNode(this.xmlResource, this.persistence);
+			this.getJpaFile().addRootStructureNode(this.xmlResource, this.persistence);
 		}
 	}
 	

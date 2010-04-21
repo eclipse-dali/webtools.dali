@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
-import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
@@ -489,7 +489,7 @@ public class JptCorePlugin extends Plugin {
 			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
 		}
 		else {
-			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion);
+			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 		}
 		prefs.put(preferenceKey, platformId);
 		flush(prefs);

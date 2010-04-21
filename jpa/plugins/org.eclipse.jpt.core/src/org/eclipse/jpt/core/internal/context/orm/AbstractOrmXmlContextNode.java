@@ -16,18 +16,22 @@ import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 
 /**
- * Use this abstract class for context nodes that are part of an OrmXml file.
- * This will not work for purely MappingFile implementations
+ * Use this abstract class for context nodes that are part of an
+ * <code>orm.xml</code> file.
+ * This will not work for a pure {@link org.eclipse.jpt.core.context.MappingFile}
+ * implementation.
  */
 public abstract class AbstractOrmXmlContextNode
 	extends AbstractXmlContextNode
 {
-
 	// ********** constructor **********
 
 	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
+
+
+	// ********** convenience methods **********
 
 	protected OrmXmlDefinition getMappingFileDefinition() {
 		return (OrmXmlDefinition) this.getJpaPlatform().getResourceDefinition(this.getResourceType());

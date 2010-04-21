@@ -194,7 +194,7 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 				restore(customizer);
 			}
 		} catch (Exception ex) {
-			System.out.println("***ORMGenCustomizer.load failed "+file+": " + ex);				
+			JptGenPlugin.logException("***ORMGenCustomizer.load failed "+file, ex);				
 		}
 		finally 
 		{

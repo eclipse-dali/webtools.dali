@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.editors;
 
 import java.util.ListIterator;
+
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
@@ -20,6 +21,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.resource.LocalResourceManager;
 import org.eclipse.jface.resource.ResourceManager;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -128,10 +130,18 @@ public class PersistenceEditor extends FormEditor
 			return;
 		}
 
+		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+		if (persistenceXml == null) {
+			return;
+		}
+		JpaResourceType resourceType = persistenceXml.getResourceType();
+		if (resourceType == null) {
+			return;  // might not ever get here... (if we have a p.xml, it probably has a resource type...)
+		}
 		String platformId = jpaProject.getJpaPlatform().getId();
 		JpaPlatformUi jpaPlatformUI = JpaPlatformUiRegistry.instance().getJpaPlatformUi(platformId);
 		PersistenceXmlResourceUiDefinition definition = 
-			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getResourceUiDefinition(jpaProject.getRootContextNode().getPersistenceXml().getResourceType());
+			(PersistenceXmlResourceUiDefinition) jpaPlatformUI.getResourceUiDefinition(resourceType);
 
 		ListIterator<JpaPageComposite> pages = definition.buildPersistenceUnitComposites(
 			buildPersistenceUnitHolder(),

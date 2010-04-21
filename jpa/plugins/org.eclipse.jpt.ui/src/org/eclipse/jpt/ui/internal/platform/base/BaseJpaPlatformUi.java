@@ -67,19 +67,20 @@ public abstract class BaseJpaPlatformUi
 	// ********** structure providers **********
 	
 	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
-		return getStructureProvider(jpaFile.getResourceModel().getResourceType());
+		JpaResourceType resourceType = jpaFile.getResourceModel().getResourceType();
+		return (resourceType == null) ? null : this.getStructureProvider(resourceType);
 	}
 	
 	protected JpaStructureProvider getStructureProvider(JpaResourceType resourceType) {
-		ResourceUiDefinition resourceUiDefinition;
+		ResourceUiDefinition definition;
 		try {
-			resourceUiDefinition = getResourceUiDefinition(resourceType);
+			definition = getResourceUiDefinition(resourceType);
 		}
 		catch (IllegalArgumentException iae) {
 			JptUiPlugin.log(iae);
 			return null;
 		}
-		return resourceUiDefinition.getStructureProvider();
+		return definition.getStructureProvider();
 	}
 	
 	
@@ -159,7 +160,7 @@ public abstract class BaseJpaPlatformUi
 				return definition;
 			}
 		}
-		throw new IllegalArgumentException("No resource ui definition for the resource type: " + resourceType); //$NON-NLS-1$
+		throw new IllegalArgumentException("No resource UI definition for the resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
 	public MappingResourceUiDefinition getMappingResourceUiDefinition(JpaResourceType resourceType) {
@@ -167,7 +168,7 @@ public abstract class BaseJpaPlatformUi
 			return (MappingResourceUiDefinition) getResourceUiDefinition(resourceType);
 		}
 		catch (ClassCastException cce) {
-			throw new IllegalArgumentException("No mapping resource ui definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
+			throw new IllegalArgumentException("No mapping resource UI definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
 		}
 	}
 	

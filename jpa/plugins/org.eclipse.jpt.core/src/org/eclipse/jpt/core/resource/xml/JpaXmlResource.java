@@ -7,11 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-
 package org.eclipse.jpt.core.resource.xml;
 
 import java.io.IOException;
 import java.util.Collections;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -25,7 +25,6 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -60,21 +59,14 @@ public class JpaXmlResource
 	
 	protected final Translator rootTranslator;
 	
-	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList;
+	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList =
+			new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
 	
 	
 	public JpaXmlResource(URI uri, Renderer renderer, IContentType contentType, Translator rootTranslator) {
 		super(uri, renderer);
 		this.contentType = contentType;
 		this.rootTranslator = rootTranslator;
-		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
-	}
-	
-	
-	//296544 - override this to avoid internet access finding the schema during tests
-	@Override
-	public EntityResolver getEntityResolver() {
-		return J2EEXmlDtDEntityResolver.INSTANCE;
 	}
 	
 	public IContentType getContentType() {
@@ -82,16 +74,10 @@ public class JpaXmlResource
 	}
 	
 	public String getVersion() {
-		return getRootObject() == null ? null : getRootObject().getVersion();
+		JpaRootEObject root = this.getRootObject();
+		return (root == null) ? null : root.getVersion();
 	}
-	
-	public JpaResourceType getResourceType() {
-		if (getContentType() == null || getVersion() == null) {
-			return null;
-		}
-		return new JpaResourceType(getContentType(), getVersion());
-	}
-	
+
 	
 	// ********** BasicNotifierImpl override **********
 	
@@ -106,14 +92,13 @@ public class JpaXmlResource
 	 */
 	@Override
 	public void eNotify(Notification notification) {
-		//Unload events can happen before the resource set is removed - should always react to unload events
-		if (notification.getEventType() == Notification.SET && notification.getFeatureID(null) == Resource.RESOURCE__IS_LOADED) {
+		// unload events can happen before the resource set is removed - should always react to unload events
+		if (this.loadedFlagCleared(notification)) {
 			super.eNotify(notification);
-			if (isReverting()) {
-				resourceModelReverted();
-			}
-			else {
-				resourceModelUnloaded();
+			if (this.isReverting()) {
+				this.resourceModelReverted();
+			} else {
+				this.resourceModelUnloaded();
 			}
 		}
 		else if ( ! notification.isTouch() && this.isLoaded() && (this.resourceSet != null)) {
@@ -123,13 +108,30 @@ public class JpaXmlResource
 	}
 	
 	/**
+	 * Return whether the specified notification indicates the resource has been
+	 * unloaded.
 	 * we could use this method to suppress some notifications; or we could just
 	 * check whether 'resourceSet' is 'null' (which is what we do)
 	 */
+	protected boolean loadedFlagCleared(Notification notification) {
+		return (notification.getNotifier() == this) &&
+				(notification.getEventType() == Notification.SET) &&
+				(notification.getFeatureID(Resource.class) == RESOURCE__IS_LOADED) &&
+				( ! notification.getNewBooleanValue());
+	}
+	
+	/**
+	 * Return whether the specified notification indicates the resource's
+	 * resource set was cleared.
+	 * We could use this method to suppress some resource set notifications;
+	 * or we could just check whether <code>resourceSet</code> is
+	 * <code>null</code> (which is what we do)/
+	 */
 	protected boolean resultSetCleared(Notification notification) {
 		return (notification.getNotifier() == this) &&
-					(notification.getFeatureID(Resource.class) == RESOURCE__RESOURCE_SET) &&
-					(notification.getNewValue() == null);
+				(notification.getEventType() == Notification.SET) &&
+				(notification.getFeatureID(Resource.class) == RESOURCE__RESOURCE_SET) &&
+				(notification.getNewValue() == null);
 	}
 	
 	
@@ -184,6 +186,12 @@ public class JpaXmlResource
 		}
 	}
 	
+	//296544 - override this to avoid internet access finding the schema during tests
+	@Override
+	public EntityResolver getEntityResolver() {
+		return J2EEXmlDtDEntityResolver.INSTANCE;
+	}
+	
 	
 	// ********** convenience methods **********
 	
@@ -192,7 +200,7 @@ public class JpaXmlResource
 	}
 	
 	public IFile getFile() {
-		IFile file = getFile(this.uri);
+		IFile file = this.getFile(this.uri);
 		return (file != null) ? file : this.getConvertedURIFile();
 	}
 	
@@ -201,7 +209,7 @@ public class JpaXmlResource
 			return null;
 		}
 		URI convertedURI = this.resourceSet.getURIConverter().normalize(this.uri);
-		return this.uri.equals(convertedURI) ? null : getFile(convertedURI);
+		return this.uri.equals(convertedURI) ? null : this.getFile(convertedURI);
 	}
 	
 	/**
@@ -209,20 +217,16 @@ public class JpaXmlResource
 	 * This URI is assumed to be absolute in the following format:
 	 *     platform:/resource/....
 	 */
-	protected static IFile getFile(URI uri) {
-		if ( ! WorkbenchResourceHelperBase.isPlatformResourceURI(uri)) {
+	protected IFile getFile(URI fileURI) {
+		if ( ! WorkbenchResourceHelperBase.isPlatformResourceURI(fileURI)) {
 			return null;
 		}
-		String fileName = URI.decode(uri.path()).substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
+		String fileName = URI.decode(fileURI.path()).substring(JEMUtilPlugin.PLATFORM_RESOURCE.length() + 1);
 		return ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(fileName));
 	}
 	
 	public IProject getProject() {
-		return getFile().getProject();
-	}
-	
-	public JpaProject getJpaProject() {
-		return JptCorePlugin.getJpaProject(getProject());
+		return this.getFile().getProject();
 	}
 	
 	public void modify(Runnable runnable) {
@@ -230,11 +234,11 @@ public class JpaXmlResource
 			runnable.run();
 			try {
 				save(Collections.EMPTY_MAP);
-			} catch (IOException ioe) {
-				JptCorePlugin.log(ioe);
+			} catch (IOException ex) {
+				JptCorePlugin.log(ex);
 			}
-		} catch (Exception e) {
-			JptCorePlugin.log(e);
+		} catch (Exception ex) {
+			JptCorePlugin.log(ex);
 		}
 	}
 	
@@ -247,6 +251,14 @@ public class JpaXmlResource
 	
 	// ********** JpaResourceModel implementation **********
 	
+	public JpaResourceType getResourceType() {
+		if (this.contentType == null) {
+			return null;
+		}
+		String version = this.getVersion();
+		return (version == null) ? null : new JpaResourceType(this.contentType, version);
+	}
+	
 	public void addResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);
 	}
@@ -254,28 +266,31 @@ public class JpaXmlResource
 	public void removeResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.remove(listener);
 	}
-	
+
+
+	// ********** listener notifications **********
+
 	protected void resourceModelChanged() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged(this);
 		}
 	}
-	
+
 	protected void resourceModelReverted() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelReverted(this);
 		}
 	}
-	
+
 	protected void resourceModelUnloaded() {
 		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelUnloaded(this);
 		}
 	}
-	
-	
+
+
 	// ********** cast things back to what they are in EMF **********
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public EList<Adapter> eAdapters() {

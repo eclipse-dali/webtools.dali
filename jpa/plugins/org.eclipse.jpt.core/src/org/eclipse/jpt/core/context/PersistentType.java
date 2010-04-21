@@ -37,7 +37,7 @@ public interface PersistentType
 
 	/**
 	 * Return the persistent type's [fully-qualified] name.
-	 * Uses '.' as the enclosing type separator instead of '$'.
+	 * The enclosing type separator is '.', as opposed to '$'.
 	 * @see #getShortName()
 	 */
 	String getName();

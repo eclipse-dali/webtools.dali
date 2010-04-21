@@ -192,11 +192,7 @@ public class GenericOrmXml
 				setEntityMappings(buildEntityMappings(newXmlEntityMappings));
 			}
 			
-			JpaFile jpaFile = getJpaFile();
-			if (jpaFile == null) {
-				System.out.print("Jpa file is null");
-			}
-			jpaFile.addRootStructureNode(this.xmlResource, this.entityMappings);
+			this.getJpaFile().addRootStructureNode(this.xmlResource, this.entityMappings);
 		}
 	}
 
