@@ -15,6 +15,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -71,20 +72,16 @@ public class GenericRootContextNode
 	}
 
 	public void update(IProgressMonitor monitor) {
-		JpaXmlResource resource = this.resolvePersistenceXmlResource();
-		if (resource == null
-				|| ! getJpaPlatform().supportsResourceType(resource.getResourceType())) {
-			
+		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
+		if (xmlResource == null) {
 			if (this.persistenceXml != null) {
 				this.persistenceXml.dispose();
-				setPersistenceXml(null);
+				this.setPersistenceXml(null);
 			}
-		}
-		else {
+		} else {
 			if (this.persistenceXml == null) {
-				setPersistenceXml(buildPersistenceXml(resource));
-			}
-			else {
+				this.setPersistenceXml(this.buildPersistenceXml(xmlResource));
+			} else {
 				this.persistenceXml.update();
 			}
 		}
@@ -142,7 +139,23 @@ public class GenericRootContextNode
 	}
 
 	protected JpaXmlResource resolvePersistenceXmlResource() {
-		return this.jpaProject.getPersistenceXmlResource();
+		JpaXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
+		if (xmlResource == null) {
+			return null;
+		}
+		if (xmlResource.isReverting()) {
+			// 308254 - this can happen when persistence.xml is closed without saving;
+			// the model is completely whacked in another thread - so wipe our model(?)
+			return null;
+		}
+		JpaResourceType resourceType = xmlResource.getResourceType();
+		if (resourceType == null) {
+			return null;
+		}
+		if ( ! this.getJpaPlatform().supportsResourceType(resourceType)) {
+			return null;
+		}
+		return xmlResource;
 	}
 
 	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {

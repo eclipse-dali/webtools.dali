@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
@@ -140,28 +141,23 @@ public abstract class AbstractMappingFileRef
 	}
 
 	protected void updateMappingFile() {
-		JpaXmlResource newXmlResource = this.resolveMappingFileXmlResource();
+		JpaXmlResource xmlResource = this.resolveMappingFileXmlResource();
 		
-		if (newXmlResource == null 
-				|| ! getJpaPlatform().supportsResourceType(newXmlResource.getResourceType())) {
-			
+		if (xmlResource == null) {
 			if (this.mappingFile != null) {
 				this.mappingFile.dispose();
 				this.setMappingFile(null);
 			}
-		}
-		else {
+		} else {
 			if (this.mappingFile == null) {
-				this.setMappingFile(this.buildMappingFile(newXmlResource));
-			} 
-			else {
-				if (this.mappingFile.getXmlResource() == newXmlResource) {
+				this.setMappingFile(this.buildMappingFile(xmlResource));
+			} else {
+				if (this.mappingFile.getXmlResource() == xmlResource) {
 					this.mappingFile.update();
-				}
-				else {
+				} else {
 					// if the resource's content type has changed, we completely rebuild the mapping file
 					this.mappingFile.dispose();
-					this.setMappingFile(this.buildMappingFile(newXmlResource));
+					this.setMappingFile(this.buildMappingFile(xmlResource));
 				}
 			}
 		}
@@ -173,7 +169,26 @@ public abstract class AbstractMappingFileRef
 	 * the mapping file itself (<code>orm.xml</code>).
 	 */
 	protected JpaXmlResource resolveMappingFileXmlResource() {
-		return (this.fileName == null) ? null : this.getJpaProject().getMappingFileXmlResource(this.fileName);
+		if (this.fileName == null) {
+			return null;
+		}
+		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(this.fileName);
+		if (xmlResource == null) {
+			return null;
+		}
+		if (xmlResource.isReverting()) {
+			// 308254 - this can happen when orm.xml is closed without saving;
+			// the model is completely whacked in another thread - so wipe our model(?)
+			return null;
+		}
+		JpaResourceType resourceType = xmlResource.getResourceType();
+		if (resourceType == null) {
+			return null;
+		}
+		if ( ! this.getJpaPlatform().supportsResourceType(resourceType)) {
+			return null;
+		}
+		return xmlResource;
 	}
 
 	/**
