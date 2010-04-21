@@ -44,5 +44,12 @@ public class EclipseLinkLogging2_0Composite extends EclipseLinkLoggingComposite<
 	protected void addCategoryLoggingLevelComposite(Composite parent) {
 		new EclipseLinkCategoryLoggingLevelComposite(this, parent);
 	}
-	
+
+	@Override
+	protected void logPropertiesComposite(Composite parent) {
+		super.logPropertiesComposite(parent);
+		
+		// Connection:
+		new ConnectionComposite(this, parent);
+	}
 }

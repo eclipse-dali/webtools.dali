@@ -18,6 +18,14 @@ public interface Logging2_0 extends Logging
 {
 	public static final String CATEGORY_PREFIX_ = "eclipselink.logging.level."; //$NON-NLS-1$
 
+	Boolean getDefaultConnection();
+	Boolean getConnection();
+	void setConnection(Boolean connection);
+		static final String CONNECTION_PROPERTY = "connection"; //$NON-NLS-1$
+		// EclipseLink key string
+		static final String ECLIPSELINK_CONNECTION = "eclipselink.logging.connection"; //$NON-NLS-1$
+		static final Boolean DEFAULT_CONNECTION = Boolean.TRUE;
+		
 	LoggingLevel getCategoriesDefaultLevel();
 	LoggingLevel getLevel(String category);
 	void setLevel(String category, LoggingLevel level);

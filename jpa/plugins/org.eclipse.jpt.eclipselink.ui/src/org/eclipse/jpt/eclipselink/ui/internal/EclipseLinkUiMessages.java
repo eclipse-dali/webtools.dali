@@ -315,6 +315,8 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_sessionLabelDefault;
 	public static String PersistenceXmlLoggingTab_exceptionsLabel;
 	public static String PersistenceXmlLoggingTab_exceptionsLabelDefault;
+	public static String PersistenceXmlLoggingTab_connectionLabel;
+	public static String PersistenceXmlLoggingTab_connectionLabelDefault;
 	
 	public static String PersistenceXmlLoggingTab_loggersLabel;
 	public static String PersistenceXmlLoggingTab_loggingFileLabel;

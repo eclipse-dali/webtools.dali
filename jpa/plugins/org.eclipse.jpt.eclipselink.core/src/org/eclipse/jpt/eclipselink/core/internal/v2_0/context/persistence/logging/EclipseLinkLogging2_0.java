@@ -32,6 +32,8 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	 * 		value = value
 	 */
 	private Map<String, LoggingLevel> categoryValues;
+
+	private Boolean connection;
 	
 	private LoggingLevel categoriesDefaultValue;
 	
@@ -48,6 +50,9 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	protected void initializeProperties() {
 		super.initializeProperties();
 
+		this.connection = 
+			this.getBooleanValue(ECLIPSELINK_CONNECTION);
+		
 		this.categoriesDefaultValue = 
 			this.getEnumValue(ECLIPSELINK_LEVEL, LoggingLevel.values());
 		this.initializeCategory(SQL_CATEGORY_LOGGING_PROPERTY);
@@ -92,8 +97,11 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	@Override
 	public void propertyValueChanged(String propertyName, String newValue) {
 		super.propertyValueChanged(propertyName, newValue);
-		
-		if (propertyName.equals(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL)) {
+
+		if (propertyName.equals(ECLIPSELINK_CONNECTION)) {
+			this.connectionChanged(newValue);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL)) {
 			this.categoryLoggingChanged_(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL, newValue);
 		}
 		else if (propertyName.equals(ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL)) {
@@ -144,7 +152,10 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	public void propertyRemoved(String propertyName) {
 		super.propertyRemoved(propertyName);
 
-		if (propertyName.equals(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL)) {
+		if (propertyName.equals(ECLIPSELINK_CONNECTION)) {
+			this.connectionChanged(null);
+		}
+		else if (propertyName.equals(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL)) {
 			this.categoryLoggingChanged_(ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL, null);
 		}
 		else if (propertyName.equals(ECLIPSELINK_TRANSACTION_CATEGORY_LOGGING_LEVEL)) {
@@ -199,7 +210,10 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 	@Override
 	protected void addPropertyNames(Map<String, String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		
+
+		propertyNames.put(
+			ECLIPSELINK_CONNECTION,
+			CONNECTION_PROPERTY);
 		propertyNames.put(
 			ECLIPSELINK_SQL_CATEGORY_LOGGING_LEVEL,
 			SQL_CATEGORY_LOGGING_PROPERTY);
@@ -246,8 +260,31 @@ public class EclipseLinkLogging2_0 extends EclipseLinkLogging
 			ECLIPSELINK_SERVER_CATEGORY_LOGGING_LEVEL,
 			SERVER_CATEGORY_LOGGING_PROPERTY);
 	}
-	
 
+	// ********** Connection **********
+	public Boolean getConnection() {
+		return this.connection;
+	}
+
+	public void setConnection(Boolean newConnection) {
+		Boolean old = this.connection;
+		this.connection = newConnection;
+		this.putProperty(CONNECTION_PROPERTY, newConnection);
+		this.firePropertyChanged(CONNECTION_PROPERTY, old, newConnection);
+	}
+
+	private void connectionChanged(String stringValue) {
+		Boolean newValue = getBooleanValueOf(stringValue);
+		
+		Boolean old = this.connection;
+		this.connection = newValue;
+		this.firePropertyChanged(CONNECTION_PROPERTY, old, newValue);
+	}
+
+	public Boolean getDefaultConnection() {
+		return DEFAULT_CONNECTION;
+	}
+	
 	// ********** Category Levels **********
 	
 	public LoggingLevel getLevel(String category) {

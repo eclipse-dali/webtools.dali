@@ -45,17 +45,8 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		// LoggingLevel:
 		new LoggingLevelComposite(this, composite);
 
-		// Timestamp:
-		new TimestampComposite(this, composite);
-
-		// Thread:
-		new ThreadComposite(this, composite);
-
-		// Session:
-		new SessionComposite(this, composite);
-
-		// Exceptions:
-		new ExceptionsComposite(this, composite);
+		// Boolean properties group
+		this.logPropertiesComposite(composite);
 
 		// LoggingFile:
 		new LoggingFileLocationComposite(this, composite);
@@ -64,6 +55,21 @@ public class EclipseLinkLoggingComposite<T extends Logging>
 		new LoggerComposite(this, composite);
 		
 		return;
+	}
+	
+	protected void logPropertiesComposite(Composite parent) {
+
+		// Timestamp:
+		new TimestampComposite(this, parent);
+
+		// Thread:
+		new ThreadComposite(this, parent);
+
+		// Session:
+		new SessionComposite(this, parent);
+
+		// Exceptions:
+		new ExceptionsComposite(this, parent);
 	}
 
 	private void updateGridData(Composite container) {
