@@ -86,9 +86,10 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	public SchemaGeneratorWizardPage(IStructuredSelection selection) {
 		super("JAXB Schema Generator", selection, null);	//$NON-NLS-1$
 		
+		this.initialSelection = selection;
+		this.setUsesMoxy(false);
 		this.setTitle(JptJaxbUiMessages.SchemaGeneratorWizardPage_title);
 		this.setDescription(JptJaxbUiMessages.SchemaGeneratorWizardPage_desc);
-		this.initialSelection = selection;
 	}
 
 	// ********** IDialogPage implementation  **********
@@ -106,10 +107,6 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
 		this.updateUsesMoxy(this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
-		
-		// checkbox visible only if jpt.eclipselink.ui plugin is available
-		// and EclipseLink MOXy is not on the classpath
-		this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
 		this.giveFocusToDestination();
     }
 
@@ -289,6 +286,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	
 	private void updateUsesMoxy(boolean usesMoxy){
 		this.setUsesMoxy(usesMoxy);
+		this.usesMoxyCheckBox.setSelection(this.usesMoxy());
 		this.validateProjectClasspath();
 	}
 
