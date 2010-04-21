@@ -26,6 +26,9 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.resource.JFaceResources;
@@ -39,6 +42,7 @@ import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ForeignKey;
@@ -47,6 +51,7 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.BaseEntityGenCustomizer;
 import org.eclipse.jpt.gen.internal.DatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
+import org.eclipse.jpt.gen.internal.ORMGenTable;
 import org.eclipse.jpt.gen.internal.PackageGenerator;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
@@ -169,6 +174,18 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			this.customizer = new BaseEntityGenCustomizer( );
 			this.customizer.init(getCustomizationFile(), schema);  
 		}
+
+		ORMGenTable newDefaultTable = getCustomizer().createGenTable(null);
+		if ( selection!=null && selection.getFirstElement() instanceof IPackageFragment ) {
+			IPackageFragment packageFrag = (IPackageFragment)selection.getFirstElement();
+			newDefaultTable.setPackage( packageFrag.getElementName() );
+			for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(this.jpaProject.getJavaProject())) {
+				String srcFolder = root.getPath().toPortableString();
+				if( packageFrag.getPath().toPortableString().startsWith( srcFolder +'/' )){
+					newDefaultTable.setSourceFolder(srcFolder.substring(1));
+				}
+			}
+		}		
 		return this.customizer;
 	} 
 	

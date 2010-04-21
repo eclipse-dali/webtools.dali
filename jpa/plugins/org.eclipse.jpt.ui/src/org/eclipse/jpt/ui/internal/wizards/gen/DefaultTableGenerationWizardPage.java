@@ -55,6 +55,7 @@ import org.eclipse.ui.help.IWorkbenchHelpSystem;
  * 
  * @author Danny Ju
  */
+@SuppressWarnings("restriction")
 public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 
 	private JpaProject jpaProject;
@@ -93,6 +94,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			initContainerPage(jelem);
 			initTypePage(jelem);
 		}
+		
 	}
 	
 	public void createControl(Composite parent) {
@@ -122,11 +124,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			//If user changed the connection or schema
 			if ( this.customizer != customizer ) {
 				this.customizer = customizer; 
-				ORMGenTable newTable;
-				newTable = getCustomizer().createGenTable(null);
-				this.defaultsTable = newTable;
-				defaultTableGenPanel.setORMGenTable(newTable);
-
+				defaultsTable=customizer.createGenTable(null);
 				//set the super class and implemented interfaces value
 				String baseClass = defaultsTable.getExtends() == null ?"" : defaultsTable.getExtends();
 				setSuperClass(baseClass, true);
@@ -184,8 +182,8 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 		parent.setLayoutData(layoutData);
 		
 		//default Java package name only available for default table generation
-		createPackageControls(parent, columns);
 		createContainerControls(parent, columns);
+		createPackageControls(parent, columns);
 		createSuperClassControls(parent, columns);
 		createSuperInterfacesControls(parent, columns);
 	}
@@ -301,7 +299,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected IStatus superInterfacesChanged() {
 		IStatus ret = super.superInterfacesChanged();
 		if ( ret.isOK() ) {
