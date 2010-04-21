@@ -14,18 +14,22 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOwnableRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -165,6 +169,10 @@ public class GenericJavaMappedByJoiningStrategy
 	
 	// **************** validation *********************************************
 	
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.mappingAnnotation.getMappedByTextRange(astRoot);
+	}
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -182,45 +190,41 @@ public class GenericJavaMappedByJoiningStrategy
 		
 		if (mappedByMapping == null) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				buildMessage(
 					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
 					new String[] {this.mappedByAttribute},
-					this,
-					this.getValidationTextRange(astRoot)
-				)
-			);
+					astRoot));
 			return;
 		}
 		
-		if ( ! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
+		if (! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+				buildMessage(
 					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-					new String[] {this.mappedByAttribute}, 
-					this,
-					this.getValidationTextRange(astRoot)
-				)
-			);
+					new String[] {this.mappedByAttribute},
+					astRoot));
 			return;
 		}
 		
 		// if mappedByMapping is not a relationship owner, then it should have 
 		// been flagged in above rule (mappedByIsValid)
 		if (! ((RelationshipMapping) mappedByMapping).isRelationshipOwner()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
+			messages.add(buildMessage(
 					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-					this,
-					this.getValidationTextRange(astRoot)
-				)
-			);
+					new String[] {this.mappedByAttribute},
+					astRoot));
 		}
 	}
 	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.mappingAnnotation.getMappedByTextRange(astRoot);
+	protected IMessage buildMessage(String msgID, String[] params, CompilationUnit astRoot) {
+		PersistentAttribute attribute = getRelationshipMapping().getPersistentAttribute();
+		String attributeDesc = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				ArrayTools.add(params, 0, attributeDesc),
+				this,
+				this.getValidationTextRange(astRoot));
 	}
 }
