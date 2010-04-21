@@ -51,6 +51,8 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	private ProjectWizardPage javaProjectWizardPage;
 	protected SchemaGeneratorWizardPage schemaGenWizardPage;
 
+	static public String XSD_EXTENSION = ".xsd";   //$NON-NLS-1$
+	
 	// ********** constructor **********
 	
 	public SchemaGeneratorWizard() {
@@ -84,24 +86,46 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	
 	public boolean performFinish() {
 
-		IJavaProject javaProject = this.schemaGenWizardPage.getJavaProject();
+		IJavaProject javaProject = this.getJavaProject();
 		
-		String targetSchemaPath = this.schemaGenWizardPage.getTargetSchemaPath();
-		String targetSchema = this.schemaGenWizardPage.getTargetSchema();
-		if( ! StringTools.stringIsEmpty(targetSchemaPath)) {
-			targetSchema = targetSchemaPath + File.separator + targetSchema;
-		}
-		boolean usesMoxy = this.schemaGenWizardPage.usesMoxy();
-
-		String[] sourceClassNames = this.buildSourceClassNames(this.schemaGenWizardPage.getAllCheckedItems());
+		String[] sourceClassNames = this.buildSourceClassNames(this.getAllCheckedItems());
 		
-		WorkspaceJob genEntitiesJob = new GenerateSchemaJob( javaProject.getProject(), sourceClassNames, targetSchema, usesMoxy);
+		WorkspaceJob genEntitiesJob = new GenerateSchemaJob( 
+						javaProject.getProject(), 
+						sourceClassNames, 
+						this.getTargetSchema(), 
+						this.usesMoxy());
 		genEntitiesJob.schedule();
 
 		return true;
 	}
 
 	// ********** internal methods **********
+	
+	private String getTargetSchema() {
+		String targetSchemaPath = this.schemaGenWizardPage.getTargetSchemaPath();
+		String targetSchema = this.schemaGenWizardPage.getTargetSchema();
+		
+		if( ! FileTools.extension(targetSchema).equalsIgnoreCase(XSD_EXTENSION)) {
+			targetSchema += XSD_EXTENSION;
+		}
+		if( ! StringTools.stringIsEmpty(targetSchemaPath)) {
+			targetSchema = targetSchemaPath + File.separator + targetSchema;
+		}
+		return targetSchema;
+	}
+	
+	private IJavaProject getJavaProject() {
+		return this.schemaGenWizardPage.getJavaProject();
+	}
+	
+	private boolean usesMoxy() {
+		return this.schemaGenWizardPage.usesMoxy();
+	}
+
+	private Object[] getAllCheckedItems() {
+		return this.schemaGenWizardPage.getAllCheckedItems();
+	}
 	
 	private String[] buildSourceClassNames(Object[] checkedElements) {
 
