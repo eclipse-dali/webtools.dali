@@ -36,6 +36,8 @@ public class Main
 	private boolean isDebugMode;
 
 	static public String NO_FACTORY_CLASS = "doesnt contain ObjectFactory.class";   //$NON-NLS-1$
+	static public String CANNOT_BE_CAST_TO_JAXBCONTEXT = "cannot be cast to org.eclipse.persistence.jaxb.JAXBContext";   //$NON-NLS-1$
+	static public String JAXB_PROPERTIES_FILE_NOT_FOUND = "\nEclipseLink JAXBContextFactory must be specified in the jaxb.properties file to use EclipseLink MOXy for schema generation.\njavax.xml.bind.context.factory=org.eclipse.persistence.jaxb.JAXBContextFactory "; 
 
 	// ********** static methods **********
 	
@@ -98,6 +100,16 @@ public class Main
 			String message = e.getMessage();
 			if(message.indexOf(NO_FACTORY_CLASS) > -1) {
 				System.err.println(message);
+			}
+			else {
+				e.printStackTrace();
+			}
+			System.err.println("\nSchema " + this.targetSchemaName + " not created");    //$NON-NLS-1$
+		}
+		catch (ClassCastException e) {
+			String message = e.getMessage();
+			if(message.indexOf(CANNOT_BE_CAST_TO_JAXBCONTEXT) > -1) {
+				System.err.println(JAXB_PROPERTIES_FILE_NOT_FOUND);
 			}
 			else {
 				e.printStackTrace();
