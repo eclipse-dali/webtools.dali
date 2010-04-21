@@ -117,6 +117,8 @@ final class DTPSchemaWrapper
 		return (hack != null) && hack.equals("true"); //$NON-NLS-1$
 	}
 
+	// provides a mechanism for DTP extenders that support synonyms but don't want to have them appear
+	// in Dali to filter out these table types from Dali 
 	private List<org.eclipse.datatools.modelbase.sql.tables.Table> hack(List<org.eclipse.datatools.modelbase.sql.tables.Table> dtpTables) {
 		List<org.eclipse.datatools.modelbase.sql.tables.Table> result = new ArrayList<org.eclipse.datatools.modelbase.sql.tables.Table>();
 		for (org.eclipse.datatools.modelbase.sql.tables.Table dtpTable : dtpTables) {
