@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -325,9 +324,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.MAPPING_INVALID_MAPPED_BY,
 			JpaValidationMessages.MAPPING_INVALID_MAPPED_BY);
-		addLabeledCombo(
-			parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE,
-			JpaValidationMessages.MAPPING_MAPPED_BY_WITH_JOIN_TABLE);
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
 			JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES);
