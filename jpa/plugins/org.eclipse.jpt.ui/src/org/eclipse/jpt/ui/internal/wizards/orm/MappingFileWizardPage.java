@@ -104,7 +104,6 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		GridData data = new GridData();
 		data.verticalAlignment = GridData.FILL;
 		data.horizontalAlignment = GridData.FILL;
-		data.widthHint = 300;
 		composite.setLayoutData(data);
 		
 		this.projectNameLabel = new Label(composite, SWT.NONE);
@@ -114,8 +113,8 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		
 		this.projectNameCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
 		data.horizontalSpan = 1;
+		data.grabExcessHorizontalSpace = true;
 		this.projectNameCombo.setLayoutData(data);
 		this.synchHelper.synchCombo(this.projectNameCombo, PROJECT_NAME, null);
 		new Label(composite, SWT.NONE);
@@ -127,14 +126,14 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		
 		this.sourceFolderText = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
 		data.horizontalSpan = 1;
+		data.grabExcessHorizontalSpace = true;
 		this.sourceFolderText.setLayoutData(data);
 		this.synchHelper.synchText(this.sourceFolderText, SOURCE_FOLDER, null);
 		
 		Button sourceFolderButton = new Button(composite, SWT.PUSH);
 		sourceFolderButton.setText(JptUiMessages.General_browse);
-		data = new GridData(GridData.FILL_HORIZONTAL);
+		data = new GridData();
 		data.horizontalSpan = 1;
 		sourceFolderButton.addSelectionListener(
 			new SelectionListener() {
@@ -147,15 +146,22 @@ public class MappingFileWizardPage extends DataModelWizardPage
 				}
 			});
 		
+		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+		data = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 3, 1);
+		data.verticalIndent = 5;
+		separator.setLayoutData(data);
+		
 		this.filePathLabel = new Label(composite, SWT.NONE);
 		this.filePathLabel.setText(JptUiMessages.MappingFileWizardPage_filePathLabel);
 		data = new GridData();
+		data.verticalIndent = 5;
 		this.filePathLabel.setLayoutData(data);
 		
 		this.filePathText = new Text(composite, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
 		data.horizontalSpan = 1;
+		data.verticalIndent = 5;
+		data.grabExcessHorizontalSpace = true;
 		this.filePathText.setLayoutData(data);
 		this.synchHelper.synchText(this.filePathText, FILE_PATH, null);
 		new Label(composite, SWT.NONE);
@@ -167,8 +173,8 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		
 		this.accessCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
 		data.horizontalSpan = 1;
+		data.grabExcessHorizontalSpace = true;
 		this.accessCombo.setLayoutData(data);
 		this.synchHelper.synchCombo(this.accessCombo, DEFAULT_ACCESS, null);
 		new Label(composite, SWT.NONE);
@@ -177,18 +183,27 @@ public class MappingFileWizardPage extends DataModelWizardPage
 		this.addToPersistenceUnitButton.setText(JptUiMessages.MappingFileWizardPage_addToPersistenceUnitButton);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 3;
+		data.verticalIndent = 10;
 		this.addToPersistenceUnitButton.setLayoutData(data);
 		this.synchHelper.synchCheckbox(this.addToPersistenceUnitButton, ADD_TO_PERSISTENCE_UNIT, null);
 		
 		this.persistenceUnitLabel = new Label(composite, SWT.NONE);
 		this.persistenceUnitLabel.setText(JptUiMessages.MappingFileWizardPage_persistenceUnitLabel);
 		data = new GridData();
+		data.horizontalIndent = 10;
 		this.persistenceUnitLabel.setLayoutData(data);
+		this.persistenceUnitLabel.setEnabled(false);
+		this.addToPersistenceUnitButton.addSelectionListener(new SelectionListener() {
+			public void widgetSelected(SelectionEvent e) {
+				persistenceUnitLabel.setEnabled(addToPersistenceUnitButton.getSelection());
+			}
+			public void widgetDefaultSelected(SelectionEvent e) {/*not called*/}
+		});
 		
 		this.persistenceUnitCombo = new Combo(composite, SWT.BORDER | SWT.READ_ONLY);
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.widthHint = 300;
 		data.horizontalSpan = 1;
+		data.grabExcessHorizontalSpace = true;
 		this.persistenceUnitCombo.setLayoutData(data);
 		this.synchHelper.synchCombo(this.persistenceUnitCombo, PERSISTENCE_UNIT, null);
 		
