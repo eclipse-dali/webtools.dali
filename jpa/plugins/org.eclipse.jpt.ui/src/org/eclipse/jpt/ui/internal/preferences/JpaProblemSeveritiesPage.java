@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.preferences;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,9 +66,18 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	/**
 	 * Severity level state is stored in this Map and is either committed or discarded
 	 * based on user action.
+	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
+	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WANRING INFO IGNORE
 	 */
 	private Map<String, String> severityLevels;
 
+	/**
+	 * Default severity levels are stored here,  ERROR is the default default so only need
+	 * to include WARNING, INFO, IGNORE in this Map. These will be displayed if neither the project 
+	 * or workspace preference applies.
+	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
+	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WANRING INFO IGNORE
+	 */
 	private Map<String, String> defaultSeverities;
 	
 	/**
@@ -153,8 +161,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 
 	@Override
 	public void init(IWorkbench workbench) {
-		setPreferenceStore(JptUiPlugin.instance().getPreferenceStore());
-		setDescription(JptUiMessages.JpaProblemSeveritiesPage_Description);
+		this.setPreferenceStore(JptUiPlugin.instance().getPreferenceStore());
+		this.setDescription(JptUiMessages.JpaProblemSeveritiesPage_Description);
 	}
 
 	protected void initialize() {
@@ -165,7 +173,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.defaultSeverities = buildDefaultSeverties();
 	}
 
-	//since most of our problems have a default severity of ERROR, we are just defining the WARNING and INFO cases
+	//since most of our problems have a default severity of ERROR, we are just defining the WARNING, INFO, IGNORE cases
 	protected Map<String, String> buildDefaultSeverties() {
 		 Map<String, String> defaultSeverities = new HashMap<String, String>();
 
@@ -228,9 +236,23 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addQueriesGeneratorsCategory(parent);
 
 		// Restore the expansion states
-		restoreSectionExpansionStates(dialogPreferences());
+		restoreSectionExpansionStates(getDialogPreferences());
 
 		return container;
+	}
+
+	protected void restoreSectionExpansionStates(IDialogSettings settings) {
+		for (int index = this.expandablePanes.size(); --index >= 0; ) {
+			ExpandableComposite expandablePane = this.expandablePanes.get(index);
+
+			if (settings == null) {
+				// Only expand the first node by default
+				expandablePane.setExpanded(index == 0);
+			}
+			else {
+				expandablePane.setExpanded(settings.getBoolean(SETTINGS_EXPANDED + index));
+			}
+		}
 	}
 
 	@Override
@@ -625,24 +647,43 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	protected int convertPreferenceKeyToComboIndex(String preferenceKey) {
 		return convertPreferenceValueToComboIndex(getPreferenceValue(preferenceKey));
 	}
+
+	protected String getPreferenceValue(String preferenceKey) {
+		String preference = null;
+		if (isProjectPreferencePage() && hasProjectSpecificOptions(getProject())) { //useProjectSettings() won't work since the page is being built
+			preference = JpaValidationPreferences.getProjectLevelProblemPreference(getProject(), preferenceKey);
+		}
+		else {
+			//don't get the workspace preference when the project has overridden workspace preferences
+			preference = JpaValidationPreferences.getWorkspaceLevelProblemPreference(preferenceKey);
+		}
+		if (preference == null) {
+			preference = getDefaultPreferenceValue(preferenceKey);
+		}
+		return preference;
+	}
+
+	/**
+	 * Return the default severity or ERROR if no default exists.
+	 */
+	protected String getDefaultPreferenceValue(String preferenceKey) {
+		String preference = this.defaultSeverities.get(preferenceKey);
+		return preference == null ? JpaValidationPreferences.ERROR : preference;
+	}
 	
 	protected int convertPreferenceValueToComboIndex(String preferenceValue) {
 		if (JpaValidationPreferences.ERROR.equals(preferenceValue)) {
 			return ERROR_INDEX;
 		}
-
 		if (JpaValidationPreferences.WARNING.equals(preferenceValue)) {
 			return WARNING_INDEX;
 		}
-
 		if (JpaValidationPreferences.INFO.equals(preferenceValue)) {
 			return INFO_INDEX;
 		}
-
 		if (JpaValidationPreferences.IGNORE.equals(preferenceValue)) {
 			return IGNORE_INDEX;
 		}
-
 		throw new IllegalStateException();
 	}
 
@@ -656,25 +697,6 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		}
 	}
 
-
-	protected IDialogSettings dialogPreferences() {
-		IDialogSettings rootSettings = JptUiPlugin.instance().getDialogSettings();
-		IDialogSettings settings = rootSettings.getSection(SETTINGS_SECTION_NAME);
-		if (settings == null) {
-			settings = rootSettings.addNewSection(SETTINGS_SECTION_NAME);
-		}
-		return settings;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void dispose() {
-		storeSectionExpansionStates(dialogPreferences());
-		super.dispose();
-	}
-
 	/**
 	 * Revalidates the layout in order to show or hide the vertical scroll bar
 	 * after a section was either expanded or collapsed. This unfortunately does
@@ -684,57 +706,30 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		this.scrollable.reflow(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String getPreferencePageID() {
 		return JPT_PREFERENCES_PROBLEM_SEVERITIES_ID;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	protected String getPropertyPageID() {
 		return JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	protected IEclipsePreferences getProjectPreferences(IProject project) {
+		return JptCorePlugin.getProjectPreferences(project);
+	}
+
 	@Override
 	protected boolean hasProjectSpecificOptions(IProject project) {
-		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-
-		// Iterate through all the message IDs
-		for (Field field : JpaValidationMessages.class.getFields()) {
-			try {
-				// Retrieve the value
-				String value = (String) field.get(null);
-
-				// Skip this one
-				if (JpaValidationMessages.BUNDLE_NAME.equals(value)) {
-					continue;
-				}
-
-				// Check to see if there is a value associated with the message ID
-				if (projectPreferences.get(value, null) != null) {
-					return true;
-				}
-			}
-			catch (Exception exception) {
-				// I think we can safely ignore any problem
-			}
-		}
-
-		return false;
+		IEclipsePreferences projectPreferences = getProjectPreferences(project);
+		return projectPreferences.getBoolean(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN, false);
 	}
 
 	@Override
 	protected void performDefaults() {
 		super.performDefaults();
-		//this call would be redundant on project preference page
+		//this call would be redundant on project preference page - bug in the JDT superclass
 		if (!isProjectPreferencePage()) {
 			revertToDefault();
 		}
@@ -743,68 +738,61 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	@Override
 	protected void enableProjectSpecificSettings(boolean useProjectSpecificSettings) {
 		super.enableProjectSpecificSettings(useProjectSpecificSettings);
+		if (getDefaultsButton() == null) {
+			//@Hack("If the defaults button is null the control is currently being built," +
+			//      "otherwise the 'enable project specific settings' checkbox is being pressed")
+			return;
+		}
 		
-		//remove any project specific settings if set to false
-		if (!useProjectSpecificSettings){
-			revertToDefault();
+		IEclipsePreferences projectPreferences = getProjectPreferences(getProject());
+		if (useProjectSpecificSettings) {
+			projectPreferences.putBoolean(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN, true);
+		}
+		else {
+			projectPreferences.remove(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN);
+		}
+		
+		//set all specified workspace preferences in the project preferences
+		if (useProjectSpecificSettings){
+			this.overrideWorkspacePreferences();
+		}
+		else {//remove any project specific settings if set to false
+			this.revertToDefault();
 		}
 	}
 
-	protected String getPreferenceValue(String preferenceKey) {
-		String preference = null;
-		if (hasProjectSpecificOptions(getProject())) { //useProjectSettings() won't work since the page is being built
-			preference = JpaValidationPreferences.getProjectLevelProblemPreference(getProject(), preferenceKey);
-		}
-		if (preference == null) {
-			preference = getDefaultPreferenceValue(preferenceKey);
-		}
-		return preference;
-	}
-
-	protected String getDefaultPreferenceValue(String preferenceKey) {
-		String preference = this.defaultSeverities.get(preferenceKey);
-		return preference == null ? JpaValidationPreferences.ERROR : preference;
-	}
-
-	protected void restoreSectionExpansionStates(IDialogSettings settings) {
-
-		for (int index = this.expandablePanes.size(); --index >= 0; ) {
-
-			ExpandableComposite expandablePane = this.expandablePanes.get(index);
-
-			if (settings == null) {
-				// Only expand the first node by default
-				expandablePane.setExpanded(index == 0);
-			}
-			else {
-				expandablePane.setExpanded(settings.getBoolean(SETTINGS_EXPANDED + index));
-			}
-		}
+	@Override
+	protected void noDefaultAndApplyButton() {
+		throw new IllegalStateException("Don't call this, see enableProjectSpecificSettings for the hack that looks for the defaultsButton being null"); //$NON-NLS-1$
 	}
 
 	protected void revertToDefault() {
 		for (Combo combo : this.combos) {
 			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
-			String defaultValue = getDefaultPreferenceValue(preferenceKey);
-			combo.select(convertPreferenceKeyToComboIndex(defaultValue));
-			//silly combo doesn't fire a selection event, so we can't expect our listener to set this
+			String preference = JpaValidationPreferences.getWorkspaceLevelProblemPreference(preferenceKey);
+			if (preference == null) {
+				preference = getDefaultPreferenceValue(preferenceKey);
+			}
+			combo.select(convertPreferenceValueToComboIndex(preference));
+			//UI will show the defaults from the workspace, but set all preferences 
+			//to null so they will be deleted from project preferences
 			this.severityLevels.put(preferenceKey, null);
 		}
 	}
 
-	protected void storeSectionExpansionStates(IDialogSettings settings) {
-		for (int index = this.expandablePanes.size(); --index >= 0; ) {
-			ExpandableComposite expandablePane = this.expandablePanes.get(index);
-			settings.put(SETTINGS_EXPANDED + index, expandablePane.isExpanded());
-		}
-	}
-
-	protected void updatePreference(String preferenceKey, String value) {
-		if (isProjectPreferencePage()) {
-			JpaValidationPreferences.setProjectLevelProblemPreference(getProject(), preferenceKey, value);
-		}
-		else {
-			JpaValidationPreferences.setWorkspaceLevelProblemPreference(preferenceKey, value);
+	protected void overrideWorkspacePreferences() {
+		for (Combo combo : this.combos) {
+			String preferenceKey = (String) combo.getData(PREFERENCE_KEY);
+			String workspacePreference = JpaValidationPreferences.getWorkspaceLevelProblemPreference(preferenceKey);
+			String defaultPreference = getDefaultPreferenceValue(preferenceKey);
+			if (workspacePreference != null && !workspacePreference.equals(defaultPreference)) {
+				combo.select(convertPreferenceValueToComboIndex(workspacePreference));
+				//silly combo doesn't fire a selection event, so we can't expect our listener to set this
+				this.severityLevels.put(preferenceKey, workspacePreference);
+			}
+			else {
+				combo.select(convertPreferenceValueToComboIndex(defaultPreference));
+			}
 		}
 	}
 	
@@ -828,6 +816,15 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		}
 
 		return true;
+	}
+
+	protected void updatePreference(String preferenceKey, String value) {
+		if (isProjectPreferencePage()) {
+			JpaValidationPreferences.setProjectLevelProblemPreference(getProject(), preferenceKey, value);
+		}
+		else {
+			JpaValidationPreferences.setWorkspaceLevelProblemPreference(preferenceKey, value);
+		}
 	}
 
 	private IRunnableContext buildOkProgressMonitorDialog() {
@@ -870,4 +867,27 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		}
 		else this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
 	}
+
+	@Override
+	public void dispose() {
+		storeSectionExpansionStates(getDialogPreferences());
+		super.dispose();
+	}
+
+	protected IDialogSettings getDialogPreferences() {
+		IDialogSettings rootSettings = JptUiPlugin.instance().getDialogSettings();
+		IDialogSettings settings = rootSettings.getSection(SETTINGS_SECTION_NAME);
+		if (settings == null) {
+			settings = rootSettings.addNewSection(SETTINGS_SECTION_NAME);
+		}
+		return settings;
+	}
+
+	protected void storeSectionExpansionStates(IDialogSettings settings) {
+		for (int index = this.expandablePanes.size(); --index >= 0; ) {
+			ExpandableComposite expandablePane = this.expandablePanes.get(index);
+			settings.put(SETTINGS_EXPANDED + index, expandablePane.isExpanded());
+		}
+	}
+
 }

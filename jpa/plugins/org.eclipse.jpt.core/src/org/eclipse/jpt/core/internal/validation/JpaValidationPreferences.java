@@ -20,14 +20,23 @@ import org.osgi.service.prefs.BackingStoreException;
 
 //TODO:  Probably want to merge the behavior in this class into JptCorePlugin
 public class JpaValidationPreferences {
-	
+
+	/*
+	 * prefix for all preference strings.  This is only used internally.
+	 * Clients of get*LevelProblemPrefernce() and set*LevelProblemPreference 
+	 * should not include the prefix.
+	 */
+	private static final String PROBLEM_PREFIX = "problem."; //$NON-NLS-1$
+
 	public static final String ERROR = "error"; //$NON-NLS-1$
 	public static final String WARNING = "warning"; //$NON-NLS-1$
 	public static final String INFO = "info"; //$NON-NLS-1$
 	public static final String IGNORE = "ignore"; //$NON-NLS-1$
-	
+
 	static final int NO_SEVERITY_PREFERENCE = -1;
-	
+
+	public static final String WORKSPACE_PREFERENCES_OVERRIDEN = "workspace_preferences_overriden"; //$NON-NLS-1$
+
 	/**
 	 * Returns only the severity level of a given problem preference.  This does not
 	 * include information on whether the problem is ignored.  See isProblemIgnored.
@@ -77,45 +86,50 @@ public class JpaValidationPreferences {
 		}
 		return problemPreference;
 	}
-	
+
 	/**
 	 * Returns the String value of the problem preference from the project preferences
 	 */
 	public static String getProjectLevelProblemPreference(IProject project, String messageId){
-		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-		return projectPreferences.get(messageId, null);
+		return getPreference(JptCorePlugin.getProjectPreferences(project), messageId);
 	}
-	
+
 	public static void setProjectLevelProblemPreference(IProject project, String messageId, String problemPreference) {
 		IEclipsePreferences projectPreferences = JptCorePlugin.getProjectPreferences(project);
-		if (problemPreference == null){
-			projectPreferences.remove(messageId);
-		}
-		else {
-			projectPreferences.put(messageId, problemPreference);
-		}
+		setPreference(projectPreferences, messageId, problemPreference);
 		flush(projectPreferences);
 	}
-	
+
 	/**
 	 * Returns the String value of the problem preference from the workspace preferences
 	 */
 	public static String getWorkspaceLevelProblemPreference(String messageId){
-		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
-		return workspacePreferences.get(messageId, null);
+		return getPreference(JptCorePlugin.getWorkspacePreferences(), messageId);
 	}
-	
+
 	public static void setWorkspaceLevelProblemPreference(String messageId, String problemPreference) {
 		IEclipsePreferences workspacePreferences = JptCorePlugin.getWorkspacePreferences();
-		if (problemPreference == null){
-			workspacePreferences.remove(messageId);
-		}
-		else {
-			workspacePreferences.put(messageId, problemPreference);
-		}
+		setPreference(workspacePreferences, messageId, problemPreference);
 		flush(workspacePreferences);
 	}
-	
+
+	private static String getPreference(IEclipsePreferences preferences, String messageId) {
+		return preferences.get(appendProblemPrefix(messageId), null);
+	}
+
+	private static void setPreference(IEclipsePreferences preferences, String messageId, String problemPreference) {
+		if (problemPreference == null){
+			preferences.remove(appendProblemPrefix(messageId));
+		}
+		else {
+			preferences.put(appendProblemPrefix(messageId), problemPreference);
+		}
+	}
+
+	private static String appendProblemPrefix(String messageId) {
+		return PROBLEM_PREFIX + messageId;
+	}
+
 	private static void flush(IEclipsePreferences prefs) {
 		try {
 			prefs.flush();
@@ -123,5 +137,4 @@ public class JpaValidationPreferences {
 			JptCorePlugin.log(ex);
 		}
 	}
-	
 }
