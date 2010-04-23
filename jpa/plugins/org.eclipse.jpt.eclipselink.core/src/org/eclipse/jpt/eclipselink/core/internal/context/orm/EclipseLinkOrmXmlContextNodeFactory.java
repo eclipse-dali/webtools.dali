@@ -127,11 +127,11 @@ public class EclipseLinkOrmXmlContextNodeFactory extends AbstractOrmXmlContextNo
 		return new OrmEclipseLinkVersionMapping(parent, (XmlVersion) resourceMapping);
 	}
 	
-	public OrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
+	public AbstractOrmEclipseLinkBasicCollectionMapping buildOrmEclipseLinkBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
 		return new OrmEclipseLinkBasicCollectionMapping(parent, resourceMapping);
 	}
 	
-	public OrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
+	public AbstractOrmEclipseLinkBasicMapMapping buildOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
 		return new OrmEclipseLinkBasicMapMapping(parent, resourceMapping);
 	}
 	
