@@ -17,23 +17,37 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaModel;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
+import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
+import org.eclipse.jdt.internal.ui.wizards.TypedViewerFilter;
+import org.eclipse.jdt.ui.JavaElementComparator;
+import org.eclipse.jdt.ui.JavaElementLabelProvider;
+import org.eclipse.jdt.ui.StandardJavaElementContentProvider;
 import org.eclipse.jdt.ui.wizards.NewTypeWizardPage;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
+import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -53,6 +67,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.osgi.framework.Bundle;
 
 /**
@@ -277,6 +292,72 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
     public final void performHelp() {
         //TODO We need a help ID for JAXB Generation
     }
+    
+	/** 
+	 * Override to allow selection of source folder in current project only
+	 * @see org.eclipse.jdt.ui.wizards.NewContainerWizardPage#chooseContainer()
+	 * Only 1 line in this code is different from the parent
+	 */
+	@Override
+	protected IPackageFragmentRoot chooseContainer() {
+		Class<?>[] acceptedClasses = new Class[] { IPackageFragmentRoot.class, IJavaProject.class };
+		TypedElementSelectionValidator validator= new TypedElementSelectionValidator(acceptedClasses, false) {
+			@Override
+			public boolean isSelectedValid(Object element) {
+				try {
+					if (element instanceof IJavaProject) {
+						IJavaProject jproject= (IJavaProject)element;
+						IPath path= jproject.getProject().getFullPath();
+						return (jproject.findPackageFragmentRoot(path) != null);
+					} else if (element instanceof IPackageFragmentRoot) {
+						return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+					}
+					return true;
+				} catch (JavaModelException e) {
+					JptUiPlugin.log(e); // just log, no UI in validation
+				}
+				return false;
+			}
+		};
+
+		acceptedClasses= new Class[] { IJavaModel.class, IPackageFragmentRoot.class, IJavaProject.class };
+		ViewerFilter filter= new TypedViewerFilter(acceptedClasses) {
+			@Override
+			public boolean select(Viewer viewer, Object parent, Object element) {
+				if (element instanceof IPackageFragmentRoot) {
+					return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+				}
+				return super.select(viewer, parent, element);
+			}
+		};
+
+		StandardJavaElementContentProvider provider= new StandardJavaElementContentProvider();
+		ILabelProvider labelProvider= new JavaElementLabelProvider(JavaElementLabelProvider.SHOW_DEFAULT);
+		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
+		dialog.setValidator(validator);
+		dialog.setComparator(new JavaElementComparator());
+		dialog.setTitle(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_title);
+		dialog.setMessage(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_description);
+		dialog.addFilter(filter);
+		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
+		//******************************************************//
+		dialog.setInput(this.jpaProject.getJavaProject());      //
+		//******************************************************//
+		dialog.setInitialSelection(getPackageFragmentRoot());
+		dialog.setHelpAvailable(false);
+
+		if (dialog.open() == Window.OK) {
+			Object element= dialog.getFirstResult();
+			if (element instanceof IJavaProject) {
+				IJavaProject jproject= (IJavaProject)element;
+				return jproject.getPackageFragmentRoot(jproject.getProject());
+			} else if (element instanceof IPackageFragmentRoot) {
+				return (IPackageFragmentRoot)element;
+			}
+			return null;
+		}
+		return null;
+	}
 	
 	// ********** SettingsGroup class **********
 

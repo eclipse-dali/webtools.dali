@@ -9,7 +9,6 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,8 +27,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.internal.corext.util.JavaModelUtil;
-import org.eclipse.jdt.internal.ui.JavaPlugin;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -40,9 +37,9 @@ import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.FileTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PlatformUI;
 
 public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 
@@ -51,7 +48,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	private ProjectWizardPage javaProjectWizardPage;
 	protected SchemaGeneratorWizardPage schemaGenWizardPage;
 
-	static public String XSD_EXTENSION = ".xsd";   //$NON-NLS-1$
+	public static final String XSD_EXTENSION = ".xsd";   //$NON-NLS-1$
 	
 	// ********** constructor **********
 	
@@ -84,6 +81,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		this.addPage(this.schemaGenWizardPage);
 	}
 	
+	@Override
 	public boolean performFinish() {
 
 		IJavaProject javaProject = this.getJavaProject();
@@ -103,14 +101,9 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	// ********** internal methods **********
 	
 	private String getTargetSchema() {
-		String targetSchemaPath = this.schemaGenWizardPage.getTargetSchemaPath();
-		String targetSchema = this.schemaGenWizardPage.getTargetSchema();
-		
-		if( ! FileTools.extension(targetSchema).equalsIgnoreCase(XSD_EXTENSION)) {
+		String targetSchema = this.schemaGenWizardPage.getSchemaPath();
+		if ( ! FileTools.extension(targetSchema).equalsIgnoreCase(XSD_EXTENSION)) {
 			targetSchema += XSD_EXTENSION;
-		}
-		if( ! StringTools.stringIsEmpty(targetSchemaPath)) {
-			targetSchema = targetSchemaPath + File.separator + targetSchema;
 		}
 		return targetSchema;
 	}
@@ -136,7 +129,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 			String packageName = javaElement.getParent().getElementName();
 			String elementName = javaElement.getElementName();
 			String className = FileTools.stripExtension(elementName);
-			classNames.add(packageName + "." + className);
+			classNames.add(packageName + '.' + className);
 		}
 		
 		return ArrayTools.array(classNames, new String[0]);
@@ -153,7 +146,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	 * @return a valid structured selection based on the current selection
 	 */
 	private IStructuredSelection getValidSelection() {
-		ISelection currentSelection = JavaPlugin.getActiveWorkbenchWindow().getSelectionService().getSelection();
+		ISelection currentSelection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
 		if(currentSelection instanceof IStructuredSelection) {
 			IStructuredSelection structuredSelection = (IStructuredSelection) currentSelection;
 			List<IAdaptable> selectedElements = new ArrayList<IAdaptable>(structuredSelection.size());
@@ -169,9 +162,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 			}
 			return new StructuredSelection(selectedElements);
 		} 
-		else {
-			return StructuredSelection.EMPTY;
-		}
+		return StructuredSelection.EMPTY;
 	}
 
 	private void addJavaElement(List<IAdaptable> selectedElements, IJavaElement javaElement) {
@@ -192,7 +183,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	}
 
 	private static boolean isInArchiveOrExternal(IJavaElement element) {
-		IPackageFragmentRoot root = JavaModelUtil.getPackageFragmentRoot(element);
+		IPackageFragmentRoot root = (IPackageFragmentRoot) element.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
 		return root != null && (root.isArchive() || root.isExternal());
 	}
 	

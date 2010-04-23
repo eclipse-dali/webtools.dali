@@ -57,7 +57,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
@@ -102,12 +102,21 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
     public void setVisible(boolean visible) {
     	super.setVisible(visible);
 
+    	this.updateTargetProject();
+    	this.setDefaultSchemaFile();
     	this.updateInputGroupTreeFilter();
 
 		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
 		this.updateUsesMoxy(this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
 		this.giveFocusToDestination();
     }
+
+	 // default the schema name to the project name	
+	protected void setDefaultSchemaFile() {
+		String defaultSchemaName = this.targetProject.getProject().getName() + SchemaGeneratorWizard.XSD_EXTENSION;
+    	this.settingsGroup.schemaFileText.setText(defaultSchemaName);
+    	this.settingsGroup.schemaFileText.setSelection(0, defaultSchemaName.length());
+	}
 
 	// ********** IWizardPage implementation  **********
 
@@ -134,15 +143,11 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		return this.targetProject;
 	}
 
-	protected String getTargetSchema() {
-		return this.settingsGroup.getTargetSchema();
-	}
-
 	/**
 	 * @return The schema relative path to the project.
 	 */
-	protected String getTargetSchemaPath() {
-		return this.settingsGroup.getTargetSchemaPath();
+	protected String getSchemaPath() {
+		return this.settingsGroup.getSchemaPath();
 	}
 	
 	protected Object[] getAllCheckedItems() {
@@ -232,7 +237,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		return composite;
 	}
 	
-    private void updateInputGroupTreeFilter() {
+	private void updateTargetProject() {
     	IWizardPage previousPage = this.getPreviousPage();
     	
 		if(previousPage instanceof ProjectWizardPage) {
@@ -242,10 +247,11 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		else if(initialSelection != null && ! this.initialSelection.isEmpty()) {
 			// no previousPage - get project from initialSelection
 			this.targetProject = this.getProjectFromInitialSelection();
-		}
-		if(this.targetProject != null) {
-			this.getInputGroup().addTreeFilter(new NonContainerFilter(this.targetProject.getProject().getName()));
-		}
+		}		
+	}
+
+    private void updateInputGroupTreeFilter() {
+		this.getInputGroup().addTreeFilter(new NonContainerFilter(this.targetProject.getProject().getName()));
     }
 
     private IJavaProject getProjectFromInitialSelection() {
@@ -266,7 +272,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
     }
 	
 	private boolean targetSchemaIsEmpty() {
-		return ! StringTools.stringIsEmpty(this.getTargetSchema());
+		return ! StringTools.stringIsEmpty(this.getSchemaPath());
 	}
 	
 	private boolean jptEclipseLinkBundleExists() {
@@ -386,8 +392,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private class SettingsGroup {
 
 		private CheckboxTreeAndListGroup inputGroup;
-		private Text schemaLocationText;
-		private Text targetSchemaText;
+		private Text schemaFileText;
 
 		// ********** constructor **********
 
@@ -428,29 +433,21 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 			// Schema Location
 			this.buildLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_shemaLocation);
-			this.schemaLocationText = this.buildTargetSchemaText(composite);
+			this.schemaFileText = this.buildSchemaText(composite);
 			this.buildBrowseButton(composite, 1);
-			
-			// Target Schema
-			this.buildLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_shema);
-			this.targetSchemaText = this.buildTargetSchemaText(composite);
 
 		}
 		// ********** intra-wizard methods **********
 		
-		protected String getTargetSchema() {
-			return this.targetSchemaText.getText();
-		}
-		
 		/**
 		 * @return The schema relative path to the project.
 		 */
-		protected String getTargetSchemaPath() {
-			return this.schemaLocationText.getText();
+		protected String getSchemaPath() {
+			return this.schemaFileText.getText();
 		}
 
 		protected void giveFocusToDestination() {
-			this.targetSchemaText.setFocus();
+			this.schemaFileText.setFocus();
 		}
 
 		// ********** UI components **********
@@ -462,7 +459,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 			return label;
 		}
 		
-		private Text buildTargetSchemaText(Composite parent) {
+		private Text buildSchemaText(Composite parent) {
 			
 			Text text = new Text(parent, SWT.BORDER);
 			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
@@ -489,11 +486,9 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 				public void widgetSelected(SelectionEvent e) {
 
-					String folderName = promptFolder();
-					if( ! StringTools.stringIsEmpty(folderName)) {
-						
-						folderName = makeRelativeToProjectPath(folderName);
-						schemaLocationText.setText(folderName);
+					String fileName = promptFile();
+					if( ! StringTools.stringIsEmpty(fileName)) {
+						schemaFileText.setText(makeRelativeToProjectPath(fileName));
 					}
 				}
 			});
@@ -502,18 +497,18 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		
 		/**
 		 * The browse button was clicked, its action invokes this action which should
-		 * prompt the user to select a folder and set it.
+		 * prompt the user to select a file and return it.
 		 */
-		private String promptFolder() {
-
-			DirectoryDialog dialog = new DirectoryDialog(getShell());
-			dialog.setMessage(JptJaxbUiMessages.SchemaGeneratorWizardPage_directoryDialogDesc);
-			dialog.setText(JptJaxbUiMessages.SchemaGeneratorWizardPage_directoryDialogTitle);
+		private String promptFile() {
+			FileDialog dialog = new FileDialog(getShell());
+			dialog.setText(JptJaxbUiMessages.SchemaGeneratorWizardPage_chooseSchemaDialogTitle);
 			dialog.setFilterPath(this.getFilterPath());
+			dialog.setFilterExtensions(new String[] {"*.xsd"});   //$NON-NLS-1$
+			String filePath = dialog.open();
 			
-			return dialog.open();
+			return (filePath != null) ? filePath : null;
 		}
-
+		
 		/**
 		 * Creates the checkbox tree and list for selecting resources.
 		 *

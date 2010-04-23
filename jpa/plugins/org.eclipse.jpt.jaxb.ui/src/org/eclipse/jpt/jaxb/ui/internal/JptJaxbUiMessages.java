@@ -53,8 +53,7 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizardPage_packages;
 	public static String SchemaGeneratorWizardPage_browse;
 	
-	public static String SchemaGeneratorWizardPage_directoryDialogTitle;
-	public static String SchemaGeneratorWizardPage_directoryDialogDesc;
+	public static String SchemaGeneratorWizardPage_chooseSchemaDialogTitle;
 	
 	public static String SchemaGeneratorWizardPage_errorNoSchema;
 	public static String SchemaGeneratorWizardPage_errorNoPackage;
