@@ -10,8 +10,10 @@
 package org.eclipse.jpt.gen.internal;
 
 import java.util.Collections;
+import java.util.Iterator;
 
 import org.eclipse.jpt.db.Column;
+import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.util.EntityGenTools;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
@@ -137,6 +139,36 @@ public class ORMGenColumn
 		return annotationName==null;
 	}
 
+	/**
+	 * Return true if the values of name element in the @Column is default
+	 * so we can skip generating the annotation
+	 * 
+	 * @return true
+	 */
+	public boolean isDefaultJoinColumnName(String associationRolePropName){
+		if( !this.mDbColumn.isPartOfForeignKey()){
+			return false;
+		}
+
+		Iterable<ForeignKey> it = mDbColumn.getTable().getForeignKeys();
+		Iterator<ForeignKey> i = it.iterator();
+		while( i.hasNext() ){
+			ForeignKey fk = i.next();
+			Column c = fk.getBaseColumns().iterator().next();
+			if( c.equals( this.mDbColumn ) ){
+				try{
+					String annotationName = this.mCustomizer.getDatabaseAnnotationNameBuilder().
+						buildJoinColumnAnnotationName(associationRolePropName, fk );
+					return annotationName==null;
+				}catch(Exception e){
+					//catch the case that referenced table has multiple primary key columns
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	
 	
 	/**
 	 * Returns the column type.

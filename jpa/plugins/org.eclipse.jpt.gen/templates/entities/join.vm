@@ -56,7 +56,8 @@
 #set ($referencedTableName = $role.getReferencedTable().getName() )
 #set( $referencedTablePkName = $role.getReferencedTable().getPrimaryKeyColumn().name )
 #set( $computedJoinColumnName = "${role.propertyName}_${referencedTablePkName}" )
-#if($column.name.toUpperCase() != $computedJoinColumnName.toUpperCase() )
+#set( $isDefaultJoinColumnName =  $column.isDefaultJoinColumnName( ${role.propertyName}) )
+#if( ! $isDefaultJoinColumnName )
 	#joinColumn($column $referencedColumn)
 
 #elseif( $customizer.generateDDLAnnotations )
