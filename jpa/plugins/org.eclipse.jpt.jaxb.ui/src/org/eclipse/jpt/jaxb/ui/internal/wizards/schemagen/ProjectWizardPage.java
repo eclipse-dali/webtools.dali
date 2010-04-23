@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -60,7 +61,7 @@ public class ProjectWizardPage extends WizardPage
 
 	private Control buildTopLevelControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
-		composite.setLayout(new GridLayout());
+		composite.setLayout(new FillLayout());
 		this.projectGroup = new ProjectGroup(composite);
 		Dialog.applyDialogFont(parent);
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
@@ -102,15 +103,12 @@ public class ProjectWizardPage extends WizardPage
 
 		private ProjectGroup(Composite parent) {
 			super();
-
 			Composite composite = new Composite(parent, SWT.NULL);
-			composite.setLayout(new GridLayout(3, false));
-			composite.setLayoutData(
-				new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL));
-			
+			composite.setLayout(new GridLayout(2, false));
+
 			// Project
-			this.buildLabel(composite, 1, JptJaxbUiMessages.ProjectWizardPage_project);
-			this.projectCombo = this.buildProjectCombo(composite, 2, this.buildProjectComboSelectionListener());
+			this.buildLabel(composite, JptJaxbUiMessages.ProjectWizardPage_project);
+			this.projectCombo = this.buildProjectCombo(composite, this.buildProjectComboSelectionListener());
 			this.updateProjectCombo();
 			
 			setPageComplete(false);
@@ -170,9 +168,10 @@ public class ProjectWizardPage extends WizardPage
 		
 		private Iterable<IProject> getJavaProjects() {
 		   return new FilteringIterable<IProject>(CollectionTools.collection(this.getProjects())) {
+		      @Override
 		      protected boolean accept(IProject next) {
 					try {
-						return ((IProject)next).hasNature(JavaCore.NATURE_ID);
+						return next.hasNature(JavaCore.NATURE_ID);
 					}
 					catch (CoreException e) {
 						return false;
@@ -182,10 +181,10 @@ public class ProjectWizardPage extends WizardPage
 		}
 
 		private Iterator<IProject> getProjects() {
-			return new ArrayIterator<IProject>(this.sortedProject());
+			return new ArrayIterator<IProject>(this.sortedProjects());
 		}
 		
-		private IProject[] sortedProject() {
+		private IProject[] sortedProjects() {
 			
 			return ArrayTools.sort(ResourcesPlugin.getWorkspace().getRoot().getProjects(), this.projectNameComparator());
 		}
@@ -200,31 +199,21 @@ public class ProjectWizardPage extends WizardPage
 		
 		// ********** UI components **********
 
-		private Label buildLabel(Composite parent, int horizontalSpan, String text) {
+		private Label buildLabel(Composite parent, String text) {
 			Label label = new Label(parent, SWT.LEFT);
+			label.setLayoutData(new GridData());
 			label.setText(text);
-			GridData gridData = new GridData();
-			gridData.horizontalSpan = horizontalSpan;
-			label.setLayoutData(gridData);
 			return label;
 		}
 			
-		private Combo buildProjectCombo(Composite parent, int horizontalSpan, SelectionListener listener) {
-
-			Combo projectCombo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
-			projectCombo.addSelectionListener(listener);
-			
-			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-			gridData.horizontalSpan = horizontalSpan;
-			gridData.widthHint = 300;
+		private Combo buildProjectCombo(Composite parent, SelectionListener listener) {
+			Combo projectCombo = new Combo(parent, SWT.READ_ONLY);
+			GridData gridData = new GridData();
+			gridData.horizontalAlignment = SWT.FILL;
+			gridData.grabExcessHorizontalSpace = true;
 			projectCombo.setLayoutData(gridData);
-
-			this.buildFillerColumn(parent);
+			projectCombo.addSelectionListener(listener);
 			return projectCombo;
-		}
-		
-		private Label buildFillerColumn(Composite parent) {
-			return new Label(parent, SWT.NONE);
 		}
 	}
 }

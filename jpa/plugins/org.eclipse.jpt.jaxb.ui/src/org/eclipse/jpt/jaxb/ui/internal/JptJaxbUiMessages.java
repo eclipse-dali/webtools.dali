@@ -28,7 +28,6 @@ public class JptJaxbUiMessages {
 	
 	public static String ClassesGeneratorWizardPage_usesMoxyImplementation;
 	
-	public static String ClassesGeneratorWizardPage_settingsGroupTitle;
 	public static String ClassesGeneratorWizardPage_catalog;
 	public static String ClassesGeneratorWizardPage_bindingsFiles;
 	public static String ClassesGeneratorWizardPage_addButton;
@@ -49,7 +48,6 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizardPage_title;
 	public static String SchemaGeneratorWizardPage_desc;
 	
-	public static String SchemaGeneratorWizardPage_settingsGoupTitle;
 	public static String SchemaGeneratorWizardPage_shemaLocation;
 	public static String SchemaGeneratorWizardPage_shema;
 	public static String SchemaGeneratorWizardPage_packages;

@@ -58,7 +58,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
@@ -122,6 +121,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		return complete;
 	}
 
+	@Override
 	public void setPreviousPage(IWizardPage page) {
 		super.setPreviousPage(page);
 		if(this.getControl() != null)
@@ -156,12 +156,9 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	// ********** validation **********
 	
 	@Override
+	@SuppressWarnings("restriction")
 	protected void updatePageCompletion() {
-		boolean pageComplete = this.isPageComplete();
-		this.setPageComplete(pageComplete);
-		if(pageComplete) {
-			this.setErrorMessage(null);
-		}
+		super.updatePageCompletion();
 	}
 
 	@Override
@@ -350,7 +347,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	@Override
 	protected void initializeJarPackage() {
 		// do nothing
-	};
+	}
 	
 	@Override
 	protected void giveFocusToDestination() {
@@ -361,7 +358,10 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	
 	private Button buildUsesMoxyCheckBox(Composite parent) {
 
-		 Button checkBox = new Button(parent, SWT.CHECK);
+		Button checkBox = new Button(parent, SWT.CHECK);
+		GridData gridData = new GridData();
+		gridData.verticalIndent = 10;
+		checkBox.setLayoutData(gridData);
 		checkBox.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_usesMoxyImplementation);
 		checkBox.setSelection(this.usesMoxy());
 		checkBox.addSelectionListener(this.buildUsesMoxySelectionListener());
@@ -396,25 +396,14 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 			initializeDialogUnits(parent);
 
 			Composite composite = new Composite(parent, SWT.NULL);
-			composite.setLayout(new GridLayout());
-			composite.setLayoutData(
-				new GridData(GridData.VERTICAL_ALIGN_FILL | GridData.HORIZONTAL_ALIGN_FILL));
+			GridLayout layout = new GridLayout();
+			layout.marginWidth = 0;
+			layout.marginHeight = 0;
+			composite.setLayout(layout);
+			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			Group group = new Group(composite, SWT.NONE);
-			group.setLayout(new GridLayout(4, false));  // false = do not make columns equal width
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			group.setText(JptJaxbUiMessages.SchemaGeneratorWizardPage_settingsGoupTitle);
+			buildSchemaComposite(composite);
 
-			// Schema Location
-			this.buildLabel(group, 1, JptJaxbUiMessages.SchemaGeneratorWizardPage_shemaLocation);
-			this.schemaLocationText = this.buildTargetSchemaText(group, 2);
-			this.buildBrowseButton(group, 1);
-			
-			// Target Schema
-			this.buildLabel(group, 1, JptJaxbUiMessages.SchemaGeneratorWizardPage_shema);
-			this.targetSchemaText = this.buildTargetSchemaText(group, 2);
-
-			new Label(composite, SWT.NONE); // vertical spacer
 			
 			// Input Tree
 			createPlainLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_packages);
@@ -427,7 +416,26 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 					}
 				});
 		}
+		
+		protected void buildSchemaComposite(Composite parent) {
+			Composite composite = new Composite(parent, SWT.NULL);
+			GridLayout layout = new GridLayout(3, false);  // false = do not make columns equal width
+			layout.marginWidth = 0;
+			layout.marginTop = 0;
+			layout.marginBottom = 10;
+			composite.setLayout(layout);
+			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
+			// Schema Location
+			this.buildLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_shemaLocation);
+			this.schemaLocationText = this.buildTargetSchemaText(composite);
+			this.buildBrowseButton(composite, 1);
+			
+			// Target Schema
+			this.buildLabel(composite, JptJaxbUiMessages.SchemaGeneratorWizardPage_shema);
+			this.targetSchemaText = this.buildTargetSchemaText(composite);
+
+		}
 		// ********** intra-wizard methods **********
 		
 		protected String getTargetSchema() {
@@ -447,20 +455,18 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 		// ********** UI components **********
 		
-		private Label buildLabel(Composite parent, int horizontalSpan, String text) {
+		private Label buildLabel(Composite parent, String text) {
 			Label label = new Label(parent, SWT.LEFT);
 			label.setText(text);
-			GridData gridData = new GridData();
-			gridData.horizontalSpan = horizontalSpan;
-			label.setLayoutData(gridData);
+			label.setLayoutData(new GridData());
 			return label;
 		}
 		
-		private Text buildTargetSchemaText(Composite parent, int horizontalSpan) {
+		private Text buildTargetSchemaText(Composite parent) {
 			
 			Text text = new Text(parent, SWT.BORDER);
 			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-			gridData.horizontalSpan = horizontalSpan;
+			gridData.grabExcessHorizontalSpace = true;
 			text.setLayoutData(gridData);
 			text.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
@@ -521,6 +527,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 							| JavaElementLabelProvider.SHOW_SMALL_ICONS;
 			ITreeContentProvider treeContentProvider=
 				new StandardJavaElementContentProvider() {
+					@Override
 					public boolean hasChildren(Object element) {
 						// prevent the + from being shown in front of packages
 						return !(element instanceof IPackageFragment) && super.hasChildren(element);

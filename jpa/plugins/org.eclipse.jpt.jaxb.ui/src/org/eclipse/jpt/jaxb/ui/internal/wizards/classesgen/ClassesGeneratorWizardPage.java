@@ -49,7 +49,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -114,7 +113,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	
 	private Button buildUsesMoxyCheckBox(Composite parent) {
 
-		 Button checkBox = new Button(parent, SWT.CHECK);
+		Button checkBox = new Button(parent, SWT.CHECK);
+		GridData gridData = new GridData();
+		gridData.verticalIndent = 10;
+		checkBox.setLayoutData(gridData);
 		checkBox.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_usesMoxyImplementation);
 		checkBox.setSelection(this.usesMoxy());
 		checkBox.addSelectionListener(this.buildUsesMoxySelectionListener());
@@ -286,28 +288,41 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		
 		// ********** constructor **********
 
-		private SettingsGroup(Composite composite) {
+		private SettingsGroup(Composite parent) {
 			super();
-			Group group = new Group(composite, SWT.NONE);
-			group.setLayout(new GridLayout(4, false));  // false = do not make columns equal width
-			group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			group.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_settingsGroupTitle);
+			Composite composite = new Composite(parent, SWT.NONE);
+			GridLayout layout = new GridLayout(4, false); //must be 4 for the package controls
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			composite.setLayout(layout);
+			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
 
 			// Source folder
-			createContainerControls(group, 4);
+			createContainerControls(composite, 4);
 			
 			// Package
-			createPackageControls(group, 4);
+			createPackageControls(composite, 4);
+			
+			Label label = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
+			GridData gridData = new GridData(SWT.FILL, SWT.BEGINNING, true, false, 4, 1);
+			gridData.verticalIndent = 5;
+			label.setLayoutData(gridData);
 			
 			// Catalog
-			this.buildLabel(group, 1, JptJaxbUiMessages.ClassesGeneratorWizardPage_catalog);
-			this.catalogText = this.buildText(group);
+			Label catalogLabel = new Label(composite, SWT.NONE);
+			catalogLabel.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_catalog);
+			gridData = new GridData();
+			gridData.verticalIndent = 5;
+			catalogLabel.setLayoutData(gridData);
+			this.catalogText = this.buildCatalogText(composite);
 			
 			// Bindings files
 			this.bindingsFileNames = new ArrayList<String>();
-			this.buildLabel(group, 1, JptJaxbUiMessages.ClassesGeneratorWizardPage_bindingsFiles);
-			this.buildBindingsFileTable(group);
+			Label bindingsFileLabel = new Label(composite, SWT.NONE);
+			bindingsFileLabel.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_bindingsFiles);
+			bindingsFileLabel.setLayoutData(new GridData());
+			this.buildBindingsFileTable(composite);
 		}
 
 		// ********** intra-wizard methods **********
@@ -322,22 +337,15 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		
 		// ********** UI components **********
 
-		private Label buildLabel(Composite parent, int span, String text) {
-			Label label = new Label(parent, SWT.NONE);
-			label.setText(text);
-			GridData gd = new GridData();
-			gd.horizontalSpan = span;
-			label.setLayoutData(gd);
-			return label;
-		}
-
-		private Text buildText(Composite parent) {
-			
+		private Text buildCatalogText(Composite parent) {
 			Text text = new Text(parent, SWT.BORDER);
-			text.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			//Filler columns
+			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+			gridData.horizontalSpan = 2;
+			gridData.verticalIndent = 5;
+			text.setLayoutData(gridData);
+			//Filler column
 			new Label(parent, SWT.NONE);
-			new Label(parent, SWT.NONE);
+			
 			return text;
 		}
 
@@ -361,8 +369,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			column.setResizable(true);
 		
 			GridData gridData= new GridData(GridData.FILL_BOTH);
+			gridData.horizontalSpan = 2;
 			gridData.heightHint= SWTUtil.getTableHeightHint(table, 3);
-			gridData.widthHint = 300;
 			tableLayout.setLayoutData(gridData);
 		
 			TableViewer tableViewer = new TableViewer(table);
