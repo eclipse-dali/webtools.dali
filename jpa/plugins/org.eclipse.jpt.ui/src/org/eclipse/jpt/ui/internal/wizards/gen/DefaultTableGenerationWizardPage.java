@@ -125,6 +125,7 @@ public class DefaultTableGenerationWizardPage extends NewTypeWizardPage {
 			if ( this.customizer != customizer ) {
 				this.customizer = customizer; 
 				defaultsTable=customizer.createGenTable(null);
+				defaultTableGenPanel.setORMGenTable(defaultsTable);
 				//set the super class and implemented interfaces value
 				String baseClass = defaultsTable.getExtends() == null ?"" : defaultsTable.getExtends();
 				setSuperClass(baseClass, true);
