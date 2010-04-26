@@ -35,7 +35,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
 
@@ -230,7 +230,7 @@ public class SchemaGenerator
 		ILaunchConfigurationWorkingCopy launchConfig = null;
 		this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager manager = getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 
 		launchConfig = type.newInstance(null, LAUNCH_CONFIG_NAME);
@@ -239,7 +239,7 @@ public class SchemaGenerator
 
 	private void removeLaunchConfiguration(String launchConfigurationName) throws CoreException {
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager manager = getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 	
 		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);
@@ -351,12 +351,12 @@ public class SchemaGenerator
 
 	private IPath buildBootstrapJarPath(String jarName) {
 		try {
-			File jarInstallDir = this.getBundleParentDir(JptCorePlugin.PLUGIN_ID);
+			File jarInstallDir = this.getBundleParentDir(JptJaxbUiPlugin.PLUGIN_ID);
 
 			List<File> result = new ArrayList<File>();
 			this.findFile(jarName, jarInstallDir, result);
 			if (result.isEmpty()) {
-				throw new RuntimeException("Could not find: " + jarName + "#.#.#v###.jar in: " + jarInstallDir);   //$NON-NLS-1$
+				throw new RuntimeException("Could not find: " + jarName + "#.#.#v###.jar in: " + jarInstallDir);   //$NON-NLS-1$ //$NON-NLS-2$
 			}
 			File ddlGenJarFile = result.get(0);
 			String ddlGenJarPath = ddlGenJarFile.getCanonicalPath();
