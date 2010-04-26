@@ -40,6 +40,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizard;
@@ -231,10 +232,14 @@ public class MappingFileWizard extends DataModelWizard
 			}
 		}
 		
-		if (project != null && JptCorePlugin.getJpaProject(project) != null) {
-			return project;
+		if (project != null) {
+			for (DataModelPropertyDescriptor descriptor :
+					getDataModel().getValidPropertyDescriptors(OrmFileCreationDataModelProperties.PROJECT_NAME)) {
+				if (descriptor.getPropertyDescription().equals(project.getName())) {
+					return project;
+				}
+			}
 		}
-		
 		return null;
 	}
 	
