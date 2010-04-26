@@ -1168,7 +1168,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 				)
 			);
 		}
-		//TODO this does not give an error for unmapped, unlisted types that aren't basic
+		//TODO this does not give an error for unmapped, unlisted types that aren't basic - bug 310464
 		if (this.resolvedTargetType != null) {
 			if (getResolvedTargetEmbeddable() == null) {
 				messages.add(

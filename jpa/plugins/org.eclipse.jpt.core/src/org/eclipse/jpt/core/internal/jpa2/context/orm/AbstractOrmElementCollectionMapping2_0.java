@@ -1093,7 +1093,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 				);
 			}
 		}
-		//TODO this does not give an error for unmapped, unlisted types that aren't basic
+		//TODO this does not give an error for unmapped, unlisted types that aren't basic - bug 310464
 		if (this.resolvedTargetType != null) {
 			if (getResolvedTargetEmbeddable() == null) {
 				if (getPersistentAttribute().isVirtual()) {
