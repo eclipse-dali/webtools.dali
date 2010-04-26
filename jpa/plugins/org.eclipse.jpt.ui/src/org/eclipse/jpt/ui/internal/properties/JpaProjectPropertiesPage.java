@@ -155,7 +155,7 @@ public class JpaProjectPropertiesPage
 
 	private final BufferedWritablePropertyValueModel<String> metamodelSourceFolderModel;
 	private final ListValueModel<String> javaSourceFolderChoicesModel;
-	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage";
+	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
 
 	private final ChangeListener validationListener;
 
