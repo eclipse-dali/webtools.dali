@@ -34,6 +34,7 @@ import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
 import org.eclipse.jpt.ui.internal.widgets.FormWidgetFactory;
+import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -182,10 +183,10 @@ public class PersistenceEditor extends FormEditor
 	}
 
 	private PropertyValueModel<JpaProject> buildJpaProjectHolder() {
-		return new TransformationPropertyValueModel<IFileEditorInput, JpaProject>(editorInputHolder) {
+		return new CachingTransformationPropertyValueModel<IFileEditorInput, JpaProject>(this.editorInputHolder) {
 			@Override
-			protected JpaProject transform_(IFileEditorInput value) {
-				return JptCorePlugin.getJpaProject(value.getFile().getProject());
+			protected JpaProject transform_(IFileEditorInput fileEditorInput) {
+				return JptCorePlugin.getJpaProject(fileEditorInput.getFile().getProject());
 			}
 		};
 	}
