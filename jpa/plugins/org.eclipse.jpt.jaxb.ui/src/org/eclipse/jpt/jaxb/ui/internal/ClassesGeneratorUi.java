@@ -17,11 +17,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -32,28 +32,28 @@ import org.eclipse.swt.widgets.Shell;
  *  ClassesGeneratorUi
  */
 public class ClassesGeneratorUi {
-	private final JpaProject project;
+	private final IJavaProject javaProject;
 	private final String xmlSchemaName;
 
 	// ********** static methods **********
 	
 	public static void generate(IFile xsdFile) {
-		JpaProject jpaProject = JptCorePlugin.getJpaProject(xsdFile.getProject());
-		if(jpaProject == null) {
-			return;
+		IJavaProject javaProject = JavaCore.create(xsdFile.getProject());
+		if (javaProject == null) {
+			throw new NullPointerException();
 		}
 		IPath xmlSchema = xsdFile.getProjectRelativePath();
 		
-		new ClassesGeneratorUi(jpaProject, xmlSchema.toOSString()).generate();
+		new ClassesGeneratorUi(javaProject, xmlSchema.toOSString()).generate();
 	}
 
 	// ********** constructors **********
-	private ClassesGeneratorUi(JpaProject project, String xmlSchemaName) {
+	private ClassesGeneratorUi(IJavaProject javaProject, String xmlSchemaName) {
 		super();
-		if(project == null || StringTools.stringIsEmpty(xmlSchemaName)) {
+		if(javaProject == null || StringTools.stringIsEmpty(xmlSchemaName)) {
 			throw new NullPointerException();
 		}
-		this.project = project;
+		this.javaProject = javaProject;
 		this.xmlSchemaName = xmlSchemaName;
 	}
 
@@ -63,7 +63,7 @@ public class ClassesGeneratorUi {
 	 */
 	protected void generate() {
 
-		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.project, this.xmlSchemaName);
+		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.xmlSchemaName);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
@@ -89,7 +89,7 @@ public class ClassesGeneratorUi {
 		String[] bindingsFileNames) {
 		
 		IWorkspaceRunnable runnable = this.buildGenerateEntitiesRunnable(
-			this.project, 
+			this.javaProject, 
 			this.xmlSchemaName, 
 			outputDir, 
 			targetPackage, 
@@ -105,7 +105,7 @@ public class ClassesGeneratorUi {
 	}
 	
 	private IWorkspaceRunnable buildGenerateEntitiesRunnable(
-		JpaProject project, 
+		IJavaProject javaProject, 
 		String xmlSchemaName, 
 		String outputDir,
 		String targetPackage, 
@@ -113,7 +113,7 @@ public class ClassesGeneratorUi {
 		boolean useMoxyGenerator,
 		String[] bindingsFileNames) {
 
-		return new GenerateEntitiesRunnable(project, xmlSchemaName, outputDir, targetPackage, catalog, useMoxyGenerator, bindingsFileNames);
+		return new GenerateEntitiesRunnable(javaProject, xmlSchemaName, outputDir, targetPackage, catalog, useMoxyGenerator, bindingsFileNames);
 	}
 	
 	private Shell getCurrentShell() {
@@ -123,7 +123,7 @@ public class ClassesGeneratorUi {
 	// ********** Runnable Class **********
 
 	private static class GenerateEntitiesRunnable implements IWorkspaceRunnable {
-		private final JpaProject project;
+		private final IJavaProject javaProject;
 		private final String xmlSchemaName;
 		private final String outputDir;
 		private final String targetPackage;
@@ -134,7 +134,7 @@ public class ClassesGeneratorUi {
 		// ********** constructors **********
 		
 		public GenerateEntitiesRunnable(
-			JpaProject project, 
+			IJavaProject javaProject, 
 			String xmlSchemaName, 
 			String outputDir,
 			String targetPackage, 
@@ -143,7 +143,7 @@ public class ClassesGeneratorUi {
 			String[] bindingsFileNames) {
 			
 			super();
-			this.project = project;
+			this.javaProject = javaProject;
 			this.xmlSchemaName = xmlSchemaName;
 			this.outputDir = outputDir;
 			this.targetPackage = targetPackage;
@@ -154,7 +154,7 @@ public class ClassesGeneratorUi {
 
 		public void run(IProgressMonitor monitor) {
 			try {
-				this.entitiesGeneratorGenerate(this.project, 
+				this.entitiesGeneratorGenerate(this.javaProject, 
 					this.xmlSchemaName, 
 					this.outputDir, 
 					this.targetPackage, 
@@ -176,7 +176,7 @@ public class ClassesGeneratorUi {
 			}
 		}
 	
-		private void entitiesGeneratorGenerate(JpaProject project, 
+		private void entitiesGeneratorGenerate(IJavaProject javaProject, 
 			String xmlSchemaName, 
 			String outputDir, 
 			String targetPackage, 
@@ -185,7 +185,7 @@ public class ClassesGeneratorUi {
 			String[] bindingsFileNames, 
 			IProgressMonitor monitor) {
 	
-			ClassesGenerator.generate(project, 
+			ClassesGenerator.generate(javaProject, 
 				xmlSchemaName, 
 				outputDir, 
 				targetPackage, 

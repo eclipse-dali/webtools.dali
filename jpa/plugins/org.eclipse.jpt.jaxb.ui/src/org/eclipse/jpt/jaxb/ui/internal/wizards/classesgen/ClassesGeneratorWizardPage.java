@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -43,11 +42,9 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -76,7 +73,7 @@ import org.osgi.framework.Bundle;
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
 
-	private final JpaProject jpaProject;
+	private final IJavaProject javaProject;
 
 	private SettingsGroup settingsGroup;
 	
@@ -88,12 +85,12 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 	// ********** constructor **********
 	
-	public ClassesGeneratorWizardPage(JpaProject jpaProject, String xmlSchemaName) {
+	public ClassesGeneratorWizardPage(IJavaProject javaProject, String xmlSchemaName) {
 		super(true, "Classes Generator"); //$NON-NLS-1$
-		if (jpaProject == null) {
+		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		this.jpaProject = jpaProject;
+		this.javaProject = javaProject;
 		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
 		this.usesMoxy = (this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
 		
@@ -107,7 +104,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		this.setPageComplete(false);
 		this.setControl(this.buildTopLevelControl(parent));
 		
-		initContainerPage(this.jpaProject.getJavaProject());
+		initContainerPage(this.javaProject);
 	}
 
 	private Control buildTopLevelControl(Composite parent) {
@@ -221,7 +218,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private boolean genericJaxbIsOnClasspath() {
 		try {
 			String className = ClassesGenerator.JAXB_GENERIC_GEN_CLASS;
-			IType genClass = this.jpaProject.getJavaProject().findType(className);
+			IType genClass = this.javaProject.findType(className);
 			return (genClass != null);
 		} 
 		catch (JavaModelException e) {
@@ -235,7 +232,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private boolean moxyIsOnClasspath() {
 		try {
 			String className = ClassesGenerator.JAXB_ECLIPSELINK_GEN_CLASS;
-			IType genClass = this.jpaProject.getJavaProject().findType(className);
+			IType genClass = this.javaProject.findType(className);
 			return (genClass != null);
 		} 
 		catch (JavaModelException e) {
@@ -310,11 +307,11 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 						IPath path= jproject.getProject().getFullPath();
 						return (jproject.findPackageFragmentRoot(path) != null);
 					} else if (element instanceof IPackageFragmentRoot) {
-						return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
 					}
 					return true;
 				} catch (JavaModelException e) {
-					JptUiPlugin.log(e); // just log, no UI in validation
+					JptJaxbUiPlugin.log(e); // just log, no UI in validation
 				}
 				return false;
 			}
@@ -325,7 +322,12 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			@Override
 			public boolean select(Viewer viewer, Object parent, Object element) {
 				if (element instanceof IPackageFragmentRoot) {
-					return JDTTools.packageFragmentRootIsSourceFolder((IPackageFragmentRoot) element);
+					try {
+						return (((IPackageFragmentRoot)element).getKind() == IPackageFragmentRoot.K_SOURCE);
+					} catch (JavaModelException e) {
+						JptJaxbUiPlugin.log(e.getStatus()); // just log, no UI in validation
+						return false;
+					}
 				}
 				return super.select(viewer, parent, element);
 			}
@@ -341,7 +343,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		dialog.addFilter(filter);
 		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
 		//******************************************************//
-		dialog.setInput(this.jpaProject.getJavaProject());      //
+		dialog.setInput(this.javaProject);     				 	//
 		//******************************************************//
 		dialog.setInitialSelection(getPackageFragmentRoot());
 		dialog.setHelpAvailable(false);
@@ -518,7 +520,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 		private String makeRelativeToProjectPath(String filePath) {
 			Path path = new Path(filePath);
-			IPath relativePath = path.makeRelativeTo(jpaProject.getProject().getLocation());
+			IPath relativePath = path.makeRelativeTo(javaProject.getProject().getLocation());
 			return relativePath.toOSString();
 		}
 		
@@ -549,7 +551,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 * prompt the user to select a file and return it.
 		 */
 		private String promptFile() {
-			String projectPath= jpaProject.getProject().getLocation().toString();
+			String projectPath= javaProject.getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);

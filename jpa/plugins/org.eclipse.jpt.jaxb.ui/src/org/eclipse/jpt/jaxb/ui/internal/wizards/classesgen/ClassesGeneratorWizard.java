@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -24,7 +24,7 @@ import org.eclipse.osgi.util.NLS;
  */
 public class ClassesGeneratorWizard extends Wizard {	
 
-	private final JpaProject jpaProject;
+	private final IJavaProject javaProject;
 	private final String xmlSchemaName;
 
 	private String destinationFolder;
@@ -37,9 +37,9 @@ public class ClassesGeneratorWizard extends Wizard {
 
 	// ********** constructor **********
 	
-	public ClassesGeneratorWizard(JpaProject jpaProject, String xmlSchemaName) {
+	public ClassesGeneratorWizard(IJavaProject javaProject, String xmlSchemaName) {
 		super();
-		this.jpaProject = jpaProject;
+		this.javaProject = javaProject;
 		this.xmlSchemaName = xmlSchemaName;
 
 		this.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
@@ -66,7 +66,7 @@ public class ClassesGeneratorWizard extends Wizard {
 		this.useMoxy = this.generatorSettingsPage.usesMoxy();
 		this.bindingsFileNames = this.generatorSettingsPage.getBindingsFileNames();
 		
-		IFolder folder = this.jpaProject.getProject().getFolder(this.destinationFolder);
+		IFolder folder = this.javaProject.getProject().getFolder(this.destinationFolder);
 		this.createFolderIfNotExist(folder);
 		return true;
 	}
@@ -101,7 +101,7 @@ public class ClassesGeneratorWizard extends Wizard {
 	// ********** internal methods **********
 
 	private ClassesGeneratorWizardPage buildClassesGeneratorPage() {
-		return new ClassesGeneratorWizardPage(this.jpaProject, this.xmlSchemaName);
+		return new ClassesGeneratorWizardPage(this.javaProject, this.xmlSchemaName);
 	}
 	
 	private void createFolderIfNotExist(IFolder folder) {

@@ -30,7 +30,6 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -46,7 +45,7 @@ public class ClassesGenerator
 	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
 	
-	private final JpaProject jpaProject;
+	private final IJavaProject javaProject;
 	private final String xmlSchemaName;
 	private final String outputDir;
 	private final String targetPackage;
@@ -58,7 +57,7 @@ public class ClassesGenerator
 	// ********** static methods **********
 	
 	public static void generate(
-			JpaProject project, 
+			IJavaProject javaProject, 
 			String xmlSchemaName, 
 			String outputDir, 
 			String targetPackage, 
@@ -66,10 +65,10 @@ public class ClassesGenerator
 			boolean useMoxyGenerator,
 			String[] bindingsFileNames,
 			IProgressMonitor monitor) {
-		if (project == null) {
+		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		new ClassesGenerator(project, 
+		new ClassesGenerator(javaProject, 
 			xmlSchemaName, 
 			outputDir, 
 			targetPackage, 
@@ -82,7 +81,7 @@ public class ClassesGenerator
 	// ********** constructors **********
 	
 	protected ClassesGenerator(
-			JpaProject jpaProject, 
+			IJavaProject javaProject, 
 			String xmlSchemaName, 
 			String outputDir, 
 			String targetPackage, 
@@ -91,7 +90,7 @@ public class ClassesGenerator
 			String[] bindingsFileNames,
 			@SuppressWarnings("unused") IProgressMonitor monitor) {
 		super();
-		this.jpaProject = jpaProject;
+		this.javaProject = javaProject;
 		this.xmlSchemaName = xmlSchemaName;
 		this.outputDir = outputDir;
 		this.targetPackage = targetPackage;
@@ -119,7 +118,7 @@ public class ClassesGenerator
 	}
 
 	protected void generate() {
-		String projectLocation = this.jpaProject.getProject().getLocation().toString();
+		String projectLocation = this.javaProject.getProject().getLocation().toString();
 		
 		this.initializeLaunchConfiguration(projectLocation);
 
@@ -131,7 +130,7 @@ public class ClassesGenerator
 
 		this.specifyJRE(this.jre.getName(), this.jre.getVMInstallType().getId());
 
-		this.specifyProject(this.getJpaProject().getProject().getName()); 
+		this.specifyProject(this.javaProject.getProject().getName()); 
 		this.specifyMainType(this.mainType);
 
 		this.specifyProgramArguments(
@@ -142,7 +141,7 @@ public class ClassesGenerator
 			this.bindingsFileNames);  // -d -p
 		this.specifyWorkingDir(projectLocation); 
 
-		this.specifyClasspathProperties(this.getJpaProject());
+		this.specifyClasspathProperties(this.javaProject);
 	}
 
 	protected void postGenerate() {
@@ -158,11 +157,11 @@ public class ClassesGenerator
 
 	// ********** Launch Configuration Setup **********
 
-	private void specifyClasspathProperties(JpaProject project)  {
+	private void specifyClasspathProperties(IJavaProject project)  {
 		List<String> classpath = new ArrayList<String>();
 		try {
 			// Default Project classpath
-			classpath.add(this.getDefaultProjectClasspathEntry(project.getJavaProject()).getMemento());
+			classpath.add(this.getDefaultProjectClasspathEntry(project).getMemento());
 			// System Library  
 			classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
 		}
@@ -234,8 +233,8 @@ public class ClassesGenerator
 		ILaunchConfigurationWorkingCopy launchConfig = null;
 		this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+		ILaunchManager manager = getLaunchManager();
+		ILaunchConfigurationType type = getLaunchManager().getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 
 		launchConfig = type.newInstance(null, LAUNCH_CONFIG_NAME);
 		return launchConfig;
@@ -243,7 +242,7 @@ public class ClassesGenerator
 
 	private void removeLaunchConfiguration(String launchConfigurationName) throws CoreException {
 
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchManager manager = getLaunchManager();
 		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 	
 		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);
@@ -323,12 +322,8 @@ public class ClassesGenerator
 		return projectEntry;
 	}
 	
-	protected JpaProject getJpaProject() {
-		return this.jpaProject;
-	}
-	
 	private IVMInstall getProjectJRE() throws CoreException {
-		return JavaRuntime.getVMInstall(this.getJpaProject().getJavaProject());
+		return JavaRuntime.getVMInstall(this.javaProject);
 	}
 	
 	protected ILaunch getLaunch() {
