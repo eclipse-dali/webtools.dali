@@ -137,8 +137,6 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		createTablesSelectionControl(composite, nColumns);
 
-		//Filler column
-		new Label( composite, SWT.NONE);
 		
 		this.updatePersistenceXmlCheckBox = new Button(composite, SWT.CHECK);
 		this.updatePersistenceXmlCheckBox.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
@@ -151,7 +149,7 @@ class TablesSelectorWizardPage extends WizardPage{
 			}
 
 		});
-		fillColumns( this.updatePersistenceXmlCheckBox, 2);
+		fillColumns( this.updatePersistenceXmlCheckBox, 3);
 
 
 		//Filler column
@@ -319,6 +317,9 @@ class TablesSelectorWizardPage extends WizardPage{
 
 		Composite buttonComposite = new Composite(parent, SWT.NULL);
 		GridLayout buttonLayout = new GridLayout(1, false);
+		buttonLayout.marginHeight = 0;
+		buttonLayout.marginWidth = 0;
+		
 		buttonComposite.setLayout(buttonLayout);
 		GridData data =  new GridData();
 		data.horizontalAlignment = GridData.FILL;

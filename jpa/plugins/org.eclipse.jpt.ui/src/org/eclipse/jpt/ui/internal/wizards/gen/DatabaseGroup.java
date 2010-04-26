@@ -90,7 +90,10 @@ public class DatabaseGroup
 		this.connectionComboBox = this.buildComboBox(parent, widthHint, this.buildConnectionComboBoxSelectionListener());
 
 		// add connection button
-		this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, ImageRepository.getAddConnectionButtonImage(this.resourceManager), this.buildAddConnectionLinkSelectionListener());
+		Button addConnectionButton = this.buildButton(parent, JptUiEntityGenMessages.addConnectionLink, ImageRepository.getAddConnectionButtonImage(this.resourceManager), this.buildAddConnectionLinkSelectionListener());
+		GridData data = new GridData();
+		addConnectionButton.setLayoutData(data);
+
 
 		// A composite holds the reconnect button & text
 		this.buildLabel(parent, 1, ""); //$NON-NLS-1$
@@ -109,7 +112,7 @@ public class DatabaseGroup
 		// schema combo-box
 		this.buildLabel(parent, 1, JptUiEntityGenMessages.schema);
 		this.schemaComboBox = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
-		GridData data = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
+		data = new GridData(SWT.BEGINNING, SWT.CENTER, true, false);
 		data.horizontalAlignment = SWT.FILL;
 		data.horizontalSpan = 1;
 		data.grabExcessHorizontalSpace = true ;

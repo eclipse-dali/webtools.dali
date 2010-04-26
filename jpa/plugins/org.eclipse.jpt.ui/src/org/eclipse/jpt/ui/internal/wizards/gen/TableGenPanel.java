@@ -100,14 +100,12 @@ class TableGenPanel
 	}
 	
 	private void createGenerateOptionalAnnotationControls(Group parent, int columns) {
-		SWTUtil.createLabel(parent, 1, "");
 		generateOptionalAnnotations = new Button(parent, SWT.CHECK );
 		generateOptionalAnnotations.setText( JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations);
 		generateOptionalAnnotations.setToolTipText(JptUiEntityGenMessages.GenerateEntitiesWizard_defaultTablePage_genOptionalAnnotations_desc);
 
 		GridData gd = new GridData();
-		gd.horizontalSpan = columns-1;
-		gd.horizontalIndent = 3 ;
+		gd.horizontalSpan = columns;
 		generateOptionalAnnotations.setLayoutData(gd);
 		generateOptionalAnnotations.addSelectionListener(new SelectionListener(){
 			public void widgetDefaultSelected(SelectionEvent e) {}
