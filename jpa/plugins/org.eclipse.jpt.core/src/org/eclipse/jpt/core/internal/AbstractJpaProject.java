@@ -1337,6 +1337,11 @@ public abstract class AbstractJpaProject
 	public void dispose() {
 		this.updater.stop();
 		this.dataSource.dispose();
+		// the XML resources are held indefinitely by the WTP translator framework,
+		// so we better remove our listener or the JPA project will not be GCed
+		for (JpaFile jpaFile : this.getJpaFiles()) {
+			jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
+		}
 	}
 	
 	
