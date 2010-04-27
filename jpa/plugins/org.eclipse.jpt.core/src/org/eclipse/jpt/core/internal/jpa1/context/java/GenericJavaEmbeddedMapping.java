@@ -195,7 +195,7 @@ public class GenericJavaEmbeddedMapping
 
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner
+	protected class AssociationOverrideContainerOwner
 		implements JavaAssociationOverrideContainer.Owner
 	{	
 		public TypeMapping getTypeMapping() {

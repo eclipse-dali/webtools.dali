@@ -22,8 +22,8 @@ import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 public class GenericJavaNamedQuery2_0 extends AbstractJavaQuery 
 	implements JavaNamedQuery2_0
 {
-	private LockModeType2_0 specifiedLockMode;
-	private LockModeType2_0 defaultLockMode;
+	protected LockModeType2_0 specifiedLockMode;
+	protected LockModeType2_0 defaultLockMode;
 
 	public GenericJavaNamedQuery2_0(JavaJpaContextNode parent) {
 		super(parent);

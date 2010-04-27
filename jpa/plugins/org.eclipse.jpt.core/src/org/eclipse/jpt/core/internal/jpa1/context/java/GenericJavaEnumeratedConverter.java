@@ -23,9 +23,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericJavaEnumeratedConverter extends AbstractJavaJpaContextNode
 	implements JavaEnumeratedConverter
 {
-	private EnumType specifiedEnumType;
+	protected EnumType specifiedEnumType;
 	
-	private JavaResourcePersistentAttribute resourcePersistenceAttribute;
+	protected JavaResourcePersistentAttribute resourcePersistenceAttribute;
 	
 	public GenericJavaEnumeratedConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);

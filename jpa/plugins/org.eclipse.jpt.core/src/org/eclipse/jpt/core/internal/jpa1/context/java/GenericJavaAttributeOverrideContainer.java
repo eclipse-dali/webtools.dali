@@ -395,7 +395,7 @@ public class GenericJavaAttributeOverrideContainer extends AbstractJavaJpaContex
 	
 	// ********** attribute override owner **********
 
-	class AttributeOverrideOwner implements JavaAttributeOverride.Owner {
+	protected class AttributeOverrideOwner implements JavaAttributeOverride.Owner {
 
 		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {

@@ -21,9 +21,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericOrmTemporalConverter extends AbstractOrmXmlContextNode
 	implements TemporalConverter, OrmConverter
 {
-	private TemporalType temporalType;
+	protected TemporalType temporalType;
 	
-	private XmlConvertibleMapping resourceConvertibleMapping;
+	protected XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmTemporalConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceConvertableMapping) {
 		super(parent);

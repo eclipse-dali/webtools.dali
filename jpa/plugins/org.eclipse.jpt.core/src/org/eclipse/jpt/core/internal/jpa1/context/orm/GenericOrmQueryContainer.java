@@ -39,7 +39,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericOrmQueryContainer extends AbstractOrmXmlContextNode
 	implements OrmQueryContainer
 {
-	private final XmlQueryContainer resourceQueryContainer;
+	protected final XmlQueryContainer resourceQueryContainer;
 	
 	protected final List<OrmNamedQuery> namedQueries;
 

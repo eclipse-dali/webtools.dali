@@ -349,7 +349,7 @@ public class GenericOrmSecondaryTable
 
 	// ********** pk join column owner adapter **********
 
-	class PrimaryKeyJoinColumnOwner
+	protected class PrimaryKeyJoinColumnOwner
 		implements OrmBaseJoinColumn.Owner
 	{
 		public TypeMapping getTypeMapping() {

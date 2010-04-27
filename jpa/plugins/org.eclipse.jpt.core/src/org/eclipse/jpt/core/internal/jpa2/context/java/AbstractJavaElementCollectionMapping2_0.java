@@ -1210,7 +1210,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 
-	abstract class ColumnOwner implements JavaBaseColumn.Owner {
+	protected abstract class ColumnOwner implements JavaBaseColumn.Owner {
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
 		}
@@ -1272,7 +1272,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		protected abstract String getColumnUnresolvedNameMessage();
 	}
 
-	class ValueColumnOwner extends ColumnOwner {		
+	protected class ValueColumnOwner extends ColumnOwner {		
 		public String getDefaultColumnName() {
 			return AbstractJavaElementCollectionMapping2_0.this.getName();
 		}
@@ -1288,7 +1288,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 	}
 
-	class MapKeyColumnOwner extends ColumnOwner {		
+	protected class MapKeyColumnOwner extends ColumnOwner {		
 		public String getDefaultColumnName() {
 			return AbstractJavaElementCollectionMapping2_0.this.getName() + "_KEY"; //$NON-NLS-1$
 		}
@@ -1306,7 +1306,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 
 	// ********** override container owners **********
 
-	abstract class OverrideContainerOwner
+	protected abstract class OverrideContainerOwner
 		implements JavaOverrideContainer.Owner
 	{
 		public TypeMapping getTypeMapping() {
@@ -1338,7 +1338,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		}
 	}
 	
-	class ValueAssociationOverrideContainerOwner
+	protected class ValueAssociationOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements JavaAssociationOverrideContainer.Owner
 	{
@@ -1500,7 +1500,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class ValueAttributeOverrideContainerOwner
+	protected class ValueAttributeOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner
 	{
@@ -1592,7 +1592,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 	
 	
-	class MapKeyAttributeOverrideContainerOwner
+	protected class MapKeyAttributeOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner
 	{

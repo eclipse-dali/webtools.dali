@@ -21,8 +21,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 public class GenericOrmNamedQuery2_0 extends AbstractOrmQuery<XmlNamedQuery>
 	implements OrmNamedQuery2_0
 {
-	private LockModeType2_0 specifiedLockMode;
-	private LockModeType2_0 defaultLockMode;
+	protected LockModeType2_0 specifiedLockMode;
+	protected LockModeType2_0 defaultLockMode;
 
 	// ********** constructor **********
 	public GenericOrmNamedQuery2_0(XmlContextNode parent, XmlNamedQuery resourceNamedQuery) {

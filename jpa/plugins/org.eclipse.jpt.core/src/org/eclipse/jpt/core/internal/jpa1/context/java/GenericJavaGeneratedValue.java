@@ -36,14 +36,14 @@ public class GenericJavaGeneratedValue
 	extends AbstractJavaJpaContextNode
 	implements JavaGeneratedValue
 {
-	private GeneratedValueAnnotation resourceGeneratedValue;
+	protected GeneratedValueAnnotation resourceGeneratedValue;
 
-	private GenerationType specifiedStrategy;
+	protected GenerationType specifiedStrategy;
 
-	private String specifiedGenerator;
+	protected String specifiedGenerator;
 
 	// always null?
-	private String defaultGenerator = null;
+	protected String defaultGenerator = null;
 	
 
 	public GenericJavaGeneratedValue(JavaIdMapping parent) {

@@ -21,9 +21,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericOrmEnumeratedConverter extends AbstractOrmXmlContextNode
 	implements EnumeratedConverter, OrmConverter
 {
-	private EnumType specifiedEnumType;
+	protected EnumType specifiedEnumType;
 	
-	private XmlConvertibleMapping resourceConvertibleMapping;
+	protected XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmEnumeratedConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);

@@ -1493,7 +1493,7 @@ public abstract class AbstractJavaEntity
 	
 	// ********** association override container owner **********
 
-	class AssociationOverrideContainerOwner
+	protected class AssociationOverrideContainerOwner
 		implements JavaAssociationOverrideContainer.Owner
 	{	
 		public TypeMapping getTypeMapping() {
@@ -1673,7 +1673,7 @@ public abstract class AbstractJavaEntity
 	
 	//********** AttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner
+	protected class AttributeOverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner 
 	{
 		public TypeMapping getTypeMapping() {
@@ -1824,7 +1824,7 @@ public abstract class AbstractJavaEntity
 	
 	// ********** pk join column owner **********
 
-	class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
+	protected class PrimaryKeyJoinColumnOwner implements JavaBaseJoinColumn.Owner
 	{
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);

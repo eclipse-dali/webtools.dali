@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericOrmLobConverter extends AbstractOrmXmlContextNode
 	implements LobConverter, OrmConverter
 {
-	private XmlConvertibleMapping resourceConvertibleMapping;
+	protected XmlConvertibleMapping resourceConvertibleMapping;
 	
 	public GenericOrmLobConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
 		super(parent);

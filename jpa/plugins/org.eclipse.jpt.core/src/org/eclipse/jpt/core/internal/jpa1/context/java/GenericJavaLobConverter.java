@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericJavaLobConverter extends AbstractJavaJpaContextNode
 	implements JavaLobConverter
 {
-	private JavaResourcePersistentAttribute resourcePersistentAttribute;
+	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	
 	public GenericJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {

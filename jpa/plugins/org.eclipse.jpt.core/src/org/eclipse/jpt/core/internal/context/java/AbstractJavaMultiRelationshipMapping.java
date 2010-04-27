@@ -691,7 +691,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 
-	class MapKeyColumnOwner implements JavaBaseColumn.Owner {		
+	protected class MapKeyColumnOwner implements JavaBaseColumn.Owner {		
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -745,7 +745,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 	}
 
-	abstract class OverrideContainerOwner implements JavaOverrideContainer.Owner {
+	protected abstract class OverrideContainerOwner implements JavaOverrideContainer.Owner {
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -779,7 +779,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 	}
 
-	class MapKeyAttributeOverrideContainerOwner
+	protected class MapKeyAttributeOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner
 	{

@@ -219,7 +219,7 @@ public class GenericOrmEmbeddedMapping
 	
 	//********** OrmAssociationOverrideContainer.Owner implementation *********	
 	
-	class AssociationOverrideContainerOwner
+	protected class AssociationOverrideContainerOwner
 		implements OrmAssociationOverrideContainer.Owner
 	{
 		public OrmTypeMapping getTypeMapping() {

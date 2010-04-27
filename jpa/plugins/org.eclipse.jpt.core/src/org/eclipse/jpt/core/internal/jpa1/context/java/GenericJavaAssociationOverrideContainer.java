@@ -380,7 +380,7 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 	
 	// ********** association override owner **********
 
-	class AssociationOverrideOwner implements JavaAssociationOverride.Owner {
+	protected class AssociationOverrideOwner implements JavaAssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			return MappingTools.getRelationshipMapping(attributeName, getOwner().getOverridableTypeMapping());

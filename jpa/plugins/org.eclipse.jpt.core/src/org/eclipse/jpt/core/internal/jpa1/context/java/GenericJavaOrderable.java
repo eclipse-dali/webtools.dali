@@ -366,7 +366,7 @@ public class GenericJavaOrderable
 
 	// ********** JavaNamedColumn.Owner implementation- JPA 2.0 **********  
 
-	class OrderColumnOwner implements JavaNamedColumn.Owner {
+	protected class OrderColumnOwner implements JavaNamedColumn.Owner {
 			
 		public String getDefaultTableName() {
 			return GenericJavaOrderable.this.getDefaultTableName();

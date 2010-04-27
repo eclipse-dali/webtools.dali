@@ -49,7 +49,7 @@ public abstract class AbstractOrmBaseEmbeddedMapping<T extends AbstractXmlEmbedd
 {
 	protected OrmAttributeOverrideContainer attributeOverrideContainer;
 	
-	private Embeddable targetEmbeddable;
+	protected Embeddable targetEmbeddable;
 	
 	
 	protected AbstractOrmBaseEmbeddedMapping(OrmPersistentAttribute parent, T resourceMapping) {

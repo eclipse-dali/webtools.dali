@@ -22,9 +22,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericJavaTemporalConverter extends AbstractJavaJpaContextNode
 	implements JavaTemporalConverter
 {
-	private TemporalType temporalType;
+	protected TemporalType temporalType;
 	
-	private JavaResourcePersistentAttribute resourcePersistentAttribute;
+	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
 	
 	public GenericJavaTemporalConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent);

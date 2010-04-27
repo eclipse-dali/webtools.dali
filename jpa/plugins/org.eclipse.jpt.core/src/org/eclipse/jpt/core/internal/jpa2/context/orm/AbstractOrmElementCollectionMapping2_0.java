@@ -1156,7 +1156,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		return this.resourceAttributeMapping.getTargetClassTextRange();
 	}
 
-	abstract class ColumnOwner implements OrmColumn.Owner {		
+	protected abstract class ColumnOwner implements OrmColumn.Owner {		
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
 		}
@@ -1251,7 +1251,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		protected abstract String getVirtualAttributeColumnUnresolvedNameMessage();
 	}
 
-	class ValueColumnOwner extends ColumnOwner {
+	protected class ValueColumnOwner extends ColumnOwner {
 
 		public XmlColumn getResourceColumn() {
 			return AbstractOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getColumn();
@@ -1290,7 +1290,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		}
 	}
 
-	class MapKeyColumnOwner extends ColumnOwner {
+	protected class MapKeyColumnOwner extends ColumnOwner {
 
 		public XmlColumn getResourceColumn() {
 			return AbstractOrmElementCollectionMapping2_0.this.resourceAttributeMapping.getMapKeyColumn();
@@ -1330,7 +1330,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 
 	}
 
-	abstract class OverrideContainerOwner implements OrmOverrideContainer.Owner {
+	protected abstract class OverrideContainerOwner implements OrmOverrideContainer.Owner {
 		public OrmTypeMapping getTypeMapping() {
 			return AbstractOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
@@ -1356,7 +1356,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		}
 	}
 
-	class AssociationOverrideContainerOwner
+	protected class AssociationOverrideContainerOwner
 		extends OverrideContainerOwner 
 		implements OrmAssociationOverrideContainer.Owner
 	{
@@ -1607,7 +1607,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	
 	//********** OrmAttributeOverrideContainer.Owner implementation *********	
 
-	class ValueAttributeOverrideContainerOwner
+	protected class ValueAttributeOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements OrmAttributeOverrideContainer.Owner
 	{
@@ -1739,7 +1739,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	}
 	
 	
-	class MapKeyAttributeOverrideContainerOwner
+	protected class MapKeyAttributeOverrideContainerOwner
 		extends OverrideContainerOwner
 		implements OrmAttributeOverrideContainer.Owner
 	{

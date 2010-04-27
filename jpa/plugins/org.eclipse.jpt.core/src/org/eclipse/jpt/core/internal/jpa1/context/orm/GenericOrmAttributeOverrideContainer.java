@@ -334,7 +334,7 @@ public class GenericOrmAttributeOverrideContainer
 	}
 	
 	
-	class AttributeOverrideOwner implements AttributeOverride.Owner {
+	protected class AttributeOverrideOwner implements AttributeOverride.Owner {
 
 		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {

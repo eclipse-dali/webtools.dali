@@ -280,7 +280,7 @@ public class GenericOrmOrderable
 
 	// ********** OrmNamedColumn implementation **********  
 
-	class OrderColumnOwner implements OrmNamedColumn.Owner {
+	protected class OrderColumnOwner implements OrmNamedColumn.Owner {
 			
 		public String getDefaultTableName() {
 			return GenericOrmOrderable.this.getDefaultTableName();

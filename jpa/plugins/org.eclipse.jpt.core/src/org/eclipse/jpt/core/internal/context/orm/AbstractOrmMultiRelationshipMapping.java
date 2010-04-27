@@ -612,7 +612,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 	}
 
 
-	class MapKeyColumnOwner implements OrmColumn.Owner {
+	protected class MapKeyColumnOwner implements OrmColumn.Owner {
 		public TypeMapping getTypeMapping() {
 			return AbstractOrmMultiRelationshipMapping.this.getTypeMapping();
 		}
@@ -704,7 +704,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		}
 	}
 
-	class MapKeyAttributeOverrideContainerOwner
+	protected class MapKeyAttributeOverrideContainerOwner
 		implements OrmAttributeOverrideContainer.Owner
 	{
 		public OrmTypeMapping getTypeMapping() {

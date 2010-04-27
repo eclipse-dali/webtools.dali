@@ -1732,7 +1732,7 @@ public abstract class AbstractOrmEntity
 		return this.resourceTypeMapping.getInheritanceStrategyTextRange();
 	}
 		
-	class AssociationOverrideContainerOwner
+	protected class AssociationOverrideContainerOwner
 		implements OrmAssociationOverrideContainer.Owner
 	{
 		public OrmTypeMapping getTypeMapping() {
@@ -1913,7 +1913,7 @@ public abstract class AbstractOrmEntity
 	
 	//********** OrmAttributeOverrideContainer.Owner implementation *********	
 	
-	class AttributeOverrideContainerOwner
+	protected class AttributeOverrideContainerOwner
 		implements OrmAttributeOverrideContainer.Owner
 	{
 		public OrmTypeMapping getTypeMapping() {
@@ -2076,7 +2076,7 @@ public abstract class AbstractOrmEntity
 	}
 	
 	
-	class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
+	protected class PrimaryKeyJoinColumnOwner implements OrmBaseJoinColumn.Owner
 	{
 		public TypeMapping getTypeMapping() {
 			return AbstractOrmEntity.this;

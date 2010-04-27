@@ -319,7 +319,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 	}
 	
 	
-	class AssociationOverrideOwner implements AssociationOverride.Owner {
+	protected class AssociationOverrideOwner implements AssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			return MappingTools.getRelationshipMapping(attributeName, getOwner().getOverridableTypeMapping());

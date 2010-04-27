@@ -21,7 +21,7 @@ public class AbstractOrmOverride extends AbstractOrmXmlContextNode
 
 	protected String name;
 
-	private final BaseOverride.Owner owner;
+	protected final BaseOverride.Owner owner;
 
 	protected XmlOverride resourceOverride;
 
