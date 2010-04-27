@@ -113,15 +113,15 @@ public class GenericJavaEmbeddedIdMapping
 		extends AbstractJavaBaseEmbeddedMapping.AttributeOverrideContainerOwner
 	{
 		@Override
-		public Iterator allOverridableNames() {
+		public Iterator<String> allOverridableNames() {
 			return (GenericJavaEmbeddedIdMapping.this.isMappedByRelationship()) ?
 					EmptyIterator.<String>instance()
 					: super.allOverridableNames();
 		}
 		
 		@Override
-		protected Iterator allOverridableAttributeNames_(TypeMapping typeMapping) {
-			final Collection mappedByRelationshipAttributes = CollectionTools.collection(
+		protected Iterator<String> allOverridableAttributeNames_(TypeMapping typeMapping) {
+			final Collection<String> mappedByRelationshipAttributes = CollectionTools.collection(
 					new TransformationIterator<SingleRelationshipMapping2_0, String>(getMapsIdRelationships()) {
 						@Override
 						protected String transform(SingleRelationshipMapping2_0 next) {
