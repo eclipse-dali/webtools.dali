@@ -107,7 +107,9 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
     	this.updateInputGroupTreeFilter();
 
 		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
-		this.updateUsesMoxy(this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
+		this.updateUsesMoxy(this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath());
+		
+		this.validateProjectClasspath();
 		this.giveFocusToDestination();
     }
 
@@ -122,10 +124,12 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 	@Override
 	public boolean isPageComplete() {
-		boolean complete = this.validateSourceGroup();
-		complete = this.validateDestinationGroup() && complete;
+		boolean complete = this.validateDestinationGroup();
 		if(complete) {
-			this.setErrorMessage(null);
+			complete = this.validateSourceGroup();
+			if(complete) {
+				this.validateProjectClasspath();
+			}
 		}
 		return complete;
 	}
@@ -171,18 +175,21 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		boolean complete = this.targetSchemaIsEmpty();
 		if( ! complete) {
 				this.setErrorMessage(JptJaxbUiMessages.SchemaGeneratorWizardPage_errorNoSchema);
+				return false;
 		}
-		return complete;
+		this.setErrorMessage(null);
+		return true;
 	}
 
 	@Override
 	protected boolean validateSourceGroup() {
 		if(this.getAllCheckedItems().length == 0) {
-			if(this.getMessage() == null) {
+			if(this.getErrorMessage() == null) {
 				this.setErrorMessage(JptJaxbUiMessages.SchemaGeneratorWizardPage_errorNoPackage);
 			}
 			return false;
 		}
+		this.setErrorMessage(null);
 		return true;
 	}
 	
@@ -299,7 +306,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	 */
 	private boolean moxyIsOnClasspath() {
 		try {
-			String className = SchemaGenerator.JAXB_GENERIC_SCHEMA_GEN_CLASS;
+			String className = SchemaGenerator.JAXB_ECLIPSELINK_SCHEMA_GEN_CLASS;
 			IType genClass = this.targetProject.findType(className);
 			return (genClass != null);
 		}
@@ -383,6 +390,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 			
 			public void widgetSelected(SelectionEvent event) {
 				updateUsesMoxy(usesMoxyCheckBox.getSelection());
+				validateProjectClasspath();
 			}
 		};
 	}
