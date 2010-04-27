@@ -30,6 +30,7 @@ public class JptJaxbUiMessages {
 	
 	public static String ClassesGeneratorWizardPage_catalog;
 	public static String ClassesGeneratorWizardPage_bindingsFiles;
+	public static String ClassesGeneratorWizardPage_browseButton;
 	public static String ClassesGeneratorWizardPage_addButton;
 	public static String ClassesGeneratorWizardPage_removeButton;
 	public static String ClassesGeneratorWizardPage_chooseABindingsFile;

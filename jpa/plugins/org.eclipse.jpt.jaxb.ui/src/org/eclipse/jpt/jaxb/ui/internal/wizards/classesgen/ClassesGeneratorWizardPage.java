@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -399,6 +400,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			gridData.verticalIndent = 5;
 			catalogLabel.setLayoutData(gridData);
 			this.catalogText = this.buildCatalogText(composite);
+			this.buildBrowseButton(composite);
 			
 			// Bindings files
 			this.bindingsFileNames = new ArrayList<String>();
@@ -426,10 +428,41 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			gridData.horizontalSpan = 2;
 			gridData.verticalIndent = 5;
 			text.setLayoutData(gridData);
-			//Filler column
-			new Label(parent, SWT.NONE);
-			
 			return text;
+		}
+
+		private void buildBrowseButton(Composite parent) {
+			
+			Composite buttonComposite = new Composite(parent, SWT.NULL);
+			GridLayout buttonLayout = new GridLayout(1, false);
+			buttonComposite.setLayout(buttonLayout);
+			GridData gridData =  new GridData();
+			gridData.horizontalAlignment = GridData.FILL;
+			gridData.verticalAlignment = GridData.BEGINNING;
+			buttonComposite.setLayoutData(gridData);
+
+			// Browse buttons
+			Button browseButton = new Button(buttonComposite, SWT.PUSH);
+			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
+			browseButton.setText("Browse...");
+			gridData = new GridData();
+			gridData.horizontalAlignment= GridData.FILL;
+			gridData.verticalIndent = 5;
+			gridData.grabExcessHorizontalSpace= true;
+			browseButton.setLayoutData(gridData);
+			
+			browseButton.addSelectionListener(new SelectionListener() {
+				public void widgetDefaultSelected(SelectionEvent e) {}
+			
+				public void widgetSelected(SelectionEvent e) {
+
+					String fileName = promptFile("*.xml");
+					if( ! StringTools.stringIsEmpty(fileName)) {
+						
+						catalogText.setText(makeRelativeToProjectPath(fileName));
+					}
+				}
+			});
 		}
 
 		private TableViewer buildBindingsFileTable(Composite parent) {
@@ -479,13 +512,14 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			addButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_addButton);
 			gridData =  new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace= true;
 			addButton.setLayoutData(gridData);
 			addButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {}
 			
 				public void widgetSelected(SelectionEvent e) {
 
-					String fileName = promptFile();
+					String fileName = promptFile("*.xjb");
 					if( ! StringTools.stringIsEmpty(fileName)) {
 						
 						tableDataModel.add(makeRelativeToProjectPath(fileName));
@@ -498,6 +532,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			removeButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_removeButton);
 			gridData =  new GridData();
 			gridData.horizontalAlignment = GridData.FILL;
+			gridData.grabExcessHorizontalSpace= true;
 			removeButton.setLayoutData(gridData);
 			removeButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {}
@@ -550,13 +585,13 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 * The Add button was clicked, its action invokes this action which should
 		 * prompt the user to select a file and return it.
 		 */
-		private String promptFile() {
+		private String promptFile(String extension) {
 			String projectPath= javaProject.getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
 			dialog.setFilterPath(projectPath);
-			dialog.setFilterExtensions(new String[] {"*.xjb"});   //$NON-NLS-1$
+			dialog.setFilterExtensions(new String[] {extension});   //$NON-NLS-1$
 			String filePath = dialog.open();
 			
 			return (filePath != null) ? filePath : null;
