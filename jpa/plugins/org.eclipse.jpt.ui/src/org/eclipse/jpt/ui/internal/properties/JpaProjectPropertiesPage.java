@@ -16,7 +16,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -41,6 +40,7 @@ import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
@@ -84,8 +84,11 @@ import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
 import org.eclipse.jpt.utility.model.listener.ChangeListener;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeAdapter;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.utility.model.listener.SimpleChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
@@ -115,7 +118,6 @@ import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
-
 import com.ibm.icu.text.Collator;
 
 /**
@@ -218,7 +220,11 @@ public class JpaProjectPropertiesPage
 
 	void platformIdChanged(String newPlatformId) {
 		if ( ! this.getControl().isDisposed()) {
-			this.getLibraryInstallDelegate().setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, newPlatformId);
+			// handle null, in the case the jpa facet is changed via the facets page,
+			// the library install delegate is temporarily null
+			if (getLibraryInstallDelegate() != null) {
+				getLibraryInstallDelegate().setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, newPlatformId);
+			}
 		}
 	}
 
@@ -989,13 +995,21 @@ public class JpaProjectPropertiesPage
 		 * If it changes, a new JPA project is built.
 		 */
 		private final IPreferenceChangeListener preferenceChangeListener;
-
-
+		
+		/**
+		 * The JPA project may also change via another page (notably, the project facets page).
+		 * In that case, the preference change occurs before we actually have another project,
+		 * so we must listen to the projects manager
+		 */
+		private final CollectionChangeListener projectManagerListener;
+		
+		
 		JpaProjectModel(PropertyValueModel<IProject> projectModel) {
 			super(projectModel);
 			this.preferenceChangeListener = this.buildPreferenceChangeListener();
+			this.projectManagerListener = buildProjectManagerListener();
 		}
-
+		
 		private IPreferenceChangeListener buildPreferenceChangeListener() {
 			return new IPreferenceChangeListener() {
 				public void preferenceChange(PreferenceChangeEvent event) {
@@ -1009,26 +1023,42 @@ public class JpaProjectPropertiesPage
 				}
 			};
 		}
-
+		
+		private CollectionChangeListener buildProjectManagerListener() {
+			return new CollectionChangeAdapter() {
+				// we are only looking for the project rebuild *add* event here so we can
+				// determine if the platform has changed.
+				// the other events are unimportant in this case
+				@Override
+				public void itemsAdded(CollectionAddEvent event) {
+					JpaProjectModel.this.platformChanged();
+				}
+			};
+		}
+		
 		void platformChanged() {
 			this.propertyChanged();
 		}
-
+		
 		@Override
 		protected void engageSubject_() {
 			this.getPreferences().addPreferenceChangeListener(this.preferenceChangeListener);
+			JptCorePlugin.getJpaProjectManager().addCollectionChangeListener(
+						JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectManagerListener);
 		}
-
+		
 		@Override
 		protected void disengageSubject_() {
 			this.getPreferences().removePreferenceChangeListener(this.preferenceChangeListener);
+			JptCorePlugin.getJpaProjectManager().removeCollectionChangeListener(
+						JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectManagerListener);
 		}
-
+		
 		@Override
 		protected JpaProject buildValue_() {
 			return JptCorePlugin.getJpaProject(this.subject);
 		}
-
+		
 		private IEclipsePreferences getPreferences() {
 			return JptCorePlugin.getProjectPreferences(this.subject);
 		}
