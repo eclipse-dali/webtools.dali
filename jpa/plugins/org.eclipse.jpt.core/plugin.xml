@@ -368,6 +368,22 @@
 	</extension>
 	
 	
+	<extension 
+		point="org.eclipse.wst.common.project.facet.core.groups">
+		
+		<group id="jpa-prereqs">
+			<label>%JPA_PREREQ_GROUP_LABEL</label>
+			<description>The set of facets that each fulfill JPA prerequisites</description>
+			<include facet="jst.utility" versions="[1.0"/>
+			<include facet="jst.appclient" versions="[1.2"/>
+			<include facet="jst.ejb" versions="[1.1"/>
+			<include facet="jst.connector" versions="[1.0"/>
+			<include facet="jst.web" versions="[2.2"/>
+		</group>
+		
+	</extension>
+	
+	
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.facets">
 		
@@ -380,13 +396,7 @@
 			<constraint>
 				<and>
 					<requires facet="jst.java" version="[5.0"/>
-					<or>
-						<requires facet="jst.utility" version="[1.0"/>
-						<requires facet="jst.appclient" version="[1.2"/>
-						<requires facet="jst.ejb" version="[1.1"/>
-						<requires facet="jst.connector" version="[1.0"/>
-						<requires facet="jst.web" version="[2.2"/>
-					</or>
+					<requires group="jpa-prereqs"/>
 				</and>
 			</constraint>
 		</project-facet-version>
@@ -395,13 +405,7 @@
 			<constraint>
 				<and>
 					<requires facet="jst.java" version="[5.0"/>
-					<or>
-						<requires facet="jst.utility" version="[1.0"/>
-						<requires facet="jst.appclient" version="[1.2"/>
-						<requires facet="jst.ejb" version="[1.1"/>
-						<requires facet="jst.connector" version="[1.0"/>
-						<requires facet="jst.web" version="[2.2"/>
-					</or>
+					<requires group="jpa-prereqs"/>
 				</and>
 			</constraint>
 		</project-facet-version>
