@@ -13,6 +13,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -149,6 +150,7 @@ public class ClassesGenerator
 			if ( ! this.isDebug) {
 				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 			}
+			this.javaProject.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		}
 		catch (CoreException e) {
 			throw new RuntimeException(e);

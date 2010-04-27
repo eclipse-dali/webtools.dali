@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
@@ -52,7 +53,9 @@ public class SchemaGenerator
 	
 	static public String JAXB_SCHEMA_GEN_JAR = JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_JAR = ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
+
 	static public String JAXB_GENERIC_SCHEMA_GEN_CLASS = "javax.xml.bind.JAXBContext";	//$NON-NLS-1$
+	static public String JAXB_ECLIPSELINK_SCHEMA_GEN_CLASS = "org.eclipse.persistence.jaxb.JAXBContext";	//$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 	
 	private IVMInstall jre;
@@ -151,6 +154,7 @@ public class SchemaGenerator
 			if ( ! this.isDebug) {
 				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 			}
+			this.project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		}
 		catch (CoreException e) {
 			throw new RuntimeException(e);
