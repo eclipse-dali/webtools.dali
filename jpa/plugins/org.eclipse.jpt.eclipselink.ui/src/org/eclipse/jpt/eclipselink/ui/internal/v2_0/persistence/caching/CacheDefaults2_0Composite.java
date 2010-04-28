@@ -35,9 +35,8 @@ public class CacheDefaults2_0Composite extends CacheDefaultsComposite<Caching>
 		
 	@Override
 	protected void initializeLayout(Composite parent) {
-			super.initializeLayout(parent);
-
-			this.installPaneEnabler();
+		this.initializeCacheDefaultsComposites(parent);
+		this.installPaneEnabler();
 	}
 
 	@Override

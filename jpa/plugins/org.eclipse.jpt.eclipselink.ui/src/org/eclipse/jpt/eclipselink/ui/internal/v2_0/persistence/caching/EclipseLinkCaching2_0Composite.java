@@ -17,7 +17,12 @@ import org.eclipse.jpt.ui.internal.jpa2.persistence.options.SharedCacheModeCompo
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
+import org.eclipse.ui.forms.widgets.Section;
 
 /**
  *  EclipseLinkCaching2_0Composite
@@ -32,19 +37,21 @@ public class EclipseLinkCaching2_0Composite extends EclipseLinkCachingComposite<
 
 	@Override
 	protected void initializeLayout(Composite parent) {
-
-		Composite container = this.addSection(
-			parent,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle,
-			EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription
-		);
+		Section section = getWidgetFactory().createSection(parent, SWT.FLAT | ExpandableComposite.TITLE_BAR | Section.DESCRIPTION);
+		section.setText(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionTitle);
+		section.setDescription(EclipseLinkUiMessages.PersistenceXmlCachingTab_sectionDescription);
+		Composite composite = getWidgetFactory().createComposite(section);
+		composite.setLayout(new GridLayout(1, false));
+		section.setClient(composite);
+		this.updateGridData(composite);
+		this.updateGridData(composite.getParent());
 
 		// SharedCacheMode
-		new SharedCacheModeComposite(this, this.buildPersistenceUnit2_0Holder(), container);
+		new SharedCacheModeComposite(this, this.buildPersistenceUnit2_0Holder(), composite);
 		// Defaults
-		new CacheDefaults2_0Composite(this, container);
+		new CacheDefaults2_0Composite(this, composite);
 		// Flush Clear Cache
-		new FlushClearCache2_0Composite(this, container);
+		new FlushClearCache2_0Composite(this, composite);
 	}
 
 	private PropertyValueModel<PersistenceUnit2_0> buildPersistenceUnit2_0Holder() {
@@ -55,5 +62,13 @@ public class EclipseLinkCaching2_0Composite extends EclipseLinkCachingComposite<
 			}
 		};
 	}
-	
+
+	private void updateGridData(Composite container) {
+		GridData gridData = new GridData();
+		gridData.grabExcessHorizontalSpace = true;
+		gridData.grabExcessVerticalSpace = true;
+		gridData.horizontalAlignment = SWT.FILL;
+		gridData.verticalAlignment = SWT.FILL;
+		container.setLayoutData(gridData);
+	}	
 }
