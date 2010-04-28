@@ -203,11 +203,11 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 		setMessage(null);
 		
 		if( ! this.genericJaxbIsOnClasspath()) {
-			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.SchemaGeneratorWizardPage_jaxbLibrariesNotAvailable);
 		}
 		else if(this.usesMoxy() && ! this.moxyIsOnClasspath()) {
 			//this message is being truncated by the wizard width in some cases
-			this.displayWarning(JptJaxbUiMessages.ClassesGeneratorWizardPage_moxyLibrariesNotAvailable);
+			this.displayWarning(JptJaxbUiMessages.SchemaGeneratorWizardPage_moxyLibrariesNotAvailable);
 		}
 
 		//this code will intelligently remove our classpath warnings when they are present but no longer apply (as an alternative 

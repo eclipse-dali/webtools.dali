@@ -60,6 +60,10 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizardPage_errorNoSchema;
 	public static String SchemaGeneratorWizardPage_errorNoPackage;
 	
+	public static String SchemaGeneratorWizardPage_jaxbLibrariesNotAvailable;
+
+	public static String SchemaGeneratorWizardPage_moxyLibrariesNotAvailable;
+	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbUiMessages.class;
