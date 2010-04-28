@@ -73,6 +73,8 @@ import org.osgi.framework.Bundle;
  */
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
+	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
+	static public String XJB_FILTER = "*.xjb";   //$NON-NLS-1$
 
 	private final IJavaProject javaProject;
 
@@ -444,7 +446,6 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			// Browse buttons
 			Button browseButton = new Button(buttonComposite, SWT.PUSH);
 			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
-			browseButton.setText("Browse...");
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
 			gridData.verticalIndent = 5;
@@ -456,10 +457,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			
 				public void widgetSelected(SelectionEvent e) {
 
-					String fileName = promptFile("*.xml");
-					if( ! StringTools.stringIsEmpty(fileName)) {
+					String filePath = promptFile(XML_FILTER);
+					if( ! StringTools.stringIsEmpty(filePath)) {
 						
-						catalogText.setText(makeRelativeToProjectPath(fileName));
+						catalogText.setText(makeRelativeToProjectPath(filePath));
 					}
 				}
 			});
@@ -519,10 +520,10 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			
 				public void widgetSelected(SelectionEvent e) {
 
-					String fileName = promptFile("*.xjb");
-					if( ! StringTools.stringIsEmpty(fileName)) {
-						
-						tableDataModel.add(makeRelativeToProjectPath(fileName));
+					String filePath = promptFile(XJB_FILTER);
+					if( ! StringTools.stringIsEmpty(filePath)) {
+
+						addBindingsFile(filePath, tableDataModel);
 						tableViewer.refresh();
 					}
 				}
@@ -543,7 +544,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 						return;
 					}
 					String bindingsFileName = (String)selection.getFirstElement();
-					removeBindingsFileName(bindingsFileName);
+					removeBindingsFile(bindingsFileName);
 		
 					tableViewer.refresh();
 				}
@@ -558,19 +559,16 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			IPath relativePath = path.makeRelativeTo(javaProject.getProject().getLocation());
 			return relativePath.toOSString();
 		}
-		
-		private void removeBindingsFileName(String bindingsName) {
-			String name = this.getBindingsFileName(bindingsName);
-			this.bindingsFileNames.remove(name);
+
+		private void addBindingsFile(String filePath, final ArrayList<String> tableDataModel) {
+			String relativePath = this.makeRelativeToProjectPath(filePath);
+			if( ! tableDataModel.contains(relativePath)) {
+				tableDataModel.add(relativePath);
+			}
 		}
 		
-		private String getBindingsFileName(String bindingsName) {
-			for(String name: this.bindingsFileNames) {
-				if(name.equals(bindingsName)) {
-					return name;
-				}
-			}
-			return null;
+		private void removeBindingsFile(String bindingsName) {
+			this.bindingsFileNames.remove(bindingsName);
 		}
 
 		private IBaseLabelProvider buildLabelProvider() {
@@ -585,15 +583,18 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 * The Add button was clicked, its action invokes this action which should
 		 * prompt the user to select a file and return it.
 		 */
-		private String promptFile(String extension) {
+		private String promptFile(String filter) {
 			String projectPath= javaProject.getProject().getLocation().toString();
+			String dialogTitle = (filter.equals(XJB_FILTER)) ?
+				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile :
+				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog;
 
 			FileDialog dialog = new FileDialog(getShell());
-			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
+			dialog.setText(dialogTitle);
 			dialog.setFilterPath(projectPath);
-			dialog.setFilterExtensions(new String[] {extension});   //$NON-NLS-1$
+			dialog.setFilterExtensions(new String[] {filter});
 			String filePath = dialog.open();
-			
+
 			return (filePath != null) ? filePath : null;
 		}
 		

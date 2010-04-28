@@ -34,6 +34,7 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizardPage_addButton;
 	public static String ClassesGeneratorWizardPage_removeButton;
 	public static String ClassesGeneratorWizardPage_chooseABindingsFile;
+	public static String ClassesGeneratorWizardPage_chooseACatalog;
 	
 	public static String ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable;
 	
