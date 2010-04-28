@@ -108,6 +108,10 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
 		this.updateUsesMoxy(this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath());
+
+		// checkbox visible only if jpt.eclipselink.ui plugin is available
+		// and EclipseLink MOXy is not on the classpath
+		this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
 		
 		this.validateProjectClasspath();
 		this.giveFocusToDestination();

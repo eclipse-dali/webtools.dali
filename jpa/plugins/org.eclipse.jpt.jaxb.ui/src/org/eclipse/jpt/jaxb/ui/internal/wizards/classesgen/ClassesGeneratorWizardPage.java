@@ -446,7 +446,6 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			// Browse buttons
 			Button browseButton = new Button(buttonComposite, SWT.PUSH);
 			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
-			browseButton.setText("Browse...");
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
 			gridData.verticalIndent = 5;
@@ -586,13 +585,16 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 */
 		private String promptFile(String filter) {
 			String projectPath= javaProject.getProject().getLocation().toString();
+			String dialogTitle = (filter.equals(XJB_FILTER)) ?
+				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile :
+				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog;
 
 			FileDialog dialog = new FileDialog(getShell());
-			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
+			dialog.setText(dialogTitle);
 			dialog.setFilterPath(projectPath);
 			dialog.setFilterExtensions(new String[] {filter});
 			String filePath = dialog.open();
-			
+
 			return (filePath != null) ? filePath : null;
 		}
 		
