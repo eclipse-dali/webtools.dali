@@ -151,6 +151,8 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 */
 	public static final String SETTINGS_SECTION_NAME = "JpaProblemSeveritiesPage"; //$NON-NLS-1$
 
+	private Boolean hasProjectSpecificPreferences = null;
+
 	/**
 	 * Creates a new <code>JpaProblemSeveritiesPage</code>.
 	 */
@@ -744,13 +746,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 			return;
 		}
 		
-		IEclipsePreferences projectPreferences = getProjectPreferences(getProject());
-		if (useProjectSpecificSettings) {
-			projectPreferences.putBoolean(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN, true);
-		}
-		else {
-			projectPreferences.remove(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN);
-		}
+		this.hasProjectSpecificPreferences = Boolean.valueOf(useProjectSpecificSettings);
 		
 		//set all specified workspace preferences in the project preferences
 		if (useProjectSpecificSettings){
@@ -801,6 +797,16 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	@Override
 	public boolean performOk() {
 		super.performOk();
+		if (this.hasProjectSpecificPreferences != null) {
+			IEclipsePreferences projectPreferences = getProjectPreferences(getProject());
+			if (this.hasProjectSpecificPreferences.booleanValue()) {
+				projectPreferences.putBoolean(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN, true);
+			}
+			else {
+				projectPreferences.remove(JpaValidationPreferences.WORKSPACE_PREFERENCES_OVERRIDEN);
+			}
+			JpaValidationPreferences.flush(projectPreferences);
+		}
 		for (String validationPreferenceKey : this.severityLevels.keySet()) {
 			updatePreference(validationPreferenceKey, this.severityLevels.get(validationPreferenceKey));
 		}

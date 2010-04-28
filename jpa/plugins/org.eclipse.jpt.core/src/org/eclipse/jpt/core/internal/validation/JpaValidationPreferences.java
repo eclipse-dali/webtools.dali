@@ -130,7 +130,7 @@ public class JpaValidationPreferences {
 		return PROBLEM_PREFIX + messageId;
 	}
 
-	private static void flush(IEclipsePreferences prefs) {
+	public static void flush(IEclipsePreferences prefs) {
 		try {
 			prefs.flush();
 		} catch(BackingStoreException ex) {
