@@ -52,6 +52,14 @@ class FauxCatalogStrategy
 
 	@SuppressWarnings("unchecked")
 	public List<Schema> getSchemas(Database database) {
+		// 308947 - hack to support old IBM DTP/RDB extension for Oracle
+		List<Catalog> catalogs = database.getCatalogs();
+		// if there are no catalogs, the database must hold the schemata directly
+		if ((catalogs == null) || catalogs.isEmpty()) {
+			return database.getSchemas();
+		}
+
+		// normal logic:
 		return this.getFauxCatalog(database.getCatalogs()).getSchemas();
 	}
 
