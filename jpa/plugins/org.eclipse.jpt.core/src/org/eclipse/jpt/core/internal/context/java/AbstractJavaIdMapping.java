@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
@@ -38,6 +39,7 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
@@ -45,6 +47,7 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -418,11 +421,9 @@ public abstract class AbstractJavaIdMapping
 		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
 		if (isColumnSpecified() && isMappedByRelationship()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					buildMessage(
 						JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 						new String[] {},
-						getColumn(),
 						getColumn().getValidationTextRange(astRoot)));
 		}
 		
@@ -454,5 +455,18 @@ public abstract class AbstractJavaIdMapping
 			column,
 			textRange
 		);
+	}
+	
+	/* TODO - move to AbstractOrmAttributeMapping? */
+	protected IMessage buildMessage(String msgID, String[] params, TextRange textRange) {
+		PersistentAttribute attribute = getPersistentAttribute();
+		String attributeDesc = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				ArrayTools.add(params, 0, attributeDesc),
+				this,
+				textRange);
 	}
 }

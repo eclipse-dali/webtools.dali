@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
@@ -29,6 +30,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.IdMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
+import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
@@ -36,9 +38,11 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.resource.orm.XmlId;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -190,7 +194,12 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 	}
 	
 	protected boolean isColumnSpecified() {
-		return ! isVirtual() && getResourceColumn() != null;
+		if (! isVirtual()) {
+			return getResourceColumn() != null;
+		}
+		else {
+			return getJavaResourcePersistentAttribute().getAnnotation(JPA.COLUMN) != null;
+		}
 	}
 	
 	public void addResourceColumn() {
@@ -341,11 +350,9 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		// (In JPA 1.0, this will never be the case, since the id is never mapped by a relationship)
 		if (isColumnSpecified() && isMappedByRelationship()) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
+					buildMessage(
 						JpaValidationMessages.ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_COLUMN_SPECIFIED,
 						new String[] {},
-						getColumn(),
 						getColumn().getValidationTextRange()));
 		}
 		
@@ -406,5 +413,19 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 			column, 
 			textRange
 		);
+	}
+	
+	/* TODO - move to AbstractOrmAttributeMapping? */
+	protected IMessage buildMessage(String msgID, String[] params, TextRange textRange) {
+		String attributeDescString;
+		PersistentAttribute attribute = getPersistentAttribute();
+		if (attribute.isVirtual()) {
+			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC, attribute.getName());
+		}
+		else {
+			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
+		}
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY, msgID, ArrayTools.add(params, 0, attributeDescString), this, textRange);
 	}
 }
