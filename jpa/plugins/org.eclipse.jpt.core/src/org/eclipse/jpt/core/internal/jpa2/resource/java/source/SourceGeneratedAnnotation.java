@@ -183,7 +183,7 @@ public final class SourceGeneratedAnnotation
 	}
 
 	protected void syncComments(String astComments) {
-		String old = this.date;
+		String old = this.comments;
 		this.comments = astComments;
 		this.firePropertyChanged(COMMENTS_PROPERTY, old, astComments);
 	}
