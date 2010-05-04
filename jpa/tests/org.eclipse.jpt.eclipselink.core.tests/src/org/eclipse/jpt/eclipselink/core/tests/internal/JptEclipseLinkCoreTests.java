@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,9 +15,6 @@ import junit.framework.TestSuite;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.JptEclipseLinkCoreContextModelTests;
 import org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCoreResourceModelTests;
-import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.JptEclipseLink1_1CoreContextModelTests;
-import org.eclipse.jpt.eclipselink1_2.core.tests.internal.context.JptEclipseLink1_2CoreContextModelTests;
-import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.JptEclipseLink2_0CoreContextModelTests;
 
 /**
  * decentralize test creation code
@@ -34,17 +31,8 @@ public class JptEclipseLinkCoreTests
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreTests.class.getPackage().getName());
-		
-		if(requiredJarsExists()) {
-			suite.addTest(JptEclipselinkCoreResourceModelTests.suite());
-			suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink1_2CoreContextModelTests.suite());
-			suite.addTest(JptEclipseLink2_0CoreContextModelTests.suite());
-		}
-		else {
-			suite.addTest(TestSuite.warning(buildMissingJarErrorMessage()));
-		}
+		suite.addTest(JptEclipselinkCoreResourceModelTests.suite());
+		suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
 		return suite;
 	}
 
@@ -71,9 +59,7 @@ public class JptEclipseLinkCoreTests
 		return (new File(getSystemProperty(ECLIPSELINK_JAR_PROPERTY))).exists();
 	}
 
-	/*********** private **********/
-	private static String buildMissingJarErrorMessage() {
-
+	public static String buildMissingJarErrorMessage() {
 		if( ! jpaJarPropertyExists()) {
 			return errorMissingProperty(JPA_JAR_PROPERTY);
 		}
@@ -85,6 +71,8 @@ public class JptEclipseLinkCoreTests
 		}
 		return errorJarFileDoesNotExist(getSystemProperty(ECLIPSELINK_JAR_PROPERTY));
 	}
+
+	/*********** private **********/
 
 	private static String errorMissingProperty(String propertyName) {
 		return "missing Java system property: \"" + propertyName + "\"";

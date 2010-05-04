@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -30,16 +30,10 @@ public class JptCoreTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCoreTests.class.getPackage().getName());
-
-		if(requiredJarsExists()) {
-			suite.addTest(JptCoreUtilityJdtTests.suite());
-			suite.addTest(JptCoreModelTests.suite());
-			suite.addTest(JptCoreResourceModelTests.suite());
-			suite.addTest(JptCoreContextModelTests.suite());
-		}
-		else {
-			suite.addTest(TestSuite.warning(buildMissingJarErrorMessage()));
-		}
+		suite.addTest(JptCoreUtilityJdtTests.suite());
+		suite.addTest(JptCoreModelTests.suite());
+		suite.addTest(JptCoreResourceModelTests.suite());
+		suite.addTest(JptCoreContextModelTests.suite());
 		return suite;
 	}
 	
@@ -55,15 +49,14 @@ public class JptCoreTests {
 		return (new File(getSystemProperty(JPA_JAR_PROPERTY))).exists();
 	}
 
-	/*********** private **********/
-	private static String buildMissingJarErrorMessage() {
-
+	public static String buildMissingJarErrorMessage() {
 		if( ! jpaJarPropertyExists()) {
 			return errorMissingProperty(JPA_JAR_PROPERTY);
 		}
 		return errorJarFileDoesNotExist(getSystemProperty(JPA_JAR_PROPERTY));
 	}
 
+	/*********** private **********/
 	private static String errorMissingProperty(String propertyName) {
 		return "missing Java system property: \"" + propertyName + "\"";
 	}

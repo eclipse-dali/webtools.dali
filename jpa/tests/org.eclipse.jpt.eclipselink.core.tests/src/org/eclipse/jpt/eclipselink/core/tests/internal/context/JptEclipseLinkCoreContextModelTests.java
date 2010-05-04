@@ -12,18 +12,29 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.java.JptEclipseLinkCoreJavaContextModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.orm.JptEclipseLinkCoreOrmContextModelTests;
-import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.JptEclipseLinkCorePersistenceContextModelTests;
+import org.eclipse.jpt.eclipselink.core.tests.internal.JptEclipseLinkCoreTests;
+import org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.JptEclipseLink1_1CoreContextModelTests;
+import org.eclipse.jpt.eclipselink1_2.core.tests.internal.context.JptEclipseLink1_2CoreContextModelTests;
+import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.JptEclipseLink2_0CoreContextModelTests;
 
+/**
+ * Required Java system property:
+ *    -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
+ *    -Dorg.eclipse.jpt.eclipselink.jar=<eclipselink.jar path>
+ */
 public class JptEclipseLinkCoreContextModelTests extends TestCase
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
-		suite.addTestSuite(EclipseLinkJpaProjectTests.class);
-		suite.addTest(JptEclipseLinkCorePersistenceContextModelTests.suite());
-		suite.addTest(JptEclipseLinkCoreJavaContextModelTests.suite());
-		suite.addTest(JptEclipseLinkCoreOrmContextModelTests.suite());
+		if(JptEclipseLinkCoreTests.requiredJarsExists()) {
+			suite.addTest(JptEclipseLink1_0CoreContextModelTests.suite());
+			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
+			suite.addTest(JptEclipseLink1_2CoreContextModelTests.suite());
+			suite.addTest(JptEclipseLink2_0CoreContextModelTests.suite());
+		}
+		else {
+			suite.addTest(TestSuite.warning(JptEclipseLinkCoreTests.buildMissingJarErrorMessage()));
+		}
 		return suite;
 	}
 
