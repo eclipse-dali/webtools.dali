@@ -57,7 +57,8 @@ public class JoinColumnInJoiningStrategyStateObject
 	}
 	
 	protected Schema getDbSchema() {
-		return getRelationshipSource().getDbSchema();
+		TypeMapping typeMapping = getRelationshipSource();
+		return typeMapping == null ? null : typeMapping.getDbSchema();
 	}
 
 	protected TypeMapping getRelationshipSource() {
@@ -75,8 +76,8 @@ public class JoinColumnInJoiningStrategyStateObject
 		if (joinColumn != null) {
 			return joinColumn.getDefaultTable();
 		}
-		
-		return getRelationshipSource().getPrimaryTableName();
+		TypeMapping typeMapping = getRelationshipSource();		
+		return typeMapping == null ? null : typeMapping.getPrimaryTableName();
 	}
 	
 	@Override
