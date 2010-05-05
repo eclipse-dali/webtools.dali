@@ -27,7 +27,7 @@
 	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>
 	    <delete dir="${jpt-folder}" quiet="true"/>
 		
-		<ant target="core-resource-model-test" antfile="${library-file}" dir="${eclipse-home}">
+		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
 		    <property name="data-dir" value="${jpt-folder}"/>
 			<property name="plugin-name" value="${plugin-name}"/>
 			<property name="classname" value="org.eclipse.jpt.eclipselink.core.tests.internal.resource.JptEclipselinkCoreResourceModelTests" />
@@ -35,7 +35,7 @@
 			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar} -Dorg.eclipse.jpt.eclipselink.jar=${testDir}/${jpt-eclipselink-jar}"/>
 		</ant>
 	</target>
-	<target name="suite2">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>				<ant target="core-context-model-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.eclipselink.core.tests.internal.context.JptEclipseLinkCoreContextModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar} -Dorg.eclipse.jpt.eclipselink.jar=${testDir}/${jpt-eclipselink-jar}"/>		</ant>	</target>
+	<target name="suite2">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>				<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.eclipselink.core.tests.internal.context.JptEclipseLinkCoreContextModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar} -Dorg.eclipse.jpt.eclipselink.jar=${testDir}/${jpt-eclipselink-jar}"/>		</ant>	</target>
 	<!-- This target holds code to cleanup the testing environment after -->
 	<!-- after all of the tests have been run. You can use this target to -->
 	<!-- delete temporary files that have been created. -->
