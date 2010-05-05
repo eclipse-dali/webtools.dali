@@ -11,15 +11,17 @@ package org.eclipse.jpt.eclipselink.jaxb.core.schemagen;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.persistence.jaxb.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.SchemaOutputResolver;
+import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import javax.xml.transform.Result;
+import org.eclipse.jpt.eclipselink.jaxb.core.schemagen.internal.JptEclipseLinkJaxbCoreMessages;
+import org.eclipse.persistence.jaxb.JAXBContext;
 
 /**
  *  Generate a EclipseLink JAXB Schema
@@ -37,7 +39,6 @@ public class Main
 
 	static public String NO_FACTORY_CLASS = "doesnt contain ObjectFactory.class";   //$NON-NLS-1$
 	static public String CANNOT_BE_CAST_TO_JAXBCONTEXT = "cannot be cast to org.eclipse.persistence.jaxb.JAXBContext";   //$NON-NLS-1$
-	static public String JAXB_PROPERTIES_FILE_NOT_FOUND = "\nEclipseLink JAXBContextFactory must be specified in the jaxb.properties file to use EclipseLink MOXy for schema generation.\njavax.xml.bind.context.factory=org.eclipse.persistence.jaxb.JAXBContextFactory "; 
 
 	// ********** static methods **********
 	
@@ -70,23 +71,21 @@ public class Main
 	}
 
 	private void generate() {
-		System.out.println("MOXy generating schema...");    //$NON-NLS-1$
-		
         // Create the JAXBContext
         JAXBContext jaxbContext = this.buildJaxbContext();
 
         // Generate an XML Schema
         if(jaxbContext != null) {
-        	SchemaOutputResolver schemaOutputResolver = 
-        		new JptSchemaOutputResolver(this.targetSchemaName);
-        	
-        	jaxbContext.generateSchema(schemaOutputResolver);
-        	
-        	System.out.println("\nSchema " + this.targetSchemaName + " generated");   //$NON-NLS-1$
-        }
-    }
+			this.generateSchema(jaxbContext);
+		}
+		String result = (jaxbContext != null) ? 
+			this.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_GENERATED, this.targetSchemaName) : 
+			this.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName);
+		System.out.println(result);
+	}
 	
 	private JAXBContext buildJaxbContext() {
+		System.out.println(this.getString(JptEclipseLinkJaxbCoreMessages.LOADING_CLASSES));
         JAXBContext jaxbContext = null;
 		try {
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -96,27 +95,28 @@ public class Main
 			jaxbContext = (JAXBContext)JAXBContext.newInstance(sourceClasses);
 
 		}
-		catch (JAXBException e) {
-			String message = e.getMessage();
-			if(message.indexOf(NO_FACTORY_CLASS) > -1) {
-				System.err.println(message);
-			}
-			else {
-				e.printStackTrace();
-			}
-			System.err.println("\nSchema " + this.targetSchemaName + " not created");    //$NON-NLS-1$
+		catch (JAXBException ex) {
+			this.handleJaxbException(ex);
 		}
-		catch (ClassCastException e) {
-			String message = e.getMessage();
-			if(message.indexOf(CANNOT_BE_CAST_TO_JAXBCONTEXT) > -1) {
-				System.err.println(JAXB_PROPERTIES_FILE_NOT_FOUND);
-			}
-			else {
-				e.printStackTrace();
-			}
-			System.err.println("\nSchema " + this.targetSchemaName + " not created");    //$NON-NLS-1$
+		catch (ClassCastException ex) {
+			this.handleClassCastException(ex);
 		}
 		return jaxbContext;
+	}
+	
+	private void generateSchema(JAXBContext jaxbContext) {
+		System.out.println(this.getString(JptEclipseLinkJaxbCoreMessages.GENERATING_SCHEMA));
+		System.out.flush();
+
+    	SchemaOutputResolver schemaOutputResolver = 
+    		new JptSchemaOutputResolver(this.targetSchemaName);
+
+		try {
+			jaxbContext.generateSchema(schemaOutputResolver);
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
     
     private Class[] buildSourceClasses(String[] classNames, ClassLoader loader) {
@@ -125,14 +125,49 @@ public class Main
 		for(String className: classNames) {
 			try {
 				sourceClasses.add(loader.loadClass(className));
-					System.out.println(className);   //$NON-NLS-1$
+					System.out.println(className);
 			}
 			catch (ClassNotFoundException e) {
-				System.err.println("\n\tNot found: " + className);   //$NON-NLS-1$
+				System.err.println(this.bind(JptEclipseLinkJaxbCoreMessages.NOT_FOUND, className));
 			}
 		}
+		System.out.flush();
 		return sourceClasses.toArray(new Class[0]);
     }
+	
+	private void handleJaxbException(JAXBException ex) {
+		String message = ex.getMessage();
+		Throwable linkedEx = ex.getLinkedException();
+		if(message != null && message.indexOf(NO_FACTORY_CLASS) > -1) {
+			System.err.println(message);
+		}
+		else if(linkedEx != null && linkedEx instanceof ClassNotFoundException) {
+			String errorMessage = this.bind(
+				JptEclipseLinkJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
+			System.err.println(errorMessage);
+		}
+		else {
+			ex.printStackTrace();
+		}
+	}
+	
+	private void handleClassCastException(ClassCastException ex) {
+		String message = ex.getMessage();
+		if(message != null && message.indexOf(CANNOT_BE_CAST_TO_JAXBCONTEXT) > -1) {
+			System.err.println(this.getString(JptEclipseLinkJaxbCoreMessages.PROPERTIES_FILE_NOT_FOUND));
+		}
+		else {
+			ex.printStackTrace();
+		}
+	}
+	
+	private String getString(String key) {
+		return JptEclipseLinkJaxbCoreMessages.getString(key);
+	}
+	
+	private String bind(String key, Object argument) {
+		return MessageFormat.format(this.getString(key), argument);
+	}
 
 	// ********** argument queries **********
     

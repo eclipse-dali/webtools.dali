@@ -11,15 +11,17 @@ package org.eclipse.jpt.jaxb.core.schemagen;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.SchemaOutputResolver;
+import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
-import javax.xml.transform.Result;
+import org.eclipse.jpt.jaxb.core.schemagen.internal.JptJaxbCoreMessages;
 
 /**
  *  Generate a JAXB Schema
@@ -70,11 +72,39 @@ public class Main
 	}
 
 	private void generate() {
-		System.out.println("generating schema...");    //$NON-NLS-1$
         // Create the JAXBContext
 		JAXBContext jaxbContext = this.buildJaxbContext();
-
+		
         // Generate an XML Schema
+		if(jaxbContext != null) {
+			this.generateSchema(jaxbContext);
+		}
+		String result = (jaxbContext != null) ? 
+				this.bind(JptJaxbCoreMessages.SCHEMA_GENERATED, this.targetSchemaName) : 
+				this.bind(JptJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName);
+		System.out.println(result);
+    }
+	
+	private JAXBContext buildJaxbContext() {
+		System.out.println(this.getString(JptJaxbCoreMessages.LOADING_CLASSES));
+		JAXBContext jaxbContext = null;
+			try {
+				ClassLoader loader = Thread.currentThread().getContextClassLoader();
+				
+				Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
+				
+				jaxbContext = JAXBContext.newInstance(sourceClasses);
+			}
+			catch(JAXBException ex) {
+				this.handleException(ex);
+			}
+			return jaxbContext;
+	 }
+	
+	private void generateSchema(JAXBContext jaxbContext) {
+		System.out.println(this.getString(JptJaxbCoreMessages.GENERATING_SCHEMA));
+		System.out.flush();
+		
 		SchemaOutputResolver schemaOutputResolver = 
 			new JptSchemaOutputResolver(this.targetSchemaName);
 
@@ -83,32 +113,8 @@ public class Main
 		}
 		catch (IOException e) {
 			e.printStackTrace();
-			return;
 		}
-		System.out.println("\nSchema " + this.targetSchemaName + " generated");
-    }
-	
-	private JAXBContext buildJaxbContext() {
-		 JAXBContext jaxbContext = null;
-			try {
-				ClassLoader loader = Thread.currentThread().getContextClassLoader();
-				
-				Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
-				
-				jaxbContext = JAXBContext.newInstance(sourceClasses);
-			}
-			catch (JAXBException e) {
-				String message = e.getMessage();
-				if(message.indexOf(NO_FACTORY_CLASS) > -1) {
-					System.err.println(message);
-				}
-				else {
-					e.printStackTrace();
-				}
-				System.err.println("\nSchema " + this.targetSchemaName + " not created");
-			}
-			return jaxbContext;
-	 }
+	}
     
     private Class[] buildSourceClasses(String[] classNames, ClassLoader loader) {
 
@@ -119,27 +125,51 @@ public class Main
 					System.out.println(className);
 			}
 			catch (ClassNotFoundException e) {
-				System.err.println("\n\tNot found: " + className);
+				System.err.println(this.bind(JptJaxbCoreMessages.NOT_FOUND, className));
 			}
 		}
+		System.out.flush();
 		return sourceClasses.toArray(new Class[0]);
     }
+	
+	private void handleException(JAXBException ex) {
+		String message = ex.getMessage();
+		Throwable linkedEx = ex.getLinkedException();
+		if(message != null && message.indexOf(NO_FACTORY_CLASS) > -1) {
+			System.err.println(message);
+		}
+		else if(linkedEx != null && linkedEx instanceof ClassNotFoundException) {
+			String errorMessage = this.bind(JptJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
+			System.err.println(errorMessage);
+		}
+		else {
+			ex.printStackTrace();
+		}
+	}
+	
+	private String getString(String key) {
+		return JptJaxbCoreMessages.getString(key);
+	}
+	
+	private String bind(String key, Object argument) {
+		return MessageFormat.format(this.getString(key), argument);
+	}
 
 	// ********** argument queries **********
     
 	private String[] getSourceClassNames(String[] args) {
 
-		return this.getAllArgumentValue("-c", args);
+		return this.getAllArgumentValue("-c", args);   //$NON-NLS-1$
 	}
 	
 	private String getTargetSchemaName(String[] args) {
 
-		return this.getArgumentValue("-s", args);
+		return this.getArgumentValue("-s", args);   //$NON-NLS-1$
 	}
 
 	private boolean getDebugMode(String[] args) {
 
-		return this.argumentExists("-debug", args);
+		return this.argumentExists("-debug", args);   //$NON-NLS-1$
 	}
 	
 	private String getArgumentValue(String argName, String[] args) {
