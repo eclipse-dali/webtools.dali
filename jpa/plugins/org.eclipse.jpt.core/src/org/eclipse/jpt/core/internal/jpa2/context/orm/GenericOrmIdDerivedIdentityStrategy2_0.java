@@ -75,7 +75,7 @@ public class GenericOrmIdDerivedIdentityStrategy2_0
 	}
 	
 	public boolean isSpecified() {
-		return this.resource.getId() != null;
+		return Boolean.TRUE.equals(this.resource.getId());
 	}
 	
 	public void addStrategy() {
