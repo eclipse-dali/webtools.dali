@@ -1222,9 +1222,9 @@ public abstract class AbstractJpaProject
 		this.processJavaDeltaChildren(delta);
 
 		if (this.classpathEntryHasBeenAdded(delta)) {
-			// TODO
+			// TODO bug 277218
 		} else if (this.classpathEntryHasBeenRemoved(delta)) {  // should be mutually-exclusive w/added (?)
-			// TODO
+			// TODO bug 277218
 		}
 	}
 
