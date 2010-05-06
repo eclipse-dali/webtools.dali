@@ -87,9 +87,7 @@ public class MappedByJoiningStrategyPane
 				if (value == Boolean.TRUE) {
 					this.subject.setMappedByJoiningStrategy();
 				}
-				else {
-					this.subject.unsetMappedByJoiningStrategy();
-				}
+				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}
 		};
 	}

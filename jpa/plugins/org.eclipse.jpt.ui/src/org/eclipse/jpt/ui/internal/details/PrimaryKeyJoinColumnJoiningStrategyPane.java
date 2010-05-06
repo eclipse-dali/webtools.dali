@@ -79,9 +79,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 				if (value == Boolean.TRUE) {
 					this.subject.setPrimaryKeyJoinColumnJoiningStrategy();
 				}
-				else {
-					this.subject.unsetPrimaryKeyJoinColumnJoiningStrategy();
-				}
+				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}
 		};
 	}

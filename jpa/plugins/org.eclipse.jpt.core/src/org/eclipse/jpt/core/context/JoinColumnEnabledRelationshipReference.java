@@ -54,6 +54,8 @@ public interface JoinColumnEnabledRelationshipReference
 	 * whichever one is also configured (is specified) or the default strategy
 	 * will apply at that point.
 	 */
+	// TODO remove this API (bug 311945)- wanted to remove it when I fixed bug 311248.
+	// API users should just call set on another strategy, this will unset all other strategies
 	void unsetJoinColumnJoiningStrategy();
 	
 	/**

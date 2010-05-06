@@ -102,9 +102,7 @@ public class JoinTableJoiningStrategyPane
 				if (value == Boolean.TRUE) {
 					this.subject.setJoinTableJoiningStrategy();
 				}
-				else {
-					this.subject.unsetJoinTableJoiningStrategy();
-				}
+				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}
 		};
 	}
