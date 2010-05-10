@@ -204,8 +204,6 @@ public class ComboModelAdapter<E> extends AbstractComboModelAdapter<E> {
 			else {
 				this.selectedItem = null;
 			}
-
-			this.combo.select(this.combo.indexOf(item));
 			this.combo.setText(item);
 		}
 	}

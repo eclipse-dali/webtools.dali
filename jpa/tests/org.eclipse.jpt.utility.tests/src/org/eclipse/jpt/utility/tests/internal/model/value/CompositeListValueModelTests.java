@@ -14,20 +14,30 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
 import junit.framework.TestCase;
+
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.utility.model.event.ListAddEvent;
+import org.eclipse.jpt.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 @SuppressWarnings("nls")
 public class CompositeListValueModelTests extends TestCase {
-	private SimpleListValueModel<String> lvm0;
-	private SimpleListValueModel<String> lvm1;
-	private SimpleListValueModel<String> lvm2;
-	private SimpleListValueModel<String> lvm3;
-	private SimpleListValueModel<SimpleListValueModel<String>> uberLVM;
-	private CompositeListValueModel<SimpleListValueModel<String>, String> compositeLVM;
+	private LocalListValueModel<String> lvm0;
+	private LocalListValueModel<String> lvm1;
+	private LocalListValueModel<String> lvm2;
+	private LocalListValueModel<String> lvm3;
+	private LocalListValueModel<LocalListValueModel<String>> uberLVM;
+	private CompositeListValueModel<LocalListValueModel<String>, String> compositeLVM;
 
 	public CompositeListValueModelTests(String name) {
 		super(name);
@@ -37,32 +47,32 @@ public class CompositeListValueModelTests extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 
-		this.lvm0 = new SimpleListValueModel<String>();
+		this.lvm0 = new LocalListValueModel<String>();
 		this.lvm0.add("aaa");
 		this.lvm0.add("bbb");
 		this.lvm0.add("ccc");
 
-		this.lvm1 = new SimpleListValueModel<String>();
+		this.lvm1 = new LocalListValueModel<String>();
 		this.lvm1.add("ddd");
 		this.lvm1.add("eee");
 
-		this.lvm2 = new SimpleListValueModel<String>();
+		this.lvm2 = new LocalListValueModel<String>();
 		this.lvm2.add("fff");
 
-		this.lvm3 = new SimpleListValueModel<String>();
+		this.lvm3 = new LocalListValueModel<String>();
 		this.lvm3.add("ggg");
 		this.lvm3.add("hhh");
 		this.lvm3.add("iii");
 		this.lvm3.add("jjj");
 		this.lvm3.add("kkk");
 
-		this.uberLVM = new SimpleListValueModel<SimpleListValueModel<String>>();
+		this.uberLVM = new LocalListValueModel<LocalListValueModel<String>>();
 		this.uberLVM.add(this.lvm0);
 		this.uberLVM.add(this.lvm1);
 		this.uberLVM.add(this.lvm2);
 		this.uberLVM.add(this.lvm3);
 
-		this.compositeLVM = new CompositeListValueModel<SimpleListValueModel<String>, String>((ListValueModel<SimpleListValueModel<String>>) this.uberLVM);
+		this.compositeLVM = new CompositeListValueModel<LocalListValueModel<String>, String>((ListValueModel<LocalListValueModel<String>>) this.uberLVM);
 	}
 
 	@Override
@@ -134,7 +144,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testAddSource_Begin() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		SimpleListValueModel<String> lvm = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm = new LocalListValueModel<String>();
 		lvm.add("xxx");
 		lvm.add("yyy");
 		lvm.add("zzz");
@@ -152,7 +162,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testAddSource_Middle() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		SimpleListValueModel<String> lvm = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm = new LocalListValueModel<String>();
 		lvm.add("xxx");
 		lvm.add("yyy");
 		lvm.add("zzz");
@@ -170,7 +180,7 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testAddSource_End() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		SimpleListValueModel<String> lvm = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm = new LocalListValueModel<String>();
 		lvm.add("xxx");
 		lvm.add("yyy");
 		lvm.add("zzz");
@@ -188,15 +198,15 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testAddSources() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		SimpleListValueModel<String> lvmA = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvmA = new LocalListValueModel<String>();
 		lvmA.add("xxx");
 		lvmA.add("yyy");
 		lvmA.add("zzz");
-		SimpleListValueModel<String> lvmB = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvmB = new LocalListValueModel<String>();
 		lvmB.add("ppp");
 		lvmB.add("qqq");
 		lvmB.add("rrr");
-		Collection<SimpleListValueModel<String>> c = new ArrayList<SimpleListValueModel<String>>();
+		Collection<LocalListValueModel<String>> c = new ArrayList<LocalListValueModel<String>>();
 		c.add(lvmA);
 		c.add(lvmB);
 		this.uberLVM.addAll(2, c);
@@ -269,15 +279,15 @@ public class CompositeListValueModelTests extends TestCase {
 	public void testReplaceSources() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
-		SimpleListValueModel<String> lvmA = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvmA = new LocalListValueModel<String>();
 		lvmA.add("xxx");
 		lvmA.add("yyy");
 		lvmA.add("zzz");
-		SimpleListValueModel<String> lvmB = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvmB = new LocalListValueModel<String>();
 		lvmB.add("ppp");
 		lvmB.add("qqq");
 		lvmB.add("rrr");
-		List<SimpleListValueModel<String>> list = new ArrayList<SimpleListValueModel<String>>();
+		List<LocalListValueModel<String>> list = new ArrayList<LocalListValueModel<String>>();
 		list.add(lvmA);
 		list.add(lvmB);
 		this.uberLVM.set(2, list);
@@ -306,12 +316,12 @@ public class CompositeListValueModelTests extends TestCase {
 	}
 
 	public void testMoveSources_Middle() {
-		SimpleListValueModel<String> lvm4 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
 		lvm4.add("lll");
 		lvm4.add("mmm");
 		this.uberLVM.add(lvm4);
 
-		SimpleListValueModel<String> lvm5 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm5 = new LocalListValueModel<String>();
 		lvm5.add("nnn");
 		lvm5.add("ooo");
 		lvm5.add("ppp");
@@ -332,12 +342,12 @@ public class CompositeListValueModelTests extends TestCase {
 	}
 
 	public void testMoveSources_End() {
-		SimpleListValueModel<String> lvm4 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
 		lvm4.add("lll");
 		lvm4.add("mmm");
 		this.uberLVM.add(lvm4);
 
-		SimpleListValueModel<String> lvm5 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm5 = new LocalListValueModel<String>();
 		lvm5.add("nnn");
 		lvm5.add("ooo");
 		lvm5.add("ppp");
@@ -358,12 +368,12 @@ public class CompositeListValueModelTests extends TestCase {
 	}
 
 	public void testMoveSource() {
-		SimpleListValueModel<String> lvm4 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
 		lvm4.add("lll");
 		lvm4.add("mmm");
 		this.uberLVM.add(lvm4);
 
-		SimpleListValueModel<String> lvm5 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm5 = new LocalListValueModel<String>();
 		lvm5.add("nnn");
 		lvm5.add("ooo");
 		lvm5.add("ppp");
@@ -395,14 +405,14 @@ public class CompositeListValueModelTests extends TestCase {
 		assertTrue(Arrays.equals(expected, coordList.toArray()));
 	}
 
-	public void testChangeSources() {
-		List<SimpleListValueModel<String>> newList = new ArrayList<SimpleListValueModel<String>>();
-		SimpleListValueModel<String> lvm4 = new SimpleListValueModel<String>();
+	public void testChangeSources1() {
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
 		lvm4.add("lll");
 		lvm4.add("mmm");
 		newList.add(lvm4);
 
-		SimpleListValueModel<String> lvm5 = new SimpleListValueModel<String>();
+		LocalListValueModel<String> lvm5 = new LocalListValueModel<String>();
 		lvm5.add("nnn");
 		lvm5.add("ooo");
 		lvm5.add("ppp");
@@ -420,6 +430,145 @@ public class CompositeListValueModelTests extends TestCase {
 		assertTrue(Arrays.equals(expected, coordList.toArray()));
 		assertEquals("ooo", this.compositeLVM.get(3));
 		assertEquals("ooo", coordList.get(3));
+	}
+
+	public void testChangeSources2() {
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
+		lvm4.add("lll");
+		lvm4.add("mmm");
+		newList.add(lvm4);
+
+		LocalListValueModel<String> lvm5 = new LocalListValueModel<String>();
+		lvm5.add("nnn");
+		lvm5.add("ooo");
+		lvm5.add("ppp");
+		lvm5.add("qqq");
+		newList.add(lvm5);
+
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.uberLVM.changeListValues(newList);
+
+		Object[] expected = new Object[] { "lll", "mmm", "nnn", "ooo", "ppp", "qqq" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ooo", this.compositeLVM.get(3));
+		assertEquals("ooo", coordList.get(3));
+	}
+
+	public void testChangeSources3() {
+		ListChangeListener listener = new ErrorListener();
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		newList.add(this.lvm0);
+		newList.add(this.lvm1);
+		newList.add(this.lvm2);
+		newList.add(this.lvm3);
+
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.uberLVM.changeListValues(newList);
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ddd", this.compositeLVM.get(3));
+		assertEquals("ddd", coordList.get(3));
+	}
+
+	public void testChangeSources4() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsAdded(ListAddEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		newList.add(this.lvm0);
+		newList.add(this.lvm1);
+		newList.add(this.lvm2);
+		newList.add(this.lvm3);
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
+		lvm4.add("lll");
+		lvm4.add("mmm");
+		newList.add(lvm4);
+
+
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.uberLVM.changeListValues(newList);
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk", "lll", "mmm" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ddd", this.compositeLVM.get(3));
+		assertEquals("ddd", coordList.get(3));
+	}
+
+	public void testChangeSources5() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsRemoved(ListRemoveEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		newList.add(this.lvm0);
+		newList.add(this.lvm1);
+		newList.add(this.lvm2);
+
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.uberLVM.changeListValues(newList);
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ddd", this.compositeLVM.get(3));
+		assertEquals("ddd", coordList.get(3));
+	}
+
+	public void testChangeSources6() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsAdded(ListAddEvent event) { /* OK */ }
+			@Override
+			public void itemsRemoved(ListRemoveEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+
+		List<LocalListValueModel<String>> newList = new ArrayList<LocalListValueModel<String>>();
+		newList.add(this.lvm0);
+		newList.add(this.lvm1);
+
+		LocalListValueModel<String> lvm4 = new LocalListValueModel<String>();
+		lvm4.add("lll");
+		lvm4.add("mmm");
+		newList.add(lvm4);
+
+		newList.add(this.lvm3);
+
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.uberLVM.changeListValues(newList);
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "lll", "mmm", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ddd", this.compositeLVM.get(3));
+		assertEquals("ddd", coordList.get(3));
 	}
 
 	public void testAddItem_Begin() {
@@ -803,7 +952,7 @@ public class CompositeListValueModelTests extends TestCase {
 		assertEquals("fff", coordList.get(5));
 	}
 
-	public void testChangeItems_Begin() {
+	public void testChangeItems_Begin1() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
 		this.lvm0.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
@@ -817,7 +966,7 @@ public class CompositeListValueModelTests extends TestCase {
 		assertEquals("ggg", coordList.get(6));
 	}
 
-	public void testChangeItems_Middle() {
+	public void testChangeItems_Middle1() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
 		this.lvm1.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
@@ -831,7 +980,7 @@ public class CompositeListValueModelTests extends TestCase {
 		assertEquals("ggg", coordList.get(7));
 	}
 
-	public void testChangeItems_End() {
+	public void testChangeItems_End1() {
 		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
 
 		this.lvm3.setListValues(Arrays.asList(new String[] { "xxx", "yyy", "zzz" }));
@@ -843,6 +992,257 @@ public class CompositeListValueModelTests extends TestCase {
 		assertTrue(Arrays.equals(expected, coordList.toArray()));
 		assertEquals("fff", this.compositeLVM.get(5));
 		assertEquals("fff", coordList.get(5));
+	}
+
+	public void testChangeItems_Begin2() {
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, new ErrorListener());
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm0.changeListValues(Arrays.asList(new String[] { "aaa", "bbb", "ccc" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ggg", this.compositeLVM.get(6));
+		assertEquals("ggg", coordList.get(6));
+	}
+
+	public void testChangeItems_Middle2() {
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, new ErrorListener());
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm1.changeListValues(Arrays.asList(new String[] { "ddd", "eee" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("hhh", this.compositeLVM.get(7));
+		assertEquals("hhh", coordList.get(7));
+	}
+
+	public void testChangeItems_End2() {
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, new ErrorListener());
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm3.changeListValues(Arrays.asList(new String[] { "ggg", "hhh", "iii", "jjj", "kkk" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("fff", this.compositeLVM.get(5));
+		assertEquals("fff", coordList.get(5));
+	}
+
+	public void testChangeItems_Begin3() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsReplaced(ListReplaceEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm0.changeListValues(Arrays.asList(new String[] { "aaa", "bbb", "xxx" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "xxx", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ggg", this.compositeLVM.get(6));
+		assertEquals("ggg", coordList.get(6));
+	}
+
+	public void testChangeItems_Middle3() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsReplaced(ListReplaceEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm1.changeListValues(Arrays.asList(new String[] { "ddd", "xxx" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "xxx", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("hhh", this.compositeLVM.get(7));
+		assertEquals("hhh", coordList.get(7));
+	}
+
+	public void testChangeItems_End3() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsReplaced(ListReplaceEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm3.changeListValues(Arrays.asList(new String[] { "ggg", "hhh", "iii", "xxx", "kkk" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "xxx", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("fff", this.compositeLVM.get(5));
+		assertEquals("fff", coordList.get(5));
+	}
+
+	public void testChangeItems_Begin4() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsAdded(ListAddEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm0.changeListValues(Arrays.asList(new String[] { "aaa", "bbb", "ccc", "xxx" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "xxx", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("fff", this.compositeLVM.get(6));
+		assertEquals("fff", coordList.get(6));
+	}
+
+	public void testChangeItems_Middle4() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsAdded(ListAddEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm1.changeListValues(Arrays.asList(new String[] { "ddd", "eee", "xxx" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "xxx", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("ggg", this.compositeLVM.get(7));
+		assertEquals("ggg", coordList.get(7));
+	}
+
+	public void testChangeItems_End4() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsAdded(ListAddEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm3.changeListValues(Arrays.asList(new String[] { "ggg", "hhh", "iii", "jjj", "kkk", "xxx" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk", "xxx" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("fff", this.compositeLVM.get(5));
+		assertEquals("fff", coordList.get(5));
+	}
+
+	public void testChangeItems_Begin5() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsRemoved(ListRemoveEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm0.changeListValues(Arrays.asList(new String[] { "aaa" }));
+
+		Object[] expected = new Object[] { "aaa", "ddd", "eee", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("iii", this.compositeLVM.get(6));
+		assertEquals("iii", coordList.get(6));
+	}
+
+	public void testChangeItems_Middle5() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsRemoved(ListRemoveEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm1.changeListValues(Arrays.asList(new String[] { "ddd" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "fff", "ggg", "hhh", "iii", "jjj", "kkk" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("iii", this.compositeLVM.get(7));
+		assertEquals("iii", coordList.get(7));
+	}
+
+	public void testChangeItems_End5() {
+		ListChangeListener listener = new ErrorListener() {
+			@Override
+			public void itemsRemoved(ListRemoveEvent event) { /* OK */ }
+		};
+		this.compositeLVM.addListChangeListener(ListValueModel.LIST_VALUES, listener);
+		CoordinatedList<String> coordList = new CoordinatedList<String>(this.compositeLVM);
+
+		this.lvm3.changeListValues(Arrays.asList(new String[] { "ggg", "hhh", "iii" }));
+
+		Object[] expected = new Object[] { "aaa", "bbb", "ccc", "ddd", "eee", "fff", "ggg", "hhh", "iii" };
+		assertEquals(expected.length, this.compositeLVM.size());
+		assertEquals(expected.length, coordList.size());
+		assertTrue(Arrays.equals(expected, this.compositeLVM.toArray()));
+		assertTrue(Arrays.equals(expected, coordList.toArray()));
+		assertEquals("fff", this.compositeLVM.get(5));
+		assertEquals("fff", coordList.get(5));
+	}
+
+	class ErrorListener implements ListChangeListener {
+		public void itemsAdded(ListAddEvent event) {
+			fail();
+		}
+		public void itemsRemoved(ListRemoveEvent event) {
+			fail();
+		}
+		public void itemsMoved(ListMoveEvent event) {
+			fail();
+		}
+		public void itemsReplaced(ListReplaceEvent event) {
+			fail();
+		}
+		public void listCleared(ListClearEvent event) {
+			fail();
+		}
+		public void listChanged(ListChangeEvent event) {
+			fail();
+		}
+	}
+
+	class LocalListValueModel<E> extends SimpleListValueModel<E> {
+		LocalListValueModel() {
+			super();
+		}
+		void changeListValues(Iterable<E> listValues) {
+			if (listValues == null) {
+				throw new NullPointerException();
+			}
+			this.list.clear();
+			CollectionTools.addAll(this.list, listValues);
+			this.fireListChanged(LIST_VALUES, this.list);
+		}
 	}
 
 }
