@@ -9,29 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import java.util.ArrayList;
 import java.util.Collection;
-
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeAdapter;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
+import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.widgets.Combo;
+import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -50,16 +45,11 @@ import org.eclipse.swt.widgets.Composite;
  * @see GeneratedValue
  * @see IdMappingGenerationComposite - The parent container
  *
- * @version 2.2
+ * @version 2.3
  * @since 1.0
  */
-@SuppressWarnings("nls")
 public class GeneratedValueComposite extends Pane<IdMapping>
 {
-	private PropertyChangeListener generatedValuePropertyChangeListener;
-	private Combo generatorNameCombo;
-	private PropertyChangeListener generatorNamePropertyChangeListener;
-	private ListChangeListener generatorsListChangeListener;
 
 	/**
 	 * Creates a new <code>GeneratedValueComposite</code>.
@@ -73,118 +63,29 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		super(parentPane, parent);
 	}
 
-	private PropertyChangeListener buildGeneratedValuePropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(
-			buildGeneratedValuePropertyChangeListener_()
+	@Override
+	protected void initializeLayout(Composite container) {
+
+		// Strategy widgets
+		addLabeledComposite(
+			container,
+			JptUiDetailsMessages.GeneratedValueComposite_strategy,
+			addStrategyComboViewer(container),
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
-	}
 
-	private PropertyChangeListener buildGeneratedValuePropertyChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				disengageListeners((GeneratedValue) e.getOldValue());
-				engageListeners((GeneratedValue) e.getNewValue());
-
-				if (!isPopulating()) {
-					setPopulating(true);
-
-					try {
-						populateGeneratorNameCombo();
-					}
-					finally {
-						setPopulating(false);
-					}
-				}
-			}
-		};
-	}
-
-	private ModifyListener buildGeneratorNameModifyListener() {
-		return new ModifyListener() {
-			public void modifyText(ModifyEvent e) {
-				if (isPopulating()) {
-					return;
-				}
-
-				String generatorName = ((Combo) e.getSource()).getText();
-				GeneratedValue generatedValue = getSubject().getGeneratedValue();
-
-				if (StringTools.stringIsEmpty(generatorName)) {
-
-					if ((generatedValue == null) ||
-					    StringTools.stringIsEmpty(generatedValue.getGenerator()))
-					{
-						return;
-					}
-
-					generatorName = null;
-				}
-
-				retrieveGeneratedValue().setSpecifiedGenerator(generatorName);
-			}
-		};
-	}
-
-	private PropertyChangeListener buildGeneratorNamePropertyChangeListener() {
-		return new SWTPropertyChangeListenerWrapper(
-			buildGeneratorNamePropertyChangeListener_()
+		addLabeledEditableCombo(
+			container,
+			JptUiDetailsMessages.GeneratedValueComposite_generatorName,
+			buildGeneratorNameListHolder(),
+			buildGeneratorNameHolder(),
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
-	}
-
-	private PropertyChangeListener buildGeneratorNamePropertyChangeListener_() {
-		return new PropertyChangeListener() {
-			public void propertyChanged(PropertyChangeEvent e) {
-				if (!isPopulating()) {
-					setPopulating(true);
-
-					try {
-						populateGeneratorName();
-					}
-					finally {
-						setPopulating(false);
-					}
-				}
-			}
-		};
-	}
-
-	private ListChangeListener buildGeneratorsListChangeListener() {
-		return new SWTListChangeListenerWrapper(
-			buildGeneratorsListChangeListener_());
-	}
-
-	private ListChangeListener buildGeneratorsListChangeListener_() {
-		return new ListChangeAdapter() {
-			@Override
-			// should only have to listen to this event - others aren't created
-			public void listChanged(ListChangeEvent event) {
-				if (! isPopulating()) {
-					setPopulating(true);
-
-					try {
-						populateGeneratorChoices();
-					}
-					finally {
-						setPopulating(false);
-					}
-				}
-
-			}
-		};
-	}
-
-	private PropertyValueModel<GeneratedValue> buildGeneratorValueHolder() {
-		return new PropertyAspectAdapter<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
-			@Override
-			protected GeneratedValue buildValue_() {
-				return getSubject().getGeneratedValue();
-			}
-		};
 	}
 
 	private EnumFormComboViewer<GeneratedValue, GenerationType> addStrategyComboViewer(Composite parent) {
 
-		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratorValueHolder(), parent) {
+		return new EnumFormComboViewer<GeneratedValue, GenerationType>(this, buildGeneratedValueHolder(), parent) {
 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
@@ -224,143 +125,81 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		};
 	}
 
-	@Override
-	protected void doPopulate() {
-		super.doPopulate();
-		populateGeneratorNameCombo();
-	}
-
-	@Override
-	protected void engageListeners_(IdMapping subject) {
-		super.engageListeners_(subject);
-		subject.addPropertyChangeListener(IdMapping.GENERATED_VALUE_PROPERTY, this.generatedValuePropertyChangeListener);
-		this.engageListeners(subject.getGeneratedValue());
-	}
-
-	private void engageListeners(GeneratedValue generatedValue) {
-		if (generatedValue != null) {
-			this.engageListeners_(generatedValue);
-		}
-	}
-
-	private void engageListeners_(GeneratedValue generatedValue) {
-		generatedValue.getPersistenceUnit().addListChangeListener(PersistenceUnit.GENERATORS_LIST, this.generatorsListChangeListener);
-		generatedValue.addPropertyChangeListener(GeneratedValue.DEFAULT_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
-		generatedValue.addPropertyChangeListener(GeneratedValue.SPECIFIED_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
-	}
-
-	@Override
-	protected void disengageListeners_(IdMapping subject) {
-		this.disengageListeners(subject.getGeneratedValue());
-		subject.removePropertyChangeListener(IdMapping.GENERATED_VALUE_PROPERTY, this.generatedValuePropertyChangeListener);
-		super.disengageListeners_(subject);
-	}
-
-	private void disengageListeners(GeneratedValue generatedValue) {
-		if (generatedValue != null) {
-			this.disengageListeners_(generatedValue);
-		}
-	}
-
-	private void disengageListeners_(GeneratedValue generatedValue) {
-		generatedValue.removePropertyChangeListener(GeneratedValue.SPECIFIED_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
-		generatedValue.removePropertyChangeListener(GeneratedValue.DEFAULT_GENERATOR_PROPERTY, this.generatorNamePropertyChangeListener);
-		generatedValue.getPersistenceUnit().removeListChangeListener(PersistenceUnit.GENERATORS_LIST, this.generatorsListChangeListener);
-	}
-
-	@Override
-	protected void initialize() {
-		super.initialize();
-
-		this.generatedValuePropertyChangeListener = buildGeneratedValuePropertyChangeListener();
-		this.generatorNamePropertyChangeListener  = buildGeneratorNamePropertyChangeListener();
-		this.generatorsListChangeListener = buildGeneratorsListChangeListener();
-	}
-
-	@Override
-	protected void initializeLayout(Composite container) {
-
-		// Strategy widgets
-		addLabeledComposite(
-			container,
-			JptUiDetailsMessages.GeneratedValueComposite_strategy,
-			addStrategyComboViewer(container),
-			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
-		);
-
-		// Generator Name widgets
-		this.generatorNameCombo = addLabeledEditableCombo(
-			container,
-			JptUiDetailsMessages.GeneratedValueComposite_generatorName,
-			buildGeneratorNameModifyListener(),
-			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
-		);
-
-		this.generatorNameCombo.add(JptUiDetailsMessages.DefaultEmpty);
-	}
-
-	private void populateGeneratorChoices() {
-		if (this.generatorNameCombo.isDisposed()) {
-			return;
-		}
-		if (getSubject() == null) {
-			this.generatorNameCombo.setItems(new String[0]);
-		}
-		else {
-			this.generatorNameCombo.setItems(this.sortedUniqueGeneratorNames());
-		}
-	}
-
-	private void populateGeneratorName() {
-		if (this.generatorNameCombo.isDisposed()) {
-			return;
-		}
-		if (getSubject() == null) {
-			this.generatorNameCombo.setText("");
-		}
-		else {
-			GeneratedValue generatedValue = getSubject().getGeneratedValue();
-
-			if (generatedValue == null) {
-				this.generatorNameCombo.setText("");
+	private PropertyValueModel<GeneratedValue> buildGeneratedValueHolder() {
+		return new PropertyAspectAdapter<IdMapping, GeneratedValue>(getSubjectHolder(), IdMapping.GENERATED_VALUE_PROPERTY) {
+			@Override
+			protected GeneratedValue buildValue_() {
+				return getSubject().getGeneratedValue();
 			}
-			else {
-				String generatorName = generatedValue.getGenerator();
-
-				if (StringTools.stringIsEmpty(generatorName)) {
-					this.generatorNameCombo.setText("");
-				}
-				else if (!this.generatorNameCombo.getText().equals(generatorName)) {
-					this.generatorNameCombo.setText(generatorName);
-				}
+		};
+	}
+	
+	protected final WritablePropertyValueModel<String> buildGeneratorNameHolder() {
+		return new PropertyAspectAdapter<GeneratedValue, String>(buildGeneratedValueHolder(), GeneratedValue.SPECIFIED_GENERATOR_PROPERTY) {
+			@Override
+			protected String buildValue_() {
+				return this.subject.getSpecifiedGenerator();
 			}
-		}
+
+			@Override
+			public void setValue(String value) {
+				if (this.subject != null) {
+					setValue_(value);
+					return;
+				}
+				if (value.length() == 0) {
+					return;
+				}
+				retrieveGeneratedValue().setSpecifiedGenerator(value);
+			}
+
+			@Override
+			protected void setValue_(String value) {
+				if (value.length() == 0) {
+					value = null;
+				}
+				this.subject.setSpecifiedGenerator(value);
+			}
+		};
 	}
 
-	private void populateGeneratorNameCombo() {
-		populateGeneratorName();
-		populateGeneratorChoices();
+	/**
+	 * Use the CompositeListValueModel even though it only contains 1 list value model
+	 * This prevents the combo items from being reset when the list of generators
+	 * hasn't really changed.  This keeps the cursor from going back to the beginning
+	 * of the list every time the generator name is edited in the combo.
+	 * AbstractComboModelAdapter.listChanged() does not handle this case well, 
+	 * the CompositeListValueModel does handle listChanged events well.
+	 */
+	protected ListValueModel<String> buildGeneratorNameListHolder() {
+		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
+		list.add(new ListAspectAdapter<PersistenceUnit, String>(
+			buildPersistenceUnitHolder(),
+			PersistenceUnit.GENERATORS_LIST)
+		{
+			@Override
+			protected ListIterator<String> listIterator_() {
+				return CollectionTools.listIterator(ArrayTools.sort(this.subject.uniqueGeneratorNames()));
+			}
+		});
+		return new CompositeListValueModel<ListValueModel<String>, String>(list);
+	}
+
+	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+		return new PropertyAspectAdapter<IdMapping, PersistenceUnit>(getSubjectHolder()) {
+			@Override
+			protected PersistenceUnit buildValue_() {
+				return getSubject().getPersistenceUnit();
+			}
+		};
 	}
 
 	private GeneratedValue retrieveGeneratedValue() {
 		GeneratedValue generatedValue = getSubject().getGeneratedValue();
 
 		if (generatedValue == null) {
-			setPopulating(true);
-
-			try {
-				generatedValue = getSubject().addGeneratedValue();
-			}
-			finally {
-				setPopulating(false);
-			}
+			generatedValue = getSubject().addGeneratedValue();
 		}
-
 		return generatedValue;
 	}
-
-	private String[] sortedUniqueGeneratorNames() {
-		return ArrayTools.sort(this.getSubject().getPersistenceUnit().uniqueGeneratorNames());
-	}
-
 }
