@@ -119,8 +119,8 @@ public class DerivedIdentity2_0Pane
 				getSubjectHolder(), DerivedIdentity2_0.PREDOMINANT_DERIVED_IDENTITY_STRATEGY_PROPERTY) {
 			
 			@Override
-			protected Boolean buildValue_() {
-				return this.subject.usesMapsIdDerivedIdentityStrategy();
+			protected Boolean buildValue() {
+				return (this.subject == null) ? Boolean.FALSE : this.subject.usesMapsIdDerivedIdentityStrategy();
 			}
 			
 			@Override
@@ -178,6 +178,11 @@ public class DerivedIdentity2_0Pane
 		}
 		
 		@Override
+		protected boolean usesDefaultValue() {
+			return (getSubject() == null) ? true : getSubject().usesDefaultValue();
+		}
+		
+		@Override
 		protected String getDefaultValue() {
 			return (getSubject() == null) ? null : getSubject().getDefaultValue();
 		}
@@ -189,10 +194,7 @@ public class DerivedIdentity2_0Pane
 		
 		@Override
 		protected String buildNullDefaultValueEntry() {
-			boolean useNullString = (getSubject() == null) ? false : getSubject().usesDefaultValue();
-			return (useNullString) ? 
-					buildNonNullDefaultValueEntry(JptUiDetailsMessages2_0.DerivedIdentity_mapsIdUnspecifiedValue)
-					: "";
+			return buildNonNullDefaultValueEntry(JptUiDetailsMessages2_0.DerivedIdentity_mapsIdUnspecifiedValue);
 		}
 	}
 }

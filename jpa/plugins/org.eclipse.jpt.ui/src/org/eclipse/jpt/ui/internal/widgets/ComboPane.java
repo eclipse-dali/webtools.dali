@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.widgets;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -79,13 +80,21 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	}
 	
 	
-	// **************** abstract methods **************************************
+	// **************** typical overrides *************************************
 	
 	/**
 	 * Return the possible values to be added to the combo during
 	 * population.
 	 */
 	protected abstract Iterable<String> getValues();
+	
+	/**
+	 * Return whether the combo is to add a default value to the choices
+	 */
+	protected boolean usesDefaultValue() {
+		// default response is 'true'
+		return true;
+	}
 	
 	/**
 	 * Return the default value, or <code>null</code> if no default is
@@ -129,8 +138,10 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	protected void populateComboBox() {
 		this.comboBox.removeAll();
 		
-		this.comboBox.add(this.buildDefaultValueEntry());
-		
+		if (usesDefaultValue()) {
+			this.comboBox.add(this.buildDefaultValueEntry());
+		}
+			
 		for (String value : this.getValues()) {
 			this.comboBox.add(value);
 		}
@@ -158,10 +169,12 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	
 	protected void updateSelectedItem() {
 		// make sure the default value is up to date (??? ~bjv)
-		String defaultValueEntry = this.buildDefaultValueEntry();
-		if ( ! this.comboBox.getItem(0).equals(defaultValueEntry)) {
-			this.comboBox.remove(0);
-			this.comboBox.add(defaultValueEntry, 0);
+		if (usesDefaultValue()) {
+			String defaultValueEntry = this.buildDefaultValueEntry();
+			if ( ! this.comboBox.getItem(0).equals(defaultValueEntry)) {
+				this.comboBox.remove(0);
+				this.comboBox.add(defaultValueEntry, 0);
+			}
 		}
 		
 		this.updateSelectedItem_();
@@ -175,8 +188,13 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	protected void updateSelectedItem_() {
 		String value = (this.getSubject() == null) ? null : this.getValue();
 		if (value == null) {
-			// select the default value
-			this.comboBox.select(0);
+			if (usesDefaultValue()) {
+				// select the default value
+				this.comboBox.select(0);
+			}
+			else {
+				this.comboBox.setText("");
+			}
 		} else {
 			// select the new value
 			if ( ! value.equals(this.comboBox.getText())) {
@@ -234,7 +252,7 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 		}
 		
 		// set the new value if it is different from the old value
-		if (this.valuesAreDifferent(oldValue, newValue)) {
+		if (Tools.valuesAreDifferent(oldValue, newValue)) {
 			this.setPopulating(true);
 			
 			try {
@@ -261,21 +279,10 @@ public abstract class ComboPane<T extends Model> extends Pane<T>
 	 * pre-condition: value is not null
 	 */
 	protected boolean valueIsDefault(String value) {
+		if (! usesDefaultValue()) {
+			return false;
+		}
 		return (this.comboBox.getItemCount() > 0)
 				&& value.equals(this.comboBox.getItem(0));
-	}
-	
-	protected boolean valuesAreEqual(String value1, String value2) {
-		if ((value1 == null) && (value2 == null)) {
-			return true;	// both are null
-		}
-		if ((value1 == null) || (value2 == null)) {
-			return false;	// one is null but the other is not
-		}
-		return value1.equals(value2);
-	}
-	
-	protected boolean valuesAreDifferent(String value1, String value2) {
-		return ! this.valuesAreEqual(value1, value2);
 	}
 }

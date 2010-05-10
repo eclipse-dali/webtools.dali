@@ -156,17 +156,32 @@ public abstract class Pane<T extends Model>
 	 * {@link #enableWidgets(boolean)} is called.
 	 */
 	private ArrayList<Pane<?>> managedSubPanes;
-
+	
 	/**
-	 * This base enabled model can be used by individually-enabled/disabled widgets to
-	 * coordinate with the pane's enablement.
-	 * It can also be combined with additional enablement that defines the *pane's* enablement logic.
+	 * This enabled model is used to store the pane's base enablement state.
+	 * If API is called to set the pane enabled, this model gets updated.  If the pane is thereby
+	 * fully enabled (controller enabled model is also in agreement) the pane's widgets are set
+	 * enabled.
 	 * @see #getCombinedEnabledModel()
 	 */
 	private final WritablePropertyValueModel<Boolean> baseEnabledModel 
 			= new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 	
+	/**
+	 * This enabled model is used to define the pane's enablement as controlled by other widgets,
+	 * tests, etc. (for example a radio button)
+	 * If this model is changed, and the pane is thereby fully enabled (base enabled model is also 
+	 * in agreement) the pane's widgets are set enabled.
+	 * @see #getCombinedEnabledModel()
+	 */
+	private PropertyValueModel<Boolean> controllerEnabledModel;
+	
+	/**
+	 * The "and" combination of {@link #baseEnabledModel} and {@link #controllerEnabledModel}
+	 */
 	private PropertyValueModel<Boolean> combinedEnabledModel;
+	
+	private PropertyChangeListener combinedEnabledModelListener;
 	
 	/**
 	 * Creates a new <code>Pane</code>.
@@ -367,9 +382,10 @@ public abstract class Pane<T extends Model>
 	// ********** initialization **********
 
 	@SuppressWarnings("unchecked")
-	private void initialize(PropertyValueModel<? extends T> subjectHolder,
-	                        WidgetFactory widgetFactory)
-	{
+	private void initialize(
+			PropertyValueModel<? extends T> subjectHolder,
+	        WidgetFactory widgetFactory) {
+		
 		Assert.isNotNull(subjectHolder, "The subject holder cannot be null");
 
 		this.subjectHolder         = (PropertyValueModel<T>) subjectHolder;
@@ -424,7 +440,26 @@ public abstract class Pane<T extends Model>
 	}
 	
 	private void initializeEnabledModel(PropertyValueModel<Boolean> enabledModel) {
-		this.combinedEnabledModel = CompositeBooleanPropertyValueModel.and(this.baseEnabledModel, enabledModel);
+		this.controllerEnabledModel = enabledModel;
+		this.combinedEnabledModel = 
+				CompositeBooleanPropertyValueModel.and(this.baseEnabledModel, this.controllerEnabledModel);
+		this.combinedEnabledModelListener = buildCombinedEnabledModelListener();
+		this.combinedEnabledModel.addPropertyChangeListener(
+				PropertyValueModel.VALUE, this.combinedEnabledModelListener);
+		enableWidgets_(getCombinedEnablement());
+	}
+	
+	private PropertyChangeListener buildCombinedEnabledModelListener() {
+		return new SWTPropertyChangeListenerWrapper(buildControllerEnabledModelListener_());
+	}
+	
+	private PropertyChangeListener buildControllerEnabledModelListener_() {
+		return new PropertyChangeListener() {
+			@SuppressWarnings("unchecked")
+			public void propertyChanged(PropertyChangeEvent e) {
+				Pane.this.controllerEnablementChanged();
+			}
+		};
 	}
 	
 	/**
@@ -3229,22 +3264,7 @@ public abstract class Pane<T extends Model>
 	protected void doPopulate() {
 		this.log(Tracing.UI_LAYOUT, "   ->doPopulate()");
 	}
-
-	/**
-	 * Changes the enablement state of the children <code>Control</code>s.
-	 *
-	 * @param enabled <code>true</code> to enable the widgets or <code>false</code>
-	 * to disable them
-	 *
-	 * @category Layout
-	 */
-	private void enableChildren(boolean enabled) {
-		for (Control control : this.managedWidgets) {
-			control.setEnabled(enabled);
-		}
-		this.baseEnabledModel.setValue(Boolean.valueOf(enabled));
-	}
-
+	
 	private void controlEnabledState(PropertyValueModel<Boolean> booleanModel, Control... controls) {
 		this.controlEnabledState_(this.wrapEnabledModel(booleanModel), controls);
 	}
@@ -3265,8 +3285,17 @@ public abstract class Pane<T extends Model>
 		return (this.combinedEnabledModel != null) ? this.combinedEnabledModel : this.baseEnabledModel;
 	}
 	
+	private boolean getCombinedEnablement() {
+		Boolean enabled = getCombinedEnabledModel().getValue();
+		return (enabled == null) ? true : enabled.booleanValue();
+	}
+	
 	private PropertyValueModel<Boolean> andEnabledModel(PropertyValueModel<Boolean> booleanModel) {
 		return CompositeBooleanPropertyValueModel.and(getCombinedEnabledModel(), booleanModel);
+	}
+	
+	protected void controllerEnablementChanged() {
+		enableWidgets_(getCombinedEnablement());
 	}
 	
 	/**
@@ -3278,16 +3307,22 @@ public abstract class Pane<T extends Model>
 	 * @category Layout
 	 */
 	public void enableWidgets(boolean enabled) {
-
-		if (!this.container.isDisposed()) {
-			this.enableChildren(enabled);
-
+		this.baseEnabledModel.setValue(Boolean.valueOf(enabled));
+		enableWidgets_(getCombinedEnablement());
+	}
+	
+	private void enableWidgets_(boolean enabled) {
+		if (! this.container.isDisposed()) {
+			for (Control control : this.managedWidgets) {
+				control.setEnabled(enabled);
+			}
+			
 			for (Pane<?> subPane : this.managedSubPanes) {
 				subPane.enableWidgets(enabled);
 			}
 		}
 	}
-
+	
 	private void engageSubjectHolder() {
 		this.subjectHolder.addPropertyChangeListener(PropertyValueModel.VALUE, this.subjectChangeListener);
 	}
@@ -3680,7 +3715,11 @@ public abstract class Pane<T extends Model>
 		// Dispose this pane
 		this.disengageListeners(getSubject());
 		this.disengageSubjectHolder();
-
+		
+		if (this.combinedEnabledModel != null && this.combinedEnabledModelListener != null) {
+			this.combinedEnabledModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.combinedEnabledModelListener);
+		}
+		
 		this.leftControlAligner.dispose();
 		this.rightControlAligner.dispose();
 
