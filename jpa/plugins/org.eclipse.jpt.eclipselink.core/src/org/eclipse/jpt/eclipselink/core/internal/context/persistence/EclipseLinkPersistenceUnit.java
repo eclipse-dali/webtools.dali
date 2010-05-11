@@ -41,6 +41,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.Ecl
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -404,20 +405,60 @@ public class EclipseLinkPersistenceUnit
 	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
 
 		if(this.isJpa2_0Compatible()) {
-			Iterator<Property> properties = this.propertiesWithNamePrefix("eclipselink.cache.type."); //$NON-NLS-1$
-			
-			if(properties.hasNext()) {
-				Property property = properties.next();
+			for(Property property: this.getLegacyEntityCachingProperties()) {
 				messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.NORMAL_SEVERITY,
 						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING,
 						new String[] {property.getName()},
-						this.getPersistenceUnit()
+						this.getPersistenceUnit(),
+						property.getValidationTextRange()
 					)
 				);
 			}
 		}
 	}
 
+	protected ArrayList<Property> getLegacyEntityCachingProperties() {
+		ArrayList<Property> result = new ArrayList<Property>();
+		CollectionTools.addAll(result, this.getSharedCacheProperties());
+		CollectionTools.addAll(result, this.getEntityCacheTypeProperties());
+		CollectionTools.addAll(result, this.getEntityCacheSizeProperties());
+		return result;
+	}
+
+	/**
+	 * Returns all Shared Cache Properties, including Entity and default.
+	 */
+	private Iterable<Property> getSharedCacheProperties() {
+		return CollectionTools.iterable(this.propertiesWithNamePrefix("eclipselink.cache.shared."));  //$NON-NLS-1$
+	}
+
+	/**
+	 * Returns Entity Cache Size Properties, excluding default.
+	 */
+	private Iterable<Property> getEntityCacheSizeProperties() {
+		return this.getEntityPropertiesWithPrefix("eclipselink.cache.size.");  //$NON-NLS-1$
+	}
+	
+	/**
+	 * Returns Entity Cache Type Properties, excluding default.
+	 */
+	private Iterable<Property> getEntityCacheTypeProperties() {
+		return this.getEntityPropertiesWithPrefix("eclipselink.cache.type.");  //$NON-NLS-1$
+	}
+	
+	/**
+	 * Returns Entity Properties with the given prefix,
+	 * excluding Entity which name equals "default".
+	 */
+	private Iterable<Property> getEntityPropertiesWithPrefix(String prefix) {
+	   return new FilteringIterable<Property>(
+		   				CollectionTools.iterable(this.propertiesWithNamePrefix(prefix))) { //$NON-NLS-1$
+	      @Override
+	      protected boolean accept(Property next) {
+				return ! next.getName().endsWith("default"); //$NON-NLS-1$
+	      }
+	   };
+	}
 }
