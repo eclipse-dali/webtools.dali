@@ -336,7 +336,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
@@ -976,7 +976,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 	
 		//set metadata-complete, orm.xml virtual column ignores java column annotation
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		//no longer an element collection mapping
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
 	}
@@ -1323,7 +1323,7 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 
 		//set metadata-complete, orm.xml virtual column ignores java column annotation
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		//no longer an element collection mapping
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
 	}

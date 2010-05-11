@@ -249,15 +249,17 @@ public class OrmVersionMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertTrue(ormPersistentAttribute.isVirtual());
 		
 		ormPersistentAttribute.makeSpecified(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
-		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		ormPersistentAttribute= ormPersistentType.getAttributeNamed("id");
 
 		OrmVersionMapping ormVersionMapping = (OrmVersionMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormVersionMapping.getName());
+		assertFalse(ormPersistentAttribute.isVirtual());
 		assertEquals(Converter.NO_CONVERTER, ormVersionMapping.getConverter().getType());
 		
 		OrmColumn ormColumn = ormVersionMapping.getColumn();

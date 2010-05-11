@@ -138,7 +138,7 @@ public class EclipseLinkOrmIdMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		contextId = (OrmEclipseLinkIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertNull(resourceId.getMutable());
@@ -149,7 +149,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		OrmEclipseLinkBasicMapping contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		assertNull(resourceId.getMutable());
 		assertTrue(contextBasic.getMutable().isDefaultMutable());
@@ -237,7 +237,7 @@ public class EclipseLinkOrmIdMappingTests
 		// remove attribute from xml, test default mutable from java
 		
 		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("myDate");
 		contextId = (OrmEclipseLinkIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertNull(resourceId.getMutable());
@@ -248,7 +248,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("myDate");
 		OrmEclipseLinkBasicMapping contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
 		assertNull(resourceId.getMutable());
 		assertFalse(contextBasic.getMutable().isDefaultMutable());
@@ -336,7 +336,7 @@ public class EclipseLinkOrmIdMappingTests
 		
 		
 		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		ormIdMapping = (OrmIdMapping) ormPersistentAttribute.getMapping();
 		
 		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormIdMapping.getConverter().getType());

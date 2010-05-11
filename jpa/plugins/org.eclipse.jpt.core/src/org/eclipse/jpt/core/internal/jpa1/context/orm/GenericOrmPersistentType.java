@@ -558,10 +558,6 @@ public class GenericOrmPersistentType
 		this.removeItemFromList(virtualAttribute, this.virtualAttributes, VIRTUAL_ATTRIBUTES_LIST);
 	}
 
-	protected void moveVirtualAttribute_(int index, OrmPersistentAttribute virtualAttribute) {
-		this.moveItemInList(index, this.virtualAttributes.indexOf(virtualAttribute), this.virtualAttributes, VIRTUAL_ATTRIBUTES_LIST);
-	}
-
 	public boolean containsVirtualAttribute(OrmPersistentAttribute ormPersistentAttribute) {
 		return this.virtualAttributes.contains(ormPersistentAttribute);
 	}
@@ -610,7 +606,6 @@ public class GenericOrmPersistentType
 					if (javaPersistentAttribute.getResourcePersistentAttribute() == javaResourceAttribute) {
 						if (this.valuesAreEqual(contextAttribute.getMappingKey(), javaAttributeMapping.getKey())) { 
 							//the mapping key would change if metaDataComplete flag changes, rebuild the orm attribute
-							this.moveVirtualAttribute_(resourceIndex, contextAttribute);
 							contextAttributesToRemove.remove(contextAttribute);
 							contextAttributesToUpdate.add(contextAttribute);
 							contextAttributeFound = true;

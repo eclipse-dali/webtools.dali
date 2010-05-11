@@ -232,7 +232,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		assertEquals("id", ((BasicMapping) ormPersistentAttribute.getMapping()).getColumn().getName());
@@ -249,7 +249,7 @@ public class GenericOrmPersistentAttributeTests extends ContextModelTestCase
 		
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 
-		ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		assertEquals("address", ormPersistentAttribute.getName());
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 	}

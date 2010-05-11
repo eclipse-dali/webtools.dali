@@ -125,7 +125,7 @@ import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 		assertEquals(GenerationType.SEQUENCE, javaGeneratedValue.getSpecifiedStrategy());
 		
 		ormIdAttribute.makeVirtual();
-		ormIdAttribute = ormPersistentType.virtualAttributes().next();
+		ormIdAttribute = ormPersistentType.getAttributeNamed("id");
 		ormIdMapping = (IdMapping) ormIdAttribute.getMapping();
 		assertEquals("Foo", ormIdMapping.getGeneratedValue().getSpecifiedGenerator());
 		assertEquals(GenerationType.SEQUENCE, ormIdMapping.getGeneratedValue().getSpecifiedStrategy());

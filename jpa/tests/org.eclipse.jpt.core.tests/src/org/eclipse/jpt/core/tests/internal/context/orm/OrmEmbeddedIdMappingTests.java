@@ -815,10 +815,11 @@ public class OrmEmbeddedIdMappingTests extends ContextModelTestCase
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
-		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		assertTrue(ormPersistentAttribute.isVirtual());
+
 		//will be an OrmEmbeddedMapping instead of OrmEmbeddedIdMapping since that is the default
-		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();	
+		OrmEmbeddedMapping ormEmbeddedMapping = (OrmEmbeddedMapping) ormPersistentAttribute.getMapping();
 		assertEquals("address", ormEmbeddedMapping.getName());
 
 		//TODO

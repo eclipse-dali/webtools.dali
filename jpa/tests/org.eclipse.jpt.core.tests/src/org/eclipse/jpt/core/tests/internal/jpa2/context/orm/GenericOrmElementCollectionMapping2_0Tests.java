@@ -349,12 +349,12 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
 		
 		ormPersistentAttribute.makeSpecified(MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY);
-		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
 
 		OrmElementCollectionMapping2_0 ormElementCollectionMapping = (OrmElementCollectionMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormElementCollectionMapping.getName());
@@ -949,7 +949,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//virtual attrubte in orm.xml, java attribute has no value Column annotation
-		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		OrmColumn ormColumn = addressesVirtualMapping.getValueColumn();
 		assertEquals("addresses", ormColumn.getSpecifiedName());
@@ -990,7 +990,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 		//set metadata-complete, orm.xml virtual column ignores java column annotation
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		//no longer an element collection mapping
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
 	}
@@ -1298,7 +1298,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
 		//virtual attribute in orm.xml, java attribute has no value Column annotation
-		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		OrmElementCollectionMapping2_0 addressesVirtualMapping = (OrmElementCollectionMapping2_0) addressesPersistentAttribute.getMapping();		
 		Column ormColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertEquals("addresses_KEY", ormColumn.getSpecifiedName());
@@ -1339,7 +1339,7 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 	
 		//set metadata-complete, orm.xml virtual column ignores java column annotation
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		//no longer an element collection mapping
 		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, addressesPersistentAttribute.getMappingKey());
 	}

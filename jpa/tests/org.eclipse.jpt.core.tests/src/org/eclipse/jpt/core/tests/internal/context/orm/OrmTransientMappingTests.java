@@ -141,15 +141,17 @@ public class OrmTransientMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(2, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 		
 		assertEquals(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertTrue(ormPersistentAttribute.isVirtual());
 		
 		ormPersistentAttribute.makeSpecified(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
-		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
 
 		OrmTransientMapping ormTransientMapping = (OrmTransientMapping) ormPersistentAttribute.getMapping();	
 		assertEquals("id", ormTransientMapping.getName());
+		assertFalse(ormPersistentAttribute.isVirtual());
 	}
 	
 	public void testSpecifiedMapping() throws Exception {

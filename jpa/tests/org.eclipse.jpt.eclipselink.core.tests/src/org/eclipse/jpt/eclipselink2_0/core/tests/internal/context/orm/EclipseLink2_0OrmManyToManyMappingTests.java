@@ -763,7 +763,7 @@ public class EclipseLink2_0OrmManyToManyMappingTests
 
 		//set metadata-complete, orm.xml virtual column ignores java column annotation
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		addressesPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		addressesPersistentAttribute = ormPersistentType.getAttributeNamed("addresses");
 		//becomes a 1-m by default
 		OrmOneToManyMapping2_0 addressesMapping = (OrmOneToManyMapping2_0) addressesPersistentAttribute.getMapping();		
 		ormColumn = addressesMapping.getMapKeyColumn();

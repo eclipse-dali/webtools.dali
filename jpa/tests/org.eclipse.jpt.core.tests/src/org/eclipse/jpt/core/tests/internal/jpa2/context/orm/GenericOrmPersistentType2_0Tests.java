@@ -170,12 +170,12 @@ public class GenericOrmPersistentType2_0Tests
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		virtualAttributes = ormPersistentType.virtualAttributes();
 		ormPersistentAttribute = virtualAttributes.next();
-		assertEquals("id", ormPersistentAttribute.getName());
+		assertEquals("name", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 		
 		
 		ormPersistentAttribute = virtualAttributes.next();
-		assertEquals("name", ormPersistentAttribute.getName());
+		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 		
 		assertFalse(virtualAttributes.hasNext());
@@ -238,11 +238,11 @@ public class GenericOrmPersistentType2_0Tests
 		
 		virtualAttributes = ormPersistentType.virtualAttributes();
 		ormPersistentAttribute = virtualAttributes.next();
-		assertEquals("id", ormPersistentAttribute.getName());
+		assertEquals("name", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 		
 		ormPersistentAttribute = virtualAttributes.next();
-		assertEquals("name", ormPersistentAttribute.getName());
+		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 
 		assertFalse(virtualAttributes.hasNext());
@@ -256,7 +256,7 @@ public class GenericOrmPersistentType2_0Tests
 		ormPersistentType.virtualAttributes().next().makeSpecified();
 		virtualAttributes = ormPersistentType.virtualAttributes();
 		ormPersistentAttribute = virtualAttributes.next();
-		assertEquals("name", ormPersistentAttribute.getName());
+		assertEquals("id", ormPersistentAttribute.getName());
 		assertEquals(AccessType.FIELD, ormPersistentAttribute.getAccess());
 
 		assertFalse(virtualAttributes.hasNext());
