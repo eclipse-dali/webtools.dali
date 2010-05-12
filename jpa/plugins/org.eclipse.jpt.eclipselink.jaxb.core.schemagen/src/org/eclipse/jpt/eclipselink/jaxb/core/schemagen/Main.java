@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBException;
@@ -22,6 +23,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.jpt.eclipselink.jaxb.core.schemagen.internal.JptEclipseLinkJaxbCoreMessages;
 import org.eclipse.persistence.jaxb.JAXBContext;
+import org.eclipse.persistence.jaxb.JAXBContextFactory;
 
 /**
  *  Generate a EclipseLink JAXB Schema
@@ -92,8 +94,9 @@ public class Main
 			
 			Class[] sourceClasses = this.buildSourceClasses(this.sourceClassNames, loader);
 			
-			jaxbContext = (JAXBContext)JAXBContext.newInstance(sourceClasses);
-
+			//call MOXy JAXBContextFactory directly.  This eliminates the need to have the JAXB properties file in place
+			//in time for the generation.
+			jaxbContext = (JAXBContext)JAXBContextFactory.createContext(sourceClasses, Collections.<String,Object>emptyMap());
 		}
 		catch (JAXBException ex) {
 			this.handleJaxbException(ex);

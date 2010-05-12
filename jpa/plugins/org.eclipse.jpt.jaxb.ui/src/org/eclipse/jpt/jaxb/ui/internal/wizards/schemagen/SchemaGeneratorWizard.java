@@ -89,7 +89,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		String[] sourceClassNames = this.buildSourceClassNames(this.getAllCheckedItems());
 		
 		WorkspaceJob genEntitiesJob = new GenerateSchemaJob( 
-						javaProject.getProject(), 
+						javaProject, 
 						sourceClassNames, 
 						this.getTargetSchema(), 
 						this.usesMoxy());
@@ -190,27 +190,27 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	// ********** generate schema job **********
 
 	static class GenerateSchemaJob extends WorkspaceJob {
-		private final IProject project;
+		private final IJavaProject javaProject;
 		private final String[] sourceClassNames;
 		private final String targetSchema;
 		private final boolean useMoxy;
 		
-		GenerateSchemaJob(IProject project, String[] sourceClassNames, String targetSchema, boolean useMoxy) {
+		GenerateSchemaJob(IJavaProject project, String[] sourceClassNames, String targetSchema, boolean useMoxy) {
 			super(JptJaxbUiMessages.SchemaGeneratorWizard_generatingSchema);
 			
-			this.project = project ;
+			this.javaProject = project ;
 			this.sourceClassNames = sourceClassNames;
 			this.targetSchema = targetSchema;
 			this.useMoxy = useMoxy;
 
 			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-			this.setRule(ruleFactory.modifyRule(project));
+			this.setRule(ruleFactory.modifyRule(javaProject.getProject()));
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 			try{
-				SchemaGenerator.generate(project, this.targetSchema, this.sourceClassNames, this.useMoxy, monitor);
+				SchemaGenerator.generate(javaProject, this.targetSchema, this.sourceClassNames, this.useMoxy, monitor);
 			}
 			catch(OperationCanceledException e) {
 				//user canceled generation

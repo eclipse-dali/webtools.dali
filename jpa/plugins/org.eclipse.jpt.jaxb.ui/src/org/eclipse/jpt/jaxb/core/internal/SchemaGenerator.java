@@ -9,11 +9,18 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -30,12 +37,16 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
@@ -51,6 +62,10 @@ public class SchemaGenerator
 	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.jaxb.core.schemagen";   //$NON-NLS-1$
 	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_CLASS = ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
 	
+	static public String ECLIPSELINK_JAXB_CONTEXT_FACTORY = "org.eclipse.persistence.jaxb.JAXBContextFactory";  //$NON-NLS-1$
+	static public String ECLIPSELINK_JAXB_PROPERTIES_FILE_CONTENTS = "javax.xml.bind.context.factory=" + ECLIPSELINK_JAXB_CONTEXT_FACTORY;  //$NON-NLS-1$
+	static public String JAXB_PROPERTIES_FILE_NAME = "jaxb.properties";  //$NON-NLS-1$
+	
 	static public String JAXB_SCHEMA_GEN_JAR = JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_JAR = ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 
@@ -62,25 +77,25 @@ public class SchemaGenerator
 	private ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
 	
-	private final IProject project;
+	private final IJavaProject javaProject;
 	private final String targetSchemaName;
 	private final String[] sourceClassNames;
-	private final String mainType;
-	private final boolean useMoxy;
+	private  String mainType;
+	private  boolean useMoxy;
 	private final boolean isDebug = false;
 
 	// ********** static methods **********
 	
 	public static void generate(
-			IProject project, 
+			IJavaProject javaProject, 
 			String targetSchemaName, 
 			String[] sourceClassNames,
 			boolean useMoxy,
 			IProgressMonitor monitor) {
-		if (project == null) {
+		if (javaProject == null) {
 			throw new NullPointerException();
 		}
-		new SchemaGenerator(project, 
+		new SchemaGenerator(javaProject, 
 			targetSchemaName, 
 			sourceClassNames,
 			useMoxy,
@@ -90,13 +105,13 @@ public class SchemaGenerator
 	// ********** constructors **********
 	
 	protected SchemaGenerator(
-			IProject project, 
+			IJavaProject javaProject, 
 			String targetSchemaName, 
 			String[] sourceClassNames,
 			boolean useMoxy,
 			@SuppressWarnings("unused") IProgressMonitor monitor) {
 		super();
-		this.project = project;
+		this.javaProject = javaProject;
 		this.targetSchemaName = targetSchemaName;
 		this.sourceClassNames = sourceClassNames;
 		this.useMoxy = useMoxy;
@@ -123,12 +138,125 @@ public class SchemaGenerator
 	}
 
 	protected void generate() {
-		String projectLocation = this.getProject().getLocation().toString();
-		
+		// generate jaxb.properties file if necessary
+		if (this.useMoxy){
+			if (!isJaxbPropertiesFilePresent()){
+				this.generateJaxbPropertiesFile();
+			}
+			else if (!isJaxbContextMoxy(getJaxbPropertiesFile())){
+				//properties file actually specifies a different implementation
+				//override wizard setting and fall back to generic generation
+				this.useMoxy = false;
+				this.mainType = JAXB_SCHEMA_GEN_CLASS;
+			}
+		}
+		String projectLocation = getProject().getLocation().toString();
 		this.initializeLaunchConfiguration(projectLocation);
-
 		this.addLaunchListener();
 		this.launch = this.saveAndLaunchConfig();
+	}
+	
+	/**
+	 * Returns the first "jaxb.properties" file that is found in a valid source
+	 * folder in the project.
+	 * 
+	 * Returns null if no "jaxb.properties" file is found.
+	 */
+	private IFile getJaxbPropertiesFile() {
+		return getJaxbPropertiesFileFromPackageRoots(JDTTools.getJavaSourceFolders(this.javaProject));
+	}
+	
+	private IFile getJaxbPropertiesFileFromPackageRoots(Iterable<IPackageFragmentRoot> packageFragmentRoots){
+		Object[] objects = null;
+		IJavaElement[] javaElements;
+		try {
+			for (IPackageFragmentRoot pfr : packageFragmentRoots) {
+				javaElements = pfr.getChildren();
+				for (IJavaElement javaElement : javaElements) {
+					objects = ((IPackageFragment) javaElement).getNonJavaResources();
+					for (Object object : objects) {
+						IResource resource = (IResource) object;
+						if (resource.getName().equals(JAXB_PROPERTIES_FILE_NAME)) {
+							// jaxb.properties has been found
+							return (IFile)resource;
+						}
+					}
+				}
+			}
+		} catch (JavaModelException jme) {
+			throw new RuntimeException(jme);
+		}
+		return null;
+	}		
+
+	private boolean isJaxbPropertiesFilePresent(){
+		return getJaxbPropertiesFile()!= null;
+	}
+
+	private boolean isJaxbContextMoxy(IFile propertyFile){	
+
+		InputStream in = null;
+		try {
+			in = propertyFile.getContents();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+			String line = reader.readLine();
+			//jaxb.properties will only contain one property entry, the JAXBContextFactory
+			String propertyValue = line.substring(line.indexOf("=") + 1);
+			if (propertyValue.equals(ECLIPSELINK_JAXB_CONTEXT_FACTORY)){
+				return true;
+			}
+		} catch (CoreException ce){
+			throw new RuntimeException(ce);
+		} catch (IOException ioe){
+			throw new RuntimeException(ioe);
+		} finally {
+		    if (in != null){
+		    	try{
+		    		in.close();
+		    	} catch (IOException ioe) {
+		    		throw new RuntimeException(ioe);
+				}
+		    }
+		}
+		return false;
+	}
+	
+	private void generateJaxbPropertiesFile(){
+		IPackageFragment packageFragment = findPackageFragementForSourceClassName(this.sourceClassNames[0]);
+
+		IFolder folder = (IFolder)packageFragment.getResource();
+		IFile file = folder.getFile("jaxb.properties");
+			
+		byte[] bytes;
+		try {
+			bytes = ECLIPSELINK_JAXB_PROPERTIES_FILE_CONTENTS.getBytes("UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			throw new RuntimeException(e);
+		}    
+		
+		InputStream contents = new ByteArrayInputStream(bytes);
+		
+		try {
+			//the input stream will be closed as a result of calling create
+		    file.create(contents, IResource.NONE, null);		
+		} catch (CoreException ce) {
+			throw new RuntimeException(ce);
+		}
+	}
+
+	private IPackageFragment findPackageFragementForSourceClassName(String sourceClassName) {
+		String packageName = sourceClassName.substring(0, sourceClassName.lastIndexOf('.'));
+		
+		//Find the existing package fragment where we want to generate
+		for (IPackageFragmentRoot pfr : JDTTools.getJavaSourceFolders(this.javaProject)) {
+			//use the package of the first source class as the package for generation
+			IPackageFragment packageFragment = pfr.getPackageFragment(packageName);
+			if (packageFragment.exists()){
+				return packageFragment;
+			}
+		}
+		//the existing package fragment was not found
+		throw new IllegalStateException("Java package must exist for source class");
 	}
 	
 	private void initializeLaunchConfiguration(String projectLocation) {
@@ -146,7 +274,7 @@ public class SchemaGenerator
 		String jarName = (this.useMoxy) ? 
 					ECLIPSELINK_JAXB_SCHEMA_GEN_JAR :
 					JAXB_SCHEMA_GEN_JAR;
-		this.specifyClasspathProperties(this.getJavaProject(), this.buildBootstrapJarPath(jarName));
+		this.specifyClasspathProperties(this.javaProject, this.buildBootstrapJarPath(jarName));
 	}
 
 	protected void postGenerate() {
@@ -154,7 +282,7 @@ public class SchemaGenerator
 			if ( ! this.isDebug) {
 				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 			}
-			this.project.refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
 		}
 		catch (CoreException e) {
 			throw new RuntimeException(e);
@@ -330,17 +458,13 @@ public class SchemaGenerator
 		
 		return projectEntry;
 	}
-	
-	protected IProject getProject() {
-		return this.project;
-	}
 
-	public IJavaProject getJavaProject() {
-		return JavaCore.create(this.project);
+	public IProject getProject() {
+		return this.javaProject.getProject();
 	}
 	
 	private IVMInstall getProjectJRE() throws CoreException {
-		return JavaRuntime.getVMInstall(this.getJavaProject());
+		return JavaRuntime.getVMInstall(this.javaProject);
 	}
 	
 	protected ILaunch getLaunch() {
