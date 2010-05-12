@@ -59,6 +59,11 @@ class TextFieldModelBinding {
 	 */
 	private final DisposeListener textFieldDisposeListener;
 
+	/**
+	 * Hmm...
+	 */
+	private boolean settingTextFieldText = false;
+
 
 	// ********** constructor **********
 
@@ -139,11 +144,21 @@ class TextFieldModelBinding {
 
 	private void setTextFieldText(String text) {
 		// the text model can be null, but the text field cannot
-		if (text == null) {
-			text = "";
-		}
+		this.setTextFieldText_((text == null) ? "" : text);
+	}
+
+	private void setTextFieldText_(String text) {
 		if ( ! text.equals(this.textField.getText())) {  // ???
+			this.setTextFieldText__(text);
+		}
+	}
+
+	private void setTextFieldText__(String text) {
+		this.settingTextFieldText = true;
+		try {
 			this.textField.setText(text);
+		} finally {
+			this.settingTextFieldText = false;
 		}
 	}
 
@@ -151,7 +166,9 @@ class TextFieldModelBinding {
 	// ********** text field events **********
 
 	/* private */ void textFieldModified() {
-		this.setTextModelText(this.textField.getText());
+		if ( ! this.settingTextFieldText) {
+			this.setTextModelText(this.textField.getText());
+		}
 	}
 
 	private void setTextModelText(String text) {
