@@ -361,13 +361,22 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_ENTITY_21__CLASS_EXTRACTOR = EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER_FEATURE_COUNT + 1;
 
 	/**
+	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ENTITY_21__PARENT_CLASS = EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER_FEATURE_COUNT + 2;
+
+	/**
 	 * The number of structural features of the '<em>Xml Entity 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER_FEATURE_COUNT + 2;
+	public static final int XML_ENTITY_21_FEATURE_COUNT = EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1 <em>Xml Entity Mappings 21</em>}' class.
@@ -445,13 +454,22 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_FETCH_GROUP_21__NAME = 0;
 
 	/**
+	 * The feature id for the '<em><b>Load</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_FETCH_GROUP_21__LOAD = 1;
+
+	/**
 	 * The feature id for the '<em><b>Attributes</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_FETCH_GROUP_21__ATTRIBUTES = 1;
+	public static final int XML_FETCH_GROUP_21__ATTRIBUTES = 2;
 
 	/**
 	 * The number of structural features of the '<em>Xml Fetch Group 21</em>' class.
@@ -460,7 +478,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_FETCH_GROUP_21_FEATURE_COUNT = 2;
+	public static final int XML_FETCH_GROUP_21_FEATURE_COUNT = 3;
 
 	/**
 	 * The feature id for the '<em><b>Fetch Groups</b></em>' containment reference list.
@@ -683,13 +701,22 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 9;
 
 	/**
+	 * The feature id for the '<em><b>Parent Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_MAPPED_SUPERCLASS_21__PARENT_CLASS = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 10;
+
+	/**
 	 * The number of structural features of the '<em>Xml Mapped Superclass 21</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_MAPPED_SUPERCLASS_21_FEATURE_COUNT = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 10;
+	public static final int XML_MAPPED_SUPERCLASS_21_FEATURE_COUNT = OrmPackage.XML_ASSOCIATION_OVERRIDE_CONTAINER_FEATURE_COUNT + 11;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1 <em>Xml One To Many 21</em>}' class.
@@ -1393,6 +1420,21 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	}
 
 	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1#getParentClass <em>Parent Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent Class</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1#getParentClass()
+	 * @see #getXmlEntity_2_1()
+	 * @generated
+	 */
+	public EAttribute getXmlEntity_2_1_ParentClass()
+	{
+		return (EAttribute)xmlEntity_2_1EClass.getEStructuralFeatures().get(1);
+	}
+
+
+	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1 <em>Xml Entity Mappings 21</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1471,8 +1513,23 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 */
 	public EReference getXmlFetchGroup_2_1_Attributes()
 	{
-		return (EReference)xmlFetchGroup_2_1EClass.getEStructuralFeatures().get(1);
+		return (EReference)xmlFetchGroup_2_1EClass.getEStructuralFeatures().get(2);
 	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getLoad <em>Load</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Load</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getLoad()
+	 * @see #getXmlFetchGroup_2_1()
+	 * @generated
+	 */
+	public EAttribute getXmlFetchGroup_2_1_Load()
+	{
+		return (EAttribute)xmlFetchGroup_2_1EClass.getEStructuralFeatures().get(1);
+	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1 <em>Xml Fetch Group Container 21</em>}'.
@@ -1613,6 +1670,21 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	{
 		return (EReference)xmlMappedSuperclass_2_1EClass.getEStructuralFeatures().get(1);
 	}
+
+	/**
+	 * Returns the meta object for the attribute '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getParentClass <em>Parent Class</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Parent Class</em>'.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1#getParentClass()
+	 * @see #getXmlMappedSuperclass_2_1()
+	 * @generated
+	 */
+	public EAttribute getXmlMappedSuperclass_2_1_ParentClass()
+	{
+		return (EAttribute)xmlMappedSuperclass_2_1EClass.getEStructuralFeatures().get(2);
+	}
+
 
 	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1 <em>Xml One To Many 21</em>}'.
@@ -1864,6 +1936,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 
 		xmlEntity_2_1EClass = createEClass(XML_ENTITY_21);
 		createEReference(xmlEntity_2_1EClass, XML_ENTITY_21__CLASS_EXTRACTOR);
+		createEAttribute(xmlEntity_2_1EClass, XML_ENTITY_21__PARENT_CLASS);
 
 		xmlEntityMappings_2_1EClass = createEClass(XML_ENTITY_MAPPINGS_21);
 
@@ -1872,6 +1945,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 
 		xmlFetchGroup_2_1EClass = createEClass(XML_FETCH_GROUP_21);
 		createEAttribute(xmlFetchGroup_2_1EClass, XML_FETCH_GROUP_21__NAME);
+		createEAttribute(xmlFetchGroup_2_1EClass, XML_FETCH_GROUP_21__LOAD);
 		createEReference(xmlFetchGroup_2_1EClass, XML_FETCH_GROUP_21__ATTRIBUTES);
 
 		xmlFetchGroupContainer_2_1EClass = createEClass(XML_FETCH_GROUP_CONTAINER_21);
@@ -1888,6 +1962,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		xmlMappedSuperclass_2_1EClass = createEClass(XML_MAPPED_SUPERCLASS_21);
 		createEReference(xmlMappedSuperclass_2_1EClass, XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS);
 		createEReference(xmlMappedSuperclass_2_1EClass, XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS);
+		createEAttribute(xmlMappedSuperclass_2_1EClass, XML_MAPPED_SUPERCLASS_21__PARENT_CLASS);
 
 		xmlOneToMany_2_1EClass = createEClass(XML_ONE_TO_MANY_21);
 		createEAttribute(xmlOneToMany_2_1EClass, XML_ONE_TO_MANY_21__ATTRIBUTE_TYPE);
@@ -1991,6 +2066,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 
 		initEClass(xmlEntity_2_1EClass, XmlEntity_2_1.class, "XmlEntity_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlEntity_2_1_ClassExtractor(), theOrmPackage.getXmlClassReference(), null, "classExtractor", null, 0, 1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlEntity_2_1_ParentClass(), theXMLTypePackage.getString(), "parentClass", null, 0, 1, XmlEntity_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlEntityMappings_2_1EClass, XmlEntityMappings_2_1.class, "XmlEntityMappings_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -1999,6 +2075,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 
 		initEClass(xmlFetchGroup_2_1EClass, XmlFetchGroup_2_1.class, "XmlFetchGroup_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlFetchGroup_2_1_Name(), ecorePackage.getEString(), "name", null, 0, 1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlFetchGroup_2_1_Load(), theXMLTypePackage.getBooleanObject(), "load", null, 0, 1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlFetchGroup_2_1_Attributes(), theEclipseLinkOrmPackage.getXmlFetchAttribute(), null, "attributes", null, 0, -1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlFetchGroupContainer_2_1EClass, XmlFetchGroupContainer_2_1.class, "XmlFetchGroupContainer_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -2015,6 +2092,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlMappedSuperclass_2_1EClass, XmlMappedSuperclass_2_1.class, "XmlMappedSuperclass_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getXmlMappedSuperclass_2_1_SqlResultSetMappings(), theOrmPackage.getSqlResultSetMapping(), null, "sqlResultSetMappings", null, 0, -1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlMappedSuperclass_2_1_QueryRedirectors(), theEclipseLinkOrmPackage.getXmlQueryRedirectors(), null, "queryRedirectors", null, 0, 1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlMappedSuperclass_2_1_ParentClass(), theXMLTypePackage.getString(), "parentClass", null, 0, 1, XmlMappedSuperclass_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlOneToMany_2_1EClass, XmlOneToMany_2_1.class, "XmlOneToMany_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlOneToMany_2_1_AttributeType(), theXMLTypePackage.getString(), "attributeType", null, 0, 1, XmlOneToMany_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -2204,6 +2282,14 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		public static final EReference XML_ENTITY_21__CLASS_EXTRACTOR = eINSTANCE.getXmlEntity_2_1_ClassExtractor();
 
 		/**
+		 * The meta object literal for the '<em><b>Parent Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_ENTITY_21__PARENT_CLASS = eINSTANCE.getXmlEntity_2_1_ParentClass();
+
+		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1 <em>Xml Entity Mappings 21</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -2256,6 +2342,14 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_FETCH_GROUP_21__ATTRIBUTES = eINSTANCE.getXmlFetchGroup_2_1_Attributes();
+
+		/**
+		 * The meta object literal for the '<em><b>Load</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_FETCH_GROUP_21__LOAD = eINSTANCE.getXmlFetchGroup_2_1_Load();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1 <em>Xml Fetch Group Container 21</em>}' class.
@@ -2346,6 +2440,14 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EReference XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS = eINSTANCE.getXmlMappedSuperclass_2_1_QueryRedirectors();
+
+		/**
+		 * The meta object literal for the '<em><b>Parent Class</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		public static final EAttribute XML_MAPPED_SUPERCLASS_21__PARENT_CLASS = eINSTANCE.getXmlMappedSuperclass_2_1_ParentClass();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlOneToMany_2_1 <em>Xml One To Many 21</em>}' class.

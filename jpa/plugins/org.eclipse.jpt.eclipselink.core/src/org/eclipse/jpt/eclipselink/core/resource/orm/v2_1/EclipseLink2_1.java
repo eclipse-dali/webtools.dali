@@ -31,6 +31,8 @@ public interface EclipseLink2_1
 	String CACHE_KEY_TYPE = "cache-key-type";
 	String CLASS_EXTRACTOR = "class-extractor";
 	String FETCH_GROUP = "fetch-group";
+		String FETCH_GROUP__LOAD = "load";
+	String PARENT_CLASS = "parent-class";
 	String RETURN_INSERT = "return-insert";
 	String RETURN_ONLY = "return-only";
 	String RETURN_UPDATE = "return-update";

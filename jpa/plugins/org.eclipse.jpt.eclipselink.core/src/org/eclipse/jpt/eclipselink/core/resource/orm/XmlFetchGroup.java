@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
@@ -59,6 +60,26 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getLoad() <em>Load</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLoad()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean LOAD_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getLoad() <em>Load</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLoad()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean load = LOAD_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAttributes() <em>Attributes</em>}' containment reference list.
@@ -150,6 +171,41 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Load</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Load</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Load</em>' attribute.
+	 * @see #setLoad(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchGroup_2_1_Load()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getLoad()
+	{
+		return load;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlFetchGroup#getLoad <em>Load</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Load</em>' attribute.
+	 * @see #getLoad()
+	 * @generated
+	 */
+	public void setLoad(Boolean newLoad)
+	{
+		Boolean oldLoad = load;
+		load = newLoad;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_FETCH_GROUP__LOAD, oldLoad, load));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -177,6 +233,8 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 		{
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__NAME:
 				return getName();
+			case EclipseLinkOrmPackage.XML_FETCH_GROUP__LOAD:
+				return getLoad();
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__ATTRIBUTES:
 				return getAttributes();
 		}
@@ -196,6 +254,9 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 		{
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__NAME:
 				setName((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_FETCH_GROUP__LOAD:
+				setLoad((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__ATTRIBUTES:
 				getAttributes().clear();
@@ -218,6 +279,9 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__NAME:
 				setName(NAME_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_FETCH_GROUP__LOAD:
+				setLoad(LOAD_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__ATTRIBUTES:
 				getAttributes().clear();
 				return;
@@ -237,6 +301,8 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 		{
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case EclipseLinkOrmPackage.XML_FETCH_GROUP__LOAD:
+				return LOAD_EDEFAULT == null ? load != null : !LOAD_EDEFAULT.equals(load);
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP__ATTRIBUTES:
 				return attributes != null && !attributes.isEmpty();
 		}
@@ -256,6 +322,8 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (name: ");
 		result.append(name);
+		result.append(", load: ");
+		result.append(load);
 		result.append(')');
 		return result.toString();
 	}
@@ -273,14 +341,20 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 	private static Translator[] buildTranslatorChildren() {
 		return new Translator[] {
 				buildNameTranslator(),
+				buildLoadTranslator(),
 				buildAttributesTranslator()};
 	}
 	
 	private static Translator buildNameTranslator() {
-		return new Translator(EclipseLink2_1.NAME, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroup_2_1_Name(), Translator.DOM_ATTRIBUTE);
+		return new Translator(JPA.NAME, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroup_2_1_Name(), Translator.DOM_ATTRIBUTE);
 	}
 	
 	private static Translator buildAttributesTranslator() {
 		return XmlFetchAttribute.buildTranslator(EclipseLink2_1.ATTRIBUTE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroup_2_1_Attributes());
 	}
+	
+	protected static Translator buildLoadTranslator() {
+		return new Translator(EclipseLink2_1.FETCH_GROUP__LOAD, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlFetchGroup_2_1_Load(), Translator.DOM_ATTRIBUTE);
+	}
+
 }

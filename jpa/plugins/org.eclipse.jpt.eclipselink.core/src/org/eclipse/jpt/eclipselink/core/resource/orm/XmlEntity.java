@@ -130,6 +130,26 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	protected XmlClassReference classExtractor;
 
 	/**
+	 * The default value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String PARENT_CLASS_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getParentClass() <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParentClass()
+	 * @generated
+	 * @ordered
+	 */
+	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
+	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1292,6 +1312,41 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Parent Class</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parent Class</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parent Class</em>' attribute.
+	 * @see #setParentClass(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_1_ParentClass()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
+	 * @generated
+	 */
+	public String getParentClass()
+	{
+		return parentClass;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getParentClass <em>Parent Class</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Parent Class</em>' attribute.
+	 * @see #getParentClass()
+	 * @generated
+	 */
+	public void setParentClass(String newParentClass)
+	{
+		String oldParentClass = parentClass;
+		parentClass = newParentClass;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS, oldParentClass, parentClass));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1400,6 +1455,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getFetchGroups();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				return getClassExtractor();
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				return getParentClass();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1465,6 +1522,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				setClassExtractor((XmlClassReference)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				setParentClass((String)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -1552,6 +1612,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				setClassExtractor((XmlClassReference)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				setParentClass(PARENT_CLASS_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -1626,6 +1689,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return fetchGroups != null && !fetchGroups.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				return classExtractor != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
+				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1708,6 +1773,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR;
+				case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -1820,6 +1886,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR: return EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR;
+				case EclipseLinkOrmV2_1Package.XML_ENTITY_21__PARENT_CLASS: return EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS;
 				default: return -1;
 			}
 		}
@@ -1897,7 +1964,9 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (readOnly: ");
+		result.append(" (parentClass: ");
+		result.append(parentClass);
+		result.append(", readOnly: ");
 		result.append(readOnly);
 		result.append(", existenceChecking: ");
 		result.append(existenceChecking);
@@ -1925,6 +1994,7 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		return new Translator[] {
 			buildNameTranslator(),
 			buildClassTranslator(),
+			buildParentClassTranslator(),
 			buildAccessTranslator(),
 			buildCacheableTranslator(),
 			buildMetadataCompleteTranslator(),
@@ -2064,6 +2134,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	
 	protected static Translator buildAccessMethodsTranslator() {
 		return XmlAccessMethods.buildTranslator(EclipseLink.ACCESS_METHODS, EclipseLinkOrmPackage.eINSTANCE.getXmlAccessMethodsHolder_AccessMethods());
+	}
+
+	protected static Translator buildParentClassTranslator() {
+		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlEntity_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
 	}
 
 }

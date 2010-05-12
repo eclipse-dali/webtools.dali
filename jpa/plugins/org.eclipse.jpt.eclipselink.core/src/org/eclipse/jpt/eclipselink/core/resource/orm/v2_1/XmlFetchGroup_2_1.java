@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlFetchAttribute;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getName <em>Name</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getLoad <em>Load</em>}</li>
  *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getAttributes <em>Attributes</em>}</li>
  * </ul>
  * </p>
@@ -76,5 +77,31 @@ public interface XmlFetchGroup_2_1 extends JpaEObject
 	 * @generated
 	 */
 	EList<XmlFetchAttribute> getAttributes();
+
+	/**
+	 * Returns the value of the '<em><b>Load</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Load</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Load</em>' attribute.
+	 * @see #setLoad(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlFetchGroup_2_1_Load()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	Boolean getLoad();
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroup_2_1#getLoad <em>Load</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Load</em>' attribute.
+	 * @see #getLoad()
+	 * @generated
+	 */
+	void setLoad(Boolean value);
 
 } // XmlFetchGroup_2_1

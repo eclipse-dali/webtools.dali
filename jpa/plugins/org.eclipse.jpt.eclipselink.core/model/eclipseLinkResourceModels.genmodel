@@ -333,6 +333,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlEntity_2_1">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_1/XmlEntity_2_1/classExtractor"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlEntity_2_1/parentClass"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlEntityMappings_2_1"/>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlFetchAttribute_2_1">
@@ -340,6 +341,7 @@
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlFetchGroup_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlFetchGroup_2_1/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlFetchGroup_2_1/load"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_1/XmlFetchGroup_2_1/attributes"/>
       </genClasses>
       <genClasses ecoreClass="eclipselink_orm.ecore#//v2_1/XmlFetchGroupContainer_2_1">
@@ -355,6 +357,7 @@
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlMappedSuperclass_2_1">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_1/XmlMappedSuperclass_2_1/sqlResultSetMappings"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_1/XmlMappedSuperclass_2_1/queryRedirectors"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlMappedSuperclass_2_1/parentClass"/>
       </genClasses>
       <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_1/XmlOneToMany_2_1">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlOneToMany_2_1/attributeType"/>
