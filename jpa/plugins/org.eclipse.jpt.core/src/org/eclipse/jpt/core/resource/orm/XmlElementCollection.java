@@ -1581,7 +1581,7 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 	}
 	
 	protected static Translator buildOrderByTranslator() {
-		return new BooleanTranslator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
+		return new Translator(JPA.ORDER_BY, OrmPackage.eINSTANCE.getXmlOrderable_OrderBy());
 	}
 	
 	protected static Translator buildOrderColumnTranslator() {

@@ -519,7 +519,15 @@ public abstract class AbstractJpaProject
 			return null;  // the file must be on the Java classpath
 		}
 
-		JpaFile jpaFile = this.getJpaPlatform().buildJpaFile(this, file);
+		JpaFile jpaFile = null;
+		try {
+			jpaFile = this.getJpaPlatform().buildJpaFile(this, file);
+		}
+		catch (Exception e) {
+			//log any developer exceptions and don't build a JpaFile rather
+			//than completely failing to build the JpaProject
+			JptCorePlugin.log(e);
+		}
 		if (jpaFile == null) {
 			return null;
 		}
