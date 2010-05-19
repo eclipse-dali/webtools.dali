@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Modifying persistent project properties</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:49Z" />
+<title>Error messages</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:45Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Modifying persistent project properties" />
+<meta name="doctitle" content="Error messages" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,35 +18,64 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABDBCBI" name="BABDBCBI"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Modifying persistent project properties</h1>
-<p>Each persistent project must be associated with a database connection. To create a new database connection, click <span class="gui-object-action">Database Connection</span> use the New Connection wizard.</p>
-<p>Use this procedure to modify the vender-specific platform and database connection associated with your JPA project.</p>
-<ol>
-<li>
-<p>Right-click the project in the <span class="gui-object-title">Explorer</span> view and select <span class="gui-object-action">Properties</span>. The Properties page appears.</p>
-<div class="figure"><a id="sthref186" name="sthref186"></a>
-<p class="titleinfigure">The Properties Page</p>
-<img src="img/project_properties_tasks.png" alt="The Persistence page." title="The Persistence page." /><br /></div>
-<!-- class="figure" --></li>
-<li>
-<p>Complete each field on the <a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; Java Persistence Options</a> click <span class="bold">OK</span>.</p>
-</li>
-</ol>
-<p>&nbsp;</p>
-<img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
-<br />
-<a href="task_create_new_project.htm#CIHHEJCJ">Creating a new JPA project</a>
-<p>&nbsp;</p>
-<img src="img/ngrelr.png" alt="Related reference" title="Related reference" /><br />
-<br />
-<a href="ref_project_properties.htm#BABJHBCI">Project Properties page &ndash; Java Persistence Options</a>
-<p>&nbsp;</p>
+<p><a id="CIHFEDEI" name="CIHFEDEI"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<h1>Error messages<a id="sthref172" name="sthref172"></a></h1>
+<p>This section contains information on error messages (including how to resolve the issue) you may encounter while working with Dali.</p>
+<a id="sthref173" name="sthref173"></a>
+<p class="subhead2">Attribute "<span class="italic">&lt;ATTRIBUTE__NAME&gt;</span>" has invalid mapping type in this context</p>
+<p>The mapped attribute is invalid. Either change the mapping type or change the entity type.</p>
+<p>See <a href="task_mapping.htm#BABDGBIJ">"Mapping an entity"</a> for more information.</p>
+<a id="sthref174" name="sthref174"></a>
+<p class="subhead2">Attribute "<span class="italic">&lt;ATTRIBUTE_NAME&gt;</span>" cannot be resolved.</p>
+<p>Dali cannot map the attribute to a database table and column. Verify that you database connection information is correct.</p>
+<p>See <a href="task_create_new_project.htm#CIHHEJCJ">"Creating a new JPA project"</a> for more information.</p>
+<a id="sthref175" name="sthref175"></a>
+<p class="subhead2">Class "<span class="italic">&lt;CLASS_NAME&gt;</span>" is not annotated as a persistent class.</p>
+<p>The class has not been identified as a persistent class. Configure the class as an Entity, Mapped Superclass, or Embeddable persistent entity.</p>
+<p>See <a href="task_add_persistence.htm#BABHICAI">"Adding persistence to a class"</a>.</p>
+<a id="sthref176" name="sthref176"></a>
+<p class="subhead2">Column "<span class="italic">&lt;COLUMN_NAME&gt;</span>" cannot be resolved.</p>
+<p>You mapped an entity's field to an incorrect or invalid column in the database table. By default, Dali will attempt to map each field in the entity with an identically named row in the database table. If the field's name differs from the row's name, you must explicitly create the mapping.</p>
+<p>Map the field to a valid row in the database table as shown in <a href="task_mapping.htm#BABDGBIJ">"Mapping an entity"</a>.</p>
+<a id="sthref177" name="sthref177"></a>
+<p class="subhead2">Duplicate class "<span class="italic">&lt;CLASS_NAME&gt;</span>".</p>
+<p>You created to persistence classes with the same name. Each Java class must have a unique name. See <a href="task_add_persistence.htm#BABHICAI">"Adding persistence to a class"</a> for more information.</p>
+<a id="sthref178" name="sthref178"></a>
+<p class="subhead2">Entity does not have an Id or Embedded Id.</p>
+<p>You created a persistent entity without identifying its primary key. A persistent entity must have a primary key field designated with an <code>@Id</code> or <code>@EmbeddedId</code> annotation.</p>
+<p>Add an ID mapping to the entity as shown in <a href="tasks013.htm#BABGCBHG">"ID mapping"</a> or <a href="tasks012.htm#CIHDIAEE">"Embedded ID mapping"</a>.</p>
+<a id="sthref179" name="sthref179"></a>
+<p class="subhead2">Multiple persistence.xml files in project.</p>
+<p>You created a JPA project with more than one <code>persistence.xml</code> file. Each JPA project must contain a <span class="italic">single</span> <code>persistence.xml</code> file.</p>
+<p>See <a href="task_manage_persistence.htm#CIHDAJID">"Managing the persistence.xml file"</a> for more information.</p>
+<a id="sthref180" name="sthref180"></a>
+<p class="subhead2">No persistence unit defined.</p>
+<p>There is no persistence unit defined in the <code>persistence.xml</code> file. Use the &lt;persistence-unit name="<span class="italic">&lt;PERSISTENCE_UNIT_NAME&gt;</span>" tag to define the persistent unit.</p>
+<p>See <a href="task_manage_orm.htm#CIHDGDCD">"Managing the orm.xml file"</a> for more information.</p>
+<a id="sthref181" name="sthref181"></a>
+<p class="subhead2">No persistence.xml file in project.</p>
+<p>You created a JPA project without a <code>persistence.xml</code> file. Each JPA project must contain a <span class="italic">single</span> <code>persistence.xml</code> file.</p>
+<p>See <a href="task_manage_persistence.htm#CIHDAJID">"Managing the persistence.xml file"</a> for more information.</p>
+<a id="sthref182" name="sthref182"></a>
+<p class="subhead2">Referenced column "<span class="italic">&lt;COLUMN_NAME&gt;</span>" in join column "<span class="italic">&lt;COLUMN_NAME&gt;</span>" cannot be resolved.</p>
+<p>The column that you selected to join a relationship mapping does not exist on the database table. Either select a different column on the <a href="reference011.htm#CACBAEBC">Join Table Information</a> or create the necessary column on the database table.</p>
+<p>See <a href="ref_persistence_map_view.htm#BABIFBAF">"JPA Details view (for attributes)"</a> for more information.</p>
+<a id="sthref183" name="sthref183"></a>
+<p class="subhead2">Schema "&lt;<span class="italic">SCHEMA_NAME</span>&gt;" cannot be resolved for table/join table "&lt;<span class="italic">TABLE_NAME</span>&gt;".</p>
+<p>Define the default database schema information in the persistence unit.</p>
+<p>See <a href="task_manage_orm.htm#CIHDGDCD">"Managing the orm.xml file"</a> for more information.</p>
+<a id="sthref184" name="sthref184"></a>
+<p class="subhead2">Table "<span class="italic">&lt;TABLE_NAME&gt;</span>" cannot be resolved.</p>
+<p>You associated a persistent entity to an incorrect or invalid database table. By default, Dali will attempt to associate each persistent entity with an identically named database table. If the entity's name differs from the table's name, you must explicitly create the association.</p>
+<p>Associate the entity with a valid database table as shown in <a href="task_add_persistence.htm#BABHICAI">"Adding persistence to a class"</a>.</p>
+<a id="sthref185" name="sthref185"></a>
+<p class="subhead2">Unresolved generator "<span class="italic">&lt;GENERATOR_NAME&gt;</span>" is defined in persistence unit.</p>
+<p>You created a persistence entity that uses sequencing or a table generator, but did not define the generator in the persistence unit. Either define the generator by using an annotation or including it in the XML mapping file.</p>
 <img src="img/ngrelc.png" alt="Related concept" title="Related concept" /><br />
-<br />
-<a href="concept_persistence.htm#BABCAHIC">Understanding Java persistence</a></div>
-<!-- class="sect1" -->
+<p><a href="../org.eclipse.platform.doc.user/concepts/cprbview.htm">Problems view</a></p>
+</div>
+<!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

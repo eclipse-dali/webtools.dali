@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embedded mapping</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:46Z" />
+<title>Basic mapping</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:43Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embedded mapping" />
+<meta name="doctitle" content="Basic mapping" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,16 +18,55 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABCBHDF" name="BABCBHDF"></a></p>
+<p><a id="BABBABCE" name="BABBABCE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embedded mapping</h1>
-<p><a id="sthref116" name="sthref116"></a><a id="sthref117" name="sthref117"></a><a id="sthref118" name="sthref118"></a><a id="sthref119" name="sthref119"></a>Use an <span class="bold">Embedded Mapping</span> to specify a persistent field or property of an entity whose value is an instance of an embeddable class.</p>
-<ol>
+<h1>Basic mapping</h1>
+<p><a id="sthref114" name="sthref114"></a><a id="sthref115" name="sthref115"></a><a id="sthref116" name="sthref116"></a><a id="sthref117" name="sthref117"></a>Use a <span class="bold">Basic Mapping</span> to map an attribute directly to a database column. Basic mappings may be used only with the following attribute types:</p>
+<ul>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map.</p>
+<p>Java primitive types and wrappers of the primitive types</p>
 </li>
 <li>
-<p>Select <span class="bold">Map as &gt; Embedded</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<p><code>java.lang.String, java.math.BigInteger</code></p>
+</li>
+<li>
+<p><code>java.math.BigDecimal</code></p>
+</li>
+<li>
+<p><code>java.util.Date</code></p>
+</li>
+<li>
+<p><code>java.util.Calendar, java.sql.Date</code></p>
+</li>
+<li>
+<p><code>java.sql.Time</code></p>
+</li>
+<li>
+<p><code>java.sql.Timestamp</code></p>
+</li>
+<li>
+<p><code>byte[]</code></p>
+</li>
+<li>
+<p><code>Byte[]</code></p>
+</li>
+<li>
+<p><code>char[]</code></p>
+</li>
+<li>
+<p><code>Character[]</code></p>
+</li>
+<li>
+<p>enums</p>
+</li>
+<li>
+<p>any other type that implements <code>Serializable</code></p>
+</li>
+</ul>
+<p>To create a basic mapping:</p>
+<ol>
+<li>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map. Select <span class="bold">Map As &gt; Basic</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
 </li>
 <li>
 <p>Use this table to complete the remaining fields on the <span class="gui-object-title">JPA Details</span> view.</p>
@@ -35,26 +74,70 @@
 <table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <col width="19%" />
 <col width="*" />
-<col width="38%" />
+<col width="41%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t15">Property</th>
-<th align="left" valign="bottom" id="r1c2-t15">Description</th>
-<th align="left" valign="bottom" id="r1c3-t15">Default</th>
+<th align="left" valign="bottom" id="r1c1-t14">Property</th>
+<th align="left" valign="bottom" id="r1c2-t14">Description</th>
+<th align="left" valign="bottom" id="r1c3-t14">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t15" headers="r1c1-t15">Entity Mapping Hyperlink</td>
-<td align="left" headers="r2c1-t15 r1c2-t15">Defines this mapping as a <span class="bold">Embedded</span>.
-<p>This corresponds to the <code>@Embedded</code> annotation.</p>
+<td align="left" id="r2c1-t14" headers="r1c1-t14">Entity Map Hyperlink</td>
+<td align="left" headers="r2c1-t14 r1c2-t14">Defines this mapping as a <span class="bold">Basic Mapping</span>.
+<p>This corresponds to the <code>@Basic</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t15 r1c3-t15">Embedded</td>
+<td align="left" headers="r2c1-t14 r1c3-t14">Basic</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t15" headers="r1c1-t15">Attribute Overrides</td>
-<td align="left" headers="r3c1-t15 r1c2-t15">Specify to override the default mapping of an entity's attribute. Select <span class="bold">Override Default</span>.</td>
-<td align="left" headers="r3c1-t15 r1c3-t15"><br /></td>
+<td align="left" id="r3c1-t14" headers="r1c1-t14">Column</td>
+<td align="left" headers="r3c1-t14 r1c2-t14">The database column mapped to the entity attribute. See <a href="ref_mapping_general.htm#CACGCBHB">"Column"</a> for details.</td>
+<td align="left" headers="r3c1-t14 r1c3-t14">By default, the Column is assumed to be named identically to the attribute and always included in the <code>INSERT</code> and <code>UPDATE</code> statements.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t14" headers="r1c1-t14">Table</td>
+<td align="left" headers="r4c1-t14 r1c2-t14">Name of the database table.</td>
+<td align="left" headers="r4c1-t14 r1c3-t14"><br /></td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t14" headers="r1c1-t14">Fetch</td>
+<td align="left" headers="r5c1-t14 r1c2-t14">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
+<ul>
+<li>
+<p>Eager</p>
+</li>
+<li>
+<p>Lazy</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r5c1-t14 r1c3-t14">Eager</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t14" headers="r1c1-t14">Optional</td>
+<td align="left" headers="r6c1-t14 r1c2-t14">Specifies if this field is can be null.</td>
+<td align="left" headers="r6c1-t14 r1c3-t14">Yes</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t14" headers="r1c1-t14">Type</td>
+<td align="left" headers="r7c1-t14 r1c2-t14">Specifies the type of data:
+<ul>
+<li>
+<p>Default</p>
+</li>
+<li>
+<p>LOB &ndash; Specifies if this is a large objects (BLOB or CLOB). See <a href="ref_mapping_general.htm#CACBBIBI">"Lob"</a> for details.</p>
+</li>
+<li>
+<p>Temporal &ndash; Specify if this is a Date, Time, or Timestamp object. See <a href="ref_mapping_general.htm#CACEAJGD">"Temporal"</a> for details.</p>
+</li>
+<li>
+<p>Enumerated &ndash; Specify how to persist enumerated constraints as ordinal or string, in order to match an existing database schema.</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r7c1-t14 r1c3-t14"><br /></td>
 </tr>
 </tbody>
 </table>
@@ -63,8 +146,11 @@
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@Embedded
-@AttributeOverride(column=@Column(table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", name = "<span class="italic">&lt;COLUMN_NAME&gt;</span>"))
+@Column(name="<span class="italic">&lt;COLUMN_NAME&gt;</span>", table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", 
+    insertable=<span class="italic">&lt;INSERTABLE&gt;</span>, updatable=<span class="italic">&lt;UPDATABLE&gt;</span>)
+@Basic(fetch=FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, optional = <span class="italic">&lt;OPTIONAL&gt;</span>)
+@Temporal(TemporalType.<span class="italic">&lt;TEMPORAL&gt;</span>)
+
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />

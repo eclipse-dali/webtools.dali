@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Dialogs</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:54Z" />
+<title>Project Properties page &ndash; Validation Preferences</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:48Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Dialogs" />
+<meta name="doctitle" content="Project Properties page &ndash; Validation Preferences" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,21 +18,80 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="CACGEJDA" name="CACGEJDA"></a></p>
-<div class="sect1"><!-- infolevel="all" infotype="General" -->
-<h1>Dialogs</h1>
-<p>This section includes information on the following preference pages:</p>
+<p><a id="CACFBAEH" name="CACFBAEH"></a></p>
+<div class="sect2"><!-- infolevel="all" infotype="General" -->
+<h1>Project Properties page &ndash; Validation Preferences</h1>
+<p><a id="sthref275" name="sthref275"></a><a id="sthref276" name="sthref276"></a>Use the <span class="gui-object-title">Java Persistence</span> options on the <span class="gui-object-title">Properties</span> page to select the database connection to use with the project.</p>
+<p>This table lists the properties available in the <span class="gui-object-title">JPA Details page</span>.</p>
+<div class="inftblinformal">
+<table class="Informal" title="This table describes the options on the Persistence Properties page." summary="This table describes the options on the Persistence Properties page." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="32%" />
+<col width="*" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t37">Property</th>
+<th align="left" valign="bottom" id="r1c2-t37">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t37" headers="r1c1-t37"><a id="sthref277" name="sthref277"></a><a id="sthref278" name="sthref278"></a><a id="sthref279" name="sthref279"></a><a id="sthref280" name="sthref280"></a>Platform</td>
+<td align="left" headers="r2c1-t37 r1c2-t37">Select the vendor-specific platform.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t37" headers="r1c1-t37">Library</td>
+<td align="left" headers="r3c1-t37 r1c2-t37">Select a specific JPA library configuration.
+<p>Click <span class="bold">Manage libraries</span> to create or update a user library.</p>
+<p>Click <span class="bold">Download libraries</span> to download a specific library configuration.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t37" headers="r1c1-t37">&nbsp;&nbsp;Type</td>
+<td align="left" headers="r4c1-t37 r1c2-t37">Select <span class="bold">User Library</span> to select from the available user-defined or downloaded libraries.
+<p>If you select Disable, you must manually include the JPA implementation library on the project classpath.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t37" headers="r1c1-t37">&nbsp;&nbsp;Include&nbsp;libraries&nbsp;with&nbsp;this&nbsp;application</td>
+<td align="left" headers="r5c1-t37 r1c2-t37">Specify if the selected libraries are included when deploying the application.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r6c1-t37" headers="r1c1-t37"><a id="sthref281" name="sthref281"></a><a id="sthref282" name="sthref282"></a><a id="sthref283" name="sthref283"></a>Connection</td>
+<td align="left" headers="r6c1-t37 r1c2-t37">The database connection used to map the persistent entities.
 <ul>
 <li>
-<p><a href="reference028.htm#CACCGEHC">Edit Join Columns Dialog</a></p>
+<p>To create a new connection, click <span class="bold">Add Connections</span>.</p>
 </li>
 <li>
-<p><a href="ref_select_cascade_dialog.htm#CIAFDGIJ">Select Cascade dialog</a></p>
-</li>
-<li>
-<p><a href="ref_eclipselink_mapping_file.htm#CIAEDEJF">New EclipseLink Mapping File dialog</a></p>
+<p>To reconnect to an existing connection, click <span class="bold">Reconnect</span>.</p>
 </li>
 </ul>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r7c1-t37" headers="r1c1-t37">&nbsp;&nbsp;Override&nbsp;default&nbsp;catalog&nbsp;from&nbsp;connection</td>
+<td align="left" headers="r7c1-t37 r1c2-t37">Select a catalog other than the default one derived from the connection information. Use this option if the default catalog is incorrect or cannot be used.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r8c1-t37" headers="r1c1-t37">&nbsp;&nbsp;Override&nbsp;default&nbsp;schema&nbsp;from&nbsp;connection</td>
+<td align="left" headers="r8c1-t37 r1c2-t37">Select a schema other than the default one derived from the connection information. Use this option if the default schema is incorrect or cannot be used. For example, use this option when the deployment login differs from the design-time login.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r9c1-t37" headers="r1c1-t37">Persistent Class Management</td>
+<td align="left" headers="r9c1-t37 r1c2-t37">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
+<p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r10c1-t37" headers="r1c1-t37"><a id="sthref284" name="sthref284"></a><a id="sthref285" name="sthref285"></a>Canonical Metamodel</td>
+<td align="left" headers="r10c1-t37 r1c2-t37"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblinformal" --></div>
+<!-- class="sect2" -->
+<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">
@@ -44,6 +103,6 @@
 </tr>
 </table>
 </div>
-<!-- class="footer" --></div>
+<!-- class="footer" -->
 </body>
 </html>

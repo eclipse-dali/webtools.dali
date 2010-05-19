@@ -10,7 +10,7 @@ To start work working on this cheat sheet, click the &quot;Click to Begin&quot; 
 Let&apos;s get started!
       </description>
    </intro>
-   <item title="Setup the Environment" dialog="false" skip="true" href="/org.eclipse.datatools.connectivity.doc.user/doc/html/asc1229700343352.html">
+   <item title="Setup the Environment" dialog="false" skip="true" href="/org.eclipse.datatools.doc.user/c_database_development_setup.html">
       <description>
          Your environment must be set up before you can perform the steps in this cheat sheet. 
 

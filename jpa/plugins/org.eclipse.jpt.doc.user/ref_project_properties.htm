@@ -7,8 +7,8 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
 <title>Project Properties page &ndash; Java Persistence Options</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:54Z" />
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:48Z" />
 <meta name="robots" content="noarchive" />
 <meta name="doctitle" content="Project Properties page &ndash; Java Persistence Options" />
 <meta name="relnum" content="Release 2.3" />
@@ -21,8 +21,7 @@
 <p><a id="BABJHBCI" name="BABJHBCI"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
 <h1>Project Properties page &ndash; Java Persistence Options</h1>
-<p><a id="sthref270" name="sthref270"></a><a id="sthref271" name="sthref271"></a>Use the <span class="gui-object-title">Java Persistence</span> options on the <span class="gui-object-title">Properties</span> page to select the database connection to use with the project.</p>
-<p>This table lists the properties available in the <span class="gui-object-title">JPA Details page</span>.</p>
+<p><a id="sthref273" name="sthref273"></a><a id="sthref274" name="sthref274"></a>Use the <span class="gui-object-title">Errors/Warnings</span> options on the <span class="gui-object-title">Properties</span> page to specify the validation options to use with the project.</p>
 <div class="inftblinformal">
 <table class="Informal" title="This table describes the options on the Persistence Properties page." summary="This table describes the options on the Persistence Properties page." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
 <col width="32%" />
@@ -35,56 +34,44 @@
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t36" headers="r1c1-t36"><a id="sthref272" name="sthref272"></a><a id="sthref273" name="sthref273"></a><a id="sthref274" name="sthref274"></a><a id="sthref275" name="sthref275"></a>Platform</td>
-<td align="left" headers="r2c1-t36 r1c2-t36">Select the vendor-specific platform.</td>
+<td align="left" id="r2c1-t36" headers="r1c1-t36">Enable project specific settings</td>
+<td align="left" headers="r2c1-t36 r1c2-t36">Select the to override the general settings for this project.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r3c1-t36" headers="r1c1-t36">Library</td>
-<td align="left" headers="r3c1-t36 r1c2-t36">Select a specific JPA library configuration.
-<p>Click <span class="bold">Manage libraries</span> to create or update a user library.</p>
-<p>Click <span class="bold">Download libraries</span> to download a specific library configuration.</p>
-</td>
+<td align="left" id="r3c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Project level</td>
+<td align="left" headers="r3c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r4c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Type</td>
-<td align="left" headers="r4c1-t36 r1c2-t36">Select <span class="bold">User Library</span> to select from the available user-defined or downloaded libraries.
-<p>If you select Disable, you must manually include the JPA implementation library on the project classpath.</p>
-</td>
+<td align="left" id="r4c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Persistent unit level</td>
+<td align="left" headers="r4c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r5c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Include&nbsp;libraries&nbsp;with&nbsp;this&nbsp;application</td>
-<td align="left" headers="r5c1-t36 r1c2-t36">Specify if the selected libraries are included when deploying the application.</td>
+<td align="left" id="r5c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Type level</td>
+<td align="left" headers="r5c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r6c1-t36" headers="r1c1-t36"><a id="sthref276" name="sthref276"></a><a id="sthref277" name="sthref277"></a><a id="sthref278" name="sthref278"></a>Connection</td>
-<td align="left" headers="r6c1-t36 r1c2-t36">The database connection used to map the persistent entities.
-<ul>
-<li>
-<p>To create a new connection, click <span class="bold">Add Connections</span>.</p>
-</li>
-<li>
-<p>To reconnect to an existing connection, click <span class="bold">Reconnect</span>.</p>
-</li>
-</ul>
-</td>
+<td align="left" id="r6c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Attribute level</td>
+<td align="left" headers="r6c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r7c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Override&nbsp;default&nbsp;catalog&nbsp;from&nbsp;connection</td>
-<td align="left" headers="r7c1-t36 r1c2-t36">Select a catalog other than the default one derived from the connection information. Use this option if the default catalog is incorrect or cannot be used.</td>
+<td align="left" id="r7c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Schema mapping</td>
+<td align="left" headers="r7c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r8c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Override&nbsp;default&nbsp;schema&nbsp;from&nbsp;connection</td>
-<td align="left" headers="r8c1-t36 r1c2-t36">Select a schema other than the default one derived from the connection information. Use this option if the default schema is incorrect or cannot be used. For example, use this option when the deployment login differs from the design-time login.</td>
+<td align="left" id="r8c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Implied&nbsp;attributes</td>
+<td align="left" headers="r8c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r9c1-t36" headers="r1c1-t36">Persistent Class Management</td>
-<td align="left" headers="r9c1-t36 r1c2-t36">Specify if Dali will <span class="bold">discover annotated classes automatically</span>, or if the <span class="bold">annotated classes must be listed in the persistence.xml</span> file.
-<p><span class="bold">Note</span>: To insure application portability, you should explicitly list the managed persistence classes that are included in the persistence unit.</p>
-</td>
+<td align="left" id="r9c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Implied&nbsp;associations</td>
+<td align="left" headers="r9c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 <tr align="left" valign="top">
-<td align="left" id="r10c1-t36" headers="r1c1-t36"><a id="sthref279" name="sthref279"></a><a id="sthref280" name="sthref280"></a>Canonical Metamodel</td>
-<td align="left" headers="r10c1-t36 r1c2-t36"><br /></td>
+<td align="left" id="r10c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Inheritance</td>
+<td align="left" headers="r10c1-t36 r1c2-t36">Select the warning level to report.</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r11c1-t36" headers="r1c1-t36">&nbsp;&nbsp;Queries&nbsp;and&nbsp;generators</td>
+<td align="left" headers="r11c1-t36 r1c2-t36">Select the warning level to report.</td>
 </tr>
 </tbody>
 </table>
@@ -93,9 +80,8 @@
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />
 <br />
-<a href="tasks024.htm#BABDBCBI">Modifying persistent project properties</a></div>
+<a href="tasks026.htm#BABDBCBI">Modifying persistent project properties</a></div>
 <!-- class="sect2" -->
-<!-- class="sect1" -->
 <!-- Start Footer -->
 <div class="footer">
 <table class="simple oac_no_warn" summary="" cellspacing="0" cellpadding="0" width="100%">

@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embedded ID mapping</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:46Z" />
+<title>Embedded mapping</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:44Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embedded ID mapping" />
+<meta name="doctitle" content="Embedded mapping" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,16 +18,16 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="CIHDIAEE" name="CIHDIAEE"></a></p>
+<p><a id="BABCBHDF" name="BABCBHDF"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embedded ID mapping</h1>
-<p><a id="sthref120" name="sthref120"></a><a id="sthref121" name="sthref121"></a><a id="sthref122" name="sthref122"></a><a id="sthref123" name="sthref123"></a>Use an <span class="bold">Embedded ID Mapping</span> to specify the primary key of an embedded ID. These mappings may be used with a <a href="tasks006.htm#BABFEICE">Embeddable</a> entities.</p>
+<h1>Embedded mapping</h1>
+<p><a id="sthref118" name="sthref118"></a><a id="sthref119" name="sthref119"></a><a id="sthref120" name="sthref120"></a><a id="sthref121" name="sthref121"></a>Use an <span class="bold">Embedded Mapping</span> to specify a persistent field or property of an entity whose value is an instance of an embeddable class.</p>
 <ol>
 <li>
-<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
+<p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, right-click the field to map.</p>
 </li>
 <li>
-<p>Right-click the field and then select <span class="bold">Map As &gt; Embedded Id</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
+<p>Select <span class="bold">Map as &gt; Embedded</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected field.</p>
 </li>
 <li>
 <p>Use this table to complete the remaining fields on the <span class="gui-object-title">JPA Details</span> view.</p>
@@ -38,18 +38,23 @@
 <col width="38%" />
 <thead>
 <tr align="left" valign="top">
-<th align="left" valign="bottom" id="r1c1-t16">Property</th>
-<th align="left" valign="bottom" id="r1c2-t16">Description</th>
-<th align="left" valign="bottom" id="r1c3-t16">Default</th>
+<th align="left" valign="bottom" id="r1c1-t15">Property</th>
+<th align="left" valign="bottom" id="r1c2-t15">Description</th>
+<th align="left" valign="bottom" id="r1c3-t15">Default</th>
 </tr>
 </thead>
 <tbody>
 <tr align="left" valign="top">
-<td align="left" id="r2c1-t16" headers="r1c1-t16">Entity Mapping Hyperlink</td>
-<td align="left" headers="r2c1-t16 r1c2-t16">Defines this mapping as a <span class="bold">Embedded Id</span>.
-<p>This corresponds to the <code>@EmbeddedId</code> annotation.</p>
+<td align="left" id="r2c1-t15" headers="r1c1-t15">Entity Mapping Hyperlink</td>
+<td align="left" headers="r2c1-t15 r1c2-t15">Defines this mapping as a <span class="bold">Embedded</span>.
+<p>This corresponds to the <code>@Embedded</code> annotation.</p>
 </td>
-<td align="left" headers="r2c1-t16 r1c3-t16">Embedded Id</td>
+<td align="left" headers="r2c1-t15 r1c3-t15">Embedded</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t15" headers="r1c1-t15">Attribute Overrides</td>
+<td align="left" headers="r3c1-t15 r1c2-t15">Specify to override the default mapping of an entity's attribute. Select <span class="bold">Override Default</span>.</td>
+<td align="left" headers="r3c1-t15 r1c3-t15"><br /></td>
 </tr>
 </tbody>
 </table>
@@ -58,7 +63,8 @@
 </ol>
 <p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@EmbeddedId
+@Embedded
+@AttributeOverride(column=@Column(table="<span class="italic">&lt;COLUMN_TABLE&gt;</span>", name = "<span class="italic">&lt;COLUMN_NAME&gt;</span>"))
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />

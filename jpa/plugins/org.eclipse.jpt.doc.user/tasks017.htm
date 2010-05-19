@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Transient mapping</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:48Z" />
+<title>One-to-one mapping</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:44Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Transient mapping" />
+<meta name="doctitle" content="One-to-one mapping" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,22 +18,102 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABHFHEI" name="BABHFHEI"></a></p>
+<p><a id="BABFHBCJ" name="BABFHBCJ"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Transient mapping</h1>
-<p><a id="sthref148" name="sthref148"></a><a id="sthref149" name="sthref149"></a><a id="sthref150" name="sthref150"></a><a id="sthref151" name="sthref151"></a>Use the Transient Mapping to specify a field of the entity class that <span class="italic">is not</span> persistent.</p>
-<p>To create a transient mapping:</p>
+<h1>One-to-one mapping</h1>
+<p><a id="sthref144" name="sthref144"></a><a id="sthref145" name="sthref145"></a><a id="sthref146" name="sthref146"></a><a id="sthref147" name="sthref147"></a>Use a <span class="bold">One-to-One Mapping</span> to define a relationship with one-to-many multiplicity.</p>
 <ol>
 <li>
 <p>In the <a href="ref_persistence_outline.htm#BABEGGFE">JPA Structure view</a>, select the field to map.</p>
 </li>
 <li>
-<p>Right-click the field and then select <span class="bold">Map As Transient</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
+<p>Right-click the field and then select <span class="bold">Map As &gt; One-to-One</span>. The <a href="ref_persistence_map_view.htm#BABIFBAF">JPA Details view (for attributes)</a> displays the properties for the selected.</p>
 </li>
+<li>
+<p>Use this table to complete the <a href="ref_mapping_general.htm#CACBHFIJ">General information</a> fields in the JPA Details view.</p>
+<div class="inftblruleinformal">
+<table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="19%" />
+<col width="*" />
+<col width="41%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t25">Property</th>
+<th align="left" valign="bottom" id="r1c2-t25">Description</th>
+<th align="left" valign="bottom" id="r1c3-t25">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t25" headers="r1c1-t25">Mapped Entity Hyperlink</td>
+<td align="left" headers="r2c1-t25 r1c2-t25">Defines mapping as <span class="bold">One-to-One</span>. This corresponds to the <code>@OneToOne</code> annotation.</td>
+<td align="left" headers="r2c1-t25 r1c3-t25">One-to-One</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r3c1-t25" headers="r1c1-t25">Target Entity</td>
+<td align="left" headers="r3c1-t25 r1c2-t25">The entity to which this attribute is mapped.</td>
+<td align="left" headers="r3c1-t25 r1c3-t25">null
+<p>You do not need to explicitly specify the target entity, since it can be inferred from the type of object being referenced.</p>
+</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r4c1-t25" headers="r1c1-t25">Fetch Type</td>
+<td align="left" headers="r4c1-t25 r1c2-t25">Defines how data is loaded from the database. See <a href="ref_mapping_general.htm#CACGGGHB">"Fetch Type"</a> for details.
+<ul>
+<li>
+<p>Eager</p>
+</li>
+<li>
+<p>Lazy</p>
+</li>
+</ul>
+</td>
+<td align="left" headers="r4c1-t25 r1c3-t25">Eager</td>
+</tr>
+<tr align="left" valign="top">
+<td align="left" id="r5c1-t25" headers="r1c1-t25">Mapped By</td>
+<td align="left" headers="r5c1-t25 r1c2-t25">The database field that owns the relationship.</td>
+<td align="left" headers="r5c1-t25 r1c3-t25"><br /></td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblruleinformal" --></li>
+<li>
+<p>Use this table to complete the <a href="reference012.htm#CACFCEJC">Join Columns Information</a> fields in the <span class="gui-object-title">JPA Details</span> view.</p>
+<div class="inftblruleinformal">
+<table class="RuleInformal" title="This table lists the fields in the Persistence Properties view for this mapping." summary="This table lists the fields in the Persistence Properties view for this mapping." dir="ltr" border="1" width="100%" frame="border" rules="all" cellpadding="3" cellspacing="0">
+<col width="19%" />
+<col width="*" />
+<col width="41%" />
+<thead>
+<tr align="left" valign="top">
+<th align="left" valign="bottom" id="r1c1-t26">Property</th>
+<th align="left" valign="bottom" id="r1c2-t26">Description</th>
+<th align="left" valign="bottom" id="r1c3-t26">Default</th>
+</tr>
+</thead>
+<tbody>
+<tr align="left" valign="top">
+<td align="left" id="r2c1-t26" headers="r1c1-t26">Join Column</td>
+<td align="left" headers="r2c1-t26 r1c2-t26"><a id="sthref148" name="sthref148"></a><a id="sthref149" name="sthref149"></a>Specify a mapped column for joining an entity association. This field corresponds to the <code>@JoinColum</code> attribute.
+<p>Select <span class="bold">Override Default</span>, then Add, Edit, or Remove the join columns.</p>
+</td>
+<td align="left" headers="r2c1-t26 r1c3-t26">By default, the mapping is assumed to have a single join.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblruleinformal" --></li>
 </ol>
-<p>Eclipse adds the following annotation to the field:</p>
+<p>Eclipse adds the following annotations to the field:</p>
 <pre xml:space="preserve" class="oac_no_warn">
-@Transient
+@OneToOne(targetEntity=<span class="italic">&lt;TARGET_ENTITY&gt;</span>, cascade=CascadeType.<span class="italic">&lt;CASCADE_TYPE&gt;</span>, 
+    fetch = FetchType.<span class="italic">&lt;FETCH_TYPE&gt;</span>, mappedBy = "<span class="italic">&lt;MAPPED_BY&gt;</span>")
+@JoinColumn(name="<span class="italic">&lt;JOIN_COLUMN_NAME&gt;</span>", referencedColumnName=
+    "<span class="italic">&lt;JOIN_COLUMN_REFERENCED_COLUMN&gt;</span>", insertable = <span class="italic">&lt;INSERTABLE&gt;</span>, 
+    updatable = <span class="italic">&lt;UPDATABLE&gt;</span>)
+
 </pre>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related task" title="Related task" /><br />

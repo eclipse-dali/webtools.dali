@@ -6,11 +6,11 @@
  
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-Script-Type" content="text/javascript" />
-<title>Embeddable</title>
-<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1 Build 004" />
-<meta name="date" content="2010-01-22T9:29:45Z" />
+<title>Entity</title>
+<meta name="generator" content="Oracle DARB XHTML Converter (Mode = ohj/ohw) - Version 5.1.1" />
+<meta name="date" content="2010-05-19T8:12:43Z" />
 <meta name="robots" content="noarchive" />
-<meta name="doctitle" content="Embeddable" />
+<meta name="doctitle" content="Entity" />
 <meta name="relnum" content="Release 2.3" />
 <meta name="copyright" content="Copyright (c) 2000, 2008 oracle . All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available at http://www.eclipse.org/legal/epl-v10.html. Contributors: Oracle - initial API and implementation" />
 <link rel="copyright" href="dcommon/html/cpyr.htm" title="Copyright" type="text/html" />
@@ -18,28 +18,56 @@
 <!-- contents -->
 </head>
 <body>
-<p><a id="BABFEICE" name="BABFEICE"></a></p>
+<p><a id="BABGBIEE" name="BABGBIEE"></a></p>
 <div class="sect2"><!-- infolevel="all" infotype="General" -->
-<h1>Embeddable</h1>
-<p><a id="sthref77" name="sthref77"></a><a id="sthref78" name="sthref78"></a>An <span class="bold">Embedded</span> class is a class whose instances are stored as part of an owning entity; it shares the identity of the owning entity. Each field of the embedded class is mapped to the database table associated with the owning entity.</p>
-<p>To override the mapping information for a specific subclass, use the <code>@AttributeOverride</code> annotation for that specific class.</p>
-<p><a id="sthref79" name="sthref79"></a><a id="sthref80" name="sthref80"></a><a id="sthref81" name="sthref81"></a>An embeddable entity is identified by the <code>@Embeddable</code> annotation.</p>
-<p>Use this procedure to add embeddable persistence to an existing entity:</p>
+<h1>Entity</h1>
+<p><a id="sthref70" name="sthref70"></a><a id="sthref71" name="sthref71"></a><a id="sthref72" name="sthref72"></a><a id="sthref73" name="sthref73"></a>An <span class="bold">Entity</span> is a persistent domain object.</p>
+<p>An entity <span class="italic">can be</span>:</p>
+<ul>
+<li>
+<p>Abstract or concrete classes. Entities may also extend non-entity classes as well as entity classes, and non-entity classes may extend entity classes.</p>
+</li>
+</ul>
+<p>An entity <span class="italic">must have</span>:</p>
+<ul>
+<li>
+<p>A no-arg constructor (public or protected); the entity class may have other constructors as well.</p>
+</li>
+</ul>
+<p><a id="sthref74" name="sthref74"></a><a id="sthref75" name="sthref75"></a><a id="sthref76" name="sthref76"></a>Each persistent entity must be mapped to a database table and contain a primary key. Persistent entities are identified by the <code>@Entity</code> annotation.</p>
+<p>Use this procedure to add persistence to an existing entity:</p>
 <ol>
 <li>
-<p>Open the Java class in the <span class="gui-object-title">Project Explorer</span>.</p>
+<p>Open the Java class in the <span class="gui-object-title">Project Explorer.</span></p>
 </li>
 <li>
 <p>Select the class in the JPA Structure view.</p>
 </li>
 <li>
-<p>Click the mapping type hyperlink to open the Mapping Type Selection dialog.</p>
+<p>In the JPA Details view, click the mapping type hyperlink to access the Mapping Type Selection dialog. In the following figure, clicking <span class="italic">entity</span> invokes the dialog from the JPA Details View.</p>
+<div class="figure"><a id="sthref77" name="sthref77"></a>
+<p class="titleinfigure">The Mapping Type Hyperlink</p>
+<img src="img/mapped_entity_type_link.png" alt="The JPA Details view for an entity showing the mapping type hyperlink." title="The JPA Details view for an entity showing the mapping type hyperlink." /><br /></div>
+<!-- class="figure" -->
+<div align="center">
+<div class="inftblnotealso"><br />
+<table class="NoteAlso oac_no_warn" summary="" cellpadding="3" cellspacing="0">
+<tbody>
+<tr>
+<td align="left">
+<p class="notep1">Tip:</p>
+You can also change (or add) persistence for an entity by right-clicking the class in the JPA Structure View and then clicking <span class="bold">Map As &gt; Entity</span>.</td>
+</tr>
+</tbody>
+</table>
+<br /></div>
+<!-- class="inftblnotealso" --></div>
 </li>
 <li>
-<p>Select <span class="bold">Embeddable</span> and then click <span class="bold">OK</span>.</p>
-<div class="figure"><a id="sthref82" name="sthref82"></a>
-<p class="titleinfigure">Mapping Type Selection Dialog (Embeddable)</p>
-<img src="img/mapping_type_selection_embed.png" alt="The Mapping Type Selection dialog with Embeddable selected." title="The Mapping Type Selection dialog with Embeddable selected." /><br /></div>
+<p>Select <span class="bold">Entity</span> from the Mapping Type Selection dialog and then click <span class="bold">OK</span>.</p>
+<div class="figure"><a id="sthref78" name="sthref78"></a>
+<p class="titleinfigure">The Mapping Type Selection Dialog</p>
+<img src="img/mapping_type_selection_entity.png" alt="The Mapping Type selection dialog with Enity selected." title="The Mapping Type selection dialog with Enity selected." /><br /></div>
 <!-- class="figure" --></li>
 <li>
 <p>Complete the remaining <a href="ref_persistence_prop_view.htm#BABFAEBB">JPA Details view (for entities)</a>.</p>
@@ -47,12 +75,10 @@
 </ol>
 <p>&nbsp;</p>
 <img src="img/ngrelt.png" alt="Related tasks" title="Related tasks" /><br />
-<dl>
-<dd><a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a></dd>
-<dd><a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a></dd>
-<dd><a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a></dd>
-</dl>
-</div>
+<br />
+<a href="task_add_persistence.htm#BABHICAI">Adding persistence to a class</a><br />
+<a href="task_additonal_tables.htm#CIHGBIEI">Specifying additional tables</a><br />
+<a href="task_inheritance.htm#CIHCCCJD">Specifying entity inheritance</a><br /></div>
 <!-- class="sect2" -->
 <!-- Start Footer -->
 <div class="footer">
