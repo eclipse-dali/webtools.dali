@@ -295,9 +295,9 @@ public class DatabaseGroup
 		this.selectedConnectionProfile.addConnectionListener(this.connectionListener);
 		this.updateConnectionComboBox();
 		this.selectedConnectionProfile.connect();
-		this.updateSchemaComboBox();
 		// everything else should be synchronized when we get the resulting open event
 		this.fireConnectionProfileChanged(this.selectedConnectionProfile);
+		this.updateSchemaComboBox();
 	}
 
 	void reconnect() {
