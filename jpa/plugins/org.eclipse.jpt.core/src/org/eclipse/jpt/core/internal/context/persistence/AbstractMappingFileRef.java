@@ -225,55 +225,53 @@ public abstract class AbstractMappingFileRef
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-
+		
 		if (StringTools.stringIsEmpty(this.fileName)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this,
-					this.getValidationTextRange()
-				)
-			);
+					this.getValidationTextRange()));
 			return;
 		}
-
+		
 		if (this.mappingFile == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					this.buildMissingMappingFileMessageID(),
-					new String[] {this.fileName},
-					this,
-					this.getValidationTextRange()
-				)
-			);
+			messages.add(buildMappingFileValidationMessage());
 			return;
 		}
-
-		if (this.mappingFile.getRoot() == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
-					new String[] {this.fileName},
-					this,
-					this.getValidationTextRange()
-				)
-			);
-		}
-
+		
 		this.mappingFile.validate(messages, reporter);
 	}
-
-	protected String buildMissingMappingFileMessageID() {
-		return this.getPlatformFile().exists() ?
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
-					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE;
+	
+	protected IMessage buildMappingFileValidationMessage() {
+		int severity = IMessage.HIGH_SEVERITY;
+		IFile file = getPlatformFile();
+		if (file.exists()) {
+			JpaXmlResource xmlResource = getJpaProject().getMappingFileXmlResource(this.fileName);
+			if (xmlResource != null 
+					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
+				return DefaultJpaValidationMessages.buildMessage(
+					severity,
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT,
+					new String[] {file.getName()},
+					file);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				severity,
+				JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
+				new String[] {file.getName()},
+				file);
+		}
+		return DefaultJpaValidationMessages.buildMessage(
+			severity,
+			JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+			new String[] {this.fileName},
+			this,
+			getValidationTextRange());
 	}
-
+	
 	protected IFile getPlatformFile() {
 		return this.getJpaProject().convertToPlatformFile(this.fileName);
 	}
-
 }

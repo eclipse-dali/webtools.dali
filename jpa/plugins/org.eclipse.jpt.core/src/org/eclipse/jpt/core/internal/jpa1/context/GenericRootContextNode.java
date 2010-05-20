@@ -192,13 +192,7 @@ public class GenericRootContextNode
 		}
 
 		if (this.persistenceXml == null) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					this.buildMissingFileMessageID(),
-					this
-				)
-			);
+			messages.add(buildPersistenceXmlValidationMessage());
 			return;
 		}
 		if ( ! this.jpaProject.discoversAnnotatedClasses()) {
@@ -207,10 +201,27 @@ public class GenericRootContextNode
 		this.persistenceXml.validate(messages, reporter);
 	}
 
-	protected String buildMissingFileMessageID() {
-		return this.getPlatformFile().exists() ?
-					JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT :
-					JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML;
+	protected IMessage buildPersistenceXmlValidationMessage() {
+		int severity = IMessage.HIGH_SEVERITY;
+		IFile file = getPlatformFile();
+		if (file.exists()) {
+			JpaXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
+			if (xmlResource != null 
+					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
+				return DefaultJpaValidationMessages.buildMessage(
+					severity,
+					JpaValidationMessages.PERSISTENCE_XML_UNSUPPORTED_CONTENT,
+					file);
+			}
+			return DefaultJpaValidationMessages.buildMessage(
+				severity,
+				JpaValidationMessages.PERSISTENCE_XML_INVALID_CONTENT,
+				file);
+		}
+		return DefaultJpaValidationMessages.buildMessage(
+			severity,
+			JpaValidationMessages.PROJECT_NO_PERSISTENCE_XML,
+			this);
 	}
 
 	protected IFile getPlatformFile() {

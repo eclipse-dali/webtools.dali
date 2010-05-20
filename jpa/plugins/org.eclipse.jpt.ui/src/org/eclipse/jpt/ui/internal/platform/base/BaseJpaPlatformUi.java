@@ -160,6 +160,7 @@ public abstract class BaseJpaPlatformUi
 				return definition;
 			}
 		}
+		// TODO (bug 313632) - return a null resource ui definition?
 		throw new IllegalArgumentException("No resource UI definition for the resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
@@ -168,6 +169,7 @@ public abstract class BaseJpaPlatformUi
 			return (MappingResourceUiDefinition) getResourceUiDefinition(resourceType);
 		}
 		catch (ClassCastException cce) {
+			// TODO (bug 313632) - return a null resource ui definition?
 			throw new IllegalArgumentException("No mapping resource UI definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
 		}
 	}
