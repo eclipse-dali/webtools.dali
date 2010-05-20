@@ -26,7 +26,10 @@ import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.jdt.core.IClasspathContainer;
+import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
@@ -166,6 +169,10 @@ public class ClassesGenerator
 			classpath.add(this.getDefaultProjectClasspathEntry(project).getMemento());
 			// System Library  
 			classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
+			// Containers classpath
+			for(IRuntimeClasspathEntry containerClasspathEntry: this.getContainersClasspathEntries()) {
+				classpath.add(containerClasspathEntry.getMemento());
+			}
 		}
 		catch (CoreException e) {
 			throw new RuntimeException("An error occurs generating a memento", e);
@@ -210,7 +217,7 @@ public class ClassesGenerator
 			programArguments.append(catalog);
 		}
 		// schema
-		programArguments.append(" ");	  //$NON-NLS-1$
+		programArguments.append(' ');	  //$NON-NLS-1$
 		programArguments.append(xmlSchemaName);
 		
 		// bindings
@@ -235,8 +242,7 @@ public class ClassesGenerator
 		ILaunchConfigurationWorkingCopy launchConfig = null;
 		this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
 
-		ILaunchManager manager = getLaunchManager();
-		ILaunchConfigurationType type = getLaunchManager().getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+		ILaunchConfigurationType type = this.getLaunchManager().getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
 
 		launchConfig = type.newInstance(null, LAUNCH_CONFIG_NAME);
 		return launchConfig;
@@ -322,6 +328,23 @@ public class ClassesGenerator
 		projectEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
 		
 		return projectEntry;
+	}
+
+	private List<IRuntimeClasspathEntry> getContainersClasspathEntries() throws CoreException {
+		ArrayList<IRuntimeClasspathEntry> classpathEntries = new ArrayList<IRuntimeClasspathEntry>();
+		for(IClasspathEntry classpathEntry: this.javaProject.getRawClasspath()) {
+			if(classpathEntry.getEntryKind() == IClasspathEntry.CPE_CONTAINER) {
+				IClasspathContainer container = JavaCore.getClasspathContainer(classpathEntry.getPath(), this.javaProject);
+				if(container != null && container.getKind() == IClasspathContainer.K_SYSTEM) {
+					classpathEntries.add( 
+						JavaRuntime.newRuntimeContainerClasspathEntry(
+							container.getPath(), 
+							IRuntimeClasspathEntry.BOOTSTRAP_CLASSES, 
+							this.javaProject));
+				}
+			}
+		}
+		return classpathEntries;
 	}
 	
 	private IVMInstall getProjectJRE() throws CoreException {
