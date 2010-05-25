@@ -428,7 +428,7 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = this.javaProject.createCompilationUnit("finals", "MyFinal.java", "public final class MyFinal { }");
 		Type type = buildType("MyFinal", cu);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
-		assertFalse(type.isPersistable(astRoot));
+		assertTrue(type.isPersistable(astRoot));
 	}
 	
 	//public interface MyInterface

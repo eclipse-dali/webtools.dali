@@ -51,9 +51,6 @@ public class JPTTools {
 			return false;  // should never get here(?)
 		}
 		int modifiers = typeAdapter.getModifiers();
-		if (Modifier.isFinal(modifiers)) {
-			return false;
-		}
 		if (typeAdapter.isMember()) {
 			if ( ! Modifier.isStatic(modifiers)) {
 				return false;
