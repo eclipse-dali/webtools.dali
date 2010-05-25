@@ -358,7 +358,32 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Embeddable1.java", sourceWriter);
 	}
-	
+
+	private void createSelfReferentialEmbedded() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR).append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Foo").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private Foo embedded;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+	}
+
 	public void testMorphToVersionMapping() throws Exception {
 		createTestEntityWithEmbeddedMapping();
 		createEmbeddableType();
@@ -1508,4 +1533,12 @@ public class GenericJavaEmbeddedMapping2_0Tests extends Generic2_0ContextModelTe
 		assertEquals(0, specifiedAttributeOverride.getColumn().getScale());
 	}
 
+	public void testSelfReferentialEmbeddedMapping() throws Exception {
+		createSelfReferentialEmbedded();
+		addXmlClassRef(PACKAGE_NAME + ".Foo");
+		
+		//If there is a StackOverflowError you will not be able to get the mapping
+		JavaEmbeddedMapping2_0 embeddedMapping = (JavaEmbeddedMapping2_0) getJavaPersistentType().getAttributeNamed("embedded").getMapping();
+		assertFalse(embeddedMapping.allOverrideableAttributeMappingNames().hasNext());
+	}
 }

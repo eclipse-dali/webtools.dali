@@ -310,6 +310,33 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "ZipCode.java", sourceWriter);
 	}
 
+	private void createSelfReferentialEmbedded() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA.EMBEDDED);
+					sb.append(";");
+					sb.append(CR).append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Foo").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @Embedded").append(CR);
+				sb.append("    private Foo embedded;").append(CR);
+				sb.append(CR);
+				sb.append("    private String name;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+	}
+
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY, "embeddedMapping");
@@ -1672,5 +1699,13 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		assertEquals(255, specifiedAttributeOverride.getColumn().getLength());
 		assertEquals(0, specifiedAttributeOverride.getColumn().getPrecision());
 		assertEquals(0, specifiedAttributeOverride.getColumn().getScale());
+	}
+
+	public void testSelfReferentialEmbeddedMapping() throws Exception {
+		createSelfReferentialEmbedded();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Foo");
+
+		OrmEmbeddedMapping2_0 embeddedMapping = (OrmEmbeddedMapping2_0) persistentType.getAttributeNamed("embedded").getMapping();
+		assertFalse(embeddedMapping.allOverrideableAttributeMappingNames().hasNext());
 	}
 }

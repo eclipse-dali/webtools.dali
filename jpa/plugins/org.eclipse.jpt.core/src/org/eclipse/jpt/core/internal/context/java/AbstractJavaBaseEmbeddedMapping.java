@@ -104,12 +104,13 @@ public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
 		setTargetEmbeddable_(this.getPersistentAttribute().getEmbeddable());
 		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
 	}
-	
+
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getTargetEmbeddable() == null) {
-			return EmptyIterator.instance();
+		Embeddable targetEmbeddable = getTargetEmbeddable();
+		if (targetEmbeddable != null && targetEmbeddable != getPersistentAttribute().getOwningTypeMapping()) {
+			return targetEmbeddable.attributeMappings();
 		}
-		return this.getTargetEmbeddable().attributeMappings();
+		return EmptyIterator.instance();
 	}
 	
 	@Override

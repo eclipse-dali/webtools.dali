@@ -308,6 +308,31 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "PropertyInfo.java", sourceWriter);
 	}
 
+	private void createSelfReferentialElementCollection() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA2_0.ELEMENT_COLLECTION);
+					sb.append(";");
+					sb.append(CR).append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Foo").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);
+				sb.append("    private java.util.List<Foo> elementCollection;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+	}
+
 	public GenericJavaElementCollectionMapping2_0Tests(String name) {
 		super(name);
 	}
@@ -2024,5 +2049,14 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		assertEquals("state.name", specifiedOverrides.next().getName());
 		assertEquals("city", specifiedOverrides.next().getName());
 		assertFalse(specifiedOverrides.hasNext());
+	}
+
+	public void testSelfReferentialElementCollection() throws Exception {
+		createSelfReferentialElementCollection();
+		addXmlClassRef(PACKAGE_NAME + ".Foo");
+		
+		//If there is a StackOverflowError you will not be able to get the mapping
+		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().getAttributeNamed("elementCollection").getMapping();
+		assertFalse(elementCollectionMapping.allOverrideableAttributeMappingNames().hasNext());
 	}
 }

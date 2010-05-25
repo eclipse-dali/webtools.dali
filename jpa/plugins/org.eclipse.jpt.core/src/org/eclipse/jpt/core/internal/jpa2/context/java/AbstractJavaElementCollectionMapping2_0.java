@@ -997,10 +997,11 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getResolvedTargetEmbeddable() == null) {
-			return EmptyIterator.instance();
+		Embeddable targetEmbeddable = getResolvedTargetEmbeddable();
+		if (targetEmbeddable != null && targetEmbeddable != getPersistentAttribute().getOwningTypeMapping()) {
+			return targetEmbeddable.attributeMappings();
 		}
-		return this.getResolvedTargetEmbeddable().attributeMappings();
+		return EmptyIterator.instance();
 	}
 
 	@Override

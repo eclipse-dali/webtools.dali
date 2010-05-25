@@ -257,6 +257,31 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 			}
 		});
 	}
+
+	private void createSelfReferentialElementCollection() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+					sb.append("import ");
+					sb.append(JPA.EMBEDDABLE);
+					sb.append(";");
+					sb.append(CR);
+					sb.append("import ");
+					sb.append(JPA2_0.ELEMENT_COLLECTION);
+					sb.append(";");
+					sb.append(CR).append(CR);
+				sb.append("@Embeddable");
+				sb.append(CR);
+				sb.append("public class ").append("Foo").append(" ");
+				sb.append("{").append(CR);
+				sb.append(CR);
+				sb.append("    @ElementCollection").append(CR);
+				sb.append("    private java.util.List<Foo> elementCollection;").append(CR);
+				sb.append(CR);
+				sb.append("}").append(CR);
+		}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "Foo.java", sourceWriter);
+	}
 	
 	public void testUpdateName() throws Exception {
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
@@ -1417,5 +1442,13 @@ public class GenericOrmElementCollectionMapping2_0Tests extends Generic2_0Contex
 		ormColumn = addressesVirtualMapping.getMapKeyColumn();
 		assertNull(ormColumn.getSpecifiedTable());
 		assertEquals(TYPE_NAME + "_addresses", ormColumn.getDefaultTable());
+	}
+
+	public void testSelfReferentialElementCollectionMapping() throws Exception {
+		createSelfReferentialElementCollection();
+		OrmPersistentType persistentType = getEntityMappings().addPersistentType(MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Foo");
+
+		OrmElementCollectionMapping2_0 mapping = (OrmElementCollectionMapping2_0) persistentType.getAttributeNamed("elementCollection").getMapping();
+		assertFalse(mapping.allOverrideableAttributeMappingNames().hasNext());
 	}
 }

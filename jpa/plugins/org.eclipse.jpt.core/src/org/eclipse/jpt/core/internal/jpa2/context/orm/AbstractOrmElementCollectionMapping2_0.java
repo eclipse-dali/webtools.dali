@@ -665,10 +665,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	}
 
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		if (this.getResolvedTargetEmbeddable() == null) {
-			return EmptyIterator.instance();
+		Embeddable targetEmbeddable = getResolvedTargetEmbeddable();
+		if (targetEmbeddable != null && targetEmbeddable != getPersistentAttribute().getOwningTypeMapping()) {
+			return targetEmbeddable.attributeMappings();
 		}
-		return this.getResolvedTargetEmbeddable().attributeMappings();
+		return EmptyIterator.instance();
 	}
 
 	@Override
