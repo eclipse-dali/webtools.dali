@@ -26,6 +26,7 @@ import org.eclipse.jpt.core.jpa2.context.EmbeddedIdMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
@@ -184,13 +185,17 @@ public class GenericOrmEmbeddedIdMapping
 		// (in JPA 1.0, this will obviously never be reached)
 		if (isMappedByRelationship()
 				&& getAttributeOverrideContainer().specifiedAttributeOverridesSize() > 0) {
+			TextRange textRange = getAttributeOverrideContainer().getValidationTextRange();
+			if (!isVirtual()) {
+				textRange = getAttributeOverrideContainer().specifiedAttributeOverrides().next().getValidationTextRange();
+			}
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.EMBEDDED_ID_MAPPING_MAPPED_BY_RELATIONSHIP_AND_ATTRIBUTE_OVERRIDES_SPECIFIED,
 						new String[] {},
 						getAttributeOverrideContainer(),
-						getAttributeOverrideContainer().getValidationTextRange()));
+						textRange));
 		}
 	}
 }

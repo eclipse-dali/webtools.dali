@@ -327,9 +327,6 @@ public class GenericOrmAttributeOverrideContainer
 	}
 
 	public TextRange getValidationTextRange() {
-		if (specifiedAttributeOverridesSize() > 0) {
-			return this.specifiedAttributeOverrides.get(0).getValidationTextRange();
-		}
 		return getOwner().getValidationTextRange();
 	}
 	
