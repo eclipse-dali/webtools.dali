@@ -176,7 +176,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		if (getSpecifiedReferencedColumnName() == null && this.getOwner().joinColumnsSize() > 1) {
 			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(astRoot));
 		}
-		else if (this.getReferencedColumnName() != null) {
+		else if (this.getSpecifiedReferencedColumnName() != null) {
 			if (this.getReferencedColumnDbTable() != null && ! this.isReferencedColumnResolved()) {
 				messages.add(getOwner().buildUnresolvedReferencedColumnNameMessage(this, this.getReferencedColumnNameTextRange(astRoot)));
 			}

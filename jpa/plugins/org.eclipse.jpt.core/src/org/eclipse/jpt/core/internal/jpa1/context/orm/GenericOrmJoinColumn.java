@@ -180,7 +180,7 @@ public class GenericOrmJoinColumn extends AbstractOrmBaseColumn<XmlJoinColumn> i
 		if (this.getSpecifiedReferencedColumnName() == null && this.getOwner().joinColumnsSize() > 1) {
 			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 		}
-		else if (this.getReferencedColumnName() != null) {
+		else if (this.getSpecifiedReferencedColumnName() != null) {
 			Table refColumnDbTable = this.getReferencedColumnDbTable();
 			if (refColumnDbTable != null && ! this.isReferencedColumnResolved()) {
 				messages.add(getOwner().buildUnresolvedReferencedColumnNameMessage(this, this.getReferencedColumnNameTextRange()));
