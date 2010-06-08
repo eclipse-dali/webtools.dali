@@ -44,6 +44,7 @@ import org.eclipse.jpt.jaxb.ui.internal.filters.EmptyInnerPackageFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonArchiveOrExternalElementFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonContainerFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonJavaElementFilter;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.SWT;
@@ -61,6 +62,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 
 public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage {
@@ -80,6 +82,8 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private static final int SIZING_SELECTION_WIDGET_WIDTH = 480;
 	private static final int SIZING_SELECTION_WIDGET_HEIGHT = 150;
 
+	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".wizard_jaxbschema_classes"; //$NON-NLS-1$
+	
 	// ********** constructor **********
 
 	public SchemaGeneratorWizardPage(IStructuredSelection selection) {
@@ -239,6 +243,8 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private Control buildTopLevelControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
+		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
 

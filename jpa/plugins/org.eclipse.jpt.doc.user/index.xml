@@ -4,15 +4,15 @@
     <entry keyword="Basic mapping"><topic href="tasks010.htm#sthref116" /></entry>
   </entry>
   <entry keyword="@Column">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref231" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref245" /></entry>
   </entry>
   <entry keyword="@DiscriminatorColumn">
     <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref96" /></entry>
-    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref225" /></entry>
+    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref239" /></entry>
   </entry>
   <entry keyword="@DiscriminatorValue">
     <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref98" /></entry>
-    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref223" /></entry>
+    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref237" /></entry>
   </entry>
   <entry keyword="@Embeddable">
     <entry keyword="Embeddable"><topic href="tasks007.htm#sthref81" /></entry>
@@ -27,10 +27,10 @@
     <entry keyword="Entity"><topic href="tasks006.htm#sthref74" /></entry>
   </entry>
   <entry keyword="@Enumerated">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref241" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref255" /></entry>
   </entry>
   <entry keyword="@GeneratedValue">
-    <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref251" /></entry>
+    <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref265" /></entry>
   </entry>
   <entry keyword="@Id">
     <entry keyword="ID mapping"><topic href="tasks013.htm#sthref128" /></entry>
@@ -41,11 +41,11 @@
   <entry keyword="@JoinColumn">
     <entry keyword="Many-to-one mapping"><topic href="tasks015.htm#sthref139" /></entry>
     <entry keyword="One-to-one mapping"><topic href="tasks017.htm#sthref149" /></entry>
-    <entry keyword="Join Table Information"><topic href="reference011.htm#sthref247" /></entry>
-    <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref250" /></entry>
+    <entry keyword="Join Table Information"><topic href="reference011.htm#sthref261" /></entry>
+    <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref264" /></entry>
   </entry>
   <entry keyword="@Lob">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref236" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref250" /></entry>
   </entry>
   <entry keyword="@ManyToMany">
     <entry keyword="Many-to-many mapping"><topic href="tasks014.htm#sthref132" /></entry>
@@ -66,13 +66,13 @@
     <entry keyword="One-to-one mapping"><topic href="tasks017.htm#sthref146" /></entry>
   </entry>
   <entry keyword="@OrderBy">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref245" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref259" /></entry>
   </entry>
   <entry keyword="@SequenceGenerator">
-    <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref253" /></entry>
+    <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref267" /></entry>
   </entry>
   <entry keyword="@Temporal">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref238" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref252" /></entry>
   </entry>
   <entry keyword="@Transient">
     <entry keyword="Transient mapping"><topic href="tasks018.htm#sthref152" /></entry>
@@ -81,20 +81,20 @@
     <entry keyword="Version mapping"><topic href="tasks019.htm#sthref156" /></entry>
   </entry>
   <entry keyword="architecture of Dali feature">
-    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref289" /></entry>
+    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref303" /></entry>
   </entry>
   <entry keyword="association tables">
-    <entry keyword="Create New Association"><topic href="ref_create_new_association_wizard.htm#sthref207" /></entry>
+    <entry keyword="Create New Association"><topic href="ref_create_new_association_wizard.htm#sthref221" /></entry>
   </entry>
   <entry keyword="attribute overrides">
-    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref214" /></entry>
+    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref228" /></entry>
   </entry>
   <entry keyword="Attribute Overrides - in Java Details view">
-    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref216" /></entry>
+    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref230" /></entry>
   </entry>
   <entry keyword="attributes">
     <entry keyword="JPA Details view">
-      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref230" /></entry>
+      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref244" /></entry>
     </entry>
     <entry keyword="mapping">
       <entry keyword="Understanding OR mappings"><topic href="concept_mapping.htm#sthref21" /></entry>
@@ -110,13 +110,13 @@
     <entry keyword="(See also mappings)"></entry>
   </entry>
   <entry keyword="caching">
-    <entry keyword="Caching"><topic href="reference020.htm#sthref264" /></entry>
+    <entry keyword="Caching"><topic href="reference020.htm#sthref278" /></entry>
   </entry>
   <entry keyword="canonical metamodel">
-    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref284" /></entry>
+    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref298" /></entry>
   </entry>
   <entry keyword="cardinality - association tables">
-    <entry keyword="Association Cardinality"><topic href="ref_association_cardinality.htm#sthref210" /></entry>
+    <entry keyword="Association Cardinality"><topic href="ref_association_cardinality.htm#sthref224" /></entry>
   </entry>
   <entry keyword="classes">
     <entry keyword="adding persistence to">
@@ -128,11 +128,15 @@
     <entry keyword="entity">
       <entry keyword="Entity"><topic href="tasks006.htm#sthref72" /></entry>
     </entry>
+    <entry keyword="generating schema from">
+      <entry keyword="Generating Schema from Classes"><topic href="task_generating_schema_from_classes.htm#sthref190" /></entry>
+      <entry keyword="Generating JAXB Classes from a Schema"><topic href="task_generate_classes_from_schema.htm#sthref198" /></entry>
+    </entry>
     <entry keyword="managed">
       <entry keyword="Managing the persistence.xml file"><topic href="task_manage_persistence.htm#sthref50" /></entry>
     </entry>
     <entry keyword="managing persistent classes">
-      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref193" /></entry>
+      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref207" /></entry>
     </entry>
     <entry keyword="mapped superclass">
       <entry keyword="Mapped superclass"><topic href="tasks008.htm#sthref86" /></entry>
@@ -144,20 +148,20 @@
   <entry keyword="columns">
     <entry keyword="discriminator">
       <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref97" /></entry>
-      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref226" /></entry>
+      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref240" /></entry>
     </entry>
     <entry keyword="join">
       <entry keyword="Many-to-one mapping"><topic href="tasks015.htm#sthref138" /></entry>
       <entry keyword="One-to-one mapping"><topic href="tasks017.htm#sthref148" /></entry>
-      <entry keyword="Join Table Information"><topic href="reference011.htm#sthref246" /></entry>
-      <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref249" /></entry>
+      <entry keyword="Join Table Information"><topic href="reference011.htm#sthref260" /></entry>
+      <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref263" /></entry>
     </entry>
     <entry keyword="mapping to">
-      <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref232" /></entry>
+      <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref246" /></entry>
     </entry>
     <entry keyword="value">
       <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref99" /></entry>
-      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref224" /></entry>
+      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref238" /></entry>
     </entry>
   </entry>
   <entry keyword="connection pool">
@@ -168,9 +172,11 @@
   </entry>
   <entry keyword="Create a JPA Project Wizard">
     <entry keyword="Creating a new JPA project"><topic href="task_create_new_project.htm#sthref29" /></entry>
+    <entry keyword="Generating Schema from Classes"><topic href="task_generating_schema_from_classes.htm#sthref194" /></entry>
+    <entry keyword="Generating JAXB Classes from a Schema"><topic href="task_generate_classes_from_schema.htm#sthref202" /></entry>
   </entry>
   <entry keyword="Create New JPA Project wizard">
-    <entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref190" /></entry>
+    <entry keyword="Create New JPA Project wizard"><topic href="ref_new_jpa_project_wizard.htm#sthref204" /></entry>
   </entry>
   <entry keyword="database tables">
     <entry keyword="generating entities from">
@@ -179,20 +185,20 @@
   </entry>
   <entry keyword="database - persistence">
     <entry keyword="connection">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref279" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref293" /></entry>
     </entry>
     <entry keyword="schema">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref281" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref295" /></entry>
     </entry>
   </entry>
   <entry keyword="derived ID">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref243" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref257" /></entry>
   </entry>
   <entry keyword="developer documentation - Dali">
-    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref288" /></entry>
+    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref302" /></entry>
   </entry>
   <entry keyword="eager fetch">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref234" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref248" /></entry>
   </entry>
   <entry keyword="embeddable class">
     <entry keyword="@Embeddable">
@@ -229,20 +235,20 @@
       <entry keyword="Creating a JPA Entity"><topic href="task_create_jpa_entity.htm#sthref40" /></entry>
     </entry>
     <entry keyword="customizing">
-      <entry keyword="Customize Individual Entities"><topic href="ref_customizIndividualEntities.htm#sthref206" /></entry>
+      <entry keyword="Customize Individual Entities"><topic href="ref_customizIndividualEntities.htm#sthref220" /></entry>
     </entry>
     <entry keyword="embeddable">
       <entry keyword="Embeddable"><topic href="tasks007.htm#sthref83" /></entry>
     </entry>
     <entry keyword="from tables">
       <entry keyword="Generating entities from tables"><topic href="tasks021.htm#sthref158" /></entry>
-      <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref202" /></entry>
+      <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref216" /></entry>
     </entry>
     <entry keyword="generating">
-      <entry keyword="Customize Default Entity Generation"><topic href="ref_customizeDefaultEntityGeneration.htm#sthref205" /></entry>
+      <entry keyword="Customize Default Entity Generation"><topic href="ref_customizeDefaultEntityGeneration.htm#sthref219" /></entry>
     </entry>
     <entry keyword="JPA Details view">
-      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref213" /></entry>
+      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref227" /></entry>
     </entry>
     <entry keyword="mapped superclass">
       <entry keyword="Mapped superclass"><topic href="tasks008.htm#sthref89" /></entry>
@@ -258,7 +264,7 @@
       <entry keyword="Entity"><topic href="tasks006.htm#sthref76" /></entry>
     </entry>
     <entry keyword="secondary tables">
-      <entry keyword="Secondary table information"><topic href="reference008.htm#sthref219" /></entry>
+      <entry keyword="Secondary table information"><topic href="reference008.htm#sthref233" /></entry>
     </entry>
   </entry>
   <entry keyword="Entity Class page">
@@ -268,29 +274,33 @@
     <entry keyword="&lt;a id=&quot;sthref43&quot; name=&quot;sthref43&quot;&gt;&lt;/a&gt;The Entity Class Page"><topic href="task_create_jpa_entity.htm#sthref45" /></entry>
   </entry>
   <entry keyword="enumerated">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref240" /></entry>
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref242" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref254" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref256" /></entry>
   </entry>
   <entry keyword="error messages - Dali">
     <entry keyword="Validating mappings and reporting problems"><topic href="tasks023.htm#sthref167" /></entry>
     <entry keyword="Error messages"><topic href="tasks024.htm#sthref172" /></entry>
   </entry>
   <entry keyword="extension points - Dali feature">
-    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref290" /></entry>
+    <entry keyword="Dali Developer Documentation"><topic href="reference033.htm#sthref304" /></entry>
   </entry>
   <entry keyword="fetch type">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref233" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref247" /></entry>
   </entry>
   <entry keyword="Generate Entities from Tables dialog">
     <entry keyword="Generating entities from tables"><topic href="tasks021.htm#sthref160" /></entry>
-    <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref201" /></entry>
+    <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref215" /></entry>
+  </entry>
+  <entry keyword="Generate Schema from Classes wizard">
+    <entry keyword="Generating Schema from Classes"><topic href="task_generating_schema_from_classes.htm#sthref192" /></entry>
+    <entry keyword="Generating JAXB Classes from a Schema"><topic href="task_generate_classes_from_schema.htm#sthref200" /></entry>
   </entry>
   <entry keyword="generated values">
     <entry keyword="ID mappings">
-      <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref252" /></entry>
+      <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref266" /></entry>
     </entry>
     <entry keyword="sequence">
-      <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref254" /></entry>
+      <entry keyword="Primary Key Generation information"><topic href="ref_primary_key.htm#sthref268" /></entry>
     </entry>
   </entry>
   <entry keyword="hints - query">
@@ -307,8 +317,8 @@
   <entry keyword="inheritance">
     <entry keyword="entity">
       <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref93" /></entry>
-      <entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref195" /></entry>
-      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref222" /></entry>
+      <entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref209" /></entry>
+      <entry keyword="Inheritance information"><topic href="reference009.htm#sthref236" /></entry>
     </entry>
     <entry keyword="joined tables">
       <entry keyword="Single Table Inheritance"><topic href="task_inheritance.htm#sthref105" /></entry>
@@ -318,7 +328,7 @@
     </entry>
   </entry>
   <entry keyword="Inheritance - in Java Details view">
-    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref221" /></entry>
+    <entry keyword="Inheritance information"><topic href="reference009.htm#sthref235" /></entry>
   </entry>
   <entry keyword="installation - Dali">
     <entry keyword="Requirements and installation"><topic href="getting_started001.htm#sthref3" /></entry>
@@ -326,23 +336,27 @@
   <entry keyword="Java project - converting to JPA">
     <entry keyword="Converting a Java Project to a JPA Project"><topic href="tasks001.htm#sthref35" /></entry>
   </entry>
+  <entry keyword="JAXB">
+    <entry keyword="Generating Schema from Classes"><topic href="task_generating_schema_from_classes.htm#sthref191" /></entry>
+    <entry keyword="Generating JAXB Classes from a Schema"><topic href="task_generate_classes_from_schema.htm#sthref199" /></entry>
+  </entry>
   <entry keyword="join columns">
-    <entry keyword="Join Columns"><topic href="ref_join_columns.htm#sthref209" /></entry>
-    <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref248" /></entry>
+    <entry keyword="Join Columns"><topic href="ref_join_columns.htm#sthref223" /></entry>
+    <entry keyword="Join Columns Information"><topic href="reference012.htm#sthref262" /></entry>
   </entry>
   <entry keyword="joined tables - inheritance">
     <entry keyword="Single Table Inheritance"><topic href="task_inheritance.htm#sthref106" /></entry>
   </entry>
   <entry keyword="JPA Details view">
     <entry keyword="attributes">
-      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref228" /></entry>
+      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref242" /></entry>
     </entry>
     <entry keyword="entities">
-      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref211" /></entry>
+      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref225" /></entry>
     </entry>
   </entry>
   <entry keyword="JPA Development perspective">
-    <entry keyword="JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref286" /></entry>
+    <entry keyword="JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref300" /></entry>
   </entry>
   <entry keyword="JPA Facet page">
     <entry keyword="The Java Source Page"><topic href="task_create_new_project.htm#sthref34" /></entry>
@@ -355,23 +369,24 @@
       <entry keyword="Creating a new JPA project"><topic href="task_create_new_project.htm#sthref27" /></entry>
     </entry>
     <entry keyword="implementation">
-      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref191" /></entry>
+      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref205" /></entry>
     </entry>
     <entry keyword="page">
       <entry keyword="&lt;a id=&quot;sthref29&quot; name=&quot;sthref29&quot;&gt;&lt;/a&gt;Selecting the Create a JPA Project wizard"><topic href="task_create_new_project.htm#sthref31" /></entry>
+      <entry keyword="&lt;a id=&quot;sthref194&quot; name=&quot;sthref194&quot;&gt;&lt;/a&gt;Selecting the Schema from JAXB Classes wizard"><topic href="task_generating_schema_from_classes.htm#sthref196" /></entry>
     </entry>
     <entry keyword="platform">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref278" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref292" /></entry>
     </entry>
   </entry>
   <entry keyword="JPA Structure view">
-    <entry keyword="JPA Structure view"><topic href="ref_persistence_outline.htm#sthref256" /></entry>
+    <entry keyword="JPA Structure view"><topic href="ref_persistence_outline.htm#sthref270" /></entry>
   </entry>
   <entry keyword="lazy fetch">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref235" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref249" /></entry>
   </entry>
   <entry keyword="library - JPA">
-    <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref192" /></entry>
+    <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref206" /></entry>
   </entry>
   <entry keyword="many-to-many mapping">
     <entry keyword="@ManyToMany">
@@ -402,7 +417,7 @@
   </entry>
   <entry keyword="mapping file">
     <entry keyword="&lt;a id=&quot;sthref58&quot; name=&quot;sthref58&quot;&gt;&lt;/a&gt;Managing the orm.xml file"><topic href="tasks004.htm#sthref61" /></entry>
-    <entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref196" /></entry>
+    <entry keyword="Entity Class page"><topic href="ref_EntityClassPage.htm#sthref210" /></entry>
   </entry>
   <entry keyword="mappings">
     <entry keyword="about">
@@ -443,7 +458,7 @@
     </entry>
   </entry>
   <entry keyword="metamodel - canonical">
-    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref285" /></entry>
+    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref299" /></entry>
   </entry>
   <entry keyword="named queries">
     <entry keyword="entity">
@@ -479,14 +494,14 @@
     </entry>
   </entry>
   <entry keyword="ordering">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref244" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref258" /></entry>
   </entry>
   <entry keyword="orm.xml file">
     <entry keyword="about">
       <entry keyword="The orm.xml file"><topic href="concepts003.htm#sthref24" /></entry>
     </entry>
     <entry keyword="creating">
-      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref194" /></entry>
+      <entry keyword="JPA Facet page"><topic href="ref_jpa_facet.htm#sthref208" /></entry>
     </entry>
     <entry keyword="managing">
       <entry keyword="Managing the orm.xml file"><topic href="task_manage_orm.htm#sthref58" /></entry>
@@ -496,24 +511,24 @@
     </entry>
   </entry>
   <entry keyword="overrides - JPA attributes">
-    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref215" /></entry>
+    <entry keyword="Attribute overrides"><topic href="reference007.htm#sthref229" /></entry>
   </entry>
   <entry keyword="persistence">
     <entry keyword="about">
       <entry keyword="Understanding Java persistence"><topic href="concept_persistence.htm#sthref19" /></entry>
     </entry>
     <entry keyword="database connection">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref280" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref294" /></entry>
     </entry>
     <entry keyword="database schema">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref283" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref297" /></entry>
     </entry>
     <entry keyword="entity class">
       <entry keyword="Adding persistence to a class"><topic href="task_add_persistence.htm#sthref67" /></entry>
     </entry>
     <entry keyword="options">
-      <entry keyword="Project Properties page - Java Persistence Options"><topic href="ref_project_properties.htm#sthref273" /></entry>
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref275" /></entry>
+      <entry keyword="Project Properties page - Java Persistence Options"><topic href="ref_project_properties.htm#sthref287" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref289" /></entry>
     </entry>
     <entry keyword="provider">
       <entry keyword="Managing the persistence.xml file"><topic href="task_manage_persistence.htm#sthref49" /></entry>
@@ -538,10 +553,10 @@
     <entry keyword="Entity"><topic href="tasks006.htm#sthref71" /></entry>
   </entry>
   <entry keyword="perspective - JPA Development">
-    <entry keyword="JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref287" /></entry>
+    <entry keyword="JPA Development perspective"><topic href="ref_persistence_perspective.htm#sthref301" /></entry>
   </entry>
   <entry keyword="platform - JPA">
-    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref277" /></entry>
+    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref291" /></entry>
   </entry>
   <entry keyword="problems">
     <entry keyword="Validating mappings and reporting problems"><topic href="tasks023.htm#sthref169" /></entry>
@@ -552,10 +567,10 @@
       <entry keyword="Creating a new JPA project"><topic href="task_create_new_project.htm#sthref26" /></entry>
     </entry>
     <entry keyword="options">
-      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref276" /></entry>
+      <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref290" /></entry>
     </entry>
     <entry keyword="validation preferences">
-      <entry keyword="Project Properties page - Java Persistence Options"><topic href="ref_project_properties.htm#sthref274" /></entry>
+      <entry keyword="Project Properties page - Java Persistence Options"><topic href="ref_project_properties.htm#sthref288" /></entry>
     </entry>
   </entry>
   <entry keyword="query hints">
@@ -572,14 +587,20 @@
       <entry keyword="Entity"><topic href="tasks006.htm#sthref73" /></entry>
     </entry>
   </entry>
+  <entry keyword="schema">
+    <entry keyword="from classes">
+      <entry keyword="Generating Schema from Classes"><topic href="task_generating_schema_from_classes.htm#sthref189" /></entry>
+      <entry keyword="Generating JAXB Classes from a Schema"><topic href="task_generate_classes_from_schema.htm#sthref197" /></entry>
+    </entry>
+  </entry>
   <entry keyword="schema - database">
-    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref282" /></entry>
+    <entry keyword="Project Properties page - Validation Preferences"><topic href="reference027.htm#sthref296" /></entry>
   </entry>
   <entry keyword="secondary tables">
-    <entry keyword="Secondary table information"><topic href="reference008.htm#sthref217" /></entry>
+    <entry keyword="Secondary table information"><topic href="reference008.htm#sthref231" /></entry>
   </entry>
   <entry keyword="Secondary Tables - in Java Details view">
-    <entry keyword="Secondary table information"><topic href="reference008.htm#sthref220" /></entry>
+    <entry keyword="Secondary table information"><topic href="reference008.htm#sthref234" /></entry>
   </entry>
   <entry keyword="single table inheritance">
     <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref101" /></entry>
@@ -592,23 +613,23 @@
   </entry>
   <entry keyword="tables">
     <entry keyword="associations">
-      <entry keyword="Table Associations"><topic href="ref_tableAssociations.htm#sthref204" /></entry>
-      <entry keyword="Create New Association"><topic href="ref_create_new_association_wizard.htm#sthref208" /></entry>
+      <entry keyword="Table Associations"><topic href="ref_tableAssociations.htm#sthref218" /></entry>
+      <entry keyword="Create New Association"><topic href="ref_create_new_association_wizard.htm#sthref222" /></entry>
     </entry>
     <entry keyword="creating entities from">
       <entry keyword="Generating entities from tables"><topic href="tasks021.htm#sthref159" /></entry>
-      <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref203" /></entry>
+      <entry keyword="Select Tables"><topic href="ref_selectTables.htm#sthref217" /></entry>
     </entry>
     <entry keyword="inheritance">
       <entry keyword="Specifying entity inheritance"><topic href="task_inheritance.htm#sthref102" /></entry>
     </entry>
     <entry keyword="secondary">
-      <entry keyword="Secondary table information"><topic href="reference008.htm#sthref218" /></entry>
+      <entry keyword="Secondary table information"><topic href="reference008.htm#sthref232" /></entry>
     </entry>
   </entry>
   <entry keyword="temporal">
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref237" /></entry>
-    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref239" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref251" /></entry>
+    <entry keyword="General information"><topic href="ref_mapping_general.htm#sthref253" /></entry>
   </entry>
   <entry keyword="transient mapping">
     <entry keyword="@Transient">
@@ -628,11 +649,11 @@
   </entry>
   <entry keyword="views">
     <entry keyword="JPA Details view">
-      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref212" /></entry>
-      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref229" /></entry>
+      <entry keyword="JPA Details view (for entities)"><topic href="ref_persistence_prop_view.htm#sthref226" /></entry>
+      <entry keyword="JPA Details view (for attributes)"><topic href="ref_persistence_map_view.htm#sthref243" /></entry>
     </entry>
     <entry keyword="JPA Structure view">
-      <entry keyword="JPA Structure view"><topic href="ref_persistence_outline.htm#sthref255" /></entry>
+      <entry keyword="JPA Structure view"><topic href="ref_persistence_outline.htm#sthref269" /></entry>
     </entry>
   </entry>
   <entry keyword="warning messages - Dali">

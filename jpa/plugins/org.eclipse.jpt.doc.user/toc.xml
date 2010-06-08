@@ -56,6 +56,8 @@
         <topic href="tasks025.htm#CIHGEAIJ" label="Warning messages" />
       </topic>
       <topic href="tasks026.htm#BABDBCBI" label="Modifying persistent project properties" />
+      <topic href="task_generating_schema_from_classes.htm#CIHHBJCJ" label="Generating Schema from Classes" />
+      <topic href="task_generate_classes_from_schema.htm#CIHCBHJD" label="Generating JAXB Classes from a Schema" />
     </topic>
     <topic label=" Reference">
       <topic label="Wizards">
@@ -83,6 +85,9 @@
           <topic href="ref_join_columns.htm#CIAEGEEG" label="Join Columns" />
           <topic href="ref_association_cardinality.htm#CIAFIIFH" label="Association Cardinality" />
         </topic>
+        <topic href="ref_jaxb_schema_wizard.htm#CACGADFH" label="Generate Schema from JAXB Classes Wizard">
+          <topic href="ref_schema_from_classes_page.htm#CACHBEGJ" label="Generate Schema from Classes" />
+        </topic>
       </topic>
       <topic label="Property pages">
         <topic href="ref_persistence_prop_view.htm#BABFAEBB" label="JPA Details view (for entities)">
@@ -90,7 +95,7 @@
           <topic href="reference007.htm#CACIJBGH" label="Attribute overrides" />
           <topic href="reference008.htm#CACBHIDA" label="Secondary table information" />
           <topic href="reference009.htm#CACFHGHE" label="Inheritance information" />
-          <topic href="reference010.htm#sthref227" label="Queries" />
+          <topic href="reference010.htm#sthref241" label="Queries" />
         </topic>
         <topic href="ref_persistence_map_view.htm#BABIFBAF" label="JPA Details view (for attributes)">
           <topic href="ref_mapping_general.htm#CACBHFIJ" label="General information" />
@@ -127,6 +132,7 @@
         <topic href="ref_select_cascade_dialog.htm#CIAFDGIJ" label="Select Cascade dialog" />
         <topic href="ref_eclipselink_mapping_file.htm#CIAEDEJF" label="New EclipseLink Mapping File dialog" />
         <topic href="ref_add_converter.htm#CIAGCGIJ" label="Add Converter dialog" />
+        <topic href="ref_configure_jaxb_class_generation_dialog.htm#CACHHHJA" label="Configure JAXB Class Generation dialog" />
       </topic>
       <topic href="ref_persistence_perspective.htm#BABIFBDB" label="JPA Development perspective" />
       <topic label="Icons and buttons">
@@ -136,15 +142,15 @@
       <topic href="reference033.htm#CACBBDIB" label="Dali Developer Documentation" />
     </topic>
     <topic href="tips_and_tricks.htm" label="Tips and tricks">
-      <topic href="whats_new001.htm#sthref292" label="Improved Internationalization and Localization" />
+      <topic href="whats_new001.htm#sthref306" label="Improved Internationalization and Localization" />
       <topic href="whats_new002.htm#CJACEDDE" label="Multiple Improvements to the Dali Perspective" />
       <topic href="whats_new003.htm#CJADIFHJ" label="Support for JPA 2.0 and EclipseLink" />
       <topic href="whats_new004.htm#CJABIJEC" label="Conversion of Java Projects to JPA Projects" />
       <topic href="whats_new005.htm#CJACJBDA" label="EclipseLink 2.x Support" />
-      <topic href="whats_new006.htm#sthref293" label="Table-per-Concrete-Class Inheritance" />
+      <topic href="whats_new006.htm#sthref307" label="Table-per-Concrete-Class Inheritance" />
     </topic>
     <topic href="legal.htm" label=" Legal">
-      <topic href="about.htm#sthref295" label="About this content" />
+      <topic href="about.htm#sthref309" label="About this content" />
     </topic>
   </topic>
 </toc>

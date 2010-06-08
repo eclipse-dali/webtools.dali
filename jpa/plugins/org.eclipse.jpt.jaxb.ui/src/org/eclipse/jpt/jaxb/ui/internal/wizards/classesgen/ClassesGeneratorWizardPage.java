@@ -46,6 +46,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -65,6 +66,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.osgi.framework.Bundle;
 
@@ -75,6 +77,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public String XJB_FILTER = "*.xjb";   //$NON-NLS-1$
+	
+	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
 	private final IJavaProject javaProject;
 
@@ -113,6 +117,8 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private Control buildTopLevelControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout());
+
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
 		
 		this.settingsGroup = new SettingsGroup(composite);
 
@@ -287,11 +293,6 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		super.setVisible(visible);
 		validateProjectClasspath();
 	}
-	
-    @Override
-    public final void performHelp() {
-        //TODO We need a help ID for JAXB Generation
-    }
     
 	/** 
 	 * Override to allow selection of source folder in current project only

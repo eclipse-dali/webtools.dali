@@ -612,7 +612,7 @@ For example: "lastName ASC ,salary DESC"	</description>
 		<topic label="Managing the orm.xml file" href="task_manage_orm" />
 	</context>
 
-<!-- Added for 3.0 -->
+<!-- Added for 2.3 -->
 	<context id="properties_canonicalMetamodel">
 		<description>Specifies if the project model uses the Canonical Metamodel. </description>
 		<topic label="Project properties" href="ref_project_properties"/>
@@ -627,6 +627,16 @@ For example: "lastName ASC ,salary DESC"	</description>
 		<description>Click Browse and select the primary key for the entity. Clicking the field name, which is represented as a hyperlink, allows you to create a new class.</description>
 		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
 		<topic label="Primary Key Generation information" href="ref_primary_key.htm"/>
+	</context>
+	<context id="wizard_jaxbschema_classes">
+		<description>Select the project, package, or classes from which to generate the XML schema. Click Finish to generate the schema</description>
+		<topic label="Generate Schema from JAXB Classes wizard" href="ref_jaxb_schema_wizard.htm"/>
+		<topic label="Generating schema from classes" href="task_generating_schema_from_classes.htm"/>
+	</context>
+	<context id="configure_jaxb_class_generation_dialog">
+		<description>Enter the JAXB class generation settings and click Finish to generate classes.  All fields are optional except for the source folder.</description>
+		<topic label="Configure JAXB Class Generation dialog" href="ref_configure_jaxb_class_generation_dialog.htm"/>
+		<topic label="Generating JAXB Classes from a Schema" href="task_generate_classes_from_schema.htm"/>
 	</context>
 	
 	
