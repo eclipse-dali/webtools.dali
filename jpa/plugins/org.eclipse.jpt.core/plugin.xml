@@ -31,7 +31,7 @@
 			id="org.eclipse.jpt.core.content.baseJpaContent"
 			name="%BASE_JPA_CONTENT"
 			base-type="org.eclipse.core.runtime.xml"
-			describer="org.eclipse.jpt.core.internal.resource.IndeterminateContentDescriber">
+			describer="org.eclipse.jpt.core.internal.resource.contenttypes.IndeterminateContentDescriber">
 		</content-type>
 		
 		<!-- persistence.xml content type -->

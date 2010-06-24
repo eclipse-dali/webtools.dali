@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -8,7 +8,7 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.resource;
+package org.eclipse.jpt.core.internal.resource.contenttypes;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -21,6 +21,9 @@ import org.eclipse.core.runtime.content.ITextContentDescriber;
  * 
  * It is used currently for org.eclipse.jpt.core.content.baseJpaContent in order
  * to make that content type act as an "abstract" content type.
+ * 
+ * This is in its own package so that it can be excluded from bundle activation in the plugin.xml.
+ * Content describers must be self-contained and not trigger auto-activation.
  */
 public class IndeterminateContentDescriber implements ITextContentDescriber
 {
