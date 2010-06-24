@@ -43,8 +43,7 @@ public class VirtualXmlOneToMany
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
 		this.virtualXmlAttributeMapping = new VirtualXmlAttributeMapping(ormTypeMapping, javaOneToManyMapping);
-		this.virtualCascadeType = 
-			new VirtualCascadeType(javaOneToManyMapping.getCascade(), this.isOrmMetadataComplete());
+		this.virtualCascadeType = new VirtualCascadeType(javaOneToManyMapping.getCascade());
 		this.mapKey = new VirtualMapKey(javaOneToManyMapping);
 	}
 	
@@ -92,6 +91,9 @@ public class VirtualXmlOneToMany
 
 	@Override
 	public CascadeType getCascade() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
 		return this.virtualCascadeType;
 	}
 	

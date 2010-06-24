@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
@@ -39,6 +41,9 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
+import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm.OrmEclipseLinkOneToOneMapping2_0;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -237,6 +242,35 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 			each.makeSpecified();
 		}
 	}
+	
+	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, JPA.JOIN_COLUMN, JPA.FETCH_TYPE, JPA.CASCADE_TYPE, EclipseLink.JOIN_FETCH, EclipseLink.JOIN_FETCH_TYPE, EclipseLink.PRIVATE_OWNED);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne(fetch=FetchType.LAZY, optional=false, targetEntity=Address.class, orphanRemoval = true, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})");
+				sb.append(CR);
+				sb.append("    @JoinColumn(name=\"MY_COLUMN\", referencedColumnName=\"MY_REFERENCED_COLUMN\", unique=true, nullable=false, insertable=false, updatable=false, columnDefinition=\"COLUMN_DEFINITION\", table=\"MY_TABLE\")");
+				sb.append(CR);
+				sb.append("    @JoinFetch(JoinFetchType.INNER)");
+				sb.append(CR);
+				sb.append("    @PrivateOwned)");
+				sb.append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");				
+			}
+		});
+	}	
 	
 	public void testUpdateDerivedId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
@@ -779,5 +813,93 @@ public class EclipseLink2_0OrmOneToOneMappingTests
 		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
 		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
 		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+	}
+
+	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+
+		OrmEclipseLinkOneToOneMapping2_0 ormOneToOneMapping = (OrmEclipseLinkOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToOneMapping.getName());
+		assertEquals(FetchType.LAZY, ormOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOptional());
+		assertEquals("Address", ormOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(ormOneToOneMapping.getRelationshipReference().
+			getMappedByJoiningStrategy().getMappedByAttribute());
+
+		OrmJoinColumn ormJoinColumn = 
+			ormOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", ormJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", ormJoinColumn.getSpecifiedTable());
+
+		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		assertTrue(cascade.isAll());
+		assertTrue(cascade.isMerge());
+		assertTrue(cascade.isPersist());
+		assertTrue(cascade.isRemove());
+		assertTrue(cascade.isRefresh());
+		assertTrue(cascade.isDetach());
+
+		assertEquals(EclipseLinkJoinFetchType.INNER, ormOneToOneMapping.getJoinFetch().getValue());
+		assertTrue(ormOneToOneMapping.getPrivateOwned().isPrivateOwned());
+
+		assertTrue(((OrmOrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
+	}
+
+	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertTrue(ormPersistentAttribute.isVirtual());
+
+		OrmEclipseLinkOneToOneMapping2_0 ormOneToOneMapping = (OrmEclipseLinkOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToOneMapping.getName());
+		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
+		assertEquals(true, ormOneToOneMapping.isOptional());
+		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
+		assertNull(ormOneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+
+		//TODO default join columns in xml one-to-one
+//		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.specifiedJoinColumns().next();
+//		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
+//		//assertEquals("address", ormJoinColumn.getSpecifiedName());
+//		//assertEquals("address", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedNullable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertNull(ormJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, ormJoinColumn.getSpecifiedTable());
+
+		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		assertFalse(cascade.isAll());
+		assertFalse(cascade.isMerge());
+		assertFalse(cascade.isPersist());
+		assertFalse(cascade.isRemove());
+		assertFalse(cascade.isRefresh());
+		assertFalse(cascade.isDetach());
+
+		assertEquals(null, ormOneToOneMapping.getJoinFetch().getValue());
+		assertFalse(ormOneToOneMapping.getPrivateOwned().isPrivateOwned());
+
+		assertFalse(((OrmOrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 }

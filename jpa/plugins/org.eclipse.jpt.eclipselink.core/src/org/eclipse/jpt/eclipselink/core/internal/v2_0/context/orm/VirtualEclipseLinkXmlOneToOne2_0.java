@@ -93,6 +93,16 @@ public class VirtualEclipseLinkXmlOneToOne2_0 extends XmlOneToOne
 	}
 
 	@Override
+	public Boolean getOrphanRemoval() {
+		return this.virtualXmlOneToOne.getOrphanRemoval();
+	}
+
+	@Override
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
+		this.virtualXmlOneToOne.setOrphanRemoval(newOrphanRemoval);
+	}
+
+	@Override
 	public EList<XmlJoinColumn> getJoinColumns() {
 		return this.virtualXmlOneToOne.getJoinColumns();
 	}

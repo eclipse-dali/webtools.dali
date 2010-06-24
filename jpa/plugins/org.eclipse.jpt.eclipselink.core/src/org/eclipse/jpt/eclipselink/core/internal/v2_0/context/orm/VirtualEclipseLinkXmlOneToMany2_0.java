@@ -247,4 +247,14 @@ public class VirtualEclipseLinkXmlOneToMany2_0 extends XmlOneToMany
 	public EList<XmlAttributeOverride> getMapKeyAttributeOverrides() {
 		return this.virtualXmlOneToMany.getMapKeyAttributeOverrides();
 	}
+
+	@Override
+	public Boolean getOrphanRemoval() {
+		return this.virtualXmlOneToMany.getOrphanRemoval();
+	}
+
+	@Override
+	public void setOrphanRemoval(Boolean newOrphanRemoval) {
+		this.virtualXmlOneToMany.setOrphanRemoval(newOrphanRemoval);
+	}
 }

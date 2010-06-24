@@ -13,6 +13,7 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaEntity;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
@@ -238,7 +240,32 @@ public class GenericOrmOneToOneMapping2_0Tests
 			each.makeSpecified();
 		}
 	}
-	
+
+	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_ONE, JPA.JOIN_COLUMN, JPA.FETCH_TYPE, JPA.CASCADE_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToOne(fetch=FetchType.LAZY, optional=false, targetEntity=Address.class, orphanRemoval = true, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH, CascadeType.DETACH})");
+				sb.append(CR);
+				sb.append("    @JoinColumn(name=\"MY_COLUMN\", referencedColumnName=\"MY_REFERENCED_COLUMN\", unique=true, nullable=false, insertable=false, updatable=false, columnDefinition=\"COLUMN_DEFINITION\", table=\"MY_TABLE\")");
+				sb.append(CR);
+				sb.append("    private Address address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");				
+			}
+		});
+	}
+
 	public void testUpdateId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -869,5 +896,90 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertFalse(relationshipReference.usesPrimaryKeyJoinColumnJoiningStrategy());
 		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
 		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
+	}
+
+	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+
+		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToOneMapping.getName());
+		assertEquals(FetchType.LAZY, ormOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOptional());
+		assertEquals("Address", ormOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(ormOneToOneMapping.getRelationshipReference().
+			getMappedByJoiningStrategy().getMappedByAttribute());
+
+		OrmJoinColumn ormJoinColumn = 
+			ormOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", ormJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", ormJoinColumn.getSpecifiedTable());
+
+		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		assertTrue(cascade.isAll());
+		assertTrue(cascade.isMerge());
+		assertTrue(cascade.isPersist());
+		assertTrue(cascade.isRemove());
+		assertTrue(cascade.isRefresh());
+		assertTrue(cascade.isDetach());
+
+		assertTrue(((OrmOrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
+	}
+
+	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
+		createTestEntityOneToOneMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+		assertTrue(ormPersistentAttribute.isVirtual());
+
+		ormPersistentAttribute.makeSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+
+		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToOneMapping.getName());
+		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
+		assertEquals(true, ormOneToOneMapping.isOptional());
+		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
+		assertNull(ormOneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+
+		//TODO default join columns in xml one-to-one
+//		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.specifiedJoinColumns().next();
+//		//TODO java default columns name in JavaSingleRelationshipMapping.JoinColumnOwner
+//		//assertEquals("address", ormJoinColumn.getSpecifiedName());
+//		//assertEquals("address", ormJoinColumn.getSpecifiedReferencedColumnName());
+//		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUnique());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedNullable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedInsertable());
+//		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUpdatable());
+//		assertNull(ormJoinColumn.getColumnDefinition());
+//		assertEquals(TYPE_NAME, ormJoinColumn.getSpecifiedTable());
+
+		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		assertFalse(cascade.isAll());
+		assertFalse(cascade.isMerge());
+		assertFalse(cascade.isPersist());
+		assertFalse(cascade.isRemove());
+		assertFalse(cascade.isRefresh());
+		assertFalse(cascade.isDetach());
+
+		assertFalse(((OrmOrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 }

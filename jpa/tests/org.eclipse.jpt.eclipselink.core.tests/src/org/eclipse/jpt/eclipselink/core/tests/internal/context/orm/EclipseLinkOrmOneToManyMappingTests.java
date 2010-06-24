@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
@@ -25,6 +27,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToManyRelationshipReference;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToMany;
@@ -211,6 +214,32 @@ public class EclipseLinkOrmOneToManyMappingTests
 		}
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "State.java", sourceWriter);
+	}
+
+	private ICompilationUnit createTestEntityOneToManyMapping() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ONE_TO_MANY, JPA.FETCH_TYPE, JPA.CASCADE_TYPE, JPA.ORDER_BY, EclipseLink.JOIN_FETCH, EclipseLink.JOIN_FETCH_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append(CR);
+				sb.append("    @OneToMany(fetch=FetchType.EAGER, targetEntity=Address.class, cascade={CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE, CascadeType.REFRESH})");
+				sb.append(CR);
+				sb.append("    @OrderBy(\"city\"");
+				sb.append(CR);
+				sb.append("    @JoinFetch(JoinFetchType.INNER)");
+				sb.append("    private java.util.Collection<Address> address;").append(CR);
+				sb.append(CR);
+				sb.append("    @Id");				
+			}
+		});
 	}
 
 	public void testUpdatePrivateOwned() throws Exception {
@@ -649,5 +678,65 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
 		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
 		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+	}
+
+	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
+		createTestEntityOneToManyMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+
+		OrmEclipseLinkOneToManyMapping ormOneToManyMapping = (OrmEclipseLinkOneToManyMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToManyMapping.getName());
+		assertEquals(FetchType.EAGER, ormOneToManyMapping.getSpecifiedFetch());
+		assertEquals("Address", ormOneToManyMapping.getSpecifiedTargetEntity());
+		assertNull(ormOneToManyMapping.getRelationshipReference().
+			getMappedByJoiningStrategy().getMappedByAttribute());
+
+		Cascade cascade = ormOneToManyMapping.getCascade();
+		assertTrue(cascade.isAll());
+		assertTrue(cascade.isMerge());
+		assertTrue(cascade.isPersist());
+		assertTrue(cascade.isRemove());
+		assertTrue(cascade.isRefresh());
+
+		assertTrue(ormOneToManyMapping.getOrderable().isCustomOrdering());
+		assertEquals("city", ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+
+		assertEquals(EclipseLinkJoinFetchType.INNER, ormOneToManyMapping.getJoinFetch().getValue());
+	}
+
+	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
+		createTestEntityOneToManyMapping();
+		createTestTargetEntityAddress();
+
+		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
+		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
+		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
+		assertEquals(3, ormPersistentType.virtualAttributesSize());		
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+
+		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
+
+		OrmEclipseLinkOneToManyMapping ormOneToManyMapping = (OrmEclipseLinkOneToManyMapping) ormPersistentAttribute.getMapping();	
+		assertEquals("address", ormOneToManyMapping.getName());
+		assertEquals(FetchType.LAZY, ormOneToManyMapping.getFetch());
+		assertEquals("test.Address", ormOneToManyMapping.getTargetEntity());
+		assertNull(ormOneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+
+		Cascade cascade = ormOneToManyMapping.getCascade();
+		assertFalse(cascade.isAll());
+		assertFalse(cascade.isMerge());
+		assertFalse(cascade.isPersist());
+		assertFalse(cascade.isRemove());
+		assertFalse(cascade.isRefresh());
+
+		assertTrue(ormOneToManyMapping.getOrderable().isNoOrdering());
+		assertEquals(null, ormOneToManyMapping.getOrderable().getSpecifiedOrderBy());
+
+		assertEquals(null, ormOneToManyMapping.getJoinFetch().getValue());
 	}
 }

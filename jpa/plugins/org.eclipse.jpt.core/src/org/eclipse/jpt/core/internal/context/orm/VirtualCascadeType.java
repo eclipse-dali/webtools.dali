@@ -16,20 +16,14 @@ public class VirtualCascadeType extends CascadeType
 {
 	protected Cascade javaCascade;
 	
-	protected boolean metadataComplete;
 	
-	
-	public VirtualCascadeType(Cascade javaCascade, boolean metadataComplete) {
+	public VirtualCascadeType(Cascade javaCascade) {
 		super();
 		this.javaCascade = javaCascade;
-		this.metadataComplete = metadataComplete;
 	}
 
 	@Override
 	public boolean isCascadeAll() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isAll();
 	}
 
@@ -40,9 +34,6 @@ public class VirtualCascadeType extends CascadeType
 
 	@Override
 	public boolean isCascadeMerge() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isMerge();
 	}
 
@@ -53,9 +44,6 @@ public class VirtualCascadeType extends CascadeType
 
 	@Override
 	public boolean isCascadePersist() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isPersist();
 	}
 
@@ -66,9 +54,6 @@ public class VirtualCascadeType extends CascadeType
 
 	@Override
 	public boolean isCascadeRefresh() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isRefresh();
 	}
 
@@ -79,9 +64,6 @@ public class VirtualCascadeType extends CascadeType
 
 	@Override
 	public boolean isCascadeRemove() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isRemove();
 	}
 }

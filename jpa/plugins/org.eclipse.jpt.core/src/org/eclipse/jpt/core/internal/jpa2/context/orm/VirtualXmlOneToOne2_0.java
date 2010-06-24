@@ -46,8 +46,7 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToOneMapping;
 		this.virtualXmlOneToOne = new VirtualXmlOneToOne(ormTypeMapping, javaOneToOneMapping);
-		this.virtualXmlCascadeType = 
-				new VirtualXmlCascadeType2_0(javaOneToOneMapping.getCascade(), isOrmMetadataComplete());
+		this.virtualXmlCascadeType = new VirtualXmlCascadeType2_0(javaOneToOneMapping.getCascade());
 	}
 	
 	protected boolean isOrmMetadataComplete() {
@@ -101,6 +100,9 @@ public class VirtualXmlOneToOne2_0 extends XmlOneToOne
 	
 	@Override
 	public CascadeType getCascade() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
 		return this.virtualXmlCascadeType;
 	}
 	

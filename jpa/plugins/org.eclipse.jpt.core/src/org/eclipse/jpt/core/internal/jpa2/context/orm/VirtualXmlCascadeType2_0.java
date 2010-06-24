@@ -19,24 +19,18 @@ public class VirtualXmlCascadeType2_0
 {
 	protected Cascade2_0 javaCascade;
 	
-	protected boolean metadataComplete;
-	
 	protected final VirtualCascadeType virtualXmlCascadeType1_0;
 	
 	
-	public VirtualXmlCascadeType2_0(Cascade2_0 javaCascade, boolean metadataComplete) {
+	public VirtualXmlCascadeType2_0(Cascade2_0 javaCascade) {
 		super();
 		this.javaCascade = javaCascade;
-		this.metadataComplete = metadataComplete;
-		this.virtualXmlCascadeType1_0 = new VirtualCascadeType(javaCascade, metadataComplete);
+		this.virtualXmlCascadeType1_0 = new VirtualCascadeType(javaCascade);
 	}
 	
 	
 	@Override
 	public boolean isCascadeDetach() {
-		if (this.metadataComplete) {
-			return false;
-		}
 		return this.javaCascade.isDetach();
 	}
 	

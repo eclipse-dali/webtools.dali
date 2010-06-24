@@ -63,8 +63,7 @@ public class VirtualXmlManyToMany2_0
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaManyToManyMapping;
 		this.virtualXmlManyToMany = new VirtualXmlManyToMany(ormTypeMapping, javaManyToManyMapping);
-		this.virtualXmlCascadeType = 
-				new VirtualXmlCascadeType2_0(javaManyToManyMapping.getCascade(), isOrmMetadataComplete());
+		this.virtualXmlCascadeType = new VirtualXmlCascadeType2_0(javaManyToManyMapping.getCascade());
 		this.mapKeyClass = new VirtualMapKeyClassReference(javaManyToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
@@ -109,6 +108,9 @@ public class VirtualXmlManyToMany2_0
 
 	@Override
 	public CascadeType getCascade() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
 		return this.virtualXmlCascadeType;
 	}
 	

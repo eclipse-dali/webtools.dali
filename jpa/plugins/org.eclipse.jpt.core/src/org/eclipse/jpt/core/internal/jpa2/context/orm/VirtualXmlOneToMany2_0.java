@@ -68,8 +68,7 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 		this.ormTypeMapping = ormTypeMapping;
 		this.javaAttributeMapping = javaOneToManyMapping;
 		this.virtualXmlOneToMany = new VirtualXmlOneToMany(ormTypeMapping, javaOneToManyMapping);
-		this.virtualXmlCascadeType = 
-				new VirtualXmlCascadeType2_0(javaOneToManyMapping.getCascade(), isOrmMetadataComplete());
+		this.virtualXmlCascadeType = new VirtualXmlCascadeType2_0(javaOneToManyMapping.getCascade());
 		this.mapKeyClass = new VirtualMapKeyClassReference(javaOneToManyMapping);
 		this.orderColumn = new VirtualXmlOrderColumn(
 			((Orderable2_0) this.javaAttributeMapping.getOrderable()).getOrderColumn(),
@@ -113,6 +112,9 @@ public class VirtualXmlOneToMany2_0 extends XmlOneToMany
 
 	@Override
 	public CascadeType getCascade() {
+		if (isOrmMetadataComplete()) {
+			return null;
+		}
 		return this.virtualXmlCascadeType;
 	}
 	
