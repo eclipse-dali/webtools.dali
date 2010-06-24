@@ -9,9 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
+import org.eclipse.jpt.core.jpa2.context.MetamodelField;
+import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.Attributes;
@@ -44,5 +48,38 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	
 	public int getXmlSequence() {
 		return 27;
+	}
+
+
+	// ********** metamodel **********  
+	@Override
+	protected String getMetamodelFieldTypeName() {
+		return ((PersistentAttribute2_0) getPersistentAttribute()).getMetamodelContainerFieldTypeName();
+	}
+
+	@Override
+	public String getMetamodelTypeName() {
+		String targetTypeName = null;
+		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
+		if (javaPersistentAttribute != null) {
+			targetTypeName = javaPersistentAttribute.getMultiReferenceTargetTypeName();
+		}
+		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
+	}
+
+	@Override
+	protected void addMetamodelFieldTypeArgumentNamesTo(ArrayList<String> typeArgumentNames) {
+		this.addMetamodelFieldMapKeyTypeArgumentNameTo(typeArgumentNames);
+		super.addMetamodelFieldTypeArgumentNamesTo(typeArgumentNames);
+	}
+
+	protected void addMetamodelFieldMapKeyTypeArgumentNameTo(ArrayList<String> typeArgumentNames) {
+		String mapKeyTypeName = null;
+		JavaPersistentAttribute javaPersistentAttribute = getJavaPersistentAttribute();
+		if (javaPersistentAttribute != null) {
+			mapKeyTypeName = javaPersistentAttribute.getMultiReferenceMapKeyTypeName();
+		}
+		mapKeyTypeName = mapKeyTypeName != null ? mapKeyTypeName : MetamodelField.DEFAULT_TYPE_NAME;
+		typeArgumentNames.add(mapKeyTypeName);
 	}
 }
