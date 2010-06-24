@@ -1001,6 +1001,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	
 	@Override
 	public String getMetamodelTypeName() {
+		if (this.valueType == Type.BASIC_TYPE) {
+			return getTargetClass();
+		}
 		if (this.resolvedTargetType == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
