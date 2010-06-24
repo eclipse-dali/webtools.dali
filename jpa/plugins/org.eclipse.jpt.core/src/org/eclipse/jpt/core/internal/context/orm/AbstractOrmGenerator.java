@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -211,18 +211,18 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 		return (XmlContextNode) super.getParent();
 	}
 	
-	public boolean overrides(Generator generator) {
-		if (getName() == null) {
-			return false;
-		}
+	public boolean overrides(Generator other) {
 		// this isn't ideal, but it will have to do until we have further adopter input
-		return this.getName().equals(generator.getName()) && generator instanceof JavaGenerator;
+		return (this.name != null)
+				&& this.name.equals(other.getName())
+				&& (other instanceof JavaGenerator);
 	}
 	
 	public boolean duplicates(Generator other) {
 		return (this != other)
 				&& ! StringTools.stringIsEmpty(this.name)
 				&& this.name.equals(other.getName())
+				&& ! this.isVirtual()
 				&& ! this.overrides(other)
 				&& ! other.overrides(this);
 	}
