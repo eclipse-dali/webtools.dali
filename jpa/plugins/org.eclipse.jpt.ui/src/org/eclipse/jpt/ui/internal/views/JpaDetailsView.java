@@ -127,25 +127,28 @@ public class JpaDetailsView extends AbstractJpaView
 		}
 
 		this.currentSelection = jpaSelection;
-		JpaDetailsPage<JpaStructureNode> newPage = null;
-		if (jpaSelection != JpaSelection.NULL_SELECTION) {
-			JpaStructureNode newNode = jpaSelection.getSelectedNode();
-			newPage = (JpaDetailsPage<JpaStructureNode>) getDetailsPage(newNode);
-			if (this.currentPage != null && this.currentPage != newPage){
-				try {
-					this.currentPage.setSubject(null);
-				} catch (Exception e) {
-					JptUiPlugin.log(e);
-				}
+		if (jpaSelection == JpaSelection.NULL_SELECTION) {
+			if (this.currentPage != null) {
+				this.currentPage.setSubject(null);
+				this.setCurrentPage(null);
 			}
-			if (newPage != null) {
-				try {
-					newPage.setSubject(newNode);
-				} catch (Exception e) {
-					// Show error page
-					newPage = null;
-					JptUiPlugin.log(e);
-				}
+			return;
+		}
+		JpaStructureNode newNode = jpaSelection.getSelectedNode();
+		JpaDetailsPage<JpaStructureNode> newPage = (JpaDetailsPage<JpaStructureNode>) getDetailsPage(newNode);
+		if (this.currentPage != null && this.currentPage != newPage){
+			try {
+				this.currentPage.setSubject(null);
+			} catch (Exception e) {
+				JptUiPlugin.log(e);
+			}
+		}
+		if (newPage != null) {
+			try {
+				newPage.setSubject(newNode);
+			} catch (Exception e) {
+				newPage = null;// Show error page
+				JptUiPlugin.log(e);
 			}
 		}
 		setCurrentPage(newPage);
