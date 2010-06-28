@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
+import org.eclipse.jdt.core.dom.IAnnotationBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -75,8 +75,12 @@ final class SourcePersistentType
 	private AccessType access;
 
 	private StaticMetamodelAnnotation staticMetamodelAnnotation;
+		//TODO move to interface after maintenance
+		public static final String STATIC_METAMODEL_ANNOTATION_PROPERTY = "staticMetamodelAnnotation"; //$NON-NLS-1$
 
 	private GeneratedAnnotation generatedAnnotation;
+		//TODO move to interface after maintenance
+		public static final String GENERATED_ANNOTATION_PROPERTY = "generatedAnnotation"; //$NON-NLS-1$
 
 
 	private static final StaticMetamodelAnnotationDefinition STATIC_METAMODEL_ANNOTATION_DEFINITION = StaticMetamodelAnnotationDefinition.instance();
@@ -181,6 +185,7 @@ final class SourcePersistentType
 		this.syncTypes(astRoot);
 		this.syncFields(astRoot);
 		this.syncMethods(astRoot);
+		this.syncMetamodelAnnotations(astRoot);
 		// need to wait until everything is built to calculate 'access'
 		this.syncAccess(this.buildAccess());
 	}
@@ -188,29 +193,64 @@ final class SourcePersistentType
 	/**
 	 * Handle the <code>StaticMetamodel</code> and <code>Generated</code>
 	 * annotations differently, since they are not really JPA "mapping"
-	 * annotations....
+	 * annotations. We aren't overriding {@link #addOrSyncAnnotation(String, CompilationUnit, java.util.Set)}
+	 * because we also have to handle removing these annotations separately.
 	 */
-	@Override
-	void addOrSyncAnnotation(String jdtAnnotationName, CompilationUnit astRoot, Set<Annotation> annotationsToRemove) {
-		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
+	private void syncMetamodelAnnotations(CompilationUnit astRoot) {
+		ITypeBinding binding = this.member.getBinding(astRoot);
+		this.syncStaticMetamodelAnnotation(astRoot, binding);
+		this.syncGeneratedAnnotation(astRoot, binding);
+	}
+
+	private void syncStaticMetamodelAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
+		if (binding != null && this.containsStaticMetamodelAnnotation(binding)) {
 			if (this.staticMetamodelAnnotation != null) {
-				this.staticMetamodelAnnotation.synchronizeWith(astRoot);
-			} else {
-				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
-				this.staticMetamodelAnnotation.initialize(astRoot);
+				this.staticMetamodelAnnotation.synchronizeWith(astRoot);				
 			}
-		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
-			if (this.generatedAnnotation != null) {
-				this.generatedAnnotation.synchronizeWith(astRoot);
-			} else {
-				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
-				this.generatedAnnotation.initialize(astRoot);
+			else {
+				StaticMetamodelAnnotation newStaticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				newStaticMetamodelAnnotation.initialize(astRoot);				
+				this.setStaticMetamodelAnnotation(newStaticMetamodelAnnotation);
 			}
-		} else {
-			super.addOrSyncAnnotation(jdtAnnotationName, astRoot, annotationsToRemove);
+		}
+		else {
+			this.setStaticMetamodelAnnotation(null);
 		}
 	}
 
+	private void syncGeneratedAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
+		if (binding != null && this.containsGeneratedAnnotation(binding)) {
+			if (this.generatedAnnotation != null) {
+				this.generatedAnnotation.synchronizeWith(astRoot);				
+			}
+			else {
+				GeneratedAnnotation newGeneratedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				newGeneratedAnnotation.initialize(astRoot);
+				this.setGeneratedAnnotation(newGeneratedAnnotation);
+			}
+		}
+		else {
+			this.setGeneratedAnnotation(null);
+		}
+	}
+
+	private boolean containsStaticMetamodelAnnotation(ITypeBinding binding) {
+		return this.containsAnnotation(binding, STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName());
+	}
+
+	private boolean containsGeneratedAnnotation(ITypeBinding binding) {
+		return this.containsAnnotation(binding, GENERATED_ANNOTATION_DEFINITION.getAnnotationName());
+	}
+
+	private boolean containsAnnotation(ITypeBinding binding, String annotationName) {
+		for (IAnnotationBinding annotationBinding : binding.getAnnotations()) {
+			ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+			if (annotationTypeBinding != null && annotationTypeBinding.getQualifiedName().equals(annotationName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	// ********** SourcePersistentMember implementation **********
 
@@ -674,6 +714,18 @@ final class SourcePersistentType
 
 	public GeneratedAnnotation getGeneratedAnnotation() {
 		return this.generatedAnnotation;
+	}
+
+	private void setGeneratedAnnotation(GeneratedAnnotation generatedAnnotation) {
+		GeneratedAnnotation old = this.generatedAnnotation;
+		this.generatedAnnotation = generatedAnnotation;
+		firePropertyChanged(GENERATED_ANNOTATION_PROPERTY, old, this.generatedAnnotation);
+	}
+
+	private void setStaticMetamodelAnnotation(StaticMetamodelAnnotation staticMetamodelAnnotation) {
+		StaticMetamodelAnnotation old = this.staticMetamodelAnnotation;
+		this.staticMetamodelAnnotation = staticMetamodelAnnotation;
+		firePropertyChanged(STATIC_METAMODEL_ANNOTATION_PROPERTY, old, this.staticMetamodelAnnotation);
 	}
 
 	/**
