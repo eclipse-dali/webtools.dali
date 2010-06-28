@@ -22,16 +22,20 @@ import org.eclipse.jdt.core.IJavaElement;
 
 
 /**
- * Filters out all non-Java elements.
+ * Filters out all non-Java elements, and elements named package-info
  */
 public class NonJavaElementFilter extends ViewerFilter {
 
+	static public String FILE_TO_EXCLUDE = "package-info.java";   //$NON-NLS-1$
+	
 	/* (non-Javadoc)
 	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
 	 */
 	public boolean select(Viewer viewer, Object parent, Object element) {
-		if (element instanceof IJavaElement)
-			return true;
+		if (element instanceof IJavaElement) {
+			return(FILE_TO_EXCLUDE.equals(((IJavaElement)element).getElementName())) ?
+					false : true;
+		}
 
 		if (element instanceof IResource) {
 			IProject project= ((IResource)element).getProject();
