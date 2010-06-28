@@ -443,6 +443,16 @@
 	
 	
 	<extension
+		point="org.eclipse.wst.common.project.facet.core.listeners">
+		
+		<listener
+			class="org.eclipse.jpt.core.internal.facet.RuntimeChangedListener"
+			eventTypes="TARGETED_RUNTIMES_CHANGED"/>
+		
+	</extension>
+	
+	
+	<extension
 		point="org.eclipse.wst.common.project.facet.core.presets">
 		
 		<static-preset id="jpt.jpa.1_0.preset">
@@ -471,7 +481,6 @@
 		</supported>
 		
 	</extension>
-		
 	
 	<extension
 		point="org.eclipse.wst.validation.validatorV2"
