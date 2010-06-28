@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -286,6 +285,8 @@ public abstract class JpaFacetDataModelProvider
 			//no-op
 		}
 		else if (propertyName.equals(FACET_VERSION)) {
+			this.model.notifyPropertyChange(PLATFORM_ID, IDataModel.DEFAULT_CHG);
+			resetLibraryProviderEnablementContext();
 			this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.DEFAULT_CHG);
 		}
 		else if (propertyName.equals(RUNTIME)) {
@@ -299,12 +300,7 @@ public abstract class JpaFacetDataModelProvider
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
 		else if (propertyName.equals(PLATFORM_ID)) {
-			LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
-			if (lid != null) {
-				// may be null while model is being built up
-				// ... or in tests
-				lid.setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, propertyValue);
-			}
+			resetLibraryProviderEnablementContext();
 		}
 		else if (propertyName.equals(CONNECTION)) {
 			this.setBooleanProperty(CONNECTION_ACTIVE, this.connectionIsActive());
@@ -382,6 +378,15 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected boolean propertyValueIsTrue(Object propertyValue) {
 		return ((Boolean) propertyValue).booleanValue();
+	}
+	
+	protected void resetLibraryProviderEnablementContext() {
+		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
+			if (lid != null) {
+				// may be null while model is being built up
+				// ... or in tests
+				lid.setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getPlatformId());
+			}
 	}
 	
 	
