@@ -21,6 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Custom
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -617,8 +618,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	private void descriptorCustomizerChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		Entity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
-		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
+		if( ! StringTools.stringIsEmpty(entityName)) {
+			Entity old = this.setEntityDescriptorCustomizerOf(entityName, stringValue);
+			this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, this.getEntityNamed(entityName));
+		}
 	}
 	
 	public String getDefaultDescriptorCustomizer() {
@@ -629,6 +632,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 * Returns the old Entity
 	 */
 	private Entity setEntityDescriptorCustomizerOf(String entityName, String descriptorCustomizerClassName) {
+		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(descriptorCustomizerClassName)) {
+				//this is a property that is currently being added, we don't need to deal with it until the value is set
+				 return null;
+			 }
 		Entity entity = (this.entityExists(entityName)) ?
 						this.getEntityNamed(entityName) :
 						this.addEntity(entityName);

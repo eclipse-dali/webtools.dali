@@ -21,6 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.caching.CacheType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.FlushClearCache;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
@@ -236,8 +237,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void cacheTypeChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		Entity old = this.setEntityCacheTypeOf(entityName, stringValue); 
-		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
+		if( ! StringTools.stringIsEmpty(entityName)) {
+			Entity old = this.setEntityCacheTypeOf(entityName, stringValue); 
+			this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, this.getEntityNamed(entityName));
+		}
 	}
 	
 	public CacheType getDefaultCacheType() {
@@ -258,8 +261,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void cacheSizeChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		Entity old = this.setEntityCacheSizeOf(entityName, stringValue);
-		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.getEntityNamed(entityName));
+		if( ! StringTools.stringIsEmpty(entityName)) {
+			Entity old = this.setEntityCacheSizeOf(entityName, stringValue);
+			this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, this.getEntityNamed(entityName));
+		}
 	}
 
 	public Integer getDefaultCacheSize() {
@@ -280,8 +285,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void sharedCacheChanged(String propertyName, String stringValue) {
 		String entityName = this.extractEntityNameOf(propertyName);
-		Entity old = this.setEntitySharedCacheOf(entityName, stringValue);
-		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.getEntityNamed(entityName));
+		if( ! StringTools.stringIsEmpty(entityName)) {
+			Entity old = this.setEntitySharedCacheOf(entityName, stringValue);
+			this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, this.getEntityNamed(entityName));
+		}
 	}
 
 	public Boolean getDefaultSharedCache() {
@@ -387,6 +394,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private Entity setEntityCacheTypeOf(String entityName, String stringValue) {
+		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+				//this is a property that is currently being added, we don't need to deal with it until the value is set
+				 return null;
+			 }
 		CacheType newValue = getEnumValueOf(stringValue, CacheType.values());
 		return this.setEntityCacheTypeOf(entityName, newValue);
 	}
@@ -423,6 +434,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private Entity setEntityCacheSizeOf(String entityName, String stringValue) {
+		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+				//this is a property that is currently being added, we don't need to deal with it until the value is set
+				 return null;
+			 }
 		Integer newValue = getIntegerValueOf(stringValue);
 		return this.setEntityCacheSizeOf(entityName, newValue);
 	}
@@ -459,6 +474,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	 * Returns the old Entity
 	 */
 	private Entity setEntitySharedCacheOf(String entityName, String stringValue) {
+		 if(( ! this.entityExists(entityName)) && StringTools.stringIsEmpty(stringValue)) {
+				//this is a property that is currently being added, we don't need to deal with it until the value is set
+				 return null;
+			 }
 		Boolean newValue = getBooleanValueOf(stringValue);
 		return this.setEntitySharedCacheOf(entityName, newValue);
 	}
@@ -520,7 +539,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	private Entity buildEntity(String name) {
 		return new Entity(this, name);
 	}
-	
+
 	private void removeEntity(Entity entity) {
 		if(entity == null) {
 			throw new IllegalArgumentException();
