@@ -332,11 +332,12 @@ public class SchemaGenerator
 		// sourceClassNames
 		StringBuffer sourceClassNamesArguments = this.buildClassNamesArguments(sourceClassNames);
 		programArguments.append(sourceClassNamesArguments);
-		
+
 		// schema
-		programArguments.append(" -s ");	  //$NON-NLS-1$
+		programArguments.append(" -s \"");	  //$NON-NLS-1$
 		programArguments.append(targetSchemaName);
-		
+		programArguments.append('"');	  //$NON-NLS-1$
+
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 	

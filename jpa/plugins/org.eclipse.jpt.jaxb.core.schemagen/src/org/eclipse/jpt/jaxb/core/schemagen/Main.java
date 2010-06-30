@@ -224,10 +224,24 @@ class JptSchemaOutputResolver extends SchemaOutputResolver {
 	
 	 @Override
     public Result createOutput(String namespaceURI, String suggestedFileName) throws IOException {
-
-        File file = new File(this.targetSchemaName );
-        StreamResult result = new StreamResult(file);
-        result.setSystemId(file.toURI().toURL().toString());
+		String canonicalName = this.canonicalFileName(this.targetSchemaName);
+		File file = new File(canonicalName);
+		StreamResult result = new StreamResult(file);
+		result.setSystemId(file.toURL().toExternalForm());
         return result;
     }
+
+	public String canonicalFileName(String fileName) {
+		return canonicalFile(new File(fileName)).getAbsolutePath();
+	}
+	
+	public File canonicalFile(File file) {
+		try {
+			return file.getCanonicalFile();
+		} 
+		catch (IOException ioexception) {
+			return file.getAbsoluteFile();
+		}
+	}
+
 }
