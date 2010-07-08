@@ -11,7 +11,6 @@ package org.eclipse.jpt.core;
 
 import java.util.Vector;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -34,10 +33,6 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.AsynchronousJpaProjectUpdater;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
-import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
@@ -46,8 +41,6 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -69,7 +62,7 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  * during resource and Java change notifications.
  * <p>
  * Events that trigger either the adding or removing of a JPA project (e.g.
- * {@link IFacetedProjectEvent.Type#POST_INSTALL}) are handled "synchronously"
+ * {@link IResourceChangeEvent#POST_CHANGE}) are handled "synchronously"
  * by allowing the background thread to handle any outstanding events before
  * updating the list of JPA projects and returning execution to the event
  * source.
@@ -80,7 +73,7 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     to find and add all pre-existing JPA projects.
  * 
  * <li>Project created and facet installed<p>
- *     {@link IFacetedProjectEvent.Type#POST_INSTALL}
+ *     {@link IResourceChangeEvent#POST_CHANGE}
  * <li>Project facet uninstalled<p>
  *     {@link IFacetedProjectEvent.Type#PRE_UNINSTALL}
  * 
@@ -118,9 +111,7 @@ import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent
  *     -> {@link IResourceDelta#CHANGED} facet settings file
  * </ul>
  */
-// TODO remove faceted project listener and rely solely on resource change events
-// for the faceted project settings file - this will require moving all the
-// datamodel stuff to the UI (where it belongs)
+//TODO Still need to look at faceted project listener for facet uninstall
 class GenericJpaProjectManager
 	extends AbstractModel
 	implements JpaProjectManager
@@ -173,7 +164,6 @@ class GenericJpaProjectManager
 	 * {@link #facetedProjectListener}.
 	 */
 	private static final IFacetedProjectEvent.Type[] FACETED_PROJECT_EVENT_TYPES = new IFacetedProjectEvent.Type[] {
-			IFacetedProjectEvent.Type.POST_INSTALL,
 			IFacetedProjectEvent.Type.PRE_UNINSTALL
 		};
 
@@ -512,64 +502,6 @@ class GenericJpaProjectManager
 		};
 	}
 
-
-	// ********** FacetedProject POST_INSTALL **********
-
-	/* private */ void jpaFacetedProjectPostInstall(IProjectFacetActionEvent event) {
-		this.executeAfterEventsHandled(this.buildJpaFacetedProjectPostInstallCommand(event));
-	}
-
-	private Command buildJpaFacetedProjectPostInstallCommand(final IProjectFacetActionEvent event) {
-		return new EventHandlerCommand("Faceted Project POST_INSTALL Command") { //$NON-NLS-1$
-			@Override
-			void execute_() {
-				GenericJpaProjectManager.this.jpaFacetedProjectPostInstall_(event);
-			}
-		};
-	}
-
-	/* private */ void jpaFacetedProjectPostInstall_(IProjectFacetActionEvent event) {
-		IProject project = event.getProject().getProject();
-		IDataModel dataModel = (IDataModel) event.getActionConfig();
-
-		// assume(?) this is the first event to indicate we need to add the JPA project to the JPA project manager
-		this.addJpaProject(project);
-
-		boolean buildOrmXml = dataModel.getBooleanProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML);
-		this.createProjectXml(project, buildOrmXml);
-	}
-
-	private void createProjectXml(IProject project, boolean buildOrmXml) {
-		this.createPersistenceXml(project);
-
-		if (buildOrmXml) {
-			this.createOrmXml(project);
-		}
-	}
-
-	private void createPersistenceXml(IProject project) {
-		IDataModel config = DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
-		// default values for all other properties should suffice
-		try {
-			config.getDefaultOperation().execute(null, null);
-		} catch (ExecutionException ex) {
-			JptCorePlugin.log(ex);
-		}
-	}
-
-	private void createOrmXml(IProject project) {
-		IDataModel config = DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
-		// default values for all other properties should suffice
-		try {
-			config.getDefaultOperation().execute(null, null);
-		} catch (ExecutionException ex) {
-			JptCorePlugin.log(ex);
-		}
-	}
-
-
 	// ********** FacetedProject PRE_UNINSTALL **********
 
 	/* private */ void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
@@ -804,8 +736,8 @@ class GenericJpaProjectManager
 		}
 
 		/**
-		 * POST_INSTALL and PRE_UNINSTALL are the only facet events we use for 
-		 * adding/removing JPA projects. These are the cases where we listen for resource events.
+		 * PRE_UNINSTALL is the only facet event we use for 
+		 * removing JPA projects. These are the cases where we listen for resource events.
 		 * <p>
 		 * Check for:<ul>
 		 * <li>facet settings file added/removed/changed
@@ -980,27 +912,16 @@ class GenericJpaProjectManager
 
 		/**
 		 * Check for:<ul>
-		 * <li>install of JPA facet
 		 * <li>un-install of JPA facet
 		 * </ul>
 		 */
 		public void handleEvent(IFacetedProjectEvent event) {
 			switch (event.getType()) {
-				case POST_INSTALL :
-					this.processPostInstallEvent((IProjectFacetActionEvent) event);
-					break;
 				case PRE_UNINSTALL :
 					this.processPreUninstallEvent((IProjectFacetActionEvent) event);
 					break;
 				default :
 					break;
-			}
-		}
-
-		private void processPostInstallEvent(IProjectFacetActionEvent event) {
-			debug("Facet POST_INSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
-			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
-				GenericJpaProjectManager.this.jpaFacetedProjectPostInstall(event);
 			}
 		}
 

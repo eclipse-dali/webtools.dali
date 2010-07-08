@@ -96,7 +96,7 @@ public class OrmFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+		return JptCorePlugin.getJpaPlatform(getProject()).getMostRecentSupportedResourceType(
 				JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
 	}
 	

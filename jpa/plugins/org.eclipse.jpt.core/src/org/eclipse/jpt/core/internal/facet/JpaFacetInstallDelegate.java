@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -16,8 +17,13 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
+import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -44,12 +50,22 @@ public class JpaFacetInstallDelegate
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
 		
-		monitor.beginTask("", 1); //$NON-NLS-1$
-		
-		// project settings
-		this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);
-		
-		monitor.worked(1);
+		try {
+			monitor.beginTask("", 3); //$NON-NLS-1$
+
+			// project settings
+			this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);
+
+			monitor.worked(1);
+
+			// create project XML files
+			this.createProjectXml(project, dataModel.getBooleanProperty(CREATE_ORM_XML));
+
+			monitor.worked(2);
+		} 
+		finally {
+			monitor.done();
+		}
 	}
 	
 	protected void addDbDriverLibraryToClasspath(
@@ -82,5 +98,35 @@ public class JpaFacetInstallDelegate
 		System.arraycopy(classpath, 0, newClasspath, 0, len);
 		newClasspath[len] = classpathEntry;
 		javaProject.setRawClasspath(newClasspath, monitor);
+	}
+	
+	private void createProjectXml(IProject project, boolean buildOrmXml) {
+		this.createPersistenceXml(project);
+
+		if (buildOrmXml) {
+			this.createOrmXml(project);
+		}
+	}
+
+	private void createPersistenceXml(IProject project) {
+		IDataModel config = DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
+		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		// default values for all other properties should suffice
+		try {
+			config.getDefaultOperation().execute(null, null);
+		} catch (ExecutionException ex) {
+			JptCorePlugin.log(ex);
+		}
+	}
+
+	private void createOrmXml(IProject project) {
+		IDataModel config = DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
+		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		// default values for all other properties should suffice
+		try {
+			config.getDefaultOperation().execute(null, null);
+		} catch (ExecutionException ex) {
+			JptCorePlugin.log(ex);
+		}
 	}
 }

@@ -43,7 +43,7 @@ public class PersistenceFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+		return JptCorePlugin.getJpaPlatform(getProject()).getMostRecentSupportedResourceType(
 				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
 	}
 	
