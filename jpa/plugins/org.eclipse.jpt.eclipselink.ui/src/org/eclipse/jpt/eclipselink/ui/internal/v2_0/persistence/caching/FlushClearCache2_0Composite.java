@@ -50,7 +50,15 @@ public class FlushClearCache2_0Composite extends FlushClearCacheComposite
 	// ********** private methods **********
 
 	private void installPaneEnabler() {
-		new PaneEnabler(this.buildPaneEnablerHolder(), this);
+		new PaneEnabler(this.buildPaneEnablerHolder(), this) {
+			@Override
+			protected void updateState(boolean enable) {
+				super.updateState(enable);
+				if( ! enable) {
+					removeFlushClearCacheProperty();
+				}
+			}
+		};
 	}
 	
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
@@ -81,5 +89,9 @@ public class FlushClearCache2_0Composite extends FlushClearCacheComposite
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
 			}
 		};
+	}
+	
+	private void removeFlushClearCacheProperty() {
+		this.getSubject().setFlushClearCache(null);
 	}
 }
