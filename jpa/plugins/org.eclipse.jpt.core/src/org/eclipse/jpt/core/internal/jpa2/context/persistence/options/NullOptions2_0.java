@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,13 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.persistence.options;
 
+import java.util.ListIterator;
 import java.util.Map;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.JpaOptions2_0;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * JPA 2.0 options
@@ -83,42 +86,67 @@ public class NullOptions2_0 extends AbstractPersistenceUnitProperties
 	}
 
 
-	// ********** ValidationGroupPrePersist **********
-	public String getValidationGroupPrePersist() {
-		return null;
+	// ********** ValidationGroupPrePersists **********
+	public ListIterator<String> validationGroupPrePersists() {
+		return EmptyListIterator.instance();
 	}
-
-	public void setValidationGroupPrePersist(String newValidationGroupPrePersist) {
+	
+	public int validationGroupPrePersistsSize() {
+		return 0;
+	}
+	
+	public boolean validationGroupPrePersistExists(String validationGroupPrePersistClassName) {
+		return false;
+	}
+	
+	public String addValidationGroupPrePersist(String newValidationGroupPrePersistClassName) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void removeValidationGroupPrePersist(String validationGroupPrePersistClassName) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getDefaultValidationGroupPrePersist() {
-		return DEFAULT_VALIDATION_GROUP_PRE_PERSIST;
+	// ********** ValidationGroupPreUpdates **********
+	public ListIterator<String> validationGroupPreUpdates() {
+		return EmptyListIterator.instance();
 	}
-
-	// ********** ValidationGroupPreUpdate **********
-	public String getValidationGroupPreUpdate() {
-		return null;
+	
+	public int validationGroupPreUpdatesSize() {
+		return 0;
 	}
-
-	public void setValidationGroupPreUpdate(String newValidationGroupPreUpdate) {
+	
+	public boolean validationGroupPreUpdateExists(String validationGroupPreUpdateClassName) {
+		return false;
+	}
+	
+	public String addValidationGroupPreUpdate(String newValidationGroupPreUpdateClassName) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void removeValidationGroupPreUpdate(String validationGroupPreUpdateClassName) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getDefaultValidationGroupPreUpdate() {
-		return DEFAULT_VALIDATION_GROUP_PRE_UPDATE;
+	// ********** ValidationGroupPreRemoves **********
+	public ListIterator<String> validationGroupPreRemoves() {
+		return EmptyListIterator.instance();
 	}
-
-	// ********** ValidationGroupPreRemove **********
-	public String getValidationGroupPreRemove() {
-		return null;
+	
+	public int validationGroupPreRemovesSize() {
+		return 0;
 	}
-
-	public void setValidationGroupPreRemove(String newValidationGroupPreRemove) {
+	
+	public boolean validationGroupPreRemoveExists(String validationGroupPreRemoveClassName) {
+		return false;
+	}
+	
+	public String addValidationGroupPreRemove(String newValidationGroupPreRemoveClassName) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public void removeValidationGroupPreRemove(String validationGroupPreRemoveClassName) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getDefaultValidationGroupPreRemove() {
-		return DEFAULT_VALIDATION_GROUP_PRE_REMOVE;
-	}
 }

@@ -29,6 +29,7 @@ public class JptUiPersistence2_0Messages
 	public static String GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionTitle;
 	public static String GenericPersistenceUnit2_0OptionsComposite_miscellaneousSectionDescription;
 	public static String GenericPersistenceUnit2_0OptionsTab_title;
+	public static String GenericPersistenceUnit2_0OptionsTab_noName;
 
 	public static String JdbcConnectionPropertiesComposite_ConnectionDialog_Message;
 	public static String JdbcConnectionPropertiesComposite_ConnectionDialog_Title;

@@ -9,6 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.persistence.options;
 
+import java.util.ListIterator;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 
 /**
@@ -40,28 +42,33 @@ public interface JpaOptions2_0
 		static final String PERSISTENCE_QUERY_TIMEOUT = "javax.persistence.query.timeout"; //$NON-NLS-1$
 		static final Integer DEFAULT_QUERY_TIMEOUT = Integer.valueOf(5);
 
-	String getDefaultValidationGroupPrePersist();
-	String getValidationGroupPrePersist();
-	void setValidationGroupPrePersist(String newValidationGroupPrePersist);
+	ListIterator<String> validationGroupPrePersists();
+	int validationGroupPrePersistsSize();
+	boolean validationGroupPrePersistExists(String validationGroupPrePersistClassName);
+	String addValidationGroupPrePersist(String newValidationGroupPrePersistClassName);
+	void removeValidationGroupPrePersist(String validationGroupPrePersistClassName);
+		static final String VALIDATION_GROUP_PRE_PERSIST_LIST = "validationGroupPrePersists"; //$NON-NLS-1$
 		static final String VALIDATION_GROUP_PRE_PERSIST_PROPERTY = "validationGroupPrePersist"; //$NON-NLS-1$
 		// Property key
 		static final String PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST = "javax.persistence.validation.group.pre-persist"; //$NON-NLS-1$
-		static final String DEFAULT_VALIDATION_GROUP_PRE_PERSIST = "Default"; //$NON-NLS-1$
 
-	String getDefaultValidationGroupPreUpdate();
-	String getValidationGroupPreUpdate();
-	void setValidationGroupPreUpdate(String newValidationGroupPreUpdate);
+	ListIterator<String> validationGroupPreUpdates();
+	int validationGroupPreUpdatesSize();
+	boolean validationGroupPreUpdateExists(String validationGroupPreUpdateClassName);
+	String addValidationGroupPreUpdate(String newValidationGroupPreUpdateClassName);
+	void removeValidationGroupPreUpdate(String validationGroupPreUpdateClassName);
+		static final String VALIDATION_GROUP_PRE_UPDATE_LIST = "validationGroupPreUpdates"; //$NON-NLS-1$
 		static final String VALIDATION_GROUP_PRE_UPDATE_PROPERTY = "validationGroupPreUpdate"; //$NON-NLS-1$
 		// Property key
 		static final String PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE = "javax.persistence.validation.group.pre-update"; //$NON-NLS-1$
-		static final String DEFAULT_VALIDATION_GROUP_PRE_UPDATE = "Default"; //$NON-NLS-1$
 
-	String getDefaultValidationGroupPreRemove();
-	String getValidationGroupPreRemove();
-	void setValidationGroupPreRemove(String newValidationGroupPreRemove);
+	ListIterator<String> validationGroupPreRemoves();
+	int validationGroupPreRemovesSize();
+	boolean validationGroupPreRemoveExists(String validationGroupPreRemoveClassName);
+	String addValidationGroupPreRemove(String newValidationGroupPreRemoveClassName);
+	void removeValidationGroupPreRemove(String validationGroupPreRemoveClassName);
+		static final String VALIDATION_GROUP_PRE_REMOVE_LIST = "validationGroupPreRemoves"; //$NON-NLS-1$
 		static final String VALIDATION_GROUP_PRE_REMOVE_PROPERTY = "validationGroupPreRemove"; //$NON-NLS-1$
 		// Property key
 		static final String PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE = "javax.persistence.validation.group.pre-remove"; //$NON-NLS-1$
-		static final String DEFAULT_VALIDATION_GROUP_PRE_REMOVE = ""; //$NON-NLS-1$
-
 }

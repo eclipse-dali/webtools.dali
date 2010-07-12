@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,11 +9,14 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.options;
 
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
+import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  *  EclipseLinkOptions2_0
@@ -24,10 +27,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	// ********** GenericConnection properties **********
 	private Integer lockTimeout;
 	private Integer queryTimeout;
-	private String validationGroupPrePersist;
-	private String validationGroupPreUpdate;
-	private String validationGroupPreRemove;
-	
+	private List<String> validationGroupPrePersists;
+	private List<String> validationGroupPreUpdates;
+	private List<String> validationGroupPreRemoves;
 
 	// ********** constructors **********
 	public EclipseLinkOptions2_0(PersistenceUnit2_0 parent) {
@@ -48,12 +50,9 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 			this.getIntegerValue(PERSISTENCE_QUERY_TIMEOUT);
 
 		// ValidationMode is initialized with the persistence unit element
-		this.validationGroupPrePersist = 
-			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST);
-		this.validationGroupPreUpdate = 
-			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE);
-		this.validationGroupPreRemove = 
-			this.getStringValue(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE);
+		this.validationGroupPrePersists = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST);
+		this.validationGroupPreUpdates = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE);
+		this.validationGroupPreRemoves = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE);
 	}
 
 	// ********** behavior **********
@@ -69,13 +68,13 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 			this.queryTimeoutChanged(newValue);
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
-			this.validationGroupPrePersistChanged(newValue);
+			this.validationGroupPrePersistsChanged();
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE)) {
-			this.validationGroupPreUpdateChanged(newValue);
+			this.validationGroupPreUpdatesChanged();
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE)) {
-			this.validationGroupPreRemoveChanged(newValue);
+			this.validationGroupPreRemovesChanged();
 		}
 	}
 
@@ -90,13 +89,13 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 			this.queryTimeoutChanged(null);
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST)) {
-			this.validationGroupPrePersistChanged(null);
+			this.validationGroupPrePersistsChanged();
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE)) {
-			this.validationGroupPreUpdateChanged(null);
+			this.validationGroupPreUpdatesChanged();
 		}
 		else if (propertyName.equals(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE)) {
-			this.validationGroupPreRemoveChanged(null);
+			this.validationGroupPreRemovesChanged();
 		}
 	}
 
@@ -180,70 +179,172 @@ public class EclipseLinkOptions2_0 extends EclipseLinkOptions
 	}
 
 	
-	// ********** ValidationGroupPrePersist **********
-	public String getValidationGroupPrePersist() {
-		return this.validationGroupPrePersist;
-	}
+	// ********** ValidationGroupPrePersists **********
 
-	public void setValidationGroupPrePersist(String newValidationGroupPrePersist) {
-		String old = this.validationGroupPrePersist;
-		this.validationGroupPrePersist = newValidationGroupPrePersist;
-		this.putProperty(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, newValidationGroupPrePersist);
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, old, newValidationGroupPrePersist);
-	}
-
-	private void validationGroupPrePersistChanged(String newValue) {
-		String old = this.validationGroupPrePersist;
-		this.validationGroupPrePersist = newValue;
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, old, newValue);
-	}
-
-	public String getDefaultValidationGroupPrePersist() {
-		return DEFAULT_VALIDATION_GROUP_PRE_PERSIST;
-	}
-
-	// ********** ValidationGroupPreUpdate **********
-	public String getValidationGroupPreUpdate() {
-		return this.validationGroupPreUpdate;
-	}
-
-	public void setValidationGroupPreUpdate(String newValidationGroupPreUpdate) {
-		String old = this.validationGroupPreUpdate;
-		this.validationGroupPreUpdate = newValidationGroupPreUpdate;
-		this.putProperty(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, newValidationGroupPreUpdate);
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, old, newValidationGroupPreUpdate);
-	}
-
-	private void validationGroupPreUpdateChanged(String newValue) {
-		String old = this.validationGroupPreUpdate;
-		this.validationGroupPreUpdate = newValue;
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, old, newValue);
-	}
-
-	public String getDefaultValidationGroupPreUpdate() {
-		return DEFAULT_VALIDATION_GROUP_PRE_UPDATE;
-	}
-
-	// ********** ValidationGroupPreRemove **********
-	public String getValidationGroupPreRemove() {
-		return this.validationGroupPreRemove;
-	}
-
-	public void setValidationGroupPreRemove(String newValidationGroupPreRemove) {
-		String old = this.validationGroupPreRemove;
-		this.validationGroupPreRemove = newValidationGroupPreRemove;
-		this.putProperty(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, newValidationGroupPreRemove);
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, old, newValidationGroupPreRemove);
-	}
-
-	private void validationGroupPreRemoveChanged(String newValue) {
-		String old = this.validationGroupPreRemove;
-		this.validationGroupPreRemove = newValue;
-		this.firePropertyChanged(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, old, newValue);
-	}
-
-	public String getDefaultValidationGroupPreRemove() {
-		return DEFAULT_VALIDATION_GROUP_PRE_REMOVE;
+	public ListIterator<String> validationGroupPrePersists(){
+		return new CloneListIterator<String>(this.validationGroupPrePersists);
 	}
 	
+	public int validationGroupPrePersistsSize(){
+		return this.validationGroupPrePersists.size();
+	}
+
+	public boolean validationGroupPrePersistExists(String validationGroupPrePersistClassName) {
+
+		for (String validationGroupPrePersist : this.validationGroupPrePersists) {
+			if(validationGroupPrePersist.equals(validationGroupPrePersistClassName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String addValidationGroupPrePersist(String newPrePersistClassName){
+
+		if( ! this.validationGroupPrePersistExists(newPrePersistClassName)) {
+			this.validationGroupPrePersists.add(newPrePersistClassName);
+			this.putPropertyCompositeValue(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, newPrePersistClassName);
+			this.fireListChanged(VALIDATION_GROUP_PRE_PERSIST_LIST, this.validationGroupPrePersists);
+			return newPrePersistClassName;
+		}
+		return null;
+	}
+	
+	public void removeValidationGroupPrePersist(String className){
+
+		if(this.removeValidationGroupPrePersist_(className) != null) {
+			this.removePropertyCompositeValue(VALIDATION_GROUP_PRE_PERSIST_PROPERTY, className);
+			this.fireListChanged(VALIDATION_GROUP_PRE_PERSIST_LIST, this.validationGroupPrePersists);
+		}
+	}
+	
+	private String removeValidationGroupPrePersist_(String className){
+
+		for ( ListIterator<String> i = this.validationGroupPrePersists(); i.hasNext();) {
+			String validationGroupPrePersist = i.next();
+			if(validationGroupPrePersist.equals(className)) {
+				this.validationGroupPrePersists.remove(validationGroupPrePersist);
+				return validationGroupPrePersist;
+			}
+		}
+		return null;
+	}
+
+	private void validationGroupPrePersistsChanged() {
+		this.validationGroupPrePersists = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_PERSIST);
+		this.fireListChanged(VALIDATION_GROUP_PRE_PERSIST_LIST, this.validationGroupPrePersists);
+	}
+
+	// ********** ValidationGroupPreUpdates **********
+
+	public ListIterator<String> validationGroupPreUpdates(){
+		return new CloneListIterator<String>(this.validationGroupPreUpdates);
+	}
+	
+	public int validationGroupPreUpdatesSize(){
+		return this.validationGroupPreUpdates.size();
+	}
+
+	public boolean validationGroupPreUpdateExists(String validationGroupPreUpdateClassName) {
+
+		for (String validationGroupPreUpdate : this.validationGroupPreUpdates) {
+			if(validationGroupPreUpdate.equals(validationGroupPreUpdateClassName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String addValidationGroupPreUpdate(String newPreUpdateClassName){
+
+		if( ! this.validationGroupPreUpdateExists(newPreUpdateClassName)) {
+			this.validationGroupPreUpdates.add(newPreUpdateClassName);
+			this.putPropertyCompositeValue(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, newPreUpdateClassName);
+			this.fireListChanged(VALIDATION_GROUP_PRE_UPDATE_LIST, this.validationGroupPreUpdates);
+			return newPreUpdateClassName;
+		}
+		return null;
+	}
+	
+	public void removeValidationGroupPreUpdate(String className){
+
+		if(this.removeValidationGroupPreUpdate_(className) != null) {
+			this.removePropertyCompositeValue(VALIDATION_GROUP_PRE_UPDATE_PROPERTY, className);
+			this.fireListChanged(VALIDATION_GROUP_PRE_UPDATE_LIST, this.validationGroupPreUpdates);
+		}
+	}
+	
+	private String removeValidationGroupPreUpdate_(String className){
+
+		for(ListIterator<String> i = this.validationGroupPreUpdates(); i.hasNext();) {
+			String validationGroupPreUpdate = i.next();
+			if(validationGroupPreUpdate.equals(className)) {
+				this.validationGroupPreUpdates.remove(validationGroupPreUpdate);
+				return validationGroupPreUpdate;
+			}
+		}
+		return null;
+	}
+
+	private void validationGroupPreUpdatesChanged() {
+		this.validationGroupPreUpdates = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_UPDATE);
+		this.fireListChanged(VALIDATION_GROUP_PRE_UPDATE_LIST, this.validationGroupPreUpdates);
+	}
+
+	// ********** ValidationGroupPreRemoves **********
+
+	public ListIterator<String> validationGroupPreRemoves(){
+		return new CloneListIterator<String>(this.validationGroupPreRemoves);
+	}
+	
+	public int validationGroupPreRemovesSize(){
+		return this.validationGroupPreRemoves.size();
+	}
+
+	public boolean validationGroupPreRemoveExists(String validationGroupPreRemoveClassName) {
+
+		for (String validationGroupPreRemove : this.validationGroupPreRemoves) {
+			if(validationGroupPreRemove.equals(validationGroupPreRemoveClassName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public String addValidationGroupPreRemove(String newPreRemoveClassName){
+
+		if( ! this.validationGroupPreRemoveExists(newPreRemoveClassName)) {
+			this.validationGroupPreRemoves.add(newPreRemoveClassName);
+			this.putPropertyCompositeValue(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, newPreRemoveClassName);
+			this.fireListChanged(VALIDATION_GROUP_PRE_REMOVE_LIST, this.validationGroupPreRemoves);
+			return newPreRemoveClassName;
+		}
+		return null;
+	}
+	
+	public void removeValidationGroupPreRemove(String className){
+
+		if(this.removeValidationGroupPreRemove_(className) != null) {
+			this.removePropertyCompositeValue(VALIDATION_GROUP_PRE_REMOVE_PROPERTY, className);
+			this.fireListChanged(VALIDATION_GROUP_PRE_REMOVE_LIST, this.validationGroupPreRemoves);
+		}
+	}
+	
+	private String removeValidationGroupPreRemove_(String className){
+
+		for(ListIterator<String> i = this.validationGroupPreRemoves(); i.hasNext();) {
+			String validationGroupPreRemove = i.next();
+			if(validationGroupPreRemove.equals(className)) {
+				this.validationGroupPreRemoves.remove(validationGroupPreRemove);
+				return validationGroupPreRemove;
+			}
+		}
+		return null;
+	}
+
+	private void validationGroupPreRemovesChanged() {
+		this.validationGroupPreRemoves = this.getCompositeValue(PERSISTENCE_VALIDATION_GROUP_PRE_REMOVE);
+		this.fireListChanged(VALIDATION_GROUP_PRE_REMOVE_LIST, this.validationGroupPreRemoves);
+	}
+
 }

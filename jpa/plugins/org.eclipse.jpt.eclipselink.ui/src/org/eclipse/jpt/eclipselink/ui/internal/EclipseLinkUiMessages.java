@@ -368,9 +368,10 @@ public class EclipseLinkUiMessages {
 	public static String TargetDatabaseComposite_sqlserver;
 	public static String TargetDatabaseComposite_sybase;
 	public static String TargetDatabaseComposite_timesten;
-	   
-	public static String PersistenceXmlOptionsTab_targetServerLabel;
 
+	public static String PersistenceXmlOptionsTab_targetServerLabel;
+	public static String PersistenceXmlOptionsTab_noName;
+	
 	public static String TargetServerComposite_none;
 	public static String TargetServerComposite_oc4j;
 	public static String TargetServerComposite_sunas9;

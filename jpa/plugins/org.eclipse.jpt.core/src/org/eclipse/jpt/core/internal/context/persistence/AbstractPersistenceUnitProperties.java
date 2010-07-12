@@ -9,7 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 
 /**
@@ -30,6 +33,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	// key = PersistenceUnit property key; value = property id
 	private Map<String, String> propertyNames;
 
+	public static final String PROPERTY_VALUE_DELIMITER = ",";	//$NON-NLS-1$
 	private static final long serialVersionUID = 1L;
 	
 	// ********** constructors / initialization **********
@@ -81,10 +85,7 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	public JpaProject getJpaProject() {
 		return this.persistenceUnit.getJpaProject();
 	}
-
-	private Map<String, String> propertyNames() {
-		return this.propertyNames;
-	}
+	
 	/**
 	 * Adds property names key/value pairs, used by the methods: itemIsProperty
 	 * and propertyIdFor.
@@ -157,12 +158,6 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		else {
 			this.putPersistenceUnitProperty(persistenceUnitKey, null, value, allowDuplicates);
 		}
-	}
-
-	private void putPersistenceUnitProperty(String key, String keySuffix, Object value, boolean allowDuplicates) {
-		String persistenceUnitKey = (keySuffix == null) ? key : key + keySuffix;
-		String stringValue = (value == null) ? null : value.toString();
-		this.getPersistenceUnit().setProperty(persistenceUnitKey, stringValue, allowDuplicates);
 	}
 
 	/**
@@ -367,17 +362,60 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		this.putPersistenceUnitProperty(key, keySuffix, getPropertyStringValueOf(newValue), allowDuplicate);
 	}
 
+	// ****** get/set CompositeValue convenience methods *******
+	/**
+	 * Returns the String values of the given Property from the PersistenceXml.
+	 */
+	protected List<String> getCompositeValue(String persistenceUnitKey) {
+		String values = this.getStringValue(persistenceUnitKey);
+		return this.extractCompositeValue(values);
+	}
+	
+	/**
+	 * Put into persistenceUnit properties. If the property already exists, 
+	 * it appends the given value at the end of the property value.
+	 * 
+	 * @param key
+	 * @param valueToAppend
+	 */
+	protected void putPropertyCompositeValue(String key, String valueToAppend) {
+		String persistenceUnitKey = this.persistenceUnitKeyOf(key);
+
+		 String persistenceUnitValue = this.buildCompositeValue(
+			 											this.getStringValue(persistenceUnitKey), valueToAppend);
+
+		this.putPersistenceUnitProperty(persistenceUnitKey, null, persistenceUnitValue, false);
+	}
+
+	/**
+	 * Removes a value from a property with composite values.
+	 * If the resulting value is empty, the property is removed from the persistenceUnit.
+	 * 
+	 * @param key -
+	 *            property name
+	 * @param valueToRemove -
+	 *            value to remove from the property
+	 */
+	protected void removePropertyCompositeValue(String key, String valueToRemove) {
+		String persistenceUnitKey = this.persistenceUnitKeyOf(key);
+		
+		String persistenceUnitValue = this.removeValueFrom(
+			 											this.getStringValue(persistenceUnitKey), valueToRemove.trim());
+
+		this.putPersistenceUnitProperty(persistenceUnitKey, null, persistenceUnitValue, false);
+	}
+
 	// ****** Static methods ******* 
 	
 	public static Boolean getBooleanValueOf(String puStringValue) {
-		if (puStringValue == null) {
+		if (StringTools.stringIsEmpty(puStringValue)) {
 			return null;
 		}
 		return Boolean.valueOf(puStringValue);
 	}
 
 	public static Integer getIntegerValueOf(String puStringValue) {
-		if (puStringValue == null) {
+		if  (StringTools.stringIsEmpty(puStringValue)) {
 			return null;
 		}
 		return Integer.valueOf(puStringValue);
@@ -409,4 +447,61 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		return value.toString();
 	}
 
+	// ********** internal methods **********
+
+	private Map<String, String> propertyNames() {
+		return this.propertyNames;
+	}
+
+	private void putPersistenceUnitProperty(String key, String keySuffix, Object value, boolean allowDuplicates) {
+		String persistenceUnitKey = (keySuffix == null) ? key : key + keySuffix;
+		String stringValue = (value == null) ? null : value.toString();
+		this.getPersistenceUnit().setProperty(persistenceUnitKey, stringValue, allowDuplicates);
+	}
+
+	private String buildCompositeValue(String value, String valueToAppend) {
+		if((StringTools.stringIsEmpty(valueToAppend)) ) {
+			return value;
+		}
+		return (StringTools.stringIsEmpty(value)) ? 
+						valueToAppend : 
+						(value + PROPERTY_VALUE_DELIMITER + valueToAppend);
+	}
+
+	protected List<String> extractCompositeValue(String compositeValue) {
+		if(StringTools.stringIsEmpty(compositeValue)) {
+			return new ArrayList<String>(0);
+		}
+		String[] values = compositeValue.split(PROPERTY_VALUE_DELIMITER);
+		List<String> results = new ArrayList<String>(values.length);
+		for(String value : values) {
+			results.add(value.trim());
+		}
+		return results;
+	}
+
+	private String removeValueFrom(String compositeValue, String valueToRemove) {
+		if((StringTools.stringIsEmpty(valueToRemove))) {
+			return compositeValue;
+		}
+		String[] values = compositeValue.split(PROPERTY_VALUE_DELIMITER);
+		ArrayList<String> results = new ArrayList<String>(values.length);
+		
+		for(String value : values) {
+			if(value.trim().equals(valueToRemove)) {
+				continue;
+			}
+			results.add(value);
+		}
+		if(results.isEmpty()) {
+			return null;
+		}
+		StringBuilder sb = new StringBuilder(values.length);
+		for(String value : results) {
+			sb.append(value).append(PROPERTY_VALUE_DELIMITER);
+		}
+		sb.deleteCharAt(sb.length() - 1); 	// remove the last delimiter
+		return sb.toString();
+	}
+	
 }

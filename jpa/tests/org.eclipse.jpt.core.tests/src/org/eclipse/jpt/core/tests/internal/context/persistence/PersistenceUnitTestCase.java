@@ -9,6 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
+import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
@@ -76,6 +78,13 @@ public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 
 	protected String getPropertyStringValueOf(Object value) {
 		return AbstractPersistenceUnitProperties.getPropertyStringValueOf(value);
+	}
+
+	protected <E> E getFirstElement(Iterator<E> iterator) {
+		if(iterator.hasNext()) {
+			return iterator.next();
+		}
+		return null;
 	}
 
 	/**
