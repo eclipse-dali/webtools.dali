@@ -76,8 +76,8 @@ import org.osgi.framework.Bundle;
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
-	static public String XJB_FILTER = "*.xjb";   //$NON-NLS-1$
-	
+	static public String XJB_FILTER = "*.xjb;*.xml;*.xbc";   //$NON-NLS-1$
+
 	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
 	private final IJavaProject javaProject;
