@@ -184,7 +184,7 @@ public interface JpaProject
 	 * Return the names of the JPA project's mapped (i.e. annotated with @Entity, etc.) Java 
 	 * classes (ignoring classes in JARs referenced in the persistence.xml).
 	 */
-	Iterator<String> mappedJavaSourceClassNames();
+	Iterable<String> getMappedJavaSourceClassNames();
 
 	/**
 	 * Return the Java resource persistent type for the specified type.

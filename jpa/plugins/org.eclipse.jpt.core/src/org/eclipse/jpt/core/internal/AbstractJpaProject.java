@@ -756,12 +756,8 @@ public abstract class AbstractJpaProject
 			}
 		};
 	}
-	
-	public Iterator<String> mappedJavaSourceClassNames() {
-		return this.getMappedJavaSourceClassNames().iterator();
-	}
 
-	protected Iterable<String> getMappedJavaSourceClassNames() {
+	public Iterable<String> getMappedJavaSourceClassNames() {
 		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalMappedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {

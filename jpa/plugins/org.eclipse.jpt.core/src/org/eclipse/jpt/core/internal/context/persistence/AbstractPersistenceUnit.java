@@ -858,8 +858,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void initializeImpliedClassRefs_() {
-		for (Iterator<String> stream = this.getJpaProject().mappedJavaSourceClassNames(); stream.hasNext(); ) {
-			String typeName = stream.next();
+		for (String typeName : this.getJpaProject().getMappedJavaSourceClassNames()) {
 			if ( ! this.specifiesPersistentType(typeName)) {
 				this.impliedClassRefs.add(this.buildClassRef(typeName));
 			}
@@ -878,8 +877,7 @@ public abstract class AbstractPersistenceUnit
 		HashBag<ClassRef> impliedRefsToRemove = CollectionTools.bag(this.impliedClassRefs(), this.impliedClassRefsSize());
 		ArrayList<ClassRef> impliedRefsToUpdate = new ArrayList<ClassRef>(this.impliedClassRefsSize());
 
-		for (Iterator<String> mappedClassNames = this.getJpaProject().mappedJavaSourceClassNames(); mappedClassNames.hasNext(); ) {
-			String mappedClassName = mappedClassNames.next();
+		for (String mappedClassName : this.getJpaProject().getMappedJavaSourceClassNames()) {
 			if ( ! this.specifiesPersistentType(mappedClassName)) {
 				boolean match = false;
 				for (Iterator<ClassRef> classRefs = impliedRefsToRemove.iterator(); classRefs.hasNext(); ) {

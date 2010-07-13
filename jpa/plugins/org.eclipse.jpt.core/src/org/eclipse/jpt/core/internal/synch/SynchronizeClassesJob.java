@@ -106,7 +106,7 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	}
 
 	protected Iterable<String> getMappedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
-		return new TransformationIterable<String, String>(CollectionTools.iterable(jpaProject.mappedJavaSourceClassNames())) {
+		return new TransformationIterable<String, String>(jpaProject.getMappedJavaSourceClassNames()) {
 			@Override
 			protected String transform(String fullyQualifiedName) {
 				IType jdtType = SynchronizeClassesJob.this.findType(jpaProject, fullyQualifiedName);
