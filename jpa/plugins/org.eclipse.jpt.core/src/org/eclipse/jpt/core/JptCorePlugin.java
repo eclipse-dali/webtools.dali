@@ -150,6 +150,13 @@ public class JptCorePlugin extends Plugin {
 	public static final QualifiedName USER_OVERRIDE_DEFAULT_SCHEMA = 
 			new QualifiedName(PLUGIN_ID, "userOverrideDefaultSchemaName");  //$NON-NLS-1$
 
+
+	/**
+	 * The identifier for the JPA validation marker
+	 * (value <code>"org.eclipse.jpt.core.jpaProblemMarker"</code>).
+	 */
+	public static final String VALIDATION_MARKER_ID = PLUGIN_ID + ".jpaProblemMarker";  //$NON-NLS-1$
+
 	/**
 	 * The identifier for the JPA validator
 	 * (value <code>"org.eclipse.jpt.core.jpaValidator"</code>).

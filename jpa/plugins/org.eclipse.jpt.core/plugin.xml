@@ -488,7 +488,8 @@
 		name="%JPA_VALIDATOR">
 		
 		<validator
-			class="org.eclipse.jpt.core.internal.validation.JpaValidator">
+        	class="org.eclipse.jpt.core.internal.validation.JpaValidator"
+        	markerId="org.eclipse.jpt.core.jpaProblemMarker">
 			<include>
 				<rules>
 					<facet id="jpt.jpa"/>
@@ -503,6 +504,25 @@
 			</include>
 		</validator>
 		
+	</extension>
+	
+	<!-- =================================================================================== -->
+	<!-- Extension: JPA Problem Marker                                                       -->
+	<!-- **** Do NOT qualify the marker id with org.eclipse.jpt.core, see bug 252891 		 -->
+	<!-- =================================================================================== -->
+	<extension
+		point="org.eclipse.core.resources.markers"
+		id="jpaProblemMarker" 
+		name="JPA Problem">
+
+		<persistent value="true"/>
+		
+		<!-- Can't use text marker until we have specific models for each input type (XML, java)
+		<super type="org.eclipse.core.resources.textmarker"/>
+		-->
+		
+		<super type="org.eclipse.wst.validation.problemmarker2"/>
+		<super type="org.eclipse.jdt.core.problem"/>
 	</extension>
 	
 </plugin>

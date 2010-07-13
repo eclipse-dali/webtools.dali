@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -40,6 +40,7 @@ public class DefaultEclipseLinkJpaValidationMessages {
 	public static IMessage buildMessage(
 			int severity, String messageId, String[] parms, Object targetObject, TextRange textRange) {
 		IMessage message = new EclipseLinkMessage(EclipseLinkJpaValidationMessages.BUNDLE_NAME, severity, messageId, parms, targetObject);
+		message.setMarkerId(JptCorePlugin.VALIDATION_MARKER_ID); //TODO do we need an 'EclipseLink JPA' problem marker?
 		if (textRange == null) {
 			//log an exception and then continue without setting location information
 			//At least the user will still get the validation message and will
