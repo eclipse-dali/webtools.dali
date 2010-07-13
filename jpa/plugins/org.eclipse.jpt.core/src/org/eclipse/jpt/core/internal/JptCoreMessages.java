@@ -55,7 +55,9 @@ public class JptCoreMessages {
 	public static String DALI_EVENT_HANDLER_THREAD_NAME;
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String KEY_CLASSES_VALIDATOR__CLASS_NOT_FOUND;
-	
+	public static String GENERATION_CREATING_LAUNCH_CONFIG_TASK;
+	public static String GENERATION_SAVING_LAUNCH_CONFIG_TASK;
+	public static String GENERATION_LAUNCHING_CONFIG_TASK;
 	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;

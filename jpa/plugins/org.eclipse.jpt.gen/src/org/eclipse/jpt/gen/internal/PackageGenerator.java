@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -47,6 +46,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.gen.internal.util.FileUtil;
 import org.eclipse.jpt.gen.internal.util.UrlUtil;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 
@@ -56,68 +56,63 @@ import org.osgi.framework.Bundle;
 public class PackageGenerator { 
 
 	private static final String LOGGER_NAME = "org.eclipse.jpt.entities.gen.log"; //$NON-NLS-1$
-	private JpaProject jpaProject;
-	private ORMGenCustomizer customizer;
-	private static OverwriteConfirmer overwriteConfirmer = null;
+	private final JpaProject jpaProject;
+	private final ORMGenCustomizer customizer;
+	private final OverwriteConfirmer overwriteConfirmer;
 
-	static public void setOverwriteConfirmer(OverwriteConfirmer confirmer){
-		overwriteConfirmer = confirmer;
-	}
-	/**
-	 * @param customizer
-	 * @param synchronizePersistenceXml
-	 * @param copyJdbcDrive
-	 * @throws Exception 
-	 */
-	static public void generate(JpaProject jpaProject, ORMGenCustomizer customizer, IProgressMonitor monitor ) throws CoreException {
-		PackageGenerator generator = new PackageGenerator();
-		generator.setProject(jpaProject);
-		generator.setCustomizer(customizer);
-		
+	public static void generate(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer overwriteConfirmer, IProgressMonitor monitor) throws CoreException {
+		SubMonitor sm = SubMonitor.convert(monitor, 20);
+		PackageGenerator generator = new PackageGenerator(jpaProject, customizer, overwriteConfirmer);
+		sm.worked(1);
 		try {
-			generator.doGenerate(monitor);
+			generator.doGenerate(sm.newChild(19));
 		} catch (Exception e) {
 			throw new CoreException(new Status(IStatus.ERROR, JptGenPlugin.PLUGIN_ID, JptGenMessages.Error_Generating_Entities, e));
 		}
 	}
 	
+	private PackageGenerator(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer) {
+		super();
+		this.jpaProject = jpaProject;
+		this.customizer = customizer;
+		this.overwriteConfirmer = confirmer;
+	}
+
 	private Object getCustomizer() {
 		return this.customizer;
 	}
 
-	private void setCustomizer(ORMGenCustomizer customizer2) {
-		this.customizer = customizer2;
-	}
-	
-	private void setProject(JpaProject proj ){
-		this.jpaProject = proj;
-	}
-	
-	protected void doGenerate(IProgressMonitor monitor ) throws Exception {
-		generateInternal( monitor );
+	private IJavaProject getJavaProject(){
+		return this.jpaProject.getJavaProject();
 	}
 
-	protected void generateInternal(IProgressMonitor progress) throws Exception {
+	
+	protected void doGenerate(IProgressMonitor monitor) throws Exception {
+		generateInternal(monitor);
+	}
+
+	protected void generateInternal(IProgressMonitor monitor) throws Exception {
 		File templDir = prepareTemplatesFolder();
 
 		List<String> genClasses = new java.util.ArrayList<String>();
 		List<String> tableNames = this.customizer.getGenTableNames();
 
 		/* .java per table, persistence.xml, refresh package folder */
-		String taskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, "Total "+ tableNames.size() + 2);//$NON-NLS-1$
-		progress.beginTask(taskName, tableNames.size() + 2);
+		SubMonitor sm = SubMonitor.convert(monitor, tableNames.size() + 2);
 
 
 		for (Iterator<String> iter = tableNames.iterator(); iter.hasNext();) {
+			if (sm.isCanceled()) {
+				return;
+			}
 			String tableName = iter.next();
-			ORMGenTable table = customizer.getTable(tableName);
+			ORMGenTable table = this.customizer.getTable(tableName);
 
 			String className = table.getQualifiedClassName();
 
-			generateClass(table, templDir.getAbsolutePath(), progress);
-			progress.worked(1);
+			generateClass(table, templDir.getAbsolutePath(), sm.newChild(1, SubMonitor.SUPPRESS_NONE));
 
-			genClasses.add( className );
+			genClasses.add(className);
 			/*
 			 * add the composite key class to persistence.xml because some 
 			 * JPA provider(e.g. Kodo) requires it. Hibernate doesn't seem to care). 
@@ -126,16 +121,19 @@ public class PackageGenerator {
 				genClasses.add(table.getQualifiedCompositeKeyClassName());
 			}
 		}
+		if (sm.isCanceled()) {
+			return;
+		}
 		
 		//update persistence.xml
 		if (this.customizer.shouldUpdatePersistenceXml()) {
 			updatePersistenceXml(genClasses);
 		}
-		progress.done();
+		sm.worked(2);
 	}
 	
 	private void updatePersistenceXml(final List<String> genClasses) {
-		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
+		JpaXmlResource resource = this.jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type,
 			//do not attempt to update
@@ -144,7 +142,7 @@ public class PackageGenerator {
 
 		resource.modify(new Runnable() {
 			public void run() {
-				Persistence persistence = jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
+				Persistence persistence = PackageGenerator.this.jpaProject.getRootContextNode().getPersistenceXml().getPersistence();
 				if (persistence == null) {
 					// invalid content, do not attempt to update
 					return;
@@ -153,14 +151,14 @@ public class PackageGenerator {
 				// create a persistence unit if one doesn't already exist
 				if (persistence.persistenceUnitsSize() == 0) {
 					persistenceUnit = persistence.addPersistenceUnit();
-					persistenceUnit.setName(jpaProject.getName());
+					persistenceUnit.setName(PackageGenerator.this.jpaProject.getName());
 				} else {
 					// we only support one persistence unit - take the first one
 					persistenceUnit = persistence.persistenceUnits().next();
 				}
 				for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();) {
 					String className = stream.next();
-					if (!persistenceUnit.mappingFileRefsContaining(className).hasNext() && !persistenceUnit.specifiesPersistentType(className)) {
+					if (!CollectionTools.isEmpty(persistenceUnit.mappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
 						ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
 						classRef.setClassName(className);
 					}
@@ -179,21 +177,21 @@ public class PackageGenerator {
 		String templatesPath = "templates/entities/";  //$NON-NLS-1$
 		Path path = new Path( templatesPath);
 		URL url = FileLocator.find(bundle, path, null);
-		if ( url ==null  ) {
+		if (url == null) {
 			throw new CoreException(new Status(IStatus.ERROR, JptGenPlugin.PLUGIN_ID,  JptGenMessages.Templates_notFound + " "+  JptGenPlugin.PLUGIN_ID + "/" + templatesPath) );//$NON-NLS-1$
 		}		
 		URL templUrl = FileLocator.resolve(url);
 		
 		//Have this check so that the code would work in both PDE and JARed plug-in at runtime
 		File templDir = null;
-		if( UrlUtil.isJarUrl(templUrl) ){
+		if (UrlUtil.isJarUrl(templUrl)) {
 			templDir = FileUtil.extractFilesFromBundle( templUrl, bundle, templatesPath );
-		}else{
+		} else {
 			templDir = UrlUtil.getUrlFile(templUrl);
 		}
 		
 
-		if (templDir==null || !templDir.exists()) {
+		if (templDir == null || !templDir.exists()) {
 			throw new CoreException(new Status(IStatus.ERROR, JptGenPlugin.PLUGIN_ID,  JptGenMessages.Templates_notFound + " "+  JptGenPlugin.PLUGIN_ID ) );//$NON-NLS-1$
 		}
 		return templDir;
@@ -211,15 +209,16 @@ public class PackageGenerator {
 	protected void generateClass(ORMGenTable table, String templateDirPath, IProgressMonitor monitor) throws Exception {
 
 		String subTaskName = NLS.bind(JptGenMessages.EntityGenerator_taskName, table.getName());
-		SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 100);
+		SubMonitor sm = SubMonitor.convert(monitor, subTaskName, 10);
 
-		try{
+		try {
 			IFolder javaPackageFolder = getJavaPackageFolder(table, monitor);
 			IFile javaFile = javaPackageFolder.getFile( table.getClassName() + ".java"); //$NON-NLS-1$
 			
-			if( javaFile.exists() ){
-				if( overwriteConfirmer!=null && !overwriteConfirmer.overwrite(javaFile.getName()) )
+			if (javaFile.exists()) {
+				if (this.overwriteConfirmer != null && !this.overwriteConfirmer.overwrite(javaFile.getName())) {
 					return;
+				}
 			}
 			//JdkLogChute in this version of Velocity not allow to set log level
 			//Workaround by preset the log level before Velocity is initialized
@@ -231,23 +230,23 @@ public class PackageGenerator {
 			vep.setProperty( JdkLogChute.RUNTIME_LOG_JDK_LOGGER, LOGGER_NAME );
 			VelocityEngine ve = new VelocityEngine();
 		    ve.init(vep);
-		    sm.worked(20);
+		    sm.worked(2);
 		    
-		    generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, monitor); //$NON-NLS-1$
-		    sm.worked(80);
+		    generateJavaFile(table, javaFile, ve, "main.java.vm", true/*isDomainClass*/, sm.newChild(6)); //$NON-NLS-1$
 		    
 		    if (table.isCompositeKey()) {
 		    	IFile compositeKeyFile = javaPackageFolder.getFile( table.getCompositeKeyClassName()+".java"); //$NON-NLS-1$
-		    	generateJavaFile(table, compositeKeyFile, ve, "pk.java.vm", false/*isDomainClass*/, monitor ); //$NON-NLS-1$
+		    	generateJavaFile(table, compositeKeyFile, ve, "pk.java.vm", false/*isDomainClass*/, sm.newChild(1)); //$NON-NLS-1$
 		    }
-		    
-			javaFile.refreshLocal(1, new NullProgressMonitor());
+		    else {
+		    	sm.setWorkRemaining(1);
+		    }
+			javaFile.refreshLocal(1, sm.newChild(1));
 			
-		} catch(Throwable e){
+		} catch (Throwable e) {
 			CoreException ce = new CoreException(new Status(IStatus.ERROR, JptGenPlugin.PLUGIN_ID, JptGenMessages.Templates_notFound + "" + JptGenPlugin.PLUGIN_ID , e) );//$NON-NLS-1$
 			JptGenPlugin.logException( ce );
 		}
-		sm.setWorkRemaining(0);
 	}
 	
 	private void generateJavaFile(ORMGenTable table, IFile javaFile, VelocityEngine ve
@@ -264,7 +263,7 @@ public class PackageGenerator {
 			if (isDomainClass) {
 				updateExistingDomainClass(table.getQualifiedClassName(), javaFile, fileContent);
 			} else {
-				javaFile.setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, monitor );
+				javaFile.setContents(new ByteArrayInputStream(fileContent.getBytes()), true, true, monitor);
 			}
 		} else {
 			createFile(javaFile, new ByteArrayInputStream(fileContent.getBytes()));
@@ -285,8 +284,7 @@ public class PackageGenerator {
 		/*use CompilationUnitModifier instead of calling WideEnv.getEnv().setFileContent 
 		 * so that if the unit is up to date if it is used before file change 
 		 * notifications are delivered (see EJB3ImportSchemaWizard.updateExistingDomainClass for example)*/
-		IJavaProject project = jpaProject.getJavaProject();
-		CompilationUnitModifier modifier = new CompilationUnitModifier(project, className);
+		CompilationUnitModifier modifier = new CompilationUnitModifier(this.getJavaProject(), className);
 		modifier.setJavaSource(fileContent);
 		modifier.save();
 	}
@@ -296,18 +294,14 @@ public class PackageGenerator {
 	}
 	
 	public IFolder getJavaPackageFolder(ORMGenTable table, IProgressMonitor monitor) throws CoreException {
-		IPackageFragmentRoot root = getDefaultJavaSourceLocation(getJavaProject(), table.getSourceFolder());
+		IPackageFragmentRoot root = getDefaultJavaSourceLocation(this.getJavaProject(), table.getSourceFolder());
 		String packageName = table.getPackage();
-		if( packageName==null ) packageName ="";
+		if (packageName == null) packageName = ""; //$NON-NLS-1$
 		IPackageFragment packageFragment = root.getPackageFragment(packageName);
 		if( !packageFragment.exists()){
 			root.createPackageFragment(packageName, true, monitor);
 		}		
-		return (IFolder)packageFragment.getResource();
-	}
-
-	private IJavaProject getJavaProject(){
-		return this.jpaProject.getJavaProject();
+		return (IFolder) packageFragment.getResource();
 	}
 
 	private IPackageFragmentRoot getDefaultJavaSourceLocation(IJavaProject jproject, String sourceFolder){

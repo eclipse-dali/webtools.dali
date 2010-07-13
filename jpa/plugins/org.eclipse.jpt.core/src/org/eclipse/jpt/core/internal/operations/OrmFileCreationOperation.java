@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,6 +16,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -38,10 +39,12 @@ public class OrmFileCreationOperation
 	
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
-		IStatus status = super.execute(monitor, info);
+		SubMonitor sm = SubMonitor.convert(monitor, 5);
+		IStatus status = super.execute(sm.newChild(4), info);
 		
 		if (status.isOK()) {
 			addMappingFileToPersistenceXml();
+			sm.worked(1);
 		}
 		
 		return OK_STATUS;

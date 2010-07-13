@@ -10,13 +10,15 @@
 package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -62,7 +64,6 @@ public class ClassesGeneratorUi {
 	 * prompt the user with a wizard
 	 */
 	protected void generate() {
-
 		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.xmlSchemaName);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
@@ -88,7 +89,7 @@ public class ClassesGeneratorUi {
 		boolean useMoxyGenerator,
 		String[] bindingsFileNames) {
 		
-		IWorkspaceRunnable runnable = this.buildGenerateEntitiesRunnable(
+		WorkspaceJob job = new GenerateEntitiesJob(
 			this.javaProject, 
 			this.xmlSchemaName, 
 			outputDir, 
@@ -96,24 +97,7 @@ public class ClassesGeneratorUi {
 			catalog, 
 			useMoxyGenerator,
 			bindingsFileNames);
-		try {
-			ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
-		} 
-		catch (CoreException ex) {
-			throw new RuntimeException(ex);
-		}
-	}
-	
-	private IWorkspaceRunnable buildGenerateEntitiesRunnable(
-		IJavaProject javaProject, 
-		String xmlSchemaName, 
-		String outputDir,
-		String targetPackage, 
-		String catalog, 
-		boolean useMoxyGenerator,
-		String[] bindingsFileNames) {
-
-		return new GenerateEntitiesRunnable(javaProject, xmlSchemaName, outputDir, targetPackage, catalog, useMoxyGenerator, bindingsFileNames);
+		job.schedule();
 	}
 	
 	private Shell getCurrentShell() {
@@ -122,7 +106,7 @@ public class ClassesGeneratorUi {
 
 	// ********** Runnable Class **********
 
-	private static class GenerateEntitiesRunnable implements IWorkspaceRunnable {
+	private static class GenerateEntitiesJob extends WorkspaceJob {
 		private final IJavaProject javaProject;
 		private final String xmlSchemaName;
 		private final String outputDir;
@@ -133,7 +117,7 @@ public class ClassesGeneratorUi {
 
 		// ********** constructors **********
 		
-		public GenerateEntitiesRunnable(
+		public GenerateEntitiesJob(
 			IJavaProject javaProject, 
 			String xmlSchemaName, 
 			String outputDir,
@@ -142,7 +126,8 @@ public class ClassesGeneratorUi {
 			boolean useMoxyGenerator,
 			String[] bindingsFileNames) {
 			
-			super();
+			//super(EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB);
+			super(JptJaxbUiMessages.ClassesGeneratorUi_generatingEntities);
 			this.javaProject = javaProject;
 			this.xmlSchemaName = xmlSchemaName;
 			this.outputDir = outputDir;
@@ -150,9 +135,12 @@ public class ClassesGeneratorUi {
 			this.catalog = catalog;
 			this.useMoxyGenerator = useMoxyGenerator;
 			this.bindingsFileNames = bindingsFileNames;
+			this.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(this.javaProject.getProject()));
 		}
 
-		public void run(IProgressMonitor monitor) {
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			SubMonitor sm = SubMonitor.convert(monitor, JptJaxbUiMessages.ClassesGeneratorUi_generatingEntitiesTask, 1);
 			try {
 				this.entitiesGeneratorGenerate(this.javaProject, 
 					this.xmlSchemaName, 
@@ -161,10 +149,10 @@ public class ClassesGeneratorUi {
 					this.catalog, 
 					this.useMoxyGenerator,
 					this.bindingsFileNames,
-					monitor);
+					sm.newChild(1));
 			} 
 			catch (OperationCanceledException e) {
-				return;
+				return Status.CANCEL_STATUS;
 				// fall through and tell monitor we are done
 			}
 			catch (RuntimeException re) {
@@ -174,7 +162,8 @@ public class ClassesGeneratorUi {
 				this.logError(message);
 				throw new RuntimeException(re);
 			}
-		}
+			return Status.OK_STATUS;
+	}
 	
 		private void entitiesGeneratorGenerate(IJavaProject javaProject, 
 			String xmlSchemaName, 

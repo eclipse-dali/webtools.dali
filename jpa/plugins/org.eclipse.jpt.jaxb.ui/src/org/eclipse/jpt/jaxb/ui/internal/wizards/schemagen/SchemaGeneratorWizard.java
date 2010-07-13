@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResourceRuleFactory;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
@@ -23,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -37,6 +37,7 @@ import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.FileTools;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -203,17 +204,17 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 			this.targetSchema = targetSchema;
 			this.useMoxy = useMoxy;
 
-			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
-			this.setRule(ruleFactory.modifyRule(javaProject.getProject()));
+			this.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(this.javaProject.getProject()));
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			try{
-				SchemaGenerator.generate(javaProject, this.targetSchema, this.sourceClassNames, this.useMoxy, monitor);
+			SubMonitor sm = SubMonitor.convert(monitor, NLS.bind(JptJaxbUiMessages.SchemaGeneratorWizard_generateSchemaTask, this.targetSchema), 1);
+			try {
+				SchemaGenerator.generate(this.javaProject, this.targetSchema, this.sourceClassNames, this.useMoxy, sm.newChild(1));
 			}
-			catch(OperationCanceledException e) {
-				//user canceled generation
+			catch (OperationCanceledException e) {
+				return Status.CANCEL_STATUS;
 			}
 			return Status.OK_STATUS;
 		}

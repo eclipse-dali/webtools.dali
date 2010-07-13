@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
@@ -48,10 +49,11 @@ public abstract class AbstractJpaFileCreationOperation
 	
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
+		SubMonitor sm = SubMonitor.convert(monitor, 5);
 		// Create source folder if it does not exist
-		createSourceFolder();
+		createSourceFolder(sm.newChild(1));
 		// Create file
-		createFile();
+		createFile(sm.newChild(4));
 		return OK_STATUS;
 	}
 	
@@ -80,15 +82,15 @@ public abstract class AbstractJpaFileCreationOperation
 	 * This method may return null.
 	 */
 	// copied from NewJavaClassOperation
-	protected void createSourceFolder() throws ExecutionException {
+	protected void createSourceFolder(IProgressMonitor monitor) throws ExecutionException {
 		// Get the source folder name from the data model
-		String folderPath = model.getStringProperty(SOURCE_FOLDER);
+		String folderPath = this.model.getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
 		IFolder folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
 		// If folder does not exist, create the folder with the specified path
 		if (! folder.exists()) {
 			try {
-				folder.create(true, true, null);
+				folder.create(true, true, monitor);
 			} catch (CoreException e) {
 				throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
 			}
@@ -97,12 +99,12 @@ public abstract class AbstractJpaFileCreationOperation
 		this.createdSourceFolder = folder;
 	}
 	
-	protected void createFile() {
+	protected void createFile(IProgressMonitor monitor) {
 		String filePath = getDataModel().getStringProperty(FILE_PATH);
 		IFile newFile = this.createdSourceFolder.getFile(new Path(filePath));
 		AbstractXmlResourceProvider resourceProvider = getXmlResourceProvider(newFile);
 		try {
-			resourceProvider.createFileAndResource(getDataModel());
+			resourceProvider.createFileAndResource(getDataModel(), monitor);
 		}
 		catch (CoreException e) {
 			JptCorePlugin.log(e);

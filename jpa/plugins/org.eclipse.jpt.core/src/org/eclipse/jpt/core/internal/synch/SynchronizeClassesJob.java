@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.synch;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResourceRuleFactory;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -17,6 +16,7 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Synchronizes the lists of persistent classes in a persistence unit and a 
@@ -51,60 +51,62 @@ public class SynchronizeClassesJob extends WorkspaceJob
 	}
 	
 	@Override
-	public IStatus runInWorkspace(final IProgressMonitor monitor) {
-		monitor.beginTask(JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 200);
-		
+	public IStatus runInWorkspace(IProgressMonitor monitor) {
 		if (monitor.isCanceled()) {
 			return Status.CANCEL_STATUS;
 		}
-		
+		final SubMonitor sm = SubMonitor.convert(monitor, JptCoreMessages.SYNCHRONIZING_CLASSES_TASK, 20);
 		final JpaProject jpaProject = JptCorePlugin.getJpaProject(this.persistenceXmlFile.getProject());
 		final JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
 		if (resource == null) {
 			//the resource would only be null if the persistence.xml file had an invalid content type
 			return Status.OK_STATUS;
 		}
-		
-		monitor.worked(25);
+		if (sm.isCanceled()) {
+			return Status.CANCEL_STATUS;
+		}
+		sm.worked(1);
 		
 		resource.modify(new Runnable() {
-				public void run() {
-					XmlPersistence persistence = (XmlPersistence) resource.getRootObject();					
-					XmlPersistenceUnit persistenceUnit;
-					
-					if (persistence.getPersistenceUnits().size() > 0) {
-						persistenceUnit = persistence.getPersistenceUnits().get(0);
-					}
-					else {
-						persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
-						persistenceUnit.setName(jpaProject.getName());
-						persistence.getPersistenceUnits().add(persistenceUnit);
-					}
-					
-					persistenceUnit.getClasses().clear();
-					
-					monitor.worked(25);
-			
-					for (Iterator<String> stream = mappedClassNames(jpaProject, '$'); stream.hasNext(); ) {
-						String fullyQualifiedTypeName = stream.next();
-						if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
-							XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
-							classRef.setJavaClass(fullyQualifiedTypeName);
-							persistenceUnit.getClasses().add(classRef);
-						}
-					}
-					
-					monitor.worked(100);
+			public void run() {
+				XmlPersistence persistence = (XmlPersistence) resource.getRootObject();					
+				XmlPersistenceUnit persistenceUnit;
+				
+				if (persistence.getPersistenceUnits().size() > 0) {
+					persistenceUnit = persistence.getPersistenceUnits().get(0);
 				}
-			});
+				else {
+					persistenceUnit = PersistenceFactory.eINSTANCE.createXmlPersistenceUnit();
+					persistenceUnit.setName(jpaProject.getName());
+					persistence.getPersistenceUnits().add(persistenceUnit);
+				}
+				sm.worked(1);
+				
+				persistenceUnit.getClasses().clear();
+				sm.worked(1);
 		
-		monitor.done();
-		
+				addClassRefs(sm.newChild(17), jpaProject, persistenceUnit);
+			}
+		});
 		return Status.OK_STATUS;
 	}
 	
-	protected Iterator<String> mappedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
-		return new TransformationIterator<String, String>(jpaProject.mappedJavaSourceClassNames()) {
+	protected void addClassRefs(IProgressMonitor monitor, JpaProject jpaProject, XmlPersistenceUnit persistenceUnit) {
+		Iterable<String> mappedClassNames = getMappedClassNames(jpaProject, '$');
+		final SubMonitor sm = SubMonitor.convert(monitor, CollectionTools.size(mappedClassNames));
+		
+		for (String fullyQualifiedTypeName : mappedClassNames) {
+			if ( ! mappingFileContains(jpaProject, fullyQualifiedTypeName)) {
+				XmlJavaClassRef classRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+				classRef.setJavaClass(fullyQualifiedTypeName);
+				persistenceUnit.getClasses().add(classRef);
+			}
+			sm.worked(1);
+		}
+	}
+
+	protected Iterable<String> getMappedClassNames(final JpaProject jpaProject, final char enclosingTypeSeparator) {
+		return new TransformationIterable<String, String>(CollectionTools.iterable(jpaProject.mappedJavaSourceClassNames())) {
 			@Override
 			protected String transform(String fullyQualifiedName) {
 				IType jdtType = SynchronizeClassesJob.this.findType(jpaProject, fullyQualifiedName);

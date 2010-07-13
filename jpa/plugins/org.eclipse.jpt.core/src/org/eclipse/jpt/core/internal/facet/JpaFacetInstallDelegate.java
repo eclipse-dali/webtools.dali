@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
@@ -38,34 +39,23 @@ public class JpaFacetInstallDelegate
 {
 	@Override
 	protected void execute_(
-			IProject project, @SuppressWarnings("unused") IProjectFacetVersion fv, 
+			IProject project, IProjectFacetVersion fv, 
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
 		// NB: WTP Natures (including the JavaEMFNature)
 		// should already be added, as this facet should 
 		// always coexist with a module facet.
+		SubMonitor sm = SubMonitor.convert(monitor, 10);
 		
-		super.execute_(project, fv, config, monitor);
-		
+		super.execute_(project, fv, config, sm.newChild(1));
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
 		
-		try {
-			monitor.beginTask("", 3); //$NON-NLS-1$
+		// project settings
+		this.addDbDriverLibraryToClasspath(javaProject, dataModel, sm.newChild(1));
 
-			// project settings
-			this.addDbDriverLibraryToClasspath(javaProject, dataModel, monitor);
-
-			monitor.worked(1);
-
-			// create project XML files
-			this.createProjectXml(project, dataModel.getBooleanProperty(CREATE_ORM_XML));
-
-			monitor.worked(2);
-		} 
-		finally {
-			monitor.done();
-		}
+		// create project XML files
+		this.createProjectXml(project, dataModel.getBooleanProperty(CREATE_ORM_XML), sm.newChild(8));
 	}
 	
 	protected void addDbDriverLibraryToClasspath(
@@ -100,31 +90,39 @@ public class JpaFacetInstallDelegate
 		javaProject.setRawClasspath(newClasspath, monitor);
 	}
 	
-	private void createProjectXml(IProject project, boolean buildOrmXml) {
-		this.createPersistenceXml(project);
+	private void createProjectXml(IProject project, boolean buildOrmXml, IProgressMonitor monitor) {
+		int tasks = 1 + (buildOrmXml ? 1 : 0);
+		SubMonitor sm = SubMonitor.convert(monitor, tasks);
 
+		this.createPersistenceXml(project, sm.newChild(1));
 		if (buildOrmXml) {
-			this.createOrmXml(project);
+			this.createOrmXml(project, sm.newChild(1));
 		}
 	}
 
-	private void createPersistenceXml(IProject project) {
+	private void createPersistenceXml(IProject project, IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, 5);
+
 		IDataModel config = DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
 		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		sm.worked(1);
 		// default values for all other properties should suffice
 		try {
-			config.getDefaultOperation().execute(null, null);
+			config.getDefaultOperation().execute(sm.newChild(4), null);
 		} catch (ExecutionException ex) {
 			JptCorePlugin.log(ex);
 		}
 	}
 
-	private void createOrmXml(IProject project) {
+	private void createOrmXml(IProject project, IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, 5);
+
 		IDataModel config = DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
 		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		sm.worked(1);
 		// default values for all other properties should suffice
 		try {
-			config.getDefaultOperation().execute(null, null);
+			config.getDefaultOperation().execute(sm.newChild(4), null);
 		} catch (ExecutionException ex) {
 			JptCorePlugin.log(ex);
 		}

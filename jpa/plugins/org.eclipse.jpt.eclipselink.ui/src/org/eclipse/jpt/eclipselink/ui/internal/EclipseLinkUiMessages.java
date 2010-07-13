@@ -386,6 +386,8 @@ public class EclipseLinkUiMessages {
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningTitle;
 	public static String EclipseLinkDDLGeneratorUi_generatingDDLWarningMessage;
 	public static String EclipseLinkDDLGeneratorUi_error;
+	public static String ECLIPSELINK_GENERATE_TABLES_JOB;
+	public static String ECLIPSELINK_GENERATE_TABLES_TASK;
 
 	private static final String BUNDLE_NAME = "eclipselink_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = EclipseLinkUiMessages.class;

@@ -21,12 +21,10 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jface.dialogs.Dialog;
@@ -221,11 +219,12 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		} catch (IOException e) {
 			JptUiPlugin.log(e);
 		}
+		OverwriteConfirmer overwriteConfirmer = null;
 		if (shouldShowOverwriteWarning()) {
-			PackageGenerator.setOverwriteConfirmer(new OverwriteConfirmer());
+			overwriteConfirmer = new OverwriteConfirmer();
 		}
 		
-		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer());
+		WorkspaceJob genEntitiesJob = new GenerateEntitiesJob(this.jpaProject, getCustomizer(), overwriteConfirmer);
 		genEntitiesJob.schedule();
 		return true;
 	}
@@ -233,27 +232,25 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 	// ********** generate entities job **********
 
 	static class GenerateEntitiesJob extends WorkspaceJob {
-		JpaProject jpaProject;
-		ORMGenCustomizer customizer;
-		GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer) {
+		final JpaProject jpaProject;
+		final ORMGenCustomizer customizer;
+		final OverwriteConfirmer confirmer;
+		GenerateEntitiesJob(JpaProject jpaProject, ORMGenCustomizer customizer, OverwriteConfirmer confirmer) {
 			super(JptUiMessages.EntitiesGenerator_jobName);
 			this.customizer = customizer;
-			this.jpaProject = jpaProject ;
+			this.jpaProject = jpaProject;
+			this.confirmer = confirmer;
 			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
 			this.setRule(ruleFactory.modifyRule(jpaProject.getProject()));
 		}
 
 		@Override
 		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			try{
-				PackageGenerator.generate(this.jpaProject,this.customizer, monitor);
-			}catch(OperationCanceledException e){
-				//user canceled generation
-			}
+			PackageGenerator.generate(this.jpaProject,this.customizer, this.confirmer, monitor);
 			return Status.OK_STATUS;
 		}
+	}
 
-	}	
     public static boolean shouldShowOverwriteWarning(){
     	IEclipsePreferences pref = new InstanceScope().getNode(JptUiPlugin.PLUGIN_ID); 
     	boolean ret = ! pref.getBoolean( DONT_SHOW_OVERWRITE_WARNING_DIALOG, false) ;

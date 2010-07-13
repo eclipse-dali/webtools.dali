@@ -40,6 +40,9 @@ public class JptJaxbUiMessages {
 	
 	public static String ClassesGeneratorWizardPage_moxyLibrariesNotAvailable;
 
+	public static String ClassesGeneratorUi_generatingEntities;
+	public static String ClassesGeneratorUi_generatingEntitiesTask;
+
 	// SchemaGenerator
 	public static String SchemaGeneratorWizard_title;
 	public static String SchemaGeneratorWizard_generatingSchema;
@@ -64,6 +67,7 @@ public class JptJaxbUiMessages {
 
 	public static String SchemaGeneratorWizardPage_moxyLibrariesNotAvailable;
 	
+	public static String SchemaGeneratorWizard_generateSchemaTask;
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbUiMessages.class;

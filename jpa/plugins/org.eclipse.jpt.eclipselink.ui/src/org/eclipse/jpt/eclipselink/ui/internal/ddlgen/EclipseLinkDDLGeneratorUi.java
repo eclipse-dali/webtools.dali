@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2007, 2009 Oracle. All rights reserved.
+* Copyright (c) 2007, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,13 @@ package org.eclipse.jpt.eclipselink.ui.internal.ddlgen;
 
 import java.util.Iterator;
 
-import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -73,17 +74,12 @@ public class EclipseLinkDDLGeneratorUi
 				return;
 			}
 		}
-		IWorkspaceRunnable runnable = this.buildGenerateDDLRunnable(puName, this.project);
-		try {
-			ResourcesPlugin.getWorkspace().run(runnable, new NullProgressMonitor());
-		} 
-		catch (CoreException ex) {
-			throw new RuntimeException(ex);
-		}
+		WorkspaceJob job = this.buildGenerateDDLJob(puName, this.project);
+		job.schedule();
 	}
 	
-	protected IWorkspaceRunnable buildGenerateDDLRunnable(String puName, JpaProject project) {
-		return new GenerateDDLRunnable(puName, project);
+	protected WorkspaceJob buildGenerateDDLJob(String puName, JpaProject project) {
+		return new GenerateDDLJob(puName, project);
 	}
 	
 	private Shell getCurrentShell() {
@@ -117,24 +113,24 @@ public class EclipseLinkDDLGeneratorUi
 
 	// ********** runnable **********
 
-	protected static class GenerateDDLRunnable implements IWorkspaceRunnable {
+	protected static class GenerateDDLJob extends WorkspaceJob {
 		private final String puName;
 		private final JpaProject project;
 
-		public GenerateDDLRunnable(String puName, JpaProject project) {
-			super();
+		public GenerateDDLJob(String puName, JpaProject project) {
+			super(EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB);
 			this.puName = puName;
 			this.project = project;
 		}
 
-		public void run(IProgressMonitor monitor) {
-			String projectLocation = this.project.getProject().getLocation().toString();
+		@Override
+		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+			SubMonitor sm = SubMonitor.convert(monitor, EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_TASK, 1);
 			try {
-				this.ddlGeneratorGenerate(this.puName, this.project, projectLocation, monitor);
+				this.ddlGeneratorGenerate(this.puName, this.project, sm.newChild(1));
 			} 
 			catch (OperationCanceledException e) {
-				return;
-				// fall through and tell monitor we are done
+				return Status.CANCEL_STATUS;
 			}
 			catch (RuntimeException re) {
 				String msg = re.getMessage();
@@ -143,14 +139,15 @@ public class EclipseLinkDDLGeneratorUi
 				this.logError(message);
 				throw new RuntimeException(re);
 			}
+			return Status.OK_STATUS;
 		}
 
-		protected void ddlGeneratorGenerate(String puName, JpaProject project, String projectLocation, IProgressMonitor monitor) {
-			EclipseLinkDDLGenerator.generate(puName, project, projectLocation, monitor);
+		protected void ddlGeneratorGenerate(String puName, JpaProject project, IProgressMonitor monitor) {
+			EclipseLinkDDLGenerator.generate(puName, project, monitor);
 		}
 
 		protected void logError(String message) {
-				this.displayError(message);
+			this.displayError(message);
 		}
 		
 		private void displayError(String message) {

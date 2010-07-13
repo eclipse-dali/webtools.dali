@@ -18,10 +18,8 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
@@ -30,13 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunch;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationType;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.ILaunchesListener2;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -44,8 +36,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
-import org.eclipse.jdt.launching.IVMInstall;
-import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.osgi.service.datalocation.Location;
@@ -54,7 +45,7 @@ import org.osgi.framework.Bundle;
 /**
  *  SchemaGenerator
  */
-public class SchemaGenerator
+public class SchemaGenerator extends AbstractJptGenerator
 {
 	static public String LAUNCH_CONFIG_NAME = "JAXB Schema Gen Run Config";   //$NON-NLS-1$
 	static public String JAXB_SCHEMA_GEN_PACKAGE_NAME = "org.eclipse.jpt.jaxb.core.schemagen";   //$NON-NLS-1$
@@ -73,16 +64,10 @@ public class SchemaGenerator
 	static public String JAXB_ECLIPSELINK_SCHEMA_GEN_CLASS = "org.eclipse.persistence.jaxb.JAXBContext";	//$NON-NLS-1$
 	static public String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 	
-	private IVMInstall jre;
-	private ILaunchConfigurationWorkingCopy launchConfig;
-	private ILaunch launch;
-	
-	private final IJavaProject javaProject;
 	private final String targetSchemaName;
 	private final String[] sourceClassNames;
 	private  String mainType;
 	private  boolean useMoxy;
-	private final boolean isDebug = false;
 
 	// ********** static methods **********
 	
@@ -98,8 +83,7 @@ public class SchemaGenerator
 		new SchemaGenerator(javaProject, 
 			targetSchemaName, 
 			sourceClassNames,
-			useMoxy,
-			monitor).generate();
+			useMoxy).generate(monitor);
 	}
 
 	// ********** constructors **********
@@ -108,10 +92,8 @@ public class SchemaGenerator
 			IJavaProject javaProject, 
 			String targetSchemaName, 
 			String[] sourceClassNames,
-			boolean useMoxy,
-			@SuppressWarnings("unused") IProgressMonitor monitor) {
-		super();
-		this.javaProject = javaProject;
+			boolean useMoxy) {
+		super(javaProject);
 		this.targetSchemaName = targetSchemaName;
 		this.sourceClassNames = sourceClassNames;
 		this.useMoxy = useMoxy;
@@ -121,39 +103,44 @@ public class SchemaGenerator
 		this.initialize();
 	}
 
-	// ********** behavior **********
-	
-	protected void initialize() {
-		try {
-			this.jre = this.getProjectJRE();
-			if (this.jre == null) {
-				String message = "Could not identify the VM.";   //$NON-NLS-1$
-				throw new RuntimeException(message);
-			}
-			this.launchConfig = this.buildLaunchConfiguration();
-		} 
-		catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
+	@Override
+	protected String getMainType() {
+		return this.mainType;
 	}
 
-	protected void generate() {
+	@Override
+	protected String getLaunchConfigName() {
+		return LAUNCH_CONFIG_NAME;
+	}
+
+
+	// ********** behavior **********
+
+	@Override
+	protected void preGenerate(IProgressMonitor monitor) {
 		// generate jaxb.properties file if necessary
 		if (this.useMoxy){
 			if (!isJaxbPropertiesFilePresent()){
-				this.generateJaxbPropertiesFile();
+				this.generateJaxbPropertiesFile(monitor);
 			}
-			else if (!isJaxbContextMoxy(getJaxbPropertiesFile())){
+			else if (!isJaxbContextMoxy()){
 				//properties file actually specifies a different implementation
 				//override wizard setting and fall back to generic generation
 				this.useMoxy = false;
 				this.mainType = JAXB_SCHEMA_GEN_CLASS;
 			}
 		}
-		String projectLocation = getProject().getLocation().toString();
-		this.initializeLaunchConfiguration(projectLocation);
-		this.addLaunchListener();
-		this.launch = this.saveAndLaunchConfig();
+	}
+
+	@Override
+	protected void postGenerate() {
+		super.postGenerate();
+		try {
+			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
+		}
+		catch (CoreException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	/**
@@ -193,15 +180,15 @@ public class SchemaGenerator
 		return getJaxbPropertiesFile()!= null;
 	}
 
-	private boolean isJaxbContextMoxy(IFile propertyFile){	
+	private boolean isJaxbContextMoxy(){	
 
 		InputStream in = null;
 		try {
-			in = propertyFile.getContents();
+			in = getJaxbPropertiesFile().getContents();
 			BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 			String line = reader.readLine();
 			//jaxb.properties will only contain one property entry, the JAXBContextFactory
-			String propertyValue = line.substring(line.indexOf("=") + 1);
+			String propertyValue = line.substring(line.indexOf("=") + 1); //$NON-NLS-1$
 			if (propertyValue.equals(ECLIPSELINK_JAXB_CONTEXT_FACTORY)){
 				return true;
 			}
@@ -221,15 +208,18 @@ public class SchemaGenerator
 		return false;
 	}
 	
-	private void generateJaxbPropertiesFile(){
+	private void generateJaxbPropertiesFile(IProgressMonitor monitor) {
+		SubMonitor sm = SubMonitor.convert(monitor, 1);
+		sm.subTask(JptJaxbCoreMessages.SchemaGenerator_creatingJAXBPropertiesFileTask);
+		
 		IPackageFragment packageFragment = findPackageFragementForSourceClassName(this.sourceClassNames[0]);
 
 		IFolder folder = (IFolder)packageFragment.getResource();
-		IFile file = folder.getFile("jaxb.properties");
+		IFile file = folder.getFile(JAXB_PROPERTIES_FILE_NAME);
 			
 		byte[] bytes;
 		try {
-			bytes = ECLIPSELINK_JAXB_PROPERTIES_FILE_CONTENTS.getBytes("UTF-8");
+			bytes = ECLIPSELINK_JAXB_PROPERTIES_FILE_CONTENTS.getBytes("UTF-8"); //$NON-NLS-1$
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException(e);
 		}    
@@ -238,7 +228,7 @@ public class SchemaGenerator
 		
 		try {
 			//the input stream will be closed as a result of calling create
-		    file.create(contents, IResource.NONE, null);		
+		    file.create(contents, IResource.NONE, sm.newChild(1));		
 		} catch (CoreException ce) {
 			throw new RuntimeException(ce);
 		}
@@ -258,227 +248,56 @@ public class SchemaGenerator
 		//the existing package fragment was not found
 		throw new IllegalStateException("Java package must exist for source class");
 	}
-	
-	private void initializeLaunchConfiguration(String projectLocation) {
 
-		this.specifyJRE(this.jre.getName(), this.jre.getVMInstallType().getId());
-
-		this.specifyProject(this.getProject().getName()); 
-		this.specifyMainType(this.mainType);
-
-		this.specifyProgramArguments(
-			this.targetSchemaName, 
-			this.sourceClassNames);  // -d -c
-		this.specifyWorkingDir(projectLocation); 
-
-		String jarName = (this.useMoxy) ? 
-					ECLIPSELINK_JAXB_SCHEMA_GEN_JAR :
-					JAXB_SCHEMA_GEN_JAR;
-		this.specifyClasspathProperties(this.javaProject, this.buildBootstrapJarPath(jarName));
-	}
-
-	protected void postGenerate() {
-		try {
-			if ( ! this.isDebug) {
-				this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
-			}
-			this.getProject().refreshLocal(IResource.DEPTH_INFINITE, new NullProgressMonitor());
-		}
-		catch (CoreException e) {
-			throw new RuntimeException(e);
-		}
-	}
 
 	// ********** Launch Configuration Setup **********
 
-	private void specifyClasspathProperties(IJavaProject javaProject, IPath bootstrapJar)  {
+	@Override
+	protected List<String> buildClasspath() throws CoreException {
 		List<String> classpath = new ArrayList<String>();
-		try {
-			// Schema_Gen jar
-			classpath.add(this.getArchiveClasspathEntry(bootstrapJar).getMemento());
-			// Default Project classpath
-			classpath.add(this.getDefaultProjectClasspathEntry(javaProject).getMemento());
-			// System Library  
-			classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
-		}
-		catch (CoreException e) {
-			throw new RuntimeException("An error occurs generating a memento", e);	  //$NON-NLS-1$
-		}
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
+		// Schema_Gen jar
+		classpath.add(getBootstrapJarClasspathEntry().getMemento());
+		// Default Project classpath
+		classpath.add(this.getDefaultProjectClasspathEntry().getMemento());
+		// System Library  
+		classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
+		return classpath;
 	}
 	
-	private void specifyJRE(String jreName, String vmId) {
-
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, jreName);
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_JRE_CONTAINER_PATH, vmId);
-	}
-	
-	private void specifyProject(String projectName) {
-
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROJECT_NAME, projectName);
-	}
-	
-	private void specifyMainType(String mainType) {
-
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, mainType);
-	}
-	
-	private void specifyProgramArguments(
-		String targetSchemaName, 
-		String[] sourceClassNames) {
+	@Override
+	protected void specifyProgramArguments() {
 
 		StringBuffer programArguments = new StringBuffer();
 		// sourceClassNames
-		StringBuffer sourceClassNamesArguments = this.buildClassNamesArguments(sourceClassNames);
-		programArguments.append(sourceClassNamesArguments);
+		this.appendClassNameArguments(programArguments);
 
 		// schema
 		programArguments.append(" -s \"");	  //$NON-NLS-1$
-		programArguments.append(targetSchemaName);
-		programArguments.append('"');	  //$NON-NLS-1$
+		programArguments.append(this.targetSchemaName);
+		programArguments.append('"');
 
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
 	}
 	
-	private StringBuffer buildClassNamesArguments(String[] sourceClassNames) {
-
-		StringBuffer classNamesArguments = new StringBuffer();
-		for (String className: sourceClassNames) {
-			classNamesArguments.append(" -c ");	  //$NON-NLS-1$
-			classNamesArguments.append(className);
-		}
-		return classNamesArguments;
-	}
-	
-	private void specifyWorkingDir(String projectLocation) {
-		
-		File workingDir = new Path(projectLocation).toFile();
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workingDir.getAbsolutePath());
-	}
-	
-	// ********** LaunchConfig **********
-
-	private ILaunchConfigurationWorkingCopy buildLaunchConfiguration() throws CoreException {
-		ILaunchConfigurationWorkingCopy launchConfig = null;
-		this.removeLaunchConfiguration(LAUNCH_CONFIG_NAME);
-
-		ILaunchManager manager = getLaunchManager();
-		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-
-		launchConfig = type.newInstance(null, LAUNCH_CONFIG_NAME);
-		return launchConfig;
-	}
-
-	private void removeLaunchConfiguration(String launchConfigurationName) throws CoreException {
-
-		ILaunchManager manager = getLaunchManager();
-		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-	
-		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);
-				for (int i = 0; i < configurations.length; i++) {
-			ILaunchConfiguration configuration = configurations[i];
-			if (configuration.getName().equals(launchConfigurationName)) {
-				configuration.delete();
-				break;
-			}
+	private void appendClassNameArguments(StringBuffer sb) {
+		for (String className : this.sourceClassNames) {
+			sb.append(" -c ");	  //$NON-NLS-1$
+			sb.append(className);
 		}
 	}
-	
-	private ILaunch saveAndLaunchConfig() {
-		ILaunchConfiguration configuration = null;
-		ILaunch result = null;
-		try {
-			configuration = this.launchConfig.doSave();
-		}
-		catch (CoreException saveException) {
-			throw new RuntimeException("Could not save LaunchConfig", saveException);
-		}
-		 try {
-			result = configuration.launch(ILaunchManager.RUN_MODE, new NullProgressMonitor());
-		}
-		catch (CoreException lauchException) {
-			throw new RuntimeException("An error occured during launch", lauchException);
-		}
-		return result;
-	}
-	
-	private void addLaunchListener() {
 
-		this.getLaunchManager().addLaunchListener(this.buildLaunchListener());
+
+	// ********** private methods **********
+
+	private IRuntimeClasspathEntry getBootstrapJarClasspathEntry() {
+		return getArchiveClasspathEntry(this.buildBootstrapJarPath());
 	}
 
-	private ILaunchesListener2 buildLaunchListener() {
-		return new ILaunchesListener2() {
-			
-			public void launchesTerminated(ILaunch[] launches) {
-				for (int i = 0; i < launches.length; i++) {
-					ILaunch launch = launches[i];
-					if (launch.equals(SchemaGenerator.this.getLaunch())) {
+	private IPath buildBootstrapJarPath() {
+		String jarName = (this.useMoxy) ? 
+			ECLIPSELINK_JAXB_SCHEMA_GEN_JAR :
+			JAXB_SCHEMA_GEN_JAR;
 
-						SchemaGenerator.this.postGenerate();
-						return;
-					}
-				}
-			}
-
-			public void launchesAdded(ILaunch[] launches) {
-				// not interested to this event
-			}
-
-			public void launchesChanged(ILaunch[] launches) {
-				// not interested to this event
-			}
-
-			public void launchesRemoved(ILaunch[] launches) {
-				// not interested to this event
-			}
-		};
-	}
-	
-	// ********** Queries **********
-
-	private IRuntimeClasspathEntry getSystemLibraryClasspathEntry() throws CoreException {
-
-		IPath systemLibsPath = new Path(JavaRuntime.JRE_CONTAINER);
-		return JavaRuntime.newRuntimeContainerClasspathEntry(systemLibsPath, IRuntimeClasspathEntry.STANDARD_CLASSES);
-	}
-	
-	private IRuntimeClasspathEntry getArchiveClasspathEntry(IPath archivePath) {
-
-		IRuntimeClasspathEntry archiveEntry = JavaRuntime.newArchiveRuntimeClasspathEntry(archivePath);
-		archiveEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-		
-		return archiveEntry;
-	}
-	
-	private IRuntimeClasspathEntry getDefaultProjectClasspathEntry(IJavaProject project) {
-
-		IRuntimeClasspathEntry projectEntry = JavaRuntime.newDefaultProjectClasspathEntry(project);
-		projectEntry.setClasspathProperty(IRuntimeClasspathEntry.USER_CLASSES);
-		
-		return projectEntry;
-	}
-
-	public IProject getProject() {
-		return this.javaProject.getProject();
-	}
-	
-	private IVMInstall getProjectJRE() throws CoreException {
-		return JavaRuntime.getVMInstall(this.javaProject);
-	}
-	
-	protected ILaunch getLaunch() {
-		return this.launch;
-	}
-	
-	protected ILaunchManager getLaunchManager() {
-		return DebugPlugin.getDefault().getLaunchManager();
-	}
-	
-	// ********** private method **********
-
-	private IPath buildBootstrapJarPath(String jarName) {
 		try {
 			File jarInstallDir = this.getBundleParentDir(JptJaxbUiPlugin.PLUGIN_ID);
 
@@ -523,5 +342,4 @@ public class SchemaGenerator
 		Bundle bundle = Platform.getBundle(bundleName);
 		return FileLocator.getBundleFile(bundle).getParentFile();
 	}
-
 }

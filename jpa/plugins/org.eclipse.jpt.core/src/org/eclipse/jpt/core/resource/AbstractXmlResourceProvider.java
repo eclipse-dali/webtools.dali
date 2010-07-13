@@ -168,14 +168,14 @@ public abstract class AbstractXmlResourceProvider
 	 * It also populates the root of the file.
 	 * @param config - A configuration object used to specify options for creation of the resource
 	 */
-	public JpaXmlResource createFileAndResource(final Object config) throws CoreException {
+	public JpaXmlResource createFileAndResource(final Object config, IProgressMonitor monitor) throws CoreException {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRunnable runnable = new IWorkspaceRunnable() {
 			public void run(IProgressMonitor monitor) {
 				createResourceAndUnderlyingFile(config);
 			}
 		};
-		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, null);
+		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, monitor);
 		return this.resource;	
 	}
 	
