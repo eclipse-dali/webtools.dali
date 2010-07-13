@@ -218,9 +218,9 @@ public abstract class AbstractEntityMappings
 		className = className.replace('$', '.');
 
 		// first try to resolve using only the locally specified name...
-		PersistentType mapKeyPersistentType = getPersistenceUnit().getPersistentType(className);
-		if (mapKeyPersistentType != null) {
-			return mapKeyPersistentType;
+		PersistentType persistentType = getPersistenceUnit().getPersistentType(className);
+		if (persistentType != null) {
+			return persistentType;
 		}
 
 		// ...then try to resolve by prepending the global package name
