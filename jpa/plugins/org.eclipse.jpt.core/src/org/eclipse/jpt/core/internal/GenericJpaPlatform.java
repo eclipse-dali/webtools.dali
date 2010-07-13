@@ -237,7 +237,7 @@ public class GenericJpaPlatform
 	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+		return JptDbPlugin.getConnectionProfileFactory();
 	}
 
 	public EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {

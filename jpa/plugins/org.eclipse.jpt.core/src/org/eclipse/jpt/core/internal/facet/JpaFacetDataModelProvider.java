@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -592,7 +592,7 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
 		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+		return JptDbPlugin.getConnectionProfileFactory();
 	}
 	
 	

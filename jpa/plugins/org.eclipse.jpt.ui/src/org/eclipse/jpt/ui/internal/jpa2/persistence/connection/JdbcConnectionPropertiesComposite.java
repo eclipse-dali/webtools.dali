@@ -168,7 +168,7 @@ public class JdbcConnectionPropertiesComposite extends Pane<JpaConnection2_0>
 		// take the settings from it (user, password, etc.) and give them
 		// to the persistence connection, so we go
 		// to the db plug-in directly to get the factory
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+		return JptDbPlugin.getConnectionProfileFactory();
 	}
 
 	// broaden access a bit

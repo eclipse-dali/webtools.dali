@@ -104,7 +104,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	}
 
 	ConnectionProfile connectionProfileNamed(String profileName) {
-		return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(profileName);
+		return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(profileName);
 	}
 
 	Schema getSchema(){

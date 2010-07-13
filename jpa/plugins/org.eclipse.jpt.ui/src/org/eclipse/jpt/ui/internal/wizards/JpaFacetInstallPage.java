@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -207,7 +207,7 @@ public class JpaFacetInstallPage
 		
 		private ConnectionProfile getConnectionProfile() {
 			// we just use the connection profile to log in, so go to the the db plug-in
-			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
+			return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 	}
 	

@@ -191,7 +191,7 @@ public class DatabaseGroup
 	}
 
 	private SortedSet<String> buildSortedConnectionProfileNames() {
-		return CollectionTools.sortedSet(JptDbPlugin.instance().getConnectionProfileFactory().getConnectionProfileNames());
+		return CollectionTools.sortedSet(JptDbPlugin.getConnectionProfileFactory().getConnectionProfileNames());
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class DatabaseGroup
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
-		return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(name);
+		return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(name);
 	}
 
 

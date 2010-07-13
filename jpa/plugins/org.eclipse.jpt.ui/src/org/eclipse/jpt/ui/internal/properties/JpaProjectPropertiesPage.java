@@ -1118,7 +1118,7 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		protected ConnectionProfile transform_(String connectionName) {
-			return JptDbPlugin.instance().getConnectionProfileFactory().buildConnectionProfile(connectionName);
+			return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(connectionName);
 		}
 	}
 
@@ -1227,7 +1227,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		private ConnectionProfileFactory getConnectionProfileFactory() {
-			return JptDbPlugin.instance().getConnectionProfileFactory();
+			return JptDbPlugin.getConnectionProfileFactory();
 		}
 	}
 

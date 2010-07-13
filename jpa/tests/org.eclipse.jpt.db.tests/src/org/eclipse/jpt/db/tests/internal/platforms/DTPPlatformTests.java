@@ -552,7 +552,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	// ********** convenience methods **********
 
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+		return JptDbPlugin.getConnectionProfileFactory();
 	}
 
 	protected ConnectionProfile getConnectionProfile() {

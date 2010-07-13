@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -175,7 +177,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		// take the settings from it (user, password, etc.) and give them
 		// to the EclipseLink connection, so we go
 		// to the db plug-in directly to get the factory
-		return JptDbPlugin.instance().getConnectionProfileFactory();
+		return JptDbPlugin.getConnectionProfileFactory();
 	}
 
 	// broaden access a bit
@@ -238,16 +240,13 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		                                   ItemsFilter itemsFilter,
 		                                   IProgressMonitor monitor) throws CoreException {
 
-			monitor.beginTask(null, -1);
+			Iterable<String> profileNames = this.getConnectionProfileNames();
+			SubMonitor sm = SubMonitor.convert(monitor, CollectionTools.size(profileNames));
 
-			try {
-				// Add the connection names to the dialog
-				for (String name : this.getConnectionProfileNames()) {
-					provider.add(name, itemsFilter);
-				}
-			}
-			finally {
-				monitor.done();
+			// Add the connection names to the dialog
+			for (String name : profileNames) {
+				provider.add(name, itemsFilter);
+				sm.worked(1);
 			}
 		}
 
