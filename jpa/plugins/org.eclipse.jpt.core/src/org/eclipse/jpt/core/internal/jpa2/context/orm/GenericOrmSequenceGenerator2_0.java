@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -109,30 +109,23 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	// ********** resource => context **********
 
 	@Override
-	protected void initialize(org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator xmlResource) {
+	protected void initialize(XmlSequenceGenerator xmlResource) {
 		super.initialize(xmlResource);
-		XmlSequenceGenerator xmlResource2_0 = (XmlSequenceGenerator) xmlResource;
 
 		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = xmlResource2_0.getCatalog();
+		this.specifiedCatalog = xmlResource.getCatalog();
 		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = xmlResource2_0.getSchema();
+		this.specifiedSchema = xmlResource.getSchema();
 	}
 
 	@Override
-	public void update(org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator xmlResource) {
+	public void update(XmlSequenceGenerator xmlResource) {
 		super.update(xmlResource);
-		XmlSequenceGenerator xmlResource2_0 = (XmlSequenceGenerator) xmlResource;
 
 		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(xmlResource2_0.getCatalog());
+		this.setSpecifiedCatalog_(xmlResource.getCatalog());
 		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(xmlResource2_0.getSchema());
-	}
-
-	@Override
-	protected XmlSequenceGenerator getResourceGenerator() {
-		return (XmlSequenceGenerator) super.getResourceGenerator();
+		this.setSpecifiedSchema_(xmlResource.getSchema());
 	}
 
 }
