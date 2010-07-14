@@ -26,6 +26,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -269,6 +270,10 @@ public class MappingFileWizardPage extends DataModelWizardPage
 					IProject project = ProjectUtilities.getProject(model.getStringProperty(PROJECT_NAME));
 					IJavaProject javaProject = JavaCore.create(project);
 					if (JDTTools.packageFragmentRootIsSourceFolder(javaProject.getPackageFragmentRoot(folder))) {
+						return true;
+					}
+					// add bundle root, if it exists
+					if (element.equals(AbstractJpaProject.getBundleRoot(project))) {
 						return true;
 					}
 				}
