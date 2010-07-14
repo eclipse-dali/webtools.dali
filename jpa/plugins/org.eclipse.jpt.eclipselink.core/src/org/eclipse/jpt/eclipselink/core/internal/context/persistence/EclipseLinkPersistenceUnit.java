@@ -315,9 +315,18 @@ public class EclipseLinkPersistenceUnit
 
 	@Override
 	public void update(XmlPersistenceUnit persistenceUnit) {
+		// the 'converters' list is simply cleared out with each
+		// "update" and completely rebuilt as the "update" cascades through
+		// the persistence unit. When the persistence unit's "update" is
+		// complete, the lists have been populated and we fire the change event.
+		// @see #addConverter(EclipseLinkConverter) (and references)
+		// see bug 311093 before attempting to change how this works
 		this.converters.clear();
+
 		super.update(persistenceUnit);
-		convertersUpdated();
+
+		// see comment at top of method
+		fireListChanged(CONVERTERS_LIST, this.converters);
 	}
 
 	@Override
@@ -391,12 +400,6 @@ public class EclipseLinkPersistenceUnit
 	
 	protected boolean impliedEclipseLinkMappingFileExists() {
 		return getJpaProject().getDefaultEclipseLinkOrmXmlResource() != null;
-	}
-
-	// This is called after the persistence unit has been updated to ensure
-	// we catch all added converters
-	protected void convertersUpdated() {
-		fireListChanged(CONVERTERS_LIST, this.converters);
 	}
 	
 	// ********** validation **********

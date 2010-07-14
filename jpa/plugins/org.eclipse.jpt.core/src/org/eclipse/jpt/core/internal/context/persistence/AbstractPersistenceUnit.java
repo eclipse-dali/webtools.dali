@@ -216,6 +216,7 @@ public abstract class AbstractPersistenceUnit
 		// complete, the lists have been populated and we fire the change event.
 		// @see #addGenerator(Generator) (and references)
 		// @see #addQuery(Query) (and references)
+		// see bug 311093 before attempting to change how this works
 		this.generators.clear();
 		this.queries.clear();
 
