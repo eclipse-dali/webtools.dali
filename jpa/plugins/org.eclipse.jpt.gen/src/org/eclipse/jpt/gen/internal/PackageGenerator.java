@@ -158,7 +158,7 @@ public class PackageGenerator {
 				}
 				for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();) {
 					String className = stream.next();
-					if (!CollectionTools.isEmpty(persistenceUnit.mappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
+					if (CollectionTools.isEmpty(persistenceUnit.mappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
 						ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
 						classRef.setClassName(className);
 					}
