@@ -660,6 +660,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	 */
 	private Entity setEntityDescriptorCustomizerOf(PersistenceUnit.Property descriptorCustomizerProperty) {
 		String entityName = this.extractEntityNameOf(descriptorCustomizerProperty);
+		if(StringTools.stringIsEmpty(entityName)) {
+			return null;
+		}
 		return this.setEntityDescriptorCustomizerOf(entityName, descriptorCustomizerProperty.getValue());
 	}
 
