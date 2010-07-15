@@ -76,7 +76,7 @@ import org.osgi.framework.Bundle;
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
-	static public String XJB_FILTER = "*.xjb;*.xml;*.xbc";   //$NON-NLS-1$
+	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
 
 	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
@@ -521,7 +521,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			
 				public void widgetSelected(SelectionEvent e) {
 
-					String filePath = promptFile(XJB_FILTER);
+					String filePath = promptFile(BINDINGS_FILE_FILTER);
 					if( ! StringTools.stringIsEmpty(filePath)) {
 
 						addBindingsFile(filePath, tableDataModel);
@@ -586,7 +586,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 */
 		private String promptFile(String filter) {
 			String projectPath= javaProject.getProject().getLocation().toString();
-			String dialogTitle = (filter.equals(XJB_FILTER)) ?
+			String dialogTitle = (filter.equals(BINDINGS_FILE_FILTER)) ?
 				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile :
 				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog;
 
