@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -19,9 +18,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragment;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -113,21 +111,7 @@ public final class BinaryPackageFragmentRoot
 	// ********** misc **********
 
 	private IJavaElement[] getJDTChildren() {
-		try {
-			return this.packageFragmentRoot.getChildren();
-		} catch (JavaModelException ex) {
-			// ignore FNFE - which can happen when the workspace is out of synch with O/S file system
-			if ( ! (ex.getCause() instanceof FileNotFoundException)) {
-				JptCorePlugin.log(ex);
-			}
-			return EMPTY_JAVA_ELEMENT_ARRAY;
-		}
-	}
-	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getFile().getName());
+		return JDTTools.getJDTChildren(this.packageFragmentRoot);
 	}
 
 }

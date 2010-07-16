@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import java.util.Iterator;
 import java.util.List;
-
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -28,6 +28,9 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -122,6 +125,10 @@ public class GenericClassRef
 
 	public boolean isFor(String typeName) {
 		return Tools.valuesAreEqual(typeName, this.getJavaClassName());
+	}
+
+	protected boolean isFor(IType type) {
+		return this.isFor(type.getFullyQualifiedName('.'));
 	}
 
 	public boolean isVirtual() {
@@ -294,6 +301,23 @@ public class GenericClassRef
 		} catch (Throwable t) {
 			JptCorePlugin.log(t);
 		}
+	}
+
+
+	//*********** refactoring ***********
+
+	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
+		if (isVirtual()) {
+			throw new IllegalStateException();
+		}
+		if (this.isFor(type)) {
+			return new SingleElementIterable<DeleteEdit>(this.createDeleteEdit());
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected DeleteEdit createDeleteEdit() {
+		return this.xmlJavaClassRef.createDeleteEdit();
 	}
 
 

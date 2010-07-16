@@ -11,13 +11,12 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFileRoot;
-import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -27,6 +26,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -140,8 +140,8 @@ public class GenericOrmXml
 	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml
 	 * files.
 	 */
-	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.entityMappings != null) ? this.entityMappings.getPersistentTypes() : EmptyIterable.<JavaPersistentType> instance();
+	public Iterable<OrmPersistentType> getPersistentTypes() {
+		return (this.entityMappings != null) ? this.entityMappings.getPersistentTypes() : EmptyIterable.<OrmPersistentType> instance();
 	}
 
 	// ********** entity mappings **********
@@ -222,4 +222,13 @@ public class GenericOrmXml
 		}
 	}
 
+
+	// ********** refactoring **********
+
+	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
+		if (this.entityMappings != null) {
+			return this.entityMappings.createDeleteTypeEdits(type);
+		}
+		return EmptyIterable.instance();
+	}
 }

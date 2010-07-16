@@ -33,6 +33,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -323,10 +324,10 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	}
 
 	public boolean containsOffset(int textOffset) {
-		return (this.resourceTypeMapping != null)
-				&& this.resourceTypeMapping.containsOffset(textOffset);
+		return this.resourceTypeMapping.containsOffset(textOffset);
 	}
-	
+
+
 	//************************* validation ************************
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -355,6 +356,16 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	public TextRange getValidationTextRange() {
 		return this.resourceTypeMapping.getValidationTextRange();
 	}
+
+
+	//************************* refactoring ************************
+	
+	public DeleteEdit createDeleteEdit() {
+		return this.resourceTypeMapping.createDeleteEdit();
+	}
+
+
+	// ********** misc **********
 
 	@Override
 	public void toString(StringBuilder sb) {

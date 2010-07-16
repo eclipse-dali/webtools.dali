@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
@@ -57,7 +58,9 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -65,6 +68,7 @@ import org.eclipse.jpt.utility.internal.iterators.CompositeListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -930,6 +934,16 @@ public class GenericOrmPersistentType
 
 	public TextRange getValidationTextRange() {
 		return this.mapping.getValidationTextRange();
+	}
+
+
+	//*********** refactoring ***********
+
+	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
+		if (this.isFor(type.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<DeleteEdit>(this.mapping.createDeleteEdit());
+		}
+		return EmptyIterable.instance();
 	}
 
 

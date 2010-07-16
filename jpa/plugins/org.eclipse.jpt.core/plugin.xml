@@ -525,4 +525,50 @@
 		<super type="org.eclipse.jdt.core.problem"/>
 	</extension>
 	
+ 	<extension
+ 		point="org.eclipse.ltk.core.refactoring.deleteParticipants">
+    	
+    	<deleteParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaDeleteTypeParticipant"
+    		id="org.eclipse.jpt.core.refactoring.jpaDeleteTypeParticipant"
+    		name="%JPA_DELETE_TYPE_PARTICIPANT_NAME">
+    		<enablement>
+    			<with variable="element">
+ 	   				<instanceof value="org.eclipse.jdt.core.IType"/>
+    			</with>
+    		</enablement>
+    	</deleteParticipant>
+    	
+     	<deleteParticipant
+           	class="org.eclipse.jpt.core.internal.refactoring.JpaDeletePackageOrFolderParticipant"
+           	id="org.eclipse.jpt.core.refactoring.jpaDeletePackageOrFolderParticipant"
+    		name="%JPA_DELETE_PACKAGE_OR_FOLDER_PARTICIPANT_NAME">
+        	<enablement>
+           		<with variable="element">
+                	<or>
+                   		<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+                   		<instanceof value="org.eclipse.core.resources.IFolder"/>
+                	</or>
+           		</with>
+        	</enablement>
+     	</deleteParticipant>
+     	
+     	<deleteParticipant
+           	class="org.eclipse.jpt.core.internal.refactoring.JpaDeleteMappingFileParticipant"
+           	id="org.eclipse.jpt.core.refactoring.jpaDeleteMappingFileParticipant"
+    		name="%JPA_DELETE_MAPPING_FILE_PARTICIPANT_NAME">
+        	<enablement>
+ 	           	<with variable="element">
+       				<and>
+	              		<instanceof value="org.eclipse.core.resources.IFile"/>
+	  					<test
+            				args="kindOf"
+            	 			property="org.eclipse.core.resources.contentTypeId"
+             				value="org.eclipse.jpt.core.content.mappingFile"/>
+	        		</and>
+	           	</with>
+        	</enablement>
+     	</deleteParticipant>
+    </extension>
+ 
 </plugin>

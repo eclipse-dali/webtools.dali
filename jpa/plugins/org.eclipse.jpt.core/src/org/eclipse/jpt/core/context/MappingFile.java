@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).
@@ -21,7 +23,7 @@ import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.1
  */
 public interface MappingFile
@@ -48,5 +50,14 @@ public interface MappingFile
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update();
+
+
+	// **************** refactoring *********************************************
+
+	/**
+	 * Create DeleteEdits for deleting references (if any) to the type about to be deleted.
+	 * Return an EmptyIterable if there are not any references to the given type.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 }

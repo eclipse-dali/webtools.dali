@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * <code>persistence.xml</code> file
@@ -78,4 +82,19 @@ public class GenericMappingFileRef
 	public TextRange getValidationTextRange() {
 		return this.xmlMappingFileRef.getValidationTextRange();
 	}
+
+
+	// ********** refactoring **********
+
+	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
+		if (this.isFor(file)) {
+			return new SingleElementIterable<DeleteEdit>(createDeleteEdit());
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected DeleteEdit createDeleteEdit() {
+		return this.xmlMappingFileRef.createDeleteEdit();
+	}
+
 }

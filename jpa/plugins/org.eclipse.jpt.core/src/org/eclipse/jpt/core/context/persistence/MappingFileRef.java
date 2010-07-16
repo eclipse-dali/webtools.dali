@@ -9,12 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Context model corresponding to the
@@ -28,7 +31,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface MappingFileRef
@@ -51,6 +54,10 @@ public interface MappingFileRef
 	 */
 	void setFileName(String fileName);
 
+	/**
+	 * Return whether the mapping file ref is a reference to the specified file.
+	 */
+	boolean isFor(IFile file);
 
 	// ********** mapping file (orm.xml) **********
 
@@ -106,4 +113,24 @@ public interface MappingFileRef
 	 * the text representation of the mapping file.
 	 */
 	boolean containsOffset(int textOffset);
+
+
+	// **************** refactoring *********************************************
+
+	/**
+	 * Create DeleteEdits for deleting any references to the given type 
+	 * that is about to be deleted.
+	 * Return an EmptyIterable if there are not any references to the given type.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
+	/**
+	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
+	 * DeleteEdit for deleting the mapping file element and any text that precedes it
+	 * from the persistence.xml.
+	 * Otherwise return an EmptyIterable.
+	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
+	 * for ease of use with other createDeleteEdit API.
+	 */
+	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
 }

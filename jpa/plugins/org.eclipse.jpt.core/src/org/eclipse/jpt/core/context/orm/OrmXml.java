@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.MappingFile;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmXml
@@ -31,11 +31,13 @@ public interface OrmXml
 	/**
 	 * String constant associated with changes to the entity-mappings property
 	 */
-	public final static String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
+	String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
 
 	/**
 	 * Return the content represented by the root of the <code>orm.xml</code> file.
 	 * This may be null.
 	 */
 	EntityMappings getEntityMappings();
+
+	OrmPersistentType getPersistentType(String name);
 }

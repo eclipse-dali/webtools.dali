@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Context model corresponding to the XML resource model
@@ -28,14 +30,14 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface ClassRef
 	extends XmlContextNode, JpaStructureNode, PersistentType.Owner
 {
 	/**
-	 * Return whether the class ref is a reference to the specified type.
+	 * Return whether the class ref is a reference to the specified type name.
 	 */
 	boolean isFor(String typeName);
 	
@@ -95,8 +97,20 @@ public interface ClassRef
 	 * see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(String className);
-	
-	
+
+
+	// **************** refactoring **************************************
+
+	/**
+	 * If this {@link ClassRef#isFor(String)} the given IType, create a text 
+	 * DeleteEdit for deleting the class element and any text that precedes it.
+	 * Otherwise return an EmptyIterable.
+	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
+	 * for ease of use with other createDeleteEdit API.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
+
 	// *************************************************************************
 	
 	/**

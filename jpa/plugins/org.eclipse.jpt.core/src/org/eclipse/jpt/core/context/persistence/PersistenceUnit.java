@@ -11,7 +11,8 @@ package org.eclipse.jpt.core.context.persistence;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -22,6 +23,7 @@ import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Context model corresponding to the XML resource model {@link XmlPersistenceUnit},
@@ -34,7 +36,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface PersistenceUnit
@@ -706,4 +708,19 @@ public interface PersistenceUnit
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
 	boolean shouldValidateAgainstDatabase();
+
+
+	// **************** refactoring *********************************************
+
+	/**
+	 * Create DeleteEdits for deleting any references to the deleted type.
+	 * Return an EmptyIterable if there are not any references.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
+	/**
+	 * Create DeleteEdits for deleting any references to the deleted file
+	 * Return an EmptyIterable if there are not any references.
+	 */
+	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
 }

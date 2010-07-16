@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
@@ -50,8 +51,10 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -812,10 +815,24 @@ public abstract class AbstractEntityMappings
 	}
 
 
+	// ********** refactoring **********
+
+	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
+		return new CompositeIterable<DeleteEdit>(
+			new TransformationIterable<OrmPersistentType, Iterable<DeleteEdit>>(getPersistentTypes()) {
+				@Override
+				protected Iterable<DeleteEdit> transform(OrmPersistentType persistentType) {
+					return persistentType.createDeleteTypeEdits(type);
+				}
+			}
+		);
+	}
+
+
 	// ********** dispose **********
 	
 	public void dispose() {
-		for (OrmPersistentType  ormPersistentType : this.getPersistentTypes()) {
+		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
 			ormPersistentType.dispose();
 		}
 	}

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -26,6 +27,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -120,6 +122,10 @@ public abstract class AbstractMappingFileRef
 
 	public String getFileName() {
 		return this.fileName;
+	}
+
+	public boolean isFor(IFile file) {
+		return this.mappingFile != null && file.equals(this.mappingFile.getXmlResource().getFile());
 	}
 
 
@@ -274,4 +280,15 @@ public abstract class AbstractMappingFileRef
 	protected IFile getPlatformFile() {
 		return this.getJpaProject().convertToPlatformFile(this.fileName);
 	}
+
+
+	// ********** refactoring **********
+
+	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
+		if (this.mappingFile != null) {
+			return this.mappingFile.createDeleteTypeEdits(type);
+		}
+		return EmptyIterable.instance();
+	}
+
 }

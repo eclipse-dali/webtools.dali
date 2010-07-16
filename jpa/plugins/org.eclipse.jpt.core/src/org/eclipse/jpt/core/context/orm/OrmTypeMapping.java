@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * 
@@ -26,7 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmTypeMapping
@@ -80,6 +81,14 @@ public interface OrmTypeMapping
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create a text DeleteEdit for deleting the type mapping element and any text that precedes it
+	 */
+	DeleteEdit createDeleteEdit();
 
 	// ********** covariant overrides **********
 

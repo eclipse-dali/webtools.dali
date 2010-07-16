@@ -9,6 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.utility.jdt;
 
+import java.io.FileNotFoundException;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -36,6 +38,24 @@ public final class JDTTools
 	protected static boolean packageFragmentRootIsSourceFolder_(IPackageFragmentRoot pfr) throws JavaModelException {
 		return pfr.exists() && (pfr.getKind() == IPackageFragmentRoot.K_SOURCE);		
 	}
+	
+	public static IJavaElement[] getJDTChildren(IPackageFragmentRoot root) {
+		try {
+			return getJDTChildren_(root);
+		} catch (JavaModelException ex) {
+			// ignore FNFE - which can happen when the workspace is out of synch with O/S file system
+			if ( ! (ex.getCause() instanceof FileNotFoundException)) {
+				JptCorePlugin.log(ex);
+			}
+			return EMPTY_JAVA_ELEMENT_ARRAY;
+		}
+	}
+	
+	private static IJavaElement[] getJDTChildren_(IPackageFragmentRoot root) throws JavaModelException {
+		return root.getChildren();
+	}
+
+	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
 
 	//TODO move this method to JpaProject once API freeze is over
 	public static Iterable<IPackageFragmentRoot> getJavaSourceFolders(IJavaProject javaProject) {

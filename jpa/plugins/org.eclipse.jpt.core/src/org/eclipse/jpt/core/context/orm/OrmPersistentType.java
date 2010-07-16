@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Context <code>orm.xml</code> persistent type.
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmPersistentType
@@ -118,8 +119,22 @@ public interface OrmPersistentType
 	void update();
 	
 
+	//******************* refactoring *******************
+
+	/**
+	 * If this {@link OrmPersistentType#isFor(String)} the given IType, create a text 
+	 * DeleteEdit for deleting the type mapping element and any text that precedes it.
+	 * Otherwise return an EmptyIterable.
+	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
+	 * for ease of use with other createDeleteEdit API.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
+
+	//******************* misc *******************
+
 	boolean contains(int textOffset);
-	
+
 	/**
 	 * Return whether the persistent type applies to the
 	 * specified type.

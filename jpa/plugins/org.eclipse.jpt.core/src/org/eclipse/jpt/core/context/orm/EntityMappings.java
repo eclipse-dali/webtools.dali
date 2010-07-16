@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFileRoot;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Context <code>orm.xml</code> entity mappings.
@@ -34,7 +36,7 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface EntityMappings 
@@ -166,4 +168,14 @@ public interface EntityMappings
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create DeleteEdits for deleting references (if any) to the type about to be deleted.
+	 * Return an EmptyIterable if there are not any references to the given type.
+	 */
+	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
 }

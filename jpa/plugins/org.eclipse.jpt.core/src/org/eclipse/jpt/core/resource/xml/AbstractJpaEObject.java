@@ -19,11 +19,14 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.EObjectImpl;
 import org.eclipse.jpt.core.utility.AbstractTextRange;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.common.internal.emf.resource.EMF2DOMAdapter;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMElement;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.dom.Text;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -32,7 +35,7 @@ import org.w3c.dom.NodeList;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.2
  */
 public abstract class AbstractJpaEObject
@@ -162,7 +165,11 @@ public abstract class AbstractJpaEObject
 	
 	protected IDOMNode getTextNode() {
 		if (this.node == null) return null; // virtual objects have no node
-		NodeList children = this.node.getChildNodes();
+		return getTextNode(this.node);
+	}
+
+	protected static IDOMNode getTextNode(IDOMNode node) {
+		NodeList children = node.getChildNodes();
 		for (int i = 0; i < children.getLength(); i ++) {
 			IDOMNode child = (IDOMNode) children.item(i);
 			if (child.getNodeType() == Node.TEXT_NODE) {
@@ -171,7 +178,7 @@ public abstract class AbstractJpaEObject
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return a text range for the specified attribute node.
 	 * If the attribute node does not exist, return a text range for this object's
@@ -182,9 +189,9 @@ public abstract class AbstractJpaEObject
 		return (attributeNode != null) ? buildTextRange(attributeNode) : this.getValidationTextRange();
 	}
 	
-	protected IDOMNode getAttributeNode(String attributeName) {
+	protected IDOMAttr getAttributeNode(String attributeName) {
 		return (this.node == null) ? // virtual objects have no node
-			null : (IDOMNode) this.node.getAttributes().getNamedItem(attributeName);
+			null : (IDOMAttr) this.node.getAttributes().getNamedItem(attributeName);
 	}
 	
 	/**
@@ -231,6 +238,27 @@ public abstract class AbstractJpaEObject
 	
 	public boolean containsOffset(int textOffset) {
 		return (this.node == null) ? false : this.node.contains(textOffset);
+	}
+
+
+	// ********** Refactoring TextEdits **********
+	
+	public DeleteEdit createDeleteEdit() {
+		int deletionOffset = getDeletionOffset();
+		int deletionLength = this.node.getEndOffset() - deletionOffset;
+		return new DeleteEdit(deletionOffset, deletionLength);
+	}
+
+	/**
+	 * deletion offset needs to include any text that is before the node
+	 */
+	protected int getDeletionOffset() {
+		int emptyTextLength = 0;
+		Node previousSibling = this.node.getPreviousSibling();
+		if (previousSibling != null && previousSibling.getNodeType() == Node.TEXT_NODE) {
+			emptyTextLength = ((Text) previousSibling).getLength();
+		}
+		return this.node.getStartOffset() - emptyTextLength;
 	}
 
 

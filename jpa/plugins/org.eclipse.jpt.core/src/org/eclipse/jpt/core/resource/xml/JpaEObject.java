@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.resource.xml;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.DeleteEdit;
 
 /**
  * Common Dali behavior for EMF objects.
@@ -22,7 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.2
  */
 public interface JpaEObject
@@ -49,4 +50,12 @@ public interface JpaEObject
 	 * range that will be highlighted when selecting in the structure view.
 	 */
 	TextRange getSelectionTextRange();
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create a text DeleteEdit for deleting the entire IDOMNode and any text that precedes it.
+	 */
+	DeleteEdit createDeleteEdit();
 }

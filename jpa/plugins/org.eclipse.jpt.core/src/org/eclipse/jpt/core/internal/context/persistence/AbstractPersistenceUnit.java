@@ -20,7 +20,6 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IType;
@@ -83,6 +82,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1589,6 +1589,31 @@ public abstract class AbstractPersistenceUnit
 	@SuppressWarnings("unused")
 	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
 		// do nothing by default
+	}
+
+
+	// ********** refactoring **********
+	
+	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
+		return new CompositeIterable<DeleteEdit>(
+			new TransformationIterable<ClassRef, Iterable<DeleteEdit>>(getSpecifiedClassRefs()) {
+				@Override
+				protected Iterable<DeleteEdit> transform(ClassRef classRef) {
+					return classRef.createDeleteTypeEdits(type);
+				}
+			}
+		);
+	}
+
+	public Iterable<DeleteEdit> createDeleteMappingFileEdits(final IFile file) {
+		return new CompositeIterable<DeleteEdit>(
+			new TransformationIterable<MappingFileRef, Iterable<DeleteEdit>>(getSpecifiedMappingFileRefs()) {
+				@Override
+				protected Iterable<DeleteEdit> transform(MappingFileRef mappingFileRef) {
+					return mappingFileRef.createDeleteMappingFileEdits(file);
+				}
+			}
+		);
 	}
 
 
