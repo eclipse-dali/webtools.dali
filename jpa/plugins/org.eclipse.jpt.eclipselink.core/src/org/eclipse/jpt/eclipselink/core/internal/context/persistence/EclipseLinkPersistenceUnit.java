@@ -118,6 +118,15 @@ public class EclipseLinkPersistenceUnit
 	protected SharedCacheMode buildDefaultSharedCacheMode() {
 		return SharedCacheMode.DISABLE_SELECTIVE;
 	}
+
+	@Override
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		super.setSpecifiedSharedCacheMode(specifiedSharedCacheMode);
+		
+		if(specifiedSharedCacheMode == SharedCacheMode.NONE) {
+			this.caching.removeDefaultCachingProperties();
+		}
+	}
 	
 	@Override
 	public boolean calculateDefaultCacheable() {
@@ -419,6 +428,26 @@ public class EclipseLinkPersistenceUnit
 					)
 				);
 			}
+			this.validateDefaultCachingProperty(this.getCacheTypeDefaultProperty(), messages);
+			this.validateDefaultCachingProperty(this.getCacheSizeDefaultProperty(), messages);
+			this.validateDefaultCachingProperty(this.getFlushClearCacheProperty(), messages);
+		}
+	}
+
+	protected void validateDefaultCachingProperty(Property cachingProperty, List<IMessage> messages) {
+		
+		if(this.getSharedCacheMode() == SharedCacheMode.NONE) {
+			if(cachingProperty != null) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_CACHING_PROPERTY_IGNORED,
+						new String[] {cachingProperty.getName()},
+						this.getPersistenceUnit(),
+						cachingProperty.getValidationTextRange()
+					)
+				);
+			}
 		}
 	}
 
@@ -430,25 +459,37 @@ public class EclipseLinkPersistenceUnit
 		return result;
 	}
 
+	private Property getCacheTypeDefaultProperty() {
+		return this.getProperty(Caching.ECLIPSELINK_CACHE_TYPE_DEFAULT);
+	}
+
+	private Property getCacheSizeDefaultProperty() {
+		return this.getProperty(Caching.ECLIPSELINK_CACHE_SIZE_DEFAULT);
+	}
+
+	private Property getFlushClearCacheProperty() {
+		return this.getProperty(Caching.ECLIPSELINK_FLUSH_CLEAR_CACHE);
+	}
+
 	/**
 	 * Returns all Shared Cache Properties, including Entity and default.
 	 */
 	private Iterable<Property> getSharedCacheProperties() {
-		return CollectionTools.iterable(this.propertiesWithNamePrefix("eclipselink.cache.shared."));  //$NON-NLS-1$
+		return CollectionTools.iterable(this.propertiesWithNamePrefix(Caching.ECLIPSELINK_SHARED_CACHE));
 	}
 
 	/**
 	 * Returns Entity Cache Size Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheSizeProperties() {
-		return this.getEntityPropertiesWithPrefix("eclipselink.cache.size.");  //$NON-NLS-1$
+		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_SIZE);
 	}
 	
 	/**
 	 * Returns Entity Cache Type Properties, excluding default.
 	 */
 	private Iterable<Property> getEntityCacheTypeProperties() {
-		return this.getEntityPropertiesWithPrefix("eclipselink.cache.type.");  //$NON-NLS-1$
+		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_TYPE);
 	}
 	
 	/**
@@ -457,7 +498,7 @@ public class EclipseLinkPersistenceUnit
 	 */
 	private Iterable<Property> getEntityPropertiesWithPrefix(String prefix) {
 	   return new FilteringIterable<Property>(
-		   				CollectionTools.iterable(this.propertiesWithNamePrefix(prefix))) { //$NON-NLS-1$
+		   				CollectionTools.iterable(this.propertiesWithNamePrefix(prefix))) {
 	      @Override
 	      protected boolean accept(Property next) {
 				return ! next.getName().endsWith("default"); //$NON-NLS-1$

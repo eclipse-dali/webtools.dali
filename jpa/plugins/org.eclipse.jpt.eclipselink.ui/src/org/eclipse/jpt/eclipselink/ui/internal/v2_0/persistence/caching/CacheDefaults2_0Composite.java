@@ -53,16 +53,7 @@ public class CacheDefaults2_0Composite extends CacheDefaultsComposite<Caching>
 	// ********** private methods **********
 
 	private void installPaneEnabler() {
-		new PaneEnabler(this.buildPaneEnablerHolder(), this) {
-			@Override
-			protected void updateState(boolean enable) {
-				super.updateState(enable);
-				if( ! enable) {
-					removeDefaultCacheTypeProperty();
-					removeDefaultCacheSizeProperty();
-				}
-			}
-		};
+		new PaneEnabler(this.buildPaneEnablerHolder(), this);
 	}
 	
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
@@ -93,13 +84,5 @@ public class CacheDefaults2_0Composite extends CacheDefaultsComposite<Caching>
 				return (PersistenceUnit2_0) this.subject.getPersistenceUnit();
 			}
 		};
-	}
-	
-	private void removeDefaultCacheTypeProperty() {
-		this.getSubject().setCacheTypeDefault(null);
-	}
-	
-	private void removeDefaultCacheSizeProperty() {
-		this.getSubject().setCacheSizeDefault(null);
 	}
 }

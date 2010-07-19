@@ -245,7 +245,7 @@ public abstract class AbstractPersistenceUnit
 		this.updateProperties();
 		this.updatePersistenceUnitDefaults();
 		
-		this.setSpecifiedSharedCacheMode(this.buildSpecifiedSharedCacheMode());
+		this.setSpecifiedSharedCacheMode_(this.buildSpecifiedSharedCacheMode());
 		this.setDefaultSharedCacheMode(this.buildDefaultSharedCacheMode());
 		this.setSpecifiedValidationMode(this.buildSpecifiedValidationMode());
 		this.setDefaultValidationMode(this.buildDefaultValidationMode());
@@ -1322,6 +1322,12 @@ public abstract class AbstractPersistenceUnit
 		SharedCacheMode old = this.specifiedSharedCacheMode;
 		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
 		this.xmlPersistenceUnit.setSharedCacheMode(SharedCacheMode.toXmlResourceModel(specifiedSharedCacheMode));
+		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
+	}
+
+	protected void setSpecifiedSharedCacheMode_(SharedCacheMode specifiedSharedCacheMode) {
+		SharedCacheMode old = this.specifiedSharedCacheMode;
+		this.specifiedSharedCacheMode = specifiedSharedCacheMode;
 		this.firePropertyChanged(SPECIFIED_SHARED_CACHE_MODE_PROPERTY, old, specifiedSharedCacheMode);
 	}
 

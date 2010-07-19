@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,6 +77,7 @@ public interface Caching extends PersistenceUnitProperties
 		static final String ECLIPSELINK_FLUSH_CLEAR_CACHE = "eclipselink.flush-clear.cache"; //$NON-NLS-1$
 		static final FlushClearCache DEFAULT_FLUSH_CLEAR_CACHE = FlushClearCache.drop_invalidate;
 
+	void removeDefaultCachingProperties();
 
 	ListIterator<Entity> entities();
 	Iterator<String> entityNames();

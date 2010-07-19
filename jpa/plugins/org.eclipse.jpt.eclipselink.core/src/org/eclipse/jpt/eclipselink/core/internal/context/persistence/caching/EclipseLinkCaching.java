@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -558,6 +558,15 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 			}
 		}
 		return false;
+	}
+
+	/**
+	 * Removes cacheTypeDefault, cacheSizeDefault, flushClearCache properties.
+	 */
+	public void removeDefaultCachingProperties() {
+		this.setCacheTypeDefault(null);
+		this.setCacheSizeDefault(null);
+		this.setFlushClearCache(null);
 	}
 
 	// ****** entities list *******
