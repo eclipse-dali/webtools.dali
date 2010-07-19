@@ -418,7 +418,12 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		if  (StringTools.stringIsEmpty(puStringValue)) {
 			return null;
 		}
-		return Integer.valueOf(puStringValue);
+		try {
+			return Integer.valueOf(puStringValue);
+		}
+		catch (NumberFormatException nfe) {
+			return null;
+		}
 	}
 
 	/**
