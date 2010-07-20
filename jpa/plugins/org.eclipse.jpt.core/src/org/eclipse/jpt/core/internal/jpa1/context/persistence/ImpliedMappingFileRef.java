@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Used by the persistence unit for the
@@ -73,4 +74,16 @@ public class ImpliedMappingFileRef
 	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
 		throw new IllegalStateException("Cannot delete this reference since it is implied"); //$NON-NLS-1$
 	}
+
+	@Override
+	protected ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
+		StringBuffer buffer = new StringBuffer();
+		String location = getFileName().substring(0, getFileName().lastIndexOf('/'));
+		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
+		buffer.append(location).append('/').append(newName);
+		buffer.append("</mapping-file>"); //$NON-NLS-1$
+		int offset = getPersistenceUnit().findInsertLocationForMappingFileRef();
+		return new ReplaceEdit(offset, 0, buffer.toString());
+	}
+
 }

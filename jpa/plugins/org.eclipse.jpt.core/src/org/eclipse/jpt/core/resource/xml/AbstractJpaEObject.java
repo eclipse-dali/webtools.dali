@@ -249,6 +249,10 @@ public abstract class AbstractJpaEObject
 		return new DeleteEdit(deletionOffset, deletionLength);
 	}
 
+	public int getNodeEndOffset() {
+		return this.node.getEndOffset();
+	}
+
 	/**
 	 * deletion offset needs to include any text that is before the node
 	 */

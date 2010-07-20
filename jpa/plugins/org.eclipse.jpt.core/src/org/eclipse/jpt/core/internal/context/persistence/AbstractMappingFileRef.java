@@ -27,7 +27,9 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -290,5 +292,14 @@ public abstract class AbstractMappingFileRef
 		}
 		return EmptyIterable.instance();
 	}
+
+	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName) {
+		if (this.isFor(originalFile)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalFile, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected abstract ReplaceEdit createReplaceEdit(IFile originalFile, String newName);
 
 }

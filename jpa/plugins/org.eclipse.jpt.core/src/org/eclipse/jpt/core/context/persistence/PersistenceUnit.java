@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the XML resource model {@link XmlPersistenceUnit},
@@ -723,4 +724,19 @@ public interface PersistenceUnit
 	 * Return an EmptyIterable if there are not any references.
 	 */
 	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalFile to the newName.
+	 * Return an EmptyIterable if there are not any references.	
+	 * The originalFile has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName);
+
+	/**
+	 * Return a location relative to the beginning of the persistence.xml for 
+	 * inserting a new mapping-file element. If there are existing mapping files, 
+	 * the location should be after those. If no existing mapping files then make
+	 * sure the location does not violate the persistence.xml schema.
+	 */
+	int findInsertLocationForMappingFileRef();
 }

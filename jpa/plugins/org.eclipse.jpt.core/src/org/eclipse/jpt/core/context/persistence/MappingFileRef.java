@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the
@@ -133,4 +134,14 @@ public interface MappingFileRef
 	 * for ease of use with other createDeleteEdit API.
 	 */
 	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
+
+	/**
+	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
+	 * ReplaceEdit for renaming the mapping file element to the new name.
+	 * Otherwise return an EmptyIterable.
+	 * Though this will contain 1 or 0 ReplaceEdits, using an Iterable
+	 * for ease of use with other createReplaceMappingFileEdits API.
+	 */
+	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName);
+
 }

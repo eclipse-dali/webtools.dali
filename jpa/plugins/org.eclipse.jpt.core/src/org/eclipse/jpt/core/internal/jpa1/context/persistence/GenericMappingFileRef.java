@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * <code>persistence.xml</code> file
@@ -88,13 +89,18 @@ public class GenericMappingFileRef
 
 	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
 		if (this.isFor(file)) {
-			return new SingleElementIterable<DeleteEdit>(createDeleteEdit());
+			return new SingleElementIterable<DeleteEdit>(this.createDeleteEdit());
 		}
 		return EmptyIterable.instance();
 	}
 
 	protected DeleteEdit createDeleteEdit() {
 		return this.xmlMappingFileRef.createDeleteEdit();
+	}
+
+	@Override
+	protected ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
+		return this.xmlMappingFileRef.createReplaceEdit(originalFile, newName);
 	}
 
 }

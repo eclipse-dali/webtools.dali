@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -28,7 +28,9 @@ import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingT
 import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0;
 import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnit_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -1073,5 +1075,31 @@ public class XmlPersistenceUnit extends AbstractJpaEObject implements XmlPersist
 		return new Translator(
 				JPA2_0.PERSISTENCE_UNIT__VALIDATION_MODE,
 				PersistenceV2_0Package.eINSTANCE.getXmlPersistenceUnit_2_0_ValidationMode());
+	}
+
+
+	public int getLocationToInsertMappingFileRef() {
+		if (getMappingFiles().size() > 0) {
+			XmlMappingFileRef mappingFileRef = CollectionTools.last(this.getMappingFiles());
+			return mappingFileRef.getNodeEndOffset();
+		}
+
+		IDOMNode elementNode = null;
+		if (getNonJtaDataSource() != null) {
+			elementNode = getElementNode(JPA.NON_JTA_DATA_SOURCE);
+		}
+		else if (getJtaDataSource() != null) {
+			elementNode = getElementNode(JPA.JTA_DATA_SOURCE);
+		}
+		else if (getProvider() != null) {
+			elementNode = getElementNode(JPA.PROVIDER);			
+		}
+		else if (getDescription() != null) {
+			elementNode = getElementNode(JPA.DESCRIPTION);			
+		}
+		if (elementNode != null) {
+			return elementNode.getLastStructuredDocumentRegion().getEnd();
+		}
+		return this.node.getFirstStructuredDocumentRegion().getEnd();
 	}
 }

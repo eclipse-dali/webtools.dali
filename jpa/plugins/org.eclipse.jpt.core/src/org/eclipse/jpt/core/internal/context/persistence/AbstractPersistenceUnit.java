@@ -83,6 +83,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1599,7 +1600,7 @@ public abstract class AbstractPersistenceUnit
 
 
 	// ********** refactoring **********
-	
+
 	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
 		return new CompositeIterable<DeleteEdit>(
 			new TransformationIterable<ClassRef, Iterable<DeleteEdit>>(getSpecifiedClassRefs()) {
@@ -1620,6 +1621,21 @@ public abstract class AbstractPersistenceUnit
 				}
 			}
 		);
+	}
+
+	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(final IFile originalFile, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(getMappingFileRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
+					return mappingFileRef.createReplaceMappingFileEdits(originalFile, newName);
+				}
+			}
+		);
+	}
+
+	public int findInsertLocationForMappingFileRef() {
+		return this.xmlPersistenceUnit.getLocationToInsertMappingFileRef();
 	}
 
 
