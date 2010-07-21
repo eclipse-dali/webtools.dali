@@ -77,7 +77,9 @@ public class ClassesGeneratorUi {
 		boolean useMoxy = wizard.getUseMoxy();
 		String[] bindingsFileNames = wizard.getBindingsFileNames();
 
-		this.run(outputDir, targetPackage, catalog, useMoxy, bindingsFileNames);
+		if(this.displayGeneratingClassesWarning()) {
+			this.run(outputDir, targetPackage, catalog, useMoxy, bindingsFileNames);
+		}
 	}
 
 	// ********** internal methods **********
@@ -98,6 +100,14 @@ public class ClassesGeneratorUi {
 			useMoxyGenerator,
 			bindingsFileNames);
 		job.schedule();
+	}
+
+	private boolean displayGeneratingClassesWarning() {
+
+		return MessageDialog.openQuestion(
+			this.getCurrentShell(), 
+			JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
+			JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningMessage);
 	}
 	
 	private Shell getCurrentShell() {
@@ -126,7 +136,6 @@ public class ClassesGeneratorUi {
 			boolean useMoxyGenerator,
 			String[] bindingsFileNames) {
 			
-			//super(EclipseLinkUiMessages.ECLIPSELINK_GENERATE_TABLES_JOB);
 			super(JptJaxbUiMessages.ClassesGeneratorUi_generatingEntities);
 			this.javaProject = javaProject;
 			this.xmlSchemaName = xmlSchemaName;

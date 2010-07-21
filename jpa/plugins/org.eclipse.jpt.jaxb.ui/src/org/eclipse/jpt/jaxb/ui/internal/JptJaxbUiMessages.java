@@ -43,6 +43,9 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorUi_generatingEntities;
 	public static String ClassesGeneratorUi_generatingEntitiesTask;
 
+	public static String ClassesGeneratorUi_generatingClassesWarningTitle;
+	public static String ClassesGeneratorUi_generatingClassesWarningMessage;
+
 	// SchemaGenerator
 	public static String SchemaGeneratorWizard_title;
 	public static String SchemaGeneratorWizard_generatingSchema;
