@@ -71,6 +71,9 @@ public class JpaRenameMappingFileParticipant
 
 	@Override
 	protected boolean initialize(Object element) {
+		if (!getArguments().getUpdateReferences()) {
+			return false;
+		}
 		this.originalMappingFile = (IFile) element;
 		return true;
 	}
