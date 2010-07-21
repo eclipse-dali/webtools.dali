@@ -9,6 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -458,7 +459,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			
 				public void widgetSelected(SelectionEvent e) {
 
-					String filePath = promptFile(XML_FILTER);
+					String filePath = promptXmlFile();
 					if( ! StringTools.stringIsEmpty(filePath)) {
 						
 						catalogText.setText(makeRelativeToProjectPath(filePath));
@@ -518,15 +519,14 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			addButton.setLayoutData(gridData);
 			addButton.addSelectionListener(new SelectionListener() {
 				public void widgetDefaultSelected(SelectionEvent e) {}
-			
+
 				public void widgetSelected(SelectionEvent e) {
 
-					String filePath = promptFile(BINDINGS_FILE_FILTER);
-					if( ! StringTools.stringIsEmpty(filePath)) {
-
+					ArrayList<String> filePaths = promptBindingsFiles();
+					for(String filePath : filePaths) {
 						addBindingsFile(filePath, tableDataModel);
-						tableViewer.refresh();
 					}
+					tableViewer.refresh();
 				}
 			});
 			// Remove buttons
@@ -584,21 +584,35 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 * The Add button was clicked, its action invokes this action which should
 		 * prompt the user to select a file and return it.
 		 */
-		private String promptFile(String filter) {
+		private String promptXmlFile() {
 			String projectPath= javaProject.getProject().getLocation().toString();
-			String dialogTitle = (filter.equals(BINDINGS_FILE_FILTER)) ?
-				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile :
-				JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog;
 
 			FileDialog dialog = new FileDialog(getShell());
-			dialog.setText(dialogTitle);
+			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog);
 			dialog.setFilterPath(projectPath);
-			dialog.setFilterExtensions(new String[] {filter});
-			String filePath = dialog.open();
+			dialog.setFilterExtensions(new String[] {XML_FILTER});
 
-			return (filePath != null) ? filePath : null;
+			return dialog.open();
 		}
-		
+
+		private ArrayList<String> promptBindingsFiles() {
+			String projectPath= javaProject.getProject().getLocation().toString();
+
+			FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
+			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
+			dialog.setFilterPath(projectPath);
+			dialog.setFilterExtensions(new String[] {BINDINGS_FILE_FILTER});
+
+			dialog.open();
+			String path = dialog.getFilterPath();
+			String[] fileNames = dialog.getFileNames();
+			ArrayList<String> results = new ArrayList<String>(fileNames.length);
+			for(String fileName : fileNames) {
+				results.add(path + File.separator + fileName);
+			}
+			return results;
+		}
+
 		private void addColumnsData(TableLayoutComposite layout) {
 			layout.addColumnData(new ColumnWeightData(50, true));
 		}
