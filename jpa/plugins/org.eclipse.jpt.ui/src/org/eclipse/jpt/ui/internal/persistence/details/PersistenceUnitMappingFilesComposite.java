@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -239,11 +239,10 @@ public abstract class PersistenceUnitMappingFilesComposite extends Pane<Persiste
 					IFile file = (IFile) result;
 					IPath filePath = removeSourcePath(file);
 					String fileName = filePath.toPortableString();
-					if(mappingFileRefExists(fileName)) {
+					if (mappingFileRefExists(fileName)) {
 						continue;
 					}
-					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef();
-					mappingFileRef.setFileName(fileName);
+					MappingFileRef mappingFileRef = getSubject().addSpecifiedMappingFileRef(fileName);
 
 					listSelectionModel.addSelectedValue(mappingFileRef);
 				}

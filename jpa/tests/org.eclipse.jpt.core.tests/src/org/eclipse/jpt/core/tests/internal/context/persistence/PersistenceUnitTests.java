@@ -486,20 +486,20 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, persistenceUnit.specifiedMappingFileRefsSize());
 		
 		// add mapping file ref, test that it's added to resource
-		persistenceUnit.addSpecifiedMappingFileRef().setFileName("foo");
+		persistenceUnit.addSpecifiedMappingFileRef("foo");
 		
 		assertEquals(1, xmlPersistenceUnit.getMappingFiles().size());
 		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
 		
 		// add another ...
-		persistenceUnit.addSpecifiedMappingFileRef().setFileName("bar");
+		persistenceUnit.addSpecifiedMappingFileRef("bar");
 		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
 		assertEquals("bar", xmlPersistenceUnit.getMappingFiles().get(1).getFileName());
 		
 		assertEquals(2, xmlPersistenceUnit.getMappingFiles().size());
 		
 		// add another, testing order
-		persistenceUnit.addSpecifiedMappingFileRef(0).setFileName("baz");
+		persistenceUnit.addSpecifiedMappingFileRef("baz", 0);
 		assertEquals(3, xmlPersistenceUnit.getMappingFiles().size());
 		assertEquals("baz", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
 		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(1).getFileName());
@@ -592,7 +592,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, persistenceUnit.specifiedClassRefsSize());
 		
 		// add class ref, test that it's added to context
-		persistenceUnit.addSpecifiedClassRef().setClassName("Foo");
+		persistenceUnit.addSpecifiedClassRef("Foo");
 		
 		try {
 			getPersistenceXmlResource().save(null);
@@ -605,14 +605,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
 	
 		// add another ...
-		persistenceUnit.addSpecifiedClassRef().setClassName("Bar");
+		persistenceUnit.addSpecifiedClassRef("Bar");
 		
 		assertEquals(2, xmlPersistenceUnit.getClasses().size());
 		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
 		assertEquals("Bar", xmlPersistenceUnit.getClasses().get(1).getJavaClass());
 	
 		
-		persistenceUnit.addSpecifiedClassRef(0).setClassName("Baz");
+		persistenceUnit.addSpecifiedClassRef("Baz", 0);
 		
 		assertEquals(3, xmlPersistenceUnit.getClasses().size());
 		assertEquals("Baz", xmlPersistenceUnit.getClasses().get(0).getJavaClass());

@@ -39,7 +39,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -159,8 +158,7 @@ public class PackageGenerator {
 				for (Iterator<String> stream = genClasses.iterator(); stream.hasNext();) {
 					String className = stream.next();
 					if (CollectionTools.isEmpty(persistenceUnit.mappingFileRefsContaining(className)) && !persistenceUnit.specifiesPersistentType(className)) {
-						ClassRef classRef = persistenceUnit.addSpecifiedClassRef();
-						classRef.setClassName(className);
+						persistenceUnit.addSpecifiedClassRef(className);
 					}
 				}
 			}

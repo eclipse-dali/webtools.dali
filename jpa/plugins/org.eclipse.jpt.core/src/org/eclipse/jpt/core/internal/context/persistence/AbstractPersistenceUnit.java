@@ -535,12 +535,12 @@ public abstract class AbstractPersistenceUnit
 		return this.specifiedMappingFileRefs.size();
 	}
 
-	public MappingFileRef addSpecifiedMappingFileRef() {
-		return this.addSpecifiedMappingFileRef(this.specifiedMappingFileRefs.size());
+	public MappingFileRef addSpecifiedMappingFileRef(String fileName) {
+		return this.addSpecifiedMappingFileRef(fileName, this.specifiedMappingFileRefs.size());
 	}
 
-	public MappingFileRef addSpecifiedMappingFileRef(int index) {
-		XmlMappingFileRef xmlMappingFileRef = this.buildXmlMappingFileRef();
+	public MappingFileRef addSpecifiedMappingFileRef(String fileName, int index) {
+		XmlMappingFileRef xmlMappingFileRef = this.buildXmlMappingFileRef(fileName);
 		MappingFileRef mappingFileRef = this.buildSpecifiedMappingFileRef(xmlMappingFileRef);
 		this.specifiedMappingFileRefs.add(index, mappingFileRef);
 		this.xmlPersistenceUnit.getMappingFiles().add(index, xmlMappingFileRef);
@@ -548,8 +548,10 @@ public abstract class AbstractPersistenceUnit
 		return mappingFileRef;
 	}
 
-	protected XmlMappingFileRef buildXmlMappingFileRef() {
-		return PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+	protected XmlMappingFileRef buildXmlMappingFileRef(String fileName) {
+		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
+		mappingFileRef.setFileName(fileName);
+		return mappingFileRef;
 	}
 
 	public void removeSpecifiedMappingFileRef(MappingFileRef mappingFileRef) {
@@ -617,12 +619,12 @@ public abstract class AbstractPersistenceUnit
 		return this.jarFileRefs.size();
 	}
 
-	public JarFileRef addJarFileRef() {
-		return this.addJarFileRef(this.jarFileRefs.size());
+	public JarFileRef addJarFileRef(String fileName) {
+		return this.addJarFileRef(fileName, this.jarFileRefs.size());
 	}
 
-	public JarFileRef addJarFileRef(int index) {
-		XmlJarFileRef xmlJarFileRef = this.buildXmlJarFileRef();
+	public JarFileRef addJarFileRef(String fileName, int index) {
+		XmlJarFileRef xmlJarFileRef = this.buildXmlJarFileRef(fileName);
 		JarFileRef jarFileRef = this.buildJarFileRef(xmlJarFileRef);
 		this.jarFileRefs.add(index, jarFileRef);
 		this.xmlPersistenceUnit.getJarFiles().add(index, xmlJarFileRef);
@@ -630,8 +632,10 @@ public abstract class AbstractPersistenceUnit
 		return jarFileRef;
 	}
 
-	protected XmlJarFileRef buildXmlJarFileRef() {
-		return PersistenceFactory.eINSTANCE.createXmlJarFileRef();
+	protected XmlJarFileRef buildXmlJarFileRef(String fileName) {
+		XmlJarFileRef jarFileRef = PersistenceFactory.eINSTANCE.createXmlJarFileRef();
+		jarFileRef.setFileName(fileName);
+		return jarFileRef;
 	}
 
 	public void removeJarFileRef(JarFileRef jarFileRef) {
@@ -734,12 +738,12 @@ public abstract class AbstractPersistenceUnit
 		return this.specifiedClassRefs.size();
 	}
 
-	public ClassRef addSpecifiedClassRef() {
-		return this.addSpecifiedClassRef(this.specifiedClassRefs.size());
+	public ClassRef addSpecifiedClassRef(String className) {
+		return this.addSpecifiedClassRef(className, this.specifiedClassRefs.size());
 	}
 
-	public ClassRef addSpecifiedClassRef(int index) {
-		XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef();
+	public ClassRef addSpecifiedClassRef(String className, int index) {
+		XmlJavaClassRef xmlClassRef = this.buildXmlJavaClassRef(className);
 		ClassRef classRef = this.buildClassRef(xmlClassRef);
 		this.specifiedClassRefs.add(index, classRef);
 		this.xmlPersistenceUnit.getClasses().add(index, xmlClassRef);
@@ -747,8 +751,10 @@ public abstract class AbstractPersistenceUnit
 		return classRef;
 	}
 
-	protected XmlJavaClassRef buildXmlJavaClassRef() {
-		return PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+	protected XmlJavaClassRef buildXmlJavaClassRef(String className) {
+		XmlJavaClassRef xmlClassRef = PersistenceFactory.eINSTANCE.createXmlJavaClassRef();
+		xmlClassRef.setJavaClass(className);
+		return xmlClassRef;
 	}
 
 	public void removeSpecifiedClassRef(ClassRef classRef) {

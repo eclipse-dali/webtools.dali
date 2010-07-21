@@ -87,8 +87,7 @@ public class OrmFileCreationOperation
 						return;
 					}
 				}
-				MappingFileRef mfRef = pUnit.addSpecifiedMappingFileRef();
-				mfRef.setFileName(new Path(filePath).toPortableString());
+				pUnit.addSpecifiedMappingFileRef(new Path(filePath).toPortableString());
 			}
 		});
 	}

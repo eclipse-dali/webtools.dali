@@ -101,8 +101,7 @@ public class PersistenceUnitClassesComposite extends Pane<PersistenceUnit>
 			if(classRefExists(className)) {
 				return;
 			}
-			ClassRef classRef = getSubject().addSpecifiedClassRef();
-			classRef.setClassName(className);
+			ClassRef classRef = getSubject().addSpecifiedClassRef(className);
 			listSelectionModel.setSelectedValue(classRef);
 		}
 	}

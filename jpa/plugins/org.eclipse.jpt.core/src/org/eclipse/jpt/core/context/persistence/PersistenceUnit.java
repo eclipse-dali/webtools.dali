@@ -215,16 +215,17 @@ public interface PersistenceUnit
 	int specifiedMappingFileRefsSize();
 
 	/**
-	 * Add a new specified mapping file ref to the persistence unit;
+	 * Add a new specified mapping file ref to the persistence unit with the given file name;
 	 * return the newly-created mapping file ref.
 	 */
-	MappingFileRef addSpecifiedMappingFileRef();
+	MappingFileRef addSpecifiedMappingFileRef(String fileName);
 
 	/**
-	 * Add a new specified mapping file ref to the persistence unit at the specified index;
+	 * Add a new specified mapping file ref to the persistence unit 
+	 * with the given file name at the specified index;
 	 * return the newly-created mapping file ref.
 	 */
-	MappingFileRef addSpecifiedMappingFileRef(int index);
+	MappingFileRef addSpecifiedMappingFileRef(String fileName, int index);
 
 	/**
 	 * Remove the specified mapping file ref from the persistence unit.
@@ -270,16 +271,16 @@ public interface PersistenceUnit
 	int jarFileRefsSize();
 
 	/**
-	 * Add a new JAR file ref to the persistence unit;
+	 * Add a new JAR file ref to the persistence unit with the given file name;
 	 * return the newly-created JAR file ref.
 	 */
-	JarFileRef addJarFileRef();
+	JarFileRef addJarFileRef(String fileName);
 
 	/**
-	 * Add a new JAR file ref to the persistence unit at the specified index;
-	 * return the newly-created JAR file ref.
+	 * Add a new JAR file ref to the persistence unit with the given file name 
+	 * at the specified index; return the newly-created JAR file ref.
 	 */
-	JarFileRef addJarFileRef(int index);
+	JarFileRef addJarFileRef(String fileName, int index);
 
 	/**
 	 * Remove the specified JAR file ref from the persistence unit.
@@ -326,16 +327,16 @@ public interface PersistenceUnit
 	int specifiedClassRefsSize();
 
 	/**
-	 * Add a new specified class ref to the persistence unit;
+	 * Add a new specified class ref to the persistence unit with the given class name;
 	 * return the newly-created class ref.
 	 */
-	ClassRef addSpecifiedClassRef();
+	ClassRef addSpecifiedClassRef(String className);
 
 	/**
-	 * Add a new specified class ref to the persistence unit at the specified index;
-	 * return the newly-created class ref.
+	 * Add a new specified class ref to the persistence unit with the given class name
+	 * at the specified index; return the newly-created class ref.
 	 */
-	ClassRef addSpecifiedClassRef(int index);
+	ClassRef addSpecifiedClassRef(String className, int index);
 
 	/**
 	 * Remove the specified class ref from the persistence unit.
