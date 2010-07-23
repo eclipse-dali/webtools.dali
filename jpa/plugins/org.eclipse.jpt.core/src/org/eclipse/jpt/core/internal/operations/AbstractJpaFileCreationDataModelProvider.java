@@ -18,11 +18,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -168,6 +169,11 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
 		}
+		if (getVerifiedJavaSourceFolder() == null) {
+			return new Status(
+				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
+				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
+		}
 		String filePath = getStringProperty(FILE_PATH);
 		if (StringTools.stringIsEmpty(filePath)) {
 			return new Status(
@@ -229,16 +235,13 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	/**
-	 * Return a best guess source folder for the specified project
+	 * Return a best guess java source folder for the specified project
 	 */
+	// Copied from NewJavaClassDataModelProvider
 	protected IFolder getDefaultSourceFolder() {
 		IProject project = getProject();
 		if (project == null) {
 			return null;
-		}
-		IFolder folder = AbstractJpaProject.getBundleRoot(project);
-		if (folder != null) {
-			return folder;
 		}
 		IPackageFragmentRoot[] sources = J2EEProjectUtilities.getSourceContainers(project);
 		// Try and return the first source folder
@@ -305,6 +308,26 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 			return null;
 		}
 		if (folder == null || ! folder.exists()) {
+			return null;
+		}
+		return folder;
+	}
+	
+	/**
+	 * Return the source folder, provided it is verified to be an actual java
+	 * source folder
+	 */
+	protected IFolder getVerifiedJavaSourceFolder() {
+		IFolder folder = getVerifiedSourceFolder();
+		if (folder == null) {
+			return null;
+		}
+		IJavaProject jProject = JavaCore.create(getProject());
+		if (jProject == null) {
+			return null;
+		}
+		IPackageFragmentRoot packageFragmentRoot = jProject.getPackageFragmentRoot(folder);
+		if (packageFragmentRoot == null || ! packageFragmentRoot.exists()) {
 			return null;
 		}
 		return folder;

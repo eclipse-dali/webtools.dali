@@ -23,6 +23,7 @@ public class JptCoreMessages {
 	public static String VALIDATE_SOURCE_FOLDER_ILLEGAL;
 	public static String VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST;
 	public static String VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT;
+	public static String VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER;
 	public static String VALIDATE_FILE_PATH_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_ALREADY_EXISTS;
 	public static String VALIDATE_FILE_VERSION_NOT_SUPPORTED;
