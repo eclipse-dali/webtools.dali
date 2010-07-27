@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui.internal.platform.base;
 
 import java.util.Collection;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResourceRuleFactory;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -125,7 +127,8 @@ public class EntitiesGenerator
 			this.entityConfig = entityConfig;
 			this.selectedTables = selectedTables;
 			this.overwriteConfirmer = overwriteConfirmer;
-			setRule(packageConfig.getPackageFragment().getJavaProject().getProject());
+			IResourceRuleFactory ruleFactory = ResourcesPlugin.getWorkspace().getRuleFactory();
+			this.setRule(ruleFactory.modifyRule(packageConfig.getPackageFragment().getJavaProject().getProject()));
 		}
 
 		@Override
