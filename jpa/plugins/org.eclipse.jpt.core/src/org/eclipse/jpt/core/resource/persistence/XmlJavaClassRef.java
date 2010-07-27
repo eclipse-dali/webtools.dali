@@ -14,9 +14,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -42,7 +43,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @extends JpaEObject
  * @generated
  */
-public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
+public class XmlJavaClassRef extends AbstractJpaEObject
 {
 	/**
 	 * The default value of the '{@link #getJavaClass() <em>Java Class</em>}' attribute.
@@ -227,5 +228,15 @@ public class XmlJavaClassRef extends AbstractJpaEObject implements JpaEObject
 				Translator.TEXT_ATTRIBUTE_VALUE,
 				PersistencePackage.eINSTANCE.getXmlJavaClassRef_JavaClass()
 			);
+	}
+
+
+	// *********** refactoring ***********
+
+	public ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		String originalName = originalType.getTypeQualifiedName();
+		int nameIndex = this.javaClass.lastIndexOf(originalName);
+		int offset = getTextNode().getStartOffset();
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 }

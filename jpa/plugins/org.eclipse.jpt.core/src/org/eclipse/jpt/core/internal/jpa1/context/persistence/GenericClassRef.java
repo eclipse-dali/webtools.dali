@@ -31,6 +31,7 @@ import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -318,6 +319,20 @@ public class GenericClassRef
 
 	protected DeleteEdit createDeleteEdit() {
 		return this.xmlJavaClassRef.createDeleteEdit();
+	}
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		if (isVirtual()) {
+			throw new IllegalStateException();
+		}
+		if (this.isFor(originalType)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		return this.xmlJavaClassRef.createReplaceEdit(originalType, newName);
 	}
 
 

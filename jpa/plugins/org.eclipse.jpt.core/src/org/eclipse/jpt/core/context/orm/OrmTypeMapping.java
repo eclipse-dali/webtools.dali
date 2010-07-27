@@ -11,12 +11,14 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.Iterator;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * 
@@ -89,6 +91,13 @@ public interface OrmTypeMapping
 	 * Create a text DeleteEdit for deleting the type mapping element and any text that precedes it
 	 */
 	DeleteEdit createDeleteEdit();
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
 
 	// ********** covariant overrides **********
 

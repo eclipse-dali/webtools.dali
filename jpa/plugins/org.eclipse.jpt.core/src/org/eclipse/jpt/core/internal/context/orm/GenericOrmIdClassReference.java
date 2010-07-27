@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -25,6 +26,9 @@ import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -207,8 +211,29 @@ public class GenericOrmIdClassReference
 			}
 		}
 	}
-	
-	
+
+
+	//************************* refactoring ************************
+
+	public Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		return getIdXmlClassRef().createReplaceEdit(originalType, newName);
+	}
+
+	protected boolean isFor(String typeName) {
+		if (this.idClass != null && this.idClass.isFor(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	// **************** validation ********************************************
 	
 	public TextRange getValidationTextRange() {

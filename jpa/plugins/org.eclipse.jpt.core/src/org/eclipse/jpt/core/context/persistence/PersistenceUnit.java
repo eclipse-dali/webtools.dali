@@ -429,6 +429,13 @@ public interface PersistenceUnit
 	Property getProperty(String propertyName);
 
 	/**
+	 * Return all the properties in the persistence unit with the specified 
+	 * name. Return an empty Iterable if the persistence unit does not contain 
+	 * a property with the specified name.
+	 */
+	Iterable<Property> getPropertiesNamed(String propertyName);
+
+	/**
 	 * Return the persistence unit's properties with names beginning with the
 	 * specified prefix.
 	 */
@@ -510,6 +517,13 @@ public interface PersistenceUnit
 
 		XmlProperty getXmlProperty();
 		void update();
+
+		/**
+		 * Create ReplaceEdits for renaming the property value to the newName.
+		 * The originalType has not yet been renamed, the newName is the new short name.
+		 * If this value does not match the original type, then return an empty Iterable.
+		 */
+		Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 	}
 
 	// ********** ORM persistence unit defaults **********
@@ -725,6 +739,12 @@ public interface PersistenceUnit
 	 * Return an EmptyIterable if there are not any references.
 	 */
 	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalFile to the newName.

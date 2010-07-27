@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.context.AssociationOverride;
@@ -94,6 +95,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1560,8 +1562,23 @@ public abstract class AbstractOrmEntity
 	public void removeFromResourceModel(XmlEntityMappings entityMappings) {
 		entityMappings.getEntities().remove(this.resourceTypeMapping);
 	}
-	
-	
+
+
+	//************************* refactoring ************************
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+					super.createReplaceTypeEdits(originalType, newName),
+					this.createIdClassReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createIdClassReplaceTypeEdits(IType originalType, String newName) {
+		return this.idClassReference.createReplaceEdits(originalType, newName);
+	}
+
+
 	// **************** validation *********************************************
 	
 	@Override

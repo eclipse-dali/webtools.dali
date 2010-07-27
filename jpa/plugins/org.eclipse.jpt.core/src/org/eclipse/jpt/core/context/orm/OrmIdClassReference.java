@@ -10,9 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -21,11 +23,20 @@ import org.eclipse.jpt.core.context.java.JavaIdClassReference;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.3
  */
 public interface OrmIdClassReference
 	extends IdClassReference, XmlContextNode
 {
 	void update(JavaIdClassReference javaIdClassReference);
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName);
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -27,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -227,6 +229,13 @@ public abstract class AbstractOrmPersistentAttribute
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
+	}
+
+
+	// ********** refactoring **********
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return this.attributeMapping.createReplaceTypeEdits(originalType, newName);
 	}
 
 

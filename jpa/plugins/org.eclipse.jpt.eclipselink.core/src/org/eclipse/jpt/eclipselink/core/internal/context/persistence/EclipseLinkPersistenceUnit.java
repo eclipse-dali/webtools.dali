@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnit;
@@ -40,12 +41,14 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizati
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -504,5 +507,17 @@ public class EclipseLinkPersistenceUnit
 				return ! next.getName().endsWith("default"); //$NON-NLS-1$
 	      }
 	   };
+	}
+
+
+	// ********** refactoring **********
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createPersistenceUnitPropertiesReplaceTypeEdits(originalType, newName),
+			this.customization.createReplaceTypeEdits(originalType, newName),
+			this.logging.createReplaceTypeEdits(originalType, newName));
 	}
 }

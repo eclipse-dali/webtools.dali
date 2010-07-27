@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 
 /**
  * <!-- begin-user-doc -->
@@ -300,6 +303,18 @@ public class XmlProperty extends AbstractJpaEObject implements JpaEObject
 				PersistencePackage.eINSTANCE.getXmlProperty_Value(),
 				Translator.DOM_ATTRIBUTE
 			);
+	}
+
+	public ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+		IDOMAttr domAttr = getAttributeNode(JPA.PROPERTY__VALUE);
+		if (domAttr == null) {
+			return null;
+		}
+		String originalName = originalType.getElementName();
+		int nameIndex = originalType.getFullyQualifiedName('.').lastIndexOf(originalName);
+
+		int offset = domAttr.getValueRegionStartOffset() + 1;
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
 }

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -30,10 +31,13 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -359,9 +363,20 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 
 
 	//************************* refactoring ************************
-	
+
 	public DeleteEdit createDeleteEdit() {
 		return this.resourceTypeMapping.createDeleteEdit();
+	}
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceTypeEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+		return this.resourceTypeMapping.createReplaceTypeEdit(originalType, newName);
 	}
 
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -69,9 +70,13 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1027,7 +1032,43 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	public String getMetamodelFieldMapKeyTypeName() {
 		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
 	}
-	
+
+
+	//*********** refactoring ***********
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplaceTypeEdits(originalType, newName),
+			this.createMapKeyClassReplaceTypeEdits(originalType, newName),
+			this.createTargetClassReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createMapKeyClassReplaceTypeEdits(IType originalType, String newName) {
+		if (this.specifiedMapKeyClass != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyClassEdit(originalType, newName));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
+		return this.resourceAttributeMapping.createReplaceMapKeyClassEdit(originalType, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createTargetClassReplaceTypeEdits(IType originalType, String newName) {
+		if (this.specifiedTargetClass != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createReplaceTargetClassEdit(originalType, newName));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
 
 	// ********** validation **********
 	

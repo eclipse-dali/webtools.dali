@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * JPA mapping file (typically <code>orm.xml</code>).
@@ -59,5 +60,11 @@ public interface MappingFile
 	 * Return an EmptyIterable if there are not any references to the given type.
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 
 }

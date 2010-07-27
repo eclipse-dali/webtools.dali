@@ -18,12 +18,14 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapKeyAttributeOverrideContainer_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlMultiRelationshipMapping_2_0;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
@@ -1083,4 +1085,12 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	protected static Translator buildOrderColumnTranslator() {
 		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
 	}
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
+		return getMapKeyClass().createReplaceEdit(originalType, newName);
+	}
+
 }

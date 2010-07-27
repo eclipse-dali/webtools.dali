@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the XML resource model
@@ -110,6 +111,13 @@ public interface ClassRef
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
+	/**
+	 * Create ReplaceEdits for renaming the class element to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 * If this ClassRef does not match the original type, then return an empty Iterable.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
 
 	// *************************************************************************
 	
@@ -118,5 +126,5 @@ public interface ClassRef
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-	
+
 }

@@ -55,6 +55,7 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -828,6 +829,16 @@ public abstract class AbstractEntityMappings
 		);
 	}
 
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
+					return persistentType.createReplaceTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
 
 	// ********** dispose **********
 	

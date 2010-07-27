@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,10 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -516,6 +518,16 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 	
 	protected static Translator buildAttributesTranslator() {
 		return Attributes.buildTranslator();
-	}	
+	}
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+		String originalName = originalType.getTypeQualifiedName();
+		int nameIndex = this.className.lastIndexOf(originalName);
+		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
 
 } // TypeMapping

@@ -15,10 +15,12 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -225,5 +227,13 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 	
 	private static Translator buildClassTranslator() {
 		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlClassReference_ClassName(), Translator.DOM_ATTRIBUTE);
+	}
+
+	public ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		String originalName = originalType.getElementName();
+		int nameIndex = this.className.lastIndexOf(originalName);
+
+		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1;
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 }

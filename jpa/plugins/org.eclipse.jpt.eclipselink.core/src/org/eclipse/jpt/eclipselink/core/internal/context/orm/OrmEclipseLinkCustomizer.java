@@ -9,14 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 
 public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	implements EclipseLinkCustomizer
@@ -27,13 +33,19 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	
 	protected String defaultCustomizerClass;
 	
+	protected JavaResourcePersistentType customizerPersistentType;
+
 	public OrmEclipseLinkCustomizer(OrmTypeMapping parent, XmlCustomizerHolder resource, JavaEclipseLinkCustomizer javaCustomizer) {
 		super(parent);
 		this.resource = resource;
 		this.defaultCustomizerClass = getJavaCustomizerClass(javaCustomizer);
 		this.specifiedCustomizerClass = getResourceCustomizerClass();
+		this.customizerPersistentType = getResourceCustomizerPersistentType();
 	}
+
 	
+	// **************** EclipseLinkCustomizer impl *********************************
+
 	public char getCustomizerClassEnclosingTypeSeparator() {
 		return '$';
 	}
@@ -79,6 +91,24 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		this.specifiedCustomizerClass = newCustomizerClass;
 		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
 	}
+
+	protected JavaResourcePersistentType getResourceCustomizerPersistentType() {
+		XmlClassReference customizerClassRef = this.getResourceCustomizer();
+		if (customizerClassRef == null) {
+			return null;
+		}
+
+		String className = customizerClassRef.getClassName();
+		if (className == null) {
+			return null;
+		}
+
+		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
+	}
+
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) getMappingFileRoot();
+	}
 	
 	protected XmlClassReference getResourceCustomizer() {
 		return this.resource.getCustomizer();
@@ -98,6 +128,7 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	protected void update(JavaEclipseLinkCustomizer javaCustomizer) {
 		setDefaultCustomizerClass(getJavaCustomizerClass(javaCustomizer));
 		setSpecifiedCustomizerClass_(getResourceCustomizerClass());
+		updateCustomizerPersistentType();
 	}
 	
 	protected String getJavaCustomizerClass(JavaEclipseLinkCustomizer javaCustomizer) {
@@ -109,7 +140,32 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		return (resource == null) ? null : resource.getClassName();
 	}
 	
-	
+	protected void updateCustomizerPersistentType() {
+		this.customizerPersistentType = this.getResourceCustomizerPersistentType();
+	}
+
+
+	//************************* refactoring ************************
+
+	public Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		return getResourceCustomizer().createReplaceEdit(originalType, newName);
+	}
+
+	protected boolean isFor(String typeName) {
+		if (this.customizerPersistentType != null && this.customizerPersistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	// **************** validation **************************************
 	
 	public TextRange getValidationTextRange() {

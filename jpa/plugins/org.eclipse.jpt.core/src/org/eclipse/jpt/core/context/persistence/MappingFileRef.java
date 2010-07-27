@@ -136,6 +136,12 @@ public interface MappingFileRef
 	Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file);
 
 	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+	/**
 	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
 	 * ReplaceEdit for renaming the mapping file element to the new name.
 	 * Otherwise return an EmptyIterable.

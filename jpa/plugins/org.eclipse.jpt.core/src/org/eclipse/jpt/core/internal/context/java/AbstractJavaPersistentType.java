@@ -632,6 +632,11 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** misc **********
 
+	public boolean isFor(String typeName) {
+		String className = this.getName();
+		return className != null && className.equals(typeName);
+	}
+
 	public boolean isMapped() {
 		return this.mapping.isMapped();
 	}

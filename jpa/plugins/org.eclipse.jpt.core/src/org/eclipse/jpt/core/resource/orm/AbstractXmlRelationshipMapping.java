@@ -14,7 +14,9 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 
@@ -378,5 +380,15 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 	protected static Translator buildCascadeTranslator() {
 		return CascadeType.buildTranslator(JPA.CASCADE, OrmPackage.eINSTANCE.getAbstractXmlRelationshipMapping_Cascade());
 	}
-	
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createReplaceTargetEntityEdit(IType originalType, String newName) {
+		String originalName = originalType.getElementName();
+		int nameIndex = this.targetEntity.lastIndexOf(originalName);
+		int offset = getAttributeNode(JPA.TARGET_ENTITY).getValueRegionStartOffset() + 1;
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
 } // RelationshipMapping

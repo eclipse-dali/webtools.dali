@@ -61,6 +61,7 @@ import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -69,6 +70,7 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -944,6 +946,24 @@ public class GenericOrmPersistentType
 			return new SingleElementIterable<DeleteEdit>(this.mapping.createDeleteEdit());
 		}
 		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.mapping.createReplaceTypeEdits(originalType, newName),
+			this.createSpecifiedAttributesReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesReplaceTypeEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
+					return persistentAttribute.createReplaceTypeEdits(originalType, newName);
+				}
+			}
+		);
 	}
 
 

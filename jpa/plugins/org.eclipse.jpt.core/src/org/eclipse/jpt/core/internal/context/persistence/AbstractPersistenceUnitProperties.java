@@ -14,13 +14,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  *  AbstractPersistenceUnitProperties
@@ -508,5 +510,11 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 		sb.deleteCharAt(sb.length() - 1); 	// remove the last delimiter
 		return sb.toString();
 	}
-	
+
+
+	// ********** refactoring ************
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return EmptyIterable.instance();
+	}
 }

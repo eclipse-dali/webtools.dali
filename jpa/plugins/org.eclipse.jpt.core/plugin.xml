@@ -574,6 +574,16 @@
     <extension
         point="org.eclipse.ltk.core.refactoring.renameParticipants">
         <renameParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameTypeParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaRenameTypeParticipant"
+    		name="%JPA_RENAME_TYPE_PARTICIPANT_NAME">
+    		<enablement>
+    			<with variable="element">
+    				<instanceof value="org.eclipse.jdt.core.IType"/>
+    			</with>
+    		</enablement>
+        </renameParticipant>
+        <renameParticipant
     		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameMappingFileParticipant"
     		id="org.eclipse.jpt.core.ltk.jpaRenameMappingParticipant"
     		name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">

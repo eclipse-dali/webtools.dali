@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context <code>orm.xml</code> persistent type.
@@ -130,16 +131,16 @@ public interface OrmPersistentType
 	 */
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
 
 	//******************* misc *******************
 
 	boolean contains(int textOffset);
-
-	/**
-	 * Return whether the persistent type applies to the
-	 * specified type.
-	 */
-	boolean isFor(String typeName);
 	
 	void classChanged(String oldClass, String newClass);
 	

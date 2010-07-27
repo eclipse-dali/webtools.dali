@@ -137,8 +137,8 @@ public abstract class AbstractPersistenceUnit
 	protected boolean defaultDelimitedIdentifiers;
 
 	//****** PersistenceUnit2_0 features
-	private PersistenceUnitProperties connection;
-	private PersistenceUnitProperties options;
+	protected PersistenceUnitProperties connection;
+	protected PersistenceUnitProperties options;
 	
 	protected SharedCacheMode specifiedSharedCacheMode;
 	protected SharedCacheMode defaultSharedCacheMode;
@@ -967,6 +967,19 @@ public abstract class AbstractPersistenceUnit
 		return null;
 	}
 
+	public Iterable<Property> getPropertiesNamed(final String propertyName) {
+		if (propertyName == null) {
+			throw new NullPointerException();
+		}
+		return new FilteringIterable<Property>(CollectionTools.iterable(this.properties())) {
+			@Override
+			protected boolean accept(Property property) {
+				String pName = property.getName();
+				return (pName != null) && pName.equals(propertyName);
+			}
+		};
+	}
+
 	public Iterator<Property> propertiesWithNamePrefix(final String propertyNamePrefix) {
 		if (propertyNamePrefix == null) {
 			throw new NullPointerException();
@@ -1627,6 +1640,28 @@ public abstract class AbstractPersistenceUnit
 				}
 			}
 		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+					createSpecifiedClassRefReplaceTypeEdits(originalType, newName),
+					createPersistenceUnitPropertiesReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefReplaceTypeEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(getSpecifiedClassRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
+					return classRef.createReplaceTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplaceTypeEdits(IType originalType, String newName) {
+		return this.options.createReplaceTypeEdits(originalType, newName);
 	}
 
 	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(final IFile originalFile, final String newName) {

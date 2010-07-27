@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
@@ -36,6 +38,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReadOnly;
 import org.eclipse.jpt.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -53,6 +59,7 @@ public class OrmEclipseLinkEntityImpl
 	
 	protected final OrmEclipseLinkConverterHolder converterHolder;
 	
+	protected JavaResourcePersistentType classExtractorPersistentType;
 	
 	public OrmEclipseLinkEntityImpl(OrmPersistentType parent, XmlEntity resourceMapping) {
 		super(parent, resourceMapping);
@@ -61,6 +68,7 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking = new OrmEclipseLinkChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
 		this.caching = new OrmEclipseLinkCachingImpl(this, (XmlCacheHolder) this.resourceTypeMapping, (XmlCacheable_2_0) this.resourceTypeMapping, getJavaCaching());
 		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping);
+		this.classExtractorPersistentType = getResourceClassExtractorPersistentType();
 	}
 	
 	
@@ -124,6 +132,25 @@ public class OrmEclipseLinkEntityImpl
 		return null;
 	}
 
+	protected JavaResourcePersistentType getResourceClassExtractorPersistentType() {
+		XmlClassReference classExtractorClassRef = this.getResourceClassExtractor();
+		if (classExtractorClassRef == null) {
+			return null;
+		}
+
+		String className = classExtractorClassRef.getClassName();
+		if (className == null) {
+			return null;
+		}
+
+		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
+	}
+
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) getMappingFileRoot();
+	}
+
+
 	// **************** resource-context interaction ***************************
 	
 	@Override
@@ -134,6 +161,7 @@ public class OrmEclipseLinkEntityImpl
 		this.changeTracking.update(getJavaChangeTracking());
 		this.caching.update(getJavaCaching());
 		this.converterHolder.update(); 
+		this.updateClassExtractorPersistentType();
 	}
 	
 	@Override
@@ -166,7 +194,41 @@ public class OrmEclipseLinkEntityImpl
 		return (javaEntity == null) ? false : javaEntity.usesPrimaryKeyColumns();
 	}
 	
-	
+	protected void updateClassExtractorPersistentType() {
+		this.classExtractorPersistentType = this.getResourceClassExtractorPersistentType();
+	}
+
+
+	//************************* refactoring ************************
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+					super.createReplaceTypeEdits(originalType, newName),
+					this.createCustomizerReplaceTypeEdits(originalType, newName),
+					this.createClassExtractorReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
+		return this.customizer.createReplaceEdits(originalType, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorReplaceTypeEdits(IType originalType, String newName) {
+		if (this.classExtractorIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplaceEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected boolean classExtractorIsFor(String typeName) {
+		if (this.classExtractorPersistentType != null && this.classExtractorPersistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+
 	// **************** validation **************************************
 	
 	@Override

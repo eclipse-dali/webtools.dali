@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -26,7 +25,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface PersistentType
@@ -159,6 +158,15 @@ public interface PersistentType
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
+
+
+	// ********** misc **********
+
+	/**
+	 * Return whether the persistent type applies to the
+	 * specified type name qualified with '.'.
+	 */
+	boolean isFor(String typeName);
 
 
 	// ********** owner **********

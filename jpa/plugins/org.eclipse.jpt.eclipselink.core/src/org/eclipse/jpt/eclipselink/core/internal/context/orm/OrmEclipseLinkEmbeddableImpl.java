@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
@@ -22,6 +23,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -92,8 +95,23 @@ public class OrmEclipseLinkEmbeddableImpl
 		JavaEclipseLinkEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
 		return (javaEmbeddable == null) ? null : javaEmbeddable.getChangeTracking();
 	}
-	
-	
+
+
+	//************************* refactoring ************************
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplaceTypeEdits(originalType, newName),
+			this.createCustomizerReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
+		return this.customizer.createReplaceEdits(originalType, newName);
+	}
+
+
 	// **************** validation **************************************
 	
 	@Override

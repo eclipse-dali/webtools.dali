@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
@@ -29,9 +30,13 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -274,6 +279,34 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	protected PersistentAttribute getTargetEntityIdAttribute() {
 		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
 	}
+
+
+	//************ refactoring ************
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplaceTypeEdits(originalType, newName),
+			this.createTargetEntityReplaceTypeEdits(originalType, newName));
+	}
+	
+	protected Iterable<ReplaceEdit> createTargetEntityReplaceTypeEdits(IType originalType, String newName) {
+		if (this.specifiedTargetEntity != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityEdit(originalType, newName));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceTargetEntityEdit(IType originalType, String newName) {
+		return this.resourceAttributeMapping.createReplaceTargetEntityEdit(originalType, newName);
+	}
+
+
+	//*********** validation ***********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {

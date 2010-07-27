@@ -10,12 +10,15 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
 
 import java.util.Map;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  *  EclipseLinkLogging
@@ -358,4 +361,21 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		return DEFAULT_LOGGER;
 	}
 
+
+	// ********** refactoring ************
+
+	@Override
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return this.createLoggerReplaceTypeEdits(originalType, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createLoggerReplaceTypeEdits(IType originalType, String newName) {
+		//TODO seems like we should have the Property stored in a SessionCustomizer object instead of having to go 
+		//find all of the Properties from the persistence unit.
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
+		if (property != null) {
+			return property.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
 }

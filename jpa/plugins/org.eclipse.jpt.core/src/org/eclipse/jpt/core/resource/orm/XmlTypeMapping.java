@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * <!-- begin-user-doc -->
@@ -149,4 +151,9 @@ public interface XmlTypeMapping extends XmlAccessHolder
 
 	//TODO not happy with this, or the corresponding one in XmlAttributeMapping
 	String getMappingKey();
+
+
+	// ********** refactoring **********
+
+	ReplaceEdit createReplaceTypeEdit(IType originalType, String newName);
 } // XmlTypeMapping

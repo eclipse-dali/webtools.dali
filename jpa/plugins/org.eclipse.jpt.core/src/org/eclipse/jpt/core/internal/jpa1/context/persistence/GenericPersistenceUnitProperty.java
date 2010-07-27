@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Straightforward implementation of the persistence unit property.
@@ -89,6 +93,20 @@ public class GenericPersistenceUnitProperty
 
 	public TextRange getValidationTextRange() {
 		return this.xmlProperty.getValidationTextRange();
+	}
+
+
+	// ********** refactoring **********
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		if (this.getValue() != null && this.getValue().equals(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceTypeEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+		return this.xmlProperty.createReplaceTypeEdit(originalType, newName);
 	}
 
 

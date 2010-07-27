@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * ORM persistent attribute
@@ -22,7 +24,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmPersistentAttribute
@@ -79,12 +81,6 @@ public interface OrmPersistentAttribute
 	 */
 	void makeSpecified(String mappingKey);
 	
-
-	// ********** miscellaneous **********
-
-	boolean contains(int textOffset);
-
-	void nameChanged(String oldName, String newName);
 	
 	// ********** updating **********
 	
@@ -93,8 +89,24 @@ public interface OrmPersistentAttribute
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
-	
-	
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+
+	// ********** miscellaneous **********
+
+	boolean contains(int textOffset);
+
+	void nameChanged(String oldName, String newName);
+
+
 	/**
 	 * interface allowing persistent attributes to be used in multiple places
 	 * (e.g. virtual and specified orm persistent attributes)

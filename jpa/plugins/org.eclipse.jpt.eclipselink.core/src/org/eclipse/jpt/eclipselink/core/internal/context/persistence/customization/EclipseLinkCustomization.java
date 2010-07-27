@@ -16,14 +16,19 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  *  EclipseLinkCustomization
@@ -794,5 +799,35 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	public int entitiesSize() {
 		return this.entities.size();
+	}
+
+
+	// ********** refactoring ************
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+					this.createSessionCustomizerReplaceTypeEdits(originalType, newName),
+					this.createExceptionHandlerReplaceTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSessionCustomizerReplaceTypeEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
+					return property.createReplaceTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createExceptionHandlerReplaceTypeEdits(IType originalType, String newName) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
+		if (property != null) {
+			return property.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
 	}
 }

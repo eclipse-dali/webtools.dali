@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.DeleteEdit;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -228,6 +229,13 @@ public class GenericOrmXml
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
 		if (this.entityMappings != null) {
 			return this.entityMappings.createDeleteTypeEdits(type);
+		}
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		if (this.entityMappings != null) {
+			return this.entityMappings.createReplaceTypeEdits(originalType, newName);
 		}
 		return EmptyIterable.instance();
 	}
