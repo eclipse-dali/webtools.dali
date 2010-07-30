@@ -86,11 +86,15 @@
                <restriction base="string">
                   <enumeration value="lowest">
                   </enumeration>
+                  <enumeration value="lower">
+                  </enumeration>
                   <enumeration value="low">
                   </enumeration>
                   <enumeration value="normal">
                   </enumeration>
                   <enumeration value="high">
+                  </enumeration>
+                  <enumeration value="higher">
                   </enumeration>
                   <enumeration value="highest">
                   </enumeration>

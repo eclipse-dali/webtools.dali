@@ -112,16 +112,22 @@ public class ResourceLocatorConfig
 	public static enum Priority {
 		
 		/* The lowest priority for a resource locator */
-		LOWEST(4, "lowest"),
+		LOWEST(6, "lowest"),
 		
 		/* The second lowest priority for a resource locator */
-		LOW(3, "low"),
+		LOWER(5, "lower"),
+		
+		/* The third lowest priority for a resource locator */
+		LOW(4, "low"),
 		
 		/* The default priority for a resource locator */
-		NORMAL(2, "normal"),
+		NORMAL(3, "normal"),
+		
+		/* The third highest priority for a resource locator */
+		HIGH(2, "high"),
 		
 		/* The second highest priority for a resource locator */
-		HIGH(1, "high"),
+		HIGHER(1, "higher"),
 		
 		/* The highest priority for a resource locator */
 		HIGHEST(0, "highest");

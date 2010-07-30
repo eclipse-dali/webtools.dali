@@ -211,7 +211,7 @@
 		<resourceLocator
 			id="org.eclipse.jpt.core.moduleResourceLocator"
 			class="org.eclipse.jpt.core.internal.resource.ModuleResourceLocator"
-			priority="low">
+			priority="lower">
 			<enablement>
 				<with variable="project">
 					<test 
@@ -225,7 +225,7 @@
 		<resourceLocator
 			id="org.eclipse.jpt.core.webModuleResourceLocator"
 			class="org.eclipse.jpt.core.internal.resource.WebModuleResourceLocator"
-			priority="normal">
+			priority="low">
 			<enablement>
 				<with variable="project">
 					<test 
@@ -239,7 +239,7 @@
 		<resourceLocator
 			id="org.eclipse.jpt.core.pluginResourceLocator"
 			class="org.eclipse.jpt.core.internal.resource.PluginResourceLocator"
-			priority="high">
+			priority="normal">
 			<enablement>
 				<with variable="project">
 					<test 
