@@ -1,4 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
 <schema targetNamespace="org.eclipse.jpt.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appInfo>
@@ -75,7 +76,7 @@
                </appInfo>
             </annotation>
          </attribute>
-         <attribute name="priority" default="normal">
+         <attribute name="priority">
             <annotation>
                <documentation>
                   Indicates the relative priority of this extension to other extensions. Used by the resource locator manager to determine which extension should be used in the case that multiple extensions apply to a given project. Defaults to &quot;normal&quot;.
@@ -83,11 +84,16 @@
             </annotation>
             <simpleType>
                <restriction base="string">
-                  <enumeration value="lowest"/>
-                  <enumeration value="low"/>
-                  <enumeration value="normal"/>
-                  <enumeration value="high"/>
-                  <enumeration value="highest"/>
+                  <enumeration value="lowest">
+                  </enumeration>
+                  <enumeration value="low">
+                  </enumeration>
+                  <enumeration value="normal">
+                  </enumeration>
+                  <enumeration value="high">
+                  </enumeration>
+                  <enumeration value="highest">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>
@@ -114,17 +120,17 @@ The following example is the included simple java resource locator, which is use
 &lt;p&gt;
 &lt;pre&gt;
 &lt;extension  
-	point=&quot;org.eclipse.jpt.core.resourceLocators&quot;&gt;
-	&lt;resourceLocator
-		id=&quot;org.eclipse.jpt.core.simpleJavaResourceLocator&quot;
-		class=&quot;org.eclipse.jpt.core.internal.resource.SimpleJavaResourceLocator&quot;
-		priority=&quot;lowest&quot;
-		&lt;enablement&gt;
-			&lt;with variable=&quot;project&quot;&gt;
-				&lt;test property=&quot;org.eclipse.wst.common.project.facet.core.projectFacet&quot; value=&quot;java&quot; forcePluginActivation=&quot;true&quot;/&gt;
-			&lt;/with&gt;
-		&lt;/enablement&gt;
-	&lt;/resourceLocator&gt;
+ point=&quot;org.eclipse.jpt.core.resourceLocators&quot;&gt;
+ &lt;resourceLocator
+  id=&quot;org.eclipse.jpt.core.simpleJavaResourceLocator&quot;
+  class=&quot;org.eclipse.jpt.core.internal.resource.SimpleJavaResourceLocator&quot;
+  priority=&quot;lowest&quot;
+  &lt;enablement&gt;
+   &lt;with variable=&quot;project&quot;&gt;
+    &lt;test property=&quot;org.eclipse.wst.common.project.facet.core.projectFacet&quot; value=&quot;java&quot; forcePluginActivation=&quot;true&quot;/&gt;
+   &lt;/with&gt;
+  &lt;/enablement&gt;
+ &lt;/resourceLocator&gt;
 &lt;/extension&gt;
 &lt;/pre&gt;
 &lt;/p&gt;
@@ -144,7 +150,6 @@ The enablement variables include:
 &lt;li&gt;&quot;project&quot; which gives the current IProject.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/p&gt;
-
       </documentation>
    </annotation>
 
@@ -155,12 +160,11 @@ The enablement variables include:
       <documentation>
          &lt;p&gt;The org.eclipse.jpt.core plug-in provides the following content types:&lt;ul&gt;
 &lt;li&gt;org.eclipse.jpt.core.simpleJavaResourceLocator&lt;/li&gt;
-&lt;li&gt;org.eclipse.jpt.core.javaEEModuleResourceLocator&lt;/li&gt;
+&lt;li&gt;org.eclipse.jpt.core.moduleResourceLocator&lt;/li&gt;
 &lt;li&gt;org.eclipse.jpt.core.webModuleResourceLocator&lt;/li&gt;
 &lt;li&gt;org.eclipse.jpt.core.pluginResourceLocator&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/p&gt;
-
       </documentation>
    </annotation>
 
