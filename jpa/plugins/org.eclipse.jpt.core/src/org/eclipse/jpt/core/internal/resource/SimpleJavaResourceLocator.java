@@ -15,7 +15,6 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
@@ -105,9 +104,10 @@ public class SimpleJavaResourceLocator
 		IJavaProject javaProject = getJavaProject(project);
 		IPath firstResourcePath = null;
 		try {
-			for (IClasspathEntry entry : javaProject.getRawClasspath()) {
-				if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-					IPath resourcePath = entry.getPath().append(runtimePath);
+			for (IPackageFragmentRoot root : javaProject.getPackageFragmentRoots()) {
+				if (root.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					IContainer rootContainer = (IContainer) root.getUnderlyingResource();
+					IPath resourcePath = rootContainer.getFullPath().append(runtimePath);
 					if (firstResourcePath == null) {
 						firstResourcePath = resourcePath;
 					}
