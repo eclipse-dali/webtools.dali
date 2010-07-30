@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
+import static org.eclipse.jpt.core.internal.XPointUtil.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -24,7 +24,6 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
-import org.eclipse.osgi.util.NLS;
 
 /**
  * Singleton registry for storing all the registered JPA platform configuration
@@ -46,6 +45,7 @@ public class JpaPlatformRegistry {
 	}
 
 	private static final String EXTENSION_ID = "jpaPlatforms"; //$NON-NLS-1$
+	private static final String QUALIFIED_EXTENSION_ID = JptCorePlugin.PLUGIN_ID_ + EXTENSION_ID;
 	private static final String PLATFORM_ELEMENT_NAME = "jpaPlatform"; //$NON-NLS-1$
 	private static final String ID_ATTRIBUTE_NAME = "id"; //$NON-NLS-1$
 	private static final String LABEL_ATTRIBUTE_NAME = "label"; //$NON-NLS-1$
@@ -105,10 +105,11 @@ public class JpaPlatformRegistry {
 		}
 
 		String id = configElement.getAttribute(ID_ATTRIBUTE_NAME);
-		IConfigurationElement prev = configElements.put(id, configElement);
-		if (prev != null) {
-			configElements.put(id, prev);  // replace previous(?)
-			this.logDuplicatePlatform(prev, configElement, id);
+		if (configElements.containsKey(id)) {
+			logDuplicateExtension(QUALIFIED_EXTENSION_ID, id);
+		}
+		else {
+			configElements.put(id, configElement);
 		}
 	}
 
@@ -118,15 +119,15 @@ public class JpaPlatformRegistry {
 	private boolean configElementIsValid(IConfigurationElement configElement) {
 		boolean valid = true;
 		if (configElement.getAttribute(ID_ATTRIBUTE_NAME) == null) {
-			this.logMissingAttribute(configElement, ID_ATTRIBUTE_NAME);
+			logMissingAttribute(configElement, ID_ATTRIBUTE_NAME);
 			valid = false;
 		}
 		if (configElement.getAttribute(LABEL_ATTRIBUTE_NAME) == null) {
-			this.logMissingAttribute(configElement, LABEL_ATTRIBUTE_NAME);
+			logMissingAttribute(configElement, LABEL_ATTRIBUTE_NAME);
 			valid = false;
 		}
 		if (configElement.getAttribute(FACTORY_CLASS_ATTRIBUTE_NAME) == null) {
-			this.logMissingAttribute(configElement, FACTORY_CLASS_ATTRIBUTE_NAME);
+			logMissingAttribute(configElement, FACTORY_CLASS_ATTRIBUTE_NAME);
 			valid = false;
 		}
 		return valid;
@@ -226,51 +227,15 @@ public class JpaPlatformRegistry {
 		String id = JptCorePlugin.getJpaPlatformId(project);
 		IConfigurationElement configElement = this.jpaPlatformConfigurationElements.get(id);
 		if (configElement == null) {
-			this.log(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName());
+			log(JptCoreMessages.PLATFORM_ID_DOES_NOT_EXIST, id, project.getName());
 			return null;
 		}
-		JpaPlatformFactory platformFactory;
-		try {
-			platformFactory = (JpaPlatformFactory) configElement.createExecutableExtension(FACTORY_CLASS_ATTRIBUTE_NAME);
-		} catch (CoreException ex) {
-			this.logFailedInstantiation(configElement, ex);
+		JpaPlatformFactory platformFactory = instantiate(
+					configElement.getContributor().getName(), QUALIFIED_EXTENSION_ID, 
+					configElement.getAttribute(FACTORY_CLASS_ATTRIBUTE_NAME), JpaPlatformFactory.class);
+		if (platformFactory == null) {
 			throw new IllegalArgumentException(id);
 		}
 		return platformFactory.buildJpaPlatform(id);
 	}
-
-
-	// ********** errors **********
-
-	private void logMissingAttribute(IConfigurationElement configElement, String attributeName) {
-		this.log(JptCoreMessages.REGISTRY_MISSING_ATTRIBUTE,
-						configElement.getName(),
-						configElement.getContributor().getName(),
-						attributeName
-					);
-	}
-
-	private void logDuplicatePlatform(IConfigurationElement prevConfigElement, IConfigurationElement newConfigElement, String id) {
-		this.log(JptCoreMessages.REGISTRY_DUPLICATE,
-						prevConfigElement.getContributor().getName(),
-						newConfigElement.getContributor().getName(),
-						ID_ATTRIBUTE_NAME,
-						PLATFORM_ELEMENT_NAME,
-						id
-					);
-	}
-
-	private void logFailedInstantiation(IConfigurationElement configElement, CoreException ex) {
-		this.log(JptCoreMessages.REGISTRY_FAILED_INSTANTIATION,
-						configElement.getAttribute(FACTORY_CLASS_ATTRIBUTE_NAME),
-						configElement.getName(),
-						configElement.getContributor().getName()
-					);
-		JptCorePlugin.log(ex);
-	}
-
-	private void log(String msg, Object... bindings) {
-		JptCorePlugin.log(NLS.bind(msg, bindings));
-	}
-
 }

@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.CONTAINER_PATH;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IClasspathContainer;
@@ -19,9 +21,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
+import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -104,7 +106,7 @@ public class JpaFacetInstallDelegate
 		SubMonitor sm = SubMonitor.convert(monitor, 5);
 
 		IDataModel config = DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		config.setProperty(CONTAINER_PATH, defaultResourceLocation(project));
 		sm.worked(1);
 		// default values for all other properties should suffice
 		try {
@@ -116,9 +118,9 @@ public class JpaFacetInstallDelegate
 
 	private void createOrmXml(IProject project, IProgressMonitor monitor) {
 		SubMonitor sm = SubMonitor.convert(monitor, 5);
-
+		
 		IDataModel config = DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		config.setProperty(CONTAINER_PATH, defaultResourceLocation(project));
 		sm.worked(1);
 		// default values for all other properties should suffice
 		try {
@@ -126,5 +128,14 @@ public class JpaFacetInstallDelegate
 		} catch (ExecutionException ex) {
 			JptCorePlugin.log(ex);
 		}
+	}
+	
+	protected IPath defaultResourceLocation(IProject project) {
+		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(project);
+		if (resourceLocator == null) {
+			JptCorePlugin.log("No resource locator for project");
+			return null;
+		}
+		return resourceLocator.getDefaultResourceLocation(project).getFullPath();
 	}
 }

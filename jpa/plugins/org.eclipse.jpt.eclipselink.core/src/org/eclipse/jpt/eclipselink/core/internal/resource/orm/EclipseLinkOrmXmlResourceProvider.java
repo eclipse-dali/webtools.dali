@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
@@ -34,33 +33,33 @@ public class EclipseLinkOrmXmlResourceProvider
 	 * the given file.
 	 */
 	public static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider(IFile file) {
-		return getXmlResourceProvider_(file.getProject(), file.getFullPath().toString());
+		return getXmlResourceProvider_(file.getProject(), file.getFullPath());
 	}
 	
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for
-	 * the given project in the specified deploy location
+	 * the given project in the specified runtime location
 	 */
-	public static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider(IProject project, String deployLocation) {
-		return getXmlResourceProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+	public static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider(IProject project, IPath runtimePath) {
+		return getXmlResourceProvider_(project, JptCorePlugin.getPlatformFile(project, runtimePath).getFullPath());
 		
 	}
 	
 	/**
 	 * (Convenience method) Returns an EclipseLink ORM resource model provider for 
-	 * the given project in the default deploy location
+	 * the given project in the default runtime location
 	 */
 	public static EclipseLinkOrmXmlResourceProvider getDefaultXmlResourceProvider(IProject project) {
-		return getXmlResourceProvider(project, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
+		return getXmlResourceProvider(project, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH);
 	}
 	
-	private static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return new EclipseLinkOrmXmlResourceProvider(project, new Path(location));
+	private static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider_(IProject project, IPath fullPath) {
+		return new EclipseLinkOrmXmlResourceProvider(project, fullPath);
 	}
 	
 	
 	public EclipseLinkOrmXmlResourceProvider(IProject project) {
-		this(project, new Path(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH));
+		this(project, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH);
 	}
 	
 	public EclipseLinkOrmXmlResourceProvider(IProject project, IPath filePath) {

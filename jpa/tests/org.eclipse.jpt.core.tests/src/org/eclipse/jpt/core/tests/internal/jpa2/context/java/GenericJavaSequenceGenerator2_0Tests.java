@@ -132,7 +132,7 @@ public class GenericJavaSequenceGenerator2_0Tests extends Generic2_0ContextModel
 	
 	public void testUpdateDefaultSchemaFromPersistenceUnitDefaults() throws Exception {
 		XmlMappingFileRef mappingFileRef = PersistenceFactory.eINSTANCE.createXmlMappingFileRef();
-		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		mappingFileRef.setFileName(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
 		getXmlPersistenceUnit().getMappingFiles().add(mappingFileRef);
 
 		createTestEntityWithSequenceGenerator();

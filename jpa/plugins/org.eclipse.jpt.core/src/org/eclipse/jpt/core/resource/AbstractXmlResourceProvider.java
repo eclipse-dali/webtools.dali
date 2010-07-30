@@ -81,7 +81,7 @@ public abstract class AbstractXmlResourceProvider
 	 * Create a new AbstractResourceModelProvider for the given project and 
 	 * resourcePath.  The resourcePath may be either a) an absolute platform 
 	 * resource path (e.g. "MyProject/src/META-INF/foobar.xml") or b) a relative 
-	 * deploy path (e.g. "META-INF/foobar.xml".)  In either case, 
+	 * runtime path (e.g. "META-INF/foobar.xml".)  In either case, 
 	 * {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
 	 * URI for the given path.
 	 */

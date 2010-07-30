@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,7 +50,7 @@ public abstract class AbstractPersistenceXmlContextNodeFactory implements Persis
 	}
 	
 	public MappingFileRef buildImpliedMappingFileRef(PersistenceUnit parent) {
-		return new ImpliedMappingFileRef(parent, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH );
+		return new ImpliedMappingFileRef(parent, JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
 	}
 	
 	public ClassRef buildClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
@@ -72,5 +72,4 @@ public abstract class AbstractPersistenceXmlContextNodeFactory implements Persis
 	public PersistenceUnit.Property buildProperty(PersistenceUnit parent, XmlProperty xmlProperty) {
 		return new GenericPersistenceUnitProperty(parent, xmlProperty);
 	}
-
 }

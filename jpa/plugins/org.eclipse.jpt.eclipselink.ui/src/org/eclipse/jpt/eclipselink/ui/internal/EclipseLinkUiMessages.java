@@ -17,13 +17,11 @@ import org.eclipse.osgi.util.NLS;
 public class EclipseLinkUiMessages {
 
 	public static String MappingFileWizard_title;
-	public static String MappingFileWizardPage_title;
-	public static String MappingFileWizardPage_desc;
+	public static String MappingFileWizardPage_newFile_title;
+	public static String MappingFileWizardPage_newFile_desc;
+	public static String MappingFileWizardPage_options_title;
+	public static String MappingFileWizardPage_options_desc;
 	
-	public static String EclipseLink1_1MappingFileWizard_title;
-	public static String EclipseLink1_1MappingFileWizardPage_title;
-	public static String EclipseLink1_1MappingFileWizardPage_desc;
-
 	public static String Boolean_True;
 	public static String Boolean_False;
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,13 +18,11 @@ public class JptCoreMessages {
 
 	public static String NONE;
 	public static String VALIDATE_JOB;
-	public static String VALIDATE_PROJECT_NOT_SPECIFIED;
-	public static String VALIDATE_SOURCE_FOLDER_NOT_SPECIFIED;
-	public static String VALIDATE_SOURCE_FOLDER_ILLEGAL;
-	public static String VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST;
-	public static String VALIDATE_SOURCE_FOLDER_NOT_IN_PROJECT;
-	public static String VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER;
-	public static String VALIDATE_FILE_PATH_NOT_SPECIFIED;
+	public static String VALIDATE_CONTAINER_NOT_SPECIFIED;
+	public static String VALIDATE_PROJECT_NOT_JPA;
+	public static String VALIDATE_PROJECT_IMPROPER_PLATFORM;
+	public static String VALIDATE_CONTAINER_QUESTIONABLE;
+	public static String VALIDATE_FILE_NAME_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_ALREADY_EXISTS;
 	public static String VALIDATE_FILE_VERSION_NOT_SUPPORTED;
 	public static String VALIDATE_FILE_VERSION_NOT_SUPPORTED_FOR_FACET_VERSION;
@@ -48,7 +46,10 @@ public class JptCoreMessages {
 	public static String ERROR_SYNCHRONIZING_CLASSES_COULD_NOT_VALIDATE;
 	public static String ERROR_WRITING_FILE;
 	public static String REGISTRY_MISSING_ATTRIBUTE;
+	public static String REGISTRY_INVALID_VALUE;
 	public static String REGISTRY_DUPLICATE;
+	public static String REGISTRY_FAILED_CLASS_LOAD;
+	public static String REGISTRY_FAILED_INTERFACE_ASSIGNMENT;
 	public static String REGISTRY_FAILED_INSTANTIATION;
 	public static String UPDATE_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;

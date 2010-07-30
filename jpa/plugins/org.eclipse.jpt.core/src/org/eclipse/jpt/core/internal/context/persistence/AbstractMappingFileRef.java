@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -180,7 +181,7 @@ public abstract class AbstractMappingFileRef
 		if (this.fileName == null) {
 			return null;
 		}
-		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(this.fileName);
+		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
 		if (xmlResource == null) {
 			return null;
 		}
@@ -256,7 +257,7 @@ public abstract class AbstractMappingFileRef
 		int severity = IMessage.HIGH_SEVERITY;
 		IFile file = getPlatformFile();
 		if (file.exists()) {
-			JpaXmlResource xmlResource = getJpaProject().getMappingFileXmlResource(this.fileName);
+			JpaXmlResource xmlResource = getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
 			if (xmlResource != null 
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
 				return DefaultJpaValidationMessages.buildMessage(
@@ -280,7 +281,7 @@ public abstract class AbstractMappingFileRef
 	}
 	
 	protected IFile getPlatformFile() {
-		return this.getJpaProject().convertToPlatformFile(this.fileName);
+		return this.getJpaProject().getPlatformFile(new Path(this.fileName));
 	}
 
 

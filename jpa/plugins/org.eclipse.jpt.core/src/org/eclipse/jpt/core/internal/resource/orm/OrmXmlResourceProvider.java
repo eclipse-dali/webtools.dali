@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.resource.orm;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
@@ -32,32 +31,32 @@ public class OrmXmlResourceProvider
 	 * the given file.
 	 */
 	public static OrmXmlResourceProvider getXmlResourceProvider(IFile file) {
-		return getXmlResourceProvider_(file.getProject(), file.getFullPath().toString());
+		return getXmlResourceProvider_(file.getProject(), file.getFullPath());
 	}
 	
 	/**
 	 * (Convenience method) Returns an ORM resource model provider for
-	 * the given project in the specified deploy location
+	 * the given project in the specified runtime location
 	 */
-	public static OrmXmlResourceProvider getXmlResourceProvider(IProject project, String deployLocation) {
-		return getXmlResourceProvider_(project, JptCorePlugin.getDeploymentURI(project, deployLocation));
+	public static OrmXmlResourceProvider getXmlResourceProvider(IProject project, IPath runtimePath) {
+		return getXmlResourceProvider_(project, JptCorePlugin.getPlatformFile(project, runtimePath).getFullPath());
 	}
 	
 	/**
 	 * (Convenience method) Returns an ORM resource model provider for 
-	 * the given project in the default deploy location
+	 * the given project in the default runtime location
 	 */
 	public static OrmXmlResourceProvider getDefaultXmlResourceProvider(IProject project) {
-		return getXmlResourceProvider(project, JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		return getXmlResourceProvider(project, JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 	}
 	
-	private static OrmXmlResourceProvider getXmlResourceProvider_(IProject project, String location) {
-		return new OrmXmlResourceProvider(project, new Path(location));
+	private static OrmXmlResourceProvider getXmlResourceProvider_(IProject project, IPath fullPath) {
+		return new OrmXmlResourceProvider(project, fullPath);
 	}
 	
 	
 	public OrmXmlResourceProvider(IProject project) {
-		this(project, new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH));
+		this(project, JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 	}
 	
 	public OrmXmlResourceProvider(IProject project, IPath filePath) {

@@ -97,8 +97,10 @@ public class JptUiMessages {
 	public static String JpaStructureView_structureNotAvailable;
 	public static String JpaStructureView_numItemsSelected;
 	public static String MappingFileWizard_title;
-	public static String MappingFileWizardPage_title;
-	public static String MappingFileWizardPage_desc;
+	public static String MappingFileWizardPage_newFile_title;
+	public static String MappingFileWizardPage_newFile_desc;
+	public static String MappingFileWizardPage_options_title;
+	public static String MappingFileWizardPage_options_desc;
 	public static String MappingFileWizardPage_projectLabel;
 	public static String MappingFileWizardPage_sourceFolderLabel;
 	public static String MappingFileWizardPage_filePathLabel;

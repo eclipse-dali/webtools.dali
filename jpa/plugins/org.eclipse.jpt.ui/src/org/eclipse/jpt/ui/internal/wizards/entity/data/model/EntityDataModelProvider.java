@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,13 +11,12 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 
-import com.ibm.icu.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IType;
@@ -38,6 +37,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
+import com.ibm.icu.text.MessageFormat;
 
 public class EntityDataModelProvider extends NewJavaClassDataModelProvider implements IEntityDataModelProperties{
 
@@ -189,7 +189,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			IProject project = ProjectUtilities.getProject(projectName);
 			if (project != null) {
 				//TODO need to check content type as well since user can type in a file name, should have a different error message for invalid content type
-				JpaFile jpaFile = JptCorePlugin.getJpaFile(project, xmlName);
+				JpaFile jpaFile = JptCorePlugin.getJpaFile(project, new Path(xmlName));
 				if (jpaFile == null) {
 					return new Status(
 						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,

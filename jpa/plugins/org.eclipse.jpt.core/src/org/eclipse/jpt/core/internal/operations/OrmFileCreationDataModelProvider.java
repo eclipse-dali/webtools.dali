@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -13,7 +13,6 @@ package org.eclipse.jpt.core.internal.operations;
 import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -87,8 +86,8 @@ public class OrmFileCreationDataModelProvider
 	}
 	
 	@Override
-	protected String getDefaultFilePath() {
-		return new Path(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH).toPortableString();
+	protected String getDefaultFileName() {
+		return JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.lastSegment();
 	}
 	
 	@Override
@@ -122,7 +121,7 @@ public class OrmFileCreationDataModelProvider
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
-		if (propertyName.equals(PROJECT_NAME)) {
+		if (propertyName.equals(CONTAINER_PATH)) {
 			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(PERSISTENCE_UNIT, IDataModel.VALID_VALUES_CHG);
 		}
@@ -156,6 +155,9 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
+		if (propertyName.equals(DEFAULT_ACCESS)) {
+			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS));
+		}
 		if (propertyName.equals(PERSISTENCE_UNIT)) {
 			return persistenceUnitPropertyDescriptor(getStringProperty(PERSISTENCE_UNIT));
 		}
@@ -214,7 +216,7 @@ public class OrmFileCreationDataModelProvider
 	
 	protected IStatus validatePersistenceUnit() {
 		boolean addToPUnit = getBooleanProperty(ADD_TO_PERSISTENCE_UNIT);
-		String projectName = getStringProperty(PROJECT_NAME);
+		String projectName = getProject().getName();
 		String pUnitName = getStringProperty(PERSISTENCE_UNIT);
 		if (addToPUnit) {
 			if (StringTools.stringIsEmpty(pUnitName)) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,12 @@ package org.eclipse.jpt.core.internal.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
@@ -22,7 +26,15 @@ import org.eclipse.jpt.core.JptCorePlugin;
  * A collection of utilities for dealing with the Eclipse platform API.
  */
 public class PlatformTools {
-
+	
+	/**
+	 * Return the {@link IContainer} with the workspace relative "full" path
+	 */
+	public static IContainer getContainer(IPath fullContainerPath) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		return root.getContainerForLocation(root.getLocation().append(fullContainerPath));
+	}
+	
 	/**
 	 * Return the specified file's content type,
 	 * using the Eclipse platform's content type manager.

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -59,7 +60,8 @@ public abstract class EclipseLink1_1OrmContextModelTestCase
 	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
-		dataModel.setProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, testJpaProject.getProject().getName());
+		dataModel.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+				testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
 		dataModel.setProperty(OrmFileCreationDataModelProperties.VERSION, EclipseLink1_1.SCHEMA_VERSION);
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
 		return dataModel;

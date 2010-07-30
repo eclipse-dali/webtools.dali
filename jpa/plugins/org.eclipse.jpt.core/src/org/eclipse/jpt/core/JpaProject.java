@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core;
 
 import java.util.Iterator;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -47,7 +47,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface JpaProject
@@ -144,30 +144,31 @@ public interface JpaProject
 
 
 	// ********** XML resources **********
-
+	
 	/**
-	 * Return the XML resource model corresponding to the file
+	 * Return the XML resource model corresponding to the file with runtime path
 	 * <code>META-INF/persistence.xml</code> if that file has the persistence content type
 	 * (<code>"org.eclipse.jpt.core.content.persistence"</code>).
 	 * 
-	 * @see JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH
+	 * @see JptCorePlugin#DEFAULT_PERSISTENCE_XML_RUNTIME_PATH
+	 * @see JptCorePlugin#PERSISTENCE_XML_CONTENT_TYPE
 	 */
 	JpaXmlResource getPersistenceXmlResource();
 	
 	/**
-	 * Return the XML resource model corresponding to the specified file
-	 * if that file has the mapping file content type
+	 * Return the XML resource model corresponding to the file with the specified
+	 * runtime path if that file has the mapping file content type
 	 * (<code>"org.eclipse.jpt.core.content.mappingFile"</code>)
 	 * 
 	 * @see JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
 	 */
-	JpaXmlResource getMappingFileXmlResource(String filePath);
+	JpaXmlResource getMappingFileXmlResource(IPath runtimePath);
 
 	/**
 	 * Return the XML resource model corresponding to the file
 	 * <code>META-INF/orm.xml</code> if that file has the mapping file content type.
 	 * 
-	 * @see JptCorePlugin#DEFAULT_ORM_XML_FILE_PATH
+	 * @see JptCorePlugin#DEFAULT_ORM_XML_RUNTIME_PATH
 	 */
 	JpaXmlResource getDefaultOrmXmlResource();
 	
@@ -318,10 +319,9 @@ public interface JpaProject
 	// ********** utility **********
 
 	/**
-	 * Convert the specified file name to a file mapped to the appropriate
-	 * deployment location.
+	 * Return an {@link IFile} that best represents the given runtime location
 	 */
-	IFile convertToPlatformFile(String fileName);
+	IFile getPlatformFile(IPath runtimePath);
 
 
 	// ********** validation **********

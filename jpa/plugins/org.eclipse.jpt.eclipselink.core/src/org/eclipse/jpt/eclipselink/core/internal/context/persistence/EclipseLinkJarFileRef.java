@@ -23,8 +23,8 @@ public class EclipseLinkJarFileRef
 	}
 
 	@Override
-	protected IPath[] resolveDeploymentJarFilePathWeb(IPath root, IPath jarFilePath) {
-		IPath[] genericPath = super.resolveDeploymentJarFilePathWeb(root, jarFilePath);
+	protected IPath[] resolveRuntimeJarFilePathWeb(IPath root, IPath jarFilePath) {
+		IPath[] genericPath = super.resolveRuntimeJarFilePathWeb(root, jarFilePath);
 		return ArrayTools.removeLast(genericPath);
 	}
 

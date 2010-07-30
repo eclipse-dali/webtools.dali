@@ -60,7 +60,8 @@ public abstract class EclipseLink2_0OrmContextModelTestCase
 	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
-		dataModel.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, testJpaProject.getProject().getName());
+		dataModel.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+				testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
 		dataModel.setProperty(JpaFileCreationDataModelProperties.VERSION, EclipseLink2_0.SCHEMA_VERSION);
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);
 		return dataModel;

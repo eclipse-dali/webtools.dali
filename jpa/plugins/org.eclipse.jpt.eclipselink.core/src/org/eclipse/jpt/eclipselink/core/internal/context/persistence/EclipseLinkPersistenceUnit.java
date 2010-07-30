@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -366,7 +366,7 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
-		return new ImpliedMappingFileRef(this, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
+		return new ImpliedMappingFileRef(this, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
 	}
 
 	@Override
@@ -396,9 +396,8 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	protected boolean impliedEclipseLinkMappingFileIsSpecified() {
-		String impliedMappingFile = JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH;
 		for (Iterator<MappingFileRef> stream = specifiedMappingFileRefs(); stream.hasNext(); ) {
-			if (impliedMappingFile.equals(stream.next().getFileName())) {
+			if (JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.equals(new Path(stream.next().getFileName()))) {
 				return true;
 			}
 		}

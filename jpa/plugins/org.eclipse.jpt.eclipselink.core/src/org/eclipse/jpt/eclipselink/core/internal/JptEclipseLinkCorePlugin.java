@@ -9,14 +9,14 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
-import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
@@ -97,7 +97,7 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static final JpaResourceType ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE
 			= new JpaResourceType(ECLIPSELINK_ORM_XML_CONTENT_TYPE, EclipseLink2_1.SCHEMA_VERSION);
 	
-	public static final String DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH = "META-INF/eclipselink-orm.xml"; //$NON-NLS-1$
+	public static final IPath DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH = new Path("META-INF/eclipselink-orm.xml"); //$NON-NLS-1$
 	
 	
 	// ********** singleton **********
@@ -109,15 +109,6 @@ public class JptEclipseLinkCorePlugin extends Plugin
 	public static JptEclipseLinkCorePlugin instance() {
 		return INSTANCE;
 	}	
-	
-	/**
-	 * Return the default mapping file deployment URI for the specified project.
-	 * ("WEB-INF/classes/META-INF/eclipselink-orm.xml" for web projects and
-	 *  "META-INF/eclipselink-orm.xml" in other cases)
-	 */
-	public static String getDefaultEclipseLinkOrmXmlDeploymentURI(IProject project) {
-		return JptCorePlugin.getDeploymentURI(project, DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH);
-	}
 	
 	/**
 	 * Log the specified status.

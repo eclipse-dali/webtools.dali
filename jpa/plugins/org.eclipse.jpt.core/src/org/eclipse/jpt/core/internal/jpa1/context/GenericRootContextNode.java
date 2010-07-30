@@ -225,7 +225,7 @@ public class GenericRootContextNode
 	}
 
 	protected IFile getPlatformFile() {
-		return this.jpaProject.convertToPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH);
+		return this.jpaProject.getPlatformFile(JptCorePlugin.DEFAULT_PERSISTENCE_XML_RUNTIME_PATH);
 	}
 
 	protected void validateOrphanClasses(List<IMessage> messages) {

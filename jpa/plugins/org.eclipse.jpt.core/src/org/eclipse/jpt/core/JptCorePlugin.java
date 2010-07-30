@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -34,12 +33,13 @@ import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
+import org.eclipse.jpt.core.internal.resource.ResourceLocatorManager;
+import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
-import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
@@ -56,7 +56,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public class JptCorePlugin extends Plugin {
@@ -227,14 +227,9 @@ public class JptCorePlugin extends Plugin {
 	 */
 	public static final String WEB_PROJECT_FACET_ID = IModuleConstants.JST_WEB_MODULE;
 
-	/**
-	 * Web projects have some special exceptions.
-	 */
-	public static final String WEB_PROJECT_DEPLOY_PREFIX = J2EEConstants.WEB_INF_CLASSES;
+	public static final IPath DEFAULT_PERSISTENCE_XML_RUNTIME_PATH = new Path("META-INF/persistence.xml"); //$NON-NLS-1$
 
-	public static final String DEFAULT_PERSISTENCE_XML_FILE_PATH = "META-INF/persistence.xml"; //$NON-NLS-1$
-
-	public static final String DEFAULT_ORM_XML_FILE_PATH = "META-INF/orm.xml"; //$NON-NLS-1$
+	public static final IPath DEFAULT_ORM_XML_RUNTIME_PATH = new Path("META-INF/orm.xml"); //$NON-NLS-1$
 	
 	private static IContentType getJpaContentType(String jpaContentType) {
 		return getContentType(CONTENT_PREFIX_ + jpaContentType);
@@ -323,67 +318,39 @@ public class JptCorePlugin extends Plugin {
 			return false;
 		}
 	}
-
-	/**
-	 * Return the <code>persistence.xml</code> (specified as <code>"META-INF/persistence.xml"</code>)
-	 * deployment URI for the specified project.
-	 */
-	public static String getPersistenceXmlDeploymentURI(IProject project) {
-		return getDeploymentURI(project, DEFAULT_PERSISTENCE_XML_FILE_PATH);
+	
+	public static ResourceLocator getResourceLocator(IProject project) {
+		return ResourceLocatorManager.instance().getResourceLocator(project);
 	}
-
-	/**
-	 * Return the default mapping file (specified as <code>"META-INF/orm.xml"</code>)
-	 * deployment URI for the specified project.
-	 */
-	public static String getDefaultOrmXmlDeploymentURI(IProject project) {
-		return getDeploymentURI(project, DEFAULT_ORM_XML_FILE_PATH);
+	
+	public static IFile getPlatformFile(IProject project, IPath runtimePath) {
+		ResourceLocator resourceLocator = getResourceLocator(project);
+		if (resourceLocator == null) {
+			return null;
+		}
+		IPath sourcePath = resourceLocator.getResourcePath(project, runtimePath);
+		if (sourcePath == null) {
+			return null;
+		}
+		return project.getWorkspace().getRoot().getFile(sourcePath);
 	}
-
-	/**
-	 * Return the mapping file (specified as {@code"META-INF/<mappingFileName>"})
-	 * deployment URI for the specified project.
-	 */
-	public static String getOrmXmlDeploymentURI(IProject project, String mappingFileName) {
-		return getDeploymentURI(project, mappingFileName);
-	}
-
-	/**
-	 * Tweak the specified deployment URI if the specified project
-	 * has a Web facet.
-	 */
-	public static String getDeploymentURI(IProject project, String defaultURI) {
-		return projectHasWebFacet(project) ?
-				WEB_PROJECT_DEPLOY_PREFIX + '/' + defaultURI
-			:
-				defaultURI;
-	}
-
-	/**
-	 * Return the deployment path to which JARs are relatively specified for 
-	 * the given project.
-	 * (Web projects have a different deployment structure than non-web projects.)
-	 */
-	public static IPath getJarDeploymentRootPath(IProject project) {
-		return new Path(getJarDeploymentRootPathName(project));
-	}
-
-	private static String getJarDeploymentRootPathName(IProject project) {
-		return projectHasWebFacet(project) ? ("/" + J2EEConstants.WEB_INF) : "/"; //$NON-NLS-1$ //$NON-NLS-2$
-	}
-
-	public static IFile getPlatformFile(IProject project, String defaultURI) {
-		IPath deploymentPath = new Path(getDeploymentURI(project, defaultURI));
-		IVirtualFile vFile = ComponentCore.createFile(project, deploymentPath);
-		return vFile.getUnderlyingFile();
-
-	}
-
-	public static JpaFile getJpaFile(IProject project, String defaultURI) {
-		IFile xmlFile = getPlatformFile(project, defaultURI);
+	
+	public static JpaFile getJpaFile(IProject project, IPath runtimePath) {
+		IFile xmlFile = getPlatformFile(project, runtimePath);
 		return xmlFile.exists() ? getJpaFile(xmlFile) : null;
 	}
-
+	
+	/**
+	 * Return the runtime path to which JARs are relatively specified for 
+	 * the given project.
+	 * (Web projects have a different runtime structure than non-web projects.)
+	 */
+	public static IPath getJarRuntimeRootPath(IProject project) {
+		return projectHasWebFacet(project) ? 
+				new Path("/" + J2EEConstants.WEB_INF)  //$NON-NLS-1$
+				: new Path("/");  //$NON-NLS-1$
+	}
+	
 	public static void initializeDefaultPreferences() {
 		IEclipsePreferences node = getDefaultPreferences();
 

@@ -10,27 +10,30 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties.*;
 import java.lang.reflect.InvocationTargetException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -40,15 +43,26 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
-import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
-import org.eclipse.wst.common.frameworks.internal.datamodel.ui.DataModelWizard;
+import org.eclipse.wst.common.frameworks.internal.datamodel.IDataModelPausibleOperation;
+import org.eclipse.wst.common.frameworks.internal.dialog.ui.WarningDialog;
+import org.eclipse.wst.common.frameworks.internal.ui.ErrorDialog;
+import org.eclipse.wst.common.frameworks.internal.ui.WTPCommonUIResourceHandler;
 
-public class MappingFileWizard extends DataModelWizard 
+public class MappingFileWizard extends Wizard
 	implements INewWizard 
 {
-	private MappingFileWizardPage page;
+	protected IDataModel dataModel;
+	
+	protected IStructuredSelection initialSelection;
+	
+	protected IStructuredSelection mungedSelection;
+	
+	private IWizardPage firstPage;
+	
+	private IWizardPage secondPage;
 	
 	
 	public MappingFileWizard() {
@@ -56,30 +70,16 @@ public class MappingFileWizard extends DataModelWizard
 	}
 	
 	public MappingFileWizard(IDataModel dataModel) {
-		super(dataModel);
+		super();
+		this.dataModel = dataModel;
 		setWindowTitle(JptUiMessages.MappingFileWizard_title);
 		setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.JPA_FILE_WIZ_BANNER));
 	}
 	
 	
-	@Override
-	protected void doAddPages() {
-		super.doAddPages();
-		page = buildMappingFileWizardPage();
-		addPage(page);
-	}
-	
-	protected MappingFileWizardPage buildMappingFileWizardPage() {
-		return new MappingFileWizardPage(getDataModel(), "Page_1");
-	}
-	
-	@Override
-	protected IDataModelProvider getDefaultProvider() {
-		return new OrmFileCreationDataModelProvider();
-	}
-	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// check for project, source folder, persistence unit?
+		this.initialSelection = selection;
+		
 		if (selection == null || selection.isEmpty()) {
 			return;
 		}
@@ -87,177 +87,213 @@ public class MappingFileWizard extends DataModelWizard
 		Object firstSelection = selection.getFirstElement();
 		
 		PersistenceUnit pUnit = extractPersistenceUnit(firstSelection);
-		IFolder sourceFolder = extractSourceFolder(pUnit, firstSelection);
-		IProject project = extractProject(pUnit, sourceFolder, firstSelection);
+		IContainer container = extractContainer(pUnit, firstSelection);
 		
-		if (project != null) {
-			getDataModel().setStringProperty(OrmFileCreationDataModelProperties.PROJECT_NAME, project.getName());
+		if (container != null) {
+			this.mungedSelection = new StructuredSelection(container);
 		}
-		if (sourceFolder != null) {
-			getDataModel().setStringProperty(OrmFileCreationDataModelProperties.SOURCE_FOLDER, sourceFolder.getFullPath().toPortableString());
+		else {
+			this.mungedSelection = this.initialSelection;
 		}
+		
 		if (pUnit != null) {
-			getDataModel().setBooleanProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, true);
-			getDataModel().setStringProperty(OrmFileCreationDataModelProperties.PERSISTENCE_UNIT, pUnit.getName());
+			getDataModel().setBooleanProperty(ADD_TO_PERSISTENCE_UNIT, true);
+			getDataModel().setStringProperty(PERSISTENCE_UNIT, pUnit.getName());
 		}
 	}
 	
 	private PersistenceUnit extractPersistenceUnit(Object selection) {
-		if (selection instanceof PersistenceUnit) {
-			return (PersistenceUnit) selection;
-		}
-		PersistenceUnit pUnit = null;
 		if (selection instanceof JpaContextNode) {
+			// may be null if node is above level of persistence unit, but in those cases
+			// null is the expected result
 			try {
-				pUnit = ((JpaContextNode) selection).getPersistenceUnit();
+				return ((JpaContextNode) selection).getPersistenceUnit();
 			}
 			catch (Exception e) { /* do nothing, just continue */ }
 		}
-		if (pUnit == null && selection instanceof IAdaptable) {
-			pUnit = (PersistenceUnit) ((IAdaptable) selection).getAdapter(PersistenceUnit.class);
-			
+		
+		if (selection instanceof IAdaptable) {
+			JpaContextNode node = (JpaContextNode) ((IAdaptable) selection).getAdapter(JpaContextNode.class);
+			if (node != null) {
+				return node.getPersistenceUnit();
+			}
 		}
-		return pUnit;
+		return null;
 	}
 	
-	private IFolder extractSourceFolder(PersistenceUnit pUnit, Object selection) {
-		IJavaProject javaProject = null;
-		IFolder srcFolder = null;
+	private IContainer extractContainer(PersistenceUnit pUnit, Object selection) {
 		if (pUnit != null) {
-			javaProject = pUnit.getJpaProject().getJavaProject();
-			srcFolder = findSourceFolder(javaProject, pUnit.getResource());
-			if (srcFolder != null) {
-				return srcFolder;
-			}
-			
+			return pUnit.getResource().getParent();
 		}
-		if (selection instanceof IResource) {
-			javaProject = JavaCore.create(((IResource) selection).getProject());
-			if (javaProject.exists()) {
-				srcFolder = findSourceFolder(javaProject, (IResource) selection);
-				if (srcFolder != null) {
-					return srcFolder;
-				}
-			}
+		if (selection instanceof IProject) {
+			return getDefaultContainer((IProject) selection);
+		}
+		if (selection instanceof IContainer) {
+			return (IContainer) selection;
+		}
+		if (selection instanceof JpaContextNode) {
+			return getDefaultContainer(((JpaContextNode) selection).getJpaProject().getProject());
 		}
 		
 		if (selection instanceof IAdaptable) {
 			IResource resource = (IResource) ((IAdaptable) selection).getAdapter(IResource.class);
 			if (resource != null) {
-				javaProject = JavaCore.create((resource).getProject());
-				if (javaProject.exists()) {
-					srcFolder = findSourceFolder(javaProject, resource);	
-					if (srcFolder != null) {
-						return srcFolder;
-					}
+				if (resource instanceof IProject) {
+					return getDefaultContainer((IProject) resource);
 				}
+				else if (resource instanceof IContainer) {
+					return (IContainer) resource;
+				}
+			}
+			JpaContextNode node = (JpaContextNode) ((IAdaptable) selection).getAdapter(JpaContextNode.class);
+			if (node != null) {
+				return getDefaultContainer(node.getJpaProject().getProject());
 			}
 		}
 		return null;
 	}
 	
-	private IFolder findSourceFolder(IJavaProject javaProject, IResource resource) {
-		if (JptCorePlugin.getJpaProject(javaProject.getProject()) == null) {
-			// not even a jpa project
-			return null;
+	private IContainer getDefaultContainer(IProject project) {
+		if (JptCorePlugin.projectHasJpaFacet(project)) {
+			return JptCorePlugin.getResourceLocator(project).getDefaultResourceLocation(project);
 		}
-		while (resource != null && ! (resource instanceof IFolder)) {
-			resource = resource.getParent();
-		}
-		if (resource == null) {
-			return null;
-		}
-		IFolder folder = (IFolder) resource;
-		try {
-			IPackageFragmentRoot packageFragmentRoot = null;
-			while (packageFragmentRoot == null && folder != null) {
-				packageFragmentRoot = javaProject.findPackageFragmentRoot(folder.getFullPath());
-				if (packageFragmentRoot == null) {
-					IPackageFragment packageFragment = javaProject.findPackageFragment(folder.getFullPath());
-					if (packageFragment != null) {
-						packageFragmentRoot = (IPackageFragmentRoot) packageFragment.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
-					}
-				}
-				if (packageFragmentRoot == null) {
-					try {
-						folder = (IFolder) folder.getParent();
-					}
-					catch (ClassCastException cce) {
-						folder = null;
-					}
-				}
-			}
-			if (packageFragmentRoot == null) {
-				return null;
-			}
-			if (JDTTools.packageFragmentRootIsSourceFolder(packageFragmentRoot)) {
-				return (IFolder) packageFragmentRoot.getResource();
-			}
-		}
-		catch (JavaModelException jme) { /* do nothing, return null */ }
-		return null;
-	}
-	
-	private IProject extractProject(PersistenceUnit pUnit, IFolder sourceFolder, Object selection) {
-		if (pUnit != null) {
-			return pUnit.getJpaProject().getProject();
-		}
-		if (sourceFolder != null) {
-			return sourceFolder.getProject();
-		}
-		
-		IProject project = null;
-		if (selection instanceof IResource) {
-			project = ((IResource) selection).getProject();
-		}
-		if (project == null && selection instanceof IJavaElement) {
-			project = ((IJavaElement) selection).getJavaProject().getProject();
-		}
-		if (project == null && selection instanceof JpaContextNode) {
-			project = ((JpaContextNode) selection).getJpaProject().getProject();
-		}
-		if (project == null && selection instanceof IAdaptable) {
-			project = (IProject) ((IAdaptable) selection).getAdapter(IProject.class);
-			if (project == null) {
-				IResource resource = (IResource) ((IAdaptable) selection).getAdapter(IResource.class);
-				if (resource != null) {
-					project = resource.getProject();
-				}
-			}
-			if (project == null) {
-				IJavaElement javaElement = (IJavaElement) ((IAdaptable) selection).getAdapter(IJavaElement.class);
-				if (javaElement != null) {
-					project = javaElement.getJavaProject().getProject();
-				}
-			}
-		}
-		
-		if (project != null) {
-			for (DataModelPropertyDescriptor descriptor :
-					getDataModel().getValidPropertyDescriptors(OrmFileCreationDataModelProperties.PROJECT_NAME)) {
-				if (descriptor.getPropertyDescription().equals(project.getName())) {
-					return project;
-				}
-			}
-		}
-		return null;
+		return project;
 	}
 	
 	@Override
-	protected void postPerformFinish() throws InvocationTargetException {      
-        try {
-        	String projectName = (String) getDataModel().getProperty(OrmFileCreationDataModelProperties.PROJECT_NAME);
-        	IProject project = ProjectUtilities.getProject(projectName);
-        	String sourceFolder = getDataModel().getStringProperty(OrmFileCreationDataModelProperties.SOURCE_FOLDER);
-        	String filePath = getDataModel().getStringProperty(OrmFileCreationDataModelProperties.FILE_PATH);
-        	
-        	IFile file = project.getWorkspace().getRoot().getFile(new Path(sourceFolder).append(filePath));
-            openEditor(file);
-        } 
-        catch (Exception cantOpen) {
-        	throw new InvocationTargetException(cantOpen);
-        } 
-    }
+	public void addPages() {
+		super.addPages();
+		this.firstPage = buildMappingFileNewFileWizardPage();
+		this.secondPage = buildMappingFileOptionsWizardPage();
+		addPage(this.firstPage);
+		addPage(this.secondPage);
+	}
+	
+	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
+		return new MappingFileNewFileWizardPage(
+				"Page_1", this.mungedSelection, getDataModel(),
+				JptUiMessages.MappingFileWizardPage_newFile_title, 
+				JptUiMessages.MappingFileWizardPage_newFile_desc);
+	}
+	
+	protected MappingFileOptionsWizardPage buildMappingFileOptionsWizardPage() {
+		return new MappingFileOptionsWizardPage(
+				"Page_2", getDataModel(),
+				JptUiMessages.MappingFileWizardPage_options_title, 
+				JptUiMessages.MappingFileWizardPage_options_desc);
+	}
+	
+	@Override
+	public boolean canFinish() {
+		// override so that visit to second page is not necessary
+		return this.firstPage.isPageComplete() && getDataModel().isValid();
+	}
+	
+	protected IDataModel getDataModel() {
+		if (this.dataModel == null) {
+			this.dataModel = DataModelFactory.createDataModel(getDefaultProvider());
+		}
+		return this.dataModel;
+	}
+	
+	protected IDataModelProvider getDefaultProvider() {
+		return new OrmFileCreationDataModelProvider();
+	}
+	
+	protected IDataModelPausibleOperation getOperation() {
+		return (IDataModelPausibleOperation) getDataModel().getDefaultOperation();
+	}
+	
+	@Override
+	public final boolean performFinish() {
+		try {
+			final IStatus st = runOperations();
+			
+			if (st.getSeverity() == IStatus.ERROR) {
+				JptUiPlugin.log(st);
+				Throwable t = st.getException() == null ? new CoreException(st) : st.getException();
+				ErrorDialog.openError(
+						getShell(), 
+						WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
+						WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_1, new Object[]{getWindowTitle()}), 
+						t, 0, false);
+			} 
+			else if(st.getSeverity() == IStatus.WARNING){
+				WarningDialog.openWarning(
+						getShell(), 
+						WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_2, new Object[]{getWindowTitle()}), 
+						st.getMessage(), 
+						st, IStatus.WARNING);
+			}
+			
+			postPerformFinish();
+		}
+		catch (Exception e) {
+			JptUiPlugin.log(e);
+			ErrorDialog.openError(
+					getShell(), 
+					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
+					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_1, new Object[]{getWindowTitle()}), 
+					e, 0, false);
+		}
+		return true;
+	}
+	
+	private IStatus runOperations() {
+		
+		class CatchThrowableRunnableWithProgress
+				implements IRunnableWithProgress {
+			
+			public IStatus status = null;
+			public Throwable caught = null;
+			
+			public void run(IProgressMonitor pm) {
+				try {
+					status = getOperation().execute(pm, null);
+				} 
+				catch (Throwable e) {
+					caught = e;
+				}
+			}
+		}
+		
+		CatchThrowableRunnableWithProgress runnable = new CatchThrowableRunnableWithProgress();
+		
+		try {
+			getContainer().run(true, false, runnable);
+		} 
+		catch (Throwable e) {
+			runnable.caught = e;
+		}
+		
+		if (runnable.caught == null) {
+			return runnable.status;
+		}
+		else {
+			JptUiPlugin.log(runnable.caught);
+			ErrorDialog.openError(
+					getShell(), 
+					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_0, new Object[]{getWindowTitle()}), 
+					WTPCommonUIResourceHandler.getString(WTPCommonUIResourceHandler.WTPWizard_UI_1, new Object[]{getWindowTitle()}), 
+					runnable.caught, 0, false);
+			return new Status(IStatus.ERROR, "id", 0, runnable.caught.getMessage(), runnable.caught); //$NON-NLS-1$
+		}
+	}
+	
+	protected void postPerformFinish()
+			throws InvocationTargetException {      
+		
+		try {
+			IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
+			String fileName = getDataModel().getStringProperty(FILE_NAME);
+			IContainer container = PlatformTools.getContainer(containerPath);
+			IFile file = container.getFile(new Path(fileName));
+			openEditor(file);
+		}
+		catch (Exception cantOpen) {
+			throw new InvocationTargetException(cantOpen);
+		} 
+	}
 	
 	private void openEditor(final IFile file) {
         if (file != null) {
@@ -274,4 +310,10 @@ public class MappingFileWizard extends DataModelWizard
             });
         }
     }
+	
+	@Override
+	public void dispose() {
+		super.dispose();
+		getDataModel().dispose();
+	}
 }

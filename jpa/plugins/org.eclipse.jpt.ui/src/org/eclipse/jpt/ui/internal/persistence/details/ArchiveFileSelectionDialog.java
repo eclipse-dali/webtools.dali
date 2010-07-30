@@ -215,7 +215,7 @@ public class ArchiveFileSelectionDialog
 		
 		protected String calculatePersistenceRootRelativePath(IVirtualFile vFile) {
 			IProject project = vFile.getProject();
-			IPath puRootPath = JptCorePlugin.getJarDeploymentRootPath(project);
+			IPath puRootPath = JptCorePlugin.getJarRuntimeRootPath(project);
 			
 			IPath path = vFile.getRuntimePath().makeRelativeTo(puRootPath);
 			

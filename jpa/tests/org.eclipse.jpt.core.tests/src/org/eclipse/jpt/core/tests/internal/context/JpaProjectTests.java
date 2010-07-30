@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.context;
 
 import junit.framework.TestCase;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
@@ -84,7 +85,8 @@ public class JpaProjectTests extends TestCase
 	private void createPersistenceXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
 	
@@ -110,56 +112,58 @@ public class JpaProjectTests extends TestCase
 	private void createDefaultOrmXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
+		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
 	
-	private void createOrmXmlFile(String filePath) throws Exception {
+	private void createOrmXmlFile(String fileName) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.PROJECT_NAME, getJpaProject().getProject().getName());
-		config.setProperty(JpaFileCreationDataModelProperties.FILE_PATH, filePath);
+		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
+		config.setProperty(JpaFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.getDefaultOperation().execute(null, null);
 	}
 
 	public void testGetMappingFileResource() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the orm.xml file and verify it is not returned from getMappingFileResource()
 		resource.delete(null);
-		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 		assertNull(resource);
 		
 		//add the  orm.xml file back
 		createDefaultOrmXmlFile();
-		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		resource = this.getJpaProject().getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm.xml", resource.getFile().getProjectRelativePath().toString());
 	}
 	
 	public void testGetMappingFileResourceDifferentlyName() throws Exception {
-		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
+		JpaXmlResource resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNull(resource);
 
 		//create the orm2.xml file
-		createOrmXmlFile("META-INF/orm2.xml");
-		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
+		createOrmXmlFile("orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());
 		
 		//delete the orm2.xml file and verify it is not returned from getMappingFileResource()
 		resource.delete(null);
-		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNull(resource);
 		
 		//add the orm2.xml file back
-		createOrmXmlFile("META-INF/orm2.xml");
-		resource = this.getJpaProject().getMappingFileXmlResource("META-INF/orm2.xml");
+		createOrmXmlFile("orm2.xml");
+		resource = this.getJpaProject().getMappingFileXmlResource(new Path("META-INF/orm2.xml"));
 		assertNotNull(resource);
 		assertEquals(JptCorePlugin.ORM_XML_CONTENT_TYPE, resource.getContentType());
 		assertEquals("src/META-INF/orm2.xml", resource.getFile().getProjectRelativePath().toString());

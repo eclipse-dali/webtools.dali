@@ -74,14 +74,15 @@ public class OrmFileCreationOperation
 		if (! getDataModel().getBooleanProperty(ADD_TO_PERSISTENCE_UNIT)) {
 			return;
 		}
-		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.createdFile.getProject());
+		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.file.getProject());
 		JpaXmlResource resource = jpaProject.getPersistenceXmlResource();
 	
 		final PersistenceUnit pUnit = getPersistenceUnit();
 		
 		resource.modify(new Runnable() {
 			public void run() {
-				String filePath = getDataModel().getStringProperty(FILE_PATH);
+				String fileName = getDataModel().getStringProperty(FILE_NAME);
+				String filePath = "META-INF/" + fileName;
 				for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
 					if (filePath.equals(stream.next().getFileName())) {
 						return;

@@ -192,7 +192,7 @@ public abstract class AbstractJpaDeleteTypeParticipant
 			}
 			Iterable<DeleteEdit> mappingFileDeleteEdits = this.createMappingFileDeleteTypeEdits(mappingFileRef);
 			if (!CollectionTools.isEmpty(mappingFileDeleteEdits)) {
-				this.mappingFilePersistentTypeDeleteEdits.put(jpaProject.getMappingFileXmlResource(mappingFileRef.getFileName()).getFile(), mappingFileDeleteEdits);
+				this.mappingFilePersistentTypeDeleteEdits.put((IFile) mappingFileRef.getMappingFile().getResource(), mappingFileDeleteEdits);
 			}
 			sm.worked(1);
 		}

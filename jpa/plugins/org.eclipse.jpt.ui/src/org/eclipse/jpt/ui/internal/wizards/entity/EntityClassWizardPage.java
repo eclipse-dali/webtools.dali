@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008, 2009 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,13 +12,13 @@
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
 import java.io.File;
-
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -126,7 +126,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 				boolean isChecked = xmlSupportButton.getSelection();
 				enableMappingXMLChooseGroup(isChecked);
 				if (isFirstCheck) {
-					ormXmlName.setText(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+					ormXmlName.setText(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
 					isFirstCheck = false;
 				}
 			}
@@ -280,7 +280,7 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 		dialog.addFilter(filter);
 			
 		String ormFileName = this.ormXmlName.getText();
-		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(ormFileName);
+		JpaXmlResource resource = jpaProject.getMappingFileXmlResource(new Path(ormFileName));
 		IFile initialSelection = (resource != null) ? resource.getFile() : null;
 		dialog.setInput(project);
 

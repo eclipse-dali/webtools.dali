@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -53,6 +54,7 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
+import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -508,15 +510,21 @@ public abstract class AbstractJpaProject
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Add a JPA file for the specified file, if appropriate, without firing
 	 * an event; useful during construction.
 	 * Return the new JPA file, null if it was not created.
 	 */
 	protected JpaFile addJpaFile_(IFile file) {
-		if ( ! this.getJavaProject().isOnClasspath(file)) {
-			return null;  // the file must be on the Java classpath
+		if (isJavaFile(file)) {
+			if (! getJavaProject().isOnClasspath(file)) {
+				// a java (.jar or .java) file must be on the Java classpath
+				return null;
+			}
+		}
+		else if (! isInAcceptableResourceLocation(file)) {
+			return null;  
 		}
 
 		JpaFile jpaFile = null;
@@ -535,7 +543,21 @@ public abstract class AbstractJpaProject
 		this.jpaFiles.add(jpaFile);
 		return jpaFile;
 	}
-
+	
+	/* file is .java or .jar */
+	protected boolean isJavaFile(IFile file) {
+		IContentType contentType = PlatformTools.getContentType(file);
+		return contentType != null 
+				&& (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
+					|| contentType.isKindOf(JptCorePlugin.JAR_CONTENT_TYPE));
+	}
+	
+	/* (non-java resource) file is in acceptable resource location */
+	protected boolean isInAcceptableResourceLocation(IFile file) {
+		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(getProject());
+		return resourceLocator.acceptResourceLocation(getProject(), file.getParent());
+	}
+	
 	/**
 	 * Remove the JPA file corresponding to the specified IFile, if it exists.
 	 * Return true if a JPA File was removed, false otherwise
@@ -685,8 +707,8 @@ public abstract class AbstractJpaProject
 
 	// ********** utility **********
 
-	public IFile convertToPlatformFile(String fileName) {
-		return JptCorePlugin.getPlatformFile(this.project, fileName);
+	public IFile getPlatformFile(IPath runtimePath) {
+		return JptCorePlugin.getPlatformFile(this.project, runtimePath);
 	}
 
 
@@ -694,17 +716,16 @@ public abstract class AbstractJpaProject
 
 	public JpaXmlResource getPersistenceXmlResource() {
 		return (JpaXmlResource) this.getResourceModel(
-				JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH,
-				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE
-			);
+				JptCorePlugin.DEFAULT_PERSISTENCE_XML_RUNTIME_PATH,
+				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE);
 	}
 
 	public JpaXmlResource getDefaultOrmXmlResource() {
-		return this.getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH);
+		return this.getMappingFileXmlResource(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH);
 	}
 
-	public JpaXmlResource getMappingFileXmlResource(String fileName) {
-		return (JpaXmlResource) this.getResourceModel(fileName, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
+	public JpaXmlResource getMappingFileXmlResource(IPath runtimePath) {
+		return (JpaXmlResource) this.getResourceModel(runtimePath, JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 
 	/**
@@ -712,8 +733,8 @@ public abstract class AbstractJpaProject
 	 * content is a "kind of" the specified content type, return the JPA
 	 * resource model corresponding to the file; otherwise, return null.
 	 */
-	protected JpaResourceModel getResourceModel(String fileName, IContentType contentType) {
-		IFile file = this.convertToPlatformFile(fileName);
+	protected JpaResourceModel getResourceModel(IPath runtimePath, IContentType contentType) {
+		IFile file = this.getPlatformFile(runtimePath);
 		return file.exists() ? this.getResourceModel(file, contentType) :  null;
 	}
 

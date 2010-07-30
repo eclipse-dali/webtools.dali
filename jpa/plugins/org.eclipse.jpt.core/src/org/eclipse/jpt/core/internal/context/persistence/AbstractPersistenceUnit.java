@@ -507,7 +507,7 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected boolean impliedMappingFileIsSpecified() {
-		String impliedMappingFileName = JptCorePlugin.DEFAULT_ORM_XML_FILE_PATH;
+		String impliedMappingFileName = JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString();
 		for (Iterator<MappingFileRef> stream = this.specifiedMappingFileRefs(); stream.hasNext(); ) {
 			if (impliedMappingFileName.equals(stream.next().getFileName())) {
 				return true;

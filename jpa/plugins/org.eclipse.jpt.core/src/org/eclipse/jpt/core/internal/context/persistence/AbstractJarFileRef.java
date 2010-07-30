@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
@@ -188,8 +187,8 @@ public abstract class AbstractJarFileRef
 	}
 	
 	private JavaResourcePackageFragmentRoot javaPackageRoot_specifically() {
-		for (IPath deploymentPath : resolveDeploymentJarFilePath(new Path(this.fileName))) {
-			IVirtualFile virtualJar = ComponentCore.createFile(this.getProject(), deploymentPath);
+		for (IPath runtimePath : resolveRuntimeJarFilePath(new Path(this.fileName))) {
+			IVirtualFile virtualJar = ComponentCore.createFile(this.getProject(), runtimePath);
 			IFile realJar = virtualJar.getUnderlyingFile();
 			if (realJar.exists() && realJar.getProject().equals(this.getProject())) {
 				return getJpaProject().getJavaResourcePackageFragmentRoot(realJar.getProjectRelativePath().toString());
@@ -212,25 +211,25 @@ public abstract class AbstractJarFileRef
 	}
 
 	/**
-	 * Return an array of deployment paths that may correspond
+	 * Return an array of runtime paths that may correspond
 	 * to the given persistence.xml jar file entry
 	 */
-	protected IPath[] resolveDeploymentJarFilePath(IPath jarFilePath) {
-		IPath root = this.getJarDeploymentRootPath();
+	protected IPath[] resolveRuntimeJarFilePath(IPath jarFilePath) {
+		IPath root = this.getJarRuntimeRootPath();
 		return this.projectHasWebFacet() ?
-				this.resolveDeploymentJarFilePathWeb(root, jarFilePath) :
-				this.resolveDeploymentJarFilePathNonWeb(root, jarFilePath);
+				this.resolveRuntimeJarFilePathWeb(root, jarFilePath) :
+				this.resolveRuntimeJarFilePathNonWeb(root, jarFilePath);
 	}
 
-	protected IPath getJarDeploymentRootPath() {
-		return JptCorePlugin.getJarDeploymentRootPath(this.getProject());
+	protected IPath getJarRuntimeRootPath() {
+		return JptCorePlugin.getJarRuntimeRootPath(this.getProject());
 	}
 
 	protected boolean projectHasWebFacet() {
 		return JptCorePlugin.projectHasWebFacet(this.getProject());
 	}
 
-	protected IPath[] resolveDeploymentJarFilePathWeb(IPath root, IPath jarFilePath) {
+	protected IPath[] resolveRuntimeJarFilePathWeb(IPath root, IPath jarFilePath) {
 		return new IPath[] {
 				// first path entry assumes form "../lib/other.jar"
 				root.append(jarFilePath.removeFirstSegments(1)),
@@ -239,7 +238,7 @@ public abstract class AbstractJarFileRef
 			};
 	}
 
-	protected IPath[] resolveDeploymentJarFilePathNonWeb(IPath root, IPath jarFilePath) {
+	protected IPath[] resolveRuntimeJarFilePathNonWeb(IPath root, IPath jarFilePath) {
 		return new IPath[] {
 				// assumes form "../lib/other.jar"
 				root.append(jarFilePath)
@@ -268,9 +267,7 @@ public abstract class AbstractJarFileRef
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
 					this,
-					this.getValidationTextRange()
-				)
-			);
+					this.getValidationTextRange()));
 			return;
 		}
 		
@@ -279,9 +276,7 @@ public abstract class AbstractJarFileRef
 				IMessage.NORMAL_SEVERITY,
 				JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
 				this,
-				this.getValidationTextRange()
-			)
-		);
+				this.getValidationTextRange()));
 
 		if (this.jarFile == null) {
 			messages.add(

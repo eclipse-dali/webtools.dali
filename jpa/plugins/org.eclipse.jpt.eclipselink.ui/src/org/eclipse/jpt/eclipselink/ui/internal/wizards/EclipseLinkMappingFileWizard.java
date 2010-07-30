@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
+ *  Copyright (c) 2008, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -12,18 +12,18 @@ package org.eclipse.jpt.eclipselink.ui.internal.wizards;
 
 import org.eclipse.jpt.eclipselink.core.internal.operations.EclipseLinkOrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileNewFileWizardPage;
+import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileOptionsWizardPage;
 import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard;
-import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizardPage;
-import org.eclipse.ui.INewWizard;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 
 /**
  * This is referenced in the plugin.xml as an org.eclipse.ui.newWizards extension
  */
-public class EclipseLinkMappingFileWizard extends MappingFileWizard 
-	implements INewWizard 
-{
+public class EclipseLinkMappingFileWizard
+		extends MappingFileWizard {
+	
 	public EclipseLinkMappingFileWizard() {
 		this(null);
 	}
@@ -35,8 +35,19 @@ public class EclipseLinkMappingFileWizard extends MappingFileWizard
 	
 	
 	@Override
-	protected MappingFileWizardPage buildMappingFileWizardPage() {
-		return new EclipseLinkMappingFileWizardPage(getDataModel(), "Page_1", EclipseLinkUiMessages.MappingFileWizardPage_title, EclipseLinkUiMessages.MappingFileWizardPage_desc);
+	protected MappingFileNewFileWizardPage buildMappingFileNewFileWizardPage() {
+		return new MappingFileNewFileWizardPage(
+				"Page_1", this.mungedSelection, getDataModel(),
+				EclipseLinkUiMessages.MappingFileWizardPage_newFile_title, 
+				EclipseLinkUiMessages.MappingFileWizardPage_newFile_desc);
+	}
+	
+	@Override
+	protected MappingFileOptionsWizardPage buildMappingFileOptionsWizardPage() {
+		return new MappingFileOptionsWizardPage(
+				"Page_2", getDataModel(),
+				EclipseLinkUiMessages.MappingFileWizardPage_options_title, 
+				EclipseLinkUiMessages.MappingFileWizardPage_options_desc);
 	}
 	
 	@Override

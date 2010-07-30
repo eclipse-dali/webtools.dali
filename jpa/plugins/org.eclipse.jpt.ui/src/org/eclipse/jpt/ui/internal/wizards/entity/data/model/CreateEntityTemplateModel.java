@@ -1,5 +1,5 @@
 /***********************************************************************
- * Copyright (c) 2008 by SAP AG, Walldorf. 
+ * Copyright (c) 2008, 2010 by SAP AG, Walldorf. 
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -243,7 +243,7 @@ public class CreateEntityTemplateModel {
 		if (getMappingXMLName().equals(IEntityDataModelProperties.EMPTY_STRING)) {
 			return true;
 		}
-		return getMappingXMLName().equals(JptCorePlugin.getDefaultOrmXmlDeploymentURI(getProject()));
+		return getMappingXMLName().equals(JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.toString());
 	}
 	
 	public String getMappingXMLName() {

@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.operations;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -42,11 +41,8 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	}
 	
 	@Override
-	public Object getDefaultProperty(String propertyName) {
-		if (propertyName.equals(FILE_PATH)) {
-			return new Path(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_FILE_PATH).toPortableString();
-		}
-		return super.getDefaultProperty(propertyName);
+	protected String getDefaultFileName() {
+		return JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.lastSegment();
 	}
 	
 	@Override
@@ -54,8 +50,14 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
-				JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
+		try {
+			return getJpaProject().getJpaPlatform().getMostRecentSupportedResourceType(
+					JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
+		}
+		catch (IllegalArgumentException iae) {
+			// eclipselink content not supported for project
+			return null;
+		}
 	}
 	
 	@Override

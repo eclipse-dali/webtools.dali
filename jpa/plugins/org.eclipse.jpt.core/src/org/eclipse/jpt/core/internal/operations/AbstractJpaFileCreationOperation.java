@@ -9,37 +9,40 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
+
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.*;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 public abstract class AbstractJpaFileCreationOperation
 	extends AbstractDataModelOperation
-	implements JpaFileCreationDataModelProperties
 {
 	/**
-	 * Will be null until folder is created
+	 * Will be null until container is created or verified to exist
 	 */
-	protected IFolder createdSourceFolder;
+	protected IContainer container;
 	
 	/**
-	 * Will be null until file is created
+	 * Will be null until file is created or verified to exist
 	 */
-	protected IFile createdFile;
+	protected IFile file;
 	
 	
 	protected AbstractJpaFileCreationOperation(IDataModel dataModel) {
@@ -50,67 +53,70 @@ public abstract class AbstractJpaFileCreationOperation
 	@Override
 	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		SubMonitor sm = SubMonitor.convert(monitor, 5);
-		// Create source folder if it does not exist
-		createSourceFolder(sm.newChild(1));
+		// Create folder if it does not exist
+		createContainer(sm.newChild(1));
 		// Create file
 		createFile(sm.newChild(4));
 		return OK_STATUS;
 	}
 	
-	protected IProject getProject() throws ExecutionException {
-		String projectName = (String) getDataModel().getProperty(PROJECT_NAME);
-		IProject project = ProjectUtilities.getProject(projectName);
-		if (project == null) {
-			throw new ExecutionException("No project name specified"); //$NON-NLS-1$
+	protected IContainer getContainer() throws ExecutionException {
+		IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
+		IContainer container = PlatformTools.getContainer(containerPath);
+		if (container == null) {
+			throw new ExecutionException("No container path specified"); //$NON-NLS-1$
 		}
-		return project;
+		return container;
+	}
+	
+	protected IProject getProject() throws ExecutionException {
+		return getContainer().getProject();
 	}
 	
 	protected JpaProject getJpaProject() throws ExecutionException {
 		IProject project = getProject();
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(project);
 		if (jpaProject == null) {
-			throw new ExecutionException("Project does not have JPA content"); //$NON-NLS-1$
+			throw new ExecutionException("Project does not have JPA facet"); //$NON-NLS-1$
 		}
 		return jpaProject;
 	}
 	
 	/**
-	 * This method will return the source folder as specified in the data model. 
-	 * It will create the source folder if it does not exist. It will not add
-	 * it as a source folder to the project build path if it is not already.
-	 * This method may return null.
+	 * This method will create the container as specified in the data model if it does not exist.
 	 */
-	// copied from NewJavaClassOperation
-	protected void createSourceFolder(IProgressMonitor monitor) throws ExecutionException {
-		// Get the source folder name from the data model
-		String folderPath = this.model.getStringProperty(SOURCE_FOLDER);
-		IProject project = getProject();
-		IFolder folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		// If folder does not exist, create the folder with the specified path
-		if (! folder.exists()) {
-			try {
-				folder.create(true, true, monitor);
-			} catch (CoreException e) {
-				throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
+	protected void createContainer(IProgressMonitor monitor) throws ExecutionException {
+		IContainer container = getContainer();
+		if (! container.exists()) {
+			if (container.getType() == IContainer.PROJECT) {
+				throw new ExecutionException("Project does not exist");
+			}
+			else if (container.getType() == IContainer.FOLDER) {
+				try {
+					((IFolder) container).create(true, true, null);
+				}
+				catch (CoreException e) {
+					throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
+				}
+			}
+			else {
+				throw new ExecutionException("Container is not a project or folder"); //$NON-NLS-1$
 			}
 		}
-		// Return the source folder
-		this.createdSourceFolder = folder;
+		this.container = container;
 	}
 	
-	protected void createFile(IProgressMonitor monitor) {
-		String filePath = getDataModel().getStringProperty(FILE_PATH);
-		IFile newFile = this.createdSourceFolder.getFile(new Path(filePath));
+	protected void createFile(IProgressMonitor monitor) throws ExecutionException {
+		String fileName = getDataModel().getStringProperty(FILE_NAME);
+		IFile newFile = this.container.getFile(new Path(fileName));
 		AbstractXmlResourceProvider resourceProvider = getXmlResourceProvider(newFile);
 		try {
 			resourceProvider.createFileAndResource(getDataModel(), monitor);
 		}
 		catch (CoreException e) {
-			JptCorePlugin.log(e);
-			newFile = null;
+			throw new ExecutionException("Could not create file", e);
 		}
-		this.createdFile = newFile;
+		this.file = newFile;
 	}
 	
 	@Override

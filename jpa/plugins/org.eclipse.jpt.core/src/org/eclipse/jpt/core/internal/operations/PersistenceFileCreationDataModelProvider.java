@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
@@ -34,8 +33,8 @@ public class PersistenceFileCreationDataModelProvider
 	}
 	
 	@Override
-	protected String getDefaultFilePath() {
-		return new Path(JptCorePlugin.DEFAULT_PERSISTENCE_XML_FILE_PATH).toPortableString();
+	protected String getDefaultFileName() {
+		return JptCorePlugin.DEFAULT_PERSISTENCE_XML_RUNTIME_PATH.lastSegment();
 	}
 	
 	@Override
@@ -64,5 +63,4 @@ public class PersistenceFileCreationDataModelProvider
 		}
 		return true;
 	}
-
 }
