@@ -97,7 +97,7 @@ public class XPointUtil {
 		
 		log(JptCoreMessages.REGISTRY_INVALID_VALUE,
 				invalidValue,
-				configElement.getName(),
+				nodeName,
 				configElement.getDeclaringExtension().getExtensionPointUniqueIdentifier(),
 				configElement.getContributor().getName());
 	}

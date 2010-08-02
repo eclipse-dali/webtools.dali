@@ -13,6 +13,7 @@ import static org.eclipse.jpt.core.internal.XPointUtil.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,7 +72,7 @@ public class ResourceLocatorManager {
 	 * for the given project
 	 */
 	public ResourceLocator getResourceLocator(final IProject project) {
-		return new FilteringIterable<ResourceLocator>(
+		Iterator<ResourceLocator> stream = new FilteringIterable<ResourceLocator>(
 				new TransformationIterable<ResourceLocatorConfig, ResourceLocator>(
 						new FilteringIterable<ResourceLocatorConfig>(
 								new TreeSet<ResourceLocatorConfig>(this.resourceLocatorConfigs)) {
@@ -89,7 +90,8 @@ public class ResourceLocatorManager {
 			protected boolean accept(ResourceLocator o) {
 				return o != null;
 			}
-		}.iterator().next();
+		}.iterator();
+		return (stream.hasNext()) ? stream.next() : null;
 	}
 	
 	private void readExtensions() {
