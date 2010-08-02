@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -377,6 +378,17 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 
 	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
 		return this.resourceTypeMapping.createReplaceTypeEdit(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (getPersistentType().isIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplacePackageEdit(String newName) {
+		return this.resourceTypeMapping.createReplacePackageEdit(newName);
 	}
 
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -117,6 +118,13 @@ public interface ClassRef
 	 * If this ClassRef does not match the original type, then return an empty Iterable.
 	 */
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+	/**
+	 * Create ReplaceEdits for renaming the class's package to the newName.
+	 * The originalPackage has not yet been renamed.
+	 * If this class is not a part of the original package, then return an empty Iterable.
+	 */
+	Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
 
 
 	// *************************************************************************

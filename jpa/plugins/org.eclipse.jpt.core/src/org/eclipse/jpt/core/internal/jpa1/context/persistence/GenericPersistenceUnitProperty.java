@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
@@ -80,6 +81,14 @@ public class GenericPersistenceUnitProperty
 		}
 	}
 
+	protected String getValuePackageName() {
+		int packageEnd = this.value == null ? -1 : this.value.lastIndexOf('.');
+		if (packageEnd == -1 ) {
+			return null;
+		}
+		return this.value.substring(0, packageEnd);
+	}
+
 
 	// ********** updating **********
 
@@ -107,6 +116,18 @@ public class GenericPersistenceUnitProperty
 
 	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
 		return this.xmlProperty.createReplaceTypeEdit(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		String packageName = getValuePackageName();
+		if (packageName != null && packageName.equals(originalPackage.getElementName())) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplacePackageEdit(String newName) {
+		return this.xmlProperty.createReplacePackageEdit(newName);
 	}
 
 

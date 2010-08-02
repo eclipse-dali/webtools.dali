@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.MappingKeys;
@@ -236,6 +237,10 @@ public abstract class AbstractOrmPersistentAttribute
 
 	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
 		return this.attributeMapping.createReplaceTypeEdits(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.attributeMapping.createReplacePackageEdits(originalPackage, newName);
 	}
 
 

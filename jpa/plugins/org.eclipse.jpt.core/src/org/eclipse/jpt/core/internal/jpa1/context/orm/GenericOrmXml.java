@@ -10,7 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -209,6 +212,16 @@ public class GenericOrmXml
 		}
 	}
 
+
+	// ********** misc **********
+
+	public boolean isIn(IFolder folder) {
+		IResource member = folder.findMember(this.getXmlResource().getFile().getName());
+		IFile file = this.getXmlResource().getFile();
+		return member != null && file != null && member.equals(file);
+	}
+
+
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
@@ -236,6 +249,13 @@ public class GenericOrmXml
 	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
 		if (this.entityMappings != null) {
 			return this.entityMappings.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.entityMappings != null) {
+			return this.entityMappings.createReplacePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

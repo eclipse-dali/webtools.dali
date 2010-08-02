@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -167,6 +168,11 @@ public interface PersistentType
 	 * specified type name qualified with '.'.
 	 */
 	boolean isFor(String typeName);
+
+	/**
+	 * Return true if persistent type resolves to a java class in the given package fragment
+	 */
+	boolean isIn(IPackageFragment packageFragment);
 
 
 	// ********** owner **********

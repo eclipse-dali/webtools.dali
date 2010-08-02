@@ -9,11 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JarFile;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * Context model corresponding to the 
@@ -71,8 +73,17 @@ public interface JarFileRef
 	 * @see org.eclipse.jpt.core.JpaProject#update()
 	 */
 	void update(XmlJarFileRef xmlJarFileRef);
-	
-	
+
+
+	// **************** refactoring *********************************************
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
+	 * The originalFolder has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName);
+
+
 	// **************** queries ************************************************
 
 	/**

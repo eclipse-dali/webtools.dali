@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -515,6 +516,10 @@ public abstract class AbstractPersistenceUnitProperties extends AbstractModel
 	// ********** refactoring ************
 
 	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return EmptyIterable.instance();
 	}
 }

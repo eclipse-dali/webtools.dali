@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -146,6 +147,20 @@ public class OrmEclipseLinkEntityImpl
 		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
 	}
 
+	protected boolean classExtractorIsFor(String typeName) {
+		if (this.classExtractorPersistentType != null && this.classExtractorPersistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean classExtractorIsIn(IPackageFragment packageFragment) {
+		if (this.classExtractorPersistentType != null) {
+			return this.classExtractorPersistentType.isIn(packageFragment);
+		}
+		return false;
+	}
+
 	protected EntityMappings getEntityMappings() {
 		return (EntityMappings) getMappingFileRoot();
 	}
@@ -221,11 +236,24 @@ public class OrmEclipseLinkEntityImpl
 		return EmptyIterable.instance();
 	}
 
-	protected boolean classExtractorIsFor(String typeName) {
-		if (this.classExtractorPersistentType != null && this.classExtractorPersistentType.getQualifiedName().equals(typeName)) {
-			return true;
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createCustomizerReplacePackageEdits(originalPackage, newName),
+			this.createClassExtractorReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.customizer.createReplacePackageEdits(originalPackage, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.classExtractorIsIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplacePackageEdit(newName));
 		}
-		return false;
+		return EmptyIterable.instance();
 	}
 
 

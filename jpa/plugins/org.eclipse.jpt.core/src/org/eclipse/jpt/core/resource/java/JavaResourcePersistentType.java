@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
+import org.eclipse.jdt.core.IPackageFragment;
 
 /**
  * Java source code or binary persistent type.
@@ -20,7 +21,7 @@ import java.util.Iterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface JavaResourcePersistentType
@@ -37,6 +38,12 @@ public interface JavaResourcePersistentType
 	 */
 	String getQualifiedName();
 		String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
+
+	/**
+	 * Return the package name.
+	 */
+	String getPackageName();
+		String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
 
 	/**
 	 * Return the fully qualified name of the type's superclass.
@@ -74,6 +81,8 @@ public interface JavaResourcePersistentType
 	 * on them (which can be used to infer the type's access type).
 	 */
 	boolean hasAnyAnnotatedAttributes();
+
+	boolean isIn(IPackageFragment packageFragment);
 
 
 	// ********** types **********

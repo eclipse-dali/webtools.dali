@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.options;
 
 import java.util.Map;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.options.Options;
@@ -411,6 +412,19 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
 		if (property != null) {
 			return property.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.createEventListenerReplacePackageEdits(originalPackage, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createEventListenerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
+		if (property != null) {
+			return property.createReplacePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

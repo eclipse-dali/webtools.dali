@@ -19,6 +19,7 @@ import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -635,6 +636,26 @@ public abstract class AbstractJavaPersistentType
 	public boolean isFor(String typeName) {
 		String className = this.getName();
 		return className != null && className.equals(typeName);
+	}
+
+	public boolean isIn(IPackageFragment packageFragment) {
+		String packageName = this.getPackageName();
+		if (packageName != null && packageName.equals(packageFragment.getElementName())) {
+			return true;
+		}
+		return false;
+	}
+
+	protected String getPackageName() {
+		String className = this.getName();
+		if (className == null) {
+			return null;
+		}
+		int packageEnd = className.lastIndexOf('.');
+		if (packageEnd == -1 ) {
+			return null;
+		}
+		return className.substring(0, packageEnd);
 	}
 
 	public boolean isMapped() {

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -39,4 +40,10 @@ public interface OrmIdClassReference
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
+	 * The originalPackage has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
 }

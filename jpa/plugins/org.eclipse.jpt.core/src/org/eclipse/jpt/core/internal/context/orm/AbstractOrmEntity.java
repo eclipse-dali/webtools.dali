@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
@@ -1576,6 +1577,18 @@ public abstract class AbstractOrmEntity
 
 	protected Iterable<ReplaceEdit> createIdClassReplaceTypeEdits(IType originalType, String newName) {
 		return this.idClassReference.createReplaceEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createIdClassReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createIdClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.idClassReference.createReplacePackageEdits(originalPackage, newName);
 	}
 
 

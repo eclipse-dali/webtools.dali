@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,7 @@
 
 package org.eclipse.jpt.core.resource.persistence;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -19,7 +20,9 @@ import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 
 /**
  * <!-- begin-user-doc -->
@@ -232,4 +235,15 @@ public class XmlJarFileRef extends AbstractJpaEObject implements JpaEObject
 			);
 	}
 
+
+	// *********** refactoring ***********
+
+	public ReplaceEdit createReplaceFolderEdit(IFolder originalFolder, String newName) {
+		IDOMNode domNode = getTextNode();
+		String originalName = originalFolder.getName();
+		int nameIndex = this.fileName.indexOf(originalName);
+
+		int offset = domNode.getStartOffset();
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
 }

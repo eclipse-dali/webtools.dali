@@ -21,7 +21,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaProject;
@@ -1662,6 +1664,57 @@ public abstract class AbstractPersistenceUnit
 
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplaceTypeEdits(IType originalType, String newName) {
 		return this.options.createReplaceTypeEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			createSpecifiedClassRefReplacePackageEdits(originalPackage, newName),
+			createPersistenceUnitPropertiesReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(getSpecifiedClassRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
+					return classRef.createReplacePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.options.createReplacePackageEdits(originalPackage, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplaceFolderEdits(final IFolder originalFolder, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createMappingFileRefReplaceFolderEdits(originalFolder, newName),
+			this.createJarFileRefReplaceFolderEdits(originalFolder, newName));
+	}
+	
+	public Iterable<ReplaceEdit> createMappingFileRefReplaceFolderEdits(final IFolder originalFolder, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(getSpecifiedMappingFileRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
+					return mappingFileRef.createReplaceFolderEdits(originalFolder, newName);
+				}
+			}
+		);
+	}
+
+	public Iterable<ReplaceEdit> createJarFileRefReplaceFolderEdits(final IFolder originalFolder, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<JarFileRef, Iterable<ReplaceEdit>>(getJarFileRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(JarFileRef jarFileRef) {
+					return jarFileRef.createReplaceFolderEdits(originalFolder, newName);
+				}
+			}
+		);
 	}
 
 	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(final IFile originalFile, final String newName) {

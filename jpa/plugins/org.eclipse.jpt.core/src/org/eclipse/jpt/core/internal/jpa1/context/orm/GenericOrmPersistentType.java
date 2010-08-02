@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -966,6 +967,24 @@ public class GenericOrmPersistentType
 		);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.mapping.createReplacePackageEdits(originalPackage, newName),
+			this.createSpecifiedAttributesReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
+					return persistentAttribute.createReplacePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
 
 	// ********** misc **********
 
@@ -995,6 +1014,36 @@ public class GenericOrmPersistentType
 			return false;
 		}
 		return (defaultPackage + '.' +  className).equals(typeName);
+	}
+
+	public boolean isIn(IPackageFragment packageFragment) {
+		String packageName = this.getPackageName();
+		if (packageName != null && packageName.equals(packageFragment.getElementName())) {
+			return true;
+		}
+		String defaultPackage = this.getDefaultPackage();
+		if (defaultPackage == null) {
+			return false;
+		}
+		if (packageName != null) {
+			packageName = defaultPackage + '.' + packageName;
+		}
+		else {
+			packageName = defaultPackage;
+		}
+		return packageName.equals(packageFragment.getElementName());
+	}
+
+	protected String getPackageName() {
+		String className = this.getName();
+		if (className == null) {
+			return null;
+		}
+		int packageEnd = className.lastIndexOf('.');
+		if (packageEnd == -1 ) {
+			return null;
+		}
+		return className.substring(0, packageEnd);
 	}
 
 	public boolean contains(int textOffset) {

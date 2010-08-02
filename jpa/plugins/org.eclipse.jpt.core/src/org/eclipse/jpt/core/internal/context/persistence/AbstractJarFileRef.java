@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -31,6 +32,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -253,8 +256,29 @@ public abstract class AbstractJarFileRef
 	protected IProject getProject() {
 		return this.getJpaProject().getProject();
 	}
-	
-	
+
+
+	// ********** refactoring **********
+
+	public Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName) {
+		if (this.isIn(originalFolder)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceFolderEdit(originalFolder, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceFolderEdit(IFolder originalFolder, String newName) {
+		return this.xmlJarFileRef.createReplaceFolderEdit(originalFolder, newName);
+	}
+
+	protected boolean isIn(IFolder folder) {
+		if (this.jarFile == null) {
+			return false;
+		}
+		return this.jarFile.isIn(folder);
+	}
+
+
 	// **************** validation *********************************************
 
 	@Override

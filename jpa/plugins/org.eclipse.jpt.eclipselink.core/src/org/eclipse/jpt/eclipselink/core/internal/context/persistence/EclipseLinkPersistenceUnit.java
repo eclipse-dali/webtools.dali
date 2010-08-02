@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -518,5 +519,14 @@ public class EclipseLinkPersistenceUnit
 			super.createPersistenceUnitPropertiesReplaceTypeEdits(originalType, newName),
 			this.customization.createReplaceTypeEdits(originalType, newName),
 			this.logging.createReplaceTypeEdits(originalType, newName));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createPersistenceUnitPropertiesReplacePackageEdits(originalPackage, newName),
+			this.customization.createReplacePackageEdits(originalPackage, newName),
+			this.logging.createReplacePackageEdits(originalPackage, newName));
 	}
 }

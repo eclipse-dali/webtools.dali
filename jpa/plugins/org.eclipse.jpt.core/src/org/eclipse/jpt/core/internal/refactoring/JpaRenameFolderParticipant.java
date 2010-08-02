@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.refactoring;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.mapping.IResourceChangeDescriptionFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
@@ -38,35 +40,35 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.text.edits.TextEdit;
 
 /**
- * Participant in the rename refactoring of {@link IFile}s with content type {@link JptCorePlugin#MAPPING_FILE_CONTENT_TYPE}.
+ * Participant in the rename refactoring of {@link IFolders}s.
  * If the renamed mapping file is listed in a persistence.xml file of any JpaProject
  * then a Change object is created that will rename that reference from the file.
  * If the renamed mapping file is an implied mapping file, then an actual reference to the mapping file will be specified.
  */
-public class JpaRenameMappingFileParticipant
+public class JpaRenameFolderParticipant
 	extends RenameParticipant
 {
 
 	/**
-	 * Store the {@link IFile}s to be renamed with content type {@link JptCorePlugin#MAPPING_FILE_CONTENT_TYPE}
+	 * Store the {@link IFolder}s to be renamed
 	 */
 
-	protected IFile originalMappingFile;
+	protected IFolder originalFolder;
 
 	/**
 	 * Store the persistence.xml ReplaceEdit in the checkConditions() call 
 	 * to avoid duplicated effort in createChange().
 	 */
-	protected final Map<IFile, Iterable<ReplaceEdit>> persistenceXmlMappingFileReplaceEdits;
+	protected final Map<IFile, Iterable<ReplaceEdit>> persistenceXmlReplaceEdits;
 
-	public JpaRenameMappingFileParticipant() {
+	public JpaRenameFolderParticipant() {
 		super();
-		this.persistenceXmlMappingFileReplaceEdits = new HashMap<IFile, Iterable<ReplaceEdit>>();
+		this.persistenceXmlReplaceEdits = new HashMap<IFile, Iterable<ReplaceEdit>>();
 	}
 	
 	@Override
 	public String getName() {
-		return JpaCoreRefactoringMessages.JPA_RENAME_MAPPING_FILE_REFACTORING_PARTICIPANT_NAME;
+		return JpaCoreRefactoringMessages.JPA_RENAME_FOLDER_REFACTORING_PARTICIPANT_NAME;
 	}
 
 	@Override
@@ -74,7 +76,7 @@ public class JpaRenameMappingFileParticipant
 		if (!getArguments().getUpdateReferences()) {
 			return false;
 		}
-		this.originalMappingFile = (IFile) element;
+		this.originalFolder = (IFolder) element;
 		return true;
 	}
 
@@ -95,7 +97,7 @@ public class JpaRenameMappingFileParticipant
 			return null;
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, jpaProjectManager.getJpaProjectsSize()*10 + 1);
-		sm.subTask(JpaCoreRefactoringMessages.JPA_RENAME_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
+		sm.subTask(JpaCoreRefactoringMessages.JPA_RENAME_FOLDER_REFACTORING_SUB_TASK_NAME);
 		ResourceChangeChecker checker = (ResourceChangeChecker) context.getChecker(ResourceChangeChecker.class);
 		IResourceChangeDescriptionFactory deltaFactory = checker.getDeltaFactory();
 
@@ -106,7 +108,7 @@ public class JpaRenameMappingFileParticipant
 		if (sm.isCanceled()) {
 			throw new OperationCanceledException();
 		}
-		for (IFile persistenceXmlFile : this.persistenceXmlMappingFileReplaceEdits.keySet()) {
+		for (IFile persistenceXmlFile : this.persistenceXmlReplaceEdits.keySet()) {
 			deltaFactory.change(persistenceXmlFile);
 		}
 		sm.worked(1);
@@ -119,44 +121,47 @@ public class JpaRenameMappingFileParticipant
 		if (persistenceUnit == null) {
 			return;
 		}
-		Iterable<ReplaceEdit> replaceEdits = this.createMappingFileRefReplaceEdits(persistenceUnit);
+		Iterable<ReplaceEdit> replaceEdits = this.createPersistenceUnitReplaceEdits(persistenceUnit);
 		if (!CollectionTools.isEmpty(replaceEdits)) {
-			this.persistenceXmlMappingFileReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), replaceEdits);
+			this.persistenceXmlReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), replaceEdits);
 		}
 	}
 
 	@Override
 	public Change createChange(IProgressMonitor monitor) throws CoreException, OperationCanceledException {
-		if (this.persistenceXmlMappingFileReplaceEdits.isEmpty()) {
+		if (this.persistenceXmlReplaceEdits.isEmpty()) {
 			return null;
 		}
-		SubMonitor sm = SubMonitor.convert(monitor, this.persistenceXmlMappingFileReplaceEdits.size());
-		sm.subTask(JpaCoreRefactoringMessages.JPA_RENAME_MAPPING_FILE_REFACTORING_SUB_TASK_NAME);
-		CompositeChange compositeChange = new CompositeChange(JpaCoreRefactoringMessages.JPA_RENAME_MAPPING_FILE_REFACTORING_CHANGE_NAME);
-		for (IFile persistenceXmlFile : this.persistenceXmlMappingFileReplaceEdits.keySet()) {
+		SubMonitor sm = SubMonitor.convert(monitor, this.persistenceXmlReplaceEdits.size());
+		sm.subTask(JpaCoreRefactoringMessages.JPA_RENAME_FOLDER_REFACTORING_SUB_TASK_NAME);
+		CompositeChange compositeChange = new CompositeChange(JpaCoreRefactoringMessages.JPA_RENAME_FOLDER_REFACTORING_CHANGE_NAME);
+		for (IFile persistenceXmlFile : this.persistenceXmlReplaceEdits.keySet()) {
 			if (sm.isCanceled()) {
 				throw new OperationCanceledException();
 			}
-			this.addPersistenceXmlRenameMappingFileChange(persistenceXmlFile, compositeChange);			
+			this.addPersistenceXmlRenameChange(persistenceXmlFile, compositeChange);			
 		}
 		//must check for children in case all changes were made in other participants TextChanges, 
 		//want to return null so our node does not appear in the preview tree
 		return compositeChange.getChildren().length == 0 ? null : compositeChange;
 	}
 
-	private Iterable<ReplaceEdit> createMappingFileRefReplaceEdits(final PersistenceUnit persistenceUnit) {
-		return persistenceUnit.createReplaceMappingFileEdits(this.originalMappingFile, getArguments().getNewName());
+	private Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(final PersistenceUnit persistenceUnit) {
+		if (persistenceUnit.getJpaProject().getJavaProject().isOnClasspath(this.originalFolder) || persistenceUnit.getJpaProject().getProject() == this.originalFolder.getProject()) {
+			return persistenceUnit.createReplaceFolderEdits(this.originalFolder, getArguments().getNewName());
+		}
+		return EmptyIterable.instance();
 	}
 	
-	protected void addPersistenceXmlRenameMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {
+	protected void addPersistenceXmlRenameChange(IFile persistenceXmlFile, CompositeChange compositeChange) {
 		TextChange textChange = getTextChange(persistenceXmlFile);
 		if (textChange == null) {
-			textChange = new TextFileChange(JpaCoreRefactoringMessages.JPA_RENAME_MAPPING_FILE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
+			textChange = new TextFileChange(JpaCoreRefactoringMessages.JPA_RENAME_FOLDER_REFACTORING_CHANGE_PERSISTENCE_XML_NAME, persistenceXmlFile);
 			MultiTextEdit multiTextEdit = new MultiTextEdit();
 			textChange.setEdit(multiTextEdit);
 			compositeChange.add(textChange);
 		}
-		Iterable<ReplaceEdit> mappingFileReplaceEdits = this.persistenceXmlMappingFileReplaceEdits.get(persistenceXmlFile);
+		Iterable<ReplaceEdit> mappingFileReplaceEdits = this.persistenceXmlReplaceEdits.get(persistenceXmlFile);
 		this.addEdits(textChange, mappingFileReplaceEdits);
 	}
 

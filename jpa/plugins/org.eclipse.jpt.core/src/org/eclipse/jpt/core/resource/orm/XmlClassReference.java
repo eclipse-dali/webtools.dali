@@ -236,4 +236,11 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1;
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
+
+	public ReplaceEdit createReplacePackageEdit(String newName) {
+		int packageLength = this.className.lastIndexOf('.');
+		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
+
 }

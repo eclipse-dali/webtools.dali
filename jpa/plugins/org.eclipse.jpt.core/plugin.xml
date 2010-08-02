@@ -651,6 +651,26 @@
     		</enablement>
         </renameParticipant>
         <renameParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaRenamePackageParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaRenamePackageParticipant"
+    		name="%JPA_RENAME_PACKAGE_PARTICIPANT_NAME">
+    		<enablement>
+    			<with variable="element">
+    				<instanceof value="org.eclipse.jdt.core.IPackageFragment"/>
+    			</with>
+    		</enablement>
+        </renameParticipant>
+        <renameParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameFolderParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaRenameFolderParticipant"
+    		name="%JPA_RENAME_FOLDER_PARTICIPANT_NAME">
+    		<enablement>
+    			<with variable="element">
+                   	<instanceof value="org.eclipse.core.resources.IFolder"/>
+    			</with>
+    		</enablement>
+        </renameParticipant>
+        <renameParticipant
     		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameMappingFileParticipant"
     		id="org.eclipse.jpt.core.ltk.jpaRenameMappingParticipant"
     		name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">

@@ -391,4 +391,10 @@ public abstract class AbstractXmlRelationshipMapping extends AbstractXmlAttribut
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
+	public ReplaceEdit createReplaceTargetEntityPackageEdit(String newName) {
+		int packageLength = this.targetEntity.lastIndexOf('.');
+		int offset = getAttributeNode(JPA.TARGET_ENTITY).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
+
 } // RelationshipMapping

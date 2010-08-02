@@ -239,4 +239,10 @@ public class XmlJavaClassRef extends AbstractJpaEObject
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
+
+	public ReplaceEdit createReplacePackageEdit(String newName) {
+		int packageLength = this.javaClass.lastIndexOf('.');
+		int offset = getTextNode().getStartOffset();
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
 }

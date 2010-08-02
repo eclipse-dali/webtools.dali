@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -351,6 +352,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return EmptyIterable.instance();
 	}
 

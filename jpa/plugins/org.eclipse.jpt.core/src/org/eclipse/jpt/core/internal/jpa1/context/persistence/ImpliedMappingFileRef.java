@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -73,6 +74,10 @@ public class ImpliedMappingFileRef
 
 	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
 		throw new IllegalStateException("Cannot delete this reference since it is implied"); //$NON-NLS-1$
+	}
+
+	public Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName) {
+		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
 	}
 
 	@Override

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -206,6 +207,12 @@ public class GenericJarFile
 			throw new ValidationCancelledException();
 		}
 		// TODO validate 'javaPersistentTypes'
+	}
+
+	public boolean isIn(org.eclipse.core.resources.IFolder folder) {
+		IResource member = folder.findMember(this.jarResourcePackageFragmentRoot.getFile().getName());
+		IFile file = this.jarResourcePackageFragmentRoot.getFile();
+		return member != null && file != null && member.equals(file);		
 	}
 	
 }

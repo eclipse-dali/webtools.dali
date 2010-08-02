@@ -16,6 +16,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
@@ -827,6 +828,34 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		if (property != null) {
 			return property.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+					this.createSessionCustomizerReplacePackageEdits(originalPackage, newName),
+					this.createExceptionHandlerReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createSessionCustomizerReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
+					return property.createReplacePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createExceptionHandlerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
+		if (property != null) {
+			return property.createReplacePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

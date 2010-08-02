@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -49,8 +50,10 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -839,6 +842,32 @@ public abstract class AbstractEntityMappings
 			}
 		);
 	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createPersistentTypeReplacePackageEdits(originalPackage, newName),
+			this.createReplacePackageEdit(originalPackage, newName));
+	}
+
+	public Iterable<ReplaceEdit> createPersistentTypeReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
+					return persistentType.createReplacePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdit(final IPackageFragment originalPackage, final String newName) {
+		if (this.package_ != null && originalPackage.getElementName().equals(this.package_)) {
+			return new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createReplacePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
 
 	// ********** dispose **********
 	

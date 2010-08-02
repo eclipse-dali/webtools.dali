@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
@@ -121,8 +122,22 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 	protected void removeResourceCustomizer() {
 		this.resource.setCustomizer(null);
 	}
+
+	protected boolean isFor(String typeName) {
+		if (this.customizerPersistentType != null && this.customizerPersistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;
+	}
 	
-	
+	protected boolean isIn(IPackageFragment packageFragment) {
+		if (this.customizerPersistentType != null) {
+			return this.customizerPersistentType.isIn(packageFragment);
+		}
+		return false;
+	}
+
+
 	// **************** updating **************************************
 	
 	protected void update(JavaEclipseLinkCustomizer javaCustomizer) {
@@ -158,11 +173,15 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		return getResourceCustomizer().createReplaceEdit(originalType, newName);
 	}
 
-	protected boolean isFor(String typeName) {
-		if (this.customizerPersistentType != null && this.customizerPersistentType.getQualifiedName().equals(typeName)) {
-			return true;
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.isIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
 		}
-		return false;
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplacePackageEdit(String newName) {
+		return getResourceCustomizer().createReplacePackageEdit(newName);
 	}
 
 

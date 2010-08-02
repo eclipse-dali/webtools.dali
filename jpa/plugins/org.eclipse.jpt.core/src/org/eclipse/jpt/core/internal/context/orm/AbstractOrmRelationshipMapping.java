@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
@@ -303,6 +304,27 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	protected ReplaceEdit createReplaceTargetEntityEdit(IType originalType, String newName) {
 		return this.resourceAttributeMapping.createReplaceTargetEntityEdit(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createTargetEntityReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createTargetEntityReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.specifiedTargetEntity != null) {
+			if (this.resolvedTargetType != null && this.resolvedTargetType.isIn(originalPackage)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityPackageEdit(newName));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceTargetEntityPackageEdit(String newName) {
+		return this.resourceAttributeMapping.createReplaceTargetEntityPackageEdit(newName);
 	}
 
 

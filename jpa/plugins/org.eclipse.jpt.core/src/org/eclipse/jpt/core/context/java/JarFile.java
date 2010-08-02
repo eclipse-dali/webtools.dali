@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context.java;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -66,5 +67,10 @@ public interface JarFile
 	 * Add to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages, IReporter reporter);
+
+	/**
+	 * Return true if this jar file exists in the given folder
+	 */
+	boolean isIn(IFolder folder);
 
 }

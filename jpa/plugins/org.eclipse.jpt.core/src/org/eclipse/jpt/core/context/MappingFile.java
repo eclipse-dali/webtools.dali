@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistentTypeContainer;
@@ -52,6 +54,11 @@ public interface MappingFile
 	 */
 	void update();
 
+	/**
+	 * Return true if this mapping file exists in the given folder
+	 */
+	boolean isIn(IFolder folder);
+
 
 	// **************** refactoring *********************************************
 
@@ -66,5 +73,11 @@ public interface MappingFile
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
+	 * The originalPackage has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
 
 }

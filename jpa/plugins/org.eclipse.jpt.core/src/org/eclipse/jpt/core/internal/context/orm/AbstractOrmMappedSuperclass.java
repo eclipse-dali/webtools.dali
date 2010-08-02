@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Table;
@@ -143,6 +144,18 @@ public abstract class AbstractOrmMappedSuperclass extends AbstractOrmTypeMapping
 
 	protected Iterable<ReplaceEdit> createIdClassReplaceTypeEdits(IType originalType, String newName) {
 		return this.idClassReference.createReplaceEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createIdClassReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createIdClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.idClassReference.createReplacePackageEdits(originalPackage, newName);
 	}
 
 

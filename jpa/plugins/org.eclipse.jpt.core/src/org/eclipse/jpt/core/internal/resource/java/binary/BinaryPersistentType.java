@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IMethod;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -31,6 +31,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -45,6 +46,8 @@ final class BinaryPersistentType
 	private String name;
 
 	private String qualifiedName;
+
+	private String packageName;
 
 	private String superclassQualifiedName;
 
@@ -65,6 +68,7 @@ final class BinaryPersistentType
 		super(parent, new TypeAdapter(type));
 		this.name = this.buildName();
 		this.qualifiedName = this.buildQualifiedName();
+		this.packageName = this.buildPackageName();
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName();
 		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.abstract_ = this.buildAbstract();
@@ -82,6 +86,7 @@ final class BinaryPersistentType
 		super.update();
 		this.setName(this.buildName());
 		this.setQualifiedName(this.buildQualifiedName());
+		this.setPackageName(this.buildPackageName());
 		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.setAbstract(this.buildAbstract());
@@ -155,6 +160,25 @@ final class BinaryPersistentType
 
 	private String buildQualifiedName() {
 		return this.getMember().getFullyQualifiedName('.');  // no parameters are included here
+	}
+
+	// ***** package
+	public String getPackageName() {
+		return this.packageName;
+	}
+
+	private void setPackageName(String packageName) {
+		String old = this.packageName;
+		this.packageName = packageName;
+		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, packageName);
+	}
+
+	private String buildPackageName() {
+		return this.getMember().getPackageFragment().getElementName();
+	}
+
+	public boolean isIn(IPackageFragment packageFragment) {
+		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.packageName);
 	}
 
 	// ***** superclass qualified name

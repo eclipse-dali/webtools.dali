@@ -36,6 +36,7 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
 import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
+import org.eclipse.ltk.core.refactoring.participants.RenameProcessor;
 import org.eclipse.text.edits.DeleteEdit;
 
 public class JpaDeletePackageOrFolderParticipant
@@ -69,6 +70,12 @@ public class JpaDeletePackageOrFolderParticipant
 
 	@Override
 	protected boolean initialize(Object element) {
+		if (getProcessor() instanceof RenameProcessor) {
+			//Renaming a package that then ends up with no subpackages or types will call the delete folder participant.
+			//We do not want to delete references in the persistence.xml and mapping files in this case, will be handled
+			//with the rename participant
+			return false;
+		}
 		this.addElement(element, getArguments());
 		return true;
 	}

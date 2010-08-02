@@ -11,6 +11,7 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
@@ -228,6 +229,24 @@ public class GenericOrmIdClassReference
 
 	protected boolean isFor(String typeName) {
 		if (this.idClass != null && this.idClass.isFor(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.isIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplacePackageEdit(String newName) {
+		return getIdXmlClassRef().createReplacePackageEdit(newName);
+	}
+
+	protected boolean isIn(IPackageFragment originalPackage) {
+		if (this.idClass != null && this.idClass.isIn(originalPackage)) {
 			return true;
 		}
 		return false;

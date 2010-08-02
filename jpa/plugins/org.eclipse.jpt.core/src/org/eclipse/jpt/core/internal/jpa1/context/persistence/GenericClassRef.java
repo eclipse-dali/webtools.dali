@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -130,6 +131,19 @@ public class GenericClassRef
 
 	protected boolean isFor(IType type) {
 		return this.isFor(type.getFullyQualifiedName('.'));
+	}
+
+	protected boolean isInPackage(IPackageFragment packageFragment) {
+		String packageName = this.getPackageName();
+		return packageName == null ? false : packageName.equals(packageFragment.getElementName());
+	}
+
+	protected String getPackageName() {
+		int packageEnd = this.className.lastIndexOf('.');
+		if (packageEnd == -1 ) {
+			return null;
+		}
+		return this.className.substring(0, packageEnd);
 	}
 
 	public boolean isVirtual() {
@@ -333,6 +347,20 @@ public class GenericClassRef
 
 	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
 		return this.xmlJavaClassRef.createReplaceEdit(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (isVirtual()) {
+			throw new IllegalStateException();
+		}
+		if (this.isInPackage(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplacePackageEdit(String newName) {
+		return this.xmlJavaClassRef.createReplacePackageEdit(newName);
 	}
 
 

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
@@ -604,6 +605,27 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	protected ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
 		return this.resourceAttributeMapping.createReplaceMapKeyClassEdit(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createMapKeyClassReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createMapKeyClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.specifiedMapKeyClass != null) {
+			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isIn(originalPackage)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyPackageEdit(newName));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceMapKeyPackageEdit(String newName) {
+		return this.resourceAttributeMapping.createReplaceMapKeyClassPackageEdit(newName);
 	}
 
 

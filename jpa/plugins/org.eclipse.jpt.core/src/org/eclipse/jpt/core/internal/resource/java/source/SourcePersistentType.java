@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
@@ -59,6 +60,8 @@ final class SourcePersistentType
 	private String name;
 
 	private String qualifiedName;
+
+	private String packageName;
 
 	private String superclassQualifiedName;
 
@@ -139,6 +142,7 @@ final class SourcePersistentType
 		super.initialize(astRoot);
 		this.name = this.buildName(astRoot);
 		this.qualifiedName = this.buildQualifiedName(astRoot);
+		this.packageName = this.buildPackageName(astRoot);
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(astRoot);
 		this.declaringTypeName = this.buildDeclaringTypeName(astRoot);
 		this.abstract_ = this.buildAbstract(astRoot);
@@ -179,6 +183,7 @@ final class SourcePersistentType
 		super.synchronizeWith(astRoot);
 		this.syncName(this.buildName(astRoot));
 		this.syncQualifiedName(this.buildQualifiedName(astRoot));
+		this.syncPackageName(this.buildPackageName(astRoot));
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
 		this.syncDeclaringTypeName(this.buildDeclaringTypeName(astRoot));
 		this.syncAbstract(this.buildAbstract(astRoot));
@@ -333,6 +338,22 @@ final class SourcePersistentType
 		return (binding == null) ? null : binding.getQualifiedName();
 	}
 
+	// ***** package name
+	public String getPackageName() {
+		return this.packageName;
+	}
+
+	private void syncPackageName(String astPackageName) {
+		String old = this.packageName;
+		this.packageName = astPackageName;
+		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, astPackageName);
+	}
+
+	private String buildPackageName(CompilationUnit astRoot) {
+		ITypeBinding binding = this.member.getBinding(astRoot);
+		return (binding == null) ? null : binding.getPackage().getName();
+	}
+
 	// ***** superclass qualified name
 	public String getSuperclassQualifiedName() {
 		return this.superclassQualifiedName;
@@ -351,6 +372,11 @@ final class SourcePersistentType
 		}
 		ITypeBinding superclass = binding.getSuperclass();
 		return (superclass == null) ? null : superclass.getTypeDeclaration().getQualifiedName();
+	}
+
+	// ***** package
+	public boolean isIn(IPackageFragment packageFragment) {
+		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.packageName);
 	}
 
 	// ***** declaring type name

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
@@ -156,6 +157,18 @@ public class OrmEclipseLinkMappedSuperclassImpl
 
 	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
 		return this.customizer.createReplaceEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createReplacePackageEdits(originalPackage, newName),
+			this.createCustomizerReplacePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.customizer.createReplacePackageEdits(originalPackage, newName);
 	}
 
 

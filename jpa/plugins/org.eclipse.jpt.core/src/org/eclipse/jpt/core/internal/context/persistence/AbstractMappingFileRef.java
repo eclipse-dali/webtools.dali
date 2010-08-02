@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -129,6 +131,13 @@ public abstract class AbstractMappingFileRef
 
 	public boolean isFor(IFile file) {
 		return this.mappingFile != null && file.equals(this.mappingFile.getXmlResource().getFile());
+	}
+
+	protected boolean isIn(IFolder folder) {
+		if (this.mappingFile == null) {
+			return false;
+		}
+		return this.mappingFile.isIn(folder);
 	}
 
 
@@ -297,6 +306,13 @@ public abstract class AbstractMappingFileRef
 	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
 		if (this.mappingFile != null) {
 			return this.mappingFile.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.mappingFile != null) {
+			return this.mappingFile.createReplacePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

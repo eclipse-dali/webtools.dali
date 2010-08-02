@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.context.persistence;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
@@ -524,6 +526,13 @@ public interface PersistenceUnit
 		 * If this value does not match the original type, then return an empty Iterable.
 		 */
 		Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+		/**
+		 * Create ReplaceEdits for renaming the property value package to the newName.
+		 * The originalPackage has not yet been renamed.
+		 * If this value is not in the originalPackage, then return an empty Iterable.
+		 */
+		Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
 	}
 
 	// ********** ORM persistence unit defaults **********
@@ -745,6 +754,18 @@ public interface PersistenceUnit
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
+	 * The originalPackage has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
+	 * The originalFolder has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName);
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalFile to the newName.

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.logging;
 
 import java.util.Map;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logger;
@@ -375,6 +376,20 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
 		if (property != null) {
 			return property.createReplaceTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.createLoggerReplacePackageEdits(originalPackage, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createLoggerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+		//find all of the Properties from the persistence unit.
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
+		if (property != null) {
+			return property.createReplacePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

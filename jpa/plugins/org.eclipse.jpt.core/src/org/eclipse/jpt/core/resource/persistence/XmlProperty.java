@@ -20,7 +20,6 @@ import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
-import org.eclipse.wst.xml.core.internal.provisional.document.IDOMAttr;
 
 /**
  * <!-- begin-user-doc -->
@@ -306,15 +305,18 @@ public class XmlProperty extends AbstractJpaEObject implements JpaEObject
 	}
 
 	public ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
-		IDOMAttr domAttr = getAttributeNode(JPA.PROPERTY__VALUE);
-		if (domAttr == null) {
-			return null;
-		}
 		String originalName = originalType.getElementName();
 		int nameIndex = originalType.getFullyQualifiedName('.').lastIndexOf(originalName);
 
-		int offset = domAttr.getValueRegionStartOffset() + 1;
+		int offset = getAttributeNode(JPA.PROPERTY__VALUE).getValueRegionStartOffset() + 1;
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
+	public ReplaceEdit createReplacePackageEdit(String newName) {
+		int packageLength = this.value.lastIndexOf('.');
+
+		int offset = getAttributeNode(JPA.PROPERTY__VALUE).getValueRegionStartOffset() + 1;
+		return new ReplaceEdit(offset, packageLength, newName);
 	}
 
 }
