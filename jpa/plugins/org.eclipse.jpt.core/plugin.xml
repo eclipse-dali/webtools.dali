@@ -435,22 +435,6 @@
 	</extension>
 	
 	
-	<extension 
-		point="org.eclipse.wst.common.project.facet.core.groups">
-		
-		<group id="jpa-prereqs">
-			<label>%JPA_PREREQ_GROUP_LABEL</label>
-			<description>The set of facets that each fulfill JPA prerequisites</description>
-			<include facet="jst.utility" versions="[1.0"/>
-			<include facet="jst.appclient" versions="[1.2"/>
-			<include facet="jst.ejb" versions="[1.1"/>
-			<include facet="jst.connector" versions="[1.0"/>
-			<include facet="jst.web" versions="[2.2"/>
-		</group>
-		
-	</extension>
-	
-	
 	<extension
 		point="org.eclipse.wst.common.project.facet.core.facets">
 		
@@ -461,19 +445,13 @@
 		
 		<project-facet-version facet="jpt.jpa" version="1.0">
 			<constraint>
-				<and>
-					<requires facet="jst.java" version="[5.0"/>
-					<requires group="jpa-prereqs"/>
-				</and>
+				<requires facet="jst.java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
 		
 		<project-facet-version facet="jpt.jpa" version="2.0">
 			<constraint>
-				<and>
-					<requires facet="jst.java" version="[5.0"/>
-					<requires group="jpa-prereqs"/>
-				</and>
+				<requires facet="jst.java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
 		
@@ -573,6 +551,7 @@
 		
 	</extension>
 	
+	
 	<!-- =================================================================================== -->
 	<!-- Extension: JPA Problem Marker                                                       -->
 	<!-- **** Do NOT qualify the marker id with org.eclipse.jpt.core, see bug 252891 		 -->
@@ -580,7 +559,7 @@
 	<extension
 		point="org.eclipse.core.resources.markers"
 		id="jpaProblemMarker" 
-		name="JPA Problem">
+		name="%JPA_PROBLEM">
 
 		<persistent value="true"/>
 		
@@ -591,6 +570,7 @@
 		<super type="org.eclipse.wst.validation.problemmarker2"/>
 		<super type="org.eclipse.jdt.core.problem"/>
 	</extension>
+	
 	
  	<extension
  		point="org.eclipse.ltk.core.refactoring.deleteParticipants">
@@ -636,9 +616,10 @@
 	           	</with>
         	</enablement>
      	</deleteParticipant>
-    </extension>
-   
-    <extension
+	</extension>
+	
+	
+	<extension
         point="org.eclipse.ltk.core.refactoring.renameParticipants">
         <renameParticipant
     		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameTypeParticipant"
@@ -687,5 +668,5 @@
         	</enablement>
         </renameParticipant>
     </extension>
-
+	
 </plugin>
