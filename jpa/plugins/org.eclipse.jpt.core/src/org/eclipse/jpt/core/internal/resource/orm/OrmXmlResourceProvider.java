@@ -39,7 +39,7 @@ public class OrmXmlResourceProvider
 	 * the given project in the specified runtime location
 	 */
 	public static OrmXmlResourceProvider getXmlResourceProvider(IProject project, IPath runtimePath) {
-		return getXmlResourceProvider_(project, JptCorePlugin.getPlatformFile(project, runtimePath).getFullPath());
+		return getXmlResourceProvider_(project, runtimePath);
 	}
 	
 	/**

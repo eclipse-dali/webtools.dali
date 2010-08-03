@@ -12,7 +12,6 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.orm;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.orm.AccessType;
@@ -41,8 +40,7 @@ public class EclipseLinkOrmXmlResourceProvider
 	 * the given project in the specified runtime location
 	 */
 	public static EclipseLinkOrmXmlResourceProvider getXmlResourceProvider(IProject project, IPath runtimePath) {
-		return getXmlResourceProvider_(project, JptCorePlugin.getPlatformFile(project, runtimePath).getFullPath());
-		
+		return getXmlResourceProvider_(project, runtimePath);
 	}
 	
 	/**

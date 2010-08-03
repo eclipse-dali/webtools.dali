@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.ISafeRunnable;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SafeRunner;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
@@ -34,14 +33,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
+import org.eclipse.jem.util.emf.workbench.EMFWorkbenchContextBase;
 import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
+import org.eclipse.jem.util.emf.workbench.IEMFContextContributor;
 import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
-import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.wst.common.componentcore.internal.impl.ModuleURIUtil;
-import org.eclipse.wst.common.componentcore.internal.impl.PlatformURLModuleConnection;
 import org.eclipse.wst.common.componentcore.internal.impl.WTPResourceFactoryRegistry;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateInputProvider;
@@ -60,7 +58,7 @@ import org.eclipse.wst.common.internal.emfworkbench.validateedit.ResourceStateVa
  * @since 2.2
  */
 public abstract class AbstractXmlResourceProvider
-	implements JpaXmlResourceProvider, ResourceStateInputProvider, ResourceStateValidator
+	implements JpaXmlResourceProvider, IEMFContextContributor, ResourceStateInputProvider, ResourceStateValidator
 {
 	protected IProject project;
 	
@@ -79,10 +77,10 @@ public abstract class AbstractXmlResourceProvider
 	
 	/**
 	 * Create a new AbstractResourceModelProvider for the given project and 
-	 * resourcePath.  The resourcePath may be either a) an absolute platform 
-	 * resource path (e.g. "MyProject/src/META-INF/foobar.xml") or b) a relative 
-	 * runtime path (e.g. "META-INF/foobar.xml".)  In either case, 
-	 * {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
+	 * resourcePath.  The resourcePath may be either 
+	 * 	a) an absolute workspace-relative platform resource path (e.g. "/MyProject/src/META-INF/foobar.xml") 
+	 * 	or b) a relative runtime path (e.g. "META-INF/foobar.xml".)  
+	 * In either case, {@link #buildFileUri(IPath)} will attempt to build an absolutely pathed 
 	 * URI for the given path.
 	 */
 	public AbstractXmlResourceProvider(IProject project, IPath resourcePath, IContentType contentType) {
@@ -99,7 +97,9 @@ public abstract class AbstractXmlResourceProvider
 			resourceUri = URI.createPlatformResourceURI(resourcePath.toString(), false);
 		}
 		else {
-			resourceUri = getModuleURI(URI.createURI(resourcePath.toString()));
+			IPath absolutePath = 
+					JptCorePlugin.getResourceLocator(this.project).getResourcePath(this.project, resourcePath);
+			resourceUri = URI.createPlatformResourceURI(absolutePath.toString(), false);
 		}
 		
 		URIConverter uriConverter = getResourceSet().getURIConverter();
@@ -135,12 +135,12 @@ public abstract class AbstractXmlResourceProvider
 	protected JpaXmlResource createResource() {
 		Resource.Factory resourceFactory = 
 			WTPResourceFactoryRegistry.INSTANCE.getFactory(this.fileUri, this.contentType.getDefaultDescription());
-		return (JpaXmlResource) ((FlexibleProjectResourceSet) getResourceSet()).createResource(this.fileUri, resourceFactory);		
+		return (JpaXmlResource) getResourceSet().createResource(this.fileUri, resourceFactory);		
 	}
 	
 	protected void loadResource() {
 		try {
-			this.resource.load(((FlexibleProjectResourceSet) getResourceSet()).getLoadOptions());
+			this.resource.load(((ProjectResourceSet) getResourceSet()).getLoadOptions());
 		}
 		catch (IOException e) {
 			JptCorePlugin.log(e);
@@ -177,13 +177,6 @@ public abstract class AbstractXmlResourceProvider
 		};
 		workspace.run(runnable, this.project, IWorkspace.AVOID_UPDATE, monitor);
 		return this.resource;	
-	}
-	
-	protected URI getModuleURI(URI uri) {
-		URI moduleuri = ModuleURIUtil.fullyQualifyURI(this.project);
-		IPath requestPath = new Path(moduleuri.path()).append(new Path(uri.path()));
-		URI resourceURI = URI.createURI(PlatformURLModuleConnection.MODULE_PROTOCOL + requestPath.toString());
-		return resourceURI;
 	}
 	
 	/**
@@ -228,8 +221,12 @@ public abstract class AbstractXmlResourceProvider
 		}
 	}
 	
-	protected ProjectResourceSet getResourceSet() {
-		return (ProjectResourceSet) WorkbenchResourceHelperBase.getResourceSet(project);
+	protected FlexibleProjectResourceSet getResourceSet() {
+		return (FlexibleProjectResourceSet) getEmfContext().getResourceSet();
+	}
+	
+	protected EMFWorkbenchContextBase getEmfContext() {
+		return WorkbenchResourceHelper.createEMFContext(this.project, this);
 	}
 	
 	public IProject getProject() {
@@ -263,7 +260,24 @@ public abstract class AbstractXmlResourceProvider
 			return work.validateEdit(files, context);
 		} 
 		return Status.OK_STATUS;
-	}	
+	}
+	
+	
+	// **************** IEMFContextContributor impl ***************************
+	
+	private boolean contributedToEmfContext = false;
+	
+	public void primaryContributeToContext(EMFWorkbenchContextBase context) {
+		if (! this.contributedToEmfContext) {
+			context.getResourceSet().setResourceFactoryRegistry(WTPResourceFactoryRegistry.INSTANCE);
+			this.contributedToEmfContext = true;
+		}
+	}
+	
+	public void secondaryContributeToContext(EMFWorkbenchContextBase aNature) {
+		// no op
+	}
+	
 	
 	// **************** ResourceStateValidator impl ****************************
 	
