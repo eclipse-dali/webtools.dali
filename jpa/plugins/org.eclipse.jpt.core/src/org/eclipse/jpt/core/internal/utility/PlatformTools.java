@@ -36,6 +36,14 @@ public class PlatformTools {
 	}
 	
 	/**
+	 * Return the {@link IFile} with the workspace relative "full" path
+	 */
+	public static IFile getFile(IPath fullFilePath) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		return root.getFileForLocation(root.getLocation().append(fullFilePath));
+	}
+	
+	/**
 	 * Return the specified file's content type,
 	 * using the Eclipse platform's content type manager.
 	 */
