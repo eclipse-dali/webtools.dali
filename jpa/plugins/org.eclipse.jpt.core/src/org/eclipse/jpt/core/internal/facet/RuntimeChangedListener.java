@@ -5,12 +5,12 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 
@@ -23,8 +23,7 @@ public class RuntimeChangedListener
 		if (fpb == null) {
 			fpb = facetedProjectEvent.getProject();
 		}
-		IProjectFacetVersion pfv = 
-			fpb.getProjectFacetVersion(ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID));
+		IProjectFacetVersion pfv = fpb.getProjectFacetVersion(JpaFacet.FACET);
 		if (pfv != null) {
 			Map<String, Object> enablementVariables = new HashMap<String, Object>();
 			enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getJpaPlatformId(fpb.getProject()));

@@ -17,6 +17,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
@@ -104,7 +104,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 				JptCoreMessages.VALIDATE_CONTAINER_NOT_SPECIFIED);
 		}
 		IProject project = getProject(container);
-		if (! hasJpaFacet(project)) {
+		if (! JpaFacet.isInstalled(project)) {
 			// verifies project has jpa facet
 			return new Status(
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID, 
@@ -212,19 +212,9 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		return null;
 	}
 	
-	protected boolean hasJpaFacet(IProject project) {
-		try {
-			return FacetedProjectFramework.hasProjectFacet(project, JptCorePlugin.FACET_ID);
-		}
-		catch (CoreException ce) {
-			return false;
-		}
-	}
-	
 	protected String getJpaFacetVersion(IProject project) throws CoreException {
 		IFacetedProject fproj = ProjectFacetsManager.create(project);
-		return fproj.getProjectFacetVersion(
-				ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID)).getVersionString();
+		return fproj.getProjectFacetVersion(JpaFacet.FACET).getVersionString();
 	}
 	
 	protected boolean hasSupportedPlatform(IProject project) {

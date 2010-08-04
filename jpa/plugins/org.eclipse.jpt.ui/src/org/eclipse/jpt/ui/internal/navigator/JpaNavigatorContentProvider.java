@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -26,7 +27,6 @@ import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
@@ -184,8 +184,7 @@ public class JpaNavigatorContentProvider
 			else if (event.getType() == IFacetedProjectEvent.Type.POST_INSTALL
 					|| event.getType() == IFacetedProjectEvent.Type.POST_UNINSTALL) {
 				IProjectFacetActionEvent ipaEvent = (IProjectFacetActionEvent) event;
-				if (ipaEvent.getProjectFacet().equals(
-						ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID))) {
+				if (ipaEvent.getProjectFacet().equals(JpaFacet.FACET)) {
 					refreshViewer(ipaEvent.getProject().getProject());
 				}
 			}

@@ -17,6 +17,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
@@ -120,7 +121,7 @@ public class JpaProjectManagerTests extends TestCase {
 	}
 
 	public void testProjectCloseReopen() throws Exception {
-		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
+		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 
@@ -142,7 +143,7 @@ public class JpaProjectManagerTests extends TestCase {
 	}
 
 	public void testProjectDeleteReimport() throws Exception {
-		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
+		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
@@ -159,7 +160,7 @@ public class JpaProjectManagerTests extends TestCase {
 		project.open(null);
 
 		assertTrue(project.isOpen());
-		assertTrue(JptCorePlugin.projectHasJpaFacet(project));
+		assertTrue(JpaFacet.isInstalled(project));
 		jpaProject = JptCorePlugin.getJpaProject(project);
 		assertNotNull(jpaProject);
 		assertEquals(4, jpaProject.jpaFilesSize());
@@ -172,7 +173,7 @@ public class JpaProjectManagerTests extends TestCase {
 	public void testFacetInstallUninstall() throws Exception {
 		assertNull(JptCorePlugin.getJpaProject(this.testProject.getProject()));
 
-		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
+		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
 		assertEquals(1, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
@@ -183,7 +184,7 @@ public class JpaProjectManagerTests extends TestCase {
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/orm.xml")));
 
-		this.testProject.uninstallFacet(JptCorePlugin.FACET_ID, "1.0");
+		this.testProject.uninstallFacet(JpaFacet.ID, "1.0");
 		assertEquals(0, JptCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNull(jpaProject);
@@ -226,7 +227,7 @@ public class JpaProjectManagerTests extends TestCase {
 	}
 	
 	public void testEditFacetSettingsFileRemoveThenAddJpaFacet() throws Exception {
-		this.testProject.installFacet(JptCorePlugin.FACET_ID, "1.0", buildJpaConfigDataModel());
+		this.testProject.installFacet(JpaFacet.ID, "1.0", buildJpaConfigDataModel());
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 

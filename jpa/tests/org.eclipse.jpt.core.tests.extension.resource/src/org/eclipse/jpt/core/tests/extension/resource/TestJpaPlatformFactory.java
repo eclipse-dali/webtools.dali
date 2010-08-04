@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
@@ -45,7 +45,7 @@ public class TestJpaPlatformFactory
 	}
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_1_0) {
+		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString()) {
 			@Override
 			public String getVersion() {
 				return "BOOOYAH!";

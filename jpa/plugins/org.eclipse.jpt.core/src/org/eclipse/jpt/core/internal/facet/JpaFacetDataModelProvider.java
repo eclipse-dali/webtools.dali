@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
@@ -167,7 +168,7 @@ public abstract class JpaFacetDataModelProvider
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(FACET_ID)) {
-			return JptCorePlugin.FACET_ID;
+			return JpaFacet.ID;
 		}
 		if (propertyName.equals(RUNTIME)) {
 			return null;

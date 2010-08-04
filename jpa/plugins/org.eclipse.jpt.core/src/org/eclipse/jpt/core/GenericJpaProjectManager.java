@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -45,6 +44,7 @@ import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
+import org.osgi.framework.BundleContext;
 
 /**
  * The JPA project manager maintains a list of all JPA projects in the workspace.
@@ -473,7 +473,7 @@ class GenericJpaProjectManager
 	/* private */ void checkForJpaFacetTransition(IProject project) {
 		JpaProject jpaProject = this.getJpaProject_(project);
 
-		if (JptCorePlugin.projectHasJpaFacet(project)) {
+		if (JpaFacet.isInstalled(project)) {
 			if (jpaProject == null) {  // JPA facet added
 				this.executeAfterEventsHandled(this.buildAddJpaProjectCommand(project));
 			}
@@ -677,7 +677,7 @@ class GenericJpaProjectManager
 		private void processProject(IResourceProxy resourceProxy) {
 			if (resourceProxy.isAccessible()) {  // the project exists and is open
 				IProject project = (IProject) resourceProxy.requestResource();
-				if (JptCorePlugin.projectHasJpaFacet(project)) {
+				if (JpaFacet.isInstalled(project)) {
 					GenericJpaProjectManager.this.addJpaProject(project);
 				}
 			}
@@ -927,7 +927,7 @@ class GenericJpaProjectManager
 
 		private void processPreUninstallEvent(IProjectFacetActionEvent event) {
 			debug("Facet PRE_UNINSTALL: ", event.getProjectFacet()); //$NON-NLS-1$
-			if (event.getProjectFacet().getId().equals(JptCorePlugin.FACET_ID)) {
+			if (event.getProjectFacet().equals(JpaFacet.FACET)) {
 				GenericJpaProjectManager.this.jpaFacetedProjectPreUninstall(event);
 			}
 		}

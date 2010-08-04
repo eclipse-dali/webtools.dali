@@ -76,22 +76,6 @@ public class JptCorePlugin extends Plugin {
 	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 
 	/**
-	 * The identifier for the JPA facet
-	 * (value <code>"jpt.jpa"</code>).
-	 */
-	public static final String FACET_ID = "jpt.jpa";  //$NON-NLS-1$
-	
-	/**
-	 * Version string for JPA facet version 1.0
-	 */
-	public static final String JPA_FACET_VERSION_1_0 = "1.0";  //$NON-NLS-1$
-	
-	/**
-	 * Version string for JPA facet version 2.0
-	 */
-	public static final String JPA_FACET_VERSION_2_0 = "2.0";  //$NON-NLS-1$
-	
-	/**
 	 * The key for storing a JPA project's platform ID in the Eclipse
 	 * project's preferences.
 	 */
@@ -109,13 +93,13 @@ public class JptCorePlugin extends Plugin {
 	 * The key for storing the default JPA platform ID for JPA 1.0 in the workspace preferences.
 	 */
 	public static final String DEFAULT_JPA_PLATFORM_1_0_PREF_KEY = 
-			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JPA_FACET_VERSION_1_0; //$NON-NLS-1$
+			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JpaFacet.VERSION_1_0.getVersionString(); //$NON-NLS-1$
 	
 	/**
 	 * The key for storing the default JPA platform ID for JPA 2.0 in the workspace preferences.
 	 */
 	public static final String DEFAULT_JPA_PLATFORM_2_0_PREF_KEY = 
-			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JPA_FACET_VERSION_2_0; //$NON-NLS-1$
+			DEFAULT_JPA_PLATFORM_PREF_KEY + "_" + JpaFacet.VERSION_2_0.getVersionString(); //$NON-NLS-1$
 	
 	/**
 	 * The key for storing a JPA project's "discover" flag in the Eclipse
@@ -294,13 +278,6 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	/**
-	 * Return whether the specified Eclipse project has a JPA facet.
-	 */
-	public static boolean projectHasJpaFacet(IProject project) {
-		return projectHasFacet(project, FACET_ID);
-	}
-
-	/**
 	 * Return whether the specified Eclipse project has a Web facet.
 	 */
 	public static boolean projectHasWebFacet(IProject project) {
@@ -355,13 +332,13 @@ public class JptCorePlugin extends Plugin {
 		IEclipsePreferences node = getDefaultPreferences();
 
 		// default JPA platforms
-		String defaultPlatformId_1_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JPA_FACET_VERSION_1_0);
+		String defaultPlatformId_1_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JpaFacet.VERSION_1_0.getVersionString());
 		if (StringTools.stringIsEmpty(defaultPlatformId_1_0)) {
 			defaultPlatformId_1_0 = GenericJpaPlatformProvider.ID;
 		}
 		node.put(DEFAULT_JPA_PLATFORM_1_0_PREF_KEY, defaultPlatformId_1_0);
 		
-		String defaultPlatformId_2_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JPA_FACET_VERSION_2_0);
+		String defaultPlatformId_2_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JpaFacet.VERSION_2_0.getVersionString());
 		if (StringTools.stringIsEmpty(defaultPlatformId_2_0)) {
 			defaultPlatformId_2_0 = Generic2_0JpaPlatformProvider.ID;
 		}
@@ -414,13 +391,13 @@ public class JptCorePlugin extends Plugin {
 		String defaultDefaultPlatformId = 
 				getDefaultJpaPlatformId(jpaFacetVersion, DEFAULT_JPA_PLATFORM_PREF_KEY, null, nodes);
 		String preferenceKey = null;
-		if (jpaFacetVersion.equals(JPA_FACET_VERSION_1_0)) {
+		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0.getVersionString())) {
 			if (defaultDefaultPlatformId == null) {
 				defaultDefaultPlatformId = GenericJpaPlatformProvider.ID;
 			}
 			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY; 
 		}
-		else if (jpaFacetVersion.equals(JPA_FACET_VERSION_2_0)) {
+		else if (jpaFacetVersion.equals(JpaFacet.VERSION_2_0.getVersionString())) {
 			if (defaultDefaultPlatformId == null) {
 				defaultDefaultPlatformId = Generic2_0JpaPlatformProvider.ID;
 			}
@@ -456,10 +433,10 @@ public class JptCorePlugin extends Plugin {
 	public static void setDefaultJpaPlatformId(String jpaFacetVersion, String platformId) {
 		IEclipsePreferences prefs = getWorkspacePreferences();
 		String preferenceKey = null;
-		if (JPA_FACET_VERSION_1_0.equals(jpaFacetVersion)) {
+		if (JpaFacet.VERSION_1_0.getVersionString().equals(jpaFacetVersion)) {
 			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY;
 		}
-		else if (JPA_FACET_VERSION_2_0.equals(jpaFacetVersion)) {
+		else if (JpaFacet.VERSION_2_0.getVersionString().equals(jpaFacetVersion)) {
 			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
 		}
 		else {
@@ -660,7 +637,7 @@ public class JptCorePlugin extends Plugin {
 	}
 
 	public static boolean nodeIsJpa2_0Compatible(JpaNode jpaNode) {
-		return jpaNode.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JPA_FACET_VERSION_2_0);
+		return jpaNode.getJpaProject().getJpaPlatform().getJpaVersion().isCompatibleWithJpaVersion(JpaFacet.VERSION_2_0.getVersionString());
 	}
 
 	/**

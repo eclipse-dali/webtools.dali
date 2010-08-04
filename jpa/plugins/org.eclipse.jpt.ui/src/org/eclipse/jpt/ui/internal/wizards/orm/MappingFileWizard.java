@@ -29,6 +29,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -154,7 +155,7 @@ public class MappingFileWizard extends Wizard
 	}
 	
 	private IContainer getDefaultContainer(IProject project) {
-		if (JptCorePlugin.projectHasJpaFacet(project)) {
+		if (JpaFacet.isInstalled(project)) {
 			return JptCorePlugin.getResourceLocator(project).getDefaultResourceLocation(project);
 		}
 		return project;

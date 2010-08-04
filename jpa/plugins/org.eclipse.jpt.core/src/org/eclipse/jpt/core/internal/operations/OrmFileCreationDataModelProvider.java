@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -207,7 +208,7 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
-		if (jpaFacetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)
+		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0.getVersionString())
 				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
 			return false;
 		}

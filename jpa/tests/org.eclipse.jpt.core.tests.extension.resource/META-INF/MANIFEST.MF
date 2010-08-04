@@ -18,5 +18,6 @@ Require-Bundle: org.eclipse.core.resources,
  org.eclipse.jpt.db,
  org.eclipse.jpt.utility,
  org.eclipse.swt,
+ org.eclipse.wst.common.project.facet.core,
  org.eclipse.wst.validation
 Export-Package: org.eclipse.jpt.core.tests.extension.resource;x-friends:="org.eclipse.jpt.ui.tests,org.eclipse.jpt.core.tests"

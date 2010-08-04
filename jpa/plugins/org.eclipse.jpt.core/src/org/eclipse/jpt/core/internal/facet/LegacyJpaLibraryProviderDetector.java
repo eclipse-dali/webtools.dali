@@ -11,7 +11,7 @@
 package org.eclipse.jpt.core.internal.facet;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LegacyLibraryProviderDetector;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
@@ -27,7 +27,7 @@ public class LegacyJpaLibraryProviderDetector
 	@Override
 	public ILibraryProvider detect(
 			final IProject project, final IProjectFacet facet) {
-		if (facet.getId().equals(JptCorePlugin.FACET_ID)) {
+		if (facet.equals(JpaFacet.FACET)) {
 			return LibraryProviderFramework.getProvider(LEGACY_JPA_LIBRARY_PROVIDER_ID);
 		}
 		return null;

@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2;
 
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaPlatform;
 import org.eclipse.jpt.core.internal.GenericJpaPlatformFactory.SimpleVersion;
@@ -43,7 +43,7 @@ public class Generic2_0JpaPlatformFactory
 	}
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_2_0);
+		return new SimpleVersion(JpaFacet.VERSION_2_0.getVersionString());
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

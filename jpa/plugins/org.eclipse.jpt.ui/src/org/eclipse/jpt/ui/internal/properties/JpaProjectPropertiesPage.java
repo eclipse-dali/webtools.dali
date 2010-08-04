@@ -39,6 +39,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableContext;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -115,9 +116,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import com.ibm.icu.text.Collator;
 
 /**
@@ -401,8 +400,7 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	public IProjectFacetVersion getProjectFacetVersion() {
-		IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID);
-		return this.getFacetedProject().getInstalledVersion(jpaFacet);
+		return this.getFacetedProject().getInstalledVersion(JpaFacet.FACET);
 	}
 
 	@Override

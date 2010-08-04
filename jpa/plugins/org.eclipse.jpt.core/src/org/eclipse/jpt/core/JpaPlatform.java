@@ -15,6 +15,9 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
+import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 
@@ -189,8 +192,8 @@ public interface JpaPlatform
 	JpaPlatformVariation getJpaVariation();
 
 	
-	interface Version 
-	{
+	interface Version {
+		
 		/**
 		 * Return the platform's version.
 		 */
@@ -198,16 +201,16 @@ public interface JpaPlatform
 		
 		/**
 		 * Return the highest JPA specification version supported by the platform.
-		 * @see JptCorePlugin#JPA_FACET_VERSION_1_0
-		 * @see JptCorePlugin#JPA_FACET_VERSION_2_0
+		 * @see JpaFacet#VERSION_1_0
+		 * @see JpaFacet#VERSION_2_0
 		 */
 		String getJpaVersion();
 		
 		/**
 		 * Return whether the platform is compatible with the specified JPA
 		 * specification version.
-		 * @see JptCorePlugin#JPA_FACET_VERSION_1_0
-		 * @see JptCorePlugin#JPA_FACET_VERSION_2_0
+		 * @see JpaFacet#VERSION_1_0
+		 * @see JpaFacet#VERSION_2_0
 		 */
 		boolean isCompatibleWithJpaVersion(String jpaVersion);
 	}

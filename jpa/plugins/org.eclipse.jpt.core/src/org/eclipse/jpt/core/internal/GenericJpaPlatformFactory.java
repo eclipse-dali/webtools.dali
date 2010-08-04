@@ -10,11 +10,10 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.Comparator;
-
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.JpaPlatformVariation;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFactory;
 import org.eclipse.wst.common.project.facet.core.DefaultVersionComparator;
 
@@ -44,7 +43,7 @@ public class GenericJpaPlatformFactory
 	
 	
 	private JpaPlatform.Version buildJpaVersion() {
-		return new SimpleVersion(JptCorePlugin.JPA_FACET_VERSION_1_0);
+		return new SimpleVersion(JpaFacet.VERSION_1_0.getVersionString());
 	}
 	
 	protected JpaPlatformVariation buildJpaPlatformVariation() {

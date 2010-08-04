@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
@@ -57,7 +58,7 @@ public class PersistenceFileCreationDataModelProvider
 	
 	@Override
 	protected boolean fileVersionSupportedForFacetVersion(String fileVersion, String jpaFacetVersion) {
-		if (jpaFacetVersion.equals(JptCorePlugin.JPA_FACET_VERSION_1_0)
+		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0.getVersionString())
 				&& fileVersion.equals(JPA2_0.SCHEMA_VERSION)) {
 			return false;
 		}

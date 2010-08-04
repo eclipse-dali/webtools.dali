@@ -16,7 +16,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jst.j2ee.internal.project.J2EEProjectUtilities;
 import org.eclipse.jst.j2ee.project.facet.JavaProjectMigrationOperation;
@@ -73,8 +73,8 @@ public class MigrateJavaProjectAction implements IObjectActionDelegate
 		// launch the UI with JPA facet preselected
 		final ModifyFacetedProjectWizard wizard = new ModifyFacetedProjectWizard(facetedProject);
 		IFacetedProjectWorkingCopy facetedProjectWorkingCopy = wizard.getFacetedProjectWorkingCopy();
-		IProjectFacetVersion jpa1_0 = ProjectFacetsManager.getProjectFacet(JptCorePlugin.FACET_ID).getDefaultVersion();
-		facetedProjectWorkingCopy.addProjectFacet(jpa1_0);
+		IProjectFacetVersion fv = JpaFacet.FACET.getDefaultVersion();
+		facetedProjectWorkingCopy.addProjectFacet(fv);
 		
 		final WizardDialog dialog = new WizardDialog(Display.getCurrent().getActiveShell(), wizard);
 		dialog.open();

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
@@ -55,12 +56,12 @@ public class TestJpaProject extends TestJavaProject {
 
 	public TestJpaProject(String projectName, boolean autoBuild, IDataModel jpaConfig) throws CoreException {
 		super(projectName, autoBuild);
-		String jpaFacetVersion = JptCorePlugin.JPA_FACET_VERSION_1_0;
+		String jpaFacetVersion = JpaFacet.VERSION_1_0.getVersionString();
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
 		this.installFacet("jst.utility", "1.0");
-		this.installFacet(JptCorePlugin.FACET_ID, jpaFacetVersion, jpaConfig);
+		this.installFacet(JpaFacet.ID, jpaFacetVersion, jpaConfig);
 		this.addJar(jpaJarName());
 		if (eclipseLinkJarName() != null) {
 			this.addJar(eclipseLinkJarName());
