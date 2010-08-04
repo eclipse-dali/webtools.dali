@@ -230,7 +230,7 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 	}
 
 	public ReplaceEdit createReplaceEdit(IType originalType, String newName) {
-		String originalName = originalType.getElementName();
+		String originalName = originalType.getTypeQualifiedName();
 		int nameIndex = this.className.lastIndexOf(originalName);
 
 		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1;
