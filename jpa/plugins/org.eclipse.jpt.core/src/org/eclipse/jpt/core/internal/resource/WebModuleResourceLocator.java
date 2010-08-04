@@ -39,4 +39,16 @@ public class WebModuleResourceLocator
 	public IPath getResourcePath(IProject project, IPath runtimePath) {
 		return super.getResourcePath(project, WEB_INF_CLASSES_PATH.append(runtimePath));
 	}
+	
+	/**
+	 * 
+	 */
+	@Override
+	public IPath getRuntimePath(IProject project, IPath resourcePath) {
+		IPath runtimePath = super.getRuntimePath(project, resourcePath);
+		if (WEB_INF_CLASSES_PATH.isPrefixOf(runtimePath)) {
+			return runtimePath.makeRelativeTo(WEB_INF_CLASSES_PATH);
+		}
+		return runtimePath;
+	}
 }

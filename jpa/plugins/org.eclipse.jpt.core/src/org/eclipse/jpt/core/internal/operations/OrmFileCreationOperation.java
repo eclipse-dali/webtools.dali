@@ -11,11 +11,13 @@ package org.eclipse.jpt.core.internal.operations;
 
 import java.util.Iterator;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -24,6 +26,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -81,14 +84,18 @@ public class OrmFileCreationOperation
 		
 		resource.modify(new Runnable() {
 			public void run() {
+				IPath containerPath = (IPath) getDataModel().getProperty(CONTAINER_PATH);
 				String fileName = getDataModel().getStringProperty(FILE_NAME);
-				String filePath = "META-INF/" + fileName;
+				IContainer container = PlatformTools.getContainer(containerPath);
+				IPath filePath = container.getFullPath().append(fileName);
+				IProject project = container.getProject();
+				IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
 				for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
-					if (filePath.equals(stream.next().getFileName())) {
+					if (runtimePath.equals(stream.next().getFileName())) {
 						return;
 					}
 				}
-				pUnit.addSpecifiedMappingFileRef(new Path(filePath).toPortableString());
+				pUnit.addSpecifiedMappingFileRef(runtimePath.toString());
 			}
 		});
 	}

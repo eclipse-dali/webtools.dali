@@ -37,8 +37,14 @@ public interface ResourceLocator {
 	IContainer getDefaultResourceLocation(IProject project);
 	
 	/**
-	 * Return the workspace relative resource path best represented by the given 
+	 * Return the workspace relative absolute resource path best represented by the given 
 	 * runtime path for the given project
 	 */
 	IPath getResourcePath(IProject project, IPath runtimePath);
+	
+	/**
+	 * Return the runtime path best represented by the given workspace relative absolute
+	 * resource path for the given project
+	 */
+	IPath getRuntimePath(IProject project, IPath resourcePath);
 }

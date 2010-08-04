@@ -10,10 +10,12 @@
 package org.eclipse.jpt.core.internal.resource;
 
 import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.pde.core.project.IBundleProjectDescription;
 import org.eclipse.pde.core.project.IBundleProjectService;
 import org.osgi.framework.BundleContext;
@@ -49,6 +51,22 @@ public class PluginResourceLocator
 			JptCorePlugin.log(ce);
 		}
 		return super.getResourcePath(project, runtimePath);
+	}
+	
+	@Override
+	public IPath getRuntimePath(IProject project, IPath resourcePath) {
+		IFile file = PlatformTools.getFile(resourcePath);
+		try {
+			IContainer root = getBundleRoot(project);
+			if (root.contains(file)) {
+				return resourcePath.makeRelativeTo(root.getFullPath());
+			}
+		}
+		catch (CoreException ce) {
+			// fall through
+			JptCorePlugin.log(ce);
+		}
+		return super.getRuntimePath(project, resourcePath);
 	}
 	
 	protected IContainer getBundleRoot(IProject project) 

@@ -20,6 +20,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 
@@ -123,6 +124,26 @@ public class SimpleJavaResourceLocator
 			return null;
 		}
 		return firstResourcePath;
+	}
+	
+	public IPath getRuntimePath(IProject project, IPath resourcePath) {
+		IJavaProject javaProject = getJavaProject(project);
+		IFile file = PlatformTools.getFile(resourcePath);
+		try {
+			for (IPackageFragmentRoot root : javaProject.getPackageFragmentRoots()) {
+				if (root.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					IContainer rootContainer = (IContainer) root.getUnderlyingResource();
+					if (rootContainer.contains(file)) {
+						return resourcePath.makeRelativeTo(rootContainer.getFullPath());
+					}
+				}
+			}
+		}
+		catch (JavaModelException jme) {
+			// fall through
+			JptCorePlugin.log(jme);
+		}
+		return resourcePath.makeRelativeTo(project.getFullPath());
 	}
 	
 	private IJavaProject getJavaProject(IProject project) {
