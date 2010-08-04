@@ -14,19 +14,26 @@ package org.eclipse.jpt.ui.internal.wizards.entity;
 import java.io.File;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -34,6 +41,7 @@ import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
+import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
 import org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -50,28 +58,24 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
+import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.model.WorkbenchContentProvider;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
-import org.eclipse.wst.common.project.facet.core.IProjectFacet;
-import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
+import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 
-public class EntityClassWizardPage extends NewJavaClassWizardPage{
+public class EntityClassWizardPage
+		extends NewJavaClassWizardPage {
 
-	private static final String JPA_FACET = JptCorePlugin.FACET_ID;
 	private static final String META_INF = "META-INF";//$NON-NLS-1$
 	private static final String EMPTY = "";//$NON-NLS-1$
 	private static final char SLASH = '/';
 	private static final String SINGLE_TABLE = "SINGLE_TABLE";//$NON-NLS-1$
 	private static final String TABLE_PER_CLASS = "TABLE_PER_CLASS";//$NON-NLS-1$
 	private static final String JOINED = "JOINED";//$NON-NLS-1$
-	private static final String[] INHERITANCE_STRATEGIES = new String[] {
-											EMPTY, 
-											SINGLE_TABLE,
-											TABLE_PER_CLASS,
-											JOINED };
+	private static final String[] INHERITANCE_STRATEGIES = 
+			new String[] {EMPTY, SINGLE_TABLE, TABLE_PER_CLASS, JOINED };
 	private Combo inheritanceStrategyCombo;
 	private Button entityButton;
 	private Button mapedAsSuperclassButton;
@@ -82,9 +86,11 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	private Text ormXmlName;
 	private Button browseButton;	
 	
-	public EntityClassWizardPage(IDataModel model, String pageName,
-			String pageDesc, String pageTitle, String moduleType) {
-		super(model, pageName, pageDesc, pageTitle, moduleType);
+	
+	public EntityClassWizardPage(
+			IDataModel model, String pageName, String pageDesc, String pageTitle) {
+		
+		super(model, pageName, pageDesc, pageTitle, null);
 	}
 	
 	
@@ -132,6 +138,54 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 			}
 		});		
 		return composite;
+	}
+	
+	@Override
+	protected ISelectionStatusValidator getContainerDialogSelectionValidator() {
+		return new ISelectionStatusValidator() {
+			public IStatus validate(Object[] selection) {
+				if (selection != null && selection[0] != null) {
+					if (selection[0] instanceof IProject) {
+						IProject project = (IProject) selection[0];
+						IJavaProject javaProject = JavaCore.create(project);
+						for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+							if (project.equals(root.getResource())) {
+								return WTPCommonPlugin.OK_STATUS;
+							}
+						}
+					}
+					else {
+						return WTPCommonPlugin.OK_STATUS;
+					}
+				}
+				return WTPCommonPlugin.createErrorStatus(J2EEUIMessages.CONTAINER_SELECTION_DIALOG_VALIDATOR_MESG);
+			}
+		};
+	}
+	
+	@Override
+	protected ViewerFilter getContainerDialogViewerFilter() {
+		return new ViewerFilter() {
+			@Override
+			public boolean select(Viewer viewer, Object parent, Object element) {
+				String projectName = (String) model.getProperty(IEntityDataModelProperties.PROJECT_NAME);
+				if (element instanceof IProject) {
+					IProject project = (IProject) element;
+					return project.getName().equals(projectName);
+				}
+				else if (element instanceof IFolder) {
+					IFolder folder = (IFolder) element;
+					// only show source folders
+					IProject project = ProjectUtilities.getProject(projectName);
+					IJavaProject javaProject = JavaCore.create(project);
+					for (IPackageFragmentRoot root : JDTTools.getJavaSourceFolders(javaProject)) {
+						if (folder.equals(root.getResource()))
+							return true;
+					}
+				}
+				return false;
+			}
+		};
 	}
 	
 	/**
@@ -321,15 +375,8 @@ public class EntityClassWizardPage extends NewJavaClassWizardPage{
 	 * 		   the project list, <code>false</code> - otherwise. 
 	 */
 	@Override
-	protected boolean isProjectValid(IProject project) {		
-		IProjectFacet jpaFacet = ProjectFacetsManager.getProjectFacet(JPA_FACET);
-		IFacetedProject fProject = null; 
-		try {
-			fProject = ProjectFacetsManager.create(project);
-		} catch (CoreException e) {
-			return false;
-		}		
-		return (project.isAccessible() && fProject != null && fProject.hasProjectFacet(jpaFacet));	
+	protected boolean isProjectValid(IProject project) {
+		return (project.isAccessible() && JpaFacet.isInstalled(project));	
 	}
 	
 	private class SelectMappingXMLDialog extends ElementTreeSelectionDialog

@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IMarker;
@@ -50,6 +51,7 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -142,7 +144,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	 */
 	public IStatus doExecute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		// Create source folder if it does not exist
-		createJavaSourceFolder();
+		createJavaSourceContainer();
 		// Create java package if it does not exist
 		IPackageFragment pack = createJavaPackage();
 		// Generate filter class using templates
@@ -341,7 +343,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	}
 
 	/**
-	 * This method will return the java source folder as specified in the java
+	 * This method will return the java source container as specified in the java
 	 * class data model. It will create the java source folder if it does not
 	 * exist. This method may return null.
 	 * 
@@ -351,26 +353,25 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 	 * 
 	 * @return IFolder the java source folder
 	 */
-	protected final IFolder createJavaSourceFolder() {
+	protected final IContainer createJavaSourceContainer() {
 		// Get the source folder name from the data model
-		String folderFullPath = model.getStringProperty(INewJavaClassDataModelProperties.SOURCE_FOLDER);
+		String containerFullPath = model.getStringProperty(INewJavaClassDataModelProperties.SOURCE_FOLDER);
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		IFolder folder = root.getFolder(new Path(folderFullPath));
-		// If folder does not exist, create the folder with the specified path
-		if (!folder.exists()) {
+		IContainer container = PlatformTools.getContainer(new Path(containerFullPath));
+		// If container does not exist, create the folder with the specified path
+		if (! container.exists()) {
 			try {
-				folder.create(true, true, null);
+				((IFolder) container).create(true, true, null);
 			} catch (CoreException e) {
 				JptUiPlugin.log(e);
 			}
 		}
 		// Return the source folder
-		return folder;
+		return container;
 	}
 
 	@Override
-	public IStatus execute(IProgressMonitor monitor, IAdaptable info)
-			throws ExecutionException {
+	public IStatus execute(IProgressMonitor monitor, IAdaptable info) throws ExecutionException {
 		return doExecute(monitor, info);
 	}
 	

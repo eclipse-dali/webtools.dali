@@ -9,13 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jface;
 
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jdt.core.IClasspathEntry;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jpt.core.JpaFile;
@@ -30,18 +28,44 @@ import org.eclipse.jpt.ui.JptUiPlugin;
  * content type.
  * @see JptCorePlugin.MAPPING_FILE_CONTENT_TYPE
  */
-public class XmlMappingFileViewerFilter extends ViewerFilter {
-
-	private final IJavaProject javaProject;
-
+public class XmlMappingFileViewerFilter
+		extends ViewerFilter {
+	
 	private final JpaProject jpaProject;
+	
 	
 	public XmlMappingFileViewerFilter(JpaProject jpaProject) {
 		super();
 		this.jpaProject = jpaProject;
-		this.javaProject = jpaProject.getJavaProject();
 	}
-
+	
+	
+	@Override
+	public boolean select(Viewer viewer, Object parentElement, Object element) {
+		
+		if (element instanceof IFile) {
+			return isMappingFile((IFile) element);
+		}
+		else if (element instanceof IContainer) {
+			IContainer container = (IContainer) element;
+			IProject project = this.jpaProject.getProject();
+			if (JptCorePlugin.getResourceLocator(project).acceptResourceLocation(project, container)) {
+				try {
+					for (IResource resource : container.members()) {
+						if (select(viewer, container, resource)) {
+							return true;
+						}
+					}
+				}
+				catch (CoreException ce) {
+					// fall through
+					JptUiPlugin.log(ce);
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Determines whether the given file (an XML file) is a JPA mapping
 	 * descriptor file. 
@@ -49,40 +73,5 @@ public class XmlMappingFileViewerFilter extends ViewerFilter {
 	private boolean isMappingFile(IFile file) {
 		JpaFile jpaFile = this.jpaProject.getJpaFile(file);
 		return jpaFile != null ? jpaFile.getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE): false;
-	}
-
-	@Override
-	public boolean select(Viewer viewer,
-	                      Object parentElement,
-	                      Object element) {
-
-		if (element instanceof IFile) {
-			return isMappingFile((IFile) element);
-		}
-		else if (element instanceof IFolder) {
-			IFolder folder = (IFolder) element;
-
-			try {
-				for (IClasspathEntry entry : this.javaProject.getRawClasspath()) {
-					if (entry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-						if (entry.getPath().isPrefixOf(folder.getFullPath().makeRelative())) {
-							for (IResource resource : folder.members()) {
-								if (select(viewer, folder, resource)) {
-									return true;
-								}
-							}
-						}
-					}
-				}
-			}
-			catch (JavaModelException e) {
-				JptUiPlugin.log(e.getStatus());
-			}
-			catch (CoreException e) {
-				JptUiPlugin.log(e.getStatus());
-			}
-		}
-
-		return false;
 	}
 }

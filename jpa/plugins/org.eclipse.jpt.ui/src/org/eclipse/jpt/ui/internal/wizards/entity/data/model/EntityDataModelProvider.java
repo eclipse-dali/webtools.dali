@@ -14,25 +14,33 @@ package org.eclipse.jpt.ui.internal.wizards.entity.data.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import org.eclipse.core.resources.IContainer;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaConventions;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaFile;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.common.J2EECommonMessages;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.common.operations.NewJavaClassDataModelProvider;
+import org.eclipse.jst.j2ee.internal.plugin.J2EEPlugin;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
@@ -83,7 +91,13 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	 */
 	@Override
 	public Object getDefaultProperty(String propertyName) {
-		if (propertyName.equals(INHERITANCE)) {
+		// overridden
+		if (propertyName.equals(SOURCE_FOLDER)) {
+			IContainer container = getDefaultJavaSourceContainer();
+			return (container == null) ? null : container.getFullPath().toString();
+		}
+		
+		else if (propertyName.equals(INHERITANCE)) {
 			return Boolean.FALSE;
 		} else if (propertyName.equals(ENTITY)) {
 			return Boolean.TRUE;
@@ -117,10 +131,40 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 	}
 	
 	@Override
+	protected IFolder getDefaultJavaSourceFolder() {
+		return null;
+	}
+	
+	protected IContainer getDefaultJavaSourceContainer() {
+		JpaProject jpaProject = getTargetJpaProject();
+		if (jpaProject == null) {
+			return null;
+		}
+		IJavaProject javaProject = jpaProject.getJavaProject();
+		try {
+			for (IPackageFragmentRoot pfr : javaProject.getPackageFragmentRoots()) {
+				if (pfr.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					return (IContainer) pfr.getUnderlyingResource();
+				}
+			}
+		}
+		catch (JavaModelException jme) {
+			// fall through
+			JptUiPlugin.log(jme);
+		}
+		return null;
+	}
+	
+	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
-		if (propertyName.equals(PROJECT_NAME) || propertyName.equals(XML_SUPPORT)) {
-			this.model.notifyPropertyChange(XML_NAME, IDataModel.VALID_VALUES_CHG);
+		if (ok) {
+			if (COMPONENT_NAME.equals(propertyName) || PROJECT_NAME.equals(propertyName)) {
+				this.model.notifyPropertyChange(SOURCE_FOLDER, IDataModel.DEFAULT_CHG);
+			}
+			if (PROJECT_NAME.equals(propertyName) || XML_SUPPORT.equals(propertyName)) {
+				this.model.notifyPropertyChange(XML_NAME, IDataModel.VALID_VALUES_CHG);
+			}
 		}
 		return ok;
 	}
@@ -144,6 +188,48 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			return validateFieldsList((ArrayList<EntityRow>) getProperty(propertyName));
 		}
 		return result;		
+	}
+	
+	@Override
+	protected IStatus validateJavaSourceFolder(String containerFullPath) {
+		// Ensure that the source folder path is not empty
+		if (containerFullPath == null || containerFullPath.length() == 0) {
+			String msg = J2EECommonMessages.ERR_JAVA_CLASS_FOLDER_NAME_EMPTY;
+			return WTPCommonPlugin.createErrorStatus(msg);
+		}
+		// Ensure that the source folder path is absolute
+		else if (!new Path(containerFullPath).isAbsolute()) {
+			String msg = J2EECommonMessages.ERR_JAVA_CLASS_FOLDER_NOT_ABSOLUTE;
+			return WTPCommonPlugin.createErrorStatus(msg);
+		}
+		IProject project = getTargetProject();
+		// Ensure project is not closed
+		if (project == null) {
+			String msg = J2EECommonMessages.ERR_JAVA_CLASS_FOLDER_NOT_EXIST;
+			return WTPCommonPlugin.createErrorStatus(msg);
+		}
+		// Ensure project is accessible.
+		if (!project.isAccessible()) {
+			String msg = J2EECommonMessages.ERR_JAVA_CLASS_FOLDER_NOT_EXIST;
+			return WTPCommonPlugin.createErrorStatus(msg);
+		}
+		// Ensure the project is a java project.
+		try {
+			if (!project.hasNature(JavaCore.NATURE_ID)) {
+				String msg = J2EECommonMessages.ERR_JAVA_CLASS_NOT_JAVA_PROJECT;
+				return WTPCommonPlugin.createErrorStatus(msg);
+			}
+		} catch (CoreException e) {
+			J2EEPlugin.logError(e);
+		}
+		// Ensure the selected folder is a valid java source folder for the component
+		IContainer container = getJavaSourceContainer();
+		if (container == null || (! container.getFullPath().equals(new Path(containerFullPath)))) {
+			String msg = J2EECommonMessages.getResourceString(J2EECommonMessages.ERR_JAVA_CLASS_FOLDER_NOT_SOURCE, new String[]{containerFullPath});
+			return WTPCommonPlugin.createErrorStatus(msg);
+		}
+		// Valid source is selected
+		return WTPCommonPlugin.OK_STATUS;
 	}
 	
 	/**
@@ -187,19 +273,19 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		if (getBooleanProperty(XML_SUPPORT)) {
 			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
-			if (project != null) {
+			JpaFile jpaFile = null;
+			if (project != null && ! StringTools.stringIsEmpty(xmlName)) {
 				//TODO need to check content type as well since user can type in a file name, should have a different error message for invalid content type
-				JpaFile jpaFile = JptCorePlugin.getJpaFile(project, new Path(xmlName));
+				jpaFile = JptCorePlugin.getJpaFile(project, new Path(xmlName));
 				if (jpaFile == null) {
 					return new Status(
-						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
+							IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
 							EntityWizardMsg.INVALID_XML_NAME);
 				}
 			}
 		}
 		return Status.OK_STATUS;
 	}
-	
 	
 	/**
 	 * This method is intended for internal use only. It will be used to validate the entity fields
@@ -359,5 +445,53 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 			}
 		}		
 		return false;
-	}		
+	}
+	
+	protected JpaProject getTargetJpaProject() {
+		IProject project = getTargetProject();
+		if (project != null && JpaFacet.isInstalled(project)) {
+			return JptCorePlugin.getJpaProject(project);
+		}
+		return null;
+	}
+	
+	protected IContainer getJavaSourceContainer() {
+		String containerFullPath = getStringProperty(SOURCE_FOLDER);
+		JpaProject jpaProject = getTargetJpaProject();
+		if (jpaProject == null) {
+			return null;
+		}
+		IJavaProject javaProject = jpaProject.getJavaProject();
+		try {
+			for (IPackageFragmentRoot pfr : javaProject.getPackageFragmentRoots()) {
+				if (pfr.getKind() == IPackageFragmentRoot.K_SOURCE) {
+					IContainer container = (IContainer) pfr.getUnderlyingResource();
+					if (container.getFullPath().equals(new Path(containerFullPath))) {
+						return container;
+					}
+				}
+			}
+		}
+		catch (JavaModelException jme) {
+			// fall through
+			JptUiPlugin.log(jme);
+		}
+		return null;
+	}
+	
+	@Override
+	protected IPackageFragmentRoot getJavaPackageFragmentRoot() {
+		JpaProject jpaProject = getTargetJpaProject();
+		if (jpaProject != null) {
+			IJavaProject javaProject = jpaProject.getJavaProject();
+			// Return the source folder for the java project of the selected project
+			if (javaProject != null) {
+				IContainer sourceContainer = getJavaSourceContainer();
+				if (sourceContainer != null) {
+					return javaProject.getPackageFragmentRoot(sourceContainer);
+				}
+			}
+		}
+		return null;
+	}
 }
