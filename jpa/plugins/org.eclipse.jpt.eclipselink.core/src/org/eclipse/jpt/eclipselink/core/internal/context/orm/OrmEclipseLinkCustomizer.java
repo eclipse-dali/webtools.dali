@@ -162,15 +162,22 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 
 	//************************* refactoring ************************
 
-	public Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
 		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceTypeEdit(originalType, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
 		return getResourceCustomizer().createReplaceEdit(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
 	}
 
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {

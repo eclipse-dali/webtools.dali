@@ -528,6 +528,12 @@ public interface PersistenceUnit
 		Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 
 		/**
+		 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
+		 * The originalType has not yet been moved.
+		 */
+		Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage);
+
+		/**
 		 * Create ReplaceEdits for renaming the property value package to the newName.
 		 * The originalPackage has not yet been renamed.
 		 * If this value is not in the originalPackage, then return an empty Iterable.
@@ -754,6 +760,12 @@ public interface PersistenceUnit
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+	
+	/**
+	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
+	 * The originalType has not yet been moved.
+	 */
+	Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.

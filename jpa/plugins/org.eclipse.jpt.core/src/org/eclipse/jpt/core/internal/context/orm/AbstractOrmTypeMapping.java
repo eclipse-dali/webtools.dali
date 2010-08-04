@@ -380,6 +380,13 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.resourceTypeMapping.createReplaceTypeEdit(originalType, newName);
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (getPersistentType().isIn(originalPackage)) {
 			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));

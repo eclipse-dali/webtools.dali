@@ -253,6 +253,13 @@ public class GenericOrmXml
 		return EmptyIterable.instance();
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.entityMappings != null) {
+			return this.entityMappings.createMoveTypeReplaceEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.entityMappings != null) {
 			return this.entityMappings.createReplacePackageEdits(originalPackage, newName);

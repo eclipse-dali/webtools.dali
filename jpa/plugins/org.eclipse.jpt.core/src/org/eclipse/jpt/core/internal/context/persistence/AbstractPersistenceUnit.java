@@ -973,7 +973,7 @@ public abstract class AbstractPersistenceUnit
 		if (propertyName == null) {
 			throw new NullPointerException();
 		}
-		return new FilteringIterable<Property>(CollectionTools.iterable(this.properties())) {
+		return new FilteringIterable<Property>(this.getProperties()) {
 			@Override
 			protected boolean accept(Property property) {
 				String pName = property.getName();
@@ -1666,6 +1666,29 @@ public abstract class AbstractPersistenceUnit
 		return this.options.createReplaceTypeEdits(originalType, newName);
 	}
 
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			createSpecifiedClassRefMoveTypeReplaceEdits(originalType, newPackage),
+			createPersistenceUnitPropertiesMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedClassRefMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<ClassRef, Iterable<ReplaceEdit>>(getSpecifiedClassRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(ClassRef classRef) {
+					return classRef.createMoveTypeReplaceEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.options.createMoveTypeReplaceEdits(originalType, newPackage);
+	}
+
+	
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(

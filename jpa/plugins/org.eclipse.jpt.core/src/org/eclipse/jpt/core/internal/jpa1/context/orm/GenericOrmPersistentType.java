@@ -968,6 +968,24 @@ public class GenericOrmPersistentType
 	}
 
 	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.mapping.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.createSpecifiedAttributesMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
+					return persistentAttribute.createMoveTypeReplaceEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			this.mapping.createReplacePackageEdits(originalPackage, newName),

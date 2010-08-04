@@ -381,6 +381,19 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	}
 
 	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.createLoggerMoveTypeReplaceEdits(originalType, newPackage);
+	}
+
+	protected Iterable<ReplaceEdit> createLoggerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
+		if (property != null) {
+			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@Override
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.createLoggerReplacePackageEdits(originalPackage, newName);
 	}

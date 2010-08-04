@@ -843,6 +843,17 @@ public abstract class AbstractEntityMappings
 		);
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
+					return persistentType.createMoveTypeReplaceEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(

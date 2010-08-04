@@ -239,6 +239,10 @@ public abstract class AbstractOrmPersistentAttribute
 		return this.attributeMapping.createReplaceTypeEdits(originalType, newName);
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.attributeMapping.createMoveTypeReplaceEdits(originalType, newPackage);
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.attributeMapping.createReplacePackageEdits(originalPackage, newName);
 	}

@@ -226,12 +226,32 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
-		return this.customizer.createReplaceEdits(originalType, newName);
+		return this.customizer.createReplaceTypeEdits(originalType, newName);
 	}
 
 	protected Iterable<ReplaceEdit> createClassExtractorReplaceTypeEdits(IType originalType, String newName) {
 		if (this.classExtractorIsFor(originalType.getFullyQualifiedName('.'))) {
 			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplaceEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+					super.createMoveTypeReplaceEdits(originalType, newPackage),
+					this.createCustomizerMoveTypeReplaceEdits(originalType, newPackage),
+					this.createClassExtractorMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.customizer.createMoveTypeReplaceEdits(originalType, newPackage);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.classExtractorIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplacePackageEdit(newPackage.getElementName()));
 		}
 		return EmptyIterable.instance();
 	}

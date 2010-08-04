@@ -609,6 +609,24 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.createMapKeyClassMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createMapKeyClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.specifiedMapKeyClass != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyPackageEdit(newPackage.getElementName()));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			super.createReplacePackageEdits(originalPackage, newName),

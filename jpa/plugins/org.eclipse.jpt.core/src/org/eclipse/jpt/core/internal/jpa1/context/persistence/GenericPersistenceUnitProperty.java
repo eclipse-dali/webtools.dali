@@ -118,6 +118,13 @@ public class GenericPersistenceUnitProperty
 		return this.xmlProperty.createReplaceTypeEdit(originalType, newName);
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.getValue() != null && this.getValue().equals(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		String packageName = getValuePackageName();
 		if (packageName != null && packageName.equals(originalPackage.getElementName())) {

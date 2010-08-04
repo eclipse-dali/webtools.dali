@@ -310,6 +310,13 @@ public abstract class AbstractMappingFileRef
 		return EmptyIterable.instance();
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.mappingFile != null) {
+			return this.mappingFile.createMoveTypeReplaceEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.mappingFile != null) {
 			return this.mappingFile.createReplacePackageEdits(originalPackage, newName);

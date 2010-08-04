@@ -109,7 +109,19 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
-		return this.customizer.createReplaceEdits(originalType, newName);
+		return this.customizer.createReplaceTypeEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.createCustomizerReplaceTypeEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.customizer.createMoveTypeReplaceEdits(originalType, newPackage);
 	}
 
 	@SuppressWarnings("unchecked")

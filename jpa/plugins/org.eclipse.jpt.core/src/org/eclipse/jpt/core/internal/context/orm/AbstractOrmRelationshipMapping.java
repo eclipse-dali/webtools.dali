@@ -308,6 +308,24 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.createTargetEntityMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createTargetEntityMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.specifiedTargetEntity != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityPackageEdit(newPackage.getElementName()));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			super.createReplacePackageEdits(originalPackage, newName),

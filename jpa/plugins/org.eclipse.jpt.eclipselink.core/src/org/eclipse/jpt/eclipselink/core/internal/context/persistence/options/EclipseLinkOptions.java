@@ -417,6 +417,19 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	}
 
 	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.createEventListenerMoveTypeReplaceEdits(originalType, newPackage);
+	}
+
+	protected Iterable<ReplaceEdit> createEventListenerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
+		if (property != null) {
+			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@Override
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return this.createEventListenerReplacePackageEdits(originalPackage, newName);
 	}

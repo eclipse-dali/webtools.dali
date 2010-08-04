@@ -120,6 +120,12 @@ public interface ClassRef
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 
 	/**
+	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
+	 * The originalType has not yet been moved.
+	 */
+	Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage);
+
+	/**
 	 * Create ReplaceEdits for renaming the class's package to the newName.
 	 * The originalPackage has not yet been renamed.
 	 * If this class is not a part of the original package, then return an empty Iterable.

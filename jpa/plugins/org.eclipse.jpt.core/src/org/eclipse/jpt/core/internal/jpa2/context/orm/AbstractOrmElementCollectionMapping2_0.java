@@ -1072,6 +1072,35 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 
 	@SuppressWarnings("unchecked")
 	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.createMapKeyClassMoveTypeReplaceEdits(originalType, newPackage),
+			this.createTargetClassMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createMapKeyClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.specifiedMapKeyClass != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyPackageEdit(newPackage.getElementName()));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected Iterable<ReplaceEdit> createTargetClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.specifiedTargetClass != null) {
+			String originalName = originalType.getFullyQualifiedName('.');
+			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createReplaceTargetClassPackageEdit(newPackage.getElementName()));
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			super.createReplacePackageEdits(originalPackage, newName),

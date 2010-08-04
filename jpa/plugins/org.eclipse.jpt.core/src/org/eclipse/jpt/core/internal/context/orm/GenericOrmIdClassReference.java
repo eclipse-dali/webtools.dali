@@ -216,7 +216,7 @@ public class GenericOrmIdClassReference
 
 	//************************* refactoring ************************
 
-	public Iterable<ReplaceEdit> createReplaceEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
 		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
 			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
 		}
@@ -232,6 +232,13 @@ public class GenericOrmIdClassReference
 			return true;
 		}
 		return false;
+	}
+
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
 	}
 
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {

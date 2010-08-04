@@ -1576,7 +1576,19 @@ public abstract class AbstractOrmEntity
 	}
 
 	protected Iterable<ReplaceEdit> createIdClassReplaceTypeEdits(IType originalType, String newName) {
-		return this.idClassReference.createReplaceEdits(originalType, newName);
+		return this.idClassReference.createReplaceTypeEdits(originalType, newName);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+					super.createMoveTypeReplaceEdits(originalType, newPackage),
+					this.createIdClassMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createIdClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return this.idClassReference.createMoveTypeReplaceEdits(originalType, newPackage);
 	}
 
 	@SuppressWarnings("unchecked")

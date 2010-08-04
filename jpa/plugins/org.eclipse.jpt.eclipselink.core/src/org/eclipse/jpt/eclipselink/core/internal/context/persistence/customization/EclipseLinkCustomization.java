@@ -832,6 +832,32 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 		return EmptyIterable.instance();
 	}
 
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+					this.createSessionCustomizerMoveTypeReplaceEdits(originalType, newPackage),
+					this.createExceptionHandlerMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
+					return property.createMoveTypeReplaceEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createExceptionHandlerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
+		if (property != null) {
+			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
 
 	@Override
 	@SuppressWarnings("unchecked")

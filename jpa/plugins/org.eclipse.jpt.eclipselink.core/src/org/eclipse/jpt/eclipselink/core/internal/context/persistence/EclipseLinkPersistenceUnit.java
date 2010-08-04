@@ -523,6 +523,15 @@ public class EclipseLinkPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	@Override
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createPersistenceUnitPropertiesMoveTypeReplaceEdits(originalType, newPackage),
+			this.customization.createMoveTypeReplaceEdits(originalType, newPackage),
+			this.logging.createMoveTypeReplaceEdits(originalType, newPackage));
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			super.createPersistenceUnitPropertiesReplacePackageEdits(originalPackage, newName),

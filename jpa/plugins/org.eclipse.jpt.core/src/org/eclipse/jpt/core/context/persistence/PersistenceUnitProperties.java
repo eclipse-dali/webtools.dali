@@ -67,6 +67,12 @@ public interface PersistenceUnitProperties extends Model
 	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
 
 	/**
+	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
+	 * The originalType has not yet been moved.
+	 */
+	Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage);
+
+	/**
 	 * Create ReplaceEdits for renaming any reference to the originalPackage newName.
 	 * The originalPackage has not yet been renamed.
 	 */

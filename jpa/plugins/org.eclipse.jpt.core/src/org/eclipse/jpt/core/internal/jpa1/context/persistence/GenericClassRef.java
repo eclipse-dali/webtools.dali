@@ -349,6 +349,16 @@ public class GenericClassRef
 		return this.xmlJavaClassRef.createReplaceEdit(originalType, newName);
 	}
 
+	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+		if (isVirtual()) {
+			throw new IllegalStateException();
+		}
+		if (this.isFor(originalType)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
 	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (isVirtual()) {
 			throw new IllegalStateException();
