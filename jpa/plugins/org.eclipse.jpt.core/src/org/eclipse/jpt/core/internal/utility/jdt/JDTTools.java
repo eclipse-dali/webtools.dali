@@ -57,14 +57,13 @@ public final class JDTTools
 
 	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
 
-	//TODO move this method to JpaProject once API freeze is over
 	public static Iterable<IPackageFragmentRoot> getJavaSourceFolders(IJavaProject javaProject) {
 		try {
 			return new FilteringIterable<IPackageFragmentRoot>(
 					getPackageFragmentRoots(javaProject),
-					SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER
-				);
-		} catch (JavaModelException ex) {
+					SOURCE_PACKAGE_FRAGMENT_ROOT_FILTER);
+		}
+		catch (JavaModelException ex) {
 			JptCorePlugin.log(ex);
 			return EmptyIterable.instance();
 		}
