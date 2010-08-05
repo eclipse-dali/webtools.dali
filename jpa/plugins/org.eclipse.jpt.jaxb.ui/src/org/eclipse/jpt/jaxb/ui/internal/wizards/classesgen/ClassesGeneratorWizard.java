@@ -14,6 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorExtensionOptions;
+import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -30,10 +32,14 @@ public class ClassesGeneratorWizard extends Wizard {
 	private String destinationFolder;
 	private String targetPackage;
 	private String catalog;
-	private boolean useMoxy;
+	private boolean usesMoxy;
 	private String[] bindingsFileNames;
+	private ClassesGeneratorOptions generatorOptions;
+	private ClassesGeneratorExtensionOptions generatorExtensionOptions;
 
-	private ClassesGeneratorWizardPage generatorSettingsPage;
+	private ClassesGeneratorWizardPage settingsPage;
+	private ClassesGeneratorOptionsWizardPage optionsPage;
+	private ClassesGeneratorExtensionOptionsWizardPage extensionOptionsPage;
 
 	// ********** constructor **********
 	
@@ -53,27 +59,72 @@ public class ClassesGeneratorWizard extends Wizard {
 	public void addPages() {
 		super.addPages();
 		
-		this.generatorSettingsPage = this.buildClassesGeneratorPage();
+		this.settingsPage = this.buildClassesGeneratorPage();
+		this.optionsPage = this.buildClassesGeneratorOptionsPage();
+		this.extensionOptionsPage = this.buildExtensionOptionsPage();
 		
-		this.addPage(this.generatorSettingsPage);
+		this.addPage(this.settingsPage);
+		this.addPage(this.optionsPage);
+		this.addPage(this.extensionOptionsPage);
 	}
 	
 	@Override
 	public boolean performFinish() {
-		this.destinationFolder = this.generatorSettingsPage.getTargetFolder();
-		this.targetPackage = this.generatorSettingsPage.getTargetPackage();
-		this.catalog = this.generatorSettingsPage.getCatalog();
-		this.useMoxy = this.generatorSettingsPage.usesMoxy();
-		this.bindingsFileNames = this.generatorSettingsPage.getBindingsFileNames();
+
+		this.initializeGeneratorSettings();
+
+		this.initializeGeneratorOptions();
 		
+		this.initializeGeneratorExtensionOptions();
+
 		IFolder folder = this.javaProject.getProject().getFolder(this.destinationFolder);
 		this.createFolderIfNotExist(folder);
 		return true;
 	}
 
+	private void initializeGeneratorSettings() {
+		this.destinationFolder = this.settingsPage.getTargetFolder();
+		this.targetPackage = this.settingsPage.getTargetPackage();
+		this.catalog = this.settingsPage.getCatalog();
+		this.usesMoxy = this.settingsPage.usesMoxy();
+		this.bindingsFileNames = this.settingsPage.getBindingsFileNames();
+	}
+	
+	private void initializeGeneratorOptions() {
+		this.generatorOptions = new ClassesGeneratorOptions();
+
+		this.generatorOptions.setProxy(this.optionsPage.getProxy());
+		this.generatorOptions.setProxyFile(this.optionsPage.getProxyFile());
+		
+		this.generatorOptions.setUsesStrictValidation(this.optionsPage.usesStrictValidation());
+		this.generatorOptions.setMakesReadOnly(this.optionsPage.makesReadOnly());
+		this.generatorOptions.setSuppressesPackageInfoGen(this.optionsPage.suppressesPackageInfoGen());
+		this.generatorOptions.setSuppressesHeaderGen(this.optionsPage.suppressesHeaderGen());
+		this.generatorOptions.setTargetIs20(this.optionsPage.getTarget());
+		this.generatorOptions.setIsVerbose(this.optionsPage.isVerbose());
+		this.generatorOptions.setIsQuiet(this.optionsPage.isQuiet());
+		
+		this.generatorOptions.setTreatsAsXmlSchema(this.optionsPage.treatsAsXmlSchema());
+		this.generatorOptions.setTreatsAsRelaxNg(this.optionsPage.treatsAsRelaxNg());
+		this.generatorOptions.setTreatsAsRelaxNgCompact(this.optionsPage.treatsAsRelaxNgCompact());
+		this.generatorOptions.setTreatsAsDtd(this.optionsPage.treatsAsDtd());
+		this.generatorOptions.setTreatsAsWsdl(this.optionsPage.treatsAsWsdl());
+		this.generatorOptions.setShowsVersion(this.optionsPage.showsVersion());
+		this.generatorOptions.setShowsHelp(this.optionsPage.showsHelp());
+	}
+	
+	private void initializeGeneratorExtensionOptions() {
+
+		this.generatorExtensionOptions = new ClassesGeneratorExtensionOptions();
+
+		this.generatorExtensionOptions.setAllowsExtensions(this.extensionOptionsPage.allowsExtensions());
+		this.generatorExtensionOptions.setClasspath(this.extensionOptionsPage.getClasspath());
+		this.generatorExtensionOptions.setAdditionalArgs(this.extensionOptionsPage.getAdditionalArgs());
+	}
+
     @Override
 	public boolean canFinish() {
-    	return this.generatorSettingsPage.isPageComplete();
+    	return this.settingsPage.isPageComplete();
     }
 
 	// ********** public methods **********
@@ -90,18 +141,34 @@ public class ClassesGeneratorWizard extends Wizard {
 		return this.catalog;
 	}
 	
-    public boolean getUseMoxy() {
-		return this.useMoxy;
+    public boolean usesMoxy() {
+		return this.usesMoxy;
 	}
 
     public String[] getBindingsFileNames() {
 		return this.bindingsFileNames;
 	}
-
+	
+    public ClassesGeneratorOptions getGeneratorOptions() {
+		return this.generatorOptions;
+	}
+	
+    public ClassesGeneratorExtensionOptions getGeneratorExtensionOptions() {
+		return this.generatorExtensionOptions;
+	}
+	
 	// ********** internal methods **********
 
 	private ClassesGeneratorWizardPage buildClassesGeneratorPage() {
 		return new ClassesGeneratorWizardPage(this.javaProject, this.xmlSchemaName);
+	}
+	
+	private ClassesGeneratorOptionsWizardPage buildClassesGeneratorOptionsPage() {
+		return new ClassesGeneratorOptionsWizardPage();
+	}
+	
+	private ClassesGeneratorExtensionOptionsWizardPage buildExtensionOptionsPage() {
+		return new ClassesGeneratorExtensionOptionsWizardPage();
 	}
 	
 	private void createFolderIfNotExist(IFolder folder) {

@@ -25,6 +25,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
+import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorExtensionOptions;
+import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Display;
@@ -74,11 +76,13 @@ public class ClassesGeneratorUi {
 		String outputDir = wizard.getDestinationFolder();
 		String targetPackage = wizard.getTargetPackage();
 		String catalog = wizard.getCatalog();
-		boolean useMoxy = wizard.getUseMoxy();
+		boolean usesMoxy = wizard.usesMoxy();
 		String[] bindingsFileNames = wizard.getBindingsFileNames();
+		ClassesGeneratorOptions generatorOptions = wizard.getGeneratorOptions();
+		ClassesGeneratorExtensionOptions generatorExtensionOptions = wizard.getGeneratorExtensionOptions();
 
 		if(this.displayGeneratingClassesWarning()) {
-			this.run(outputDir, targetPackage, catalog, useMoxy, bindingsFileNames);
+			this.run(outputDir, targetPackage, catalog, usesMoxy, bindingsFileNames, generatorOptions, generatorExtensionOptions);
 		}
 	}
 
@@ -88,8 +92,10 @@ public class ClassesGeneratorUi {
 		String outputDir,
 		String targetPackage, 
 		String catalog, 
-		boolean useMoxyGenerator,
-		String[] bindingsFileNames) {
+		boolean usesMoxyGenerator,
+		String[] bindingsFileNames,
+		ClassesGeneratorOptions generatorOptions,
+		ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		
 		WorkspaceJob job = new GenerateEntitiesJob(
 			this.javaProject, 
@@ -97,8 +103,10 @@ public class ClassesGeneratorUi {
 			outputDir, 
 			targetPackage, 
 			catalog, 
-			useMoxyGenerator,
-			bindingsFileNames);
+			usesMoxyGenerator,
+			bindingsFileNames,
+			generatorOptions,
+			generatorExtensionOptions);
 		job.schedule();
 	}
 
@@ -122,8 +130,10 @@ public class ClassesGeneratorUi {
 		private final String outputDir;
 		private final String targetPackage;
 		private final String catalog;
-		private final boolean useMoxyGenerator;
+		private final boolean usesMoxyGenerator;
 		private final String[] bindingsFileNames;
+		private final ClassesGeneratorOptions generatorOptions;
+		private final ClassesGeneratorExtensionOptions generatorExtensionOptions;
 
 		// ********** constructors **********
 		
@@ -133,8 +143,10 @@ public class ClassesGeneratorUi {
 			String outputDir,
 			String targetPackage, 
 			String catalog, 
-			boolean useMoxyGenerator,
-			String[] bindingsFileNames) {
+			boolean usesMoxyGenerator,
+			String[] bindingsFileNames,
+			ClassesGeneratorOptions generatorOptions,
+			ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 			
 			super(JptJaxbUiMessages.ClassesGeneratorUi_generatingEntities);
 			this.javaProject = javaProject;
@@ -142,8 +154,10 @@ public class ClassesGeneratorUi {
 			this.outputDir = outputDir;
 			this.targetPackage = targetPackage;
 			this.catalog = catalog;
-			this.useMoxyGenerator = useMoxyGenerator;
+			this.usesMoxyGenerator = usesMoxyGenerator;
 			this.bindingsFileNames = bindingsFileNames;
+			this.generatorOptions = generatorOptions;
+			this.generatorExtensionOptions = generatorExtensionOptions;
 			this.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(this.javaProject.getProject()));
 		}
 
@@ -156,8 +170,10 @@ public class ClassesGeneratorUi {
 					this.outputDir, 
 					this.targetPackage, 
 					this.catalog, 
-					this.useMoxyGenerator,
+					this.usesMoxyGenerator,
 					this.bindingsFileNames,
+					this.generatorOptions,
+					this.generatorExtensionOptions, 
 					sm.newChild(1));
 			} 
 			catch (OperationCanceledException e) {
@@ -179,8 +195,10 @@ public class ClassesGeneratorUi {
 			String outputDir, 
 			String targetPackage, 
 			String catalog, 
-			boolean useMoxyGenerator,
+			boolean usesMoxyGenerator,
 			String[] bindingsFileNames, 
+			ClassesGeneratorOptions generatorOptions,
+			ClassesGeneratorExtensionOptions generatorExtensionOptions,
 			IProgressMonitor monitor) {
 	
 			ClassesGenerator.generate(javaProject, 
@@ -188,8 +206,10 @@ public class ClassesGeneratorUi {
 				outputDir, 
 				targetPackage, 
 				catalog, 
-				useMoxyGenerator, 
+				usesMoxyGenerator, 
 				bindingsFileNames, 
+				generatorOptions, 
+				generatorExtensionOptions,
 				monitor);
 			return;
 		}

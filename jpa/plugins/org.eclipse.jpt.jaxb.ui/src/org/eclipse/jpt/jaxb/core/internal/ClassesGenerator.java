@@ -40,6 +40,8 @@ public class ClassesGenerator extends AbstractJptGenerator
 	private final String targetPackage;
 	private final String catalog;
 	private final String[] bindingsFileNames;
+	private final ClassesGeneratorOptions generatorOptions;
+	private final ClassesGeneratorExtensionOptions generatorExtensionOptions;
 	private final String mainType;
 
 	// ********** static methods **********
@@ -50,8 +52,10 @@ public class ClassesGenerator extends AbstractJptGenerator
 			String outputDir, 
 			String targetPackage, 
 			String catalog, 
-			boolean useMoxyGenerator,
+			boolean usesMoxyGenerator,
 			String[] bindingsFileNames,
+			ClassesGeneratorOptions generatorOptions,
+			ClassesGeneratorExtensionOptions generatorExtensionOptions,
 			IProgressMonitor monitor) {
 		if (javaProject == null) {
 			throw new NullPointerException();
@@ -61,8 +65,10 @@ public class ClassesGenerator extends AbstractJptGenerator
 			outputDir, 
 			targetPackage, 
 			catalog, 
-			useMoxyGenerator, 
-			bindingsFileNames).generate(monitor);
+			usesMoxyGenerator, 
+			bindingsFileNames,
+			generatorOptions, 
+			generatorExtensionOptions).generate(monitor);
 	}
 
 	// ********** constructors **********
@@ -73,15 +79,19 @@ public class ClassesGenerator extends AbstractJptGenerator
 			String outputDir, 
 			String targetPackage, 
 			String catalog, 
-			boolean useMoxyGenerator, 
-			String[] bindingsFileNames) {
+			boolean usesMoxyGenerator, 
+			String[] bindingsFileNames,
+			ClassesGeneratorOptions generatorOptions,
+			ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		super(javaProject);
 		this.xmlSchemaName = xmlSchemaName;
 		this.outputDir = outputDir;
 		this.targetPackage = targetPackage;
 		this.catalog = catalog;
 		this.bindingsFileNames = bindingsFileNames;
-		this.mainType = (useMoxyGenerator) ? JAXB_ECLIPSELINK_GEN_CLASS : JAXB_GENERIC_GEN_CLASS;
+		this.generatorOptions = generatorOptions;
+		this.generatorExtensionOptions = generatorExtensionOptions;
+		this.mainType = (usesMoxyGenerator) ? JAXB_ECLIPSELINK_GEN_CLASS : JAXB_GENERIC_GEN_CLASS;
 	}
 
 	@Override
@@ -132,8 +142,11 @@ public class ClassesGenerator extends AbstractJptGenerator
 	@Override
 	protected void specifyProgramArguments() {
 		StringBuffer programArguments = new StringBuffer();
-		// options
+		
 		programArguments.append("-d ");	  //$NON-NLS-1$
+		if(StringTools.stringIsEmpty(this.outputDir)) {
+			throw new RuntimeException("Output directory cannot be empty");	  //$NON-NLS-1$
+		}
 		programArguments.append(this.outputDir);
 		if( ! StringTools.stringIsEmpty(this.targetPackage)) {
 			programArguments.append(" -p ");	  //$NON-NLS-1$
@@ -143,6 +156,74 @@ public class ClassesGenerator extends AbstractJptGenerator
 			programArguments.append(" -catalog ");	  //$NON-NLS-1$
 			programArguments.append(this.catalog);
 		}
+
+		// Options
+		if( ! StringTools.stringIsEmpty(this.generatorOptions.getProxy())) {
+			programArguments.append(" -httpproxy ");	  //$NON-NLS-1$
+			programArguments.append(this.generatorOptions.getProxy());
+		}
+		if( ! StringTools.stringIsEmpty(this.generatorOptions.getProxyFile())) {
+			programArguments.append(" -httpproxyfile ");	  //$NON-NLS-1$
+			programArguments.append(this.generatorOptions.getProxyFile());
+		}
+		
+		if( ! this.generatorOptions.usesStrictValidation()) {
+			programArguments.append(" -nv");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.makesReadOnly()) {
+			programArguments.append(" -readOnly");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.suppressesPackageInfoGen()) {
+			programArguments.append(" -npa");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.suppressesHeaderGen()) {
+			programArguments.append(" -no-header");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.targetIs20()) {
+			programArguments.append(" -target 2.0");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.isVerbose()) {
+			programArguments.append(" -verbose");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.isQuiet()) {
+			programArguments.append(" -quiet");	  //$NON-NLS-1$
+		}
+
+		if(this.generatorOptions.treatsAsXmlSchema()) {
+			programArguments.append(" -xmlschema");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.treatsAsRelaxNg()) {
+			programArguments.append(" -relaxng");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.treatsAsRelaxNgCompact()) {
+			programArguments.append(" -relaxng-compact");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.treatsAsDtd()) {
+			programArguments.append(" -dtd");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.treatsAsWsdl()) {
+			programArguments.append(" -wsdl");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.showsVersion()) {
+			programArguments.append(" -version");	  //$NON-NLS-1$
+		}
+		if(this.generatorOptions.showsHelp()) {
+			programArguments.append(" -help");	  //$NON-NLS-1$
+		}
+
+		// Extension Options
+		if(this.generatorExtensionOptions.allowsExtensions()) {
+			programArguments.append(" -extension");	  //$NON-NLS-1$
+		}
+		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getClasspath())) {
+			programArguments.append(" -classpath ");	  //$NON-NLS-1$
+			programArguments.append(this.generatorExtensionOptions.getClasspath());
+		}
+		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getAdditionalArgs())) {
+			programArguments.append(' ');
+			programArguments.append(this.generatorExtensionOptions.getAdditionalArgs());
+		}
+
 		// schema
 		programArguments.append(' ');
 		programArguments.append(this.xmlSchemaName);

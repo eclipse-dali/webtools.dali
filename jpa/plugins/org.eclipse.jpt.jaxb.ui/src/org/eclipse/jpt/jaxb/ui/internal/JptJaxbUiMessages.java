@@ -35,7 +35,36 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizardPage_removeButton;
 	public static String ClassesGeneratorWizardPage_chooseABindingsFile;
 	public static String ClassesGeneratorWizardPage_chooseACatalog;
+
+	public static String ClassesGeneratorOptionsWizardPage_title;
+	public static String ClassesGeneratorOptionsWizardPage_desc;
+
+	public static String ClassesGeneratorOptionsWizardPage_proxy;
+	public static String ClassesGeneratorOptionsWizardPage_proxyFile;
 	
+	public static String ClassesGeneratorOptionsWizardPage_useStrictValidation;
+	public static String ClassesGeneratorOptionsWizardPage_makeReadOnly;
+	public static String ClassesGeneratorOptionsWizardPage_suppressPackageInfoGen;
+	public static String ClassesGeneratorOptionsWizardPage_suppressesHeaderGen;
+	public static String ClassesGeneratorOptionsWizardPage_target;
+	public static String ClassesGeneratorOptionsWizardPage_verbose;
+	public static String ClassesGeneratorOptionsWizardPage_quiet;
+
+	public static String ClassesGeneratorOptionsWizardPage_treatsAsXmlSchema;
+	public static String ClassesGeneratorOptionsWizardPage_treatsAsRelaxNg;
+	public static String ClassesGeneratorOptionsWizardPage_treatsAsRelaxNgCompact;
+	public static String ClassesGeneratorOptionsWizardPage_treatsAsDtd;
+	public static String ClassesGeneratorOptionsWizardPage_treatsAsWsdl;
+	public static String ClassesGeneratorOptionsWizardPage_showsVersion;
+	public static String ClassesGeneratorOptionsWizardPage_showsHelp;
+	
+	public static String ClassesGeneratorExtensionOptionsWizardPage_title;
+	public static String ClassesGeneratorExtensionOptionsWizardPage_desc;
+	
+	public static String ClassesGeneratorExtensionOptionsWizardPage_allowExtensions;
+	public static String ClassesGeneratorExtensionOptionsWizardPage_classpath;
+	public static String ClassesGeneratorExtensionOptionsWizardPage_additionalArguments;
+
 	public static String ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable;
 	
 	public static String ClassesGeneratorWizardPage_moxyLibrariesNotAvailable;
