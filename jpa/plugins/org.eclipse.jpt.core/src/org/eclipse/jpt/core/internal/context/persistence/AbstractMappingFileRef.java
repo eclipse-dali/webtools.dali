@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.persistence;
 import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -332,5 +333,14 @@ public abstract class AbstractMappingFileRef
 	}
 
 	protected abstract ReplaceEdit createReplaceEdit(IFile originalFile, String newName);
+
+	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination) {
+		if (this.isFor(originalFile)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalFile, runtineDestination));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected abstract ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination);
 
 }

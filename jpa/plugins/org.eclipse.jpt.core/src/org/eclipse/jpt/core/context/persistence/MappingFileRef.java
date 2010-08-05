@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -169,5 +170,13 @@ public interface MappingFileRef
 	 * for ease of use with other createReplaceMappingFileEdits API.
 	 */
 	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName);
+
+	/**
+	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile create a text
+	 * ReplaceEdit for moving the originalFile to the destination.
+	 * Otherwise return an EmptyIterable.
+	 * The originalFile has not been moved yet.
+	 */
+	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination);
 
 }

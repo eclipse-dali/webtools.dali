@@ -23,6 +23,7 @@ import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -1755,6 +1756,16 @@ public abstract class AbstractPersistenceUnit
 		return this.xmlPersistenceUnit.getLocationToInsertMappingFileRef();
 	}
 
+	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(final IFile originalFile, final IPath runtineDestination) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(getMappingFileRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
+					return mappingFileRef.createReplaceMappingFileEdits(originalFile, runtineDestination);
+				}
+			}
+		);
+	}
 
 	// ********** misc **********
 

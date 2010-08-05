@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -785,6 +786,13 @@ public interface PersistenceUnit
 	 * The originalFile has not yet been renamed, the newName is the new short name.
 	 */
 	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName);
+
+	/**
+	 * Create ReplaceEdits for moving any references to the originalFile to the destination.
+	 * Return an EmptyIterable if there are not any references.	
+	 * The originalFile has not been moved yet.
+	 */
+	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination);
 
 	/**
 	 * Return a location relative to the beginning of the persistence.xml for 

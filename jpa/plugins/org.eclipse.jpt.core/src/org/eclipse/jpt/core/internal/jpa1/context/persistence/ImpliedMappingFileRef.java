@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -91,4 +92,13 @@ public class ImpliedMappingFileRef
 		return new ReplaceEdit(offset, 0, buffer.toString());
 	}
 
+	@Override
+	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
+		buffer.append(runtineDestination.toString()).append('/').append(originalFile.getName());
+		buffer.append("</mapping-file>"); //$NON-NLS-1$
+		int offset = getPersistenceUnit().findInsertLocationForMappingFileRef();
+		return new ReplaceEdit(offset, 0, buffer.toString());
+	}
 }

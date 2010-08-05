@@ -670,7 +670,7 @@
         </renameParticipant>
         <renameParticipant
     		class="org.eclipse.jpt.core.internal.refactoring.JpaRenameMappingFileParticipant"
-    		id="org.eclipse.jpt.core.ltk.jpaRenameMappingParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaRenameMappingFileParticipant"
     		name="%JPA_RENAME_MAPPING_FILE_PARTICIPANT_NAME">
         	<enablement>
  	           	<with variable="element">
@@ -684,6 +684,25 @@
 	           	</with>
         	</enablement>
         </renameParticipant>
+    </extension>
+    <extension
+        point="org.eclipse.ltk.core.refactoring.moveParticipants">
+        <moveParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaMoveMappingFileParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaMoveMappingFileParticipant"
+    		name="%JPA_MOVE_MAPPING_FILE_PARTICIPANT_NAME">
+        	<enablement>
+ 	           	<with variable="element">
+       				<and>
+	              		<instanceof value="org.eclipse.core.resources.IFile"/>
+	  					<test
+            				args="kindOf"
+            	 			property="org.eclipse.core.resources.contentTypeId"
+             				value="org.eclipse.jpt.core.content.mappingFile"/>
+	        		</and>
+	           	</with>
+        	</enablement>
+        </moveParticipant>
     </extension>
 	
 </plugin>

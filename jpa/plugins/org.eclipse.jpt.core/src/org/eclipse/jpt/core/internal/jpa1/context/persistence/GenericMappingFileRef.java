@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -115,4 +116,8 @@ public class GenericMappingFileRef
 		return this.xmlMappingFileRef.createReplaceFolderEdit(originalFolder, newName);
 	}
 
+	@Override
+	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
+		return this.xmlMappingFileRef.createReplaceEdit(originalFile, runtineDestination);
+	}
 }

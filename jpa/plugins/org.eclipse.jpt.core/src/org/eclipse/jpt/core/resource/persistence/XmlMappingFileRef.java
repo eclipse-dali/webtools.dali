@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.resource.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.EList;
@@ -241,8 +242,6 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 	}
 
 
-	// *********** refactoring ***********
-
 	public ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
 		IDOMNode domNode = getTextNode();
 		String originalName = originalFile.getName();
@@ -259,5 +258,13 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 
 		int offset = domNode.getStartOffset();
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
+	public ReplaceEdit createReplaceEdit(IFile originalFile, IPath destination) {
+		String originalName = originalFile.getName();
+		int nameIndex = this.fileName.lastIndexOf(originalName);
+
+		int offset = getTextNode().getStartOffset();
+		return new ReplaceEdit(offset, nameIndex - 1, destination.toString());
 	}
 }
