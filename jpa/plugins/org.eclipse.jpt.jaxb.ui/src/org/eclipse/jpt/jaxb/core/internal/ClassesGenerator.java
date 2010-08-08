@@ -147,14 +147,14 @@ public class ClassesGenerator extends AbstractJptGenerator
 		if(StringTools.stringIsEmpty(this.outputDir)) {
 			throw new RuntimeException("Output directory cannot be empty");	  //$NON-NLS-1$
 		}
-		programArguments.append(this.outputDir);
+		programArguments.append(StringTools.quote(this.outputDir));
 		if( ! StringTools.stringIsEmpty(this.targetPackage)) {
 			programArguments.append(" -p ");	  //$NON-NLS-1$
 			programArguments.append(this.targetPackage);
 		}
 		if( ! StringTools.stringIsEmpty(this.catalog)) {
 			programArguments.append(" -catalog ");	  //$NON-NLS-1$
-			programArguments.append(this.catalog);
+			programArguments.append(StringTools.quote(this.catalog));
 		}
 
 		// Options
@@ -164,7 +164,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 		}
 		if( ! StringTools.stringIsEmpty(this.generatorOptions.getProxyFile())) {
 			programArguments.append(" -httpproxyfile ");	  //$NON-NLS-1$
-			programArguments.append(this.generatorOptions.getProxyFile());
+			programArguments.append(StringTools.quote(this.generatorOptions.getProxyFile()));
 		}
 		
 		if( ! this.generatorOptions.usesStrictValidation()) {
@@ -217,7 +217,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 		}
 		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getClasspath())) {
 			programArguments.append(" -classpath ");	  //$NON-NLS-1$
-			programArguments.append(this.generatorExtensionOptions.getClasspath());
+			programArguments.append(StringTools.quote(this.generatorExtensionOptions.getClasspath()));
 		}
 		if( ! StringTools.stringIsEmpty(this.generatorExtensionOptions.getAdditionalArgs())) {
 			programArguments.append(' ');
@@ -226,13 +226,13 @@ public class ClassesGenerator extends AbstractJptGenerator
 
 		// schema
 		programArguments.append(' ');
-		programArguments.append(this.xmlSchemaName);
+		programArguments.append(StringTools.quote(this.xmlSchemaName));
 		
 		// bindings
 		if (this.bindingsFileNames.length > 0) {
 			for (String bindingsFileName : this.bindingsFileNames) {
 				programArguments.append(" -b ");	  //$NON-NLS-1$
-				programArguments.append(bindingsFileName);
+				programArguments.append(StringTools.quote(bindingsFileName));
 			}
 		}
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
