@@ -39,8 +39,11 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorOptionsWizardPage_title;
 	public static String ClassesGeneratorOptionsWizardPage_desc;
 
+	public static String ClassesGeneratorOptionsWizardPage_proxyGroup;
+	public static String ClassesGeneratorOptionsWizardPage_noProxy;
 	public static String ClassesGeneratorOptionsWizardPage_proxy;
 	public static String ClassesGeneratorOptionsWizardPage_proxyFile;
+	public static String ClassesGeneratorOptionsWizardPage_chooseAProxyFile;
 	
 	public static String ClassesGeneratorOptionsWizardPage_useStrictValidation;
 	public static String ClassesGeneratorOptionsWizardPage_makeReadOnly;

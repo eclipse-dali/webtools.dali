@@ -164,7 +164,7 @@ public class ClassesGeneratorWizard extends Wizard {
 	}
 	
 	private ClassesGeneratorOptionsWizardPage buildClassesGeneratorOptionsPage() {
-		return new ClassesGeneratorOptionsWizardPage();
+		return new ClassesGeneratorOptionsWizardPage(this.javaProject);
 	}
 	
 	private ClassesGeneratorExtensionOptionsWizardPage buildExtensionOptionsPage() {
