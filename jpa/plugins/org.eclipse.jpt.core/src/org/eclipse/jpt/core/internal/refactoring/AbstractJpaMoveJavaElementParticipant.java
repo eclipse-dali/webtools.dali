@@ -36,7 +36,6 @@ import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
-import org.eclipse.ltk.core.refactoring.participants.DeleteArguments;
 import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
 import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
 import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
@@ -51,8 +50,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 	extends MoveParticipant implements ISharableParticipant {
 
 	/**
-	 * Store the {@link IFile}s to be deleted with content type {@link JptCorePlugin#MAPPING_FILE_CONTENT_TYPE}
-	 * and their corresponding {@link DeleteArguments}
+	 * Store the {@link IJavaElements}s to be moved and their corresponding {@link MoveArguments}
 	 */
 	protected final Map<IJavaElement, MoveArguments> originalJavaElements;
 
@@ -84,6 +82,8 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		this.addElement(element, getArguments());
 		return true;
 	}
+
+
 	//****************ISharableParticipant implementation *****************
 	/**
 	 * This is used when multiple mapping files are deleted.
@@ -176,7 +176,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 			return;
 		}
 		SubMonitor sm = SubMonitor.convert(monitor, 1 + persistenceUnit.mappingFileRefsSize());
-		Iterable<ReplaceEdit> classRefDeleteEdits = this.createPersistenceXmlReplaceEditsCheckClasspath(persistenceUnit);
+		Iterable<ReplaceEdit> classRefDeleteEdits = this.createPersistenceUnitReplaceEditsCheckClasspath(persistenceUnit);
 		sm.worked(1);
 		if (!CollectionTools.isEmpty(classRefDeleteEdits)) {
 			this.persistenceXmlReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), classRefDeleteEdits);
@@ -194,7 +194,7 @@ public abstract class AbstractJpaMoveJavaElementParticipant
 		}
 	}
 
-	protected Iterable<ReplaceEdit> createPersistenceXmlReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
+	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<IJavaElement, Iterable<ReplaceEdit>>(this.getElementsOnClasspath(persistenceUnit.getJpaProject())) {
 				@Override
