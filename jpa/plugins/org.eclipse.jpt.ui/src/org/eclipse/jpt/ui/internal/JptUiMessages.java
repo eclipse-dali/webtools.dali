@@ -110,9 +110,10 @@ public class JptUiMessages {
 	public static String MappingFileWizardPage_incorrectSourceFolderError;
 	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogTitle;
 	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogDesc;
+	public static String JpaSEProjectWizard_title;
+	public static String JpaEEProjectWizard_title;
 	public static String NewJpaProjectWizard_firstPage_description;
 	public static String NewJpaProjectWizard_firstPage_title;
-	public static String NewJpaProjectWizard_title;
 	public static String OrmItemLabelProviderFactory_entityMappingsLabel;
 	public static String OverwriteConfirmerDialog_text;
 	public static String OverwriteConfirmerDialog_title;

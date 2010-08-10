@@ -11,8 +11,10 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
@@ -39,6 +41,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
@@ -46,6 +49,7 @@ import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
+import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
@@ -79,8 +83,13 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1316,8 +1325,32 @@ public abstract class AbstractJpaProject
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		this.validateConnection(messages);
+		validateLibraryProvider(messages);
+		validateConnection(messages);
 		this.rootContextNode.validate(messages, reporter);
+	}
+	
+	protected void validateLibraryProvider(List<IMessage> messages) {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getJpaPlatform().getId());
+		
+		try {
+			ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
+			IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
+			IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
+			if (! libraryProvider.isEnabledFor(
+					facetedProject, facetVersion, enablementVariables)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+							this));
+			}
+		}
+		catch (CoreException ce) {
+			// fall through
+			JptCorePlugin.log(ce);
+		}
 	}
 
 	protected void validateConnection(List<IMessage> messages) {

@@ -894,8 +894,9 @@ public class JpaProjectPropertiesPage
 		// user is unable to unset the platform, so no validation necessary
 
 		/* library provider */
-		IStatus lpStatus = super.performValidation();
+		IStatus lpStatus = validateLibraryProvider();
 		statuses.get(Integer.valueOf(lpStatus.getSeverity())).add(lpStatus);
+		
 
 		/* connection */
 		ConnectionProfile connectionProfile = this.getConnectionProfile();
@@ -956,6 +957,18 @@ public class JpaProjectPropertiesPage
 		else {
 			return statuses.get(OK_STATUS).get(0);
 		}
+	}
+	
+	private IStatus validateLibraryProvider() {
+		Map<String, Object> enablementVariables = new HashMap<String, Object>();
+		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, this.platformIdModel.getValue()); //$NON-NLS-1$
+		
+		if (! getLibraryInstallDelegate().getLibraryProvider().isEnabledFor(
+				getFacetedProject(), getProjectFacetVersion(), enablementVariables)) {
+			return buildErrorStatus(JptCoreMessages.VALIDATE_LIBRARY_PROVIDER_INVALID);
+		}
+		
+		return super.performValidation();
 	}
 
 	private IStatus buildInfoStatus(String message) {

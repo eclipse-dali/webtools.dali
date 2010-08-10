@@ -14,6 +14,7 @@ public interface JpaValidationMessages {
 
 	public static final String BUNDLE_NAME = "jpa_validation";
 	
+	public static final String PROJECT_INVALID_LIBRARY_PROVIDER = "PROJECT_INVALID_LIBRARY_PROVIDER";
 	public static final String PROJECT_NO_CONNECTION = "PROJECT_NO_CONNECTION";
 	public static final String PROJECT_INVALID_CONNECTION = "PROJECT_INVALID_CONNECTION";
 	public static final String PROJECT_INACTIVE_CONNECTION = "PROJECT_INACTIVE_CONNECTION";
