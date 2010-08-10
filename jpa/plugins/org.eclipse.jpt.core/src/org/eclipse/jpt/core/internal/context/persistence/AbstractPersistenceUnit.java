@@ -1712,30 +1712,16 @@ public abstract class AbstractPersistenceUnit
 		return this.options.createReplacePackageEdits(originalPackage, newName);
 	}
 
-	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createReplaceFolderEdits(final IFolder originalFolder, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			this.createMappingFileRefReplaceFolderEdits(originalFolder, newName),
-			this.createJarFileRefReplaceFolderEdits(originalFolder, newName));
+		return this.createMappingFileRefReplaceFolderEdits(originalFolder, newName);
 	}
 	
-	public Iterable<ReplaceEdit> createMappingFileRefReplaceFolderEdits(final IFolder originalFolder, final String newName) {
+	protected Iterable<ReplaceEdit> createMappingFileRefReplaceFolderEdits(final IFolder originalFolder, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(getSpecifiedMappingFileRefs()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
 					return mappingFileRef.createReplaceFolderEdits(originalFolder, newName);
-				}
-			}
-		);
-	}
-
-	public Iterable<ReplaceEdit> createJarFileRefReplaceFolderEdits(final IFolder originalFolder, final String newName) {
-		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<JarFileRef, Iterable<ReplaceEdit>>(getJarFileRefs()) {
-				@Override
-				protected Iterable<ReplaceEdit> transform(JarFileRef jarFileRef) {
-					return jarFileRef.createReplaceFolderEdits(originalFolder, newName);
 				}
 			}
 		);
@@ -1766,6 +1752,22 @@ public abstract class AbstractPersistenceUnit
 			}
 		);
 	}
+
+	public Iterable<ReplaceEdit> createMoveFolderReplaceEdits(final IFolder originalFolder, final IPath runtimeDestination) {
+		return this.createMappingFileRefMoveFolderReplaceEdits(originalFolder, runtimeDestination);
+	}
+	
+	protected Iterable<ReplaceEdit> createMappingFileRefMoveFolderReplaceEdits(final IFolder originalFolder, final IPath runtimeDestination) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<MappingFileRef, Iterable<ReplaceEdit>>(getSpecifiedMappingFileRefs()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(MappingFileRef mappingFileRef) {
+					return mappingFileRef.createMoveFolderReplaceEdits(originalFolder, runtimeDestination);
+				}
+			}
+		);
+	}
+
 
 	// ********** misc **********
 

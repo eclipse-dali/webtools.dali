@@ -795,6 +795,12 @@ public interface PersistenceUnit
 	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination);
 
 	/**
+	 * Create ReplaceEdits for moving any references to the originalFolder to the runtimeDestination.
+	 * The runtimeDestination already includes the original folder name.
+	 */
+	Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination);
+
+	/**
 	 * Return a location relative to the beginning of the persistence.xml for 
 	 * inserting a new mapping-file element. If there are existing mapping files, 
 	 * the location should be after those. If no existing mapping files then make

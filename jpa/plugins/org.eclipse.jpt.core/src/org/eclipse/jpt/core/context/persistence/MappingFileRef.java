@@ -179,4 +179,10 @@ public interface MappingFileRef
 	 */
 	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination);
 
+	/**
+	 * Create ReplaceEdits for moving any references to the originalFolder to the runtimeDestination.
+	 * The runtimeDestination already includes the original folder name.
+	 */
+	Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination);
+
 }

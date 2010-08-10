@@ -96,9 +96,13 @@ public class ImpliedMappingFileRef
 	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
-		buffer.append(runtineDestination.toString()).append('/').append(originalFile.getName());
+		buffer.append(runtineDestination.append(originalFile.getName())).toString();
 		buffer.append("</mapping-file>"); //$NON-NLS-1$
 		int offset = getPersistenceUnit().findInsertLocationForMappingFileRef();
 		return new ReplaceEdit(offset, 0, buffer.toString());
+	}
+
+	public Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination) {
+		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
 	}
 }

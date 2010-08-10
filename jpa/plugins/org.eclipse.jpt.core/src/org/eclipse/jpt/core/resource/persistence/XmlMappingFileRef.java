@@ -267,4 +267,11 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset, nameIndex - 1, destination.toString());
 	}
+
+	public ReplaceEdit createReplaceEdit(IPath originalLocation, IPath destination) {
+		String originalName = originalLocation.toString();
+
+		int offset = getTextNode().getStartOffset();
+		return new ReplaceEdit(offset, originalName.length(), destination.toString());
+	}
 }

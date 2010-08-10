@@ -11,7 +11,9 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -120,4 +122,20 @@ public class GenericMappingFileRef
 	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
 		return this.xmlMappingFileRef.createReplaceEdit(originalFile, runtineDestination);
 	}
+
+	public Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination) {
+		if (this.isIn(originalFolder)) {
+			IProject project = originalFolder.getProject();
+			IPath fullPath = originalFolder.getFullPath();
+			IPath originalLocation = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+			
+			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalLocation, runtimeDestination));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createReplaceEdit(IPath originalLocation, IPath runtineDestination) {
+		return this.xmlMappingFileRef.createReplaceEdit(originalLocation, runtineDestination);
+	}
+
 }

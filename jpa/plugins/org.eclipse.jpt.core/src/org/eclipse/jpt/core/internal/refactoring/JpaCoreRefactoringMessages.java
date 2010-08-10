@@ -63,6 +63,11 @@ public class JpaCoreRefactoringMessages {
 	public static String JPA_MOVE_MAPPING_FILE_REFACTORING_CHANGE_NAME;
 	public static String JPA_MOVE_MAPPING_FILE_REFACTORING_CHANGE_PERSISTENCE_XML_NAME;
 
+	public static String JPA_MOVE_FOLDER_REFACTORING_PARTICIPANT_NAME;
+	public static String JPA_MOVE_FOLDER_REFACTORING_CHANGE_NAME;
+	public static String JPA_MOVE_FOLDER_REFACTORING_CHANGE_PERSISTENCE_XML_NAME;
+	public static String JPA_MOVE_FOLDER_REFACTORING_SUB_TASK_NAME;
+
 	private static final String BUNDLE_NAME = "jpa_core_refactoring"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JpaCoreRefactoringMessages.class;
 	static {

@@ -703,6 +703,16 @@
 	           	</with>
         	</enablement>
         </moveParticipant>
+         <moveParticipant
+    		class="org.eclipse.jpt.core.internal.refactoring.JpaMoveFolderParticipant"
+    		id="org.eclipse.jpt.core.ltk.jpaMoveFolderParticipant"
+    		name="%JPA_MOVE_FOLDER_PARTICIPANT_NAME">
+        	<enablement>
+    			<with variable="element">
+                   	<instanceof value="org.eclipse.core.resources.IFolder"/>
+    			</with>
+        	</enablement>
+        </moveParticipant>
     </extension>
 	
 </plugin>
