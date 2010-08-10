@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -27,13 +28,19 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.ltk.core.refactoring.Change;
 import org.eclipse.ltk.core.refactoring.CompositeChange;
 import org.eclipse.ltk.core.refactoring.RefactoringStatus;
 import org.eclipse.ltk.core.refactoring.TextChange;
 import org.eclipse.ltk.core.refactoring.TextFileChange;
 import org.eclipse.ltk.core.refactoring.participants.CheckConditionsContext;
+import org.eclipse.ltk.core.refactoring.participants.ISharableParticipant;
+import org.eclipse.ltk.core.refactoring.participants.MoveArguments;
 import org.eclipse.ltk.core.refactoring.participants.MoveParticipant;
+import org.eclipse.ltk.core.refactoring.participants.RefactoringArguments;
 import org.eclipse.ltk.core.refactoring.participants.ResourceChangeChecker;
 import org.eclipse.text.edits.MalformedTreeException;
 import org.eclipse.text.edits.MultiTextEdit;
@@ -48,22 +55,24 @@ import org.eclipse.text.edits.TextEdit;
  */
 public class JpaMoveMappingFileParticipant
 	extends MoveParticipant
+	implements ISharableParticipant
 {
 
 	/**
 	 * Store the {@link IFile}s to be renamed with content type {@link JptCorePlugin#MAPPING_FILE_CONTENT_TYPE}
+	 * and their corresponding {@link MoveArguments}
 	 */
-
-	protected IFile originalMappingFile;
+	protected final Map<IFile, MoveArguments> originalMappingFiles;
 
 	/**
-	 * Store the persistence.xml DeleteEdits in the checkConditions() call 
+	 * Store the persistence.xml ReplaceEdit in the checkConditions() call 
 	 * to avoid duplicated effort in createChange().
 	 */
 	protected final Map<IFile, Iterable<ReplaceEdit>> persistenceXmlMappingFileReplaceEdits;
 
 	public JpaMoveMappingFileParticipant() {
 		super();
+		this.originalMappingFiles = new HashMap<IFile, MoveArguments>();
 		this.persistenceXmlMappingFileReplaceEdits = new HashMap<IFile, Iterable<ReplaceEdit>>();
 	}
 	
@@ -77,8 +86,23 @@ public class JpaMoveMappingFileParticipant
 		if (!getArguments().getUpdateReferences()) {
 			return false;
 		}
-		this.originalMappingFile = (IFile) element;
+		this.addElement(element, getArguments());
 		return true;
+	}
+	
+	//****************ISharableParticipant implementation *****************
+
+	/**
+	 * This is used when multiple mapping files are deleted.
+	 * RefactoringParticipant#initialize(Object) is called for the first deleted IFile.
+	 * RefactoringParticipant#getArguments() only applies to the first deleted IFile
+	 */
+	public void addElement(Object element, RefactoringArguments arguments) {
+		this.originalMappingFiles.put((IFile) element, (MoveArguments) arguments);
+	}
+
+	protected MoveArguments getArguments(IFile element) {
+		return this.originalMappingFiles.get(element);
 	}
 
 
@@ -122,7 +146,7 @@ public class JpaMoveMappingFileParticipant
 		if (persistenceUnit == null) {
 			return;
 		}
-		Iterable<ReplaceEdit> replaceEdits = this.createMappingFileRefReplaceEdits(persistenceUnit);
+		Iterable<ReplaceEdit> replaceEdits = this.createPersistenceUnitReplaceEditsCheckClasspath(persistenceUnit);
 		if (!CollectionTools.isEmpty(replaceEdits)) {
 			this.persistenceXmlMappingFileReplaceEdits.put(jpaProject.getPersistenceXmlResource().getFile(), replaceEdits);
 		}
@@ -147,12 +171,33 @@ public class JpaMoveMappingFileParticipant
 		return compositeChange.getChildren().length == 0 ? null : compositeChange;
 	}
 
-	private Iterable<ReplaceEdit> createMappingFileRefReplaceEdits(final PersistenceUnit persistenceUnit) {
-		IFolder destination = (IFolder) getArguments().getDestination();
+
+	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEditsCheckClasspath(final PersistenceUnit persistenceUnit) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<IFile, Iterable<ReplaceEdit>>(this.getOriginalFoldersOnClasspath(persistenceUnit.getJpaProject())) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(IFile mappingFile) {
+					return createPersistenceUnitReplaceEdits(persistenceUnit, mappingFile, (IFolder) getArguments(mappingFile).getDestination());
+				}
+			}
+		);
+	}
+
+	protected Iterable<IFile> getOriginalFoldersOnClasspath(final JpaProject jpaProject) {
+		final IJavaProject javaProject = jpaProject.getJavaProject();
+		return new FilteringIterable<IFile>(this.originalMappingFiles.keySet()) {
+			@Override
+			protected boolean accept(IFile file) {
+				return javaProject.isOnClasspath(file);
+			}
+		};
+	}
+
+	private Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFile mappingFile, IFolder destination) {
 		IProject project = destination.getProject();
 		IPath fullPath = destination.getFullPath();
 		IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
-		return persistenceUnit.createReplaceMappingFileEdits(this.originalMappingFile, runtimePath);
+		return persistenceUnit.createReplaceMappingFileEdits(mappingFile, runtimePath);
 	}
 	
 	protected void addPersistenceXmlRenameMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {
