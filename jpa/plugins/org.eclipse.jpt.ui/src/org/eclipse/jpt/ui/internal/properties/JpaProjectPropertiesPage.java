@@ -649,6 +649,8 @@ public class JpaProjectPropertiesPage
 				metamodelSourceFolderDropDown,
 				SIMPLE_STRING_CONVERTER
 		);
+		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE_METAMODEL);
 
 		SWTTools.controlVisibleState(this.jpa2_0ProjectFlagModel, group, metamodelSourceFolderLink, metamodelSourceFolderDropDown);
 	}

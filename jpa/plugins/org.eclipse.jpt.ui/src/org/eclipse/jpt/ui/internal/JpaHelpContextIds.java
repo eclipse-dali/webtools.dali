@@ -100,7 +100,8 @@ public interface JpaHelpContextIds {
 	public static final String PROPERTIES_JAVA_PERSISTENCE = PREFIX + "properties_javaPersistence";
 	public static final String PROPERTIES_JAVA_PERSISTENCE_CONNECTION = PREFIX + "properties_javaPersistenceConnection";
 	public static final String PROPERTIES_JAVA_PERSISTENCE_SCHEMA = PREFIX + "properties_javaPersistenceSchema";
-
+	public static final String PROPERTIES_JAVA_PERSISTENCE_METAMODEL = PREFIX + "properties_canonicalMetamodel";
+	
 	//Dialogs, Wizards
 	public static final String DIALOG_CREATE_ORM = PREFIX + "dialog_createORM";
 	public static final String DIALOG_EDIT_INVERSE_JOIN_COLUNN = PREFIX + "dialog_editInverseJoinColumn";

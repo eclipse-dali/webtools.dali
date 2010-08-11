@@ -618,7 +618,7 @@ For example: "lastName ASC ,salary DESC"	</description>
 		<topic label="Project properties" href="ref_project_properties"/>
 		<topic label="Understanding persistence" href="concept_persistence.htm"/>
 	</context>
-	<context id="entity_cachable">
+	<context id="entity_cacheable">
 		<description>Specify if the entity uses the @Cachable annotation. Default is @Cachable(false).</description>
 		<topic label="JPA Details" href="ref_persistence_prop_view.htm"/>
 		<topic label="Understanding persistence" href="concept_persistence.htm"/>
