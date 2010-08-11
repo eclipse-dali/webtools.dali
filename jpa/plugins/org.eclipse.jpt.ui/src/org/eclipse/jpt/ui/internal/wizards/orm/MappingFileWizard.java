@@ -80,8 +80,9 @@ public class MappingFileWizard extends Wizard
 	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.initialSelection = selection;
+		this.mungedSelection = selection;
 		
-		if (selection == null || selection.isEmpty()) {
+		if (selection == null || selection.isEmpty()) {	
 			return;
 		}
 		
@@ -92,9 +93,6 @@ public class MappingFileWizard extends Wizard
 		
 		if (container != null) {
 			this.mungedSelection = new StructuredSelection(container);
-		}
-		else {
-			this.mungedSelection = this.initialSelection;
 		}
 		
 		if (pUnit != null) {
