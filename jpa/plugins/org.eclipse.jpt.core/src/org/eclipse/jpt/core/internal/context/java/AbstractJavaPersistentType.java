@@ -647,15 +647,7 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	protected String getPackageName() {
-		String className = this.getName();
-		if (className == null) {
-			return null;
-		}
-		int packageEnd = className.lastIndexOf('.');
-		if (packageEnd == -1 ) {
-			return null;
-		}
-		return className.substring(0, packageEnd);
+		return getResourcePersistentType().getPackageName();
 	}
 
 	public boolean isMapped() {
