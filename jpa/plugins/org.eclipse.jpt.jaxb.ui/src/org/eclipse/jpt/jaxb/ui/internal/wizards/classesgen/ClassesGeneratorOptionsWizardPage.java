@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -161,37 +162,34 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		return checkBox;
 	}
 
-	protected Button buildRadioButton(Composite parent, String text, SelectionListener listener, int horizontalSpan, int verticalIndent) {
-		Button radioButton = new Button(parent, SWT.NONE | SWT.RADIO);
-		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
+	protected Button buildRadioButton(Composite parent, String text, SelectionListener listener, int horizontalSpan) {
+		Button radioButton = new Button(parent, SWT.RADIO);
+		GridData gridData = new GridData();
 		gridData.horizontalSpan = horizontalSpan;
-		gridData.horizontalIndent= 5;
-		gridData.verticalIndent = verticalIndent;
 		radioButton.setLayoutData(gridData);
 		radioButton.setText(text);
 		radioButton.addSelectionListener(listener);
 		return radioButton;
 	}
 
-	protected Text buildText(Composite parent, int horizontalSpan, int verticalIndent) {
+	protected Text buildText(Composite parent, int horizontalSpan) {
 		Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		GridData gridData = new GridData(SWT.FILL, SWT.CENTER, true, false);
 		gridData.horizontalSpan = horizontalSpan;
-		gridData.verticalIndent = verticalIndent;
 		text.setLayoutData(gridData);
 		return text;
 	}
 
 	protected void disableText(Text text) {
 		text.setEnabled(false);
-		text.setText("");			
+		text.setText(""); //$NON-NLS-1$
 	}
 	
 	// ********** internal methods **********
 
 	private String makeRelativeToProjectPath(String filePath) {
 		Path path = new Path(filePath);
-		IPath relativePath = path.makeRelativeTo(javaProject.getProject().getLocation());
+		IPath relativePath = path.makeRelativeTo(this.javaProject.getProject().getLocation());
 		return relativePath.toOSString();
 	}
 
@@ -215,8 +213,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			super();
 			Group proxyGroup = new Group(parent, SWT.NONE);
 			GridLayout layout = new GridLayout(3, false);
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
 			proxyGroup.setLayout(layout);
 			proxyGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			proxyGroup.setText(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxyGroup);
@@ -224,14 +220,16 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			SelectionListener proxyButtonListener = this.buildProxyRadioButtonListener();
 
 			this.noProxyRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_noProxy, proxyButtonListener, 3, 1);
+									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_noProxy, proxyButtonListener, 3);
+			
 			this.proxyRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxy, proxyButtonListener, 1, 1);
-			this.proxyText = buildText(proxyGroup, 2, 1);
+									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxy, proxyButtonListener, 1);
+			this.proxyText = buildText(proxyGroup, 1);
+			new Label(proxyGroup, SWT.WRAP); //empty label for spacing
 
 			this.proxyFileRadioButton = buildRadioButton(proxyGroup, 
-									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxyFile, proxyButtonListener, 1, 1);
-			this.proxyFileText = buildText(proxyGroup, 1, 1);
+									JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_proxyFile, proxyButtonListener, 1);
+			this.proxyFileText = buildText(proxyGroup, 1);
 			this.browseButton = this.buildBrowseButton(proxyGroup);
 			
 			this.noProxyRadioButton.setSelection(true);
@@ -252,7 +250,6 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 			browseButton.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_browseButton);
 			gridData = new GridData();
 			gridData.horizontalAlignment= GridData.FILL;
-			gridData.verticalIndent = 1;
 			gridData.grabExcessHorizontalSpace= true;
 			browseButton.setLayoutData(gridData);
 			
@@ -262,9 +259,8 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 				public void widgetSelected(SelectionEvent e) {
 
 					String filePath = promptProxyFile();
-					if( ! StringTools.stringIsEmpty(filePath)) {
-						
-						proxyFileText.setText(makeRelativeToProjectPath(filePath));
+					if ( ! StringTools.stringIsEmpty(filePath)) {
+						ProxyOptionsComposite.this.proxyFileText.setText(makeRelativeToProjectPath(filePath));
 					}
 				}
 			});
@@ -286,13 +282,13 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 
 		private void proxyButtonChanged() {
 			boolean usesProxy = ! this.noProxyRadioButton.getSelection();
-			if(usesProxy) {
-				if(this.proxyRadioButton.getSelection()) {
+			if (usesProxy) {
+				if (this.proxyRadioButton.getSelection()) {
 					this.proxyText.setEnabled(true);
 					disableText(this.proxyFileText);
 					this.browseButton.setEnabled(false);
 				}
-				else if(this.proxyFileRadioButton.getSelection()) {
+				else if (this.proxyFileRadioButton.getSelection()) {
 					this.proxyFileText.setEnabled(true);
 					this.browseButton.setEnabled(true);
 					disableText(this.proxyText);
@@ -311,7 +307,7 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		 * prompt the user to select a file and return it.
 		 */
 		private String promptProxyFile() {
-			String projectPath= javaProject.getProject().getLocation().toString();
+			String projectPath = ClassesGeneratorOptionsWizardPage.this.javaProject.getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_chooseAProxyFile);
