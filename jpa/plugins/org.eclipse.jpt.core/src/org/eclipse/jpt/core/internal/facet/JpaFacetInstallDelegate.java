@@ -29,6 +29,7 @@ import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.validation.ValidationFramework;
 
 /**
  * We don't really "install" the JPA facet here. We simply store all the various
@@ -44,12 +45,12 @@ public class JpaFacetInstallDelegate
 			IProject project, IProjectFacetVersion fv, 
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
-		// NB: WTP Natures (including the JavaEMFNature)
-		// should already be added, as this facet should 
-		// always coexist with a module facet.
 		SubMonitor sm = SubMonitor.convert(monitor, 10);
 		
+		ValidationFramework.getDefault().addValidationBuilder(project);
+		
 		super.execute_(project, fv, config, sm.newChild(1));
+		
 		IJavaProject javaProject = JavaCore.create(project);
 		IDataModel dataModel = (IDataModel) config;
 		
