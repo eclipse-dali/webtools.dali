@@ -47,7 +47,7 @@ public class ProjectWizardPage extends WizardPage
 	private IJavaProject javaProject;
 	private ProjectGroup projectGroup;
 
-	protected ProjectWizardPage() {
+	public ProjectWizardPage() {
 		super("Java Project"); //$NON-NLS-1$
 		
 		this.setTitle(JptJaxbUiMessages.SchemaGeneratorWizardPage_title);

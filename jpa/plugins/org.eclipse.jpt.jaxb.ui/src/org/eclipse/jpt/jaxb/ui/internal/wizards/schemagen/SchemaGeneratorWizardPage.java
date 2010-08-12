@@ -72,6 +72,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 
 	// widgets
 	private SettingsGroup settingsGroup;
+	private NonContainerFilter projectFilter;
 	
 	private Button usesMoxyCheckBox;
 	private boolean usesMoxy;
@@ -268,7 +269,11 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	}
 
     private void updateInputGroupTreeFilter() {
-		this.getInputGroup().addTreeFilter(new NonContainerFilter(this.targetProject.getProject().getName()));
+    	if(this.projectFilter != null) {
+    		this.getInputGroup().removeTreeFilter(this.projectFilter);
+    	}
+    	this.projectFilter = new NonContainerFilter(this.targetProject.getProject().getName());
+		this.getInputGroup().addTreeFilter(this.projectFilter);
     }
 
     private IJavaProject getProjectFromInitialSelection() {
