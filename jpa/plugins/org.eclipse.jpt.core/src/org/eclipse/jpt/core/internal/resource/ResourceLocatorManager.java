@@ -11,12 +11,8 @@ package org.eclipse.jpt.core.internal.resource;
 
 import static org.eclipse.jpt.core.internal.XPointUtil.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.TreeSet;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.expressions.ExpressionConverter;
@@ -31,6 +27,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.core.internal.resource.ResourceLocatorConfig.Priority;
 import org.eclipse.jpt.core.resource.ResourceLocator;
+import org.eclipse.jpt.utility.internal.KeyedSet;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
@@ -45,24 +42,19 @@ public class ResourceLocatorManager {
 	public static final String ENABLEMENT_ELEMENT = "enablement";
 	
 	
-	private static ResourceLocatorManager INSTANCE;
+	private static ResourceLocatorManager INSTANCE = new ResourceLocatorManager();
 	
 	
 	public static ResourceLocatorManager instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new ResourceLocatorManager();
-		}
 		return INSTANCE;
 	}
 	
 	
-	private Set<ResourceLocatorConfig> resourceLocatorConfigs;
-	private Map<String, ResourceLocatorConfig> resourceLocatorLookupTable;
+	private KeyedSet<String, ResourceLocatorConfig> resourceLocatorConfigs;
 	
 	
 	private ResourceLocatorManager() {
-		this.resourceLocatorConfigs = new HashSet<ResourceLocatorConfig>();
-		this.resourceLocatorLookupTable = new HashMap<String, ResourceLocatorConfig>();
+		this.resourceLocatorConfigs = new KeyedSet<String, ResourceLocatorConfig>();
 		readExtensions();
 	}
 	
@@ -75,7 +67,7 @@ public class ResourceLocatorManager {
 		Iterator<ResourceLocator> stream = new FilteringIterable<ResourceLocator>(
 				new TransformationIterable<ResourceLocatorConfig, ResourceLocator>(
 						new FilteringIterable<ResourceLocatorConfig>(
-								new TreeSet<ResourceLocatorConfig>(this.resourceLocatorConfigs)) {
+								new TreeSet<ResourceLocatorConfig>(this.resourceLocatorConfigs.getItemSet())) {
 							@Override
 							protected boolean accept(ResourceLocatorConfig o) {
 								return o.isEnabledFor(project);
@@ -129,7 +121,7 @@ public class ResourceLocatorManager {
 			// resource locator id
 			rlConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
-			if (this.resourceLocatorLookupTable.containsKey(rlConfig.getId())) {
+			if (this.resourceLocatorConfigs.containsKey(rlConfig.getId())) {
 				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, rlConfig.getId());
 				throw new XPointException();
 			}
@@ -162,8 +154,7 @@ public class ResourceLocatorManager {
 				}
 			}
 			
-			this.resourceLocatorConfigs.add(rlConfig);
-			this.resourceLocatorLookupTable.put(rlConfig.getId(), rlConfig);
+			this.resourceLocatorConfigs.addItem(rlConfig.getId(), rlConfig);
 		}
 		catch (XPointException e) {
 			// Ignore and continue. The problem has already been reported to the user
