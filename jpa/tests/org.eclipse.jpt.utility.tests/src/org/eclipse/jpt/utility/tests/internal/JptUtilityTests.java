@@ -11,7 +11,6 @@ package org.eclipse.jpt.utility.tests.internal;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-
 import org.eclipse.jpt.utility.tests.internal.enumerations.JptUtilityEnumerationsTests;
 import org.eclipse.jpt.utility.tests.internal.iterables.JptUtilityIterablesTests;
 import org.eclipse.jpt.utility.tests.internal.iterators.JptUtilityIteratorsTests;
@@ -59,6 +58,7 @@ public class JptUtilityTests {
 		suite.addTestSuite(IntReferenceTests.class);
 		suite.addTestSuite(JavaTypeTests.class);
 		suite.addTestSuite(JDBCTypeTests.class);
+		suite.addTestSuite(KeyedSetTests.class);
 		suite.addTestSuite(ListenerListTests.class);
 		suite.addTestSuite(MethodSignatureTests.class);
 		suite.addTestSuite(NameToolsTests.class);
