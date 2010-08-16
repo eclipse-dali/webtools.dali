@@ -88,7 +88,6 @@ public class JpaProjectManagerTests extends TestCase {
 	 */
 	private TestFacetedProject buildTestProject() throws Exception {
 		TestJavaProject tjp = TestJavaProject.buildJavaProject(this.getClass().getSimpleName(), true);
-		tjp.installFacet("jst.utility", "1.0");
 		tjp.createCompilationUnit("test.pkg", "TestEntity.java", "@Entity public class TestEntity {}");
 		tjp.createCompilationUnit("test.pkg", "TestEntity2.java", "@Entity public class TestEntity2 {}");
 		return tjp;
@@ -202,7 +201,7 @@ public class JpaProjectManagerTests extends TestCase {
 		inStream.close();
 
 		String oldDocument = new String(buf);
-		String oldString = "<installed facet=\"jst.utility\" version=\"1.0\"/>";
+		String oldString = "<installed facet=\"java\" version=\"1.5\"/>";
 		String newString = oldString + CR + "  " + "<installed facet=\"jpt.jpa\" version=\"1.0\"/>";
 		String newDocument = oldDocument.replaceAll(oldString, newString);
 
@@ -240,8 +239,8 @@ public class JpaProjectManagerTests extends TestCase {
 		inStream.close();
 
 		String oldDocument = new String(buf);
-		String oldString = "<installed facet=\"jst.utility\" version=\"1.0\"/>" + CR + "  " + "<installed facet=\"jpt.jpa\" version=\"1.0\"/>";
-		String newString = "<installed facet=\"jst.utility\" version=\"1.0\"/>";
+		String oldString = "<installed facet=\"java\" version=\"1.5\"/>" + CR + "  " + "<installed facet=\"jpt.jpa\" version=\"1.0\"/>";
+		String newString = "<installed facet=\"java\" version=\"1.5\"/>";
 		String newDocument = oldDocument.replaceAll(oldString, newString);
 
 		facetSettingsFile.setContents(new ByteArrayInputStream(newDocument.getBytes()), false, false, null);
