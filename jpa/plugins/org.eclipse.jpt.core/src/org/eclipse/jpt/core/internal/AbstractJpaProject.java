@@ -1444,6 +1444,9 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void internalProjectChanged(IResourceDelta delta) {
+		if (delta.getKind() == IResourceDelta.REMOVED) {
+			setUpdater(JpaProject.Updater.Null.instance());
+		}
 		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
 		resourceDeltaVisitor.visitDelta(delta);
 		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
