@@ -101,14 +101,14 @@
 			id="org.eclipse.jpt.core.propertyTester.platformResource"
 			type="org.eclipse.core.resources.IResource"
 			namespace="org.eclipse.jpt.core"
-			properties="jpaPlatform"
+			properties="jpaPlatform, jpaPlatformGroup"
 			class="org.eclipse.jpt.core.internal.JpaPlatformTester"/>
 		
 		<propertyTester
 			id="org.eclipse.jpt.core.propertyTester.javaElement"
 			type="org.eclipse.jdt.core.IJavaElement"
 			namespace="org.eclipse.jpt.core"
-			properties="jpaPlatform"
+			properties="jpaPlatform, jpaPlatformGroup"
 			class="org.eclipse.jpt.core.internal.JpaPlatformTester"/>
 		
 		<propertyTester
@@ -179,21 +179,25 @@
 	<extension
 		point="org.eclipse.jpt.core.jpaPlatforms">
 		
+		<jpaPlatformGroup
+        	id="generic"
+        	label="%GENERIC_PLATFORM_GROUP_LABEL"/>
+		
 		<jpaPlatform
 			id="generic"
 			label="%GENERIC_1_0_PLATFORM_LABEL"
 			factoryClass="org.eclipse.jpt.core.internal.GenericJpaPlatformFactory"
+			group="generic"
 			jpaFacetVersion="1.0"
-			default="false">
-		</jpaPlatform>
+			default="false"/>
 			
 	  <jpaPlatform
 	        id="generic2_0"
 	        label="%GENERIC_2_0_PLATFORM_LABEL"
 	        factoryClass="org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformFactory"
+	        group="generic"
 	        jpaFacetVersion="2.0"
-	        default="false">
-	  </jpaPlatform>
+	        default="false"/>
 		
 	</extension>
 	
@@ -592,20 +596,20 @@
 		
 		<project-facet-version facet="jpt.jpa" version="1.0">
 			<constraint>
-				<requires facet="jst.java" version="[5.0"/>
+				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
 		
 		<project-facet-version facet="jpt.jpa" version="2.0">
 			<constraint>
-				<requires facet="jst.java" version="[5.0"/>
+				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
 		
 		<template id="jpt.jpa.se.template">
 			<label>%JPA_SE_TEMPLATE_LABEL</label>
 			<fixed facet="jpt.jpa"/>
-			<fixed facet="jst.java"/>
+			<fixed facet="java"/>
 			<!--
 			<preset id="jpt.jpa.2_0.preset"/>
 			-->
@@ -614,7 +618,7 @@
 		<template id="jpt.jpa.ee.template">
 			<label>%JPA_EE_TEMPLATE_LABEL</label>
 			<fixed facet="jpt.jpa"/>
-			<fixed facet="jst.java"/>
+			<fixed facet="java"/>
 			<fixed facet="jst.utility"/>
 			<!--
 			<preset id="jpt.jpa.2_0.preset"/>
@@ -661,26 +665,26 @@
 		
 		<static-preset id="jpt.jpa.1_0.se.preset">
 			<label>%JPA_1.0_SE_PRESET_LABEL</label>
-			<facet id="jst.java" version="5.0"/>
+			<facet id="java" version="5.0"/>
 			<facet id="jpt.jpa" version="1.0"/>
 		</static-preset>
 		
 		<static-preset id="jpt.jpa.1_0.ee.preset">
 			<label>%JPA_1.0_EE_PRESET_LABEL</label>
-			<facet id="jst.java" version="5.0"/>
+			<facet id="java" version="5.0"/>
 			<facet id="jst.utility" version="1.0"/>
 			<facet id="jpt.jpa" version="1.0"/>
 		</static-preset>
 		
 		<static-preset id="jpt.jpa.2_0.se.preset">
 			<label>%JPA_2.0_SE_PRESET_LABEL</label>
-			<facet id="jst.java" version="6.0"/>
+			<facet id="java" version="6.0"/>
 			<facet id="jpt.jpa" version="2.0"/>
 		</static-preset>
 		
 		<static-preset id="jpt.jpa.2_0.ee.preset">
 			<label>%JPA_2.0_EE_PRESET_LABEL</label>
-			<facet id="jst.java" version="6.0"/>
+			<facet id="java" version="6.0"/>
 			<facet id="jst.utility" version="1.0"/>
 			<facet id="jpt.jpa" version="2.0"/>
 		</static-preset>

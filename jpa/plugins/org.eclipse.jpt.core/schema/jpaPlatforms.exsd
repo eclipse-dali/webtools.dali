@@ -6,7 +6,7 @@
          <meta.schema plugin="org.eclipse.jpt.core" id="jpaPlatforms" name="JPA Platforms"/>
       </appInfo>
       <documentation>
-         Used to add JPA platforms as choices when configuring a project with the JPA facet.  The optional &quot;jpaFacetVersion&quot; attribute is used to tie a platform to a particular JPA facet version (if not present, the platform is available for all facet versions.)  The optional &quot;default&quot; attribute is used to determine if a platform should have a higher priority when calculating the default platform for a project.
+         Defines JPA platforms and JPA platform groups.
       </documentation>
    </annotation>
 
@@ -17,9 +17,10 @@
          </appInfo>
       </annotation>
       <complexType>
-         <sequence>
-            <element ref="jpaPlatform" minOccurs="1" maxOccurs="unbounded"/>
-         </sequence>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="jpaPlatformGroup"/>
+            <element ref="jpaPlatform"/>
+         </choice>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
@@ -47,10 +48,37 @@
       </complexType>
    </element>
 
+   <element name="jpaPlatformGroup">
+      <annotation>
+         <documentation>
+            Declares a JPA platform group.  Acts as a sort of &quot;super&quot; platform.  Most useful for enabling functionality for a set of platforms without having to enable the functionality for each platform separately.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for a JPA platform group.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A translatable string representation of the JPA platform group.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
    <element name="jpaPlatform">
       <annotation>
          <documentation>
-            Declares a JPA platform, one jpaPlatform will be chosen per JpaProject. See &lt;samp&gt;org.eclipse.jpt.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.  Also see the org.eclipse.jpt.ui.jpaPlatforms extension point.
+            Declares a JPA platform.  One JPA platform will be selected per JPA-faceted project. See &lt;samp&gt;org.eclipse.jpt.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.  Also see the org.eclipse.jpt.ui.jpaPlatforms extension point.
          </documentation>
       </annotation>
       <complexType>
@@ -81,6 +109,13 @@
                </appInfo>
             </annotation>
          </attribute>
+         <attribute name="group" type="string">
+            <annotation>
+               <documentation>
+                  Declares which JPA platform group this platform belongs to, if any.
+               </documentation>
+            </annotation>
+         </attribute>
          <attribute name="jpaFacetVersion" type="string">
             <annotation>
                <documentation>
@@ -103,7 +138,7 @@
          <meta.section type="since"/>
       </appInfo>
       <documentation>
-         2.2
+         JPT 1.0
       </documentation>
    </annotation>
 
@@ -112,16 +147,25 @@
          <meta.section type="examples"/>
       </appInfo>
       <documentation>
-         The following example shows a basic JPA platform which should be considered a prominent platform for JPA 1.0
-
+         &lt;br&gt;
+&lt;p&gt;
+The following example is the included generic JPA 1.0 platform and its platform group 
+&lt;p&gt;
+&lt;pre&gt;
 &lt;extension point=&quot;org.eclipse.jpt.core.jpaPlatforms&quot;&gt;
+   
+   &lt;jpaPlatformGroup
+      id=&quot;myJpaPlatformGroup&quot;
+      label=&quot;My JPA Platform&quot;/&gt;
+      
    &lt;jpaPlatform
-      id=&quot;myJpaPlatform&quot;
-      label=&quot;My JPA Platform&quot;
-      factoryClass=&quot;org.foo.MyJpaPlatformFactory&quot;
+      id=&quot;generic&quot;
+      label=&quot;%GENERIC_1_0_PLATFORM_LABEL&quot;
+      factoryClass=&quot;org.eclipse.jpt.core.internal.GenericJpaPlatformFactory&quot;
       jpaFacetVersion=&quot;1.0&quot;
-      default=&quot;true&quot;&gt;
+      default=&quot;false&quot;&gt;
    &lt;/jpaPlatform&gt;
+   
 &lt;/extension&gt;
       </documentation>
    </annotation>
@@ -153,7 +197,7 @@ will almost certainly be broken (repeatedly) as the API evolves.
          <meta.section type="copyright"/>
       </appInfo>
       <documentation>
-         Copyright (c) 2006, 2009 Oracle. All rights reserved.
+         Copyright (c) 2006, 2010 Oracle. All rights reserved.
 This program and the accompanying materials are made available under the
 terms of the Eclipse Public License v1.0, which accompanies this distribution
 and is available at http://www.eclipse.org/legal/epl-v10.html.

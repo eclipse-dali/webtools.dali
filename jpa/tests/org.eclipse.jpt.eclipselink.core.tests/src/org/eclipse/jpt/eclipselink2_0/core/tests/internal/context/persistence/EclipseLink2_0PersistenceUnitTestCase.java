@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -45,7 +45,7 @@ public abstract class EclipseLink2_0PersistenceUnitTestCase extends PersistenceU
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());	
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLink2_0JpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkPlatform.VERSION_2_0.getId());
 		return dataModel;
 	}
 

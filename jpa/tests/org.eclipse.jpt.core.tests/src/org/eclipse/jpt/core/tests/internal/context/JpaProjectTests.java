@@ -14,13 +14,13 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
+import org.eclipse.jpt.core.platform.GenericPlatform;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
@@ -48,7 +48,7 @@ public class JpaProjectTests extends TestCase
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericJpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericPlatform.VERSION_1_0.getId());
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
+* Copyright (c) 2009, 2010 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.tests.internal.jpa2.context.persistence;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.platform.GenericPlatform;
 import org.eclipse.jpt.core.tests.internal.context.persistence.PersistenceUnitTestCase;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -46,7 +46,7 @@ public abstract class Generic2_0PersistenceUnitTests extends PersistenceUnitTest
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, Generic2_0JpaPlatformProvider.ID);
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericPlatform.VERSION_2_0.getId());
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}

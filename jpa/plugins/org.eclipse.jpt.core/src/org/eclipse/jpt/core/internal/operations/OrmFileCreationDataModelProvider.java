@@ -15,6 +15,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaFacet;
+import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -96,8 +97,12 @@ public class OrmFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		return JptCorePlugin.getJpaPlatform(getProject()).getMostRecentSupportedResourceType(
-				JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
+		JpaPlatform jpaPlatform;
+		JpaProject jpaProject = getJpaProject();
+		jpaPlatform = (jpaProject == null) 
+				? JptCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(getProject()) 
+				: jpaProject.getJpaPlatform();
+		return jpaPlatform.getMostRecentSupportedResourceType(JptCorePlugin.ORM_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	protected PersistenceUnit getDefaultPersistenceUnit() {

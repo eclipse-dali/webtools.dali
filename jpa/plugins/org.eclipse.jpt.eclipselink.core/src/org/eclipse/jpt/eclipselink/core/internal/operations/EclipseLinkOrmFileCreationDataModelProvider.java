@@ -10,13 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.operations;
 
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformProvider;
-import org.eclipse.jpt.eclipselink.core.internal.v2_1.EclipseLink2_1JpaPlatformProvider;
+import org.eclipse.jpt.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
@@ -77,10 +75,10 @@ public class EclipseLinkOrmFileCreationDataModelProvider
 	
 	@Override
 	protected boolean isSupportedPlatformId(String id) {
-		return id.equals(EclipseLinkJpaPlatformProvider.ID) 
-				|| id.equals(EclipseLink1_1JpaPlatformProvider.ID)
-				|| id.equals(EclipseLink1_2JpaPlatformProvider.ID)
-				|| id.equals(EclipseLink2_0JpaPlatformProvider.ID)
-				|| id.equals(EclipseLink2_1JpaPlatformProvider.ID);
+		JpaPlatformDescription platform = JptCorePlugin.getJpaPlatformManager().getJpaPlatform(id);
+		if (platform == null) {
+			return false;
+		}
+		return EclipseLinkPlatform.GROUP.equals(platform.getGroup());
 	}
 }

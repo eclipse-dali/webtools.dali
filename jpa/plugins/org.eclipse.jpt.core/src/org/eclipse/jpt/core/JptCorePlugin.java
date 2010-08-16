@@ -29,18 +29,20 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.core.internal.resource.ResourceLocatorManager;
+import org.eclipse.jpt.core.platform.GenericPlatform;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.core.platform.JpaPlatformManager;
 import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -332,19 +334,21 @@ public class JptCorePlugin extends Plugin {
 		IEclipsePreferences node = getDefaultPreferences();
 
 		// default JPA platforms
-		String defaultPlatformId_1_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JpaFacet.VERSION_1_0.getVersionString());
-		if (StringTools.stringIsEmpty(defaultPlatformId_1_0)) {
-			defaultPlatformId_1_0 = GenericJpaPlatformProvider.ID;
+		JpaPlatformDescription defaultPlatform_1_0 = 
+				JpaPlatformManagerImpl.instance().getDefaultJpaPlatform(JpaFacet.VERSION_1_0);
+		if (defaultPlatform_1_0 == null) {
+			defaultPlatform_1_0 = GenericPlatform.VERSION_1_0;
 		}
-		node.put(DEFAULT_JPA_PLATFORM_1_0_PREF_KEY, defaultPlatformId_1_0);
+		node.put(DEFAULT_JPA_PLATFORM_1_0_PREF_KEY, defaultPlatform_1_0.getId());
 		
-		String defaultPlatformId_2_0 = JpaPlatformRegistry.instance().getDefaultJpaPlatformId(JpaFacet.VERSION_2_0.getVersionString());
-		if (StringTools.stringIsEmpty(defaultPlatformId_2_0)) {
-			defaultPlatformId_2_0 = Generic2_0JpaPlatformProvider.ID;
+		JpaPlatformDescription defaultPlatform_2_0 = 
+				JpaPlatformManagerImpl.instance().getDefaultJpaPlatform(JpaFacet.VERSION_2_0);
+		if (defaultPlatform_2_0 == null) {
+			defaultPlatform_2_0 = GenericPlatform.VERSION_2_0;
 		}
-		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatformId_2_0);
+		node.put(DEFAULT_JPA_PLATFORM_2_0_PREF_KEY, defaultPlatform_2_0.getId());
 	}
-
+	
 	/**
 	 * Return the default Dali preferences
 	 * @see JpaPreferenceInitializer
@@ -375,56 +379,57 @@ public class JptCorePlugin extends Plugin {
 	}
 	
 	/**
-	 * Return the default JPA Platform ID for new JPA projects with the given JPA facet version.
+	 * Return the default {@link JpaPlatformDescription} for new JPA projects with the given JPA facet version.
 	 */
-	public static String getDefaultJpaPlatformId(String jpaFacetVersion) {
-		String defaultPlatformId = 
-				getDefaultJpaPlatformId(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences());
-		if (defaultPlatformId == null) {
+	public static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion) {
+		JpaPlatformDescription defaultPlatform = 
+				getDefaultJpaPlatform(jpaFacetVersion, getWorkspacePreferences(), getDefaultPreferences());
+		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
-			defaultPlatformId = getDefaultJpaPlatformId(jpaFacetVersion, getDefaultPreferences());
+			defaultPlatform = getDefaultJpaPlatform(jpaFacetVersion, getDefaultPreferences());
 		}
-		return defaultPlatformId;
+		return defaultPlatform;
 	}
 	
-	private static String getDefaultJpaPlatformId(String jpaFacetVersion, Preferences ... nodes) {
-		String defaultDefaultPlatformId = 
-				getDefaultJpaPlatformId(jpaFacetVersion, DEFAULT_JPA_PLATFORM_PREF_KEY, null, nodes);
+	private static JpaPlatformDescription getDefaultJpaPlatform(IProjectFacetVersion jpaFacetVersion, Preferences ... nodes) {
+		JpaPlatformDescription defaultDefaultPlatform = 
+				getDefaultJpaPlatform(jpaFacetVersion, DEFAULT_JPA_PLATFORM_PREF_KEY, null, nodes);
 		String preferenceKey = null;
-		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0.getVersionString())) {
-			if (defaultDefaultPlatformId == null) {
-				defaultDefaultPlatformId = GenericJpaPlatformProvider.ID;
+		if (jpaFacetVersion.equals(JpaFacet.VERSION_1_0)) {
+			if (defaultDefaultPlatform == null) {
+				defaultDefaultPlatform = GenericPlatform.VERSION_1_0;
 			}
 			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY; 
 		}
-		else if (jpaFacetVersion.equals(JpaFacet.VERSION_2_0.getVersionString())) {
-			if (defaultDefaultPlatformId == null) {
-				defaultDefaultPlatformId = Generic2_0JpaPlatformProvider.ID;
+		else if (jpaFacetVersion.equals(JpaFacet.VERSION_2_0)) {
+			if (defaultDefaultPlatform == null) {
+				defaultDefaultPlatform = GenericPlatform.VERSION_2_0;
 			}
 			preferenceKey = DEFAULT_JPA_PLATFORM_2_0_PREF_KEY;
 		}
 		else {
 			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 		}
-		return getDefaultJpaPlatformId(jpaFacetVersion, preferenceKey, defaultDefaultPlatformId, nodes);
+		return getDefaultJpaPlatform(jpaFacetVersion, preferenceKey, defaultDefaultPlatform, nodes);
 	}
 	
-	private static String getDefaultJpaPlatformId(
-			String jpaFacetVersion, String preferenceKey, String defaultDefault, Preferences ... nodes) {	
-		String defaultPlatformId = Platform.getPreferencesService().get(preferenceKey, defaultDefault, nodes);
-		if (jpaPlatformIdIsValid(defaultPlatformId)
-				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(defaultPlatformId, jpaFacetVersion)) {
-			return defaultPlatformId;
+	private static JpaPlatformDescription getDefaultJpaPlatform(
+			IProjectFacetVersion jpaFacetVersion, String preferenceKey, JpaPlatformDescription defaultDefault, Preferences ... nodes) {	
+		
+		String defaultDefaultId = (defaultDefault == null) ? null : defaultDefault.getId();
+		String defaultPlatformId = Platform.getPreferencesService().get(preferenceKey, defaultDefaultId, nodes);
+		JpaPlatformDescription defaultPlatform = getJpaPlatformManager().getJpaPlatform(defaultPlatformId);
+		if (defaultPlatform != null && defaultPlatform.supportsJpaFacetVersion(jpaFacetVersion)) {
+			return defaultPlatform;
 		}
-		else if (jpaPlatformIdIsValid(defaultDefault)
-				&& JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(defaultDefault, jpaFacetVersion)) {
+		else if (defaultDefault != null && defaultDefault.supportsJpaFacetVersion(jpaFacetVersion)) {
 			return defaultDefault;
 		}
 		return null;
 	}
 	
-	private static boolean jpaPlatformIdIsValid(String platformId) {
-		return JpaPlatformRegistry.instance().containsPlatform(platformId);
+	public static JpaPlatformManager getJpaPlatformManager() {
+		return JpaPlatformManagerImpl.instance();
 	}
 
 	/**
@@ -445,19 +450,12 @@ public class JptCorePlugin extends Plugin {
 		prefs.put(preferenceKey, platformId);
 		flush(prefs);
 	}
-
-	/**
-	 * Return the JPA platform associated with the specified Eclipse project.
-	 */
-	public static JpaPlatform getJpaPlatform(IProject project) {
-		return JpaPlatformRegistry.instance().getJpaPlatform(project);
-	}
-
+	
 	/**
 	 * Return the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJpaPlatformId(IProject project) {
-		return getProjectPreferences(project).get(JPA_PLATFORM_PREF_KEY, GenericJpaPlatformProvider.ID);
+		return getProjectPreferences(project).get(JPA_PLATFORM_PREF_KEY, GenericPlatform.VERSION_1_0.getId());
 	}
 
 	/**

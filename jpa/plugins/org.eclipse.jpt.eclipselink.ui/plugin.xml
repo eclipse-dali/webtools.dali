@@ -87,28 +87,10 @@
 							property="org.eclipse.wst.common.project.facet.core.projectFacet"
 							value="jpt.jpa" />
 					</adapt>
-					<or>
-						<test
-							property="org.eclipse.jpt.core.jpaPlatform"
-							value="org.eclipse.eclipselink.platform">
-						</test>
-						<test
-							property="org.eclipse.jpt.core.jpaPlatform"
-							value="eclipselink1_1">
-						</test>
-						<test
-							property="org.eclipse.jpt.core.jpaPlatform"
-							value="eclipselink1_2">
-						</test>
-						<test
-							property="org.eclipse.jpt.core.jpaPlatform"
-							value="eclipselink2_0">
-						</test>
-						<test
-							property="org.eclipse.jpt.core.jpaPlatform"
-							value="eclipselink2_1">
-						</test>
-					</or>
+					<test
+						property="org.eclipse.jpt.core.jpaPlatformGroup"
+						value="eclipselink">
+					</test>
 				</and>
 			</enablement>
 		</commonWizard>

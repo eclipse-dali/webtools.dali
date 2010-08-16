@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,6 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
@@ -81,15 +80,14 @@ public class JpaPlatformExtensionTests extends ContextModelTestCase
 	}
 	
 	public void testAllJpaPlatformIds() {
-		assertTrue(CollectionTools.size(JpaPlatformRegistry.instance().getJpaPlatformIds()) >= 2);
+		assertTrue(CollectionTools.size(JptCorePlugin.getJpaPlatformManager().getJpaPlatforms()) >= 2);
 	}
 	
 	public void testJpaPlatformLabel() {
-		assertEquals(TEST_PLATFORM_LABEL, JpaPlatformRegistry.instance().getJpaPlatformLabel(TEST_PLATFORM_ID));	
+		assertEquals(TEST_PLATFORM_LABEL, JptCorePlugin.getJpaPlatformManager().getJpaPlatform(TEST_PLATFORM_ID).getLabel());	
 	}
 	
 	public void testJpaPlatform() {
-		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(this.testProject.getProject()));		
+		assertNotNull(JptCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(this.testProject.getProject()));		
 	}
-
 }

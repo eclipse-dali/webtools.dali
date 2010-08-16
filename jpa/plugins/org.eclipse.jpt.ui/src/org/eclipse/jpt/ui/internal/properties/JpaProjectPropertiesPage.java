@@ -43,10 +43,10 @@ import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
@@ -68,6 +68,8 @@ import org.eclipse.jpt.utility.internal.NotBooleanTransformer;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.model.value.AbstractCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.AspectCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -496,8 +498,19 @@ public class JpaProjectPropertiesPage
 	}
 
 	private CollectionValueModel<String> buildRegistryPlatformsModel() {
-		String jpaFacetVersion = this.getProjectFacetVersion().getVersionString();
-		Iterable<String> enabledPlatformIds = JpaPlatformRegistry.instance().getJpaPlatformIdsForJpaFacetVersion(jpaFacetVersion);
+		Iterable<String> enabledPlatformIds = 
+			new TransformationIterable<JpaPlatformDescription, String>(
+					new FilteringIterable<JpaPlatformDescription>(JptCorePlugin.getJpaPlatformManager().getJpaPlatforms()) {
+						@Override
+						protected boolean accept(JpaPlatformDescription o) {
+							return o.supportsJpaFacetVersion(getProjectFacetVersion());
+						}
+					}) {
+				@Override
+				protected String transform(JpaPlatformDescription o) {
+					return o.getId();
+				}
+			};
 		return new StaticCollectionValueModel<String>(enabledPlatformIds);
 	}
 
@@ -518,7 +531,7 @@ public class JpaProjectPropertiesPage
 			};
 
 	/* private */ static String getJpaPlatformLabel(String id) {
-		return JpaPlatformRegistry.instance().getJpaPlatformLabel(id);
+		return JptCorePlugin.getJpaPlatformManager().getJpaPlatform(id).getLabel();
 	}
 
 

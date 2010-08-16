@@ -12,7 +12,7 @@ package org.eclipse.jpt.ui.tests.internal.platform;
 
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
+import org.eclipse.jpt.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -60,7 +60,6 @@ public class JpaPlatformUiExtensionTests extends TestCase
 	}
 
 	public void testJpaPlatform() {
-		assertNotNull(JpaPlatformRegistry.instance().getJpaPlatform(this.testProject.getProject()));
+		assertNotNull(JpaPlatformManagerImpl.instance().buildJpaPlatformImplementation(this.testProject.getProject()));
 	}
-
 }

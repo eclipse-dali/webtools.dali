@@ -11,6 +11,8 @@
 package org.eclipse.jpt.core.internal.operations;
 
 import org.eclipse.jpt.core.JpaFacet;
+import org.eclipse.jpt.core.JpaPlatform;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.persistence.JPA;
 import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
@@ -43,8 +45,12 @@ public class PersistenceFileCreationDataModelProvider
 		if (getProject() == null) {
 			return null;
 		}
-		return JptCorePlugin.getJpaPlatform(getProject()).getMostRecentSupportedResourceType(
-				JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
+		JpaPlatform jpaPlatform;
+		JpaProject jpaProject = getJpaProject();
+		jpaPlatform = (jpaProject == null) 
+				? JptCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(getProject()) 
+				: jpaProject.getJpaPlatform();
+		return jpaPlatform.getMostRecentSupportedResourceType(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE).getVersion();
 	}
 	
 	

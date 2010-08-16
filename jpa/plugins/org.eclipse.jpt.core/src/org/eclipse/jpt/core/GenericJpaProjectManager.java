@@ -396,7 +396,7 @@ class GenericJpaProjectManager
 	private JpaProject.Config buildJpaProjectConfig(IProject project) {
 		SimpleJpaProjectConfig config = new SimpleJpaProjectConfig();
 		config.setProject(project);
-		config.setJpaPlatform(JptCorePlugin.getJpaPlatform(project));
+		config.setJpaPlatform(JptCorePlugin.getJpaPlatformManager().buildJpaPlatformImplementation(project));
 		config.setConnectionProfileName(JptCorePlugin.getConnectionProfileName(project));
 		config.setUserOverrideDefaultCatalog(JptCorePlugin.getUserOverrideDefaultCatalog(project));
 		config.setUserOverrideDefaultSchema(JptCorePlugin.getUserOverrideDefaultSchema(project));

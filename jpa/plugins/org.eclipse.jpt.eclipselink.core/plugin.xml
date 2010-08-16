@@ -33,40 +33,44 @@
 	<extension
 		point="org.eclipse.jpt.core.jpaPlatforms">
 		
+		<jpaPlatformGroup
+        	id="eclipselink"
+        	label="%ECLIPSELINK_PLATFORM_GROUP_LABEL"/>
+		
 		<jpaPlatform
 			id="org.eclipse.eclipselink.platform"
-            factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
-			label="%ECLIPSELINK1_0_x_PLATFORM"
-			jpaFacetVersion="1.0">
-		</jpaPlatform>
+            label="%ECLIPSELINK1_0_x_PLATFORM"
+			factoryClass="org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformFactory"
+			group="eclipselink"
+			jpaFacetVersion="1.0"/>
 	    
 	    <jpaPlatform
 	        id="eclipselink1_1"
-	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformFactory"
 	        label="%ECLIPSELINK1_1_x_PLATFORM"
-	        jpaFacetVersion="1.0">
-	    </jpaPlatform>
+	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_1.EclipseLink1_1JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="1.0"/>
 	    
 	    <jpaPlatform
 			id="eclipselink1_2"
-			factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformFactory"
 			label="%ECLIPSELINK1_2_x_PLATFORM"
-			jpaFacetVersion="1.0">
-		</jpaPlatform>
+			factoryClass="org.eclipse.jpt.eclipselink.core.internal.v1_2.EclipseLink1_2JpaPlatformFactory"
+			group="eclipselink"
+			jpaFacetVersion="1.0"/>
 		
 	    <jpaPlatform
 	        id="eclipselink2_0"
-	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformFactory"
 	        label="%ECLIPSELINK2_0_x_PLATFORM"
-	        jpaFacetVersion="2.0">
-	    </jpaPlatform>
+	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v2_0.EclipseLink2_0JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="2.0"/>
 		
 		<jpaPlatform
 	        id="eclipselink2_1"
-	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v2_1.EclipseLink2_1JpaPlatformFactory"
 	        label="%ECLIPSELINK2_1_x_PLATFORM"
-	        jpaFacetVersion="2.0">
-	    </jpaPlatform>
+	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v2_1.EclipseLink2_1JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="2.0"/>
 		
 	</extension>
 

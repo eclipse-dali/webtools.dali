@@ -55,9 +55,7 @@ import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.Eclips
  *  EclipseLink2_0JpaPlatformProvider
  */
 public class EclipseLink2_0JpaPlatformProvider
-	extends AbstractJpaPlatformProvider
-{
-	public static final String ID = "eclipselink2_0"; //$NON-NLS-1$
+		extends AbstractJpaPlatformProvider {
 	
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = 

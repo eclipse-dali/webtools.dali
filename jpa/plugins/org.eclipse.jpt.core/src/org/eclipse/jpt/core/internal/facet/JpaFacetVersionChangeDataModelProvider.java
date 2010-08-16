@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -15,8 +15,8 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 
@@ -104,8 +104,8 @@ public class JpaFacetVersionChangeDataModelProvider
 		IStatus status = super.validatePlatformId();
 		
 		if (status.isOK()) {
-			if (! JpaPlatformRegistry.instance().platformSupportsJpaFacetVersion(
-					getPlatformId(), getProjectFacetVersion().getVersionString())) {
+			JpaPlatformDescription platform = JptCorePlugin.getJpaPlatformManager().getJpaPlatform(getPlatformId());
+			if (! platform.supportsJpaFacetVersion(getProjectFacetVersion())) {
 				status = PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION_STATUS;
 			}
 		}

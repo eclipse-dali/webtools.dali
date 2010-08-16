@@ -27,9 +27,7 @@ import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.persistence.Eclips
 import org.eclipse.jpt.eclipselink.core.internal.v2_1.context.orm.EclipseLinkOrmXml2_1Definition;
 
 public class EclipseLink2_1JpaPlatformProvider
-	extends EclipseLink2_0JpaPlatformProvider
-{
-	public static final String ID = "eclipselink2_1"; //$NON-NLS-1$
+		extends EclipseLink2_0JpaPlatformProvider {
 	
 	// singleton
 	private static final JpaPlatformProvider INSTANCE = 

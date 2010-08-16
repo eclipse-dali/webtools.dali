@@ -19,8 +19,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -31,6 +31,7 @@ import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -424,8 +425,18 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected Iterable<String> buildValidPlatformIds() {
-		String jpaFacetVersion = this.getProjectFacetVersion().getVersionString();
-		return JpaPlatformRegistry.instance().getJpaPlatformIdsForJpaFacetVersion(jpaFacetVersion);
+		return new TransformationIterable<JpaPlatformDescription, String>(
+				new FilteringIterable<JpaPlatformDescription>(JptCorePlugin.getJpaPlatformManager().getJpaPlatforms()) {
+					@Override
+					protected boolean accept(JpaPlatformDescription o) {
+						return o.supportsJpaFacetVersion(getProjectFacetVersion());
+					}
+				}) {
+			@Override
+			protected String transform(JpaPlatformDescription o) {
+				return o.getId();
+			}
+		};
 	}
 	
 	protected static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
@@ -521,7 +532,7 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected String getPlatformLabel(String platformId) {
-		return JpaPlatformRegistry.instance().getJpaPlatformLabel(platformId);
+		return JptCorePlugin.getJpaPlatformManager().getJpaPlatform(platformId).getLabel();
 	}
 	
 	protected DataModelPropertyDescriptor buildConnectionDescriptor(String connectionName) {

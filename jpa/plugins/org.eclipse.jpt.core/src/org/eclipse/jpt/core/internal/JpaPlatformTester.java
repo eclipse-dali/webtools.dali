@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved. This
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved. This
  * program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0 which accompanies this distribution, and is
  * available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,28 +13,41 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
+import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
 
 public class JpaPlatformTester extends PropertyTester {
 	
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-		if (! property.equals("jpaPlatform")) { //$NON-NLS-1$
+		if (! (property.equals("jpaPlatform") || property.equals("jpaPlatformGroup"))
+				|| ! (expectedValue instanceof String)) { //$NON-NLS-1$
 			return false;
 		}
 		
-		String platformId = null;
+		JpaPlatformDescription platform = null;
 		
 		if (receiver instanceof IResource) {
-			platformId = platformId(((IResource) receiver).getProject());
+			platform = platform(((IResource) receiver).getProject());
 		} 
 		else if (receiver instanceof IJavaElement) {
-			platformId = platformId(((IJavaElement) receiver).getResource().getProject());
+			platform = platform(((IJavaElement) receiver).getResource().getProject());
 		} 
 		
-		
-		return platformId == null ? false : platformId.equals(expectedValue);
+		if (property.equals("jpaPlatform")) {
+			JpaPlatformDescription otherPlatform = JptCorePlugin.getJpaPlatformManager().getJpaPlatform((String) expectedValue);
+			return platform == null ? false : platform.equals(otherPlatform);
+		}
+		if (property.equals("jpaPlatformGroup")) {
+			JpaPlatformGroupDescription group = (platform == null) ? null : platform.getGroup();
+			JpaPlatformGroupDescription otherGroup = JptCorePlugin.getJpaPlatformManager().getJpaPlatformGroup((String) expectedValue);
+			return group == null ? false : group.equals(otherGroup);
+		}
+		return false;
 	}
 	
-	private String platformId(IProject project) {
-		return (project == null) ? null : JptCorePlugin.getJpaPlatformId(project);
+	private JpaPlatformDescription platform(IProject project) {
+		return (project == null) 
+				? null 
+				: JptCorePlugin.getJpaPlatformManager().getJpaPlatform(JptCorePlugin.getJpaPlatformId(project));
 	}
 }
