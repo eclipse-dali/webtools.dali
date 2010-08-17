@@ -807,81 +807,81 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerReplaceTypeEdits(originalType, newName),
-					this.createExceptionHandlerReplaceTypeEdits(originalType, newName));
+					this.createSessionCustomizerRenameTypeEdits(originalType, newName),
+					this.createExceptionHandlerRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerReplaceTypeEdits(final IType originalType, final String newName) {
+	protected Iterable<ReplaceEdit> createSessionCustomizerRenameTypeEdits(final IType originalType, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createReplaceTypeEdits(originalType, newName);
+					return property.createRenameTypeEdits(originalType, newName);
 				}
 			}
 		);
 	}
 
-	protected Iterable<ReplaceEdit> createExceptionHandlerReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createExceptionHandlerRenameTypeEdits(IType originalType, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		if (property != null) {
-			return property.createReplaceTypeEdits(originalType, newName);
+			return property.createRenameTypeEdits(originalType, newName);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerMoveTypeReplaceEdits(originalType, newPackage),
-					this.createExceptionHandlerMoveTypeReplaceEdits(originalType, newPackage));
+					this.createSessionCustomizerMoveTypeEdits(originalType, newPackage),
+					this.createExceptionHandlerMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createMoveTypeReplaceEdits(originalType, newPackage);
+					return property.createMoveTypeEdits(originalType, newPackage);
 				}
 			}
 		);
 	}
 
-	protected Iterable<ReplaceEdit> createExceptionHandlerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createExceptionHandlerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		if (property != null) {
-			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+			return property.createMoveTypeEdits(originalType, newPackage);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerReplacePackageEdits(originalPackage, newName),
-					this.createExceptionHandlerReplacePackageEdits(originalPackage, newName));
+					this.createSessionCustomizerRenamePackageEdits(originalPackage, newName),
+					this.createExceptionHandlerRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSessionCustomizerReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+	protected Iterable<ReplaceEdit> createSessionCustomizerRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<PersistenceUnit.Property, Iterable<ReplaceEdit>>(getPersistenceUnit().getPropertiesNamed(ECLIPSELINK_SESSION_CUSTOMIZER)) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(PersistenceUnit.Property property) {
-					return property.createReplacePackageEdits(originalPackage, newName);
+					return property.createRenamePackageEdits(originalPackage, newName);
 				}
 			}
 		);
 	}
 
-	protected Iterable<ReplaceEdit> createExceptionHandlerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createExceptionHandlerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
 		if (property != null) {
-			return property.createReplacePackageEdits(originalPackage, newName);
+			return property.createRenamePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

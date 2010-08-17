@@ -351,15 +351,15 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 
 	// ********** refactoring **********
 
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return EmptyIterable.instance();
 	}
 

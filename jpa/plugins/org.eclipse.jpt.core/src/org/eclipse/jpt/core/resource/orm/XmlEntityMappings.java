@@ -1072,19 +1072,19 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 			buildSchemaNamespaceTranslator(),
 			buildSchemaLocationTranslator(namespace, versionsToSchemaLocations),
 			buildDescriptionTranslator(),
-			XmlPersistenceUnitMetadata.buildTranslator(JPA2_0.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
+			XmlPersistenceUnitMetadata.buildTranslator(JPA.PERSISTENCE_UNIT_METADATA, OrmPackage.eINSTANCE.getXmlEntityMappings_PersistenceUnitMetadata()),
 			buildPackageTranslator(),
 			buildSchemaTranslator(),
 			buildCatalogTranslator(),
 			buildAccessTranslator(),
-			XmlSequenceGenerator.buildTranslator(JPA2_0.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
-			XmlTableGenerator.buildTranslator(JPA2_0.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
-			XmlNamedQuery.buildTranslator(JPA2_0.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
-			XmlNamedNativeQuery.buildTranslator(JPA2_0.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
-			SqlResultSetMapping.buildTranslator(JPA2_0.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
-			XmlMappedSuperclass.buildTranslator(JPA2_0.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
-			XmlEntity.buildTranslator(JPA2_0.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
-			XmlEmbeddable.buildTranslator(JPA2_0.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
+			XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
+			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
+			XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
+			SqlResultSetMapping.buildTranslator(JPA.SQL_RESULT_SET_MAPPING, OrmPackage.eINSTANCE.getXmlEntityMappings_SqlResultSetMappings()),
+			XmlMappedSuperclass.buildTranslator(JPA.MAPPED_SUPERCLASS, OrmPackage.eINSTANCE.getXmlEntityMappings_MappedSuperclasses()),
+			XmlEntity.buildTranslator(JPA.ENTITY, OrmPackage.eINSTANCE.getXmlEntityMappings_Entities()),
+			XmlEmbeddable.buildTranslator(JPA.EMBEDDABLE, OrmPackage.eINSTANCE.getXmlEntityMappings_Embeddables()),
 		};
 	}
 	protected static Translator buildDescriptionTranslator() {
@@ -1110,7 +1110,7 @@ public class XmlEntityMappings extends AbstractJpaRootEObject implements XmlQuer
 
 	// ********** refactorings **********
 
-	public ReplaceEdit createReplacePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int offset = getElementNode(JPA.PACKAGE).getStartStructuredDocumentRegion().getEndOffset();
 		return new ReplaceEdit(offset, this.package_.length(), newName);		
 	}

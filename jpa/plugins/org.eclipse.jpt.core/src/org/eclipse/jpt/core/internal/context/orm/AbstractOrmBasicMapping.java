@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BasicMapping;
@@ -35,6 +37,9 @@ import org.eclipse.jpt.core.resource.orm.XmlBasic;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -265,7 +270,56 @@ public abstract class AbstractOrmBasicMapping<T extends XmlBasic>
 	public void removeResourceColumn() {
 		this.resourceAttributeMapping.setColumn(null);
 	}
+
+
+	//************ refactoring ************
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createRenameTypeEdits(originalType, newName),
+			this.createConverterRenameTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenameTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createMoveTypeEdits(originalType, newPackage),
+			this.createConverterMoveTypeEdits(originalType, newPackage));
+	}
 	
+	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (getConverter() != null) {
+			return getConverter().createMoveTypeEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.createConverterRenamePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenamePackageEdits(originalPackage, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+
 	// ****************** validation ****************
 	
 	@Override

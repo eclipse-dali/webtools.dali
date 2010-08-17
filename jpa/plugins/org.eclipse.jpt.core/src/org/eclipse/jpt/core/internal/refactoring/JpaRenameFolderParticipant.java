@@ -148,7 +148,7 @@ public class JpaRenameFolderParticipant
 
 	private Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(final PersistenceUnit persistenceUnit) {
 		if (persistenceUnit.getJpaProject().getJavaProject().isOnClasspath(this.originalFolder) || persistenceUnit.getJpaProject().getProject() == this.originalFolder.getProject()) {
-			return persistenceUnit.createReplaceFolderEdits(this.originalFolder, getArguments().getNewName());
+			return persistenceUnit.createRenameFolderEdits(this.originalFolder, getArguments().getNewName());
 		}
 		return EmptyIterable.instance();
 	}

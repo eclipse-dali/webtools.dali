@@ -523,14 +523,14 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 
 	// ********** refactoring **********
 
-	public ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+	public ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
 		String originalName = originalType.getTypeQualifiedName();
 		int nameIndex = this.className.lastIndexOf(originalName);
 		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplacePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int packageLength = this.className.lastIndexOf('.');
 		if (packageLength == -1) {
 			packageLength = 0;

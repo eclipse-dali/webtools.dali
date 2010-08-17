@@ -304,43 +304,43 @@ public abstract class AbstractMappingFileRef
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		if (this.mappingFile != null) {
-			return this.mappingFile.createReplaceTypeEdits(originalType, newName);
+			return this.mappingFile.createRenameTypeEdits(originalType, newName);
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.mappingFile != null) {
-			return this.mappingFile.createMoveTypeReplaceEdits(originalType, newPackage);
+			return this.mappingFile.createMoveTypeEdits(originalType, newPackage);
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.mappingFile != null) {
-			return this.mappingFile.createReplacePackageEdits(originalPackage, newName);
+			return this.mappingFile.createRenamePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName) {
+	public Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName) {
 		if (this.isFor(originalFile)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalFile, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalFile, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected abstract ReplaceEdit createReplaceEdit(IFile originalFile, String newName);
+	protected abstract ReplaceEdit createRenameEdit(IFile originalFile, String newName);
 
-	public Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination) {
+	public Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination) {
 		if (this.isFor(originalFile)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalFile, runtineDestination));
+			return new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalFile, runtineDestination));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected abstract ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination);
+	protected abstract ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination);
 
 }

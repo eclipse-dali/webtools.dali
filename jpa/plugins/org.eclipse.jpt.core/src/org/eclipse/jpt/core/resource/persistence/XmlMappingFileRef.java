@@ -242,7 +242,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 	}
 
 
-	public ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
+	public ReplaceEdit createRenameEdit(IFile originalFile, String newName) {
 		IDOMNode domNode = getTextNode();
 		String originalName = originalFile.getName();
 		int nameIndex = this.fileName.lastIndexOf(originalName);
@@ -251,7 +251,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplaceFolderEdit(IFolder originalFolder, String newName) {
+	public ReplaceEdit createRenameFolderEdit(IFolder originalFolder, String newName) {
 		IDOMNode domNode = getTextNode();
 		String originalName = originalFolder.getName();
 		int nameIndex = this.fileName.indexOf(originalName);
@@ -260,7 +260,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplaceEdit(IFile originalFile, IPath destination) {
+	public ReplaceEdit createMoveEdit(IFile originalFile, IPath destination) {
 		String originalName = originalFile.getName();
 		int nameIndex = this.fileName.lastIndexOf(originalName);
 
@@ -268,7 +268,7 @@ public class XmlMappingFileRef extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset, nameIndex - 1, destination.toString());
 	}
 
-	public ReplaceEdit createReplaceEdit(IPath originalLocation, IPath destination) {
+	public ReplaceEdit createMoveEdit(IPath originalLocation, IPath destination) {
 		String originalName = originalLocation.toString();
 
 		int offset = getTextNode().getStartOffset();

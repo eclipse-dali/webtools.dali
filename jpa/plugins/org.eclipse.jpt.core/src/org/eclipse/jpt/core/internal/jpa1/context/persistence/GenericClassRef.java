@@ -335,7 +335,7 @@ public class GenericClassRef
 		return this.xmlJavaClassRef.createDeleteEdit();
 	}
 
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		if (isVirtual()) {
 			throw new IllegalStateException();
 		}
@@ -346,31 +346,31 @@ public class GenericClassRef
 	}
 
 	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
-		return this.xmlJavaClassRef.createReplaceEdit(originalType, newName);
+		return this.xmlJavaClassRef.createRenameEdit(originalType, newName);
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (isVirtual()) {
 			throw new IllegalStateException();
 		}
 		if (this.isFor(originalType)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (isVirtual()) {
 			throw new IllegalStateException();
 		}
 		if (this.isInPackage(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplacePackageEdit(String newName) {
-		return this.xmlJavaClassRef.createReplacePackageEdit(newName);
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return this.xmlJavaClassRef.createRenamePackageEdit(newName);
 	}
 
 

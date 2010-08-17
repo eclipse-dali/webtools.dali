@@ -1039,32 +1039,32 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplaceTypeEdits(originalType, newName),
-			this.createMapKeyClassReplaceTypeEdits(originalType, newName),
-			this.createTargetClassReplaceTypeEdits(originalType, newName));
+			super.createRenameTypeEdits(originalType, newName),
+			this.createMapKeyClassRenameTypeEdits(originalType, newName),
+			this.createTargetClassRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createMapKeyClassReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createMapKeyClassRenameTypeEdits(IType originalType, String newName) {
 		if (this.specifiedMapKeyClass != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyClassEdit(originalType, newName));
+				return new SingleElementIterable<ReplaceEdit>(this.createRenameMapKeyClassEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
-		return this.resourceAttributeMapping.createReplaceMapKeyClassEdit(originalType, newName);
+	protected ReplaceEdit createRenameMapKeyClassEdit(IType originalType, String newName) {
+		return this.resourceAttributeMapping.createRenameMapKeyClassEdit(originalType, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createTargetClassReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createTargetClassRenameTypeEdits(IType originalType, String newName) {
 		if (this.specifiedTargetClass != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createReplaceTargetClassEdit(originalType, newName));
+				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createRenameTargetClassEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1072,28 +1072,28 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createMoveTypeReplaceEdits(originalType, newPackage),
-			this.createMapKeyClassMoveTypeReplaceEdits(originalType, newPackage),
-			this.createTargetClassMoveTypeReplaceEdits(originalType, newPackage));
+			super.createMoveTypeEdits(originalType, newPackage),
+			this.createMapKeyClassMoveTypeEdits(originalType, newPackage),
+			this.createTargetClassMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createMapKeyClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createMapKeyClassMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.specifiedMapKeyClass != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyPackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<ReplaceEdit>(this.createMapKeyClassRenamePackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected Iterable<ReplaceEdit> createTargetClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createTargetClassMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.specifiedTargetClass != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createReplaceTargetClassPackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createRenameTargetClassPackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
@@ -1101,30 +1101,30 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplacePackageEdits(originalPackage, newName),
-			this.createMapKeyClassReplacePackageEdits(originalPackage, newName),
-			this.createTargetClassReplacePackageEdits(originalPackage, newName));
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.createMapKeyClassRenamePackageEdits(originalPackage, newName),
+			this.createTargetClassRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createMapKeyClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createMapKeyClassRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.specifiedMapKeyClass != null) {
 			if (this.resolvedMapKeyType != null && this.resolvedMapKeyType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceMapKeyPackageEdit(newName));
+				return new SingleElementIterable<ReplaceEdit>(this.createMapKeyClassRenamePackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceMapKeyPackageEdit(String newName) {
-		return this.resourceAttributeMapping.createReplaceMapKeyClassPackageEdit(newName);
+	protected ReplaceEdit createMapKeyClassRenamePackageEdit(String newName) {
+		return this.resourceAttributeMapping.createRenameMapKeyClassPackageEdit(newName);
 	}
 
-	protected Iterable<ReplaceEdit> createTargetClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createTargetClassRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.specifiedTargetClass != null) {
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createReplaceTargetClassPackageEdit(newName));
+				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createRenameTargetClassPackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();

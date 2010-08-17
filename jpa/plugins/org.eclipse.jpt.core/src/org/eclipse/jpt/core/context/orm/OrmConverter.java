@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.text.edits.ReplaceEdit;
 
 /**
  * 
@@ -21,7 +24,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.0
  * @since 2.1
  */
 public interface OrmConverter
@@ -32,4 +35,25 @@ public interface OrmConverter
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update();
+
+
+	// ********** refactoring **********
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
+	 * The originalType has not yet been renamed, the newName is the new short name.
+	 */
+	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
+
+	/**
+	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
+	 * The originalType has not yet been moved.
+	 */
+	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
+
+	/**
+	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
+	 * The originalPackage has not yet been renamed.
+	 */
+	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 }

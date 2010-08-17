@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -28,6 +30,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -55,6 +62,10 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 
 	public ListIterator<OrmEclipseLinkCustomConverter> customConverters() {
 		return this.customConverters.listIterator();
+	}
+
+	public ListIterable<OrmEclipseLinkCustomConverter> getCustomConverters() {
+		return new LiveCloneListIterable<OrmEclipseLinkCustomConverter>(this.customConverters);
 	}
 
 	public int customConvertersSize() {
@@ -106,6 +117,10 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 		return this.objectTypeConverters.listIterator();
 	}
 
+	public ListIterable<OrmEclipseLinkObjectTypeConverter> getObjectTypeConverters() {
+		return new LiveCloneListIterable<OrmEclipseLinkObjectTypeConverter>(this.objectTypeConverters);
+	}
+
 	public int objectTypeConvertersSize() {
 		return this.objectTypeConverters.size();
 	}
@@ -153,6 +168,10 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 
 	public ListIterator<OrmEclipseLinkStructConverter> structConverters() {
 		return this.structConverters.listIterator();
+	}
+
+	public ListIterable<OrmEclipseLinkStructConverter> getStructConverters() {
+		return new LiveCloneListIterable<OrmEclipseLinkStructConverter>(this.structConverters);
 	}
 
 	public int structConvertersSize() {
@@ -203,6 +222,10 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 
 	public ListIterator<OrmEclipseLinkTypeConverter> typeConverters() {
 		return this.typeConverters.listIterator();
+	}
+
+	public ListIterable<OrmEclipseLinkTypeConverter> getTypeConverters() {
+		return new LiveCloneListIterable<OrmEclipseLinkTypeConverter>(this.typeConverters);
 	}
 
 	public int typeConvertersSize() {
@@ -436,6 +459,169 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 		}	
 	}
 
+
+	//************************* refactoring ************************
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createRenameObjectTypeConverterEdits(originalType, newName),
+			this.createRenameTypeConverterEdits(originalType, newName),
+			this.createRenameStructConverterEdits(originalType, newName),
+			this.createRenameCustomConverterEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createRenameObjectTypeConverterEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
+					return objectTypeConverter.createRenameTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createRenameTypeConverterEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
+					return typeConverter.createRenameTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createRenameStructConverterEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
+					return structConverter.createRenameTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createRenameCustomConverterEdits(final IType originalType, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
+					return customConverter.createRenameTypeEdits(originalType, newName);
+				}
+			}
+		);
+	}
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createMoveObjectTypeConverterEdits(originalType, newPackage),
+			this.createMoveTypeConverterEdits(originalType, newPackage),
+			this.createMoveStructConverterEdits(originalType, newPackage),
+			this.createMoveCustomConverterEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createMoveObjectTypeConverterEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
+					return objectTypeConverter.createMoveTypeEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createMoveTypeConverterEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
+					return typeConverter.createMoveTypeEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createMoveStructConverterEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
+					return structConverter.createMoveTypeEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createMoveCustomConverterEdits(final IType originalType, final IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
+					return customConverter.createMoveTypeEdits(originalType, newPackage);
+				}
+			}
+		);
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createObjectTypeConverterRenamePackageEdits(originalPackage, newName),
+			this.createTypeConverterRenamePackageEdits(originalPackage, newName),
+			this.createStructConverterRenamePackageEdits(originalPackage, newName),
+			this.createCustomConverterRenamePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createObjectTypeConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkObjectTypeConverter, Iterable<ReplaceEdit>>(getObjectTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkObjectTypeConverter objectTypeConverter) {
+					return objectTypeConverter.createRenamePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createTypeConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkTypeConverter, Iterable<ReplaceEdit>>(getTypeConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkTypeConverter typeConverter) {
+					return typeConverter.createRenamePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createStructConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkStructConverter, Iterable<ReplaceEdit>>(getStructConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkStructConverter structConverter) {
+					return structConverter.createRenamePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
+	protected Iterable<ReplaceEdit> createCustomConverterRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			new TransformationIterable<OrmEclipseLinkCustomConverter, Iterable<ReplaceEdit>>(getCustomConverters()) {
+				@Override
+				protected Iterable<ReplaceEdit> transform(OrmEclipseLinkCustomConverter customConverter) {
+					return customConverter.createRenamePackageEdits(originalPackage, newName);
+				}
+			}
+		);
+	}
+
 	//************ validation ***************
 	
 	@Override
@@ -447,6 +633,4 @@ public class OrmEclipseLinkConverterHolder extends AbstractOrmXmlContextNode imp
 	public TextRange getValidationTextRange() {
 		return this.resourceConvertersHolder.getValidationTextRange();
 	}
-
-
 }

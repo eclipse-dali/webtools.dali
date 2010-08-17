@@ -197,7 +197,7 @@ public class JpaMoveMappingFileParticipant
 		IProject project = destination.getProject();
 		IPath fullPath = destination.getFullPath();
 		IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
-		return persistenceUnit.createReplaceMappingFileEdits(mappingFile, runtimePath);
+		return persistenceUnit.createMoveMappingFileEdits(mappingFile, runtimePath);
 	}
 	
 	protected void addPersistenceXmlRenameMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

@@ -1089,12 +1089,12 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 
 	// ********** refactoring **********
 
-	public ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
-		return getMapKeyClass().createReplaceEdit(originalType, newName);
+	public ReplaceEdit createRenameMapKeyClassEdit(IType originalType, String newName) {
+		return getMapKeyClass().createRenameEdit(originalType, newName);
 	}
 
-	public ReplaceEdit createReplaceMapKeyClassPackageEdit(String newName) {
-		return getMapKeyClass().createReplacePackageEdit(newName);		
+	public ReplaceEdit createRenameMapKeyClassPackageEdit(String newName) {
+		return getMapKeyClass().createRenamePackageEdit(newName);		
 	}
 
 }

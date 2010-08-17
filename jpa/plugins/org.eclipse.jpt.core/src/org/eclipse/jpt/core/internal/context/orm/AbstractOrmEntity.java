@@ -1569,38 +1569,38 @@ public abstract class AbstractOrmEntity
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					super.createReplaceTypeEdits(originalType, newName),
-					this.createIdClassReplaceTypeEdits(originalType, newName));
+					super.createRenameTypeEdits(originalType, newName),
+					this.createIdClassRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createIdClassReplaceTypeEdits(IType originalType, String newName) {
-		return this.idClassReference.createReplaceTypeEdits(originalType, newName);
+	protected Iterable<ReplaceEdit> createIdClassRenameTypeEdits(IType originalType, String newName) {
+		return this.idClassReference.createRenameTypeEdits(originalType, newName);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-					super.createMoveTypeReplaceEdits(originalType, newPackage),
-					this.createIdClassMoveTypeReplaceEdits(originalType, newPackage));
+					super.createMoveTypeEdits(originalType, newPackage),
+					this.createIdClassMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createIdClassMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
-		return this.idClassReference.createMoveTypeReplaceEdits(originalType, newPackage);
+	protected Iterable<ReplaceEdit> createIdClassMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.idClassReference.createMoveTypeEdits(originalType, newPackage);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplacePackageEdits(originalPackage, newName),
-			this.createIdClassReplacePackageEdits(originalPackage, newName));
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.createIdClassRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createIdClassReplacePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.idClassReference.createReplacePackageEdits(originalPackage, newName);
+	protected Iterable<ReplaceEdit> createIdClassRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.idClassReference.createRenamePackageEdits(originalPackage, newName);
 	}
 
 

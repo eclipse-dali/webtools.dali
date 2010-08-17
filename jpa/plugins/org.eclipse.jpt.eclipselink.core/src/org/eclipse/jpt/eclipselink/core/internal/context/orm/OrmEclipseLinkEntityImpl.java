@@ -218,60 +218,75 @@ public class OrmEclipseLinkEntityImpl
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					super.createReplaceTypeEdits(originalType, newName),
-					this.createCustomizerReplaceTypeEdits(originalType, newName),
-					this.createClassExtractorReplaceTypeEdits(originalType, newName));
+					super.createRenameTypeEdits(originalType, newName),
+					this.createCustomizerRenameTypeEdits(originalType, newName),
+					this.createConverterHolderRenameTypeEdits(originalType, newName),
+					this.createClassExtractorRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createCustomizerReplaceTypeEdits(IType originalType, String newName) {
-		return this.customizer.createReplaceTypeEdits(originalType, newName);
+	protected Iterable<ReplaceEdit> createCustomizerRenameTypeEdits(IType originalType, String newName) {
+		return this.customizer.createRenameTypeEdits(originalType, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createClassExtractorReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createConverterHolderRenameTypeEdits(IType originalType, String newName) {
+		return this.converterHolder.createRenameTypeEdits(originalType, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorRenameTypeEdits(IType originalType, String newName) {
 		if (this.classExtractorIsFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplaceEdit(originalType, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createRenameEdit(originalType, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-					super.createMoveTypeReplaceEdits(originalType, newPackage),
-					this.createCustomizerMoveTypeReplaceEdits(originalType, newPackage),
-					this.createClassExtractorMoveTypeReplaceEdits(originalType, newPackage));
+					super.createMoveTypeEdits(originalType, newPackage),
+					this.createCustomizerMoveTypeEdits(originalType, newPackage),
+					this.createConverterHolderMoveTypeEdits(originalType, newPackage),
+					this.createClassExtractorMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createCustomizerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
-		return this.customizer.createMoveTypeReplaceEdits(originalType, newPackage);
+	protected Iterable<ReplaceEdit> createCustomizerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.customizer.createMoveTypeEdits(originalType, newPackage);
 	}
 
-	protected Iterable<ReplaceEdit> createClassExtractorMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createConverterHolderMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.converterHolder.createMoveTypeEdits(originalType, newPackage);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.classExtractorIsFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplacePackageEdit(newPackage.getElementName()));
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createRenamePackageEdit(newPackage.getElementName()));
 		}
 		return EmptyIterable.instance();
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplacePackageEdits(originalPackage, newName),
-			this.createCustomizerReplacePackageEdits(originalPackage, newName),
-			this.createClassExtractorReplacePackageEdits(originalPackage, newName));
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.createCustomizerRenamePackageEdits(originalPackage, newName),
+			this.createConverterHolderRenamePackageEdits(originalPackage, newName),
+			this.createClassExtractorRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createCustomizerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.customizer.createReplacePackageEdits(originalPackage, newName);
+	protected Iterable<ReplaceEdit> createCustomizerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.customizer.createRenamePackageEdits(originalPackage, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createClassExtractorReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createConverterHolderRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.converterHolder.createRenamePackageEdits(originalPackage, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createClassExtractorRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.classExtractorIsIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createReplacePackageEdit(newName));
+			return new SingleElementIterable<ReplaceEdit>(this.getResourceClassExtractor().createRenamePackageEdit(newName));
 		}
 		return EmptyIterable.instance();
 	}

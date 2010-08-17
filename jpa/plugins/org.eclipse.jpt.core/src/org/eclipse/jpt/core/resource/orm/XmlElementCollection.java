@@ -1636,25 +1636,25 @@ public class XmlElementCollection extends AbstractXmlAttributeMapping implements
 
 	// ********** refactoring **********
 
-	public ReplaceEdit createReplaceTargetClassEdit(IType originalType, String newName) {
+	public ReplaceEdit createRenameTargetClassEdit(IType originalType, String newName) {
 		String originalName = originalType.getElementName();
 		int nameIndex = this.targetClass.lastIndexOf(originalName);
 		int offset = getAttributeNode(JPA2_0.TARGET_CLASS).getValueRegionStartOffset() + 1;
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplaceMapKeyClassEdit(IType originalType, String newName) {
-		return getMapKeyClass().createReplaceEdit(originalType, newName);
+	public ReplaceEdit createRenameMapKeyClassEdit(IType originalType, String newName) {
+		return getMapKeyClass().createRenameEdit(originalType, newName);
 	}
 
-	public ReplaceEdit createReplaceTargetClassPackageEdit(String newName) {
+	public ReplaceEdit createRenameTargetClassPackageEdit(String newName) {
 		int packageLength = this.targetClass.lastIndexOf('.');
 		int offset = getAttributeNode(JPA2_0.TARGET_CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
 		return new ReplaceEdit(offset, packageLength, newName);
 	}
 
-	public ReplaceEdit createReplaceMapKeyClassPackageEdit(String newName) {
-		return getMapKeyClass().createReplacePackageEdit(newName);		
+	public ReplaceEdit createRenameMapKeyClassPackageEdit(String newName) {
+		return getMapKeyClass().createRenamePackageEdit(newName);		
 	}
 
 }

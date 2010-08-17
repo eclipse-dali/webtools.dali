@@ -77,12 +77,12 @@ public class ImpliedMappingFileRef
 		throw new IllegalStateException("Cannot delete this reference since it is implied"); //$NON-NLS-1$
 	}
 
-	public Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName) {
+	public Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName) {
 		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
 	}
 
 	@Override
-	protected ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
+	protected ReplaceEdit createRenameEdit(IFile originalFile, String newName) {
 		StringBuffer buffer = new StringBuffer();
 		String location = getFileName().substring(0, getFileName().lastIndexOf('/'));
 		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
@@ -93,7 +93,7 @@ public class ImpliedMappingFileRef
 	}
 
 	@Override
-	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
+	protected ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination) {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
 		buffer.append(runtineDestination.append(originalFile.getName())).toString();
@@ -102,7 +102,7 @@ public class ImpliedMappingFileRef
 		return new ReplaceEdit(offset, 0, buffer.toString());
 	}
 
-	public Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination) {
+	public Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination) {
 		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
 	}
 }

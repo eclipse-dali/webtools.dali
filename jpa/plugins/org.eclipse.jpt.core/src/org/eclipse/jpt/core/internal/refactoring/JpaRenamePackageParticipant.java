@@ -36,12 +36,12 @@ public class JpaRenamePackageParticipant
 
 	@Override
 	protected Iterable<ReplaceEdit> createPersistenceXmlReplaceEdits(PersistenceUnit persistenceUnit) {	
-		return persistenceUnit.createReplacePackageEdits(this.getOriginalPackage(), this.getNewName());
+		return persistenceUnit.createRenamePackageEdits(this.getOriginalPackage(), this.getNewName());
 	}
 
 	@Override
 	protected Iterable<ReplaceEdit> createMappingFileReplaceEdits(MappingFileRef mappingFileRef) {
-		return mappingFileRef.createReplacePackageEdits(this.getOriginalPackage(), this.getNewName());
+		return mappingFileRef.createRenamePackageEdits(this.getOriginalPackage(), this.getNewName());
 	}
 
 	protected String getNewName() {

@@ -369,33 +369,33 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return this.resourceTypeMapping.createDeleteEdit();
 	}
 
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceTypeEdit(originalType, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
-		return this.resourceTypeMapping.createReplaceTypeEdit(originalType, newName);
+	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
+		return this.resourceTypeMapping.createRenameTypeEdit(originalType, newName);
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (getPersistentType().isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplacePackageEdit(String newName) {
-		return this.resourceTypeMapping.createReplacePackageEdit(newName);
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return this.resourceTypeMapping.createRenamePackageEdit(newName);
 	}
 
 

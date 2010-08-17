@@ -229,7 +229,7 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 		return new Translator(JPA.CLASS, OrmPackage.eINSTANCE.getXmlClassReference_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
 
-	public ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+	public ReplaceEdit createRenameEdit(IType originalType, String newName) {
 		String originalName = originalType.getTypeQualifiedName();
 		int nameIndex = this.className.lastIndexOf(originalName);
 
@@ -237,7 +237,7 @@ public class XmlClassReference extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplacePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int packageLength = this.className.lastIndexOf('.');
 		int offset = getAttributeNode(JPA.CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
 		return new ReplaceEdit(offset, packageLength, newName);

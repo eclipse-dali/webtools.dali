@@ -304,7 +304,7 @@ public class XmlProperty extends AbstractJpaEObject implements JpaEObject
 			);
 	}
 
-	public ReplaceEdit createReplaceTypeEdit(IType originalType, String newName) {
+	public ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
 		String originalName = originalType.getElementName();
 		int nameIndex = originalType.getFullyQualifiedName('.').lastIndexOf(originalName);
 
@@ -312,7 +312,7 @@ public class XmlProperty extends AbstractJpaEObject implements JpaEObject
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplacePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int packageLength = this.value.lastIndexOf('.');
 
 		int offset = getAttributeNode(JPA.PROPERTY__VALUE).getValueRegionStartOffset() + 1;

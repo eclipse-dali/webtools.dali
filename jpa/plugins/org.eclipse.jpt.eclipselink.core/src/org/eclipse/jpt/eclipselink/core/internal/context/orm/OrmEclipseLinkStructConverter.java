@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,16 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -21,6 +27,8 @@ public class OrmEclipseLinkStructConverter extends OrmEclipseLinkConverter<XmlSt
 	implements EclipseLinkStructConverter
 {	
 	private String converterClass;
+
+	private JavaResourcePersistentType converterPersistentType;
 	
 	
 	public OrmEclipseLinkStructConverter(XmlContextNode parent) {
@@ -50,24 +58,34 @@ public class OrmEclipseLinkStructConverter extends OrmEclipseLinkConverter<XmlSt
 		this.converterClass = newConverterClass;
 		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
 	}
-	
-	
+
+	protected JavaResourcePersistentType getConverterJavaResourcePersistentType() {
+		return this.getEntityMappings().resolveJavaResourcePersistentType(this.converterClass);
+	}
+
+
 	// **************** resource interaction ***********************************
 	
 	@Override
 	protected void initialize(XmlStructConverter xmlResource) {
 		super.initialize(xmlResource);
 		this.converterClass = getResourceConverterClass();
+		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
 	}
 	
 	@Override
 	public void update() {
 		super.update();
 		setConverterClass_(getResourceConverterClass());
+		updateConverterPersistentType();
 	}
 	
 	protected String getResourceConverterClass() {
 		return this.resourceConverter.getConverter();
+	}
+	
+	protected void updateConverterPersistentType() {
+		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
 	}
 	
 	
@@ -97,4 +115,53 @@ public class OrmEclipseLinkStructConverter extends OrmEclipseLinkConverter<XmlSt
 //	public TextRange getConverterClassTextRange() {
 //		return getResourceConverter().getClassNameTextRange();
 //	}
+
+
+	//************************* refactoring ************************
+
+	@Override
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
+		return getXmlResource().createRenameEdit(originalType, newName);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return getXmlResource().createRenamePackageEdit(newName);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.isIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected boolean isFor(String typeName) {
+		if (this.converterPersistentType != null && this.converterPersistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;	
+	}
+
+	protected boolean isIn(IPackageFragment packageFragment) {
+		if (this.converterPersistentType != null) {
+			return this.converterPersistentType.isIn(packageFragment);
+		}
+		return false;
+	}
 }

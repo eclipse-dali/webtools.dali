@@ -194,7 +194,7 @@ public class JpaMoveFolderParticipant
 		IProject project = destination.getProject();
 		IPath fullPath = destination.getFullPath().append(folder.getName());
 		IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
-		return persistenceUnit.createMoveFolderReplaceEdits(folder, runtimePath);
+		return persistenceUnit.createMoveFolderEdits(folder, runtimePath);
 	}
 	
 	protected void addPersistenceXmlRenameChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

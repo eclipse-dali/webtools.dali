@@ -233,14 +233,14 @@ public class XmlJavaClassRef extends AbstractJpaEObject
 
 	// *********** refactoring ***********
 
-	public ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+	public ReplaceEdit createRenameEdit(IType originalType, String newName) {
 		String originalName = originalType.getTypeQualifiedName();
 		int nameIndex = this.javaClass.lastIndexOf(originalName);
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
 	}
 
-	public ReplaceEdit createReplacePackageEdit(String newName) {
+	public ReplaceEdit createRenamePackageEdit(String newName) {
 		int packageLength = this.javaClass.lastIndexOf('.');
 		int offset = getTextNode().getStartOffset();
 		return new ReplaceEdit(offset, packageLength, newName);

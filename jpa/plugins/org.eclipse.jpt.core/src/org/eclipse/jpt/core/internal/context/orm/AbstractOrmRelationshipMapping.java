@@ -286,39 +286,39 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplaceTypeEdits(originalType, newName),
-			this.createTargetEntityReplaceTypeEdits(originalType, newName));
+			super.createRenameTypeEdits(originalType, newName),
+			this.createTargetEntityRenameTypeEdits(originalType, newName));
 	}
 	
-	protected Iterable<ReplaceEdit> createTargetEntityReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createTargetEntityRenameTypeEdits(IType originalType, String newName) {
 		if (this.specifiedTargetEntity != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityEdit(originalType, newName));
+				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenameTypeEdit(originalType, newName));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceTargetEntityEdit(IType originalType, String newName) {
-		return this.resourceAttributeMapping.createReplaceTargetEntityEdit(originalType, newName);
+	protected ReplaceEdit createTargetEntityRenameTypeEdit(IType originalType, String newName) {
+		return this.resourceAttributeMapping.createRenameTargetEntityEdit(originalType, newName);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createMoveTypeReplaceEdits(originalType, newPackage),
-			this.createTargetEntityMoveTypeReplaceEdits(originalType, newPackage));
+			super.createMoveTypeEdits(originalType, newPackage),
+			this.createTargetEntityMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createTargetEntityMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createTargetEntityMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.specifiedTargetEntity != null) {
 			String originalName = originalType.getFullyQualifiedName('.');
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityPackageEdit(newPackage.getElementName()));
+				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
@@ -326,23 +326,23 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createReplacePackageEdits(originalPackage, newName),
-			this.createTargetEntityReplacePackageEdits(originalPackage, newName));
+			super.createRenamePackageEdits(originalPackage, newName),
+			this.createTargetEntityRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createTargetEntityReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createTargetEntityRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.specifiedTargetEntity != null) {
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isIn(originalPackage)) {
-				return new SingleElementIterable<ReplaceEdit>(this.createReplaceTargetEntityPackageEdit(newName));
+				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newName));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceTargetEntityPackageEdit(String newName) {
-		return this.resourceAttributeMapping.createReplaceTargetEntityPackageEdit(newName);
+	protected ReplaceEdit createTargetEntityRenamePackageEdit(String newName) {
+		return this.resourceAttributeMapping.createRenameTargetEntityPackageEdit(newName);
 	}
 
 

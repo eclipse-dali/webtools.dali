@@ -950,54 +950,54 @@ public class GenericOrmPersistentType
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			this.mapping.createReplaceTypeEdits(originalType, newName),
-			this.createSpecifiedAttributesReplaceTypeEdits(originalType, newName));
+			this.mapping.createRenameTypeEdits(originalType, newName),
+			this.createSpecifiedAttributesRenameTypeEdits(originalType, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesReplaceTypeEdits(final IType originalType, final String newName) {
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenameTypeEdits(final IType originalType, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createReplaceTypeEdits(originalType, newName);
+					return persistentAttribute.createRenameTypeEdits(originalType, newName);
 				}
 			}
 		);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			this.mapping.createMoveTypeReplaceEdits(originalType, newPackage),
-			this.createSpecifiedAttributesMoveTypeReplaceEdits(originalType, newPackage));
+			this.mapping.createMoveTypeEdits(originalType, newPackage),
+			this.createSpecifiedAttributesMoveTypeEdits(originalType, newPackage));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeReplaceEdits(final IType originalType, final IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createMoveTypeReplaceEdits(originalType, newPackage);
+					return persistentAttribute.createMoveTypeEdits(originalType, newPackage);
 				}
 			}
 		);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			this.mapping.createReplacePackageEdits(originalPackage, newName),
-			this.createSpecifiedAttributesReplacePackageEdits(originalPackage, newName));
+			this.mapping.createRenamePackageEdits(originalPackage, newName),
+			this.createSpecifiedAttributesRenamePackageEdits(originalPackage, newName));
 	}
 
-	protected Iterable<ReplaceEdit> createSpecifiedAttributesReplacePackageEdits(final IPackageFragment originalPackage, final String newName) {
+	protected Iterable<ReplaceEdit> createSpecifiedAttributesRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
 			new TransformationIterable<OrmPersistentAttribute, Iterable<ReplaceEdit>>(getSpecifiedAttributes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentAttribute persistentAttribute) {
-					return persistentAttribute.createReplacePackageEdits(originalPackage, newName);
+					return persistentAttribute.createRenamePackageEdits(originalPackage, newName);
 				}
 			}
 		);

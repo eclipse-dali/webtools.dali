@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,9 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -220,5 +222,25 @@ public class XmlConverter extends XmlNamedConverter
 	protected static Translator buildClassTranslator() {
 		return new Translator(EclipseLink.CONVERTER__CLASS, EclipseLinkOrmPackage.eINSTANCE.getXmlConverter_ClassName(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createRenameEdit(IType originalType, String newName) {
+		String originalName = originalType.getTypeQualifiedName();
+		int nameIndex = this.className.lastIndexOf(originalName);
+		int offset = getAttributeNode(EclipseLink.CONVERTER__CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
+	public ReplaceEdit createRenamePackageEdit(String newName) {
+		int packageLength = this.className.lastIndexOf('.');
+		if (packageLength == -1) {
+			packageLength = 0;
+			newName = newName + '.';
+		}
+		int offset = getAttributeNode(EclipseLink.CONVERTER__CLASS).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
+
 } // XmlConverter

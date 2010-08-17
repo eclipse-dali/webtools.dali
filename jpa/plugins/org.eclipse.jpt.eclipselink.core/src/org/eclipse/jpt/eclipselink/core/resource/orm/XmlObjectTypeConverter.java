@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -434,5 +436,42 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 	protected static Translator buildObjectTypeTranslator() {
 		return new Translator(EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE, EclipseLinkOrmPackage.eINSTANCE.getXmlObjectTypeConverter_ObjectType(), Translator.DOM_ATTRIBUTE);
 	}
-	
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createRenameDataTypeEdit(IType originalType, String newName) {
+		String originalName = originalType.getTypeQualifiedName();
+		int nameIndex = this.dataType.lastIndexOf(originalName);
+		int offset = getAttributeNode(EclipseLink.OBJECT_TYPE_CONVERTER__DATA_TYPE).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
+	public ReplaceEdit createRenameDataTypePackageEdit(String newName) {
+		int packageLength = this.dataType.lastIndexOf('.');
+		if (packageLength == -1) {
+			packageLength = 0;
+			newName = newName + '.';
+		}
+		int offset = getAttributeNode(EclipseLink.OBJECT_TYPE_CONVERTER__DATA_TYPE).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
+
+	public ReplaceEdit createRenameObjectTypeEdit(IType originalType, String newName) {
+		String originalName = originalType.getTypeQualifiedName();
+		int nameIndex = this.objectType.lastIndexOf(originalName);
+		int offset = getAttributeNode(EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset + nameIndex, originalName.length(), newName);
+	}
+
+	public ReplaceEdit createRenameObjectTypePackageEdit(String newName) {
+		int packageLength = this.objectType.lastIndexOf('.');
+		if (packageLength == -1) {
+			packageLength = 0;
+			newName = newName + '.';
+		}
+		int offset = getAttributeNode(EclipseLink.OBJECT_TYPE_CONVERTER__OBJECT_TYPE).getValueRegionStartOffset() + 1; // +1 = opening double quote
+		return new ReplaceEdit(offset, packageLength, newName);
+	}
+
 } // XmlObjectTypeConverter

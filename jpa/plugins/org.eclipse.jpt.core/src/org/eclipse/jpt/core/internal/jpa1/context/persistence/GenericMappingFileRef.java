@@ -103,39 +103,39 @@ public class GenericMappingFileRef
 	}
 
 	@Override
-	protected ReplaceEdit createReplaceEdit(IFile originalFile, String newName) {
-		return this.xmlMappingFileRef.createReplaceEdit(originalFile, newName);
+	protected ReplaceEdit createRenameEdit(IFile originalFile, String newName) {
+		return this.xmlMappingFileRef.createRenameEdit(originalFile, newName);
 	}
 
-	public Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName) {
+	public Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName) {
 		if (this.isIn(originalFolder)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceFolderEdit(originalFolder, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameFolderEdit(originalFolder, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceFolderEdit(IFolder originalFolder, String newName) {
-		return this.xmlMappingFileRef.createReplaceFolderEdit(originalFolder, newName);
+	protected ReplaceEdit createRenameFolderEdit(IFolder originalFolder, String newName) {
+		return this.xmlMappingFileRef.createRenameFolderEdit(originalFolder, newName);
 	}
 
 	@Override
-	protected ReplaceEdit createReplaceEdit(IFile originalFile, IPath runtineDestination) {
-		return this.xmlMappingFileRef.createReplaceEdit(originalFile, runtineDestination);
+	protected ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination) {
+		return this.xmlMappingFileRef.createMoveEdit(originalFile, runtineDestination);
 	}
 
-	public Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination) {
+	public Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination) {
 		if (this.isIn(originalFolder)) {
 			IProject project = originalFolder.getProject();
 			IPath fullPath = originalFolder.getFullPath();
 			IPath originalLocation = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
 			
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalLocation, runtimeDestination));
+			return new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalLocation, runtimeDestination));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceEdit(IPath originalLocation, IPath runtineDestination) {
-		return this.xmlMappingFileRef.createReplaceEdit(originalLocation, runtineDestination);
+	protected ReplaceEdit createMoveEdit(IPath originalLocation, IPath runtineDestination) {
+		return this.xmlMappingFileRef.createMoveEdit(originalLocation, runtineDestination);
 	}
 
 }

@@ -155,8 +155,8 @@ public interface XmlTypeMapping extends XmlAccessHolder
 
 	// ********** refactoring **********
 
-	ReplaceEdit createReplaceTypeEdit(IType originalType, String newName);
+	ReplaceEdit createRenameTypeEdit(IType originalType, String newName);
 
-	ReplaceEdit createReplacePackageEdit(String newName);
+	ReplaceEdit createRenamePackageEdit(String newName);
 
 } // XmlTypeMapping

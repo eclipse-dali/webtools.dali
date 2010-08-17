@@ -64,18 +64,18 @@ public class JpaMoveTypeParticipant
 	protected Iterable<ReplaceEdit> createPersistenceXmlReplaceEdits(PersistenceUnit persistenceUnit, IJavaElement javaElement, Object destination) {
 		IType type = (IType) javaElement;
 		if (((IJavaElement) destination).getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			return persistenceUnit.createMoveTypeReplaceEdits(type, (IPackageFragment) destination);
+			return persistenceUnit.createMoveTypeEdits(type, (IPackageFragment) destination);
 		}
-		return persistenceUnit.createReplaceTypeEdits(type, getNewNameForNestedType(type, (IType) destination));
+		return persistenceUnit.createRenameTypeEdits(type, getNewNameForNestedType(type, (IType) destination));
 	}
 
 	@Override
 	protected Iterable<ReplaceEdit> createMappingFileReplaceEdits(MappingFileRef mappingFileRef, IJavaElement javaElement, Object destination) {
 		IType type = (IType) javaElement;
 		if (((IJavaElement) destination).getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			return mappingFileRef.createMoveTypeReplaceEdits(type, (IPackageFragment) destination);
+			return mappingFileRef.createMoveTypeEdits(type, (IPackageFragment) destination);
 		}
-		return mappingFileRef.createReplaceTypeEdits(type, getNewNameForNestedType(type, (IType) destination));
+		return mappingFileRef.createRenameTypeEdits(type, getNewNameForNestedType(type, (IType) destination));
 	}
 
 	protected String getNewNameForNestedType(IType nestedType, IType destination) {

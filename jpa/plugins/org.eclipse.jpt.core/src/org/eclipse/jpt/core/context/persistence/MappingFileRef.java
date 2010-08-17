@@ -142,25 +142,25 @@ public interface MappingFileRef
 	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
 	 * The originalType has not yet been renamed, the newName is the new short name.
 	 */
-	Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName);
+	Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName);
 
 	/**
 	 * Create ReplaceEdits for moving any references to the originalType to the newPackage.
 	 * The originalType has not yet been moved.
 	 */
-	Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage);
+	Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage);
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalPackage to the newName.
 	 * The originalPackage has not yet been renamed.
 	 */
-	Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName);
+	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
 	 * The originalFolder has not yet been renamed.
 	 */
-	Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName);
+	Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName);
 
 	/**
 	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
@@ -169,7 +169,7 @@ public interface MappingFileRef
 	 * Though this will contain 1 or 0 ReplaceEdits, using an Iterable
 	 * for ease of use with other createReplaceMappingFileEdits API.
 	 */
-	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, String newName);
+	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
 
 	/**
 	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile create a text
@@ -177,12 +177,12 @@ public interface MappingFileRef
 	 * Otherwise return an EmptyIterable.
 	 * The originalFile has not been moved yet.
 	 */
-	Iterable<ReplaceEdit> createReplaceMappingFileEdits(IFile originalFile, IPath runtineDestination);
+	Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination);
 
 	/**
 	 * Create ReplaceEdits for moving any references to the originalFolder to the runtimeDestination.
 	 * The runtimeDestination already includes the original folder name.
 	 */
-	Iterable<ReplaceEdit> createMoveFolderReplaceEdits(IFolder originalFolder, IPath runtimeDestination);
+	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination);
 
 }

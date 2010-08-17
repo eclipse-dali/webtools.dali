@@ -82,7 +82,7 @@ public class JpaRenameTypeParticipant
 	}
 
 	private Iterable<ReplaceEdit> createPersistenceXmlReplaceOriginalTypeEdits(PersistenceUnit persistenceUnit) {
-		return persistenceUnit.createReplaceTypeEdits(this.getOriginalType(), this.getNewName());
+		return persistenceUnit.createRenameTypeEdits(this.getOriginalType(), this.getNewName());
 	}
 
 	private Iterable<ReplaceEdit> createPersistenceXmlReplaceNestedTypeEdits(final PersistenceUnit persistenceUnit) {
@@ -91,7 +91,7 @@ public class JpaRenameTypeParticipant
 				@Override
 				protected Iterable<ReplaceEdit> transform(IType nestedType) {
 					String newName = getNewNameForNestedType(nestedType);
-					return persistenceUnit.createReplaceTypeEdits(nestedType, newName);
+					return persistenceUnit.createRenameTypeEdits(nestedType, newName);
 				}
 			}
 		);
@@ -106,7 +106,7 @@ public class JpaRenameTypeParticipant
 	}
 
 	private Iterable<ReplaceEdit> createMappingFileReplaceOriginalTypeEdits(MappingFileRef mappingFileRef) {
-		return mappingFileRef.createReplaceTypeEdits(this.getOriginalType(), this.getNewName());
+		return mappingFileRef.createRenameTypeEdits(this.getOriginalType(), this.getNewName());
 	}
 
 	private Iterable<ReplaceEdit> createMappingFileReplaceNestedTypeEdits(final MappingFileRef mappingFileRef) {
@@ -115,7 +115,7 @@ public class JpaRenameTypeParticipant
 				@Override
 				protected Iterable<ReplaceEdit> transform(IType nestedType) {
 					String newName = getNewNameForNestedType(nestedType);
-					return mappingFileRef.createReplaceTypeEdits(nestedType, newName);
+					return mappingFileRef.createRenameTypeEdits(nestedType, newName);
 				}
 			}
 		);

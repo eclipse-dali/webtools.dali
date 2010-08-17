@@ -404,40 +404,40 @@ public class EclipseLinkOptions extends EclipseLinkPersistenceUnitProperties
 	// ********** refactoring ************
 
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
-		return this.createEventListenerReplaceTypeEdits(originalType, newName);
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return this.createEventListenerRenameTypeEdits(originalType, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createEventListenerReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createEventListenerRenameTypeEdits(IType originalType, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
 		if (property != null) {
-			return property.createReplaceTypeEdits(originalType, newName);
+			return property.createRenameTypeEdits(originalType, newName);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
-		return this.createEventListenerMoveTypeReplaceEdits(originalType, newPackage);
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.createEventListenerMoveTypeEdits(originalType, newPackage);
 	}
 
-	protected Iterable<ReplaceEdit> createEventListenerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createEventListenerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
 		if (property != null) {
-			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+			return property.createMoveTypeEdits(originalType, newPackage);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.createEventListenerReplacePackageEdits(originalPackage, newName);
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.createEventListenerRenamePackageEdits(originalPackage, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createEventListenerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createEventListenerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_SESSION_EVENT_LISTENER);
 		if (property != null) {
-			return property.createReplacePackageEdits(originalPackage, newName);
+			return property.createRenamePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

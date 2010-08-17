@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
@@ -21,9 +24,13 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConversionValue;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -33,6 +40,10 @@ public class OrmEclipseLinkObjectTypeConverter extends OrmEclipseLinkConverter<X
 	private String dataType;
 	
 	private String objectType;
+
+	private JavaResourcePersistentType dataTypePersistentType;
+
+	private JavaResourcePersistentType objectTypePersistentType;
 	
 	private final List<OrmEclipseLinkConversionValue> conversionValues;
 	
@@ -176,6 +187,8 @@ public class OrmEclipseLinkObjectTypeConverter extends OrmEclipseLinkConverter<X
 		super.initialize(xmlResource);
 		this.dataType = this.getResourceDataType();
 		this.objectType = this.getResourceObjectType();
+		this.dataTypePersistentType = this.getDataTypeJavaResourcePersistentType();
+		this.objectTypePersistentType = this.getObjectTypeJavaResourcePersistentType();
 		this.defaultObjectValue = this.getResourceDefaultObjectValue();
 		this.initializeConversionValues();
 	}
@@ -191,10 +204,20 @@ public class OrmEclipseLinkObjectTypeConverter extends OrmEclipseLinkConverter<X
 		super.update();
 		setDataType_(getResourceDataType());
 		setObjectType_(getResourceObjectType());
+		updateDataTypePersistentType();
+		updateObjectTypePersistentType();
 		setDefaultObjectValue_(getResourceDefaultObjectValue());
 		updateConversionValues();
 	}
 	
+	protected void updateDataTypePersistentType() {
+		this.dataTypePersistentType = this.getDataTypeJavaResourcePersistentType();
+	}
+
+	protected void updateObjectTypePersistentType() {
+		this.objectTypePersistentType = this.getObjectTypeJavaResourcePersistentType();
+	}
+
 	protected void updateConversionValues( ) {
 		// make a copy of the XML conversion values (to prevent ConcurrentModificationException)
 		Iterator<XmlConversionValue> xmlConversionValues = new CloneIterator<XmlConversionValue>(this.getXmlResource().getConversionValues());
@@ -232,6 +255,130 @@ public class OrmEclipseLinkObjectTypeConverter extends OrmEclipseLinkConverter<X
 		return this.resourceConverter.getDefaultObjectValue();
 	}
 	
+
+	protected JavaResourcePersistentType getDataTypeJavaResourcePersistentType() {
+		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getDataType());
+	}
+
+	protected JavaResourcePersistentType getObjectTypeJavaResourcePersistentType() {
+		return this.getEntityMappings().resolveJavaResourcePersistentType(this.getObjectType());
+	}
+
+	protected boolean dataTypeIsFor(String typeName) {
+		return this.isFor(this.dataTypePersistentType, typeName);
+	}
+
+	protected boolean objectTypeIsFor(String typeName) {
+		return this.isFor(this.objectTypePersistentType, typeName);
+	}
+
+	protected boolean isFor(JavaResourcePersistentType persistentType, String typeName) {
+		if (persistentType != null && persistentType.getQualifiedName().equals(typeName)) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean dataTypeIsIn(IPackageFragment packageFragment) {
+		return this.isIn(this.dataTypePersistentType, packageFragment);
+	}
+
+	protected boolean objectTypeIsIn(IPackageFragment packageFragment) {
+		return this.isIn(this.objectTypePersistentType, packageFragment);
+	}
+
+	protected boolean isIn(JavaResourcePersistentType persistentType, IPackageFragment packageFragment) {
+		if (persistentType != null) {
+			return persistentType.isIn(packageFragment);
+		}
+		return false;
+	}
+
+
+	//************************* refactoring ************************
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createRenameDataTypeEdits(originalType, newName),
+			this.createRenameObjectTypeEdits(originalType, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createRenameDataTypeEdits(IType originalType, String newName) {
+		if (this.dataTypeIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypeEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenameDataTypeEdit(IType originalType, String newName) {
+		return getXmlResource().createRenameDataTypeEdit(originalType, newName);
+	}
+
+	protected Iterable<ReplaceEdit> createRenameObjectTypeEdits(IType originalType, String newName) {
+		if (this.objectTypeIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypeEdit(originalType, newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenameObjectTypeEdit(IType originalType, String newName) {
+		return getXmlResource().createRenameObjectTypeEdit(originalType, newName);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createMoveDataTypeEdits(originalType, newPackage),
+			this.createMoveObjectTypeEdits(originalType, newPackage));
+	}
+
+	protected Iterable<ReplaceEdit> createMoveDataTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.dataTypeIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenameDataTypePackageEdit(String newName) {
+		return getXmlResource().createRenameDataTypePackageEdit(newName);
+	}
+
+	protected Iterable<ReplaceEdit> createMoveObjectTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.objectTypeIsFor(originalType.getFullyQualifiedName('.'))) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypePackageEdit(newPackage.getElementName()));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected ReplaceEdit createRenameObjectTypePackageEdit(String newName) {
+		return getXmlResource().createRenameObjectTypePackageEdit(newName);
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return new CompositeIterable<ReplaceEdit>(
+			this.createRenameDataTypePackageEdits(originalPackage, newName),
+			this.createRenameObjectTypePackageEdits(originalPackage, newName));
+	}
+
+	protected Iterable<ReplaceEdit> createRenameDataTypePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.dataTypeIsIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameDataTypePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected Iterable<ReplaceEdit> createRenameObjectTypePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.objectTypeIsIn(originalPackage)) {
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameObjectTypePackageEdit(newName));
+		}
+		return EmptyIterable.instance();
+	}
+
 	
 	// **************** validation *********************************************
 	

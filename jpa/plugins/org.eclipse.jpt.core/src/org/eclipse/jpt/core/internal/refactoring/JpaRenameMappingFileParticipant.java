@@ -145,7 +145,7 @@ public class JpaRenameMappingFileParticipant
 	}
 
 	private Iterable<ReplaceEdit> createMappingFileRefReplaceEdits(final PersistenceUnit persistenceUnit) {
-		return persistenceUnit.createReplaceMappingFileEdits(this.originalMappingFile, getArguments().getNewName());
+		return persistenceUnit.createRenameMappingFileEdits(this.originalMappingFile, getArguments().getNewName());
 	}
 	
 	protected void addPersistenceXmlRenameMappingFileChange(IFile persistenceXmlFile, CompositeChange compositeChange) {

@@ -216,15 +216,15 @@ public class GenericOrmIdClassReference
 
 	//************************* refactoring ************************
 
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
-		return getIdXmlClassRef().createReplaceEdit(originalType, newName);
+	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
+		return getIdXmlClassRef().createRenameEdit(originalType, newName);
 	}
 
 	protected boolean isFor(String typeName) {
@@ -234,22 +234,22 @@ public class GenericOrmIdClassReference
 		return false;
 	}
 
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newPackage.getElementName()));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
 		}
 		return EmptyIterable.instance();
 	}
 
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplacePackageEdit(newName));
+			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
 		}
 		return EmptyIterable.instance();
 	}
 
-	protected ReplaceEdit createReplacePackageEdit(String newName) {
-		return getIdXmlClassRef().createReplacePackageEdit(newName);
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return getIdXmlClassRef().createRenamePackageEdit(newName);
 	}
 
 	protected boolean isIn(IPackageFragment originalPackage) {

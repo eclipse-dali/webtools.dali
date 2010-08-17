@@ -514,28 +514,28 @@ public class EclipseLinkPersistenceUnit
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesReplaceTypeEdits(originalType, newName),
-			this.customization.createReplaceTypeEdits(originalType, newName),
-			this.logging.createReplaceTypeEdits(originalType, newName));
+			super.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName),
+			this.customization.createRenameTypeEdits(originalType, newName),
+			this.logging.createRenameTypeEdits(originalType, newName));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesMoveTypeReplaceEdits(originalType, newPackage),
-			this.customization.createMoveTypeReplaceEdits(originalType, newPackage),
-			this.logging.createMoveTypeReplaceEdits(originalType, newPackage));
+			super.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage),
+			this.customization.createMoveTypeEdits(originalType, newPackage),
+			this.logging.createMoveTypeEdits(originalType, newPackage));
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesReplacePackageEdits(originalPackage, newName),
-			this.customization.createReplacePackageEdits(originalPackage, newName),
-			this.logging.createReplacePackageEdits(originalPackage, newName));
+			super.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName),
+			this.customization.createRenamePackageEdits(originalPackage, newName),
+			this.logging.createRenamePackageEdits(originalPackage, newName));
 	}
 }

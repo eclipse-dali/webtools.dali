@@ -366,43 +366,43 @@ public class EclipseLinkLogging extends EclipseLinkPersistenceUnitProperties
 	// ********** refactoring ************
 
 	@Override
-	public Iterable<ReplaceEdit> createReplaceTypeEdits(IType originalType, String newName) {
-		return this.createLoggerReplaceTypeEdits(originalType, newName);
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return this.createLoggerRenameTypeEdits(originalType, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createLoggerReplaceTypeEdits(IType originalType, String newName) {
+	protected Iterable<ReplaceEdit> createLoggerRenameTypeEdits(IType originalType, String newName) {
 		//TODO seems like we should have the Property stored in a SessionCustomizer object instead of having to go 
 		//find all of the Properties from the persistence unit.
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
 		if (property != null) {
-			return property.createReplaceTypeEdits(originalType, newName);
+			return property.createRenameTypeEdits(originalType, newName);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
-	public Iterable<ReplaceEdit> createMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
-		return this.createLoggerMoveTypeReplaceEdits(originalType, newPackage);
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.createLoggerMoveTypeEdits(originalType, newPackage);
 	}
 
-	protected Iterable<ReplaceEdit> createLoggerMoveTypeReplaceEdits(IType originalType, IPackageFragment newPackage) {
+	protected Iterable<ReplaceEdit> createLoggerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
 		if (property != null) {
-			return property.createMoveTypeReplaceEdits(originalType, newPackage);
+			return property.createMoveTypeEdits(originalType, newPackage);
 		}
 		return EmptyIterable.instance();
 	}
 
 	@Override
-	public Iterable<ReplaceEdit> createReplacePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.createLoggerReplacePackageEdits(originalPackage, newName);
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.createLoggerRenamePackageEdits(originalPackage, newName);
 	}
 
-	protected Iterable<ReplaceEdit> createLoggerReplacePackageEdits(IPackageFragment originalPackage, String newName) {
+	protected Iterable<ReplaceEdit> createLoggerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		//find all of the Properties from the persistence unit.
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_LOGGER);
 		if (property != null) {
-			return property.createReplacePackageEdits(originalPackage, newName);
+			return property.createRenamePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}

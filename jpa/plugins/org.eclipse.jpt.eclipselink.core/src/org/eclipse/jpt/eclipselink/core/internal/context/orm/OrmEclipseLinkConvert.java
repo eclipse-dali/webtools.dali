@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -23,6 +25,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -263,6 +267,32 @@ public class OrmEclipseLinkConvert extends AbstractOrmXmlContextNode implements 
 		contextConverter.initialize(resourceConverter);
 		return contextConverter;
 	}
+
+
+	//************************* refactoring ************************
+
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenameTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenamePackageEdits(originalPackage, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (getConverter() != null) {
+			return getConverter().createMoveTypeEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
+		
+	//************************* validation ************************
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
