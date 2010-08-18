@@ -217,25 +217,22 @@
 			commandId="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion"
 			class="org.eclipse.jpt.ui.internal.commands.UpgradeXmlFileVersionHandler">
 			<enabledWhen>
-				<and>
-					<count value="1"/>
-					<iterate>
-						<or>
-							<adapt
-								type="org.eclipse.jpt.core.context.XmlFile">
-								<test
-									property="org.eclipse.jpt.core.isLatestSupportedVersion"
-									value="false"/>
-							</adapt>
-							<adapt
-								type="org.eclipse.jpt.core.resource.xml.JpaXmlResource">
-								<test
-									property="org.eclipse.jpt.core.isLatestSupportedVersion"
-									value="false"/>
-							</adapt>
-						</or>
-					</iterate>
-				</and>
+				<iterate>
+					<or>
+						<adapt
+							type="org.eclipse.jpt.core.context.XmlFile">
+							<test
+								property="org.eclipse.jpt.core.isLatestSupportedVersion"
+								value="false"/>
+						</adapt>
+						<adapt
+							type="org.eclipse.jpt.core.resource.xml.JpaXmlResource">
+							<test
+								property="org.eclipse.jpt.core.isLatestSupportedVersion"
+								value="false"/>
+						</adapt>
+					</or>
+				</iterate>
 			</enabledWhen>
 		</handler>
 		
