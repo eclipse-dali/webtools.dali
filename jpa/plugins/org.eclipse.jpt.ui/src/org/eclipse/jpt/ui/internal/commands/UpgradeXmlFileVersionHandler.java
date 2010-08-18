@@ -27,11 +27,16 @@ public class UpgradeXmlFileVersionHandler extends AbstractHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		IStructuredSelection selection 
 			= (IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(event);
-		
-		// only applies for a singly selected objects that adapt to JpaXmlResource or XmlFile
-		Object selectedObject = selection.getFirstElement();
+
+		for (Object selectedObject : selection.toArray()) {
+			upgradeXmlFileVersion(selectedObject);
+		}
+		return null;
+	}
+
+	protected void upgradeXmlFileVersion(Object selectedObject) {
 		JpaXmlResource xmlResource = 
-				(JpaXmlResource) Platform.getAdapterManager().getAdapter(selectedObject, JpaXmlResource.class);
+			(JpaXmlResource) Platform.getAdapterManager().getAdapter(selectedObject, JpaXmlResource.class);
 		if (xmlResource == null) {
 			XmlFile xmlFile = 
 				(XmlFile) Platform.getAdapterManager().getAdapter(selectedObject, XmlFile.class);
@@ -40,21 +45,19 @@ public class UpgradeXmlFileVersionHandler extends AbstractHandler
 			}
 		}
 		if (xmlResource == null) {
-			return null;
+			return;
 		}
-		
+
 		final JpaRootEObject root = xmlResource.getRootObject();
 		IContentType contentType = xmlResource.getContentType();
 		JpaProject jpaProject = JptCorePlugin.getJpaProject(xmlResource.getProject());
 		final String newVersion = jpaProject.getJpaPlatform().getMostRecentSupportedResourceType(contentType).getVersion();
-		
+
 		xmlResource.modify(
 			new Runnable() {
 				public void run() {
 					root.setVersion(newVersion);
 				}
 			});
-		
-		return null;
 	}
 }
