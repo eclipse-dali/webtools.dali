@@ -1043,7 +1043,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		return new CompositeIterable<ReplaceEdit>(
 			super.createRenameTypeEdits(originalType, newName),
 			this.createMapKeyClassRenameTypeEdits(originalType, newName),
-			this.createTargetClassRenameTypeEdits(originalType, newName));
+			this.createTargetClassRenameTypeEdits(originalType, newName),
+			this.createConverterRenameTypeEdits(originalType, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createMapKeyClassRenameTypeEdits(IType originalType, String newName) {
@@ -1070,13 +1071,21 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		return EmptyIterable.instance();
 	}
 
+	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenameTypeEdits(originalType, newName);
+		}
+		return EmptyIterable.instance();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
 			super.createMoveTypeEdits(originalType, newPackage),
 			this.createMapKeyClassMoveTypeEdits(originalType, newPackage),
-			this.createTargetClassMoveTypeEdits(originalType, newPackage));
+			this.createTargetClassMoveTypeEdits(originalType, newPackage),
+			this.createConverterMoveTypeEdits(originalType, newPackage));
 	}
 
 	protected Iterable<ReplaceEdit> createMapKeyClassMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
@@ -1098,6 +1107,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		}
 		return EmptyIterable.instance();
 	}
+	
+	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (getConverter() != null) {
+			return getConverter().createMoveTypeEdits(originalType, newPackage);
+		}
+		return EmptyIterable.instance();
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -1105,7 +1121,8 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		return new CompositeIterable<ReplaceEdit>(
 			super.createRenamePackageEdits(originalPackage, newName),
 			this.createMapKeyClassRenamePackageEdits(originalPackage, newName),
-			this.createTargetClassRenamePackageEdits(originalPackage, newName));
+			this.createTargetClassRenamePackageEdits(originalPackage, newName),
+			this.createConverterRenamePackageEdits(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createMapKeyClassRenamePackageEdits(IPackageFragment originalPackage, String newName) {
@@ -1126,6 +1143,13 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 			if (this.resolvedTargetType != null && this.resolvedTargetType.isIn(originalPackage)) {
 				return new SingleElementIterable<ReplaceEdit>(this.resourceAttributeMapping.createRenameTargetClassPackageEdit(newName));
 			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (getConverter() != null) {
+			return getConverter().createRenamePackageEdits(originalPackage, newName);
 		}
 		return EmptyIterable.instance();
 	}
