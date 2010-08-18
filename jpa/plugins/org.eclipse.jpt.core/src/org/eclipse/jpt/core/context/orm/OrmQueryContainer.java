@@ -10,12 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * The orm.xml representation of a {@link PrimaryKeyJoinColumnJoiningStrategy}
+ * The orm.xml representation of a {@link QueryContainer}
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
