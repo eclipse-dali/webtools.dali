@@ -103,6 +103,21 @@ public class JavaEntityTests extends ContextModelTestCase
 			}
 		});
 	}
+
+	private ICompilationUnit createTestEntityInvalidNamedQueries() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERIES);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+				sb.append(CR);
+				sb.append("@NamedQueries(value={@NamedQuery(query=\"asdf\", name=\"foo\"), @NamedQuer})");
+			}
+		});
+	}
 	
 	private void createTestAbstractEntity() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
@@ -2835,7 +2850,15 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		entity.getQueryContainer().addNamedNativeQuery(0).setName("foo");
 	}
-	
+
+	public void testInvalidNamedQueries() throws Exception {
+		createTestEntityInvalidNamedQueries();
+		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
+
+		JavaEntity entity = getJavaEntity();
+		assertEquals(2, entity.getQueryContainer().namedQueriesSize());
+	}
+
 	public void testRemoveNamedQuery() throws Exception {
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -3304,7 +3327,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		JavaAttributeOverride javaAttributeOverride = virtualAttributeOverrides.next();
 		assertEquals("id", javaAttributeOverride.getName());
 		
-		javaAttributeOverride = (JavaAttributeOverride) javaAttributeOverride.setVirtual(false);
+		javaAttributeOverride = javaAttributeOverride.setVirtual(false);
 		javaAttributeOverride.getColumn().setSpecifiedName("ID");
 		assertEquals("ID", javaEntity.getPrimaryKeyColumnName());
 	}
