@@ -136,7 +136,7 @@ public final class AnnotationContainerTools {
 	private static <T extends NestableAnnotation> ArrayList<Annotation> getNestedAstAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
 		ArrayList<Annotation> result = new ArrayList<Annotation>();
 		Annotation astContainerAnnotation = annotationContainer.getAstAnnotation(astRoot);
-		if (astContainerAnnotation.isMarkerAnnotation()) {
+		if (astContainerAnnotation == null || astContainerAnnotation.isMarkerAnnotation()) {
 			// no nested annotations
 		}
 		else if (astContainerAnnotation.isSingleMemberAnnotation()) {
