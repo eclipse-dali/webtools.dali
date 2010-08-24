@@ -2,7 +2,7 @@
 <feature
       id="org.eclipse.jpt.eclipselink.feature"
       label="%featureName"
-      version="2.3.1.qualifier"
+      version="2.3.2.qualifier"
       provider-name="%providerName"
       plugin="org.eclipse.jpt.eclipselink.branding">
 
@@ -19,7 +19,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.jpt.feature" version="2.3.0"/>
+      <import feature="org.eclipse.jpt.feature" version="2.3.2"/>
    </requires>
 
    <plugin
