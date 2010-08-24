@@ -14,11 +14,14 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericPersistentAttributeValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribute
@@ -42,8 +45,8 @@ public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribut
 	}
 	
 	@Override
-	protected void validateAttribute(List<IMessage> messages) {
-		super.validateAttribute(messages);
+	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
+		super.validateAttribute(messages, reporter);
 		if (this.javaPersistentAttribute != null) {
 			JavaPersistentType javaPersistentType = getOwningPersistentType().getJavaPersistentType();
 			if (javaPersistentType != null && javaPersistentType.getAttributeNamed(this.javaPersistentAttribute.getName()) == null) {
@@ -58,5 +61,10 @@ public class GenericOrmPersistentAttribute extends AbstractOrmPersistentAttribut
 					);				
 			}
 		}
+	}
+
+	@Override
+	protected JptValidator buildAttibuteValidator() {
+		return new GenericPersistentAttributeValidator(this, getJavaPersistentAttribute(), buildTextRangeResolver());
 	}
 }

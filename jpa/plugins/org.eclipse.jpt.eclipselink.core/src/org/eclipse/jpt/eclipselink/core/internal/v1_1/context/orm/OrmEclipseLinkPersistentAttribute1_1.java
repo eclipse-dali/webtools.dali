@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,9 @@ package org.eclipse.jpt.eclipselink.core.internal.v1_1.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlAttributeMapping;
 
 
@@ -57,5 +59,12 @@ public class OrmEclipseLinkPersistentAttribute1_1
 	protected AccessType getResourceAccess() {
 		return AccessType.fromOrmResourceModel(getResourceAttributeMapping().getAccess());
 	}
-	
+
+
+	// ********** validation **********
+
+	@Override
+	protected JptValidator buildAttibuteValidator() {
+		return new EclipseLinkPersistentAttributeValidator(this, getJavaPersistentAttribute(), buildTextRangeResolver());
+	}	
 }

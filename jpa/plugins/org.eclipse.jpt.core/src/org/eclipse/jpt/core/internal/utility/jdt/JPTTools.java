@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,8 +26,6 @@ public class JPTTools {
 	 * Return whether the specified type can be "persisted", i.e. marked as
 	 * Entity, MappedSuperclass, Embeddable
 	 */
-	// TODO check for no-arg constructor (or should that just be validation?)
-	// TODO move other checks to validation (e.g. 'final', 'static')?
 	public static boolean typeIsPersistable(TypeAdapter typeAdapter) {
 		if (typeAdapter.isInterface()) {
 			return false;
@@ -49,12 +47,6 @@ public class JPTTools {
 		}
 		if (typeAdapter.isArray()) {
 			return false;  // should never get here(?)
-		}
-		int modifiers = typeAdapter.getModifiers();
-		if (typeAdapter.isMember()) {
-			if ( ! Modifier.isStatic(modifiers)) {
-				return false;
-			}
 		}
 		return true;
 	}
@@ -170,12 +162,6 @@ public class JPTTools {
 	private static boolean methodHasInvalidModifiers(SimpleMethodAdapter methodAdapter) {
 		int modifiers = methodAdapter.getModifiers();
 		if (Modifier.isStatic(modifiers)) {
-			return true;
-		}
-		if (Modifier.isFinal(modifiers)) {
-			return true;
-		}
-		if ( ! (Modifier.isPublic(modifiers) || Modifier.isProtected(modifiers))) {
 			return true;
 		}
 		return false;

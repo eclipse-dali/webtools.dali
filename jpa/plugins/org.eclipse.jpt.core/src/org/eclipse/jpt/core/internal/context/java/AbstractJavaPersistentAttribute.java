@@ -14,7 +14,6 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Embeddable;
@@ -23,8 +22,8 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.internal.context.PersistentAttributeTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -523,7 +522,7 @@ public abstract class AbstractJavaPersistentAttribute
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 
-		this.validateModifiers(messages, astRoot);
+		this.validateAttribute(messages, reporter, astRoot);
 
 		if (this.specifiedMapping != null) {
 			this.specifiedMapping.validate(messages, reporter, astRoot);
@@ -533,30 +532,14 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 	}
 
-
-	protected void validateModifiers(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			return;
-		}
-
-		if (this.isField()) {
-			if (this.isFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD, astRoot));
-			}
-			if (this.isPublic()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD, astRoot));
-			}
-		}
+	protected void validateAttribute(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.buildAttibuteValidator(astRoot).validate(messages, reporter);
 	}
 
-	protected IMessage buildAttributeMessage(String msgID, CompilationUnit astRoot) {
-		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				msgID,
-				new String[] {getName()},
-				this,
-				this.getValidationTextRange(astRoot)
-			);
+	protected abstract JptValidator buildAttibuteValidator(CompilationUnit astRoot);
+
+	protected PersistentAttributeTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaPersistentAttributeTextRangeResolver(this, astRoot);
 	}
 
 

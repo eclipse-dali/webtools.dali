@@ -65,6 +65,30 @@ public interface JavaResourcePersistentType
 		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
 
 	/**
+	 * Return whether the type is a member type.
+	 */
+	boolean isMemberType();
+		String MEMBER_TYPE_PROPERTY = "memberType"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type is abstract.
+	 */
+	boolean isStatic();
+		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type has a no-arg constructor (private, protected, or public)
+	 */
+	boolean hasNoArgConstructor();
+		String NO_ARG_CONSTRUCTOR_PROPERTY = "noArgConstructor"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type has a private no-arg constructor
+	 */
+	boolean hasPrivateNoArgConstructor();
+		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
+
+	/**
 	 * Return the type's access type ("field" or "property").
 	 */
 	AccessType getAccess();

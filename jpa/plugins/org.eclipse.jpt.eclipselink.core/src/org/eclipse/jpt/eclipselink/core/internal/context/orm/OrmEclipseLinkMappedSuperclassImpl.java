@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmMappedSuperclass;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -212,7 +212,7 @@ public class OrmEclipseLinkMappedSuperclassImpl
 	}
 	
 	@Override
-	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+	protected JptValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver());
 	}
 }

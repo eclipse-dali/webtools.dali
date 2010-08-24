@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaEntityTextRangeResolver
-	implements PrimaryKeyTextRangeResolver
+	implements EntityTextRangeResolver
 {
 	private JavaEntity entity;
 	

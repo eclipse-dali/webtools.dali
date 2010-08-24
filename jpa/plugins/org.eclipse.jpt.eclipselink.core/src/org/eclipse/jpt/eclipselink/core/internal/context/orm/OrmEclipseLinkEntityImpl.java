@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
@@ -32,6 +32,7 @@ import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -304,7 +305,12 @@ public class OrmEclipseLinkEntityImpl
 	}
 	
 	@Override
-	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+	protected JptValidator buildPrimaryKeyValidator() {
 		return new EclipseLinkEntityPrimaryKeyValidator(this, buildTextRangeResolver());
+	}
+
+	@Override
+	protected JptValidator buildEntityValidator() {
+		return new EclipseLinkEntityValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
 	}
 }

@@ -127,6 +127,12 @@ public interface JavaResourcePersistentMember
 	 */
 	boolean isPersistable();
 		String PERSISTABLE_PROPERTY = "persistable"; //$NON-NLS-1$
+
+	/**
+	 * Return whether the type is final.
+	 */
+	boolean isFinal();
+		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
 		
 	/**
 	 * Return whether the underlying JDT member is currently annotated with any recognized

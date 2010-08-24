@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
+import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Modifier;
@@ -68,6 +69,14 @@ final class SourcePersistentType
 	private String declaringTypeName;
 
 	private boolean abstract_;  // 'abstract' is a reserved word
+
+	private boolean static_;  // 'static' is a reserved word
+
+	private boolean memberType;
+
+	private boolean hasPrivateNoArgConstructor;
+
+	private boolean hasNoArgConstructor;
 
 	private final Vector<JavaResourcePersistentType> types;
 
@@ -140,12 +149,17 @@ final class SourcePersistentType
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.name = this.buildName(astRoot);
-		this.qualifiedName = this.buildQualifiedName(astRoot);
-		this.packageName = this.buildPackageName(astRoot);
-		this.superclassQualifiedName = this.buildSuperclassQualifiedName(astRoot);
-		this.declaringTypeName = this.buildDeclaringTypeName(astRoot);
-		this.abstract_ = this.buildAbstract(astRoot);
+		ITypeBinding binding = this.member.getBinding(astRoot);
+		this.name = this.buildName(binding);
+		this.qualifiedName = this.buildQualifiedName(binding);
+		this.packageName = this.buildPackageName(binding);
+		this.superclassQualifiedName = this.buildSuperclassQualifiedName(binding);
+		this.declaringTypeName = this.buildDeclaringTypeName(binding);
+		this.abstract_ = this.buildAbstract(binding);
+		this.static_ = this.buildStatic(binding);
+		this.memberType = this.buildMemberType(binding);
+		this.hasNoArgConstructor = this.buildHasNoArgConstructor(binding);
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(binding);
 		this.initializeTypes(astRoot);
 		this.initializeFields(astRoot);
 		this.initializeMethods(astRoot);
@@ -181,12 +195,17 @@ final class SourcePersistentType
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
-		this.syncName(this.buildName(astRoot));
-		this.syncQualifiedName(this.buildQualifiedName(astRoot));
-		this.syncPackageName(this.buildPackageName(astRoot));
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
-		this.syncDeclaringTypeName(this.buildDeclaringTypeName(astRoot));
-		this.syncAbstract(this.buildAbstract(astRoot));
+		ITypeBinding binding = this.member.getBinding(astRoot);
+		this.syncName(this.buildName(binding));
+		this.syncQualifiedName(this.buildQualifiedName(binding));
+		this.syncPackageName(this.buildPackageName(binding));
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
+		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));		
+		this.syncAbstract(this.buildAbstract(binding));
+		this.syncStatic(this.buildStatic(binding));
+		this.syncMemberType(this.buildMemberType(binding));
+		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor(binding));
+		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor(binding));
 		this.syncTypes(astRoot);
 		this.syncFields(astRoot);
 		this.syncMethods(astRoot);
@@ -278,7 +297,7 @@ final class SourcePersistentType
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
 
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(astRoot));
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(this.member.getBinding(astRoot)));
 
 		for (JavaResourcePersistentAttribute field : this.getFields()) {
 			field.resolveTypes(astRoot);
@@ -317,8 +336,7 @@ final class SourcePersistentType
 		this.firePropertyChanged(NAME_PROPERTY, old, astName);
 	}
 
-	private String buildName(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private String buildName(ITypeBinding binding) {
 		return (binding == null) ? null : binding.getName();
 	}
 
@@ -333,8 +351,7 @@ final class SourcePersistentType
 		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, astQualifiedName);
 	}
 
-	private String buildQualifiedName(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private String buildQualifiedName(ITypeBinding binding) {
 		return (binding == null) ? null : binding.getQualifiedName();
 	}
 
@@ -349,8 +366,7 @@ final class SourcePersistentType
 		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, astPackageName);
 	}
 
-	private String buildPackageName(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private String buildPackageName(ITypeBinding binding) {
 		return (binding == null) ? null : binding.getPackage().getName();
 	}
 
@@ -365,8 +381,7 @@ final class SourcePersistentType
 		this.firePropertyChanged(SUPERCLASS_QUALIFIED_NAME_PROPERTY, old, astSuperclassQualifiedName);
 	}
 
-	private String buildSuperclassQualifiedName(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private String buildSuperclassQualifiedName(ITypeBinding binding) {
 		if (binding == null) {
 			return null;
 		}
@@ -390,15 +405,13 @@ final class SourcePersistentType
 		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, astDeclaringTypeName);
 	}
 
-	private String buildDeclaringTypeName(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private String buildDeclaringTypeName(ITypeBinding binding) {
 		if (binding == null) {
 			return null;
 		}
 		ITypeBinding declaringClass = binding.getDeclaringClass();
 		return (declaringClass == null) ? null : declaringClass.getTypeDeclaration().getQualifiedName();
 	}
-
 
 	// ***** abstract
 	public boolean isAbstract() {
@@ -411,9 +424,88 @@ final class SourcePersistentType
 		this.firePropertyChanged(ABSTRACT_PROPERTY, old, astAbstract);
 	}
 
-	private boolean buildAbstract(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+	private boolean buildAbstract(ITypeBinding binding) {
 		return (binding == null) ? false : Modifier.isAbstract(binding.getModifiers());
+	}
+
+	// ***** static
+	public boolean isStatic() {
+		return this.static_;
+	}
+
+	private void syncStatic(boolean static_) {
+		boolean old = this.static_;
+		this.static_ = static_;
+		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
+	}
+
+	private boolean buildStatic(ITypeBinding binding) {
+		return (binding == null) ? false : Modifier.isStatic(binding.getModifiers());
+	}
+
+	// ***** member type
+	public boolean isMemberType() {
+		return this.memberType;
+	}
+
+	private void syncMemberType(boolean memberType) {
+		boolean old = this.memberType;
+		this.memberType = memberType;
+		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
+	}
+
+	private boolean buildMemberType(ITypeBinding binding) {
+		return (binding == null) ? false : binding.isMember();
+	}
+
+	// ***** no-arg constructor
+	public boolean hasNoArgConstructor() {
+		return this.hasNoArgConstructor;
+	}
+
+	private void syncHasNoArgConstructor(boolean hasNoArgConstructor) {
+		boolean old = this.hasNoArgConstructor;
+		this.hasNoArgConstructor = hasNoArgConstructor;
+		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
+	}
+
+	private boolean buildHasNoArgConstructor(ITypeBinding binding) {
+		return (binding == null) ? false : typeHasNoArgConstructor(binding);
+	}
+
+	protected static boolean typeHasNoArgConstructor(ITypeBinding binding) {
+		return findNoArgConstructor(binding) != null;
+	}
+	
+	protected static IMethodBinding findNoArgConstructor(ITypeBinding binding) {
+		for (IMethodBinding method : binding.getDeclaredMethods()) {
+			if (method.isConstructor()) {
+				if (method.getParameterTypes().length == 0) {
+					return method;
+				}
+			}
+		}
+		return null;
+	}
+
+	// ***** private no-arg constructor
+	public boolean hasPrivateNoArgConstructor() {
+		return this.hasPrivateNoArgConstructor;
+	}
+
+	private void syncHasPrivateNoArgConstructor(boolean hasPrivateNoArgConstructor) {
+		boolean old = this.hasPrivateNoArgConstructor;
+		this.hasPrivateNoArgConstructor = hasPrivateNoArgConstructor;
+		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
+	}
+
+	private boolean buildHasPrivateNoArgConstructor(ITypeBinding binding) {
+		return (binding == null) ? false : typeHasPrivateNoArgConstructor(binding);
+	}
+
+	protected static boolean typeHasPrivateNoArgConstructor(ITypeBinding binding) {
+		IMethodBinding method = findNoArgConstructor(binding);
+		return method != null && Modifier.isPrivate(method.getModifiers());
 	}
 
 	// ***** access

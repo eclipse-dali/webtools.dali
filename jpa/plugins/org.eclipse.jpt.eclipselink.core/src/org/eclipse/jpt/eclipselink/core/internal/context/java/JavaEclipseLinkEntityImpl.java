@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityValidator;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -133,7 +134,12 @@ public class JavaEclipseLinkEntityImpl
 	}
 	
 	@Override
-	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
 		return new EclipseLinkEntityPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	@Override
+	protected JptValidator buildEntityValidator(CompilationUnit astRoot) {
+		return new EclipseLinkEntityValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
 	}
 }

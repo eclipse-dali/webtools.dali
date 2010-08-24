@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -783,7 +783,7 @@ public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
 		ICompilationUnit cu = createTestEntityWithMemberTypes();
 		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
 		
-		assertEquals("only persistable types should be returned by #persistableTypes()", 1, CollectionTools.size(persistentType.persistableTypes()));
+		assertEquals("only persistable types should be returned by #persistableTypes()", 2, CollectionTools.size(persistentType.persistableTypes()));
 		assertEquals("enums and interfaces should be ignored", 2, CollectionTools.size(persistentType.types()));
 	}
 	

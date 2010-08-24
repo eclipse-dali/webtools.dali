@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericPersistentAttributeValidator;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -64,5 +67,13 @@ public class GenericJavaPersistentAttribute2_0
 	public void update() {
 		super.update();
 		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	protected JptValidator buildAttibuteValidator(CompilationUnit astRoot) {
+		return new GenericPersistentAttributeValidator(this, this, buildTextRangeResolver(astRoot));
 	}
 }

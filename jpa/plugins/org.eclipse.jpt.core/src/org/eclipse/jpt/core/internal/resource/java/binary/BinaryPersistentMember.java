@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.eclipse.jdt.core.Flags;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMember;
 import org.eclipse.jdt.core.JavaModelException;
@@ -45,6 +46,8 @@ abstract class BinaryPersistentMember
 
 	boolean persistable;
 
+	private boolean final_;  // 'final' is a reserved word
+
 
 	// ********** construction/initialization **********
 
@@ -53,6 +56,7 @@ abstract class BinaryPersistentMember
 		this.adapter = adapter;
 		this.initializeAnnotations();
 		this.persistable = this.buildPersistable();
+		this.final_ = this.buildFinal();
 	}
 
 	private void initializeAnnotations() {
@@ -75,6 +79,7 @@ abstract class BinaryPersistentMember
 		super.update();
 		this.updateAnnotations();
 		this.setPersistable(this.buildPersistable());
+		this.setFinal(this.buildFinal());
 	}
 
 	// TODO
@@ -153,6 +158,27 @@ abstract class BinaryPersistentMember
 		return this.adapter.isPersistable();
 	}
 
+	// ***** final
+	public boolean isFinal() {
+		return this.final_;
+	}
+
+	private void setFinal(boolean final_) {
+		boolean old = this.final_;
+		this.final_ = final_;
+		this.firePropertyChanged(FINAL_PROPERTY, old, final_);
+	}
+
+	private boolean buildFinal() {
+		try {
+			return Flags.isFinal(this.getMember().getFlags());
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	
 	public boolean isAnnotated() {
 		return ! this.annotations.isEmpty();
 	}

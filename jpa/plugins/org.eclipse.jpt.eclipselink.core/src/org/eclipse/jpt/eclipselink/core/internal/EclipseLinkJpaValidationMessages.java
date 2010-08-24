@@ -13,13 +13,13 @@ package org.eclipse.jpt.eclipselink.core.internal;
 public interface EclipseLinkJpaValidationMessages {
 
 	public static final String BUNDLE_NAME = "eclipselink_jpa_validation";
-	
+
 	public static final String CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED = "CACHE_EXPIRY_AND_EXPIRY_TIME_OF_DAY_BOTH_SPECIFIED";
 
 	public static final String CONVERTER_CLASS_IMPLEMENTS_CONVERTER = "CONVERTER_CLASS_IMPLEMENTS_CONVERTER";
-	
+
 	public static final String CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER = "CUSTOMIZER_CLASS_IMPLEMENTS_DESCRIPTOR_CUSTOMIZER";
-		
+
 	public static final String MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE = "MULTIPLE_OBJECT_VALUES_FOR_DATA_VALUE";
 
 	public static final String PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING = "PERSISTENCE_UNIT_LEGACY_ENTITY_CACHING";
@@ -28,5 +28,7 @@ public interface EclipseLinkJpaValidationMessages {
 
 	public static final String BASIC_COLLECTION_MAPPING_DEPRECATED = "BASIC_COLLECTION_MAPPING_DEPRECATED";
 	public static final String BASIC_MAP_MAPPING_DEPRECATED = "BASIC_MAP_MAPPING_DEPRECATED";
+
+	public static final String ENTITY_MEMBER_CLASS_NOT_STATIC = "ENTITY_MEMBER_CLASS_NOT_STATIC";
 
 }

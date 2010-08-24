@@ -19,7 +19,9 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
+import org.eclipse.jdt.core.dom.Modifier;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
@@ -53,6 +55,8 @@ abstract class SourcePersistentMember<M extends Member>
 
 	boolean persistable;
 
+	boolean final_;  // 'final' is a reserved word
+
 
 	// ********** construction/initialization **********
 
@@ -64,6 +68,8 @@ abstract class SourcePersistentMember<M extends Member>
 	public void initialize(CompilationUnit astRoot) {
 		this.member.getBodyDeclaration(astRoot).accept(this.buildInitialAnnotationVisitor(astRoot));
 		this.persistable = this.buildPersistable(astRoot);
+		IBinding binding = this.member.getBinding(astRoot);
+		this.final_ = this.buildFinal(binding);
 	}
 
 	private ASTVisitor buildInitialAnnotationVisitor(CompilationUnit astRoot) {
@@ -96,6 +102,8 @@ abstract class SourcePersistentMember<M extends Member>
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncAnnotations(astRoot);
 		this.syncPersistable(this.buildPersistable(astRoot));
+		IBinding binding = this.member.getBinding(astRoot);
+		this.syncFinal(this.buildFinal(binding));
 	}
 
 
@@ -370,6 +378,21 @@ abstract class SourcePersistentMember<M extends Member>
 
 	private boolean buildPersistable(CompilationUnit astRoot) {
 		return this.member.isPersistable(astRoot);
+	}
+
+	// ***** final
+	public boolean isFinal() {
+		return this.final_;
+	}
+
+	private void syncFinal(boolean astFinal) {
+		boolean old = this.final_;
+		this.final_ = astFinal;
+		this.firePropertyChanged(FINAL_PROPERTY, old, astFinal);
+	}
+
+	private boolean buildFinal(IBinding binding) {
+		return (binding == null) ? false : Modifier.isFinal(binding.getModifiers());
 	}
 
 

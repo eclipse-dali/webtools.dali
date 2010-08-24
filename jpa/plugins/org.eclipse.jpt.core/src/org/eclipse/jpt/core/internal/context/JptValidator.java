@@ -14,7 +14,7 @@ import java.util.List;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public interface PrimaryKeyValidator
+public interface JptValidator
 {
 	void validate(List<IMessage> messages, IReporter reporter);
 }

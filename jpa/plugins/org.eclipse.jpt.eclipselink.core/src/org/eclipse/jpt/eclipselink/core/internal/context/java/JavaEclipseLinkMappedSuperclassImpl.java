@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaMappedSuperclass;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -119,7 +119,7 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	}
 	
 	@Override
-	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
 		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 }

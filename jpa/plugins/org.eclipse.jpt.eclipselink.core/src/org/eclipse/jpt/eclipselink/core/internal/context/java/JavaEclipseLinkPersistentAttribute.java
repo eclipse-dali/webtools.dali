@@ -9,11 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
 
 /**
  * EclipseLink Java persistent attribute
@@ -66,5 +69,13 @@ public class JavaEclipseLinkPersistentAttribute
 		return (interfaceName == null) ||
 				this.typeIsContainer(interfaceName) ||
 				interfaceName.equals("org.eclipse.persistence.indirection.ValueHolderInterface"); //$NON-NLS-1$
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	protected JptValidator buildAttibuteValidator(CompilationUnit astRoot) {
+		return new EclipseLinkPersistentAttributeValidator(this, this, buildTextRangeResolver(astRoot));
 	}
 }

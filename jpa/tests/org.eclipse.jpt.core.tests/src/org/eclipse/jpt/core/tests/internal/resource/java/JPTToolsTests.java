@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -277,18 +277,18 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
-	//int getFoo() {} - not persistable
+	//int getFoo() {} - persistable
 	public void testMethodIsPersistablePropertyGetter03() throws Exception {
 		ICompilationUnit cu = createTestTypeGetMethodWithModifier("");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
-	//private int getFoo() {} - not persistable
+	//private int getFoo() {} - persistable
 	public void testMethodIsPersistablePropertyGetter04() throws Exception {
 		ICompilationUnit cu = createTestTypeGetMethodWithModifier("private");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
 	//public static int getFoo() {} - not persistable
@@ -298,11 +298,11 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 
-	//public final int getFoo() {} - not persistable
+	//public final int getFoo() {} - persistable
 	public void testMethodIsPersistablePropertyGetter06() throws Exception {
 		ICompilationUnit cu = createTestTypeGetMethodWithModifier("public final");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 
 	//public void setFoo(int foo) {} - persistable
@@ -319,18 +319,18 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
-	//void setFoo(int foo) {} - not persistable
+	//void setFoo(int foo) {} - persistable
 	public void testMethodIsPersistablePropertyGetter09() throws Exception {
 		ICompilationUnit cu = createTestTypeSetMethodWithModifier("");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
-	//private void setFoo(int foo) {} - not persistable
+	//private void setFoo(int foo) {} - persistable
 	public void testMethodIsPersistablePropertyGetter10() throws Exception {
 		ICompilationUnit cu =  createTestTypeSetMethodWithModifier("private");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 	
 	//public static void setFoo(int foo) {} - not persistable
@@ -340,11 +340,11 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 
-	//public final void setFoo(int foo) {} - not persistable
+	//public final void setFoo(int foo) {} - persistable
 	public void testMethodIsPersistablePropertyGetter12() throws Exception {
 		ICompilationUnit cu = createTestTypeSetMethodWithModifier("public final");
 		MethodAttribute methodAttribute = fooMethod(cu);
-		assertFalse(methodAttribute.isPersistable(this.buildASTRoot(cu)));
+		assertTrue(methodAttribute.isPersistable(this.buildASTRoot(cu)));
 	}
 
 	//public boolean isFoo() {} - persistable
@@ -464,13 +464,13 @@ public class JPTToolsTests extends JavaResourceModelTestCase {
 		assertTrue(memberType.isPersistable(astRoot));
 	}
 	
-	//non-static member type is not persistable
+	//non-static member type is persistable, handled with validation
 	public void testTypeIsPersistable7() throws Exception {
 		ICompilationUnit cu = this.createTestTypeWithMemberTypes();
 		Type testType = this.testType(cu);
 		Type memberType = this.buildType(testType, "FooNotStatic", 1, cu);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
-		assertFalse(memberType.isPersistable(astRoot));
+		assertTrue(memberType.isPersistable(astRoot));
 	}
 	//TODO still need to test typeIsPersistable() returns false for local and anonymous classes
 

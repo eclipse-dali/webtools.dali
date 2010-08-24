@@ -48,9 +48,9 @@ import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
+import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -903,6 +903,27 @@ public abstract class AbstractJavaEntity
 	protected boolean isAbstract() {
 		return this.javaResourcePersistentType.isAbstract();
 	}
+
+	/**
+	 * Return whether the type is final.
+	 */
+	protected boolean isFinal() {
+		return this.javaResourcePersistentType.isFinal();
+	}
+
+	/**
+	 * Return whether the type is a top-level type.
+	 */
+	protected boolean isMember() {
+		return this.javaResourcePersistentType.isMemberType();
+	}
+
+	/**
+	 * Return whether the type is static.
+	 */
+	protected boolean isStatic() {
+		return this.javaResourcePersistentType.isStatic();
+	}
 	
 	public String getPrimaryKeyColumnName() {
 		return getPrimaryKeyColumnName(this);
@@ -1328,6 +1349,7 @@ public abstract class AbstractJavaEntity
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		validateType(messages, reporter, astRoot);
 		validatePrimaryKey(messages, reporter, astRoot);
 		validateTable(messages, reporter, astRoot);
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
@@ -1344,14 +1366,20 @@ public abstract class AbstractJavaEntity
 		buildPrimaryKeyValidator(astRoot).validate(messages, reporter);
 	}
 	
-	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
 		return new GenericEntityPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 	
-	protected PrimaryKeyTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+	protected EntityTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaEntityTextRangeResolver(this, astRoot);
 	}
 	
+	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.buildEntityValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected abstract JptValidator buildEntityValidator(CompilationUnit astRoot);
+
 	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (isAbstractTablePerClass()) {
 			if (this.table.isResourceSpecified()) {

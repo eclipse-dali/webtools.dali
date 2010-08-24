@@ -22,6 +22,8 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.PersistentAttributeTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
@@ -253,12 +255,11 @@ public abstract class AbstractOrmPersistentAttribute
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateAttribute(messages);
-		this.validateModifiers(messages);
+		this.validateAttribute(messages, reporter);
 		this.attributeMapping.validate(messages, reporter);
 	}
 	
-	protected void validateAttribute(List<IMessage> messages) {
+	protected void validateAttribute(List<IMessage> messages, IReporter reporter) {
 		if (this.javaPersistentAttribute == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -270,38 +271,16 @@ public abstract class AbstractOrmPersistentAttribute
 				)
 			);
 		}
+		else {
+			this.buildAttibuteValidator().validate(messages, reporter);
+		}
 	}
 	
-	protected void validateModifiers(List<IMessage> messages) {
-		if (this.getMappingKey() == MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
-			return;
-		}
-		if (this.javaPersistentAttribute == null) {
-			return;
-		}
-
-		if (this.javaPersistentAttribute.isField()) {
-			if (this.javaPersistentAttribute.isFinal()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD));
-			}
-			if (this.javaPersistentAttribute.isPublic()) {
-				messages.add(this.buildAttributeMessage(JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD));
-			}
-		} else {
-			//TODO validation : need to have a validation message for final methods as well.
-			//From the JPA spec : No methods or persistent instance variables of the entity class may be final.
-		}
+	protected PersistentAttributeTextRangeResolver buildTextRangeResolver() {
+		return new OrmPersistentAttributeTextRangeResolver(this);
 	}
 
-	protected IMessage buildAttributeMessage(String msgID) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			msgID,
-			new String[] {this.getName()},
-			this, 
-			getValidationTextRange()
-		);
-	}
+	protected abstract JptValidator buildAttibuteValidator();
 
 	public TextRange getValidationTextRange() {
 		if (isVirtual()) {

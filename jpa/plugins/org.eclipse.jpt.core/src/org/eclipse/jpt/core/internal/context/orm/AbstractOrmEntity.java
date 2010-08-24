@@ -60,9 +60,9 @@ import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -1061,6 +1061,30 @@ public abstract class AbstractOrmEntity
 		return javaResourcePersistentType == null ? false : javaResourcePersistentType.isAbstract();
 	}
 
+	/**
+	 * Return whether the type is abstract, false if no java type exists.
+	 */
+	protected boolean isFinal() {
+		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
+		return javaResourcePersistentType == null ? false : javaResourcePersistentType.isFinal();
+	}
+
+	/**
+	 * Return whether the type is a top-level type.
+	 */
+	protected boolean isMember() {
+		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
+		return javaResourcePersistentType == null ? false : javaResourcePersistentType.isMemberType();
+	}
+
+	/**
+	 * Return whether the type is static.
+	 */
+	protected boolean isStatic() {
+		JavaResourcePersistentType javaResourcePersistentType = getJavaResourcePersistentType();
+		return javaResourcePersistentType == null ? false : javaResourcePersistentType.isStatic();
+	}
+
 //	public String primaryKeyColumnName() {
 //		String pkColumnName = null;
 //		for (Iterator<IPersistentAttribute> stream = getPersistentType().allAttributes(); stream.hasNext();) {
@@ -1610,6 +1634,7 @@ public abstract class AbstractOrmEntity
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
+		validateType(messages, reporter);
 		validatePrimaryKey(messages, reporter);
 		validateTable(messages, reporter);	
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
@@ -1626,14 +1651,20 @@ public abstract class AbstractOrmEntity
 		buildPrimaryKeyValidator().validate(messages, reporter);
 	}
 	
-	protected PrimaryKeyValidator buildPrimaryKeyValidator() {
+	protected JptValidator buildPrimaryKeyValidator() {
 		return new GenericEntityPrimaryKeyValidator(this, buildTextRangeResolver());
 		// TODO - JPA 2.0 validation
 	}
 	
-	protected PrimaryKeyTextRangeResolver buildTextRangeResolver() {
+	protected EntityTextRangeResolver buildTextRangeResolver() {
 		return new OrmEntityTextRangeResolver(this);
 	}
+	
+	protected void validateType(List<IMessage> messages, IReporter reporter) {
+		this.buildEntityValidator().validate(messages, reporter);
+	}
+
+	protected abstract JptValidator buildEntityValidator();
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter) {
 		if (isAbstractTablePerClass()) {

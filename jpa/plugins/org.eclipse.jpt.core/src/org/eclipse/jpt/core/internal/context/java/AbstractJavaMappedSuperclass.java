@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaIdClassReference;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
-import org.eclipse.jpt.core.internal.context.PrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericMappedSuperclassPrimaryKeyValidator;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -118,7 +118,7 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		buildPrimaryKeyValidator(astRoot).validate(messages, reporter);
 	}
 	
-	protected PrimaryKeyValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
+	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
 		return new GenericMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 		// TODO - JPA 2.0 validation
 	}

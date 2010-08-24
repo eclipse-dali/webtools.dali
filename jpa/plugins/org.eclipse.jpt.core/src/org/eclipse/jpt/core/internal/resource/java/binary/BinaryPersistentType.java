@@ -55,6 +55,14 @@ final class BinaryPersistentType
 
 	private boolean abstract_;  // 'abstract' is a reserved word
 
+	private boolean static_;  // 'static' is a reserved word
+
+	private boolean memberType;
+
+	private boolean hasPrivateNoArgConstructor;
+
+	private boolean hasNoArgConstructor;
+
 	private final Vector<JavaResourcePersistentAttribute> fields;
 
 	private final Vector<JavaResourcePersistentAttribute> methods;
@@ -72,6 +80,10 @@ final class BinaryPersistentType
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName();
 		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.abstract_ = this.buildAbstract();
+		this.static_ = this.buildStatic();
+		this.memberType = this.buildMemberType();
+		this.hasNoArgConstructor = this.buildHasNoArgConstructor();
+		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor();
 		this.fields = this.buildFields();
 		this.methods = this.buildMethods();
 		// need to wait until everything is built to calculate 'access'
@@ -90,6 +102,10 @@ final class BinaryPersistentType
 		this.setSuperclassQualifiedName(this.buildSuperclassQualifiedName());
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
 		this.setAbstract(this.buildAbstract());
+		this.setStatic(this.buildStatic());
+		this.setMemberType(this.buildMemberType());
+		this.setHasNoArgConstructor(this.buildHasNoArgConstructor());
+		this.setHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor());
 		this.updateFields();
 		this.updateMethods();
 		// need to wait until everything is updated to calculate 'access'
@@ -236,6 +252,97 @@ final class BinaryPersistentType
 		try {
 			return Flags.isAbstract(this.getMember().getFlags());
 		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	// ***** static
+	public boolean isStatic() {
+		return this.static_;
+	}
+
+	private void setStatic(boolean static_) {
+		boolean old = this.static_;
+		this.static_ = static_;
+		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
+	}
+
+	private boolean buildStatic() {
+		try {
+			return Flags.isStatic(this.getMember().getFlags());
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	// ***** member
+	public boolean isMemberType() {
+		return this.memberType;
+	}
+
+	private void setMemberType(boolean memberType) {
+		boolean old = this.memberType;
+		this.memberType = memberType;
+		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
+	}
+
+	private boolean buildMemberType() {
+		try {
+			return this.getMember().isMember();
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return false;
+		}
+	}
+
+	// ***** no-arg constructor
+	public boolean hasNoArgConstructor() {
+		return this.hasNoArgConstructor;
+	}
+
+	private void setHasNoArgConstructor(boolean hasNoArgConstructor) {
+		boolean old = this.hasNoArgConstructor;
+		this.hasNoArgConstructor = hasNoArgConstructor;
+		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
+	}
+
+	private boolean buildHasNoArgConstructor() {
+		return this.findNoArgConstructor() != null;
+	}
+
+	private IMethod findNoArgConstructor() {
+		try {
+			for (IMethod method : this.getMember().getMethods()) {
+				if (method.isConstructor()) {
+					return method;
+				}
+			}
+		}
+		catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+		}
+		return null;
+	}
+
+	// ***** private no-arg constructor
+	public boolean hasPrivateNoArgConstructor() {
+		return this.hasPrivateNoArgConstructor;
+	}
+
+	private void setHasPrivateNoArgConstructor(boolean hasPrivateNoArgConstructor) {
+		boolean old = this.hasPrivateNoArgConstructor;
+		this.hasPrivateNoArgConstructor = hasPrivateNoArgConstructor;
+		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
+	}
+
+	private boolean buildHasPrivateNoArgConstructor() {
+		IMethod method = this.findNoArgConstructor();
+		try {
+			return method != null && Flags.isPrivate(method.getFlags());
+		}
+		catch (JavaModelException ex) {
 			JptCorePlugin.log(ex);
 			return false;
 		}
