@@ -53,6 +53,7 @@ public class VendorRepository {
 		this.addVendorTo(SQLServer.instance(), list);
 		this.addVendorTo(Sybase.asa(), list);
 		this.addVendorTo(Sybase.ase(), list);
+		this.addVendorTo(Sybase.dtpVendorExtension(), list);
 	}
 
 	private void addVendorTo(Vendor vendor, ArrayList<Vendor> list) {

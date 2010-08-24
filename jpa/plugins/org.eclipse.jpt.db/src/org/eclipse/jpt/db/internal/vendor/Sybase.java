@@ -21,6 +21,10 @@ class Sybase
 
 	static final Vendor ASA = new Sybase("Sybase_ASA"); //$NON-NLS-1$
 	static final Vendor ASE = new Sybase("Sybase_ASE"); //$NON-NLS-1$
+	// 321401 - hack to support DTP vendor extension in adopter product.
+	// Applies to 2.3.x maintenance stream only
+	static final String DTP_VENDOR_EXTENSION_NAME = "Sybase";
+	static final Vendor DTP_VENDOR_EXTENSION = new Sybase(DTP_VENDOR_EXTENSION_NAME); //$NON-NLS-1$
 
 	static Vendor asa() {
 		return ASA;
@@ -28,6 +32,10 @@ class Sybase
 
 	static Vendor ase() {
 		return ASE;
+	}
+	
+	static Vendor dtpVendorExtension() {
+		return DTP_VENDOR_EXTENSION;
 	}
 
 	/**
@@ -45,7 +53,14 @@ class Sybase
 
 	@Override
 	CatalogStrategy getCatalogStrategy() {
-		return SimpleCatalogStrategy.instance();
+		// 308947 - hack to support DTP vendor extension in adopter product
+		if (getDTPVendorName().equals(DTP_VENDOR_EXTENSION_NAME)) {
+			return UnknownCatalogStrategy.instance();
+		}
+		// normal logic:
+		else {
+			return SimpleCatalogStrategy.instance();
+		}
 	}
 
 	/**
