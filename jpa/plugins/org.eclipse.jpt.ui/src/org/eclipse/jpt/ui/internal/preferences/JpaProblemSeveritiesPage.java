@@ -67,7 +67,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * Severity level state is stored in this Map and is either committed or discarded
 	 * based on user action.
 	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
-	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WANRING INFO IGNORE
+	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
 	 */
 	private Map<String, String> severityLevels;
 
@@ -76,7 +76,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * to include WARNING, INFO, IGNORE in this Map. These will be displayed if neither the project 
 	 * or workspace preference applies.
 	 * <br> key is the preferenceKey which is also the validation message key @see JpaValidationMessages.
-	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WANRING INFO IGNORE
+	 * <br> value is a severity level - @see JpaValidationPreferences#ERROR WARNING INFO IGNORE
 	 */
 	private Map<String, String> defaultSeverities;
 	
@@ -318,6 +318,18 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.ENTITY_NO_PK,
 			JpaValidationMessages.ENTITY_NO_PK);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_FINAL_CLASS,
+			JpaValidationMessages.TYPE_MAPPING_FINAL_CLASS);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_MEMBER_CLASS,
+			JpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR,
+			JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR,
+			JpaValidationMessages.TYPE_MAPPING_CLASS_PRIVATE_NO_ARG_CONSTRUCTOR);
 	}
 
 	private void addAttributeLevelCategory(Composite parent) {
@@ -339,6 +351,9 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD,
 			JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_FIELD);
+		addLabeledCombo(
+			parent, JptUiValidationPreferenceMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER,
+			JpaValidationMessages.PERSISTENT_ATTRIBUTE_FINAL_GETTER);
 		addLabeledCombo(
 			parent, JptUiValidationPreferenceMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD,
 			JpaValidationMessages.PERSISTENT_ATTRIBUTE_PUBLIC_FIELD);

@@ -10,9 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
-import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityValidator;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -56,11 +54,4 @@ public class GenericOrmEntity
 		getCacheable().update();
 	}
 
-
-	//********** Validation ********************************************
-
-	@Override
-	protected JptValidator buildEntityValidator() {
-		return new GenericEntityValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
-	}
 }

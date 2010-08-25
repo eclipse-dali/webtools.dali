@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -20,6 +21,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
@@ -159,5 +161,10 @@ public class OrmEclipseLinkEmbeddableImpl
 		super.validate(messages, reporter);
 		this.customizer.validate(messages, reporter);
 		this.changeTracking.validate(messages, reporter);
+	}
+
+	@Override
+	protected JptValidator buildTypeMappingValidator() {
+		return new EclipseLinkTypeMappingValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
 	}
 }

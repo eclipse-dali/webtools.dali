@@ -8,17 +8,22 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.core.internal.context;
+package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.core.utility.TextRange;
 
-/**
- * Interface to resolve text ranges on persistent type mappings that can define primary keys
- */
-public interface PrimaryKeyTextRangeResolver extends TypeMappingTextRangeResolver
+public class OrmTypeMappingTextRangeResolver
+	implements TypeMappingTextRangeResolver
 {
-	
-	TextRange getIdClassTextRange();
-	
-	TextRange getAttributeMappingTextRange(String attributeName);
+	private OrmTypeMapping typeMapping;
+
+	public OrmTypeMappingTextRangeResolver(OrmTypeMapping typeMapping) {
+		this.typeMapping = typeMapping;
+	}
+
+	public TextRange getTypeMappingTextRange() {
+		return this.typeMapping.getValidationTextRange();
+	}
 }

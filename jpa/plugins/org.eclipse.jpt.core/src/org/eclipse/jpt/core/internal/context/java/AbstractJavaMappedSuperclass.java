@@ -123,6 +123,7 @@ public abstract class AbstractJavaMappedSuperclass extends AbstractJavaTypeMappi
 		// TODO - JPA 2.0 validation
 	}
 	
+	@Override
 	protected PrimaryKeyTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaMappedSuperclassTextRangeResolver(this, astRoot);
 	}

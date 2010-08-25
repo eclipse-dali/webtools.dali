@@ -11,41 +11,40 @@
 package org.eclipse.jpt.eclipselink.core.internal.v1_1.context;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
-import org.eclipse.jpt.core.internal.jpa1.context.AbstractEntityValidator;
+import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.AbstractTypeMappingValidator;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class EclipseLinkEntityValidator
-	extends AbstractEntityValidator
+public abstract class AbstractEclipseLinkTypeMappingValidator<T extends TypeMapping>
+	extends AbstractTypeMappingValidator<T>
 {
-	public EclipseLinkEntityValidator(Entity entity, JavaResourcePersistentType jrpt, EntityTextRangeResolver textRangeResolver) {
-		super(entity, jrpt, textRangeResolver);
+	public AbstractEclipseLinkTypeMappingValidator(T typeMapping, JavaResourcePersistentType jrpt, TypeMappingTextRangeResolver textRangeResolver) {
+		super(typeMapping, jrpt, textRangeResolver);
 	}
 
 
 	@Override
 	protected void validateType(List<IMessage> messages) {
 		if (this.isMemberType() && !this.isStaticType()) {
-			messages.add(this.buildTypeMessage(EclipseLinkJpaValidationMessages.ENTITY_MEMBER_CLASS_NOT_STATIC));
+			messages.add(this.buildEclipseLinkTypeMessage(EclipseLinkJpaValidationMessages.TYPE_MAPPING_MEMBER_CLASS_NOT_STATIC));
 		}
 		if (!this.hasNoArgConstructor()) {
-			messages.add(this.buildTypeMessage(JpaValidationMessages.ENTITY_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
+			messages.add(this.buildTypeMessage(JpaValidationMessages.TYPE_MAPPING_CLASS_MISSING_NO_ARG_CONSTRUCTOR));
 		}
 	}
 
-	protected IMessage buildTypeMessage(String msgID) {
+	protected IMessage buildEclipseLinkTypeMessage(String msgID) {
 		return DefaultEclipseLinkJpaValidationMessages.buildMessage(
 				IMessage.HIGH_SEVERITY,
 				msgID,
-				new String[] {this.entity.getName()},
-				this.entity,
+				new String[] {this.typeMapping.getName()},
+				this.typeMapping,
 				this.textRangeResolver.getTypeMappingTextRange()
 			);
 	}
-
 }

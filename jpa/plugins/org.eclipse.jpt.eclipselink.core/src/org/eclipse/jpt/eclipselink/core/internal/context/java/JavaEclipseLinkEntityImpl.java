@@ -24,7 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityValidator;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.v2_0.resource.java.EclipseLinkClassExtractorAnnotation2_1;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -139,7 +139,7 @@ public class JavaEclipseLinkEntityImpl
 	}
 
 	@Override
-	protected JptValidator buildEntityValidator(CompilationUnit astRoot) {
-		return new EclipseLinkEntityValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
+	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
+		return new EclipseLinkTypeMappingValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
 	}
 }

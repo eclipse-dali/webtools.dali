@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkMappedSuperclassPrimaryKeyValidator;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkMappedSuperclassValidator;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -121,5 +122,10 @@ public class JavaEclipseLinkMappedSuperclassImpl
 	@Override
 	protected JptValidator buildPrimaryKeyValidator(CompilationUnit astRoot) {
 		return new EclipseLinkMappedSuperclassPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	@Override
+	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
+		return new EclipseLinkMappedSuperclassValidator(this, this.javaResourcePersistentType, this.buildTextRangeResolver(astRoot));
 	}
 }

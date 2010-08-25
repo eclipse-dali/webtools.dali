@@ -12,12 +12,14 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -81,5 +83,10 @@ public class JavaEclipseLinkEmbeddableImpl
 		this.converterHolder.validate(messages, reporter, astRoot);
 		this.customizer.validate(messages, reporter, astRoot);
 		this.changeTracking.validate(messages, reporter, astRoot);
+	}
+
+	@Override
+	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
+		return new EclipseLinkTypeMappingValidator(this, this.javaResourcePersistentType, this.buildTextRangeResolver(astRoot));
 	}
 }

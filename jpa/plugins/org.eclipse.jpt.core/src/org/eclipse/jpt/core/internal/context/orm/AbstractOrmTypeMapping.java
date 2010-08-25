@@ -24,8 +24,12 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
@@ -69,6 +73,10 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	@Override
 	public OrmPersistentType getParent() {
 		return (OrmPersistentType) super.getParent();
+	}
+
+	public String getName() {
+		return getPersistentType().getName();
 	}
 
 	public OrmPersistentType getPersistentType() {
@@ -309,6 +317,13 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	
 	// *************************************************************************
 	
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		if (getPersistentType().getJavaPersistentType() != null) {
+			return getPersistentType().getJavaPersistentType().getResourcePersistentType();
+		}
+		return null;
+	}
+
 	public JpaStructureNode getStructureNode(int offset) {
 		if (this.resourceTypeMapping.containsOffset(offset)) {
 			return getPersistentType();
@@ -337,10 +352,10 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateClass(messages);
+		this.validateClass(messages, reporter);
 	}
 
-	protected void validateClass(List<IMessage> messages) {
+	protected void validateClass(List<IMessage> messages, IReporter reporter) {
 		if (StringTools.stringIsEmpty(this.class_)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -352,6 +367,15 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 			);
 			return;
 		}
+		this.buildTypeMappingValidator().validate(messages, reporter);
+	}
+
+	protected JptValidator buildTypeMappingValidator() {
+		return new GenericTypeMappingValidator(this, this.getJavaResourcePersistentType(), buildTextRangeResolver());
+	}
+
+	protected TypeMappingTextRangeResolver buildTextRangeResolver() {
+		return new OrmTypeMappingTextRangeResolver(this);
 	}
 	
 	public boolean shouldValidateAgainstDatabase() {

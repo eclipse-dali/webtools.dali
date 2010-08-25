@@ -426,6 +426,7 @@ public abstract class AbstractJavaEntity
 	
 	// **************** name **************************************************
 	
+	@Override
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? this.getDefaultName() : this.getSpecifiedName();
 	}
@@ -1349,7 +1350,6 @@ public abstract class AbstractJavaEntity
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
-		validateType(messages, reporter, astRoot);
 		validatePrimaryKey(messages, reporter, astRoot);
 		validateTable(messages, reporter, astRoot);
 		for (Iterator<JavaSecondaryTable> stream = this.specifiedSecondaryTables(); stream.hasNext();) {
@@ -1370,15 +1370,10 @@ public abstract class AbstractJavaEntity
 		return new GenericEntityPrimaryKeyValidator(this, buildTextRangeResolver(astRoot));
 	}
 	
+	@Override
 	protected EntityTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaEntityTextRangeResolver(this, astRoot);
 	}
-	
-	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		this.buildEntityValidator(astRoot).validate(messages, reporter);
-	}
-
-	protected abstract JptValidator buildEntityValidator(CompilationUnit astRoot);
 
 	protected void validateTable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		if (isAbstractTablePerClass()) {

@@ -20,18 +20,13 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface Entity
 	extends TypeMapping
 {
 	// **************** name **************************************
-	
-	/**
-	 * Return the name, specified or default if not specified.
-	 */
-	String getName();
 	
 	/**
 	 * Return the specified name.

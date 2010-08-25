@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
-import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityValidator;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaCacheable2_0;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
@@ -62,13 +59,5 @@ public class GenericJavaEntity
 			return parentEntity.getCacheable().isCacheable();
 		}
 		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
-	}
-
-
-	//********** Validation ********************************************
-
-	@Override
-	protected JptValidator buildEntityValidator(CompilationUnit astRoot) {
-		return new GenericEntityValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
 	}
 }

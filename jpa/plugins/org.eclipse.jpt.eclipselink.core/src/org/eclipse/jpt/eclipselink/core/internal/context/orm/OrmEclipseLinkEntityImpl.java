@@ -32,7 +32,7 @@ import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityPrimaryKeyValidator;
-import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkEntityValidator;
+import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
@@ -310,7 +310,7 @@ public class OrmEclipseLinkEntityImpl
 	}
 
 	@Override
-	protected JptValidator buildEntityValidator() {
-		return new EclipseLinkEntityValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
+	protected JptValidator buildTypeMappingValidator() {
+		return new EclipseLinkTypeMappingValidator(this, getJavaResourcePersistentType(), buildTextRangeResolver());
 	}
 }

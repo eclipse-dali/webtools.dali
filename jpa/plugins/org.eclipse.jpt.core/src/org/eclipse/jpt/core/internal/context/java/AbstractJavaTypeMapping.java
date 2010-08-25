@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
@@ -21,6 +22,9 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -32,6 +36,8 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
@@ -59,6 +65,10 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 
 	//***************** TypeMapping impl ***************************************
 	
+	public String getName() {
+		return getPersistentType().getName();
+	}
+
 	public JavaPersistentType getPersistentType() {
 		return getParent();
 	}
@@ -229,6 +239,24 @@ public abstract class AbstractJavaTypeMapping extends AbstractJavaJpaContextNode
 	}
 	
 	//******************** validation *********************
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		validateType(messages, reporter, astRoot);
+	}
+
+	protected void validateType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.buildTypeMappingValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
+		return new GenericTypeMappingValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
+	}
+
+	protected TypeMappingTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaTypeMappingTextRangeResolver(this, astRoot);
+	}
 	
 	public boolean shouldValidateAgainstDatabase() {
 		return getPersistenceUnit().shouldValidateAgainstDatabase();

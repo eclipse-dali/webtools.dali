@@ -11,26 +11,27 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
-import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
+import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractEntityValidator
+public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 	implements JptValidator
 {
-	protected Entity entity;
+	protected T typeMapping;
 
 	protected JavaResourcePersistentType jrpt;
 
-	protected EntityTextRangeResolver textRangeResolver;
+	protected TypeMappingTextRangeResolver textRangeResolver;
 
 
-	protected AbstractEntityValidator(
-			Entity entity, JavaResourcePersistentType jrpt, EntityTextRangeResolver textRangeResolver) {
-		this.entity = entity;
+	protected AbstractTypeMappingValidator(
+			T typeMapping, JavaResourcePersistentType jrpt, TypeMappingTextRangeResolver textRangeResolver) {
+		this.typeMapping = typeMapping;
 		this.jrpt = jrpt;
 		this.textRangeResolver = textRangeResolver;
 	}
@@ -75,5 +76,15 @@ public abstract class AbstractEntityValidator
 			return false;
 		}
 		return this.jrpt.hasNoArgConstructor();
+	}
+
+	protected IMessage buildTypeMessage(String msgID) {
+		return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				new String[] {this.typeMapping.getName()},
+				this.typeMapping,
+				this.textRangeResolver.getTypeMappingTextRange()
+			);
 	}
 }

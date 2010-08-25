@@ -411,6 +411,7 @@ public abstract class AbstractOrmEntity
 	
 	// **************** name **************************************************
 	
+	@Override
 	public String getName() {
 		return (this.getSpecifiedName() == null) ? getDefaultName() : this.getSpecifiedName();
 	}
@@ -1374,13 +1375,6 @@ public abstract class AbstractOrmEntity
 		return this.getDiscriminatorColumn().getDiscriminatorType();
 	}
 	
-	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		if (getPersistentType().getJavaPersistentType() != null) {
-			return getPersistentType().getJavaPersistentType().getResourcePersistentType();
-		}
-		return null;
-	}
-	
 	protected boolean buildSpecifiedDiscriminatorValueIsAllowed() {
 		return !isTablePerClass() && !isAbstract();
 	}
@@ -1634,7 +1628,6 @@ public abstract class AbstractOrmEntity
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		
-		validateType(messages, reporter);
 		validatePrimaryKey(messages, reporter);
 		validateTable(messages, reporter);	
 		for (Iterator<OrmSecondaryTable> stream = this.secondaryTables(); stream.hasNext(); ) {
@@ -1656,15 +1649,10 @@ public abstract class AbstractOrmEntity
 		// TODO - JPA 2.0 validation
 	}
 	
+	@Override
 	protected EntityTextRangeResolver buildTextRangeResolver() {
 		return new OrmEntityTextRangeResolver(this);
 	}
-	
-	protected void validateType(List<IMessage> messages, IReporter reporter) {
-		this.buildEntityValidator().validate(messages, reporter);
-	}
-
-	protected abstract JptValidator buildEntityValidator();
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter) {
 		if (isAbstractTablePerClass()) {

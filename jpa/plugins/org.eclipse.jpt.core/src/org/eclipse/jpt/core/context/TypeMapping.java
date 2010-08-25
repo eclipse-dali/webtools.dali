@@ -20,7 +20,7 @@ import org.eclipse.jpt.db.Schema;
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface TypeMapping
@@ -30,6 +30,11 @@ public interface TypeMapping
 	 * extension they should be equal.
 	 */
 	String getKey();
+
+	/**
+	 * Return the name, specified or default if not specified.
+	 */
+	String getName();
 
 	PersistentType getPersistentType();
 

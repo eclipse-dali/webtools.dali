@@ -13,12 +13,9 @@ package org.eclipse.jpt.core.internal.context;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Interface to resolve text ranges on persistent type mappings that can define primary keys
+ * Interface to resolve text ranges on persistent type mappings
  */
-public interface PrimaryKeyTextRangeResolver extends TypeMappingTextRangeResolver
+public interface TypeMappingTextRangeResolver
 {
-	
-	TextRange getIdClassTextRange();
-	
-	TextRange getAttributeMappingTextRange(String attributeName);
+	TextRange getTypeMappingTextRange();
 }

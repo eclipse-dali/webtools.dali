@@ -9,11 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
-import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityValidator;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
 
 public class TestJavaEntity extends AbstractJavaEntity
@@ -30,10 +27,4 @@ public class TestJavaEntity extends AbstractJavaEntity
 		return false;
 	}
 
-	//********** Validation ********************************************
-
-	@Override
-	protected JptValidator buildEntityValidator(CompilationUnit astRoot) {
-		return new GenericEntityValidator(this, this.javaResourcePersistentType, buildTextRangeResolver(astRoot));
-	}
 }
