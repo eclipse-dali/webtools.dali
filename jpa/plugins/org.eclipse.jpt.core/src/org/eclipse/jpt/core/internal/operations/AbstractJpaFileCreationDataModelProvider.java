@@ -11,19 +11,20 @@ package org.eclipse.jpt.core.internal.operations;
 
 import java.util.Iterator;
 import java.util.Set;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
-import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -63,7 +64,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	@Override
 	public Object getDefaultProperty(String propertyName) {
 		if (propertyName.equals(SOURCE_FOLDER)) {
-			IFolder sourceFolder = getDefaultSourceFolder();
+			IContainer sourceFolder = getDefaultSourceFolder();
 			if (sourceFolder != null && sourceFolder.exists()) {
 				return sourceFolder.getFullPath().toPortableString();
 			}
@@ -169,11 +170,6 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_DOES_NOT_EXIST, sourceFolderPath));
 		}
-		if (getVerifiedJavaSourceFolder() == null) {
-			return new Status(
-				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
-				NLS.bind(JptCoreMessages.VALIDATE_SOURCE_FOLDER_NOT_SOURCE_FOLDER, sourceFolderPath));
-		}
 		String filePath = getStringProperty(FILE_PATH);
 		if (StringTools.stringIsEmpty(filePath)) {
 			return new Status(
@@ -235,13 +231,16 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	/**
-	 * Return a best guess java source folder for the specified project
+	 * Return a best guess source folder for the specified project
 	 */
-	// Copied from NewJavaClassDataModelProvider
-	protected IFolder getDefaultSourceFolder() {
+	protected IContainer getDefaultSourceFolder() {
 		IProject project = getProject();
 		if (project == null) {
 			return null;
+		}
+		IContainer folder = AbstractJpaProject.getBundleRoot(project);
+		if (folder != null) {
+			return folder;
 		}
 		IPackageFragmentRoot[] sources = J2EEProjectUtilities.getSourceContainers(project);
 		// Try and return the first source folder
@@ -256,20 +255,20 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	/**
-	 * Return whether the path provided can not be a valid IFolder path
+	 * Return whether the path provided can not be a valid IContainer path
 	 */
-	protected boolean sourceFolderIsIllegal(String folderPath) {
+	protected boolean sourceFolderIsIllegal(String containerPath) {
 		IProject project = getProject();
 		if (project == null) {
 			return false;
 		}
 		try {
-			project.getWorkspace().getRoot().getFolder(new Path(folderPath));
+			IWorkspaceRoot root = project.getWorkspace().getRoot();
+			return root.getContainerForLocation(root.getLocation().append(new Path(containerPath))) == null;
 		}
 		catch (IllegalArgumentException e) {
 			return true;
 		}
-		return false;
 	}
 	
 	/**
@@ -291,55 +290,36 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 	}
 	
 	/**
-	 * Return an IFolder represented by the SOURCE_FOLDER property, verified
+	 * Return an IContainer represented by the SOURCE_FOLDER property, verified
 	 * to exist
 	 */
-	protected IFolder getVerifiedSourceFolder() {
+	protected IContainer getVerifiedSourceFolder() {
 		String folderPath = getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
 		if (project == null) {
 			return null;
 		}
-		IFolder folder;
+		IContainer container;
 		try {
-			folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
+			IWorkspaceRoot root = project.getWorkspace().getRoot();
+			container = root.getContainerForLocation(root.getLocation().append(new Path(folderPath)));
 		}
 		catch (IllegalArgumentException e) {
 			return null;
 		}
-		if (folder == null || ! folder.exists()) {
+		if (container == null || ! container.exists()) {
 			return null;
 		}
-		return folder;
-	}
-	
-	/**
-	 * Return the source folder, provided it is verified to be an actual java
-	 * source folder
-	 */
-	protected IFolder getVerifiedJavaSourceFolder() {
-		IFolder folder = getVerifiedSourceFolder();
-		if (folder == null) {
-			return null;
-		}
-		IJavaProject jProject = JavaCore.create(getProject());
-		if (jProject == null) {
-			return null;
-		}
-		IPackageFragmentRoot packageFragmentRoot = jProject.getPackageFragmentRoot(folder);
-		if (packageFragmentRoot == null || ! packageFragmentRoot.exists()) {
-			return null;
-		}
-		return folder;
+		return container;
 	}
 	
 	protected IFile getExistingFile() {
-		IFolder folder = getVerifiedSourceFolder();
-		if (folder == null) {
+		IContainer container = getVerifiedSourceFolder();
+		if (container == null) {
 			return null;
 		}
 		String filePath = getStringProperty(FILE_PATH);
-		IFile existingFile = folder.getFile(new Path(filePath));
+		IFile existingFile = container.getFile(new Path(filePath));
 		if (! existingFile.exists()) {
 			return null;
 		}

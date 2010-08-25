@@ -11,7 +11,6 @@
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
 import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IStatus;
@@ -26,6 +25,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
@@ -247,8 +247,16 @@ public class MappingFileWizardPage extends DataModelWizardPage
 	private ISelectionStatusValidator getSourceFolderDialogSelectionValidator() {
 		return new ISelectionStatusValidator() {
 			public IStatus validate(Object[] selection) {
-				if (selection != null && selection[0] != null && ! (selection[0] instanceof IProject)) {
-					return Status.OK_STATUS;
+				if (selection != null && selection[0] != null) {
+					if (selection[0] instanceof IProject) {
+						IProject project = (IProject) selection[0];
+						if (project.equals(AbstractJpaProject.getBundleRoot(project))) {
+							return Status.OK_STATUS;
+						}
+					}
+					else {
+						return Status.OK_STATUS;
+					}
 				}
 				return new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, JptUiMessages.MappingFileWizardPage_incorrectSourceFolderError);
 			}
@@ -263,12 +271,16 @@ public class MappingFileWizardPage extends DataModelWizardPage
 					IProject project = (IProject) element;
 					return project.getName().equals(model.getProperty(PROJECT_NAME));
 				} 
-				else if (element instanceof IFolder) {
-					IFolder folder = (IFolder) element;
+				else if (element instanceof IContainer) {
+					IContainer container = (IContainer) element;
 					// only show source folders
 					IProject project = ProjectUtilities.getProject(model.getStringProperty(PROJECT_NAME));
 					IJavaProject javaProject = JavaCore.create(project);
-					if (JDTTools.packageFragmentRootIsSourceFolder(javaProject.getPackageFragmentRoot(folder))) {
+					if (JDTTools.packageFragmentRootIsSourceFolder(javaProject.getPackageFragmentRoot(container))) {
+						return true;
+					}
+					// add bundle root, if it exists
+					if (element.equals(AbstractJpaProject.getBundleRoot(project))) {
 						return true;
 					}
 				}

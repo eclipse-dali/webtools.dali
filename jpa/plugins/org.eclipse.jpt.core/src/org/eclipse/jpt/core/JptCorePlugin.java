@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core;
 
 import javax.xml.parsers.SAXParserFactory;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.JpaPlatformRegistry;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
+import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
@@ -304,6 +304,20 @@ public class JptCorePlugin extends Plugin {
 	public static boolean projectHasWebFacet(IProject project) {
 		return projectHasFacet(project, WEB_PROJECT_FACET_ID);
 	}
+	
+	/**
+	 * Return whether the specified Eclipse project has a Plug-in nature.
+	 */
+	public static boolean projectHasPluginNature(IProject project) {
+		try {
+			return project.hasNature("org.eclipse.pde.PluginNature");
+		}
+		catch (CoreException ce) {
+			// fall through
+			log(ce);
+		}
+		return false;
+	}
 
 	/**
 	 * Checked exceptions bite.
@@ -346,10 +360,9 @@ public class JptCorePlugin extends Plugin {
 	 * has a Web facet.
 	 */
 	public static String getDeploymentURI(IProject project, String defaultURI) {
-		return projectHasWebFacet(project) ?
-				WEB_PROJECT_DEPLOY_PREFIX + '/' + defaultURI
-			:
-				defaultURI;
+		return (projectHasWebFacet(project) && ! projectHasPluginNature(project))
+				? WEB_PROJECT_DEPLOY_PREFIX + '/' + defaultURI
+				: defaultURI;
 	}
 
 	/**

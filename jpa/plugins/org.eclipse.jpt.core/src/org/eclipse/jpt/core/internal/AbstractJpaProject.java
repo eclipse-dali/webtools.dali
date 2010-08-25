@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -24,6 +25,7 @@ import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.IResourceProxy;
 import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -78,9 +80,13 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.pde.core.project.IBundleProjectDescription;
+import org.eclipse.pde.core.project.IBundleProjectService;
 import org.eclipse.wst.common.internal.emfworkbench.WorkbenchResourceHelper;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * JPA project. Holds all the JPA stuff.
@@ -189,8 +195,8 @@ public abstract class AbstractJpaProject
 	 * generated.
 	 */
 	protected String metamodelSourceFolderName;
-
-
+	
+	
 	// ********** constructor/initialization **********
 
 	protected AbstractJpaProject(JpaProject.Config config) {
@@ -515,8 +521,8 @@ public abstract class AbstractJpaProject
 	 * Return the new JPA file, null if it was not created.
 	 */
 	protected JpaFile addJpaFile_(IFile file) {
-		if ( ! this.getJavaProject().isOnClasspath(file)) {
-			return null;  // the file must be on the Java classpath
+		if (! getJavaProject().isOnClasspath(file) && ! isInBundleRoot(file)) {
+			return null; // the file must be on the Java classpath or in the bundle root
 		}
 
 		JpaFile jpaFile = null;
@@ -535,7 +541,53 @@ public abstract class AbstractJpaProject
 		this.jpaFiles.add(jpaFile);
 		return jpaFile;
 	}
-
+	
+	/**
+	 * Returns <code>true</code> if the given resource is within the PDE bundle root,
+	 * and <code>false</code> otherwise.
+	 */
+	private boolean isInBundleRoot(IResource resource) {
+		IContainer root = getBundleRoot(project);
+		if (root != null) {
+				return root.getFullPath().isPrefixOf(resource.getFullPath());
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the {@link IContainer} representing the PDE bundle root, <code>null</code> otherwise.
+	 */
+	public static IContainer getBundleRoot(IProject project) {
+		try {
+			if (JptCorePlugin.projectHasPluginNature(project)) {
+				IBundleProjectService service = getBundleProjectService();
+				if (service != null) {
+					IBundleProjectDescription description = service.getDescription(project);
+					if (description != null) {
+						IPath path = description.getBundleRoot();
+						return (path == null) ? project : project.getFolder(path);
+					}
+				}
+			}
+		} 
+		catch (CoreException ce) {
+			// ignore, no PDE bundle root
+		}
+		return null;
+	}
+	
+	private static IBundleProjectService getBundleProjectService() {
+		BundleContext context = JptCorePlugin.instance().getBundle().getBundleContext();
+		ServiceReference reference = context.getServiceReference(IBundleProjectService.class.getName());
+		if (reference == null)
+			return null;
+		IBundleProjectService service = (IBundleProjectService) context.getService(reference);
+		if (service != null)
+			context.ungetService(reference);
+		
+		return service;
+	}
+	
 	/**
 	 * Remove the JPA file corresponding to the specified IFile, if it exists.
 	 * Return true if a JPA File was removed, false otherwise
@@ -1206,7 +1258,7 @@ public abstract class AbstractJpaProject
 	 */
 	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
 		IFile file = jpaFile.getFile();
-		return this.getJavaProject().isOnClasspath(file) &&
+		return (this.getJavaProject().isOnClasspath(file) || isInBundleRoot(file)) &&
 				file.exists();
 	}
 
@@ -1463,7 +1515,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected void externalProjectChanged(IResourceDelta delta) {
-		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
+		if (this.getJavaProject().isOnClasspath(delta.getResource()) || isInBundleRoot(delta.getResource())) {
 			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
 			resourceDeltaVisitor.visitDelta(delta);
 			// force an "update" here since adding and/or removing an external Java type

@@ -10,9 +10,11 @@
 package org.eclipse.jpt.core.internal.operations;
 
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -23,6 +25,8 @@ import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
+import org.eclipse.wst.common.componentcore.ComponentCore;
+import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelOperation;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -33,7 +37,7 @@ public abstract class AbstractJpaFileCreationOperation
 	/**
 	 * Will be null until folder is created
 	 */
-	protected IFolder createdSourceFolder;
+	protected IContainer createdSourceFolder;
 	
 	/**
 	 * Will be null until file is created
@@ -84,17 +88,42 @@ public abstract class AbstractJpaFileCreationOperation
 		// Get the source folder name from the data model
 		String folderPath = model.getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
-		IFolder folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		// If folder does not exist, create the folder with the specified path
-		if (! folder.exists()) {
-			try {
-				folder.create(true, true, null);
-			} catch (CoreException e) {
-				throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
+		IWorkspaceRoot root = project.getWorkspace().getRoot();
+		IContainer container = root.getContainerForLocation(root.getLocation().append(new Path(folderPath)));
+		boolean createVirtualReference = ComponentCore.createFolder(project, new Path("")).exists();
+		if (container instanceof IFolder) {
+			IFolder folder = (IFolder) container;
+			// If folder does not exist, create the folder with the specified path
+			if (! folder.exists()) {
+				try {
+					folder.create(true, true, null);
+				} catch (CoreException e) {
+					throw new ExecutionException("Could not create folder", e); //$NON-NLS-1$
+				}
+			}
+			if (createVirtualReference) {
+				IVirtualFolder rootFolder = ComponentCore.createComponent(project).getRootFolder();
+				try {
+					rootFolder.getFolder(new Path("/")).createLink(container.getProjectRelativePath(), 0, null);
+				}
+				catch (CoreException ce) {
+					JptCorePlugin.log(ce);
+				}
+			}
+		}
+		else if (container instanceof IProject) {
+			if (createVirtualReference) {
+				IVirtualFolder rootFolder = ComponentCore.createComponent(project).getRootFolder();
+				try {
+					rootFolder.getFolder(new Path("/META-INF")).createLink(container.getProjectRelativePath().append("META-INF"), 0, null);
+				}
+				catch (CoreException ce) {
+					JptCorePlugin.log(ce);
+				}
 			}
 		}
 		// Return the source folder
-		this.createdSourceFolder = folder;
+		this.createdSourceFolder = container;
 	}
 	
 	protected void createFile() {

@@ -156,6 +156,9 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
+		if (propertyName.equals(DEFAULT_ACCESS)) {
+			return accessPropertyDescriptor((AccessType) getProperty(DEFAULT_ACCESS));
+		}
 		if (propertyName.equals(PERSISTENCE_UNIT)) {
 			return persistenceUnitPropertyDescriptor(getStringProperty(PERSISTENCE_UNIT));
 		}
