@@ -511,7 +511,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 	}
 
 	protected OrmAssociationOverrideContainer buildValueAssociationOverrideContainer() {
-		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new AssociationOverrideContainerOwner());
+		return getXmlContextNodeFactory().buildOrmAssociationOverrideContainer(this, new ValueAssociationOverrideContainerOwner());
 	}
 
 	protected JavaAssociationOverride getJavaValueAssociationOverrideNamed(String attributeName) {
@@ -1485,7 +1485,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		}
 	}
 
-	protected class AssociationOverrideContainerOwner
+	protected class ValueAssociationOverrideContainerOwner
 		extends OverrideContainerOwner 
 		implements OrmAssociationOverrideContainer.Owner
 	{
