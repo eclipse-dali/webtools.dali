@@ -24,7 +24,6 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jdt.internal.ui.wizards.NewWizardMessages;
 import org.eclipse.jdt.internal.ui.wizards.TypedElementSelectionValidator;
 import org.eclipse.jdt.internal.ui.wizards.TypedViewerFilter;
 import org.eclipse.jdt.ui.JavaElementComparator;
@@ -81,8 +80,6 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
-	private final IJavaProject javaProject;
-
 	private SettingsGroup settingsGroup;
 	
 	private String targetFolder;
@@ -93,16 +90,9 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 	// ********** constructor **********
 	
-	public ClassesGeneratorWizardPage(IJavaProject javaProject, String xmlSchemaName) {
+	public ClassesGeneratorWizardPage() {
 		super(true, "Classes Generator"); //$NON-NLS-1$
-		if (javaProject == null) {
-			throw new NullPointerException();
-		}
-		this.javaProject = javaProject;
-		// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
-		this.usesMoxy = (this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
-		
-		this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, xmlSchemaName));
+
 		this.setDescription(JptJaxbUiMessages.ClassesGeneratorWizardPage_desc);
 	}
 
@@ -111,9 +101,35 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	public void createControl(Composite parent) {
 		this.setPageComplete(false);
 		this.setControl(this.buildTopLevelControl(parent));
-		
-		initContainerPage(this.javaProject);
 	}
+
+	// ********** intra-wizard methods **********
+	
+	protected String getTargetFolder() {
+		return this.targetFolder;
+	}
+
+	protected String getTargetPackage() {
+		return this.targetPackage;
+	}
+
+	protected String getCatalog() {
+		return this.settingsGroup.getCatalog();
+	}
+
+	protected String[] getBindingsFileNames() {
+		return this.settingsGroup.getBindingsFileNames();
+	}
+	
+	protected boolean usesMoxy() {
+		return this.usesMoxy;
+	}
+	
+	protected void setUsesMoxy(boolean usesMoxy){
+		this.usesMoxy = usesMoxy;
+	}
+
+	// ********** internal methods **********
 
 	private Control buildTopLevelControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
@@ -123,11 +139,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		
 		this.settingsGroup = new SettingsGroup(composite);
 
-		// add checkbox only if jpt.eclipselink.ui plugin is available
-		// and EclipseLink MOXy is not on the classpath
-		if(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath()) {
-			this.usesMoxyCheckBox = this.buildUsesMoxyCheckBox(composite);
-		}
+		this.usesMoxyCheckBox = this.buildUsesMoxyCheckBox(composite);
 		
 		Dialog.applyDialogFont(parent);
 		return composite;
@@ -158,34 +170,6 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			}
 		};
 	}
-
-	// ********** intra-wizard methods **********
-	
-	protected String getTargetFolder() {
-		return this.targetFolder;
-	}
-
-	protected String getTargetPackage() {
-		return this.targetPackage;
-	}
-
-	protected String getCatalog() {
-		return this.settingsGroup.getCatalog();
-	}
-
-	protected String[] getBindingsFileNames() {
-		return this.settingsGroup.getBindingsFileNames();
-	}
-	
-	protected boolean usesMoxy() {
-		return this.usesMoxy;
-	}
-	
-	protected void setUsesMoxy(boolean usesMoxy){
-		this.usesMoxy = usesMoxy;
-	}
-
-	// ********** internal methods **********
 	
 	private boolean jptEclipseLinkBundleExists() {
 		return (this.getJptEclipseLinkBundle() != null);
@@ -228,7 +212,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private boolean genericJaxbIsOnClasspath() {
 		try {
 			String className = ClassesGenerator.JAXB_GENERIC_GEN_CLASS;
-			IType genClass = this.javaProject.findType(className);
+			IType genClass = this.getJavaProject().findType(className);
 			return (genClass != null);
 		} 
 		catch (JavaModelException e) {
@@ -242,7 +226,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	private boolean moxyIsOnClasspath() {
 		try {
 			String className = ClassesGenerator.JAXB_ECLIPSELINK_GEN_CLASS;
-			IType genClass = this.javaProject.findType(className);
+			IType genClass = this.getJavaProject().findType(className);
 			return (genClass != null);
 		} 
 		catch (JavaModelException e) {
@@ -292,7 +276,20 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	@Override
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
-		validateProjectClasspath();
+		if(visible) {
+			this.initContainerPage(((ClassesGeneratorWizard)this.getWizard()).getJavaProject());
+
+			// default usesMoxy to true only when JPT EclipseLink bundle exists and MOXy is on the classpath
+			this.usesMoxy = (this.jptEclipseLinkBundleExists() && this.moxyIsOnClasspath()); 
+	
+			// checkbox is visible only if jpt.eclipselink.ui plugin is available
+			// and EclipseLink MOXy is not on the classpath
+			this.usesMoxyCheckBox.setVisible(this.jptEclipseLinkBundleExists() && ! this.moxyIsOnClasspath());
+			this.validateProjectClasspath();
+
+			String schemaPathOrUri = ((ClassesGeneratorWizard)this.getWizard()).getSchemaPathOrUri();
+			this.setTitle(NLS.bind(JptJaxbUiMessages.ClassesGeneratorWizardPage_title, schemaPathOrUri));
+		}
 	}
     
 	/** 
@@ -343,12 +340,12 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		ElementTreeSelectionDialog dialog= new ElementTreeSelectionDialog(getShell(), labelProvider, provider);
 		dialog.setValidator(validator);
 		dialog.setComparator(new JavaElementComparator());
-		dialog.setTitle(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_title);
-		dialog.setMessage(NewWizardMessages.NewContainerWizardPage_ChooseSourceContainerDialog_description);
+		dialog.setTitle(JptJaxbUiMessages.ClassesGeneratorWizardPage_sourceFolderSelectionDialog_title);
+		dialog.setMessage(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseSourceFolderDialog_desc);
 		dialog.addFilter(filter);
 		//set the java project as the input instead of the workspace like the NewContainerWizardPage was doing
 		//******************************************************//
-		dialog.setInput(this.javaProject);     				 	//
+		dialog.setInput(this.getJavaProject());     			//
 		//******************************************************//
 		dialog.setInitialSelection(getPackageFragmentRoot());
 		dialog.setHelpAvailable(false);
@@ -384,7 +381,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			layout.marginWidth = 0;
 			composite.setLayout(layout);
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
+			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, HELP_CONTEXT_ID);
 
 			// Source folder
 			createContainerControls(composite, 4);
@@ -557,7 +554,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 
 		private String makeRelativeToProjectPath(String filePath) {
 			Path path = new Path(filePath);
-			IPath relativePath = path.makeRelativeTo(javaProject.getProject().getLocation());
+			IPath relativePath = path.makeRelativeTo(getJavaProject().getProject().getLocation());
 			return relativePath.toOSString();
 		}
 
@@ -585,7 +582,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		 * prompt the user to select a file and return it.
 		 */
 		private String promptXmlFile() {
-			String projectPath= javaProject.getProject().getLocation().toString();
+			String projectPath= getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseACatalog);
@@ -596,7 +593,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 		}
 
 		private ArrayList<String> promptBindingsFiles() {
-			String projectPath= javaProject.getProject().getLocation().toString();
+			String projectPath= getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell(), SWT.MULTI);
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorWizardPage_chooseABindingsFile);
@@ -645,5 +642,4 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 			return ((Collection<?>) inputElement).toArray();
 		}
 	}
-	
 }

@@ -7,17 +7,20 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
+package org.eclipse.jpt.jaxb.ui.internal.wizards;
 
-import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
@@ -37,8 +40,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
-import com.ibm.icu.text.Collator;
-
 /**
  *  ProjectWizardPage
  */
@@ -47,17 +48,58 @@ public class ProjectWizardPage extends WizardPage
 	private IJavaProject javaProject;
 	private ProjectGroup projectGroup;
 
+	// ********** static methods **********
+
+    public static IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
+    	if(selection == null) {
+    		return null;
+    	}
+		Object firstElement = selection.getFirstElement();
+		if(firstElement instanceof IJavaProject) {
+			return (IJavaProject)firstElement;
+		}
+		else if(firstElement instanceof IResource) {
+			IProject project = ((IResource) firstElement).getProject();
+			return getJavaProjectFrom(project);
+		}
+		else if(firstElement instanceof IJavaElement) {
+			return ((IJavaElement)firstElement).getJavaProject();
+		}
+		return null;
+    }
+    
+    public static IJavaProject getJavaProjectFrom(IProject project) {
+    	return (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
+    }
+
+	// ********** constructor **********
+    
 	public ProjectWizardPage() {
 		super("Java Project"); //$NON-NLS-1$
-		
-		this.setTitle(JptJaxbUiMessages.SchemaGeneratorWizardPage_title);
+
 		this.setDescription(JptJaxbUiMessages.ProjectWizardPage_desc);
 	}
+	
+	public ProjectWizardPage(IJavaProject javaProject) {
+		this();
+
+		this.javaProject = javaProject;
+	}
+	
+	// ********** IDialogPage implementation  **********
 
 	public void createControl(Composite parent) {
 		this.setPageComplete(false);
 		this.setControl(this.buildTopLevelControl(parent));
 	}
+
+	// ********** intra-wizard methods **********
+
+	public IJavaProject getJavaProject() {
+		return this.javaProject;
+	}
+	
+	// ********** internal methods **********
 
 	private Control buildTopLevelControl(Composite parent) {
 		Composite composite = new Composite(parent, SWT.NULL);
@@ -67,17 +109,8 @@ public class ProjectWizardPage extends WizardPage
 //		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, HELP_CONTEXT_ID);
 		return composite;
 	}
-
-	// ********** intra-wizard methods **********
-
-	protected IJavaProject getProject() {
-		return this.javaProject;
-	}
 	
-	
-	// ********** internal methods **********
-
-	private void setProject(IJavaProject project) {
+	private void setJavaProject(IJavaProject project) {
 		this.javaProject = project;
 	}
 
@@ -87,8 +120,8 @@ public class ProjectWizardPage extends WizardPage
 		if( ! StringTools.stringIsEmpty(projectName)) {
 
 			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
-			this.setProject(JavaCore.create(project));
-			setPageComplete(true);
+			this.setJavaProject(JavaCore.create(project));
+			this.setPageComplete(true);
 		}
 	}
 
@@ -110,8 +143,8 @@ public class ProjectWizardPage extends WizardPage
 			this.buildLabel(composite, JptJaxbUiMessages.ProjectWizardPage_project);
 			this.projectCombo = this.buildProjectCombo(composite, this.buildProjectComboSelectionListener());
 			this.updateProjectCombo();
-			
-			setPageComplete(false);
+
+			setPageComplete( ! StringTools.stringIsEmpty(this.getProjectName()));
 		}
 
 		// ********** listeners **********
@@ -149,7 +182,8 @@ public class ProjectWizardPage extends WizardPage
 		protected void updateProjectCombo() {
 			
 			this.projectCombo.removeAll();
-			for (String name : this.getJavaProjectsNames()) {
+			
+			for (String name : this.getSortedJavaProjectsNames()) {
 				this.projectCombo.add(name);
 			}
 			if(javaProject != null) {
@@ -157,13 +191,19 @@ public class ProjectWizardPage extends WizardPage
 			}
 		}
 
-		private Iterable<String> getJavaProjectsNames() {
-			return new TransformationIterable<IProject, String>(this.getJavaProjects()) {
-				@Override
-				protected String transform(IProject project) {
-					return project.getName();
-				}
-			};
+		private String[] getSortedJavaProjectsNames() {
+			return ArrayTools.sort(getJavaProjectsNames());
+		}
+
+		private String[] getJavaProjectsNames() {
+			return ArrayTools.array(
+				new TransformationIterable<IProject, String>(this.getJavaProjects()) {
+					@Override
+					protected String transform(IProject project) {
+						return project.getName();
+					}
+				},
+				new String[0]);
 		}
 		
 		private Iterable<IProject> getJavaProjects() {
@@ -181,22 +221,9 @@ public class ProjectWizardPage extends WizardPage
 		}
 
 		private Iterator<IProject> getProjects() {
-			return new ArrayIterator<IProject>(this.sortedProjects());
-		}
-		
-		private IProject[] sortedProjects() {
-			
-			return ArrayTools.sort(ResourcesPlugin.getWorkspace().getRoot().getProjects(), this.projectNameComparator());
+			return new ArrayIterator<IProject>(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 		}
 
-		private Comparator<IProject> projectNameComparator() {
-			return new Comparator<IProject>() {
-				public int compare(IProject project1, IProject project2) {
-					return Collator.getInstance().compare(project1.getName(), project2.getName());
-				}
-			};
-		}
-		
 		// ********** UI components **********
 
 		private Label buildLabel(Composite parent, String text) {

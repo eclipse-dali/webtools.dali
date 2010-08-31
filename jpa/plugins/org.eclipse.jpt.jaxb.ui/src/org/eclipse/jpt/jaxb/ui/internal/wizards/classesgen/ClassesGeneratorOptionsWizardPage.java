@@ -9,9 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -36,17 +37,11 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 	private ProxyOptionsComposite proxyOptionsComposite;
 	private Options1Composite options1Composite;
 	private Options2Composite options2Composite;
-
-	private final IJavaProject javaProject;
 	
 	// ********** constructor **********
 
-	protected ClassesGeneratorOptionsWizardPage(IJavaProject javaProject) {
+	protected ClassesGeneratorOptionsWizardPage() {
 		super("Classes Generator Options"); //$NON-NLS-1$
-		if (javaProject == null) {
-			throw new NullPointerException();
-		}
-		this.javaProject = javaProject;
 
 		this.initialize();
 	}
@@ -189,10 +184,13 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 
 	private String makeRelativeToProjectPath(String filePath) {
 		Path path = new Path(filePath);
-		IPath relativePath = path.makeRelativeTo(this.javaProject.getProject().getLocation());
+		IPath relativePath = path.makeRelativeTo(this.getProject().getLocation());
 		return relativePath.toOSString();
 	}
 
+	private IProject getProject() {
+		return ((ClassesGeneratorWizard)this.getWizard()).getJavaProject().getProject();
+	}
 
 	// ********** ProxyOptionsComposite **********
 
@@ -307,7 +305,8 @@ public class ClassesGeneratorOptionsWizardPage extends WizardPage
 		 * prompt the user to select a file and return it.
 		 */
 		private String promptProxyFile() {
-			String projectPath = ClassesGeneratorOptionsWizardPage.this.javaProject.getProject().getLocation().toString();
+			IWizard wizard = ClassesGeneratorOptionsWizardPage.this.getWizard();
+			String projectPath = ((ClassesGeneratorWizard)wizard).getJavaProject().getProject().getLocation().toString();
 
 			FileDialog dialog = new FileDialog(getShell());
 			dialog.setText(JptJaxbUiMessages.ClassesGeneratorOptionsWizardPage_chooseAProxyFile);

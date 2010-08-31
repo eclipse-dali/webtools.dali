@@ -35,6 +35,7 @@ import org.eclipse.jpt.jaxb.core.internal.SchemaGenerator;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.jaxb.ui.internal.wizards.ProjectWizardPage;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.FileTools;
 import org.eclipse.osgi.util.NLS;
@@ -75,6 +76,7 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		super.addPages();
 		if(this.selection.isEmpty()) {
 			this.javaProjectWizardPage = new ProjectWizardPage();
+			this.javaProjectWizardPage.setTitle(JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_title);
 			this.addPage(this.javaProjectWizardPage);
 		}
 
@@ -89,12 +91,12 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		
 		String[] sourceClassNames = this.buildSourceClassNames(this.getAllCheckedItems());
 		
-		WorkspaceJob genEntitiesJob = new GenerateSchemaJob( 
+		WorkspaceJob genSchemaJob = new GenerateSchemaJob( 
 						javaProject, 
 						sourceClassNames, 
 						this.getTargetSchema(), 
 						this.usesMoxy());
-		genEntitiesJob.schedule();
+		genSchemaJob.schedule();
 
 		return true;
 	}

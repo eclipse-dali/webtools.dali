@@ -15,6 +15,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
+import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -29,10 +31,12 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 @SuppressWarnings("nls")
 public class JptJaxbUiPlugin extends AbstractUIPlugin
 {
-
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.jpt.jaxb.ui";
 
+	public static final String USER_CATALOG_ID = XMLCorePlugin.USER_CATALOG_ID; //$NON-NLS-1$
+	public static final String DEFAULT_CATALOG_ID = XMLCorePlugin.DEFAULT_CATALOG_ID; //$NON-NLS-1$
+	public static final String SYSTEM_CATALOG_ID = XMLCorePlugin.SYSTEM_CATALOG_ID; //$NON-NLS-1$
 	
 	// ********** singleton **********
 	private static JptJaxbUiPlugin INSTANCE;
@@ -87,7 +91,11 @@ public class JptJaxbUiPlugin extends AbstractUIPlugin
 		return image;
 	}
 
-
+	// ********** XMLCorePlugin API **********
+	
+	public ICatalog getDefaultXMLCatalog() {
+		return XMLCorePlugin.getDefault().getDefaultXMLCatalog();
+	}
 	
 	// ********** constructors **********
 	public JptJaxbUiPlugin() {

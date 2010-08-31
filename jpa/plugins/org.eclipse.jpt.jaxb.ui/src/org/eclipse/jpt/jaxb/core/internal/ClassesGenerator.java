@@ -35,7 +35,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 	public static final String JAXB_GENERIC_GEN_CLASS = "com.sun.tools.xjc.XJCFacade";   //$NON-NLS-1$
 	public static final String JAXB_ECLIPSELINK_GEN_CLASS = "org.eclipse.persistence.jaxb.xjc.MOXyXJC";   //$NON-NLS-1$
 	
-	private final String xmlSchemaName;
+	private final String schemaPathOrUri;
 	private final String outputDir;
 	private final String targetPackage;
 	private final String catalog;
@@ -48,7 +48,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 	
 	public static void generate(
 			IJavaProject javaProject, 
-			String xmlSchemaName, 
+			String schemaPathOrUri, 
 			String outputDir, 
 			String targetPackage, 
 			String catalog, 
@@ -61,7 +61,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 			throw new NullPointerException();
 		}
 		new ClassesGenerator(javaProject, 
-			xmlSchemaName, 
+			schemaPathOrUri, 
 			outputDir, 
 			targetPackage, 
 			catalog, 
@@ -75,7 +75,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 	
 	protected ClassesGenerator(
 			IJavaProject javaProject, 
-			String xmlSchemaName, 
+			String schemaPathOrUri, 
 			String outputDir, 
 			String targetPackage, 
 			String catalog, 
@@ -84,7 +84,7 @@ public class ClassesGenerator extends AbstractJptGenerator
 			ClassesGeneratorOptions generatorOptions,
 			ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		super(javaProject);
-		this.xmlSchemaName = xmlSchemaName;
+		this.schemaPathOrUri = schemaPathOrUri;
 		this.outputDir = outputDir;
 		this.targetPackage = targetPackage;
 		this.catalog = catalog;
@@ -226,7 +226,10 @@ public class ClassesGenerator extends AbstractJptGenerator
 
 		// schema
 		programArguments.append(' ');
-		programArguments.append(StringTools.quote(this.xmlSchemaName));
+		if(StringTools.stringIsEmpty(this.schemaPathOrUri)) {
+			throw new RuntimeException("Schema cannot be empty");	  //$NON-NLS-1$
+		}
+		programArguments.append(StringTools.quote(this.schemaPathOrUri));
 		
 		// bindings
 		if (this.bindingsFileNames.length > 0) {

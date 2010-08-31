@@ -23,6 +23,19 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizard_errorDialogTitle;
 	public static String ClassesGeneratorWizard_couldNotCreate;
 
+	public static String ClassesGeneratorProjectWizardPage_title;
+	
+
+	public static String SchemaWizardPage_title;
+	public static String SchemaWizardPage_desc;
+	
+	public static String SchemaWizardPage_xmlCatalogTableTitle; 
+	public static String SchemaWizardPage_xmlCatalogKeyColumn; 
+	public static String SchemaWizardPage_xmlCatalogUriColumn; 
+	
+	public static String SchemaWizardPage_errorUriCannotBeLocated;
+	
+	
 	public static String ClassesGeneratorWizardPage_title;
 	public static String ClassesGeneratorWizardPage_desc;
 	
@@ -35,6 +48,12 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizardPage_removeButton;
 	public static String ClassesGeneratorWizardPage_chooseABindingsFile;
 	public static String ClassesGeneratorWizardPage_chooseACatalog;
+
+	public static String ClassesGeneratorWizardPage_sourceFolderSelectionDialog_title;
+	public static String ClassesGeneratorWizardPage_chooseSourceFolderDialog_desc;
+
+	public static String ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable;
+	public static String ClassesGeneratorWizardPage_moxyLibrariesNotAvailable;
 
 	public static String ClassesGeneratorOptionsWizardPage_title;
 	public static String ClassesGeneratorOptionsWizardPage_desc;
@@ -68,10 +87,6 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorExtensionOptionsWizardPage_classpath;
 	public static String ClassesGeneratorExtensionOptionsWizardPage_additionalArguments;
 
-	public static String ClassesGeneratorWizardPage_jaxbLibrariesNotAvailable;
-	
-	public static String ClassesGeneratorWizardPage_moxyLibrariesNotAvailable;
-
 	public static String ClassesGeneratorUi_generatingEntities;
 	public static String ClassesGeneratorUi_generatingEntitiesTask;
 
@@ -85,6 +100,8 @@ public class JptJaxbUiMessages {
 	public static String ProjectWizardPage_desc;
 	public static String ProjectWizardPage_project;
 
+	public static String SchemaGeneratorProjectWizardPage_title;
+	
 	public static String SchemaGeneratorWizardPage_title;
 	public static String SchemaGeneratorWizardPage_desc;
 	

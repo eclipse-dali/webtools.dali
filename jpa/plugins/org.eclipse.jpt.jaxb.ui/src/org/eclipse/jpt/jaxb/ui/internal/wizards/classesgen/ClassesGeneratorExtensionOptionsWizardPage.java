@@ -95,7 +95,7 @@ public class ClassesGeneratorExtensionOptionsWizardPage extends WizardPage
 			layout.marginWidth = 0;
 			composite.setLayout(layout);
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, JpaHelpContextIds.XXX);
+			// TODO PlatformUI.getWorkbench().getHelpSystem().setHelp(this.group, HELP_CONTEXT_ID);
 			
 			this.allowsExtensionsCheckBox = this.buildAllowsExtensionsCheckBox(composite, this.buildAllowsExtensionsSelectionListener());
 

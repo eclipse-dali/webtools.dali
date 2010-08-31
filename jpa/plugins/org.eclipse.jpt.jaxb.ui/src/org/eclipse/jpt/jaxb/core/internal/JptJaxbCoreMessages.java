@@ -19,8 +19,11 @@ import org.eclipse.osgi.util.NLS;
 public class JptJaxbCoreMessages {
 	
 	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
-	
-	
+
+	public static String ClassesGenerator_generatingClasses;
+	public static String ClassesGenerator_generatingClassesTask;
+
+
 	private static final String BUNDLE_NAME = "jpt_jaxb_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreMessages.class;
 	static {

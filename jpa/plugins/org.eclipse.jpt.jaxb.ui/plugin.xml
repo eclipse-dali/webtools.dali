@@ -18,7 +18,16 @@
 				<description>%generateSchemaFromClassesDesc</description>
 				<selection class="org.eclipse.core.resources.IResource"/> 
 		</wizard>
-      
+
+ 		<wizard
+            id="org.eclipse.jpt.jaxb.ui.wizard.generateJAXBClasses"
+			name="%generateClassesFromSchemaName"
+ 			category="org.eclipse.jpt.jaxb"
+ 			class="org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard"
+			icon="icons/full/etool16/newclass_wiz.gif">
+				<description>%generateClassesFromSchemaDesc</description>
+		</wizard>
+		
 	</extension>
 
 	<extension

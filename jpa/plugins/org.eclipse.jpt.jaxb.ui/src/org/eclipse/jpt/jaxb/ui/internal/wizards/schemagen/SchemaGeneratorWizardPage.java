@@ -44,6 +44,7 @@ import org.eclipse.jpt.jaxb.ui.internal.filters.EmptyInnerPackageFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonArchiveOrExternalElementFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonContainerFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonJavaElementFilter;
+import org.eclipse.jpt.jaxb.ui.internal.wizards.ProjectWizardPage;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -260,7 +261,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
     	
 		if(previousPage instanceof ProjectWizardPage) {
 			// get project from previousPage
-			this.targetProject = ((ProjectWizardPage)previousPage).getProject();
+			this.targetProject = ((ProjectWizardPage)previousPage).getJavaProject();
 		}
 		else if(initialSelection != null && ! this.initialSelection.isEmpty()) {
 			// no previousPage - get project from initialSelection

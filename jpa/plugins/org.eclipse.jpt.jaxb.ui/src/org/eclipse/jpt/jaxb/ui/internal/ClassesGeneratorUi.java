@@ -10,23 +10,17 @@
 package org.eclipse.jpt.jaxb.ui.internal;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.OperationCanceledException;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.jaxb.core.internal.ClassesGenerator;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.ClassesGeneratorOptions;
+import org.eclipse.jpt.jaxb.core.internal.GenerateJaxbClassesJob;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.ClassesGeneratorWizard;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Display;
@@ -37,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
  */
 public class ClassesGeneratorUi {
 	private final IJavaProject javaProject;
-	private final String xmlSchemaName;
+	private final String schemaPathOrUri;
 
 	// ********** static methods **********
 	
@@ -52,13 +46,13 @@ public class ClassesGeneratorUi {
 	}
 
 	// ********** constructors **********
-	private ClassesGeneratorUi(IJavaProject javaProject, String xmlSchemaName) {
+	private ClassesGeneratorUi(IJavaProject javaProject, String schemaPathOrUri) {
 		super();
-		if(javaProject == null || StringTools.stringIsEmpty(xmlSchemaName)) {
+		if(javaProject == null || StringTools.stringIsEmpty(schemaPathOrUri)) {
 			throw new NullPointerException();
 		}
 		this.javaProject = javaProject;
-		this.xmlSchemaName = xmlSchemaName;
+		this.schemaPathOrUri = schemaPathOrUri;
 	}
 
 	// ********** generate **********
@@ -66,7 +60,7 @@ public class ClassesGeneratorUi {
 	 * prompt the user with a wizard
 	 */
 	protected void generate() {
-		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.xmlSchemaName);
+		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.schemaPathOrUri);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
@@ -81,14 +75,14 @@ public class ClassesGeneratorUi {
 		ClassesGeneratorOptions generatorOptions = wizard.getGeneratorOptions();
 		ClassesGeneratorExtensionOptions generatorExtensionOptions = wizard.getGeneratorExtensionOptions();
 
-		if(this.displayGeneratingClassesWarning()) {
-			this.run(outputDir, targetPackage, catalog, usesMoxy, bindingsFileNames, generatorOptions, generatorExtensionOptions);
+		if(this.displayOverridingClassesWarning(generatorOptions)) {
+			this.generateJaxbClasses(outputDir, targetPackage, catalog, usesMoxy, bindingsFileNames, generatorOptions, generatorExtensionOptions);
 		}
 	}
 
 	// ********** internal methods **********
 
-	private void run(
+	private void generateJaxbClasses(
 		String outputDir,
 		String targetPackage, 
 		String catalog, 
@@ -97,21 +91,66 @@ public class ClassesGeneratorUi {
 		ClassesGeneratorOptions generatorOptions,
 		ClassesGeneratorExtensionOptions generatorExtensionOptions) {
 		
-		WorkspaceJob job = new GenerateEntitiesJob(
-			this.javaProject, 
-			this.xmlSchemaName, 
-			outputDir, 
-			targetPackage, 
-			catalog, 
-			usesMoxyGenerator,
-			bindingsFileNames,
-			generatorOptions,
-			generatorExtensionOptions);
-		job.schedule();
+		try {
+			WorkspaceJob job = new GenerateJaxbClassesJob(
+				this.javaProject, 
+				this.schemaPathOrUri, 
+				outputDir, 
+				targetPackage, 
+				catalog, 
+				usesMoxyGenerator,
+				bindingsFileNames,
+				generatorOptions,
+				generatorExtensionOptions);
+			job.schedule();
+		}
+		catch(RuntimeException re) {
+			JptJaxbUiPlugin.log(re);
+
+			String msg = re.getMessage();
+			String message = (msg == null) ? re.toString() : msg;
+			this.logError(message);
+		}
+	}
+	
+	private void logError(String message) {
+		this.displayError(message);
 	}
 
-	private boolean displayGeneratingClassesWarning() {
+	private void displayError(String message) {
+		MessageDialog.openError(
+				this.getShell(),
+				JptJaxbUiMessages.ClassesGeneratorWizard_errorDialogTitle,
+				message
+			);
+	}
+	
+	private Shell getShell() {
+		Display display = Display.getCurrent();
+		Shell shell = (display == null) ? null : display.getActiveShell();
+		if(shell == null && display != null) {
+			Shell[] shells = display.getShells();
+			if(shells.length > 0)
+				shell = shells[0];
+		}
+		return shell;
+	}
+	
+	private boolean isOverridingClasses(ClassesGeneratorOptions generatorOptions) {
+		if(generatorOptions == null) {
+			throw new NullPointerException();
+		}
+		if(generatorOptions.showsVersion() || generatorOptions.showsHelp()) {
+			return false;
+		}
+		return true;
+	}
 
+	private boolean displayOverridingClassesWarning(ClassesGeneratorOptions generatorOptions) {
+		
+		if( ! this.isOverridingClasses(generatorOptions)) {
+			return true;
+		}
 		return MessageDialog.openQuestion(
 			this.getCurrentShell(), 
 			JptJaxbUiMessages.ClassesGeneratorUi_generatingClassesWarningTitle,
@@ -120,121 +159,5 @@ public class ClassesGeneratorUi {
 	
 	private Shell getCurrentShell() {
 	    return Display.getCurrent().getActiveShell();
-	}
-
-	// ********** Runnable Class **********
-
-	private static class GenerateEntitiesJob extends WorkspaceJob {
-		private final IJavaProject javaProject;
-		private final String xmlSchemaName;
-		private final String outputDir;
-		private final String targetPackage;
-		private final String catalog;
-		private final boolean usesMoxyGenerator;
-		private final String[] bindingsFileNames;
-		private final ClassesGeneratorOptions generatorOptions;
-		private final ClassesGeneratorExtensionOptions generatorExtensionOptions;
-
-		// ********** constructors **********
-		
-		public GenerateEntitiesJob(
-			IJavaProject javaProject, 
-			String xmlSchemaName, 
-			String outputDir,
-			String targetPackage, 
-			String catalog, 
-			boolean usesMoxyGenerator,
-			String[] bindingsFileNames,
-			ClassesGeneratorOptions generatorOptions,
-			ClassesGeneratorExtensionOptions generatorExtensionOptions) {
-			
-			super(JptJaxbUiMessages.ClassesGeneratorUi_generatingEntities);
-			this.javaProject = javaProject;
-			this.xmlSchemaName = xmlSchemaName;
-			this.outputDir = outputDir;
-			this.targetPackage = targetPackage;
-			this.catalog = catalog;
-			this.usesMoxyGenerator = usesMoxyGenerator;
-			this.bindingsFileNames = bindingsFileNames;
-			this.generatorOptions = generatorOptions;
-			this.generatorExtensionOptions = generatorExtensionOptions;
-			this.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(this.javaProject.getProject()));
-		}
-
-		@Override
-		public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-			SubMonitor sm = SubMonitor.convert(monitor, JptJaxbUiMessages.ClassesGeneratorUi_generatingEntitiesTask, 1);
-			try {
-				this.entitiesGeneratorGenerate(this.javaProject, 
-					this.xmlSchemaName, 
-					this.outputDir, 
-					this.targetPackage, 
-					this.catalog, 
-					this.usesMoxyGenerator,
-					this.bindingsFileNames,
-					this.generatorOptions,
-					this.generatorExtensionOptions, 
-					sm.newChild(1));
-			} 
-			catch (OperationCanceledException e) {
-				return Status.CANCEL_STATUS;
-				// fall through and tell monitor we are done
-			}
-			catch (RuntimeException re) {
-				String msg = re.getMessage();
-				String message = (msg == null) ? re.toString() : msg;
-				
-				this.logError(message);
-				throw new RuntimeException(re);
-			}
-			return Status.OK_STATUS;
-	}
-	
-		private void entitiesGeneratorGenerate(IJavaProject javaProject, 
-			String xmlSchemaName, 
-			String outputDir, 
-			String targetPackage, 
-			String catalog, 
-			boolean usesMoxyGenerator,
-			String[] bindingsFileNames, 
-			ClassesGeneratorOptions generatorOptions,
-			ClassesGeneratorExtensionOptions generatorExtensionOptions,
-			IProgressMonitor monitor) {
-	
-			ClassesGenerator.generate(javaProject, 
-				xmlSchemaName, 
-				outputDir, 
-				targetPackage, 
-				catalog, 
-				usesMoxyGenerator, 
-				bindingsFileNames, 
-				generatorOptions, 
-				generatorExtensionOptions,
-				monitor);
-			return;
-		}
-	
-		private void logError(String message) {
-				this.displayError(message);
-		}
-		
-		private void displayError(String message) {
-			MessageDialog.openError(
-					this.getShell(),
-					JptJaxbUiMessages.ClassesGeneratorWizard_errorDialogTitle,
-					message
-				);
-		}
-
-		private Shell getShell() {
-			Display display = Display.getCurrent();
-			Shell shell = (display == null) ? null : display.getActiveShell();
-			if (shell == null && display != null) {
-				Shell[] shells = display.getShells();
-				if (shells.length > 0)
-					shell = shells[0];
-			}
-			return shell;
-		}
 	}
 }
