@@ -15,6 +15,7 @@ import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -105,7 +106,7 @@ public class JpaFacetInstallPage
 				new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
-						updateConnectLink();
+						updateConnectionStatus();
 					}
 				});
 			
@@ -195,19 +196,34 @@ public class JpaFacetInstallPage
 			if (cp != null) {
 				cp.connect();
 				model.setBooleanProperty(CONNECTION_ACTIVE, cp.isActive());
-				updateConnectLink();
+				updateConnectionStatus();
 			}
 		}
 		
-		private void updateConnectLink() {
+		private void updateConnectionStatus() {
 			ConnectionProfile cp = this.getConnectionProfile();
-			connectLink.setEnabled((cp != null) && cp.isDisconnected());
+			updateConnectLink(cp);
 			addDriverLibraryButton.setEnabled(cp != null);
 		}
 		
 		private ConnectionProfile getConnectionProfile() {
 			// we just use the connection profile to log in, so go to the the db plug-in
 			return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
+		}
+		
+		private void updateConnectLink(ConnectionProfile cp) {
+			connectLink.setEnabled((cp != null) && cp.isDisconnected());
+			if (cp != null && cp.isConnected()) {
+				updateConnectLinkText(JptUiMessages.JpaFacetWizardPage_connectedText);
+			}
+			else {
+				updateConnectLinkText(JptUiMessages.JpaFacetWizardPage_connectLink);
+			}
+		}
+		
+		private void updateConnectLinkText(String text) {
+			connectLink.setText(text);
+			SWTUtil.reflow(connectLink.getParent());
 		}
 	}
 	

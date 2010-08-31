@@ -60,6 +60,8 @@ import org.eclipse.jpt.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
+import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.BitTools;
@@ -139,6 +141,7 @@ public class JpaProjectPropertiesPage
 	private final BufferedWritablePropertyValueModel<String> connectionModel;
 	private final PropertyValueModel<ConnectionProfile> connectionProfileModel;
 	private final PropertyValueModel<Boolean> disconnectedModel;
+	private final PropertyChangeListener disconnectedModelListener;
 	private Link connectLink;
 
 	private final BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
@@ -183,6 +186,7 @@ public class JpaProjectPropertiesPage
 		this.connectionModel = this.buildConnectionModel();
 		this.connectionProfileModel = this.buildConnectionProfileModel();
 		this.disconnectedModel = this.buildDisconnectedModel();
+		this.disconnectedModelListener = buildDisconnectedModelListener();
 
 		this.userOverrideDefaultCatalogFlagModel = this.buildUserOverrideDefaultCatalogFlagModel();
 		this.userOverrideDefaultCatalogModel = this.buildUserOverrideDefaultCatalogModel();
@@ -556,9 +560,10 @@ public class JpaProjectPropertiesPage
 		Link addConnectionLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_connectionLink);
 		addConnectionLink.addSelectionListener(this.buildAddConnectionLinkListener());  // the link will be GCed
 
-		this.connectLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_connectLink);
+		this.connectLink = this.buildLink(group, buildConnectLinkText());
 		SWTTools.controlEnabledState(this.disconnectedModel, this.connectLink);
 		this.connectLink.addSelectionListener(this.buildConnectLinkListener());  // the link will be GCed
+		this.disconnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 
 		// override default catalog
 		Button overrideDefaultCatalogCheckBox = this.buildCheckBox(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel);
@@ -587,6 +592,34 @@ public class JpaProjectPropertiesPage
 					return (string != null) ? string : JptUiMessages.JpaFacetWizardPage_none;
 				}
 			};
+
+	private PropertyChangeListener buildDisconnectedModelListener() {
+		return new SWTPropertyChangeListenerWrapper(buildDisconnectedModelListener_());
+	}
+	
+	private PropertyChangeListener buildDisconnectedModelListener_() {
+		return new PropertyChangeListener() {
+			
+			public void propertyChanged(PropertyChangeEvent event) {
+				JpaProjectPropertiesPage.this.updateConnectLinkText(buildConnectLinkText());	
+			}
+		};
+	}
+	
+	private String buildConnectLinkText(){
+		ConnectionProfile connectionProfile = getConnectionProfile();
+		if (connectionProfile != null && connectionProfile.isConnected()) {
+			return JptUiMessages.JpaFacetWizardPage_connectedText;
+		}
+		else {
+			return JptUiMessages.JpaFacetWizardPage_connectLink;
+		}
+	}
+	
+	private void updateConnectLinkText(String text) {
+		connectLink.setText(text);
+		SWTUtil.reflow(connectLink.getParent());
+	}
 
 	private SelectionListener buildAddConnectionLinkListener() {
 		return new SelectionAdapter() {
@@ -839,6 +872,7 @@ public class JpaProjectPropertiesPage
 	public void dispose() {
 		this.disengageValidationListener();
 		this.platformIdModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.platformIdListener);
+		this.disconnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 		super.dispose();
 	}
 
