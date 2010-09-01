@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -22,7 +20,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface BaseColumn
@@ -105,13 +103,5 @@ public interface BaseColumn
 		 * Return a list of table names that are valid for this column
 		 */
 		Iterator<String> candidateTableNames();
-
-		/**
-		 * Return a validation message for when the specified table is not valid in this context.
-		 * An example is a basic mapping column where a table is specified that is
-		 * not included as table or secondary tables of the owning entity.
-		 */
-		IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange);
-
 	}
 }

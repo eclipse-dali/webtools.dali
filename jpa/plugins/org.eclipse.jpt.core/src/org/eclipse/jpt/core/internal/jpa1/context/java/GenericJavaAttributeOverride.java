@@ -21,6 +21,9 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -28,7 +31,6 @@ import org.eclipse.jpt.core.jpa2.context.AttributeOverride2_0;
 import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
@@ -244,11 +246,7 @@ public class GenericJavaAttributeOverride
 		}
 	}
 	
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return getOwner().buildColumnUnresolvedNameMessage(this, column, textRange);
-	}
-	
-	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-		return getOwner().buildColumnTableNotValidMessage(this, column, textRange);
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return getOwner().buildColumnValidator(this, (BaseColumn) column, this, (BaseColumnTextRangeResolver) textRangeResolver);
 	}
 }

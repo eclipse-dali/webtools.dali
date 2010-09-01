@@ -13,6 +13,8 @@ import java.util.List;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlNamedColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
@@ -206,14 +208,14 @@ public abstract class AbstractOrmNamedColumn<T extends AbstractXmlNamedColumn> e
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.validateName(messages);
-	}
-	
-	protected void validateName(List<IMessage> messages) {
-		Table dbTable = this.getDbTable();
-		if (dbTable != null && ! this.isResolved()) {
-			messages.add(this.getOwner().buildUnresolvedNameMessage(this, this.getNameTextRange()));
-		}
+		this.buildColumnValidator().validate(messages, reporter);
 	}
 
+	protected JptValidator buildColumnValidator() {
+		return this.getOwner().buildColumnValidator(this, buildTextRangeResolver());
+	}
+
+	protected NamedColumnTextRangeResolver buildTextRangeResolver() {
+		return new OrmNamedColumnTextRangeResolver(this);
+	}
 }

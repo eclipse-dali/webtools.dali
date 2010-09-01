@@ -19,11 +19,15 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.jpa2.context.OrderColumnValidator;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrderColumn2_0;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
+import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
@@ -388,14 +392,8 @@ public class GenericJavaOrderable
 			return GenericJavaOrderable.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.ORDER_COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()},
-				column, 
-				textRange
-			);
+		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new OrderColumnValidator((OrderColumn2_0) column, textRangeResolver);
 		}
 	}
 }

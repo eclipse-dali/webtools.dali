@@ -25,12 +25,14 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnInAssociationOverrideJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn.Owner;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy 
 	extends AbstractJavaJoinColumnJoiningStrategy
@@ -240,24 +242,8 @@ public class GenericJavaJoinColumnInAssociationOverrideJoiningStrategy
 			return GenericJavaJoinColumnInAssociationOverrideJoiningStrategy.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return getAssociationOverrideOwner().buildColumnUnresolvedNameMessage(getAssociationOverride(), column, textRange);
-		}
-
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			return getAssociationOverrideOwner().buildColumnTableNotValidMessage(getAssociationOverride(), column, textRange);
-		}
-
-		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverrideOwner().buildColumnUnresolvedReferencedColumnNameMessage(getAssociationOverride(), column, textRange);
-		}
-
-		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverrideOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
-		}
-
-		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return getAssociationOverrideOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(getAssociationOverride(), column, textRange);
+		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return getAssociationOverrideOwner().buildColumnValidator(getAssociationOverride(), (BaseColumn) column, this, (BaseColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 

@@ -13,7 +13,7 @@ package org.eclipse.jpt.core.internal.context;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Interface to resolve text ranges on persistent type mappings that can define primary keys
+ * Interface to resolve text ranges on persistent attributes
  */
 public interface PersistentAttributeTextRangeResolver
 {

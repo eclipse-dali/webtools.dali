@@ -15,6 +15,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
@@ -211,13 +213,14 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation>
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.validateName(messages, astRoot);
+		this.buildColumnValidator(astRoot).validate(messages, reporter);
 	}
 
-	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
-		Table dbTable = this.getDbTable();
-		if (dbTable != null && !this.isResolved()) {
-			messages.add(this.getOwner().buildUnresolvedNameMessage(this, this.getNameTextRange(astRoot)));
-		}
+	protected JptValidator buildColumnValidator(CompilationUnit astRoot) {
+		return this.getOwner().buildColumnValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaNamedColumnTextRangeResolver(this, astRoot);
 	}
 }

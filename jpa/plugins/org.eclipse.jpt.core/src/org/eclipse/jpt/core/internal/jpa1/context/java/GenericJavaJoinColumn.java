@@ -10,14 +10,14 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
-import java.util.List;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseColumn;
+import org.eclipse.jpt.core.internal.context.java.JavaJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
@@ -26,7 +26,6 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 
 public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnnotation> implements JavaJoinColumn
@@ -153,45 +152,7 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 	}
 
 	@Override
-	//this method will only be called if the table validates correctly
-	protected void validateName(List<IMessage> messages, CompilationUnit astRoot) {
-		this.validateJoinColumnName(messages, astRoot);
-		this.validateReferencedColumnName(messages, astRoot);
-	}
-	
-	protected void validateJoinColumnName(List<IMessage> messages, CompilationUnit astRoot) {
-		if (getSpecifiedName() == null && this.getOwner().joinColumnsSize() > 1) {
-			messages.add(this.buildUnspecifiedNameMultipleJoinColumnsMessage(astRoot));
-		}
-		else if (this.getName() != null){
-			super.validateName(messages, astRoot);
-		}
-		//If the name is null and there is only one join-column, one of these validation messages will apply
-		// 1. target entity does not have a primary key
-		// 2. target entity is not specified
-		// 3. target entity is not an entity
-	}
-	
-	protected void validateReferencedColumnName(List<IMessage> messages, CompilationUnit astRoot) {
-		if (getSpecifiedReferencedColumnName() == null && this.getOwner().joinColumnsSize() > 1) {
-			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(astRoot));
-		}
-		else if (this.getSpecifiedReferencedColumnName() != null) {
-			if (this.getReferencedColumnDbTable() != null && ! this.isReferencedColumnResolved()) {
-				messages.add(getOwner().buildUnresolvedReferencedColumnNameMessage(this, this.getReferencedColumnNameTextRange(astRoot)));
-			}
-		}
-		//If the referenced column name is null and there is only one join-column, one of these validation messages will apply
-		// 1. target entity does not have a primary key
-		// 2. target entity is not specified
-		// 3. target entity is not an entity
-	}
-	
-	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(CompilationUnit astRoot) {
-		return getOwner().buildUnspecifiedNameMultipleJoinColumnsMessage(this, getNameTextRange(astRoot));
-	}
-
-	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(CompilationUnit astRoot) {
-		return getOwner().buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this, getReferencedColumnNameTextRange(astRoot));
+	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaJoinColumnTextRangeResolver(this, astRoot);
 	}
 }

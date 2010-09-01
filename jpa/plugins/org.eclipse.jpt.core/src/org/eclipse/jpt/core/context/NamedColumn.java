@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * 
@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface NamedColumn
@@ -90,10 +90,6 @@ public interface NamedColumn
 		 */
 		String getDefaultColumnName();
 
-		/**
-		 * Return a validation message for the column's name not resolving on the 
-		 * table either specified or default. Use the given text range in the message
-		 */
-		IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange);
+		JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver);
 	}
 }

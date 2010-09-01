@@ -10,17 +10,20 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmReferenceTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
@@ -29,7 +32,6 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * orm.xml collection table
@@ -218,133 +220,8 @@ public class GenericOrmCollectionTable2_0
 			return GenericOrmCollectionTable2_0.this.joinColumnsSize();
 		}
 
-		protected boolean isPersistentAttributeVirtual() {
-			return getPersistentAttribute().isVirtual();
-		}
-
-		protected String getPersistentAttributeName() {
-			return getPersistentAttribute().getName();
-		}
-
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			if (this.isPersistentAttributeVirtual()) {
-				return this.buildVirtualTableNotValidMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_TABLE_NOT_VALID,
-				new String[] {
-					column.getTable(),
-					column.getName(),
-					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE}, 
-				column, 
-				textRange
-			);
-		}
-
-		protected IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_TABLE_NOT_VALID,
-				new String[] {
-					this.getPersistentAttributeName(),
-					column.getTable(),
-					column.getName(),
-					JpaValidationDescriptionMessages.DOES_NOT_MATCH_COLLECTION_TABLE},
-				column, 
-				textRange
-			);
-		}
-
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			if (this.isPersistentAttributeVirtual()) {
-				return this.buildVirtualUnresolvedNameMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()}, 
-				column,
-				textRange
-			);
-		}
-
-		protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_NAME,
-				new String[] {this.getPersistentAttributeName(), column.getName(), column.getDbTable().getName()},
-				column, 
-				textRange
-			);
-		}
-
-		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			if (this.isPersistentAttributeVirtual()) {
-				return this.buildVirtualUnresolvedReferencedColumnNameMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
-				new String[] {column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
-				column,
-				textRange
-			);
-		}
-
-		protected IMessage buildVirtualUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
-				new String[] {this.getPersistentAttributeName(), column.getReferencedColumnName(), column.getReferencedColumnDbTable().getName()},
-				column, 
-				textRange
-			);
-		}
-
-		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			if (this.isPersistentAttributeVirtual()) {
-				return this.buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[0],
-				column,
-				textRange
-			);
-		}
-
-		protected IMessage buildVirtualUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[] {this.getPersistentAttributeName()},
-				column, 
-				textRange
-			);
-		}
-
-		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			if (this.isPersistentAttributeVirtual()) {
-				return this.buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[0],
-				column,
-				textRange
-			);
-		}
-		protected IMessage buildVirtualUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-				new String[] {this.getPersistentAttributeName()},
-				column, 
-				textRange
-			);
+		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new JoinColumnValidator(getPersistentAttribute(), (JoinColumn) column, this, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
 	}
 }

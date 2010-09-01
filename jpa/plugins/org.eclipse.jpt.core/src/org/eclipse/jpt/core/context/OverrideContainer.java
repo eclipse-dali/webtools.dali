@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -20,7 +20,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.3
  */
 public interface OverrideContainer
@@ -73,17 +73,7 @@ public interface OverrideContainer
 		 */
 		Iterator<String> candidateTableNames();		
 		
-		/**
-		 * Return a validation message for the column's table not being valid in the context.
-		 * Use the given text range in the message
-		 */
-		IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange);
-		
-		/**
-		 * Return a validation message for the column's name not resolving on the 
-		 * table either specified or default. Use the given text range in the message
-		 */
-		IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange);
+		JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver);
 	}
 
 }

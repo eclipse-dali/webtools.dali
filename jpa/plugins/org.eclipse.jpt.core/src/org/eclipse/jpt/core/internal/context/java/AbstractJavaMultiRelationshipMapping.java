@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
@@ -32,10 +33,14 @@ import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.JoiningStrategyTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
@@ -724,24 +729,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
 		}
 
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {			
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.MAP_KEY_COLUMN_TABLE_NOT_VALID,
-				new String[] {column.getTable(), column.getName(), getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
-				column,
-				textRange
-			);
-		}
-
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.MAP_KEY_COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()}, 
-				column, 
-				textRange
-			);
+		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new JoiningStrategyTableDescriptionProvider(getPredominantJoiningStrategy()));
 		}
 	}
 
@@ -811,50 +800,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
 		}
 		
-		public IMessage buildColumnUnresolvedNameMessage(BaseOverride override, NamedColumn column, TextRange textRange) {
-			if (override.isVirtual()) {
-				return this.buildVirtualColumnUnresolvedNameMessage(override.getName(), column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-				new String[] {column.getName(), column.getDbTable().getName()}, 
-				column, 
-				textRange
-			);
-		}
-		
-		protected IMessage buildVirtualColumnUnresolvedNameMessage(String overrideName, NamedColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_UNRESOLVED_NAME,
-				new String[] {overrideName, column.getName(), column.getDbTable().getName()},
-				column, 
-				textRange
-			);
-		}
-		
-		public IMessage buildColumnTableNotValidMessage(BaseOverride override, BaseColumn column, TextRange textRange) {
-			if (override.isVirtual()) {
-				return this.buildVirtualColumnTableNotValidMessage(override.getName(), column, textRange);
-			}
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
-				new String[] {column.getTable(), column.getName(), getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
-				column,
-				textRange
-			);
-		}
-		
-		protected IMessage buildVirtualColumnTableNotValidMessage(String overrideName, BaseColumn column, TextRange textRange) {
-			return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY,
-				JpaValidationMessages.VIRTUAL_MAP_KEY_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID,
-				new String[] {overrideName, column.getTable(), column.getName(), getPredominantJoiningStrategy().getColumnTableNotValidDescription()}, 
-				column, 
-				textRange
-			);
+		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new JoiningStrategyTableDescriptionProvider(getPredominantJoiningStrategy()));
 		}
 	}
 }

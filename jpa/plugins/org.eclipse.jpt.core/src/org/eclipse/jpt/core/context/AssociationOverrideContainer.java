@@ -10,8 +10,6 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -20,7 +18,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.3
  */
 public interface AssociationOverrideContainer
@@ -81,25 +79,6 @@ public interface AssociationOverrideContainer
 	{
 		
 		RelationshipReference resolveRelationshipReference(String associationOverrideName);
-		
-		/**
-		 * Return a validation message for the join column's referenced column name not resolving on the 
-		 * table either specified or default. Use the given text range in the message
-		 */
-		IMessage buildColumnUnresolvedReferencedColumnNameMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange);
-		
-		/**
-		 * Return a validation message for multiple join columns and the name 
-		 * is unspecified on the given join column. Use the given text range in the message.
-		 */
-		IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange);
-		
-		/**
-		 * Return a validation message for multiple join columns and the 
-		 * referenced column name is unspecified on the given join column.
-		 * Use the given text range in the message.
-		 */
-		IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(AssociationOverride override, BaseJoinColumn column, TextRange textRange);
 	}
 
 

@@ -10,18 +10,16 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
-import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> extends AbstractJavaNamedColumn<T>
 	implements JavaBaseColumn
@@ -305,24 +303,8 @@ public abstract class AbstractJavaBaseColumn<T extends BaseColumnAnnotation> ext
 		return this.getOwner().getDefaultTableName();
 	}
 
-
-	// ****************** validation ****************
-
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (this.validateTable(messages, astRoot)) {
-			super.validate(messages, reporter, astRoot);
-		}
-	}
-
-	/**
-	 * Return true if the table is valid and no messages are logged
-	 */
-	protected boolean validateTable(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.tableNameIsInvalid()) {
-			messages.add(this.getOwner().buildTableNotValidMessage(this, this.getTableTextRange(astRoot)));
-			return false;
-		}
-		return true;
+	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaBaseColumnTextRangeResolver(this, astRoot);
 	}
 }

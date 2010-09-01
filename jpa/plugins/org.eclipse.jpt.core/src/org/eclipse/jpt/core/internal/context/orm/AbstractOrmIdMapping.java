@@ -27,6 +27,11 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratedValue;
 import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -413,58 +418,9 @@ public abstract class AbstractOrmIdMapping<T extends XmlId>
 		}
 		this.generatorContainer.validate(messages, reporter);
 	}
-
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		if (isVirtual()) {
-			return this.buildVirtualUnresolvedNameMessage(column, textRange);
-		}
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-			new String[] {column.getName(), column.getDbTable().getName()}, 
-			column,
-			textRange
-		);
-	}
-
-	protected IMessage buildVirtualUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_UNRESOLVED_NAME,
-			new String[] {getName(), column.getName(), column.getDbTable().getName()},
-			column, 
-			textRange
-		);
-	}
-
-	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-		if (isVirtual()) {
-			return this.buildVirtualTableNotValidMessage(column, textRange);
-		}
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
-			new String[] {
-				column.getTable(),
-				column.getName(),
-				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
-			column, 
-			textRange
-		);
-	}
 	
-	public IMessage buildVirtualTableNotValidMessage(BaseColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLUMN_TABLE_NOT_VALID,
-			new String[] {
-				getName(),
-				column.getTable(),
-				column.getName(),
-				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY},
-			column, 
-			textRange
-		);
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 	
 	/* TODO - move to AbstractOrmAttributeMapping? */

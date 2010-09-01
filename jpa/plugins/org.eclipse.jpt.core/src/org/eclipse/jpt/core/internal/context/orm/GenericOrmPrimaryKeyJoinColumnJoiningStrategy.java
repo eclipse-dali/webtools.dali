@@ -26,6 +26,8 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
@@ -282,23 +284,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 			return GenericOrmPrimaryKeyJoinColumnJoiningStrategy.this.getValidationTextRange();
 		}
 
-		public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
-		}
-
-		public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnresolvedReferencedColumnNameMessage(BaseJoinColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
-			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
-		}
-
-		public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(BaseJoinColumn column, TextRange textRange) {
+		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
 			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
 		}
 	}

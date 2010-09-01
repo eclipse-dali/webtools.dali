@@ -22,14 +22,15 @@ import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -196,26 +197,7 @@ public abstract class AbstractJavaVersionMapping
 		this.getConverter().validate(messages, reporter, astRoot);
 	}
 
-	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
-			new String[] {
-				column.getTable(),
-				column.getName(),
-				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
-			column,
-			textRange
-		);
-	}
-
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-			new String[] {column.getName(), column.getDbTable().getName()}, 
-			column,
-			textRange
-		);
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 }

@@ -25,6 +25,11 @@ import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
 import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -433,30 +438,11 @@ public abstract class AbstractJavaIdMapping
 		this.getGeneratorContainer().validate(messages, reporter, astRoot);
 		this.getConverter().validate(messages, reporter, astRoot);
 	}
-	
-	public IMessage buildTableNotValidMessage(BaseColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_TABLE_NOT_VALID,
-			new String[] {
-				column.getTable(),
-				column.getName(),
-				JpaValidationDescriptionMessages.NOT_VALID_FOR_THIS_ENTITY}, 
-			column,
-			textRange
-		);
+
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
-	
-	public IMessage buildUnresolvedNameMessage(NamedColumn column, TextRange textRange) {
-		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.COLUMN_UNRESOLVED_NAME,
-			new String[] {column.getName(), column.getDbTable().getName()}, 
-			column,
-			textRange
-		);
-	}
-	
+
 	/* TODO - move to AbstractOrmAttributeMapping? */
 	protected IMessage buildMessage(String msgID, String[] params, TextRange textRange) {
 		PersistentAttribute attribute = getPersistentAttribute();
