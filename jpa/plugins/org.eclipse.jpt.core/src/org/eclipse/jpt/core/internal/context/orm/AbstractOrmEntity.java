@@ -1048,7 +1048,11 @@ public abstract class AbstractOrmEntity
 	protected boolean isAbstractTablePerClass() {
 		return isAbstract() && isTablePerClass();
 	}
-	
+
+	protected boolean isResourceTableSpecified() {
+		return this.table.isResourceSpecified() || (getJavaEntity() != null && getJavaEntity().getTable().isResourceSpecified());
+	}
+
 	/**
 	 * Return whether the entity is a part of a "table per class" 
 	 * inheritance hierarchy.
@@ -1662,7 +1666,7 @@ public abstract class AbstractOrmEntity
 	
 	protected void validateTable(List<IMessage> messages, IReporter reporter) {
 		if (isAbstractTablePerClass()) {
-			if (this.table.isResourceSpecified()) {
+			if (this.isResourceTableSpecified()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -1676,7 +1680,7 @@ public abstract class AbstractOrmEntity
 			return;
 		}
 		if (isSingleTableDescendant()) {
-			if (this.table.isResourceSpecified()) {
+			if (this.isResourceTableSpecified()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
