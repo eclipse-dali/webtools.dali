@@ -33,12 +33,44 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 		return super.buildUnresolvedNameMessage();
 	}
 
+	protected String getVirtualPKJoinColumnUnresolvedNameMessage() {
+		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
+	}
+
 	@Override
 	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
 		if (getColumn().isVirtual()) {
 			return this.buildUnresolvedReferencedColumnNameMessage(this.getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage());
 		}
 		return super.buildUnresolvedReferencedColumnNameMessage();
+	}
+
+	protected String getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage() {
+		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
+	}
+
+	@Override
+	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
+		if (getColumn().isVirtual()) {
+			return this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage());
+		}
+		return super.buildUnspecifiedNameMultipleJoinColumnsMessage();
+	}
+
+	protected String getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage() {
+		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+	}
+
+	@Override
+	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+		if (getColumn().isVirtual()) {
+			return this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
+		}
+		return super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
+	}
+
+	protected String getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
 	@Override
@@ -51,10 +83,6 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 		throw new UnsupportedOperationException();
 	}
 
-	protected String getVirtualPKJoinColumnUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
-	}
-
 	@Override
 	protected String getUnresolvedReferencedColumnNameMessage() {
 		return JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
@@ -63,10 +91,6 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 	@Override
 	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
 		return JpaValidationMessages.PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
-	}
-
-	protected String getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage() {
-		return JpaValidationMessages.VIRTUAL_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
 	}
 
 	@Override

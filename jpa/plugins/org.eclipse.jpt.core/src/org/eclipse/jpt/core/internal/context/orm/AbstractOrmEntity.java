@@ -62,6 +62,7 @@ import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -71,6 +72,7 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaEntity;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.DiscriminatorColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
@@ -1635,6 +1637,9 @@ public abstract class AbstractOrmEntity
 			stream.next().validate(messages, reporter);
 		}
 		validateInheritance(messages, reporter);
+		for (Iterator<OrmPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter);
+		}
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
 		this.attributeOverrideContainer.validate(messages, reporter);
@@ -2008,11 +2013,11 @@ public abstract class AbstractOrmEntity
 		}
 		
 		public TextRange getValidationTextRange() {
-			return null;
+			return AbstractOrmEntity.this.getValidationTextRange();
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
+			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}	
 }

@@ -50,6 +50,7 @@ import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.EntityTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -58,6 +59,7 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.DiscriminatorColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
@@ -1357,6 +1359,9 @@ public abstract class AbstractJavaEntity
 			stream.next().validate(messages, reporter, astRoot);
 		}
 		validateInheritance(messages, reporter, astRoot);
+		for (Iterator<JavaPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter, astRoot);
+		}
 		getGeneratorContainer().validate(messages, reporter, astRoot);
 		getQueryContainer().validate(messages, reporter, astRoot);
 		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
@@ -1721,7 +1726,7 @@ public abstract class AbstractJavaEntity
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("validation not supported yet: bug 148262"); //$NON-NLS-1$
+			return new EntityPrimaryKeyJoinColumnValidator((BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

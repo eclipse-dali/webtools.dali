@@ -121,15 +121,20 @@ public abstract class BaseJoinColumnValidator extends AbstractNamedColumnValidat
 		if (isPersistentAttributeVirtual()) {
 			return this.buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage();
 		}
+		return this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getUnspecifiedNameMultipleJoinColumnsMessage());
+	}
+
+	protected abstract String getUnspecifiedNameMultipleJoinColumnsMessage();
+
+	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage(String message) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			this.getUnspecifiedNameMultipleJoinColumnsMessage(),
+			message,
 			new String[0],
 			this.getColumn(), 
 			this.getTextRangeResolver().getNameTextRange()
 		);
 	}
-	protected abstract String getUnspecifiedNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
@@ -147,16 +152,20 @@ public abstract class BaseJoinColumnValidator extends AbstractNamedColumnValidat
 		if (isPersistentAttributeVirtual()) {
 			return this.buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 		}
+		return this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(this.getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
+	}
+
+	protected abstract String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
+
+	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(String message) {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			this.getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage(),
+			message,
 			new String[0],
 			this.getColumn(), 
 			this.getTextRangeResolver().getReferencedColumnNameTextRange()
 		);
 	}
-
-	protected abstract String getUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 
 	protected IMessage buildVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
