@@ -120,6 +120,7 @@ public class JpaFacetInstallPage
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openNewConnectionWizard();
+						updateConnectionStatus();
 					}
 				}
 			);
