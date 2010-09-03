@@ -10,10 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
-import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -26,8 +25,10 @@ import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.OneToOnePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOneToOne;
@@ -38,6 +39,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	extends AbstractOrmXmlContextNode
@@ -206,9 +208,20 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 			addPrimaryKeyJoinColumn(buildPrimaryKeyJoinColumn(xmlPkJoinColumns.next()));
 		}
 	}
-	
+
+
+	// **************** validation *********************************************
+
 	public TextRange getValidationTextRange() {
 		return this.getRelationshipReference().getValidationTextRange();
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		for (Iterator<OrmPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+			stream.next().validate(messages, reporter);
+		}
 	}
 	
 
@@ -285,7 +298,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("validation not supported yet"); //$NON-NLS-1$
+			return new OneToOnePrimaryKeyJoinColumnValidator(getPersistentAttribute(), (BaseJoinColumn) column, this, (BaseJoinColumnTextRangeResolver) textRangeResolver);
 		}
 	}
 }

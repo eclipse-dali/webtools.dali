@@ -11,35 +11,44 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.internal.context.BaseJoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 
-public class EntityPrimaryKeyJoinColumnValidator extends PrimaryKeyJoinColumnValidator
+public class OneToOnePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinColumnValidator
 {
-
-	public EntityPrimaryKeyJoinColumnValidator(
+	public OneToOnePrimaryKeyJoinColumnValidator(
 				BaseJoinColumn column,
 				BaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(column, owner, textRangeResolver);
 	}
 
+	public OneToOnePrimaryKeyJoinColumnValidator(
+				PersistentAttribute persistentAttribute,
+				BaseJoinColumn column,
+				BaseJoinColumn.Owner owner,
+				BaseJoinColumnTextRangeResolver textRangeResolver) {
+		super(persistentAttribute, column, owner, textRangeResolver);
+	}
+
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		throw new UnsupportedOperationException();
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
-		throw new UnsupportedOperationException();
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
-		throw new UnsupportedOperationException();
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		throw new UnsupportedOperationException();
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 }

@@ -75,6 +75,7 @@ public abstract class BaseJoinColumnValidator extends AbstractNamedColumnValidat
 		if (this.getColumn().getSpecifiedReferencedColumnName() == null && this.joinColumnOwner.joinColumnsSize() > 1) {
 			messages.add(this.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
 		}
+		//bug 315292 is the reason we are only validating if there is a specified referenced column name
 		else if (this.getColumn().getSpecifiedReferencedColumnName() != null) {
 			if (this.getColumn().getReferencedColumnDbTable() != null && ! this.getColumn().isReferencedColumnResolved()) {
 				messages.add(this.buildUnresolvedReferencedColumnNameMessage());
@@ -109,7 +110,7 @@ public abstract class BaseJoinColumnValidator extends AbstractNamedColumnValidat
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			this.getVirtualAttributeUnresolvedReferencedColumnNameMessage(),
-			new String[] {getPersistentAttributeName(), this.getColumn().getReferencedColumnName(), this.namedColumn.getDbTable().getName()},
+			new String[] {getPersistentAttributeName(), this.getColumn().getReferencedColumnName(), this.getColumn().getReferencedColumnDbTable().getName()},
 			this.getColumn(), 
 			this.getTextRangeResolver().getReferencedColumnNameTextRange()
 		);

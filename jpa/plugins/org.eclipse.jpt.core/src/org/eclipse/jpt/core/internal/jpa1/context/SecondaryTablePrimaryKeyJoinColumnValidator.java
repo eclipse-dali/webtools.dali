@@ -57,6 +57,11 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 	}
 	
 	@Override
+	protected String getVirtualAttributeUnresolvedNameMessage() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public IMessage buildUnresolvedReferencedColumnNameMessage() {
 		if (isSecondaryTableVirtual())  {
 			return this.buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage();
@@ -73,6 +78,11 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 			getTextRangeResolver().getReferencedColumnNameTextRange()
 		);
 	}	
+
+	@Override
+	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
+		throw new UnsupportedOperationException();
+	}
 
 	@Override
 	public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
@@ -93,6 +103,11 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 	}
 
 	@Override
+	protected String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
 	public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		if (this.isSecondaryTableVirtual()) {
 			return this.buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
@@ -108,5 +123,10 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 			getColumn(), 
 			getTextRangeResolver().getReferencedColumnNameTextRange()
 		);
+	}
+
+	@Override
+	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
+		throw new UnsupportedOperationException();
 	}
 }
