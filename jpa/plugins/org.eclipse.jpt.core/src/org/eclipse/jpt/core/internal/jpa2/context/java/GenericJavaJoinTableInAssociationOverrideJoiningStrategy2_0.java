@@ -10,7 +10,14 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaJoinTableInAssociationOverrideJoiningStrategy2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
@@ -65,9 +72,19 @@ public class GenericJavaJoinTableInAssociationOverrideJoiningStrategy2_0
 		this.associationOverrideAnnotation = associationOverride;
 		super.update();
 	}
+
+
+	// **************** validation *********************************************
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getRelationshipReference().getValidationTextRange(astRoot);
 	}
 
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return new AssociationOverrideJoinColumnValidator(this.getRelationshipReference().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return new  AssociationOverrideInverseJoinColumnValidator(this.getRelationshipReference().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	}
 }

@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
@@ -161,11 +162,11 @@ public class GenericJavaCollectionTable2_0
 
 		//***** JoinColumn.Owner implementation *******
 		/**
-		 * the default table name is always valid and a specified table name
-		 * is prohibited (which will be handled elsewhere)
+		 * If there is a specified table name it needs to be the same
+		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return false;
+			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
 		}
 
 		/**

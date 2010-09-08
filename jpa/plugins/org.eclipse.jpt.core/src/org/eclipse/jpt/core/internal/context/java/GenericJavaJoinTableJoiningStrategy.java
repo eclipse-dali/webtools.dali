@@ -10,7 +10,14 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.InverseJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -87,5 +94,13 @@ public class GenericJavaJoinTableJoiningStrategy
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getRelationshipReference().getValidationTextRange(astRoot);
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return new JoinColumnValidator(column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return new InverseJoinColumnValidator(column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 }

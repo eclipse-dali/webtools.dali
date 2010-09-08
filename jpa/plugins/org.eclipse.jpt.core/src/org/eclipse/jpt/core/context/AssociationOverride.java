@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+
 /**
  * 
  * 
@@ -40,5 +43,9 @@ public interface AssociationOverride
 		 * will be found in the mapped superclass, not in the owning entity
 		 */
 		RelationshipMapping getRelationshipMapping(String attributeName);
+
+		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 	}
 }

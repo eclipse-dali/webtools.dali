@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmJoinTableInAssociationOverrideJoiningStrategy2_0;
@@ -27,7 +30,12 @@ public class GenericOrmJoinTableInAssociationOverrideJoiningStrategy2_0
 		this.resourceAssociationOverride = xao;
 		this.initialize();
 	}
-	
+
+	@Override
+	public OrmAssociationOverrideRelationshipReference2_0 getParent() {
+		return (OrmAssociationOverrideRelationshipReference2_0) super.getParent();
+	}
+
 	public boolean isOverridableAssociation() {
 		return false;
 	}
@@ -62,7 +70,15 @@ public class GenericOrmJoinTableInAssociationOverrideJoiningStrategy2_0
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.resourceAssociationOverride.getValidationTextRange();
+		TextRange textRange = this.resourceAssociationOverride.getValidationTextRange();
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return getRelationshipReference().buildJoinTableJoinColumnValidator(column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return getRelationshipReference().buildJoinTableInverseJoinColumnValidator(column, owner, textRangeResolver);
+	}
 }

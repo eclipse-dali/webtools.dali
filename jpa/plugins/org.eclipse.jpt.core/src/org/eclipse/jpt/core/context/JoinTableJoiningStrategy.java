@@ -10,6 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+
 /**
  * Joining strategy that uses a join table
  * <p>
@@ -19,7 +22,7 @@ package org.eclipse.jpt.core.context;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.2
  * 
  * @see {@link RelationshipMapping}
@@ -49,4 +52,9 @@ public interface JoinTableJoiningStrategy
 	String getJoinTableDefaultName();
 
 	boolean shouldValidateAgainstDatabase();
+
+	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
 }

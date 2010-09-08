@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -79,6 +81,10 @@ public interface AssociationOverrideContainer
 	{
 		
 		RelationshipReference resolveRelationshipReference(String associationOverrideName);
+
+		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 	}
 
 

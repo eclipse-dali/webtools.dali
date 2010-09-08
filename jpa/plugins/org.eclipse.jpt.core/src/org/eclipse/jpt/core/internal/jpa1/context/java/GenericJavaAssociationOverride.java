@@ -55,6 +55,11 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 	public AssociationOverrideAnnotation getOverrideAnnotation() {
 		return (AssociationOverrideAnnotation) super.getOverrideAnnotation();
 	}
+
+	@Override
+	public JavaAssociationOverrideContainer getParent() {
+		return (JavaAssociationOverrideContainer) super.getParent();
+	}
 	
 	@Override
 	public JavaAssociationOverride.Owner getOwner() {

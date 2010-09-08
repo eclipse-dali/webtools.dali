@@ -19,11 +19,11 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
+public class AssociationOverrideInverseJoinColumnValidator extends JoinColumnValidator
 {
 	private final AssociationOverride override;
 
-	public AssociationOverrideJoinColumnValidator(
+	public AssociationOverrideInverseJoinColumnValidator(
 				AssociationOverride override,
 				JoinColumn column,
 				JoinColumn.Owner joinColumnOwner,
@@ -33,7 +33,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 		this.override = override;
 	}
 
-	public AssociationOverrideJoinColumnValidator(
+	public AssociationOverrideInverseJoinColumnValidator(
 				PersistentAttribute persistentAttribute,
 				AssociationOverride override,
 				JoinColumn column,
@@ -60,7 +60,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 	protected IMessage buildVirtualOverrideUnresolvedNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME,
+			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME,
 			new String[] {this.override.getName(), this.getColumn().getName(), this.getColumn().getDbTable().getName()},
 			this.getColumn(), 
 			this.getTextRangeResolver().getNameTextRange()
@@ -84,7 +84,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_NAME;
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 	protected IMessage buildVirtualOverrideUnresolvedReferencedColumnNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
 			new String[] {this.override.getName(), this.getColumn().getReferencedColumnName(), this.getColumn().getReferencedColumnDbTable().getName()},
 			this.getColumn(), 
 			this.getTextRangeResolver().getReferencedColumnNameTextRange()
@@ -122,7 +122,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 	@Override
 	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME;
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_UNRESOLVED_NAME;
 	}
 
 	@Override
@@ -136,7 +136,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 	protected IMessage buildVirtualOverrideUnspecifiedNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS,
 				new String[] {this.override.getName()},
 			this.getColumn(), 
 			this.getTextRangeResolver().getNameTextRange()
@@ -156,7 +156,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedNameMultipleJoinColumnsMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS;
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 	protected IMessage buildVirtualOverrideUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+			JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS,
 				new String[] {this.override.getName()},
 			this.getColumn(), 
 			this.getTextRangeResolver().getReferencedColumnNameTextRange()
@@ -190,7 +190,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 	@Override
 	protected String getVirtualAttributeUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
+		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_INVERSE_JOIN_COLUMNS;
 	}
 
 
@@ -203,7 +203,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 		@Override
 		public IMessage buildTableNotValidMessage() {
-			if (AssociationOverrideJoinColumnValidator.this.override.isVirtual()) {
+			if (AssociationOverrideInverseJoinColumnValidator.this.override.isVirtual()) {
 				return this.buildVirtualOverrideColumnTableNotValidMessage();
 			}
 			return super.buildTableNotValidMessage();
@@ -214,7 +214,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 				IMessage.HIGH_SEVERITY,
 				getVirtualOverrideColumnTableNotValidMessage(),
 				new String[] {
-					AssociationOverrideJoinColumnValidator.this.override.getName(),
+					AssociationOverrideInverseJoinColumnValidator.this.override.getName(),
 					this.getColumn().getTable(),
 					this.getColumn().getName(),
 					this.getColumnTableDescriptionMessage()},
@@ -224,7 +224,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 		}
 
 		protected String getVirtualOverrideColumnTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID;
+			return JpaValidationMessages.VIRTUAL_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 
 		@Override
@@ -234,7 +234,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 				this.getVirtualAttributeColumnTableNotValidMessage(),
 				new String[] {
 					getPersistentAttributeName(),
-					AssociationOverrideJoinColumnValidator.this.override.getName(),
+					AssociationOverrideInverseJoinColumnValidator.this.override.getName(),
 					getColumn().getTable(),
 					getColumn().getName(),
 					this.getColumnTableDescriptionMessage()},
@@ -245,7 +245,7 @@ public class AssociationOverrideJoinColumnValidator extends JoinColumnValidator
 
 		@Override
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
-			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_JOIN_COLUMN_TABLE_NOT_VALID;
+			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ASSOCIATION_OVERRIDE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
 	}
 }

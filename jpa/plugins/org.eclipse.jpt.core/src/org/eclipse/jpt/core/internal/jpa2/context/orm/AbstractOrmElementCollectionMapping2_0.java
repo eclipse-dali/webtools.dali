@@ -28,6 +28,7 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
@@ -1431,7 +1432,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator(getPersistentAttribute(), (AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
-		
+
+		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+			throw new UnsupportedOperationException("An element collection with containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+		}
+
+		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+			throw new UnsupportedOperationException("An element collection with containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+		}
+
 		public TextRange getValidationTextRange() {
 			return AbstractOrmElementCollectionMapping2_0.this.getValidationTextRange();
 		}

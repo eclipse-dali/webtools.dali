@@ -10,8 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -75,5 +79,13 @@ public class NullOrmJoinTableJoiningStrategy
 	
 	public TextRange getValidationTextRange() {
 		return null;
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		throw new UnsupportedOperationException();
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		throw new UnsupportedOperationException();
 	}
 }

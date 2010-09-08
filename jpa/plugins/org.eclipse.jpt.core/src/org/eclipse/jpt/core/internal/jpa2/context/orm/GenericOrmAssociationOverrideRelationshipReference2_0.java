@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,8 +11,12 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
+import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
@@ -67,17 +71,15 @@ public class GenericOrmAssociationOverrideRelationshipReference2_0 extends Abstr
 		}
 		return this.joinTableJoiningStrategy;
 	}
-	
+
+
 	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-//		if (this.connectionProfileIsActive()) {
-//			this.validateJoinTable(messages, astRoot);
-//		}
+		this.joinTableJoiningStrategy.validate(messages, reporter);
 	}
-
 
 
 	// **************** join table *******************************************
@@ -101,12 +103,20 @@ public class GenericOrmAssociationOverrideRelationshipReference2_0 extends Abstr
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {
-		return getAssociationOverride().isVirtual();
+		return getAssociationOverride().isVirtual() && this.usesJoinTableJoiningStrategy();
 	}
 
 	@Override
 	public void setJoinColumnJoiningStrategy() {
 		super.setJoinColumnJoiningStrategy();
 		this.joinTableJoiningStrategy.removeStrategy();
+	}
+
+	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return getAssociationOverride().getOwner().buildJoinTableJoinColumnValidator(getAssociationOverride(), column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
+		return getAssociationOverride().getOwner().buildJoinTableInverseJoinColumnValidator(getAssociationOverride(), column, owner, textRangeResolver);
 	}
 }

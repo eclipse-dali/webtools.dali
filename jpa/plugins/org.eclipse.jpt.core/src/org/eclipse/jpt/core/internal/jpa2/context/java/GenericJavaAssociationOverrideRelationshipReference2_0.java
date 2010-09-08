@@ -81,22 +81,18 @@ public class GenericJavaAssociationOverrideRelationshipReference2_0 extends Abst
 		}
 		return this.joinTableJoiningStrategy;
 	}
-	
+
+
 	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		//this is not yet correctly supported so I am going to comment it out
-		//I end up with join-table validation when the association is for join-columns.
-		//bug 190319 covers the use case for validation of join tables in association overrides 
-		//this.joinTableJoiningStrategy.validate(messages, reporter, astRoot);
+		this.joinTableJoiningStrategy.validate(messages, reporter, astRoot);
 	}
 
 
-
 	// **************** join columns *******************************************
-	
 
 	public JavaJoinTableInAssociationOverrideJoiningStrategy2_0 getJoinTableJoiningStrategy() {
 		return this.joinTableJoiningStrategy;
@@ -116,7 +112,7 @@ public class GenericJavaAssociationOverrideRelationshipReference2_0 extends Abst
 	}
 	
 	public boolean mayHaveDefaultJoinTable() {
-		return getAssociationOverride().isVirtual();
+		return getAssociationOverride().isVirtual() && this.usesJoinTableJoiningStrategy();
 	}
 
 	@Override
