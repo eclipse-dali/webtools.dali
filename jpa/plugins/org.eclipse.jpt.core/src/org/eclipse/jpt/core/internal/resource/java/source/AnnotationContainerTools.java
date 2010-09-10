@@ -160,17 +160,20 @@ public final class AnnotationContainerTools {
 
 	/**
 	 * Add whatever annotations are represented by the specified expression to
-	 * the specified list. Add null to the list for any non-annotation expression.
+	 * the specified list. Do not add null to the list for any non-annotation expression.
 	 */
 	private static void addAstAnnotationsTo(Expression expression, String annotationName, ArrayList<Annotation> astAnnotations) {
 		if (expression == null) {
-			astAnnotations.add(null);  // not sure how we would get here...
+			//do not add null to the list, not sure how we would get here...
 		}
 		else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
 			addAstAnnotationsTo((ArrayInitializer) expression, annotationName, astAnnotations);
 		}
 		else {
-			astAnnotations.add(getAstAnnotation_(expression, annotationName));
+			Annotation astAnnotation = getAstAnnotation_(expression, annotationName);
+			if (astAnnotation != null) {
+				astAnnotations.add(astAnnotation);
+			}
 		}
 	}
 
@@ -178,7 +181,10 @@ public final class AnnotationContainerTools {
 		@SuppressWarnings("unchecked")
 		List<Expression> expressions = arrayInitializer.expressions();
 		for (Expression expression : expressions) {
-			astAnnotations.add(getAstAnnotation(expression, annotationName));
+			Annotation astAnnotation = getAstAnnotation(expression, annotationName);
+			if (astAnnotation != null) {
+				astAnnotations.add(astAnnotation);
+			}
 		}
 	}
 

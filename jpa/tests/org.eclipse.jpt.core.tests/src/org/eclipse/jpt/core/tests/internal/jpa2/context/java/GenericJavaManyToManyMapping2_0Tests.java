@@ -1199,6 +1199,7 @@ public class GenericJavaManyToManyMapping2_0Tests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
 		attributeResource.moveAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 

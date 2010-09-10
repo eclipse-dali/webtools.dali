@@ -2012,7 +2012,8 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
 		attributeResource.moveAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		
+		getJpaProject().synchronizeContextModel();
+
 		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 
 		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -2033,6 +2034,7 @@ public class EclipseLink2_0JavaElementCollectionMappingTests
 		
 		
 		attributeResource.moveAnnotation(3, 2, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 

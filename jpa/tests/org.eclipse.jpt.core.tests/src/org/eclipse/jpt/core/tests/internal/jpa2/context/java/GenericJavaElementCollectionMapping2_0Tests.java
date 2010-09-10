@@ -2010,7 +2010,8 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		
 		attributeResource.moveAnnotation(1, 0, AttributeOverridesAnnotation.ANNOTATION_NAME);
-		
+		getJpaProject().synchronizeContextModel();
+
 		Iterator<NestableAnnotation> attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 
 		assertEquals("key.state.name", ((AttributeOverrideAnnotation) attributeOverrides.next()).getName());
@@ -2031,6 +2032,7 @@ public class GenericJavaElementCollectionMapping2_0Tests extends Generic2_0Conte
 		
 		
 		attributeResource.moveAnnotation(3, 2, AttributeOverridesAnnotation.ANNOTATION_NAME);
+		getJpaProject().synchronizeContextModel();
 		
 		attributeOverrides = attributeResource.annotations(AttributeOverrideAnnotation.ANNOTATION_NAME, AttributeOverridesAnnotation.ANNOTATION_NAME);
 

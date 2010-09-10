@@ -108,7 +108,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERIES);
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID, JPA.NAMED_QUERIES, JPA.NAMED_QUERY);
 			}
 			@Override
 			public void appendTypeAnnotationTo(StringBuilder sb) {
@@ -1198,6 +1198,7 @@ public class JavaEntityTests extends ContextModelTestCase
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.removeAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		getJpaProject().synchronizeContextModel();
 		
 		secondaryTables = getJavaEntity().secondaryTables();
 		assertEquals(2, getJavaEntity().secondaryTablesSize());
@@ -1205,6 +1206,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		assertEquals("baz", secondaryTables.next().getSpecifiedName());
 	
 		typeResource.removeAnnotation(0, JPA.SECONDARY_TABLE, JPA.SECONDARY_TABLES);
+		getJpaProject().synchronizeContextModel();
 		
 		secondaryTables = getJavaEntity().secondaryTables();
 		assertEquals(1, getJavaEntity().secondaryTablesSize());
@@ -2856,7 +2858,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaEntity entity = getJavaEntity();
-		assertEquals(2, entity.getQueryContainer().namedQueriesSize());
+		assertEquals(1, entity.getQueryContainer().namedQueriesSize());
 	}
 
 	public void testRemoveNamedQuery() throws Exception {
