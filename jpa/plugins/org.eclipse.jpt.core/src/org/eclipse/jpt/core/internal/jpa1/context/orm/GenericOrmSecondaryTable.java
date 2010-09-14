@@ -28,8 +28,6 @@ import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
@@ -59,8 +57,8 @@ public class GenericOrmSecondaryTable
 	protected final OrmBaseJoinColumn.Owner joinColumnOwner;
 
 
-	public GenericOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable) {
-		super(parent);
+	public GenericOrmSecondaryTable(OrmEntity parent, Owner owner, XmlSecondaryTable xmlSecondaryTable) {
+		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 		this.initialize(xmlSecondaryTable);
 	}
@@ -297,55 +295,21 @@ public class GenericOrmSecondaryTable
 
 	// ********** validation **********
 
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		if (this.connectionProfileIsActive()) {
-			this.validateAgainstDatabase(messages);
-		}
-		for (Iterator<OrmPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
-			stream.next().validate(messages, reporter);
-		}
+	public boolean shouldValidateAgainstDatabase() {
+		return this.connectionProfileIsActive();
 	}
 
-	protected void validateAgainstDatabase(List<IMessage> messages) {
-		if ( ! this.hasResolvedCatalog()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getName()}, 
-					this,
-					this.getCatalogTextRange()
-				)
-			);
-			return;
-		}
-		
-		if ( ! this.hasResolvedSchema()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getName()}, 
-					this,
-					this.getSchemaTextRange()
-				)
-			);
-			return;
-		}
-		
-		if ( ! this.isResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
-					new String[] {this.getName()}, 
-					this, 
-					this.getNameTextRange()
-				)
-			);
-			return;
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
+
+		//join column validation will handle the check for whether to validate against the database
+		//some validation messages are not database specific. If the database validation for the
+		//table fails we will stop there and not validate the join columns at all
+		if (continueValidating) {
+			for (Iterator<OrmPrimaryKeyJoinColumn> stream = this.primaryKeyJoinColumns(); stream.hasNext(); ) {
+				stream.next().validate(messages, reporter);
+			}
 		}
 	}
 

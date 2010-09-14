@@ -22,11 +22,11 @@ import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.1
+ * @version 3.0
  * @since 2.0
  */
 public interface JavaSecondaryTable
-	extends SecondaryTable, JavaJpaContextNode
+	extends SecondaryTable, JavaBaseTable
 {
 
 	void initialize(SecondaryTableAnnotation secondaryTableResource);
@@ -49,10 +49,5 @@ public interface JavaSecondaryTable
 	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
-	
-	JavaUniqueConstraint addUniqueConstraint(int index);
 
 }

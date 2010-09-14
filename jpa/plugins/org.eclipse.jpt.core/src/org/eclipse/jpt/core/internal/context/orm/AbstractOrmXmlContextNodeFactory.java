@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -210,20 +211,20 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmPersistentAttribute(parent, owner, resourceMapping);
 	}
 	
-	public OrmTable buildOrmTable(OrmEntity parent) {
-		return new GenericOrmTable(parent);
+	public OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner) {
+		return new GenericOrmTable(parent, owner);
 	}
 	
-	public OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable) {
-		return new GenericOrmSecondaryTable(parent, xmlSecondaryTable);
+	public OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, Table.Owner owner, XmlSecondaryTable xmlSecondaryTable) {
+		return new GenericOrmSecondaryTable(parent, owner, xmlSecondaryTable);
 	}
 	
 	public OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn) {
 		return new GenericOrmPrimaryKeyJoinColumn(parent, owner, resourcePkJoinColumn);
 	}
 	
-	public OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTable resourceJoinTable) {
-		return new GenericOrmJoinTable(parent, resourceJoinTable);
+	public OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, Table.Owner owner, XmlJoinTable resourceJoinTable) {
+		return new GenericOrmJoinTable(parent, owner, resourceJoinTable);
 	}
 	
 	public OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn) {
@@ -389,7 +390,7 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new NullOrmOrphanRemoval2_0(parent);
 	}
 	
-	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, XmlCollectionTable resource) {
+	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, Table.Owner owner, XmlCollectionTable resource) {
 		throw new UnsupportedOperationException();
 	}
 	

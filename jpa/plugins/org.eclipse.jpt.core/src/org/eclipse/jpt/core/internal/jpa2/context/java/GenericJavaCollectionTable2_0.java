@@ -25,7 +25,6 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaReferenceTable;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
@@ -41,8 +40,8 @@ public class GenericJavaCollectionTable2_0
 	implements JavaCollectionTable2_0
 {
 
-	public GenericJavaCollectionTable2_0(JavaElementCollectionMapping2_0 parent) {
-		super(parent);
+	public GenericJavaCollectionTable2_0(JavaElementCollectionMapping2_0 parent, Owner owner) {
+		super(parent, owner);
 	}
 
 	@Override
@@ -88,24 +87,8 @@ public class GenericJavaCollectionTable2_0
 
 	// ********** validation **********
 
-	@Override
-	protected boolean shouldValidateAgainstDatabase() {
+	public boolean shouldValidateAgainstDatabase() {
 		return getParent().shouldValidateAgainstDatabase();
-	}
-
-	@Override
-	protected String getUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
-	}
-	
-	@Override
-	protected String getUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
-	}
-	
-	@Override
-	protected String getUnresolvedNameMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
 	}
 
 

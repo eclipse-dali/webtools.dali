@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -57,14 +58,18 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.DiscriminatorColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.SecondaryTableValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -155,7 +160,7 @@ public abstract class AbstractJavaEntity
 	protected AbstractJavaEntity(JavaPersistentType parent) {
 		super(parent);
 		this.idClassReference = buildIdClassReference();
-		this.table = this.getJpaFactory().buildJavaTable(this);
+		this.table = this.getJpaFactory().buildJavaTable(this, new TableOwner());
 		this.discriminatorColumn = buildJavaDiscriminatorColumn();
 		this.specifiedSecondaryTables = new ArrayList<JavaSecondaryTable>();
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
@@ -487,7 +492,7 @@ public abstract class AbstractJavaEntity
 	}
 	
 	public JavaSecondaryTable addSpecifiedSecondaryTable(int index) {
-		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
+		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this, new SecondaryTableOwner());
 		this.specifiedSecondaryTables.add(index, secondaryTable);
 		SecondaryTableAnnotation secondaryTableResource = 
 				(SecondaryTableAnnotation) this.javaResourcePersistentType.
@@ -1259,7 +1264,7 @@ public abstract class AbstractJavaEntity
 	}
 
 	protected JavaSecondaryTable buildSecondaryTable(SecondaryTableAnnotation secondaryTableResource) {
-		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this);
+		JavaSecondaryTable secondaryTable = getJpaFactory().buildJavaSecondaryTable(this, new SecondaryTableOwner());
 		secondaryTable.initialize(secondaryTableResource);
 		return secondaryTable;
 	}
@@ -1522,6 +1527,18 @@ public abstract class AbstractJavaEntity
 		return getResourceInheritance().getStrategyTextRange(astRoot);
 	}
 	
+
+	protected class TableOwner implements Table.Owner {
+		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+			return new TableValidator(table, textRangeResolver);
+		}
+	}
+
+	protected class SecondaryTableOwner implements Table.Owner {
+		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+			return new SecondaryTableValidator((SecondaryTable) table, textRangeResolver);
+		}
+	}
 	
 	// ********** association override container owner **********
 
@@ -1590,6 +1607,10 @@ public abstract class AbstractJavaEntity
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		}
+
+		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinTableValidator(override, (JoinTable) table, textRangeResolver);
 		}
 	}
 	

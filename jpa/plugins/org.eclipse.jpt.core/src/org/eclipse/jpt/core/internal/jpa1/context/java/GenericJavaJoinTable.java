@@ -29,7 +29,6 @@ import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -57,8 +56,8 @@ public class GenericJavaJoinTable
 	protected final JavaJoinColumn.Owner inverseJoinColumnOwner;
 
 
-	public GenericJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
-		super(parent);
+	public GenericJavaJoinTable(JavaJoinTableJoiningStrategy parent, Owner owner) {
+		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 	}
 
@@ -309,24 +308,8 @@ public class GenericJavaJoinTable
 		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter, astRoot);
 	}
 
-	@Override
-	protected boolean shouldValidateAgainstDatabase() {
+	public boolean shouldValidateAgainstDatabase() {
 		return getParent().shouldValidateAgainstDatabase();
-	}
-
-	@Override
-	protected String getUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
-	}
-	
-	@Override
-	protected String getUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
-	}
-	
-	@Override
-	protected String getUnresolvedNameMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
 	}
 
 

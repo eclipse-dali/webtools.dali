@@ -36,8 +36,9 @@ public abstract class AbstractPersistentAttributeValidator
 	}
 
 
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		this.validateAttribute(messages);
+		return true;
 	}
 
 	protected abstract void validateAttribute(List<IMessage> messages);

@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -90,13 +91,13 @@ public interface OrmXmlContextNodeFactory
 	
 	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping);
 	
-	OrmTable buildOrmTable(OrmEntity parent);
+	OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner);
 	
-	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, XmlSecondaryTable xmlSecondaryTable);
+	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, Table.Owner owner, XmlSecondaryTable xmlSecondaryTable);
 	
 	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn);
 	
-	OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTable resourceJoinTable);
+	OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, Table.Owner owner, XmlJoinTable resourceJoinTable);
 	
 	OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
 	

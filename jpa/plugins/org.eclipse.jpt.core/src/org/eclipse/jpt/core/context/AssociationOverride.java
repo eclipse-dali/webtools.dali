@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context;
 
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 
 /**
  * 
@@ -47,5 +48,7 @@ public interface AssociationOverride
 		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 
 		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
+
+		JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
 	}
 }

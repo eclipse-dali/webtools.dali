@@ -11,14 +11,18 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.InverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.JoinTableValidator;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTableMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -88,5 +92,9 @@ public class GenericOrmJoinTableJoiningStrategy
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return new InverseJoinColumnValidator(this.getPersistentAttribute(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+	}
+
+	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		return new JoinTableValidator(getPersistentAttribute(), (JoinTable) table, textRangeResolver);
 	}
 }

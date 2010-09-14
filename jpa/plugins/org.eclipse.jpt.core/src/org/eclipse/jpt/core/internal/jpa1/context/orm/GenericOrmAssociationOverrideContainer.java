@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -29,11 +30,11 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
@@ -355,7 +356,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 			return getOwner().getDefaultTableName();
 		}
 
-		public Table getDbTable(String tableName) {
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getOwner().getDbTable(tableName);
 		}
 
@@ -369,6 +370,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return getOwner().buildJoinTableInverseJoinColumnValidator(override, column, owner, textRangeResolver);
+		}
+
+		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
+			return getOwner().buildTableValidator(override, table, textRangeResolver);
 		}
 	}
 }

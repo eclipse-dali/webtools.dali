@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaTable
 	extends AbstractJavaTable
@@ -27,8 +21,8 @@ public class GenericJavaTable
 {
 	protected JavaResourcePersistentMember resourcePersistentMember;
 
-	public GenericJavaTable(JavaEntity parent) {
-		super(parent);
+	public GenericJavaTable(JavaEntity parent, Owner owner) {
+		super(parent, owner);
 	}
 	
 	public void initialize(JavaResourcePersistentMember pr) {
@@ -101,53 +95,8 @@ public class GenericJavaTable
 
 
 	//******************* validation **********************
-	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		if (this.connectionProfileIsActive()) {
-			this.validateAgainstDatabase(messages, astRoot);
-		}
-	}
 
-	protected void validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getName()}, 
-					this, 
-					this.getCatalogTextRange(astRoot)
-				)
-			);
-			return;
-		}
-		
-		if ( ! this.hasResolvedSchema()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getName()}, 
-					this, 
-					this.getSchemaTextRange(astRoot)
-				)
-			);
-			return;
-		}
-		
-		if ( ! this.isResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.TABLE_UNRESOLVED_NAME,
-					new String[] {this.getName()}, 
-					this, 
-					this.getNameTextRange(astRoot)
-				)
-			);
-		}
+	public boolean shouldValidateAgainstDatabase() {
+		return this.connectionProfileIsActive();
 	}
-
 }

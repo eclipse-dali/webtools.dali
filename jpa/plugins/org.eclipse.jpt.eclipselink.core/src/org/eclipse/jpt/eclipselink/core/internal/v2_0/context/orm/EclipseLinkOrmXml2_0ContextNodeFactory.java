@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
@@ -148,8 +149,8 @@ public class EclipseLinkOrmXml2_0ContextNodeFactory extends EclipseLinkOrmXmlCon
 	}
 
 	@Override
-	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, XmlCollectionTable resource) {
-		return new GenericOrmCollectionTable2_0(parent, resource);
+	public OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, Table.Owner owner, XmlCollectionTable resource) {
+		return new GenericOrmCollectionTable2_0(parent, owner, resource);
 	}
 
 	@Override

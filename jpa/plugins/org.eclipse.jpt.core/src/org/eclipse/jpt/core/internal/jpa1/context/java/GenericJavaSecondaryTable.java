@@ -29,8 +29,6 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -57,8 +55,8 @@ public class GenericJavaSecondaryTable
 
 	protected SecondaryTableAnnotation resourceSecondaryTable;
 	
-	public GenericJavaSecondaryTable(JavaEntity parent) {
-		super(parent);
+	public GenericJavaSecondaryTable(JavaEntity parent, Owner owner) {
+		super(parent, owner);
 		this.specifiedPrimaryKeyJoinColumns = new ArrayList<JavaPrimaryKeyJoinColumn>();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
 	}
@@ -287,11 +285,8 @@ public class GenericJavaSecondaryTable
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		boolean continueValidating = true;
-		if (this.connectionProfileIsActive()) {
-			continueValidating = this.validateAgainstDatabase(messages, astRoot);
-		}
+		boolean continueValidating = this.buildTableValidator(astRoot).validate(messages, reporter);
+
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
@@ -302,46 +297,8 @@ public class GenericJavaSecondaryTable
 		}
 	}
 
-	protected boolean validateAgainstDatabase(List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_CATALOG,
-					new String[] {this.getCatalog(), this.getName()}, 
-					this, 
-					this.getCatalogTextRange(astRoot)
-				)
-			);
-			return false;
-		}
-		
-		if ( ! this.hasResolvedSchema()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_SCHEMA,
-					new String[] {this.getSchema(), this.getName()}, 
-					this, 
-					this.getSchemaTextRange(astRoot)
-				)
-			);
-			return false;
-		}
-		
-		if ( ! this.isResolved()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					JpaValidationMessages.SECONDARY_TABLE_UNRESOLVED_NAME,
-					new String[] {this.getName()}, 
-					this, 
-					this.getNameTextRange(astRoot)
-				)
-			);
-			return false;
-		}
-		return true;
+	public boolean shouldValidateAgainstDatabase() {
+		return this.connectionProfileIsActive();
 	}
 
 

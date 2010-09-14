@@ -13,6 +13,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProject.Config;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
@@ -158,8 +159,8 @@ public class GenericJpaFactory2_0
 	}
 	
 	@Override
-	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent) {
-		return new GenericJavaCollectionTable2_0(parent);
+	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner) {
+		return new GenericJavaCollectionTable2_0(parent, owner);
 	}
 
 	@Override

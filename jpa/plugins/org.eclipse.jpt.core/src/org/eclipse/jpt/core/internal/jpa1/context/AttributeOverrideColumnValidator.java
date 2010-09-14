@@ -127,6 +127,22 @@ public class AttributeOverrideColumnValidator extends NamedColumnValidator
 		}
 		
 		@Override
+		protected IMessage buildVirtualAttributeTableNotValidMessage() {
+			return DefaultJpaValidationMessages.buildMessage(
+				IMessage.HIGH_SEVERITY,
+				this.getVirtualAttributeColumnTableNotValidMessage(),
+				new String[] {
+					getPersistentAttributeName(),
+					AttributeOverrideColumnValidator.this.override.getName(),
+					getColumn().getTable(),
+					getColumn().getName(),
+					this.getColumnTableDescriptionMessage()},
+				getColumn(), 
+				getTextRangeResolver().getTableTextRange()
+			);
+		}
+
+		@Override
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
 			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_ATTRIBUTE_OVERRIDE_COLUMN_TABLE_NOT_VALID;
 		}

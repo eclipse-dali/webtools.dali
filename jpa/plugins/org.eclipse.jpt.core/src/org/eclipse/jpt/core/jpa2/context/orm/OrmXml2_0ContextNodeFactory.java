@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
@@ -60,5 +61,5 @@ public interface OrmXml2_0ContextNodeFactory
 	
 	OrmOrderColumn2_0 buildOrmOrderColumn(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner);
 	
-	OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, XmlCollectionTable resource);
+	OrmCollectionTable2_0 buildOrmCollectionTable(OrmElementCollectionMapping2_0 parent, Table.Owner owner, XmlCollectionTable resource);
 }

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
@@ -112,4 +114,17 @@ public interface Table
 	 */
 	boolean isResourceSpecified();
 
+	/**
+	 * Return when this table should be validated in its given context
+	 */
+	boolean shouldValidateAgainstDatabase();
+
+	/**
+	 * interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides)
+	 */
+	interface Owner
+	{
+		JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver);
+	}
 }

@@ -12,11 +12,15 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaJoinTableInAssociationOverrideJoiningStrategy2_0;
@@ -33,7 +37,11 @@ public class GenericJavaJoinTableInAssociationOverrideJoiningStrategy2_0
 	public GenericJavaJoinTableInAssociationOverrideJoiningStrategy2_0(JavaAssociationOverrideRelationshipReference2_0 parent) {
 		super(parent);
 	}
-	
+
+	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		return new AssociationOverrideJoinTableValidator(getRelationshipReference().getAssociationOverride(), (JoinTable) table, textRangeResolver);
+	}
+
 	public boolean isOverridableAssociation() {
 		return false;
 	}

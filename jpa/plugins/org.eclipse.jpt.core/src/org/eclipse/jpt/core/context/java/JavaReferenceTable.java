@@ -21,11 +21,11 @@ import org.eclipse.jpt.core.context.ReferenceTable;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.3
  */
 public interface JavaReferenceTable
-	extends ReferenceTable, JavaJpaContextNode
+	extends ReferenceTable, JavaBaseTable
 {
 
 	// ********** covariant overrides **********
@@ -39,10 +39,5 @@ public interface JavaReferenceTable
 	ListIterator<JavaJoinColumn> specifiedJoinColumns();
 
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
-
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
-
-	JavaUniqueConstraint addUniqueConstraint(int index);
 
 }

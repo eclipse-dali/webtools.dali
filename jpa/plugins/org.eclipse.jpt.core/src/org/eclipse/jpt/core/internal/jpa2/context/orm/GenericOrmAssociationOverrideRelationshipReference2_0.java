@@ -13,10 +13,12 @@ import java.util.List;
 import org.eclipse.jpt.core.context.AssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
@@ -118,5 +120,9 @@ public class GenericOrmAssociationOverrideRelationshipReference2_0 extends Abstr
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return getAssociationOverride().getOwner().buildJoinTableInverseJoinColumnValidator(getAssociationOverride(), column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		return getAssociationOverride().getOwner().buildTableValidator(getAssociationOverride(), table, textRangeResolver);
 	}
 }

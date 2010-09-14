@@ -10,14 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
-import java.util.List;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.jpt.core.utility.TextRange;
 
-public interface JptValidator
+/**
+ * Interface to resolve text ranges on named columns
+ */
+public interface TableTextRangeResolver
 {
-	/**
-	 * Return a boolean used to determine whether to continue validating
-	 */
-	boolean validate(List<IMessage> messages, IReporter reporter);
+	TextRange getNameTextRange();
+
+	TextRange getSchemaTextRange();
+
+	TextRange getCatalogTextRange();
 }

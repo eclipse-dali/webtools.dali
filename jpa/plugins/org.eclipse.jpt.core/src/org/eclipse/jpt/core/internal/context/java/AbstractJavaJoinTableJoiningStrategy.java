@@ -16,12 +16,12 @@ import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -29,7 +29,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaJoinTableJoiningStrategy 
 	extends AbstractJavaJpaContextNode
-	implements JavaJoinTableJoiningStrategy
+	implements JavaJoinTableJoiningStrategy, Table.Owner
 {
 	protected JavaJoinTable joinTable;
 	
@@ -56,7 +56,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 		return getJoinTable().getName();
 	}
 
-	public Table getDbTable(String tableName) {
+	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 		return getJoinTable().getDbTable();
 	}
 
@@ -74,7 +74,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
+			this.joinTable = this.buildJavaJoinTable();
 			addAnnotation();
 			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
 		}
@@ -127,7 +127,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	public void initialize() {
 		JoinTableAnnotation annotation = getAnnotation();
 		if (mayHaveJoinTable()) {
-			this.joinTable = getJpaFactory().buildJavaJoinTable(this);
+			this.joinTable = this.buildJavaJoinTable();
 			this.joinTable.initialize(annotation);
 		}
 	}
@@ -136,7 +136,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 		JoinTableAnnotation annotation = getAnnotation();
 		if (mayHaveJoinTable()) {
 			if (this.joinTable == null) {
-				setJoinTable_(getJpaFactory().buildJavaJoinTable(this));
+				setJoinTable_(this.buildJavaJoinTable());
 			}
 			this.joinTable.update(annotation);
 		}
@@ -147,7 +147,12 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 			}
 		}
 	}
-	
+
+	protected JavaJoinTable buildJavaJoinTable() {
+		return getJpaFactory().buildJavaJoinTable(this, this);
+	}
+
+
 	// **************** Java completion proposals ******************************
 	
 	@Override
@@ -169,5 +174,4 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 			this.joinTable.validate(messages, reporter, astRoot);
 		}
 	}
-
 }

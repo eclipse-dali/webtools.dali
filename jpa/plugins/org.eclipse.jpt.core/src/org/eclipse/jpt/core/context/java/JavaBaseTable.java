@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * 
@@ -21,17 +24,22 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.0
- * @since 2.0
+ * @since 3.0
  */
-public interface JavaTable
-	extends JavaBaseTable
+public interface JavaBaseTable
+	extends Table, JavaJpaContextNode
 {
-	void initialize(JavaResourcePersistentMember jrpm);
-	
-	/**
-	 * Update the JavaTable context model object to match the JavaResourcePersistentMember 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentMember jrpm);
 
+	TextRange getNameTextRange(CompilationUnit astRoot);
+
+	TextRange getSchemaTextRange(CompilationUnit astRoot);
+
+	TextRange getCatalogTextRange(CompilationUnit astRoot);
+
+	//****************** covariant overrides *******************
+
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+
+	JavaUniqueConstraint addUniqueConstraint(int index);
 }

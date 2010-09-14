@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
@@ -48,6 +49,7 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverrideColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
@@ -56,9 +58,11 @@ import org.eclipse.jpt.core.internal.jpa1.context.CollectionTableTableDescriptio
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
+import org.eclipse.jpt.core.internal.jpa2.context.CollectionTableValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
@@ -77,7 +81,6 @@ import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -145,7 +148,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		this.defaultTargetClass = buildDefaultTargetClass();
 		this.resolvedTargetType = this.resolveTargetType();
 		this.resolvedTargetEmbeddable = resolveTargetEmbeddable();
-		this.collectionTable = getXmlContextNodeFactory().buildOrmCollectionTable(this, getResourceCollectionTable());
+		this.collectionTable = getXmlContextNodeFactory().buildOrmCollectionTable(this, new CollectionTableOwner(), getResourceCollectionTable());
 		this.valueType = this.buildValueType();
 		this.valueColumn = getXmlContextNodeFactory().buildOrmColumn(this, new ValueColumnOwner());
 		this.nullValueConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
@@ -492,7 +495,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 			public String getTableName() {
 				return getCollectionTable().getName();
 			}
-			public Table getDbTable(String tableName) {
+			public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 				return getCollectionTable().getDbTable();
 			}
 		};
@@ -1295,6 +1298,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		return this.resourceAttributeMapping.getTargetClassTextRange();
 	}
 
+	protected class CollectionTableOwner implements Table.Owner {
+		public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+			return new CollectionTableValidator(getPersistentAttribute(), (CollectionTable2_0) table, textRangeResolver);
+		}
+	}
+
 	protected abstract class ColumnOwner implements OrmColumn.Owner {		
 		public String getDefaultTableName() {
 			return getCollectionTable().getName();
@@ -1304,7 +1313,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 			return AbstractOrmElementCollectionMapping2_0.this.getTypeMapping();
 		}
 		
-		public Table getDbTable(String tableName) {
+		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			if (getCollectionTable().getName().equals(tableName)) {
 				return AbstractOrmElementCollectionMapping2_0.this.getCollectionTable().getDbTable();
 			}
@@ -1434,11 +1443,15 @@ public abstract class AbstractOrmElementCollectionMapping2_0<T extends XmlElemen
 		}
 
 		public JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection with containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
 		}
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-			throw new UnsupportedOperationException("An element collection with containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
+		}
+
+		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
+			throw new UnsupportedOperationException("An element collection containing a nested relationship mapping using a JoinTable is not supported"); //$NON-NLS-1$
 		}
 
 		public TextRange getValidationTextRange() {

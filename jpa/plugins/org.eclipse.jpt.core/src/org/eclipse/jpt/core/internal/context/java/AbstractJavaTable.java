@@ -10,14 +10,16 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.context.java.JavaBaseTable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -33,13 +35,15 @@ import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Java table
  */
 public abstract class AbstractJavaTable
 	extends AbstractJavaJpaContextNode
-	implements Table, UniqueConstraint.Owner
+	implements JavaBaseTable, UniqueConstraint.Owner
 {
 	protected String specifiedName;
 	protected String defaultName;
@@ -52,13 +56,18 @@ public abstract class AbstractJavaTable
 
 	protected final Vector<JavaUniqueConstraint> uniqueConstraints = new Vector<JavaUniqueConstraint>();
 
+	protected final Owner owner;
 
 	// ********** constructor **********
 
-	protected AbstractJavaTable(JavaJpaContextNode parent) {
+	protected AbstractJavaTable(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
 	}
 
+	protected Owner getOwner() {
+		return this.owner;
+	}
 
 	// ********** abstract methods **********
 
@@ -283,7 +292,7 @@ public abstract class AbstractJavaTable
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
 
-	protected TextRange getNameTextRange(CompilationUnit astRoot) {
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		return this.getTextRange(this.getAnnotation().getNameTextRange(astRoot), astRoot);
 	}
 
@@ -291,7 +300,7 @@ public abstract class AbstractJavaTable
 		return this.getAnnotation().nameTouches(pos, astRoot);
 	}
 
-	protected TextRange getSchemaTextRange(CompilationUnit astRoot) {
+	public TextRange getSchemaTextRange(CompilationUnit astRoot) {
 		return this.getTextRange(this.getAnnotation().getSchemaTextRange(astRoot), astRoot);
 	}
 
@@ -299,7 +308,7 @@ public abstract class AbstractJavaTable
 		return this.getAnnotation().schemaTouches(pos, astRoot);
 	}
 
-	protected TextRange getCatalogTextRange(CompilationUnit astRoot) {
+	public TextRange getCatalogTextRange(CompilationUnit astRoot) {
 		return this.getTextRange(this.getAnnotation().getCatalogTextRange(astRoot), astRoot);
 	}
 
@@ -400,6 +409,19 @@ public abstract class AbstractJavaTable
 		return this.getTextRange(this.getAnnotation().getTextRange(astRoot), astRoot);
 	}
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.buildTableValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildTableValidator(CompilationUnit astRoot) {
+		return this.getOwner().buildTableValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	protected TableTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaTableTextRangeResolver(this, astRoot);
+	}
 
 	// ********** Java completion proposals **********
 

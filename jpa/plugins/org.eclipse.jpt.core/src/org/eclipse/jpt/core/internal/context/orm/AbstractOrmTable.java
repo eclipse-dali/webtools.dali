@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,13 +13,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.orm.OrmBaseTable;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTable;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
@@ -30,13 +32,15 @@ import org.eclipse.jpt.utility.internal.NameTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
  */
 public abstract class AbstractOrmTable
 	extends AbstractOrmXmlContextNode
-	implements Table, UniqueConstraint.Owner
+	implements OrmBaseTable, UniqueConstraint.Owner
 {
 	protected String specifiedName;
 	protected String defaultName;
@@ -49,12 +53,19 @@ public abstract class AbstractOrmTable
 
 	protected final List<OrmUniqueConstraint> uniqueConstraints;
 
+	protected final Owner owner;
+
 
 	// ********** constructor **********
 
-	protected AbstractOrmTable(XmlContextNode parent) {
+	protected AbstractOrmTable(XmlContextNode parent, Owner owner) {
 		super(parent);
 		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
+		this.owner = owner;
+	}
+
+	protected Owner getOwner() {
+		return this.owner;
 	}
 
 
@@ -272,7 +283,7 @@ public abstract class AbstractOrmTable
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
-	protected TextRange getNameTextRange() {
+	public TextRange getNameTextRange() {
 		return this.getTextRange(this.getResourceTableNameTextRange());
 	}
 
@@ -281,7 +292,7 @@ public abstract class AbstractOrmTable
 		return (resourceTable == null) ? null : resourceTable.getNameTextRange();
 	}
 
-	protected TextRange getSchemaTextRange() {
+	public TextRange getSchemaTextRange() {
 		return this.getTextRange(this.getResourceTableSchemaTextRange());
 	}
 
@@ -290,7 +301,7 @@ public abstract class AbstractOrmTable
 		return (resourceTable == null) ? null : resourceTable.getSchemaTextRange();
 	}
 
-	protected TextRange getCatalogTextRange() {
+	public TextRange getCatalogTextRange() {
 		return this.getTextRange(this.getResourceTableCatalogTextRange());
 	}
 
@@ -444,6 +455,20 @@ public abstract class AbstractOrmTable
 
 	public TextRange getValidationTextRange() {
 		return this.getTextRange(this.getResourceTableValidationTextRange());
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildTableValidator().validate(messages, reporter);
+	}
+
+	protected JptValidator buildTableValidator() {
+		return this.getOwner().buildTableValidator(this, buildTextRangeResolver());
+	}
+
+	protected TableTextRangeResolver buildTextRangeResolver() {
+		return new OrmTableTextRangeResolver(this);
 	}
 
 	protected TextRange getResourceTableValidationTextRange() {

@@ -88,13 +88,12 @@ public abstract class AbstractNamedColumnValidator
 		return this.persistentAttribute.getName();
 	}
 
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		if (this.tableValidator.isTableNameInvalid()) {
-			this.tableValidator.validate(messages, reporter);
+			return this.tableValidator.validate(messages, reporter);
 		}
-		else {
-			this.validateName(messages);
-		}
+		this.validateName(messages);
+		return true;
 	}
 
 	protected void validateName(List<IMessage> messages) {
@@ -140,8 +139,8 @@ public abstract class AbstractNamedColumnValidator
 	}
 	
 	public static class NullTableValidator implements TableValidator {
-		public void validate(List<IMessage> messages, IReporter reporter) {
-			// nothing to validate
+		public boolean validate(List<IMessage> messages, IReporter reporter) {
+			return true;
 		}
 		public boolean isTableNameInvalid() {
 			return false;

@@ -73,7 +73,7 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 		return DefaultJpaValidationMessages.buildMessage(
 			IMessage.HIGH_SEVERITY,
 			JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
-			new String[] {this.getSecondaryTableName(), getColumn().getName(), getColumn().getDbTable().getName()},
+			new String[] {this.getSecondaryTableName(), getColumn().getReferencedColumnName(), getColumn().getReferencedColumnDbTable().getName()},
 			getColumn(), 
 			getTextRangeResolver().getReferencedColumnNameTextRange()
 		);

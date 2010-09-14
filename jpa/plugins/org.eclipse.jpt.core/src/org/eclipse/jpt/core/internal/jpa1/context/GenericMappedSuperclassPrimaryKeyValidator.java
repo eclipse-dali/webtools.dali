@@ -36,7 +36,7 @@ public class GenericMappedSuperclassPrimaryKeyValidator
 		return mappedSuperclass().getIdClassReference();
 	}
 	
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		validatePrimaryKeyIsNotRedefined(messages, reporter);
 		validateIdClassIsUsedIfNecessary(messages, reporter);
 		
@@ -48,5 +48,6 @@ public class GenericMappedSuperclassPrimaryKeyValidator
 		if (specifiesIdClass()) {
 			validateIdClass(idClassReference().getIdClass(), messages, reporter);
 		}
+		return true;
 	}
 }

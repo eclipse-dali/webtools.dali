@@ -15,14 +15,12 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmReferenceTable;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmTable;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlReferenceTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -45,8 +43,8 @@ public abstract class GenericOrmReferenceTable
 	protected final OrmJoinColumn.Owner joinColumnOwner;
 
 
-	protected GenericOrmReferenceTable(XmlContextNode parent) {
-		super(parent);
+	protected GenericOrmReferenceTable(XmlContextNode parent, Owner owner) {
+		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 
@@ -281,98 +279,14 @@ public abstract class GenericOrmReferenceTable
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		boolean continueValidating = true;
-		if (this.shouldValidateAgainstDatabase()) {
-			continueValidating = this.validateAgainstDatabase(messages, reporter);
-		}
+		boolean continueValidating = this.buildTableValidator().validate(messages, reporter);
+
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
 			this.validateJoinColumns(messages, reporter);
 		}
-	}
-	protected abstract boolean shouldValidateAgainstDatabase();
-	
-	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter) {
-		PersistentAttribute persistentAttribute = this.getPersistentAttribute();
-		if ( ! this.hasResolvedCatalog()) {
-			if (persistentAttribute.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						getVirtualAttributeUnresolvedCatalogMessageId(),
-						new String[] {persistentAttribute.getName(), this.getCatalog(), this.getName()}, 
-						this,
-						this.getCatalogTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						getUnresolvedCatalogMessageId(),
-						new String[] {this.getCatalog(), this.getName()}, 
-						this,
-						this.getCatalogTextRange()
-					)
-				);
-			}
-			return false;
-		}
-
-		if ( ! this.hasResolvedSchema()) {
-			if (persistentAttribute.isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						getVirtualAttributeUnresolvedSchemaMessageId(),
-						new String[] {persistentAttribute.getName(), this.getSchema(), this.getName()}, 
-						this,
-						this.getSchemaTextRange()
-					)
-				);
-			} else {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						getUnresolvedSchemaMessageId(),
-						new String[] {this.getSchema(), this.getName()}, 
-						this,
-						this.getSchemaTextRange()
-					)
-				);
-			}
-			return false;
-		}
-		if ( ! this.isResolved()) {
-			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				if (persistentAttribute.isVirtual()) {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							getVirtualAttributeUnresolvedNameMessageId(),
-							new String[] {persistentAttribute.getName(), this.getName()}, 
-							this,
-							this.getNameTextRange()
-						)
-					);
-				} 
-				else {
-					messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-								IMessage.HIGH_SEVERITY,
-								getUnresolvedNameMessageId(),
-								new String[] {this.getName()}, 
-								this, 
-								this.getNameTextRange())
-						);
-				}
-			}
-			return false;
-		}
-		return true;
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter) {
@@ -384,17 +298,4 @@ public abstract class GenericOrmReferenceTable
 			joinColumns.next().validate(messages, reporter);
 		}
 	}
-	
-	protected abstract String getUnresolvedCatalogMessageId();
-	
-	protected abstract String getUnresolvedSchemaMessageId();
-	
-	protected abstract String getUnresolvedNameMessageId();
-	
-	protected abstract String getVirtualAttributeUnresolvedCatalogMessageId();
-	
-	protected abstract String getVirtualAttributeUnresolvedSchemaMessageId();
-	
-	protected abstract String getVirtualAttributeUnresolvedNameMessageId();
-
 }

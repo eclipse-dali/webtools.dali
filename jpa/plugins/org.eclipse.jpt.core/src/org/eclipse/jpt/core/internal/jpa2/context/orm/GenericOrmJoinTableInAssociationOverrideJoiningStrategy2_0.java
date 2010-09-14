@@ -10,8 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmJoinTableInAssociationOverrideJoiningStrategy2_0;
@@ -80,5 +82,9 @@ public class GenericOrmJoinTableInAssociationOverrideJoiningStrategy2_0
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 		return getRelationshipReference().buildJoinTableInverseJoinColumnValidator(column, owner, textRangeResolver);
+	}
+
+	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
+		return getRelationshipReference().buildTableValidator(table, textRangeResolver);
 	}
 }

@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.java.JavaReferenceTable;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
 import org.eclipse.jpt.core.internal.resource.java.NullJoinColumnAnnotation;
-import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.ReferenceTableAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -47,8 +46,8 @@ public abstract class GenericJavaReferenceTable
 	protected final JavaJoinColumn.Owner joinColumnOwner;
 
 
-	protected GenericJavaReferenceTable(JavaJpaContextNode parent) {
-		super(parent);
+	protected GenericJavaReferenceTable(JavaJpaContextNode parent, Owner owner) {
+		super(parent, owner);
 		this.joinColumnOwner = this.buildJoinColumnOwner();
 	}
 
@@ -288,62 +287,14 @@ public abstract class GenericJavaReferenceTable
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-		boolean continueValidating = true;
-		if (this.shouldValidateAgainstDatabase()) {
-			continueValidating = this.validateAgainstDatabase(messages, reporter, astRoot);
-		}
+		boolean continueValidating = this.buildTableValidator(astRoot).validate(messages, reporter);
+
 		//join column validation will handle the check for whether to validate against the database
 		//some validation messages are not database specific. If the database validation for the
 		//table fails we will stop there and not validate the join columns at all
 		if (continueValidating) {
 			this.validateJoinColumns(messages, reporter, astRoot);
 		}
-	}
-	
-	protected abstract boolean shouldValidateAgainstDatabase();
-
-	protected boolean validateAgainstDatabase(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if ( ! this.hasResolvedCatalog()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					this.getUnresolvedCatalogMessageId(),
-					new String[] {this.getCatalog(), this.getName()}, 
-					this, 
-					this.getCatalogTextRange(astRoot)
-				)
-			);
-			return false;
-		}
-
-		if ( ! this.hasResolvedSchema()) {
-			messages.add(
-				DefaultJpaValidationMessages.buildMessage(
-					IMessage.HIGH_SEVERITY,
-					this.getUnresolvedSchemaMessageId(),
-					new String[] {this.getSchema(), this.getName()}, 
-					this, 
-					this.getSchemaTextRange(astRoot)
-				)
-			);
-			return false;
-		}
-
-		if ( ! this.isResolved()) {
-			if (getName() != null) { //if name is null, the validation will be handled elsewhere, such as the target entity is not defined
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							this.getUnresolvedNameMessageId(),
-							new String[] {this.getName()}, 
-							this, 
-							this.getNameTextRange(astRoot))
-					);
-			}
-			return false;
-		}
-		return true;
 	}
 
 	protected void validateJoinColumns(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -355,11 +306,5 @@ public abstract class GenericJavaReferenceTable
 			joinColumns.next().validate(messages, reporter, astRoot);
 		}
 	}
-
-	protected abstract String getUnresolvedCatalogMessageId();
-	
-	protected abstract String getUnresolvedSchemaMessageId();
-	
-	protected abstract String getUnresolvedNameMessageId();
 }
 

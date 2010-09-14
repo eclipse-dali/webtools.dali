@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
@@ -222,8 +223,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaEmbeddable(parent);
 	}
 	
-	public JavaTable buildJavaTable(JavaEntity parent) {
-		return new GenericJavaTable(parent);
+	public JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner) {
+		return new GenericJavaTable(parent, owner);
 	}
 	
 	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
@@ -238,12 +239,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaJoinColumn(parent, owner);
 	}
 	
-	public JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent) {
-		return new GenericJavaJoinTable(parent);
+	public JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent, Table.Owner owner) {
+		return new GenericJavaJoinTable(parent, owner);
 	}
 	
-	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent) {
-		return new GenericJavaSecondaryTable(parent);
+	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner) {
+		return new GenericJavaSecondaryTable(parent, owner);
 	}
 	
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
@@ -398,7 +399,7 @@ public abstract class AbstractJpaFactory
 		throw new UnsupportedOperationException();
 	}
 	
-	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent) {
+	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
@@ -181,9 +182,9 @@ public interface JpaFactory
 	
 	JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent);
 	
-	JavaTable buildJavaTable(JavaEntity parent);
+	JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner);
 	
-	JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent);
+	JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent, Table.Owner owner);
 	
 	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner);
 	
@@ -191,7 +192,7 @@ public interface JpaFactory
 	
 	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner);
 	
-	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent);
+	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner);
 	
 	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent);
 	

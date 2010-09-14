@@ -37,8 +37,9 @@ public abstract class AbstractTypeMappingValidator<T extends TypeMapping>
 	}
 
 
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		this.validateType(messages);
+		return true;
 	}
 
 	protected abstract void validateType(List<IMessage> messages);

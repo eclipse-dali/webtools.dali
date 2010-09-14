@@ -19,18 +19,22 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.RelationshipReference;
-import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
@@ -264,6 +268,10 @@ public class GenericJavaEmbeddedMapping
 
 		public JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideInverseJoinColumnValidator(override, column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		}
+
+		public JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideJoinTableValidator(override, (JoinTable) table, textRangeResolver);
 		}
 	}
 }

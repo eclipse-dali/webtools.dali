@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class AssociationOverrideInverseJoinColumnValidator extends JoinColumnValidator
+public class AssociationOverrideInverseJoinColumnValidator extends InverseJoinColumnValidator
 {
 	private final AssociationOverride override;
 
@@ -46,7 +46,7 @@ public class AssociationOverrideInverseJoinColumnValidator extends JoinColumnVal
 
 	@Override
 	protected TableValidator buildTableValidator() {
-		return new AssociationOverrideJoinColumnTableValidator(this.persistentAttribute, this.getColumn(), this.getTextRangeResolver(), this.tableDescriptionProvider);
+		return new AssociationOverrideInverseJoinColumnTableValidator(this.persistentAttribute, this.getColumn(), this.getTextRangeResolver(), this.tableDescriptionProvider);
 	}
 
 	@Override
@@ -194,9 +194,9 @@ public class AssociationOverrideInverseJoinColumnValidator extends JoinColumnVal
 	}
 
 
-	public class AssociationOverrideJoinColumnTableValidator extends JoinColumnTableValidator {
+	public class AssociationOverrideInverseJoinColumnTableValidator extends InverseJoinColumnTableValidator {
 
-		protected AssociationOverrideJoinColumnTableValidator(
+		protected AssociationOverrideInverseJoinColumnTableValidator(
 			PersistentAttribute persistentAttribute, JoinColumn column, JoinColumnTextRangeResolver textRangeResolver, TableDescriptionProvider provider) {
 			super(persistentAttribute, column, textRangeResolver, provider);
 		}

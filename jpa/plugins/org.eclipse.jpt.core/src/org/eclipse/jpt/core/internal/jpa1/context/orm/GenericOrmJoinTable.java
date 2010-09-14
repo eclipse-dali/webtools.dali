@@ -29,7 +29,6 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlReferenceTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
@@ -59,8 +58,8 @@ public class GenericOrmJoinTable
 	protected final OrmJoinColumn.Owner inverseJoinColumnOwner;
 
 
-	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, XmlJoinTable resourceJoinTable) {
-		super(parent);
+	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, Owner owner, XmlJoinTable resourceJoinTable) {
+		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.initialize(resourceJoinTable);
 	}
@@ -313,40 +312,10 @@ public class GenericOrmJoinTable
 		this.validateJoinColumns(this.inverseJoinColumns(), messages, reporter);
 	}
 
-	@Override
-	protected boolean shouldValidateAgainstDatabase() {
+	public boolean shouldValidateAgainstDatabase() {
 		return getParent().shouldValidateAgainstDatabase();
 	}
 
-	@Override
-	protected String getUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_CATALOG;
-	}
-
-	@Override
-	protected String getUnresolvedNameMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_NAME;
-	}
-
-	@Override
-	protected String getUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.JOIN_TABLE_UNRESOLVED_SCHEMA;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_CATALOG;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedNameMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_NAME;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_JOIN_TABLE_UNRESOLVED_SCHEMA;
-	}
 
 	// ********** join column owner adapters **********
 

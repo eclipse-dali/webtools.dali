@@ -14,12 +14,14 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
@@ -54,5 +56,7 @@ public interface OrmAssociationOverrideRelationshipReference2_0
 	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 
 	JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-	
+
+	JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver);
+
 }

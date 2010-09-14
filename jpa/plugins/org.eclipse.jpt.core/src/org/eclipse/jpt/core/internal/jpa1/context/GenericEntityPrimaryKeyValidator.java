@@ -37,7 +37,7 @@ public class GenericEntityPrimaryKeyValidator
 		return entity().getIdClassReference();
 	}
 	
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		// if an entity is non-root, it is not allowed to define primary keys
 		if (! entity().isRoot()) {
 			validatePrimaryKeyForNonRoot(messages, reporter);
@@ -45,6 +45,7 @@ public class GenericEntityPrimaryKeyValidator
 		else {
 			validatePrimaryKeyForRoot(messages, reporter);
 		}
+		return true;
 	}
 	
 	protected void validatePrimaryKeyForNonRoot(List<IMessage> messages, IReporter reporter) {

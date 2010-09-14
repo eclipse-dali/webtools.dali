@@ -24,7 +24,6 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmReferenceTable;
-import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
@@ -41,8 +40,8 @@ public class GenericOrmCollectionTable2_0
 	implements OrmCollectionTable2_0
 {
 
-	public GenericOrmCollectionTable2_0(OrmElementCollectionMapping2_0 parent, XmlCollectionTable xmlCollectionTable) {
-		super(parent);
+	public GenericOrmCollectionTable2_0(OrmElementCollectionMapping2_0 parent, Owner owner, XmlCollectionTable xmlCollectionTable) {
+		super(parent, owner);
 		this.initialize(xmlCollectionTable);
 	}
 
@@ -91,39 +90,8 @@ public class GenericOrmCollectionTable2_0
 
 	// ********** validation **********
 
-	@Override
-	protected boolean shouldValidateAgainstDatabase() {
+	public boolean shouldValidateAgainstDatabase() {
 		return getParent().shouldValidateAgainstDatabase();
-	}
-
-	@Override
-	protected String getUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_CATALOG;
-	}
-
-	@Override
-	protected String getUnresolvedNameMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_NAME;
-	}
-
-	@Override
-	protected String getUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.COLLECTION_TABLE_UNRESOLVED_SCHEMA;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedCatalogMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_CATALOG;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedNameMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_NAME;
-	}
-
-	@Override
-	protected String getVirtualAttributeUnresolvedSchemaMessageId() {
-		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_COLLECTION_TABLE_UNRESOLVED_SCHEMA;
 	}
 
 

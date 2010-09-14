@@ -60,8 +60,9 @@ public class BaseColumnTableValidator implements TableValidator
 		return this.getColumn().tableNameIsInvalid();
 	}
 	
-	public void validate(List<IMessage> messages, IReporter reporter) {
+	public boolean validate(List<IMessage> messages, IReporter reporter) {
 		messages.add(buildTableNotValidMessage());
+		return false;
 	}
 
 	public IMessage buildTableNotValidMessage() {
