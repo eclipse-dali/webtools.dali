@@ -7,11 +7,10 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.core.context.java;
+package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -24,26 +23,19 @@ import org.eclipse.jpt.core.utility.TextRange;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
  * @version 3.0
- * @since 2.3
+ * @since 3.0
  */
-public interface JavaOverride
-	extends BaseOverride, JavaJpaContextNode
+public interface OrmOverride
+	extends BaseOverride, XmlContextNode
 {
 
-	OverrideAnnotation getOverrideAnnotation();
-	
 	/**
 	 * Return the (best guess) text location of the override's name.
 	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getNameTextRange();
 
 	interface Owner extends BaseOverride.Owner
 	{
-
-		/**
-		 * Return a prefix (ending in '.') that is allowed to be appended to the override name.
-		 * Return null if no prefix is supported.
-		 */
-		String getPossiblePrefix();
+		//nothing yet
 	}
 }

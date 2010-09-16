@@ -24,7 +24,7 @@ public class GenericOrmAssociationOverride extends AbstractOrmOverride
 	protected final OrmAssociationOverrideRelationshipReference relationshipReference;
 
 
-	public GenericOrmAssociationOverride(OrmAssociationOverrideContainer parent, AssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
+	public GenericOrmAssociationOverride(OrmAssociationOverrideContainer parent, OrmAssociationOverride.Owner owner, XmlAssociationOverride xmlAssociationOverride) {
 		super(parent, owner, xmlAssociationOverride);
 		this.relationshipReference = this.buildRelationshipReference();
 	}
@@ -35,8 +35,8 @@ public class GenericOrmAssociationOverride extends AbstractOrmOverride
 	}
 
 	@Override
-	public Owner getOwner() {
-		return (Owner) super.getOwner();
+	public OrmAssociationOverride.Owner getOwner() {
+		return (OrmAssociationOverride.Owner) super.getOwner();
 	}
 
 	protected OrmAssociationOverrideRelationshipReference buildRelationshipReference() {

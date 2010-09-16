@@ -45,12 +45,17 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.CollectionTableTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.core.internal.jpa2.context.CollectionTableValidator;
@@ -1354,6 +1359,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return !overrideName.startsWith("key."); //$NON-NLS-1$
 		}
 
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		}
+
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) columnOwner, (JoinColumnTextRangeResolver) textRangeResolver, new CollectionTableTableDescriptionProvider());
 		}
@@ -1409,6 +1418,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			}
 			return !overrideName.startsWith("key."); //$NON-NLS-1$
 		}
+
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		}
 		
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new CollectionTableTableDescriptionProvider());
@@ -1449,6 +1462,10 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		
 		public Column resolveOverriddenColumn(String attributeOverrideName) {
 			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideValidator((AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver) {

@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -50,7 +49,7 @@ public class GenericOrmAttributeOverride
 	
 	public GenericOrmAttributeOverride(
 			OrmAttributeOverrideContainer parent, 
-			AttributeOverride.Owner owner, 
+			OrmAttributeOverride.Owner owner, 
 			XmlAttributeOverride resourceAttributeOverride) {
 		
 		super(parent, owner, resourceAttributeOverride);
@@ -67,9 +66,10 @@ public class GenericOrmAttributeOverride
 		return (OrmAttributeOverride) getOwner().setVirtual(virtual, this);
 	}
 	
+
 	@Override
-	public Owner getOwner() {
-		return (Owner) super.getOwner();
+	public OrmAttributeOverride.Owner getOwner() {
+		return (OrmAttributeOverride.Owner) super.getOwner();
 	}
 	
 	@Override

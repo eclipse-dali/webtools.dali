@@ -40,8 +40,11 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
+import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoiningStrategyTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
@@ -800,6 +803,10 @@ public abstract class AbstractOrmMultiRelationshipMapping<T extends AbstractXmlM
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
 			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideValidator(getPersistentAttribute(), (AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

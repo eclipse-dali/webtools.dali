@@ -33,11 +33,14 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBaseEmbeddedMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
@@ -277,6 +280,10 @@ public class GenericOrmEmbeddedMapping
 		
 		public TextRange getValidationTextRange() {
 			return GenericOrmEmbeddedMapping.this.getValidationTextRange();
+		}
+
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator(getPersistentAttribute(), (AssociationOverride) override, (AssociationOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

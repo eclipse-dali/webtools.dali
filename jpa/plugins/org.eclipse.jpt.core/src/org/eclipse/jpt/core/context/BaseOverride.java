@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.db.Table;
 
 /**
@@ -55,7 +56,16 @@ public interface BaseOverride
 		 * @return
 		 */
 		TypeMapping getTypeMapping();
-		
+
+		/**
+		 * Return the type mapping that contains the attributes/associations to be overridden.
+		 * (Though the type mapping may not *directly* own them.  i.e. they may be on a supertype
+		 *  mapping.)
+		 * (For example, on an entity, this would be the supertype mapping of that entity.  On
+		 *  an embedded, this would be the target type mapping of the embedded.)
+		 */
+		TypeMapping getOverridableTypeMapping();
+
 		/**
 		 * Return an Iterator of all attribute names that can be overridden
 		 */
@@ -98,5 +108,7 @@ public interface BaseOverride
 		String getDefaultTableName();
 
 		JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver);
+
+		JptValidator buildValidator(BaseOverride override, OverrideTextRangeResolver textRangeResolver);
 	}
 }

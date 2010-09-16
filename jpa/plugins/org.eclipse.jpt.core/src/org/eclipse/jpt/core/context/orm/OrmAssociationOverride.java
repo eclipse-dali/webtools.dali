@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
@@ -22,11 +21,11 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmAssociationOverride
-	extends AssociationOverride, XmlContextNode
+	extends AssociationOverride, OrmOverride
 {
 	OrmAssociationOverrideRelationshipReference getRelationshipReference();
 	
@@ -37,4 +36,11 @@ public interface OrmAssociationOverride
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlAssociationOverride associationOverride);
+
+	OrmAssociationOverride.Owner getOwner();
+
+	interface Owner extends AssociationOverride.Owner, OrmOverride.Owner
+	{
+		//nothing yet
+	}
 }

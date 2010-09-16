@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
@@ -24,6 +23,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.VirtualXmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -311,7 +311,7 @@ public class GenericOrmAttributeOverrideContainer
 		return getXmlContextNodeFactory().buildOrmAttributeOverride(this, createAttributeOverrideOwner(), attributeOverride);
 	}
 
-	protected AttributeOverride.Owner createAttributeOverrideOwner() {
+	protected OrmAttributeOverride.Owner createAttributeOverrideOwner() {
 		return new AttributeOverrideOwner();
 	}
 	
@@ -332,7 +332,7 @@ public class GenericOrmAttributeOverrideContainer
 	}
 	
 	
-	protected class AttributeOverrideOwner implements AttributeOverride.Owner {
+	protected class AttributeOverrideOwner implements OrmAttributeOverride.Owner {
 
 		public Column resolveOverriddenColumn(String attributeName) {
 			if (attributeName == null) {
@@ -353,6 +353,10 @@ public class GenericOrmAttributeOverrideContainer
 			return getOwner().getTypeMapping();
 		}
 
+		public TypeMapping getOverridableTypeMapping() {
+			return getOwner().getOverridableTypeMapping();
+		}
+
 		public Iterator<String> allOverridableAttributeNames() {
 			return GenericOrmAttributeOverrideContainer.this.allOverridableAttributeNames();
 		}
@@ -371,6 +375,10 @@ public class GenericOrmAttributeOverrideContainer
 
 		public Table getDbTable(String tableName) {
 			return getOwner().getDbTable(tableName);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, OverrideTextRangeResolver textRangeResolver) {
+			return getOwner().buildValidator(override, this, textRangeResolver);
 		}
 
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

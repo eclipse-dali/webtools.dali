@@ -9,23 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.orm.OrmOverride;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.internal.context.orm.OrmOverrideTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.XmlOverride;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public class AbstractOrmOverride extends AbstractOrmXmlContextNode
+public abstract class AbstractOrmOverride extends AbstractOrmXmlContextNode
+	implements OrmOverride
 {
 
 	protected String name;
 
-	protected final BaseOverride.Owner owner;
+	protected final Owner owner;
 
 	protected XmlOverride resourceOverride;
 
-	public AbstractOrmOverride(XmlContextNode parent, BaseOverride.Owner owner, XmlOverride resourceOverride) {
+	protected AbstractOrmOverride(XmlContextNode parent, Owner owner, XmlOverride resourceOverride) {
 		super(parent);
 		this.owner = owner;
 		this.resourceOverride = resourceOverride;
@@ -37,7 +45,7 @@ public class AbstractOrmOverride extends AbstractOrmXmlContextNode
 		return (XmlContextNode) super.getParent();
 	}
 
-	public BaseOverride.Owner getOwner() {
+	public Owner getOwner() {
 		return this.owner;
 	}
 	
@@ -73,10 +81,30 @@ public class AbstractOrmOverride extends AbstractOrmXmlContextNode
 	protected String getResourceName() {
 		return this.resourceOverride.getName();
 	}
+	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.buildValidator().validate(messages, reporter);
+	}
+
+	protected JptValidator buildValidator() {
+		return this.getOwner().buildValidator(this, buildTextRangeResolver());
+	}
+
+	protected OverrideTextRangeResolver buildTextRangeResolver() {
+		return new OrmOverrideTextRangeResolver(this);
+	}
 
 	public TextRange getValidationTextRange() {
 		TextRange textRange = this.resourceOverride.getValidationTextRange();
 		return textRange == null ? getParent().getValidationTextRange() : textRange;
+	}
+
+	public TextRange getNameTextRange() {
+		TextRange textRange = this.resourceOverride.getNameTextRange();
+		return (textRange != null) ? textRange : this.getValidationTextRange();
 	}
 
 	

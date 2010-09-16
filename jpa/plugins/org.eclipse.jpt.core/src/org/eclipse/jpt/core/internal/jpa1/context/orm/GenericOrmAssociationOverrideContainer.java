@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -302,7 +303,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 		return OrmFactory.eINSTANCE.createXmlAssociationOverride();
 	}
 	
-	protected AssociationOverride.Owner buildAssociationOverrideOwner() {
+	protected OrmAssociationOverride.Owner buildAssociationOverrideOwner() {
 		return new AssociationOverrideOwner();
 	}
 	
@@ -322,7 +323,7 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 	}
 	
 	
-	protected class AssociationOverrideOwner implements AssociationOverride.Owner {
+	protected class AssociationOverrideOwner implements OrmAssociationOverride.Owner {
 
 		public RelationshipMapping getRelationshipMapping(String attributeName) {
 			return MappingTools.getRelationshipMapping(attributeName, getOwner().getOverridableTypeMapping());
@@ -338,6 +339,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 		public TypeMapping getTypeMapping() {
 			return getOwner().getTypeMapping();
+		}
+
+		public TypeMapping getOverridableTypeMapping() {
+			return getOwner().getOverridableTypeMapping();
 		}
 
 		public Iterator<String> allOverridableAttributeNames() {
@@ -358,6 +363,10 @@ public class GenericOrmAssociationOverrideContainer extends AbstractOrmXmlContex
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getOwner().getDbTable(tableName);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, OverrideTextRangeResolver textRangeResolver) {
+			return getOwner().buildValidator(override, this, textRangeResolver);
 		}
 
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

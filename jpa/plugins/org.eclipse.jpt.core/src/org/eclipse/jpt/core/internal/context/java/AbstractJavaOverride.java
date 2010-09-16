@@ -10,15 +10,20 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
+import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaOverride;
+import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
 public abstract class AbstractJavaOverride
@@ -143,11 +148,32 @@ public abstract class AbstractJavaOverride
 		TextRange textRange = this.overrideAnnotation.getTextRange(astRoot);
 		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
 	}
-	
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.overrideAnnotation.getNameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getValidationTextRange(astRoot);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
 		sb.append(getName());
 	}
 
+
+	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.buildValidator(astRoot).validate(messages, reporter);
+	}
+
+	protected JptValidator buildValidator(CompilationUnit astRoot) {
+		return this.getOwner().buildValidator(this, buildTextRangeResolver(astRoot));
+	}
+
+	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
+		return new JavaOverrideTextRangeResolver(this, astRoot);
+	}
 }

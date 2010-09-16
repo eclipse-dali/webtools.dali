@@ -20,7 +20,10 @@ public class JpaValidationDescriptionMessages {
 	public static String ATTRIBUTE_DESC;
 	public static String VIRTUAL_ATTRIBUTE_DESC;
 
-	
+	public static String ON_MAPPED_SUPERCLASS;
+	public static String ON_EMBEDDABLE;
+
+
 	private static final String BUNDLE_NAME = "jpa_validation_description"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JpaValidationDescriptionMessages.class;
 	static {

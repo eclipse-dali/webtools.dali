@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -467,7 +468,13 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlOve
 		result.append(')');
 		return result.toString();
 	}
-	
+
+
+	public TextRange getNameTextRange() {
+		return getAttributeTextRange(JPA.NAME);
+	}
+
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {
@@ -498,4 +505,6 @@ public class XmlAssociationOverride extends AbstractJpaEObject implements XmlOve
 	protected static Translator buildJoinTableTranslator() {
 		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmV2_0Package.eINSTANCE.getXmlAssociationOverride_2_0_JoinTable());
 	}
+
+	
 }

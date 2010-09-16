@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 
 /**
@@ -20,11 +19,11 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface OrmAttributeOverride
-	extends AttributeOverride, XmlContextNode
+	extends AttributeOverride, OrmOverride
 {
 	OrmColumn getColumn();
 
@@ -35,4 +34,10 @@ public interface OrmAttributeOverride
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
 	void update(XmlAttributeOverride attributeOverride);
+
+	interface Owner
+		extends AttributeOverride.Owner, OrmOverride.Owner
+	{
+		//nothing yet
+	}
 }

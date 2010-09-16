@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -38,7 +39,6 @@ import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
@@ -58,16 +58,20 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.DiscriminatorColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityPrimaryKeyJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.MappedSuperclassOverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.SecondaryTableValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.TableValidator;
 import org.eclipse.jpt.core.internal.resource.java.NullPrimaryKeyJoinColumnAnnotation;
@@ -1597,6 +1601,10 @@ public abstract class AbstractJavaEntity
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
 		}
 
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new AssociationOverrideValidator((AssociationOverride) override, (AssociationOverride.Owner) owner, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
+		}
+
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AssociationOverrideJoinColumnValidator((AssociationOverride) override, (JoinColumn) column, (JoinColumn.Owner) owner, (JoinColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 		}
@@ -1708,6 +1716,10 @@ public abstract class AbstractJavaEntity
 		
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaEntity.this.getValidationTextRange(astRoot);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new MappedSuperclassOverrideDescriptionProvider());
 		}
 		
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

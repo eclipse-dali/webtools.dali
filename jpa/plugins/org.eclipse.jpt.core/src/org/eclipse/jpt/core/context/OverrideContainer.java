@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -73,6 +74,8 @@ public interface OverrideContainer
 		 */
 		Iterator<String> candidateTableNames();		
 		
+		JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver);
+
 		JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner columnOwner, BaseColumnTextRangeResolver textRangeResolver);
 	}
 

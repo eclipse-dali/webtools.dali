@@ -30,6 +30,7 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
+import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -401,6 +402,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 			return getOwner().getTypeMapping();
 		}
 
+		public TypeMapping getOverridableTypeMapping() {
+			return getOwner().getOverridableTypeMapping();
+		}
+
 		public Iterator<String> allOverridableAttributeNames() {
 			return GenericJavaAssociationOverrideContainer.this.allOverridableAssociationNames();
 		}
@@ -423,6 +428,10 @@ public class GenericJavaAssociationOverrideContainer extends AbstractJavaJpaCont
 
 		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
 			return getOwner().getDbTable(tableName);
+		}
+
+		public JptValidator buildValidator(BaseOverride override, OverrideTextRangeResolver textRangeResolver) {
+			return getOwner().buildValidator(override, this, textRangeResolver);
 		}
 
 		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {

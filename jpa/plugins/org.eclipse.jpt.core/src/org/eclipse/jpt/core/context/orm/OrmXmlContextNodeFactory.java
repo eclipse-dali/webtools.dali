@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.Table;
@@ -105,9 +103,9 @@ public interface OrmXmlContextNodeFactory
 
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner);
 
-	OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, AttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
+	OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, OrmAttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
 	
-	OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, AssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
+	OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, OrmAssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
 	
 	OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, XmlAssociationOverride associationOverride);
 

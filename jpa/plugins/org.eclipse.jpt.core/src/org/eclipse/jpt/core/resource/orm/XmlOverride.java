@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->
@@ -62,4 +63,5 @@ public interface XmlOverride extends JpaEObject
 	 */
 	void setName(String value);
 
+	TextRange getNameTextRange();
 } // XmlOverride
