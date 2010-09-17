@@ -175,8 +175,8 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 			return null;
 		}
 
-		selectionDialog.setTitle(JptUiMessages.ClassChooserPane_dialogTitle);
-		selectionDialog.setMessage(JptUiMessages.ClassChooserPane_dialogMessage);
+		selectionDialog.setTitle(JptUiMessages.PackageChooserPane_dialogTitle);
+		selectionDialog.setMessage(JptUiMessages.PackageChooserPane_dialogMessage);
 
 		IPackageFragment pack = getPackageFragment();
 
