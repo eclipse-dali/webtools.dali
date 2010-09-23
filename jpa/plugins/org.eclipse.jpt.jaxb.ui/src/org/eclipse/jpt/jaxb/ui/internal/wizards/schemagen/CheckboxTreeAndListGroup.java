@@ -52,7 +52,7 @@ public class CheckboxTreeAndListGroup implements ICheckStateListener, ISelection
 	private Object fRoot;
 	private Object fCurrentTreeSelection;
 	private List fExpandedTreeNodes= new ArrayList();
-	private Map fCheckedStateStore= new HashMap(9);
+	private Map fCheckedStateStore= this.buildCheckedStateStore();
 	private List fWhiteCheckedTreeItems= new ArrayList();
 	private List fListeners= new ArrayList();
 
@@ -339,7 +339,7 @@ public class CheckboxTreeAndListGroup implements ICheckStateListener, ISelection
 	 */
 	public Iterator getAllCheckedListItems() {
 		Set result= new HashSet();
-		Iterator listCollectionsEnum= fCheckedStateStore.values().iterator();
+		Iterator listCollectionsEnum= this.fCheckedStateStore.values().iterator();
 		while (listCollectionsEnum.hasNext())
 			result.addAll((List)listCollectionsEnum.next());
 		return result.iterator();
@@ -507,7 +507,7 @@ public class CheckboxTreeAndListGroup implements ICheckStateListener, ISelection
 	 *
 	 *@param treeElement java.lang.Object
 	 */
-	protected void populateListViewer(final Object treeElement) {
+	public void populateListViewer(final Object treeElement) {
 		if (treeElement == fCurrentTreeSelection)
 			return;
 		fCurrentTreeSelection= treeElement;
@@ -792,6 +792,10 @@ public class CheckboxTreeAndListGroup implements ICheckStateListener, ISelection
 		return new HashSet(fWhiteCheckedTreeItems);
 	}
 
+	private HashMap buildCheckedStateStore() {
+		return new HashMap(9);
+	}
+	
 	private void handleUpdateSelection(Map items) {
 		Iterator keyIterator= items.keySet().iterator();
 

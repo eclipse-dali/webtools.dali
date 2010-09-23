@@ -11,9 +11,13 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -25,7 +29,7 @@ import org.eclipse.jpt.jaxb.core.internal.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.ProjectWizardPage;
+import org.eclipse.jpt.jaxb.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -47,7 +51,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	private ClassesGeneratorOptions generatorOptions;
 	private ClassesGeneratorExtensionOptions generatorExtensionOptions;
 
-	private ProjectWizardPage javaProjectWizardPage;
+	private JavaProjectWizardPage projectWizardPage;
 	private SchemaWizardPage schemaWizardPage;
 	
 	private ClassesGeneratorWizardPage settingsPage;
@@ -87,11 +91,12 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 		super.addPages();
 
 		if(this.selection != null) {
-			this.javaProject = ProjectWizardPage.getJavaProjectFromSelection(this.selection);
+			this.javaProject = this.getJavaProjectFromSelection(this.selection);
 			
-			this.javaProjectWizardPage = new ProjectWizardPage(this.javaProject);
-			this.javaProjectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
-			this.addPage(this.javaProjectWizardPage);
+			this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
+			this.projectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
+			this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
+			this.addPage(this.projectWizardPage);
 
 			// SchemaWizardPage
 			IFile schemaSelected = SchemaWizardPage.getSourceSchemaFromSelection(this.selection);
@@ -147,8 +152,8 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	// ********** intra-wizard methods **********
     
 	public IJavaProject getJavaProject() {
-		if(this.javaProjectWizardPage != null) {
-			return this.javaProjectWizardPage.getJavaProject();
+		if(this.projectWizardPage != null) {
+			this.javaProject = this.projectWizardPage.getJavaProject();
 		}
     	return this.javaProject;
     }
@@ -202,7 +207,29 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 	}
 	
 	// ********** internal methods **********
-	
+
+    public IJavaProject getJavaProjectFromSelection(IStructuredSelection selection) {
+    	if(selection == null) {
+    		return null;
+    	}
+		Object firstElement = selection.getFirstElement();
+		if(firstElement instanceof IJavaProject) {
+			return (IJavaProject)firstElement;
+		}
+		else if(firstElement instanceof IResource) {
+			IProject project = ((IResource) firstElement).getProject();
+			return getJavaProjectFrom(project);
+		}
+		else if(firstElement instanceof IJavaElement) {
+			return ((IJavaElement)firstElement).getJavaProject();
+		}
+		return null;
+    }
+    
+    public IJavaProject getJavaProjectFrom(IProject project) {
+    	return (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
+    }
+    
 	private boolean displayOverridingClassesWarning(ClassesGeneratorOptions generatorOptions) {
 		
 		if( ! this.isOverridingClasses(generatorOptions)) {

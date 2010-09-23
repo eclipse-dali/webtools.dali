@@ -17,13 +17,17 @@ import org.eclipse.osgi.util.NLS;
  * @version 2.3
  */
 public class JptJaxbUiMessages {
+
+	public static String JavaProjectWizardPage_project;
+	public static String JavaProjectWizardPage_destinationProject;
 	
 	// ClassesGenerator
+	public static String ClassesGeneratorProjectWizardPage_title;
+	public static String ClassesGeneratorProjectWizardPage_desc;
+	
 	public static String ClassesGeneratorWizard_title;
 	public static String ClassesGeneratorWizard_errorDialogTitle;
 	public static String ClassesGeneratorWizard_couldNotCreate;
-
-	public static String ClassesGeneratorProjectWizardPage_title;
 	
 
 	public static String SchemaWizardPage_title;
@@ -97,10 +101,8 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizard_title;
 	public static String SchemaGeneratorWizard_generatingSchema;
 
-	public static String ProjectWizardPage_desc;
-	public static String ProjectWizardPage_project;
-
 	public static String SchemaGeneratorProjectWizardPage_title;
+	public static String SchemaGeneratorProjectWizardPage_desc;
 	
 	public static String SchemaGeneratorWizardPage_title;
 	public static String SchemaGeneratorWizardPage_desc;
@@ -120,6 +122,10 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizardPage_moxyLibrariesNotAvailable;
 	
 	public static String SchemaGeneratorWizard_generateSchemaTask;
+	
+	
+	public static String NewSchemaFileWizardPage_errorNotJavaProject;
+	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbUiMessages.class;

@@ -9,8 +9,8 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
@@ -18,55 +18,66 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.jaxb.core.internal.SchemaGenerator;
+import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.ProjectWizardPage;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.FileTools;
 import org.eclipse.osgi.util.NLS;
-import org.eclipse.ui.IExportWizard;
+import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.PlatformUI;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModelProvider;
 
-public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
+/**
+ *  SchemaGeneratorWizard
+ */
+public class SchemaGeneratorWizard extends Wizard implements INewWizard 
+{
+	protected IStructuredSelection initialSelection;
+	private IJavaProject targetProject;
+	
+	protected IDataModel dataModel;	
+	
+	private NewSchemaFileWizardPage newSchemaFileWizardPage;
 
-	protected IStructuredSelection selection;
-
-	private ProjectWizardPage javaProjectWizardPage;
-	protected SchemaGeneratorWizardPage schemaGenWizardPage;
+	private SchemaGeneratorWizardPage schemaGenWizardPage;
 
 	public static final String XSD_EXTENSION = ".xsd";   //$NON-NLS-1$
-	
+
 	// ********** constructor **********
 	
 	public SchemaGeneratorWizard() {
 		super();
+		setWindowTitle(JptJaxbUiMessages.SchemaGeneratorWizard_title);
+		setDefaultPageImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.SCHEMA_GEN_WIZ_BANNER));
 	}
-
-	// ********** IWorkbenchWizard implementation  **********
 	
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
-
-		this.selection = this.getValidSelection();
+		this.initialSelection = selection;
 		
-		this.setWindowTitle(JptJaxbUiMessages.SchemaGeneratorWizard_title);
-		this.setDefaultPageImageDescriptor(JptJaxbUiPlugin.getImageDescriptor(JptJaxbUiIcons.SCHEMA_GEN_WIZ_BANNER));
-		this.setNeedsProgressMonitor(true);
+		if (selection == null || selection.isEmpty()) {	
+			return;
+		}
+		this.targetProject = this.getProjectFromInitialSelection();
+		this.dataModel = null;
 	}
 
 	// ********** IWizard implementation  **********
@@ -74,25 +85,23 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 	@Override
 	public void addPages() {
 		super.addPages();
-		if(this.selection.isEmpty()) {
-			this.javaProjectWizardPage = new ProjectWizardPage();
-			this.javaProjectWizardPage.setTitle(JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_title);
-			this.addPage(this.javaProjectWizardPage);
-		}
+		
+		this.newSchemaFileWizardPage = this.buildNewSchemaFileWizardPage(this.initialSelection);
+		this.addPage(this.newSchemaFileWizardPage);
 
-		this.schemaGenWizardPage = new SchemaGeneratorWizardPage(this.selection);
+		this.schemaGenWizardPage = this.buildSchemaGeneratorWizardPage(this.buildSelection(this.getProject()));
 		this.addPage(this.schemaGenWizardPage);
 	}
 	
 	@Override
 	public boolean performFinish() {
 
-		IJavaProject javaProject = this.getJavaProject();
+		this.targetProject = this.getJavaProject();
 		
 		String[] sourceClassNames = this.buildSourceClassNames(this.getAllCheckedItems());
 		
 		WorkspaceJob genSchemaJob = new GenerateSchemaJob( 
-						javaProject, 
+						this.targetProject, 
 						sourceClassNames, 
 						this.getTargetSchema(), 
 						this.usesMoxy());
@@ -101,22 +110,59 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		return true;
 	}
 
+	// ********** intra-wizard methods **********
+	
+	public IJavaProject getJavaProject() {
+		return this.getJavaProjectFrom(this.getProject());
+	}
+    
 	// ********** internal methods **********
+
+	private IProject getProject() {
+		return this.newSchemaFileWizardPage.getProject();
+	}
+
+    private IJavaProject getProjectFromInitialSelection() {
+    	IJavaProject project = null;
+
+		Object firstElement = this.initialSelection.getFirstElement();
+		if(firstElement instanceof IJavaElement) {
+			IJavaElement javaElement = (IJavaElement)firstElement;
+			int type = javaElement.getElementType();
+			if(type == IJavaElement.JAVA_PROJECT) {
+				project = (IJavaProject)javaElement;
+			}
+			else if(type == IJavaElement.PACKAGE_FRAGMENT) {
+				project = ((IPackageFragment)javaElement).getJavaProject();
+			}
+		}
+		return project;
+    }
+
+    private IJavaProject getJavaProjectFrom(IProject project) {
+		IJavaProject javaProject = (IJavaProject)((IJavaElement)((IAdaptable)project).getAdapter(IJavaElement.class));
+		if(javaProject == null) {
+			throw new RuntimeException("Not a Java Project");  //$NON-NLS-1$
+		}
+		return javaProject;
+    }
 	
 	private String getTargetSchema() {
-		String targetSchema = this.schemaGenWizardPage.getSchemaPath();
+		
+		IPath filePath = this.newSchemaFileWizardPage.getFilePath();
+		String fileName = this.newSchemaFileWizardPage.getFileName();
+		String targetSchema = filePath.toOSString() + File.separator + fileName;
 		if ( ! FileTools.extension(targetSchema).equalsIgnoreCase(XSD_EXTENSION)) {
 			targetSchema += XSD_EXTENSION;
 		}
-		return targetSchema;
+		
+		return this.makeRelativeToProjectPath(targetSchema);
 	}
 	
-	private IJavaProject getJavaProject() {
-		return this.schemaGenWizardPage.getJavaProject();
-	}
-	
-	private boolean usesMoxy() {
-		return this.schemaGenWizardPage.usesMoxy();
+	private String makeRelativeToProjectPath(String filePath) {
+		Path path = new Path(filePath);
+		IPath relativePath = path.makeRelativeTo(this.targetProject.getProject().getLocation());
+		return relativePath.removeFirstSegments(1).toOSString();
 	}
 
 	private Object[] getAllCheckedItems() {
@@ -138,46 +184,31 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		return ArrayTools.array(classNames, new String[0]);
 	}
 	
-	/**
-	 * Gets the current workspace page selection and converts it to a valid
-	 * selection for this wizard.
-	 * Valid selections: 
-	 *      - Java projects
-	 *      - Source package fragments
-	 *  all other input elements are ignored
-	 *
-	 * @return a valid structured selection based on the current selection
-	 */
-	private IStructuredSelection getValidSelection() {
-		ISelection currentSelection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
-		if(currentSelection instanceof IStructuredSelection) {
-			IStructuredSelection structuredSelection = (IStructuredSelection) currentSelection;
-			List<IAdaptable> selectedElements = new ArrayList<IAdaptable>(structuredSelection.size());
-			Iterator<?> i = structuredSelection.iterator();
-			while(i.hasNext()) {
-				Object selectedElement = i.next();
-				if(selectedElement instanceof IProject) {
-					this.addProject(selectedElements, (IProject)selectedElement);
-				}
-				else if(selectedElement instanceof IJavaElement) {
-					this.addJavaElement(selectedElements, (IJavaElement)selectedElement);
-				}
-			}
-			return new StructuredSelection(selectedElements);
-		} 
-		return StructuredSelection.EMPTY;
+	private boolean usesMoxy() {
+		return this.schemaGenWizardPage.usesMoxy();
+	}
+	
+	protected NewSchemaFileWizardPage buildNewSchemaFileWizardPage(IStructuredSelection selection) {
+		return new NewSchemaFileWizardPage(
+				"Page_1", selection, this.getDataModel(),	   //$NON-NLS-1$
+				JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_title, 
+				JptJaxbUiMessages.SchemaGeneratorProjectWizardPage_desc);
+	}
+	
+	protected SchemaGeneratorWizardPage buildSchemaGeneratorWizardPage(IStructuredSelection selection) {
+		return new SchemaGeneratorWizardPage(selection);
 	}
 
-	private void addJavaElement(List<IAdaptable> selectedElements, IJavaElement javaElement) {
-		if(javaElement.getElementType() == IJavaElement.PACKAGE_FRAGMENT) {
-			if( ! isInArchiveOrExternal(javaElement))
-				selectedElements.add(javaElement);
-		} 
-	}
+	private IStructuredSelection buildSelection(IProject project) {
 
-	private void addProject(List<IAdaptable> selectedElements, IProject project) {
+		List<IAdaptable> selectedElements = new ArrayList<IAdaptable>(1);
+		this.addProjectTo(selectedElements, project);
+		return new StructuredSelection(selectedElements);
+	}
+	
+	private void addProjectTo(List<IAdaptable> selectedElements, IProject project) {
 		try {
-			if(project.hasNature(JavaCore.NATURE_ID))
+			if(project != null && project.hasNature(JavaCore.NATURE_ID))
 				selectedElements.add(JavaCore.create(project));
 		} 
 		catch(CoreException ex) {
@@ -185,9 +216,15 @@ public class SchemaGeneratorWizard extends Wizard implements IExportWizard {
 		}
 	}
 
-	private static boolean isInArchiveOrExternal(IJavaElement element) {
-		IPackageFragmentRoot root = (IPackageFragmentRoot) element.getAncestor(IJavaElement.PACKAGE_FRAGMENT_ROOT);
-		return root != null && (root.isArchive() || root.isExternal());
+	protected IDataModel getDataModel() {
+		if (this.dataModel == null) {
+			this.dataModel = DataModelFactory.createDataModel(getDefaultProvider());
+		}
+		return this.dataModel;
+	}
+
+	protected IDataModelProvider getDefaultProvider() {
+		return new SchemaFileCreationDataModelProvider();
 	}
 	
 	// ********** generate schema job **********

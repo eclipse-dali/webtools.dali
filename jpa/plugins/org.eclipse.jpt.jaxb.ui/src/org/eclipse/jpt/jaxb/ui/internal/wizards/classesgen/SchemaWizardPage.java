@@ -19,7 +19,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.ProjectWizardPage;
+import org.eclipse.jpt.jaxb.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -143,9 +143,9 @@ public class SchemaWizardPage extends WizardPage {
 	private void updateTargetProject() {
     	IWizardPage previousPage = this.getPreviousPage();
     	
-		if(previousPage instanceof ProjectWizardPage) {
+		if(previousPage instanceof JavaProjectWizardPage) {
 			// get project from previousPage
-			this.targetProject = (((ProjectWizardPage)previousPage).getJavaProject()).getProject();
+			this.targetProject = (((JavaProjectWizardPage)previousPage).getJavaProject()).getProject();
 		}
 		else if(initialSelection != null && ! this.initialSelection.isEmpty()) {
 			// no previousPage - get project from initialSelection

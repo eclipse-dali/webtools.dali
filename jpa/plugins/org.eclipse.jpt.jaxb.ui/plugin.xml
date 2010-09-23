@@ -4,11 +4,11 @@
 
 	<extension
 		point="org.eclipse.ui.newWizards">
-		
+
 		<category
 			id="org.eclipse.jpt.jaxb"
 			name="%jpaWizardCategoryName"/>
- 			
+
  		<wizard
             id="org.eclipse.jpt.jaxb.ui.wizard.generateSchemaFromClasses"
 			name="%generateSchemaFromClassesName"
@@ -27,7 +27,7 @@
 			icon="icons/full/etool16/newclass_wiz.gif">
 				<description>%generateClassesFromSchemaDesc</description>
 		</wizard>
-		
+
 	</extension>
 
 	<extension

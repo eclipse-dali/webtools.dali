@@ -77,7 +77,7 @@ public class ProjectWizardPage extends WizardPage
 	public ProjectWizardPage() {
 		super("Java Project"); //$NON-NLS-1$
 
-		this.setDescription(JptJaxbUiMessages.ProjectWizardPage_desc);
+		this.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
 	}
 	
 	public ProjectWizardPage(IJavaProject javaProject) {
@@ -140,7 +140,7 @@ public class ProjectWizardPage extends WizardPage
 			composite.setLayout(new GridLayout(2, false));
 
 			// Project
-			this.buildLabel(composite, JptJaxbUiMessages.ProjectWizardPage_project);
+			this.buildLabel(composite, JptJaxbUiMessages.JavaProjectWizardPage_project);
 			this.projectCombo = this.buildProjectCombo(composite, this.buildProjectComboSelectionListener());
 			this.updateProjectCombo();
 
@@ -192,7 +192,7 @@ public class ProjectWizardPage extends WizardPage
 		}
 
 		private String[] getSortedJavaProjectsNames() {
-			return ArrayTools.sort(getJavaProjectsNames());
+			return ArrayTools.sort(this.getJavaProjectsNames());
 		}
 
 		private String[] getJavaProjectsNames() {
@@ -232,7 +232,7 @@ public class ProjectWizardPage extends WizardPage
 			label.setText(text);
 			return label;
 		}
-			
+
 		private Combo buildProjectCombo(Composite parent, SelectionListener listener) {
 			Combo projectCombo = new Combo(parent, SWT.READ_ONLY);
 			GridData gridData = new GridData();
