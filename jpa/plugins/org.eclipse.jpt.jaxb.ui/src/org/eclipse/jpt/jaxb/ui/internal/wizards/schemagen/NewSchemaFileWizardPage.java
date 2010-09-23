@@ -9,10 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
-import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.CONTAINER_PATH;
-import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.FILE_NAME;
-import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.PROJECT;
-
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.*;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,7 +19,6 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.old.SchemaGeneratorWizard;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
