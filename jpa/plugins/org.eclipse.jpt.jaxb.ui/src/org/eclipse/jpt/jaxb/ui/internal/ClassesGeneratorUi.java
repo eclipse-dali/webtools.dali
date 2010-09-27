@@ -61,6 +61,7 @@ public class ClassesGeneratorUi {
 	 */
 	protected void generate() {
 		ClassesGeneratorWizard wizard = new ClassesGeneratorWizard(this.javaProject, this.schemaPathOrUri);
+		wizard.setWindowTitle(JptJaxbUiMessages.ClassesGeneratorWizard_title);
 		WizardDialog dialog = new WizardDialog(this.getCurrentShell(), wizard);
 		dialog.create();
 		int returnCode = dialog.open();
