@@ -13,6 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
 
@@ -31,7 +32,13 @@ public class JpaPlatformTester extends PropertyTester {
 		} 
 		else if (receiver instanceof IJavaElement) {
 			platform = platform(((IJavaElement) receiver).getResource().getProject());
-		} 
+		}
+		else if (receiver instanceof JpaPlatformDescription) {
+			platform = (JpaPlatformDescription) receiver;
+		}
+		else if (receiver instanceof JpaLibraryProviderInstallOperationConfig) {
+			platform = ((JpaLibraryProviderInstallOperationConfig) receiver).getJpaPlatform();
+		}
 		
 		if (property.equals("jpaPlatform")) {
 			JpaPlatformDescription otherPlatform = JptCorePlugin.getJpaPlatformManager().getJpaPlatform((String) expectedValue);
