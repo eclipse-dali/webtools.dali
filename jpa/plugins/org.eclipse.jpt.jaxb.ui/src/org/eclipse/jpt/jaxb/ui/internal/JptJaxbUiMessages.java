@@ -123,8 +123,26 @@ public class JptJaxbUiMessages {
 	
 	public static String SchemaGeneratorWizard_generateSchemaTask;
 	
-	
 	public static String NewSchemaFileWizardPage_errorNotJavaProject;
+	
+	
+	// new project wizard
+	
+	public static String JaxbProjectWizard_title;
+	
+	public static String JaxbProjectWizard_firstPage_title;
+	public static String JaxbProjectWizard_firstPage_desc;
+	
+	
+	// facet page
+	
+	public static String JaxbFacetWizardPage_title;
+	public static String JaxbFacetWizardPage_desc;
+	public static String JaxbFacetWizardPage_platformLabel;
+	public static String JaxbFacetWizardPage_jaxbImplementationLabel;
+	
+	public static String JaxbFacetDataModel_validatePlatformNotSpecified;
+	
 	
 	
 	private static final String BUNDLE_NAME = "jpt_jaxb_ui"; //$NON-NLS-1$
