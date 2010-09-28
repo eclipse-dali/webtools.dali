@@ -126,7 +126,7 @@ The following example is the included simple java resource locator, which is use
 &lt;extension  
  point=&quot;org.eclipse.jpt.core.resourceLocators&quot;&gt;
  &lt;resourceLocator
-  id=&quot;org.eclipse.jpt.core.simpleJavaResourceLocator&quot;
+  id=&quot;simpleJavaResourceLocator&quot;
   class=&quot;org.eclipse.jpt.core.internal.resource.SimpleJavaResourceLocator&quot;
   priority=&quot;lowest&quot;
   &lt;enablement&gt;
@@ -162,11 +162,12 @@ The enablement variables include:
          <meta.section type="implementation"/>
       </appInfo>
       <documentation>
-         &lt;p&gt;The org.eclipse.jpt.core plug-in provides the following content types:&lt;ul&gt;
-&lt;li&gt;org.eclipse.jpt.core.simpleJavaResourceLocator&lt;/li&gt;
-&lt;li&gt;org.eclipse.jpt.core.moduleResourceLocator&lt;/li&gt;
-&lt;li&gt;org.eclipse.jpt.core.webModuleResourceLocator&lt;/li&gt;
-&lt;li&gt;org.eclipse.jpt.core.pluginResourceLocator&lt;/li&gt;
+         &lt;p&gt;The org.eclipse.jpt.core plug-in provides the following resource locators:
+&lt;ul&gt;
+&lt;li&gt;simpleJavaResourceLocator&lt;/li&gt;
+&lt;li&gt;moduleResourceLocator&lt;/li&gt;
+&lt;li&gt;webModuleResourceLocator&lt;/li&gt;
+&lt;li&gt;pluginResourceLocator&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/p&gt;
       </documentation>
