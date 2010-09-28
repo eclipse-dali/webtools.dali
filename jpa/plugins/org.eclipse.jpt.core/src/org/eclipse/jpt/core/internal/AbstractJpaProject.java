@@ -11,10 +11,8 @@ package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
@@ -49,7 +47,6 @@ import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
@@ -1331,15 +1328,12 @@ public abstract class AbstractJpaProject
 	}
 	
 	protected void validateLibraryProvider(List<IMessage> messages) {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getJpaPlatform().getId());
-		
 		try {
 			ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
 			IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
 			IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
 			if (! libraryProvider.isEnabledFor(
-					facetedProject, facetVersion, enablementVariables)) {
+					facetedProject, facetVersion)) {
 				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,

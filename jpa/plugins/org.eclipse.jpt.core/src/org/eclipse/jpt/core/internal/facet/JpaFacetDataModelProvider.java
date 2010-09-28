@@ -10,16 +10,16 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
+import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -33,8 +33,10 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
@@ -82,7 +84,7 @@ public abstract class JpaFacetDataModelProvider
 	public Set<String> getPropertyNames() {
 		@SuppressWarnings("unchecked") Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(RUNTIME);
-		propertyNames.add(PLATFORM_ID);
+		propertyNames.add(PLATFORM);
 		propertyNames.add(LIBRARY_PROVIDER_DELEGATE);
 		propertyNames.add(CONNECTION);
 		propertyNames.add(CONNECTION_ACTIVE);
@@ -110,8 +112,8 @@ public abstract class JpaFacetDataModelProvider
 		return (IRuntime) this.getProperty(RUNTIME);
 	}
 	
-	protected String getPlatformId() {
-		return (String) this.getProperty(PLATFORM_ID);
+	protected JpaPlatformDescription getPlatform() {
+		return (JpaPlatformDescription) getProperty(PLATFORM);
 	}
 	
 	protected LibraryInstallDelegate getLibraryInstallDelegate() {
@@ -174,8 +176,8 @@ public abstract class JpaFacetDataModelProvider
 		if (propertyName.equals(RUNTIME)) {
 			return null;
 		}
-		if (propertyName.equals(PLATFORM_ID)) {
-			return getDefaultPlatformId();
+		if (propertyName.equals(PLATFORM)) {
+			return getDefaultPlatform();
 		}
 		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
 			return getDefaultLibraryProvider();
@@ -208,12 +210,16 @@ public abstract class JpaFacetDataModelProvider
 		return super.getDefaultProperty(propertyName);
 	}
 	
-	protected abstract String getDefaultPlatformId();
+	protected abstract JpaPlatformDescription getDefaultPlatform();
 	
 	protected LibraryInstallDelegate getDefaultLibraryProvider() {
-		// delegate itself changes, not the instance of delegate
+		// delegate itself changes only when facet version changes
 		if (this.defaultLibraryProvider == null) {
-			this.defaultLibraryProvider = this.buildDefaultLibraryProvider();
+			this.defaultLibraryProvider = buildDefaultLibraryProvider();
+		}
+		else if (! this.defaultLibraryProvider.getProjectFacetVersion().equals(getProjectFacetVersion())) {
+			this.defaultLibraryProvider.dispose();
+			this.defaultLibraryProvider = buildDefaultLibraryProvider();
 		}
 		return defaultLibraryProvider;
 	}
@@ -227,20 +233,17 @@ public abstract class JpaFacetDataModelProvider
 		if (pfv == null) {
 			return null;
 		}
-		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv, this.buildEnablementVariables());
-		lp.addListener(this.buildLibraryProviderListener());
+		LibraryInstallDelegate lp = new LibraryInstallDelegate(fpjwc, pfv);
+		lp.addListener(buildLibraryProviderListener());
 		return lp;
-	}
-	
-	protected Map<String, Object> buildEnablementVariables() {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, this.getPlatformId());
-		return enablementVariables;
 	}
 	
 	protected IPropertyChangeListener buildLibraryProviderListener() {
 		return new IPropertyChangeListener() {
 				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
+						adjustLibraryProviders();
+					}
 					JpaFacetDataModelProvider.this.getDataModel().notifyPropertyChange(
 							LIBRARY_PROVIDER_DELEGATE, IDataModel.VALUE_CHG);
 				}
@@ -287,8 +290,8 @@ public abstract class JpaFacetDataModelProvider
 			//no-op
 		}
 		else if (propertyName.equals(FACET_VERSION)) {
-			this.model.notifyPropertyChange(PLATFORM_ID, IDataModel.DEFAULT_CHG);
-			resetLibraryProviderEnablementContext();
+			adjustLibraryProviders();
+			this.model.notifyPropertyChange(PLATFORM, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIBRARY_PROVIDER_DELEGATE, IDataModel.DEFAULT_CHG);
 		}
 		else if (propertyName.equals(RUNTIME)) {
@@ -301,8 +304,8 @@ public abstract class JpaFacetDataModelProvider
 			this.model.notifyPropertyChange(DISCOVER_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 			this.model.notifyPropertyChange(LIST_ANNOTATED_CLASSES, IDataModel.DEFAULT_CHG);
 		}
-		else if (propertyName.equals(PLATFORM_ID)) {
-			resetLibraryProviderEnablementContext();
+		else if (propertyName.equals(PLATFORM)) {
+			adjustLibraryProviders();
 		}
 		else if (propertyName.equals(CONNECTION)) {
 			this.setBooleanProperty(CONNECTION_ACTIVE, this.connectionIsActive());
@@ -382,13 +385,29 @@ public abstract class JpaFacetDataModelProvider
 		return ((Boolean) propertyValue).booleanValue();
 	}
 	
-	protected void resetLibraryProviderEnablementContext() {
+	protected void adjustLibraryProviders() {
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
-			if (lid != null) {
-				// may be null while model is being built up
-				// ... or in tests
-				lid.setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getPlatformId());
+		if (lid != null) {
+			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
+					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
+			// add the currently selected one first
+			JpaLibraryProviderInstallOperationConfig currentJpaConfig = null;
+			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
+			if (config instanceof JpaLibraryProviderInstallOperationConfig) {
+				currentJpaConfig = (JpaLibraryProviderInstallOperationConfig) config;
+				jpaConfigs.add(currentJpaConfig);
 			}
+			for (ILibraryProvider lp : lid.getLibraryProviders()) {
+				config = lid.getLibraryProviderOperationConfig(lp);
+				if (config instanceof JpaLibraryProviderInstallOperationConfig
+						&& ! config.equals(currentJpaConfig)) {
+					jpaConfigs.add((JpaLibraryProviderInstallOperationConfig) config);
+				}
+			}
+			for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
+				jpaConfig.setJpaPlatform(getPlatform());
+			}
+		}
 	}
 	
 	
@@ -396,7 +415,7 @@ public abstract class JpaFacetDataModelProvider
 	
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
-		if (propertyName.equals(PLATFORM_ID)) {
+		if (propertyName.equals(PLATFORM)) {
 			return this.buildValidPlatformDescriptors();
 		}
 		if (propertyName.equals(CONNECTION)) {
@@ -413,30 +432,25 @@ public abstract class JpaFacetDataModelProvider
 	}
 	
 	protected DataModelPropertyDescriptor[] buildValidPlatformDescriptors() {
-		Iterable<String> validPlatformIds = buildValidPlatformIds();
+		Iterable<JpaPlatformDescription> validPlatformDescriptions = buildValidPlatformDescriptions();
 		Iterable<DataModelPropertyDescriptor> validPlatformDescriptors =
-				new TransformationIterable<String, DataModelPropertyDescriptor>(validPlatformIds) {
+				new TransformationIterable<JpaPlatformDescription, DataModelPropertyDescriptor>(validPlatformDescriptions) {
 					@Override
-					protected DataModelPropertyDescriptor transform(String platformId) {
-						return JpaFacetDataModelProvider.this.buildPlatformIdDescriptor(platformId);
+					protected DataModelPropertyDescriptor transform(JpaPlatformDescription desc) {
+						return buildPlatformDescriptor(desc);
 					}
 				};
 		return ArrayTools.sort(ArrayTools.array(validPlatformDescriptors, EMPTY_DMPD_ARRAY), DESCRIPTOR_COMPARATOR);
 	}
 	
-	protected Iterable<String> buildValidPlatformIds() {
-		return new TransformationIterable<JpaPlatformDescription, String>(
-				new FilteringIterable<JpaPlatformDescription>(JptCorePlugin.getJpaPlatformManager().getJpaPlatforms()) {
-					@Override
-					protected boolean accept(JpaPlatformDescription o) {
-						return o.supportsJpaFacetVersion(getProjectFacetVersion());
-					}
-				}) {
-			@Override
-			protected String transform(JpaPlatformDescription o) {
-				return o.getId();
-			}
-		};
+	protected Iterable<JpaPlatformDescription> buildValidPlatformDescriptions() {
+		return new FilteringIterable<JpaPlatformDescription>(
+					JptCorePlugin.getJpaPlatformManager().getJpaPlatforms()) {
+				@Override
+				protected boolean accept(JpaPlatformDescription o) {
+					return o.supportsJpaFacetVersion(getProjectFacetVersion());
+				}
+			};
 	}
 	
 	protected static final Comparator<DataModelPropertyDescriptor> DESCRIPTOR_COMPARATOR =
@@ -518,8 +532,8 @@ public abstract class JpaFacetDataModelProvider
 	 */
 	@Override
 	public DataModelPropertyDescriptor getPropertyDescriptor(String propertyName) {
-		if (propertyName.equals(PLATFORM_ID)) {
-			return buildPlatformIdDescriptor(this.getPlatformId());
+		if (propertyName.equals(PLATFORM)) {
+			return buildPlatformDescriptor(this.getPlatform());
 		}
 		if (propertyName.equals(CONNECTION)) {
 			return buildConnectionDescriptor(this.getConnectionName());
@@ -527,8 +541,8 @@ public abstract class JpaFacetDataModelProvider
 		return super.getPropertyDescriptor(propertyName);
 	}
 	
-	protected DataModelPropertyDescriptor buildPlatformIdDescriptor(String platformId) {
-		return new DataModelPropertyDescriptor(platformId, this.getPlatformLabel(platformId));
+	protected DataModelPropertyDescriptor buildPlatformDescriptor(JpaPlatformDescription platform) {
+		return new DataModelPropertyDescriptor(platform, platform.getLabel());
 	}
 	
 	protected String getPlatformLabel(String platformId) {
@@ -612,8 +626,8 @@ public abstract class JpaFacetDataModelProvider
 	
 	@Override
 	public IStatus validate(String propertyName) {
-		if (propertyName.equals(PLATFORM_ID)) {
-			return this.validatePlatformId();
+		if (propertyName.equals(PLATFORM)) {
+			return this.validatePlatform();
 		}
 		if (propertyName.equals(LIBRARY_PROVIDER_DELEGATE)) {
 		    return this.getLibraryInstallDelegate().validate();
@@ -636,8 +650,8 @@ public abstract class JpaFacetDataModelProvider
 		return super.validate(propertyName);
 	}
 	
-	protected IStatus validatePlatformId() {
-		return (this.getPlatformId() == null) ? PLATFORM_NOT_SPECIFIED_STATUS : OK_STATUS;
+	protected IStatus validatePlatform() {
+		return (this.getPlatform() == null) ? PLATFORM_NOT_SPECIFIED_STATUS : OK_STATUS;
 	}
 	
 	protected IStatus validateConnection() {

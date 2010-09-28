@@ -30,9 +30,12 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.internal.libval.LibraryValidatorManager;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
 import org.eclipse.jpt.core.internal.resource.ResourceLocatorManager;
+import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.jpt.core.platform.GenericPlatform;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformManager;
@@ -42,7 +45,9 @@ import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.componentcore.internal.util.IModuleConstants;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
+import org.eclipse.wst.common.project.facet.core.IProjectFacet;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -211,7 +216,8 @@ public class JptCorePlugin extends Plugin {
 	/**
 	 * Web projects have some special exceptions.
 	 */
-	public static final String WEB_PROJECT_FACET_ID = IModuleConstants.JST_WEB_MODULE;
+	public static final IProjectFacet WEB_FACET
+			= ProjectFacetsManager.getProjectFacet(IModuleConstants.JST_WEB_MODULE);
 
 	public static final IPath DEFAULT_PERSISTENCE_XML_RUNTIME_PATH = new Path("META-INF/persistence.xml"); //$NON-NLS-1$
 
@@ -283,19 +289,24 @@ public class JptCorePlugin extends Plugin {
 	 * Return whether the specified Eclipse project has a Web facet.
 	 */
 	public static boolean projectHasWebFacet(IProject project) {
-		return projectHasFacet(project, WEB_PROJECT_FACET_ID);
+		return projectHasFacet(project, WEB_FACET);
 	}
 
 	/**
 	 * Checked exceptions bite.
 	 */
-	private static boolean projectHasFacet(IProject project, String facetId) {
+	private static boolean projectHasFacet(IProject project, IProjectFacet facet) {
 		try {
-			return FacetedProjectFramework.hasProjectFacet(project, facetId);
+			return FacetedProjectFramework.hasProjectFacet(project, facet.getId());
 		} catch (CoreException ex) {
 			log(ex);  // problems reading the project metadata - assume facet doesn't exist - return 'false'
 			return false;
 		}
+	}
+	
+	public static Iterable<LibraryValidator> getLibraryValidators(
+			JptLibraryProviderInstallOperationConfig config) {
+		return LibraryValidatorManager.instance().getLibraryValidators(config);
 	}
 	
 	public static ResourceLocator getResourceLocator(IProject project) {
@@ -363,6 +374,15 @@ public class JptCorePlugin extends Plugin {
 	public static IEclipsePreferences getWorkspacePreferences() {
 		return getPreferences(new InstanceScope());
 	}
+	
+	/**
+	 * Set the workspace preference.
+	 */
+	public static void setWorkspacePreference(String preferenceKey, String preferenceValue) {
+		IEclipsePreferences prefs = getWorkspacePreferences();
+		prefs.put(preferenceKey, preferenceValue);
+		flush(prefs);
+	}
 
 	/**
 	 * Return the Dali preferences for the specified Eclipse project.
@@ -370,7 +390,30 @@ public class JptCorePlugin extends Plugin {
 	public static IEclipsePreferences getProjectPreferences(IProject project) {
 		return getPreferences(new ProjectScope(project));
 	}
-
+	
+	/**
+	 * Set the project preference
+	 */
+	public static void setProjectPreference(IProject project, String preferenceKey, String preferenceValue) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		if (preferenceValue == null) {
+			prefs.remove(preferenceKey);
+		}
+		else {
+			prefs.put(preferenceKey, preferenceValue);
+		}
+		flush(prefs);
+	}
+	
+	/**
+	 * Set the project preference
+	 */
+	public static void setProjectPreference(IProject project, String preferenceKey, boolean preferenceValue) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		prefs.putBoolean(preferenceKey, preferenceValue);
+		flush(prefs);
+	}
+	
 	/**
 	 * Return the Dali preferences for the specified context.
 	 */
@@ -436,7 +479,6 @@ public class JptCorePlugin extends Plugin {
 	 * Set the default JPA platform ID for creating new JPA projects
 	 */
 	public static void setDefaultJpaPlatformId(String jpaFacetVersion, String platformId) {
-		IEclipsePreferences prefs = getWorkspacePreferences();
 		String preferenceKey = null;
 		if (JpaFacet.VERSION_1_0.getVersionString().equals(jpaFacetVersion)) {
 			preferenceKey = DEFAULT_JPA_PLATFORM_1_0_PREF_KEY;
@@ -447,8 +489,7 @@ public class JptCorePlugin extends Plugin {
 		else {
 			throw new IllegalArgumentException("Illegal JPA facet version: " + jpaFacetVersion); //$NON-NLS-1$
 		}
-		prefs.put(preferenceKey, platformId);
-		flush(prefs);
+		setWorkspacePreference(preferenceKey, platformId);
 	}
 	
 	/**
@@ -457,14 +498,20 @@ public class JptCorePlugin extends Plugin {
 	public static String getJpaPlatformId(IProject project) {
 		return getProjectPreferences(project).get(JPA_PLATFORM_PREF_KEY, GenericPlatform.VERSION_1_0.getId());
 	}
+	
+	/**
+	 * Return the JPA platform description associated with the specified Eclipse project.
+	 */
+	public static JpaPlatformDescription getJpaPlatformDescription(IProject project) {
+		String jpaPlatformId = getJpaPlatformId(project);
+		return getJpaPlatformManager().getJpaPlatform(jpaPlatformId);
+	}
 
 	/**
 	 * Set the JPA platform ID associated with the specified Eclipse project.
 	 */
 	public static void setJpaPlatformId(IProject project, String jpaPlatformId) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.put(JPA_PLATFORM_PREF_KEY, jpaPlatformId);
-		flush(prefs);
+		setProjectPreference(project, JPA_PLATFORM_PREF_KEY, jpaPlatformId);
 	}
 
 	/**
@@ -488,9 +535,7 @@ public class JptCorePlugin extends Plugin {
 	 * Eclipse project.
 	 */
 	public static void setDiscoverAnnotatedClasses(IProject project, boolean discoverAnnotatedClasses) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		prefs.putBoolean(DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
-		flush(prefs);
+		setProjectPreference(project, DISCOVER_ANNOTATED_CLASSES, discoverAnnotatedClasses);
 	}
 
 	/**
@@ -506,14 +551,7 @@ public class JptCorePlugin extends Plugin {
 	 * specified Eclipse project.
 	 */
 	public static void setMetamodelSourceFolderName(IProject project, String metamodelSourceFolderName) {
-		IEclipsePreferences prefs = getProjectPreferences(project);
-		if (metamodelSourceFolderName == null) {
-			prefs.remove(METAMODEL_SOURCE_FOLDER_NAME);
-		}
-		else {
-			prefs.put(METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
-		}
-		flush(prefs);
+		setProjectPreference(project, METAMODEL_SOURCE_FOLDER_NAME, metamodelSourceFolderName);
 	}
 
 	/**

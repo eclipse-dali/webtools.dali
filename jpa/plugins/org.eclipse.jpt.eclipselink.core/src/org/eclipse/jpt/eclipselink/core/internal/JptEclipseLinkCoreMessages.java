@@ -17,7 +17,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptEclipseLinkCoreMessages
 {
-	public static String EclipseLinkLibraryValidator_invalidJpaLibrary;
 	public static String EclipseLinkLibraryValidator_noEclipseLinkVersion;
 	public static String EclipseLinkLibraryValidator_multipleEclipseLinkVersions;
 	public static String EclipseLinkLibraryValidator_improperEclipseLinkVersion;

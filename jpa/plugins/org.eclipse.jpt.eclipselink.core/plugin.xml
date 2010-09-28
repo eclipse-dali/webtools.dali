@@ -73,8 +73,43 @@
 			jpaFacetVersion="2.0"/>
 		
 	</extension>
-
-
+	
+	
+	<extension
+		point="org.eclipse.jpt.core.libraryValidators">
+		
+		<libraryValidator
+			id="eclipselinkLibraryValidator"
+			class="org.eclipse.jpt.eclipselink.core.internal.libval.EclipseLinkUserLibraryValidator">
+			<enablement>
+				<and>
+					<with variable="libraryProvider">
+						<test property="org.eclipse.jpt.core.extendsId" value="jpa-user-library-provider"/>
+					</with>
+					<with variable="config">
+						<test property="org.eclipse.jpt.core.jpaPlatformGroup" value="eclipselink"/>
+					</with>
+				</and>
+			</enablement>
+		</libraryValidator>
+		
+		<libraryValidator
+			id="eclipselinkEclipselinkBundlesLibraryValidator"
+			class="org.eclipse.jpt.eclipselink.core.internal.libval.EclipseLinkEclipseLinkBundlesLibraryValidator">
+			<enablement>
+				<and>
+					<with variable="libraryProvider">
+						<test property="org.eclipse.jpt.core.extendsId" value="eclipselink-bundles-library-provider"/>
+					</with>
+					<with variable="config">
+						<test property="org.eclipse.jpt.core.jpaPlatformGroup" value="eclipselink"/>
+					</with>
+				</and>
+			</enablement>
+		</libraryValidator>
+		
+	</extension>
+	
 	
 	<!--
 	******************************************
@@ -104,136 +139,32 @@
 		
 		<provider 
 			id="jpa-eclipselink1_0-user-library-provider" 
-			extends="jpa-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.0, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="org.eclipse.eclipselink.platform"/>
-				</with>
-			</enablement>
-		</provider>
-		
-		<provider 
-			id="jpa-eclipselink1_0-wtp-user-library-provider" 
-			extends="jpa-wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.0, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="org.eclipse.eclipselink.platform"/>
-				</with>
-			</enablement>
+			extends="jpa-deprecated-user-library-provider"
+			hidden="true">
 		</provider>
 		
 		<provider 
 			id="jpa-eclipselink1_1-user-library-provider" 
-			extends="jpa-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.1, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink1_1"/>
-				</with>
-			</enablement>
-		</provider>
-		
-		<provider 
-			id="jpa-eclipselink1_1-wtp-user-library-provider" 
-			extends="jpa-wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.1, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink1_1"/>
-				</with>
-			</enablement>
+			extends="jpa-deprecated-user-library-provider"
+			hidden="true">
 		</provider>
 		
 		<provider 
 			id="jpa-eclipselink1_2-user-library-provider" 
-			extends="jpa-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.2, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink1_2"/>
-				</with>
-			</enablement>
-		</provider>
-		
-		<provider 
-			id="jpa-eclipselink1_2-wtp-user-library-provider" 
-			extends="jpa-wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[1.2, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink1_2"/>
-				</with>
-			</enablement>
+			extends="jpa-deprecated-user-library-provider"
+			hidden="true">
 		</provider>
 		
 		<provider 
 			id="eclipselink2_0-user-library-provider" 
-			extends="jpa-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[2.0, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<param name="validator.param.2" value="key-class:javax.persistence.ElementCollection"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink2_0"/>
-				</with>
-			</enablement>
-		</provider>
-		
-		<provider 
-			id="eclipselink2_0-wtp-user-library-provider" 
-			extends="jpa-wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[2.0, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<param name="validator.param.2" value="key-class:javax.persistence.ElementCollection"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink2_0"/>
-				</with>
-			</enablement>
+			extends="jpa-deprecated-user-library-provider"
+			hidden="true">
 		</provider>
 		
 		<provider 
 			id="jpa-eclipselink2_1-user-library-provider" 
-			extends="jpa-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[2.1, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<param name="validator.param.2" value="key-class:javax.persistence.ElementCollection"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink2_1"/>
-				</with>
-			</enablement>
-		</provider>
-		
-		<provider 
-			id="jpa-eclipselink2_1-wtp-user-library-provider" 
-			extends="jpa-wtp-user-library-provider">
-			<param name="validator" value="org.eclipse.jpt.eclipselink.core.internal.utility.EclipseLinkLibraryValidator"/>
-			<param name="validator.param.0" value="version-range:[2.1, 3.0)"/>
-			<param name="validator.param.1" value="key-class:javax.persistence.Entity"/>
-			<param name="validator.param.2" value="key-class:javax.persistence.ElementCollection"/>
-			<enablement>
-				<with variable="jpaPlatform">
-					<equals value="eclipselink2_1"/>
-				</with>
-			</enablement>
+			extends="jpa-deprecated-user-library-provider"
+			hidden="true">
 		</provider>
 		
 	</extension>

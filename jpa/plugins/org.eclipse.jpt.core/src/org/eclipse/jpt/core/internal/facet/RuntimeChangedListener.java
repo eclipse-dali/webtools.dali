@@ -1,7 +1,14 @@
+/*******************************************************************************
+ *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  This program and the accompanying materials are made available under the
+ *  terms of the Eclipse Public License v1.0, which accompanies this distribution
+ *  and is available at http://www.eclipse.org/legal/epl-v10.html
+ *  
+ *  Contributors: 
+ *  	Oracle - initial API and implementation
+ *******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
-import java.util.HashMap;
-import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -25,9 +32,7 @@ public class RuntimeChangedListener
 		}
 		IProjectFacetVersion pfv = fpb.getProjectFacetVersion(JpaFacet.FACET);
 		if (pfv != null) {
-			Map<String, Object> enablementVariables = new HashMap<String, Object>();
-			enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, getJpaPlatformId(fpb.getProject()));
-			LibraryInstallDelegate lp = new LibraryInstallDelegate(fpb, pfv, enablementVariables);
+			LibraryInstallDelegate lp = new LibraryInstallDelegate(fpb, pfv);
 			try {
 				lp.execute(new NullProgressMonitor());
 			}

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
+import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRunnable;
@@ -44,7 +44,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.facet.JpaLibraryProviderConstants;
+import org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.Catalog;
@@ -100,7 +100,10 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
+import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
 import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
@@ -227,9 +230,7 @@ public class JpaProjectPropertiesPage
 		if ( ! this.getControl().isDisposed()) {
 			// handle null, in the case the jpa facet is changed via the facets page,
 			// the library install delegate is temporarily null
-			if (getLibraryInstallDelegate() != null) {
-				getLibraryInstallDelegate().setEnablementContextVariable(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, newPlatformId);
-			}
+			adjustLibraryProviders();
 		}
 	}
 
@@ -411,18 +412,53 @@ public class JpaProjectPropertiesPage
 
 	@Override
 	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, ""); //$NON-NLS-1$
-		return new LibraryInstallDelegate(project, fv, enablementVariables);
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv, null);
+		lid.addListener(buildLibraryProviderListener());
+		return lid;
 	}
-
-
+	
+	protected IPropertyChangeListener buildLibraryProviderListener() {
+		return new IPropertyChangeListener() {
+				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
+						adjustLibraryProviders();
+					}
+				}
+			};
+	}
+	
+	protected void adjustLibraryProviders() {
+		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
+		if (lid != null) {
+			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
+					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
+			// add the currently selected one first
+			JpaLibraryProviderInstallOperationConfig currentJpaConfig = null;
+			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
+			if (config instanceof JpaLibraryProviderInstallOperationConfig) {
+				currentJpaConfig = (JpaLibraryProviderInstallOperationConfig) config;
+				jpaConfigs.add(currentJpaConfig);
+			}
+			for (ILibraryProvider lp : lid.getLibraryProviders()) {
+				config = lid.getLibraryProviderOperationConfig(lp);
+				if (config instanceof JpaLibraryProviderInstallOperationConfig
+						&& ! config.equals(currentJpaConfig)) {
+					jpaConfigs.add((JpaLibraryProviderInstallOperationConfig) config);
+				}
+			}
+			for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
+				jpaConfig.setJpaPlatform(JptCorePlugin.getJpaPlatformManager().getJpaPlatform(this.platformIdModel.getValue()));
+			}
+		}
+	}
+	
+	
 	// ********** page **********
 
 	@Override
 	protected Control createPageContents(Composite parent) {
 		this.projectModel.setValue(this.getProject());
-
+		
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout();
 		layout.marginWidth = 0;
@@ -444,7 +480,8 @@ public class JpaProjectPropertiesPage
 
 		Dialog.applyDialogFont(composite);
 		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
-
+		
+		adjustLibraryProviders();
 		this.updateValidation();
 
 		return composite;
@@ -938,15 +975,14 @@ public class JpaProjectPropertiesPage
 		statuses.put(WARNING_STATUS, new ArrayList<IStatus>());
 		statuses.put(INFO_STATUS, new ArrayList<IStatus>());
 		statuses.put(OK_STATUS, CollectionTools.list(Status.OK_STATUS));
-
+		
 		/* platform */
 		// user is unable to unset the platform, so no validation necessary
-
+		
 		/* library provider */
-		IStatus lpStatus = validateLibraryProvider();
+		IStatus lpStatus = super.performValidation();
 		statuses.get(Integer.valueOf(lpStatus.getSeverity())).add(lpStatus);
 		
-
 		/* connection */
 		ConnectionProfile connectionProfile = this.getConnectionProfile();
 		String connectionName = this.getConnectionName();
@@ -1008,18 +1044,6 @@ public class JpaProjectPropertiesPage
 		}
 	}
 	
-	private IStatus validateLibraryProvider() {
-		Map<String, Object> enablementVariables = new HashMap<String, Object>();
-		enablementVariables.put(JpaLibraryProviderConstants.EXPR_VAR_JPA_PLATFORM, this.platformIdModel.getValue()); //$NON-NLS-1$
-		
-		if (! getLibraryInstallDelegate().getLibraryProvider().isEnabledFor(
-				getFacetedProject(), getProjectFacetVersion(), enablementVariables)) {
-			return buildErrorStatus(JptCoreMessages.VALIDATE_LIBRARY_PROVIDER_INVALID);
-		}
-		
-		return super.performValidation();
-	}
-
 	private IStatus buildInfoStatus(String message) {
 		return this.buildStatus(IStatus.INFO, message);
 	}
