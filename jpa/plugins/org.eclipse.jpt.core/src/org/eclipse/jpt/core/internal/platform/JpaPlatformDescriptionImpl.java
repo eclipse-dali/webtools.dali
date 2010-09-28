@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
 import org.eclipse.jpt.core.internal.XPointUtil;
@@ -65,10 +66,16 @@ public class JpaPlatformDescriptionImpl
 	}
 	
 	void setJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
+		if (! jpaFacetVersion.getProjectFacet().equals(JpaFacet.FACET)) {
+			throw new IllegalArgumentException(jpaFacetVersion.toString());
+		}
 		this.jpaFacetVersion = jpaFacetVersion;
 	}
 	
 	public boolean supportsJpaFacetVersion(IProjectFacetVersion jpaFacetVersion) {
+		if (! jpaFacetVersion.getProjectFacet().equals(JpaFacet.FACET)) {
+			throw new IllegalArgumentException(jpaFacetVersion.toString());
+		}
 		return (this.jpaFacetVersion != null) ? this.jpaFacetVersion.equals(jpaFacetVersion) : true;
 	}
 	
