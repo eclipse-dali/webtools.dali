@@ -7,24 +7,31 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.wizards;
+package org.eclipse.jpt.ui.internal.wizards.proj;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.jpt.ui.internal.wizards.proj.model.JpaProjectCreationDataModelProvider;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectTemplate;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.web.ui.internal.wizards.NewProjectDataModelFacetWizard;
 
-public abstract class JpaProjectWizard
+public class JpaProjectWizard
 		extends NewProjectDataModelFacetWizard {
 	
-	protected JpaProjectWizard() {
+	public JpaProjectWizard() {
 		super();
+		setWindowTitle(JptUiMessages.JpaProjectWizard_title);
 	}
 	
-	protected JpaProjectWizard(IDataModel dataModel) {
+	public JpaProjectWizard(IDataModel dataModel) {
 		super(dataModel);
+		setWindowTitle(JptUiMessages.JpaProjectWizard_title);
 	}
 	
 	
@@ -36,6 +43,16 @@ public abstract class JpaProjectWizard
 	@Override
 	protected IWizardPage createFirstPage() {
 		return new JpaProjectWizardFirstPage(model, "first.page"); //$NON-NLS-1$ 
+	}
+	
+	@Override
+	protected IDataModel createDataModel() {
+		return DataModelFactory.createDataModel(new JpaProjectCreationDataModelProvider());
+	}
+	
+	@Override
+	protected IFacetedProjectTemplate getTemplate() {
+		return ProjectFacetsManager.getTemplate("jpt.jpa.template");
 	}
 	
 	@Override

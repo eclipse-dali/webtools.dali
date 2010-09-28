@@ -23,6 +23,10 @@ public class JptUiMessages {
 	public static String AccessTypeComposite_access;
 	public static String AccessTypeComposite_field;
 	public static String AccessTypeComposite_property;
+	public static String AddToEarComposite_earMemberShip;
+	public static String AddToEarComposite_addToEarLabel;
+	public static String AddToEarComposite_earProjectLabel;
+	public static String AddToEarComposite_newButtonLabel;
 	public static String AddPersistentAttributeDialog_attributeLabel;
 	public static String AddPersistentAttributeDialog_mappingLabel;
 	public static String AddPersistentAttributeDialog_noMappingKeyError;
@@ -40,6 +44,8 @@ public class JptUiMessages {
 	public static String AddRemovePane_RemoveButtonText;
 	public static String ClassChooserPane_dialogMessage;
 	public static String ClassChooserPane_dialogTitle;
+	public static String convertToJpa_convertingProject;
+	public static String convertToJpa_detectingTechnologies;
 	public static String DatabaseSchemaWizardPage_title;
 	public static String DatabaseSchemaWizardPage_desc;
 	public static String DatabaseSchemaWizardPage_schemaSettings;
@@ -92,6 +98,7 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_title;
 	public static String JpaFacetWizardPage_userLibsLink;
 	public static String JpaFacetWizardPage_userServerLibLabel;
+	public static String JpaLibraryProviderInstallPanel_includeLibraries;
 	public static String JpaStructureView_linkWithEditorDesc;
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;
@@ -111,8 +118,7 @@ public class JptUiMessages {
 	public static String MappingFileWizardPage_incorrectSourceFolderError;
 	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogTitle;
 	public static String MappingFileWizardPage_accessLabel_sourceFolderDialogDesc;
-	public static String JpaSEProjectWizard_title;
-	public static String JpaEEProjectWizard_title;
+	public static String JpaProjectWizard_title;
 	public static String NewJpaProjectWizard_firstPage_description;
 	public static String NewJpaProjectWizard_firstPage_title;
 	public static String OrmItemLabelProviderFactory_entityMappingsLabel;

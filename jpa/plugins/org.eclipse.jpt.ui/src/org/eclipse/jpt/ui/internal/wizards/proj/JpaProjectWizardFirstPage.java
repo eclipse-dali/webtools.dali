@@ -6,29 +6,27 @@
  *  
  *  Contributors: Oracle. - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.ui.internal.wizards;
+package org.eclipse.jpt.ui.internal.wizards.proj;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.eclipse.jpt.core.JpaFacet;
-import org.eclipse.jpt.core.internal.facet.JpaProjectCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.facet.FacetTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
-import org.eclipse.jst.j2ee.project.facet.IJ2EEFacetConstants;
-import org.eclipse.jst.j2ee.ui.project.facet.EarSelectionPanel;
+import org.eclipse.jpt.ui.internal.wizards.proj.model.JpaProjectCreationDataModelProperties;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.web.ui.internal.wizards.DataModelFacetCreationWizardPage;
 
 public class JpaProjectWizardFirstPage
 		extends DataModelFacetCreationWizardPage  {
 	
-	protected EarSelectionPanel earComposite;
-	
+	private AddToEarComposite addToEarComposite;
 	
 	public JpaProjectWizardFirstPage(IDataModel dataModel, String pageName) {
 		super(dataModel, pageName);
@@ -41,25 +39,21 @@ public class JpaProjectWizardFirstPage
 	@Override
 	protected Composite createTopLevelComposite(Composite parent) {
 		final Composite top = super.createTopLevelComposite(parent);
-		if (shouldAddEARComposite()) {
-			createEarComposite(top);
-			createWorkingSetGroupPanel(top, new String[] { RESOURCE_WORKING_SET, JAVA_WORKING_SET });
-		}
+		createEarComposite(top);
+		createWorkingSetGroupPanel(top, new String[] { RESOURCE_WORKING_SET, JAVA_WORKING_SET });
 		return top;
 	}
 	
 	private void createEarComposite(Composite top) {
-		if (hasUtilityFacet()) {
-			final IFacetedProject.Action action 
-					= getFacetedProjectWorkingCopy().getProjectFacetAction(IJ2EEFacetConstants.UTILITY_FACET);
-			this.earComposite = new EarSelectionPanel( (IDataModel) action.getConfig(), top);
-		}
+		this.addToEarComposite = new AddToEarComposite(getDataModel(), top);
 	}
 	
 	@Override
 	public boolean internalLaunchNewRuntimeWizard(Shell shell, IDataModel model) {
-		if (hasUtilityFacet()) {
-			return launchNewRuntimeWizard(shell, model, IJ2EEFacetConstants.UTILITY);
+		IFacetedProjectWorkingCopy fpwc = (IFacetedProjectWorkingCopy) model.getProperty(FACETED_PROJECT_WORKING_COPY);
+		IProjectFacetVersion moduleFacet = FacetTools.getModuleFacet(fpwc);
+		if (moduleFacet != null) {
+			return launchNewRuntimeWizard(shell, model, moduleFacet.getProjectFacet().getId());
 		}
 		else {
 			return launchNewRuntimeWizard(shell, model);
@@ -74,9 +68,7 @@ public class JpaProjectWizardFirstPage
 	@Override
 	public void dispose() {
 		super.dispose();
-		if (this.earComposite != null) {
-			earComposite.dispose();
-		}
+		this.addToEarComposite.dispose();
 	}
 	
     @Override
@@ -125,17 +117,5 @@ public class JpaProjectWizardFirstPage
 		arrayList.add(JpaProjectCreationDataModelProperties.EAR_PROJECT_NAME);
 		arrayList.add(JpaProjectCreationDataModelProperties.ADD_TO_EAR );
 		return arrayList.toArray( new String[0] );
-	}
-	
-	protected boolean shouldAddEARComposite() {
-		return hasUtilityFacet();
-	}
-	
-	protected boolean hasUtilityFacet() {
-		return getFacetedProjectWorkingCopy().hasProjectFacet(IJ2EEFacetConstants.UTILITY_FACET);
-	}
-	
-	protected IFacetedProjectWorkingCopy getFacetedProjectWorkingCopy() {
-		return (IFacetedProjectWorkingCopy) this.model.getProperty(FACETED_PROJECT_WORKING_COPY);
 	}
 }

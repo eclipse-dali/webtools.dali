@@ -95,6 +95,19 @@
 			factoryClass="org.eclipse.jpt.ui.internal.jpa2.platform.generic.Generic2_0JpaPlatformUiFactory"/>
 		
 	</extension>
+  	
+	
+	<extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
+		
+		<panel 
+			provider="temp-wtp-user-library-provider"
+			class="org.eclipse.jpt.ui.internal.libprov.TempWtpUserLibraryProviderInstallPanel"/>
+		
+		<panel 
+			provider="temp-wtp-osgi-bundles-library-provider"
+			class="org.eclipse.jpt.ui.internal.libprov.TempWtpOsgiBundlesLibraryProviderInstallPanel"/>
+		
+	</extension>
 	
 	
 	<extension
@@ -121,6 +134,12 @@
 	<extension
 		point="org.eclipse.ui.commands">
 		
+		<command
+			id="org.eclipse.jpt.ui.convertJavaProjectToJpa"
+			name="%convertJavaProjectToJpaCommandName"
+			categoryId="org.eclipse.ui.category.file"
+			defaultHandler="org.eclipse.jpt.ui.internal.commands.ConvertJavaProjectToJpaCommandHandler"/>
+			
 		<command
 			id="org.eclipse.jpt.ui.xmlFileUpgradeToLatestVersion"
 			name="%upgradeToLatestVersion"/>
@@ -430,6 +449,31 @@
 			</command>
 		</menuContribution>
 		
+		<!-- contributions to the project configure menu -->
+		<menuContribution locationURI="popup:org.eclipse.ui.projectConfigure?after=additions">
+			<command commandId="org.eclipse.jpt.ui.convertJavaProjectToJpa" style="push">
+				<visibleWhen checkEnabled="false">
+					<and>
+						<count value="1"/>
+						<iterate ifEmpty="false" operator="and">
+							<adapt type="org.eclipse.core.resources.IProject">
+								<and>
+									<test
+										property="org.eclipse.core.resources.projectNature"
+										value="org.eclipse.jdt.core.javanature"/>
+									<not>
+										<test 
+											property="org.eclipse.core.resources.projectNature" 
+											value="org.eclipse.wst.common.project.facet.core.nature"/>
+									</not>
+								</and>
+							</adapt>
+						</iterate>
+					</and>
+				</visibleWhen>
+			</command>
+		</menuContribution>
+		
 		<!-- contributions to objects in the JPA structure view -->
 		<menuContribution
 			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
@@ -696,22 +740,8 @@
 			project="true"
 			finalPerspective="org.eclipse.jpt.ui.jpaPerspective">
 			<description>%newJpaProjectWizardDesc</description>
-			<class class="org.eclipse.jpt.ui.internal.wizards.JpaSEProjectWizard"> 
+			<class class="org.eclipse.jpt.ui.internal.wizards.proj.JpaProjectWizard"> 
 				<parameter name="menuIndex" value="35"/> 
-			</class> 
-		</wizard>
-		
-		<wizard
-			id="org.eclipse.jpt.ui.wizard.newJpaEEProject"
-			name="%newJpaEEProjectWizardName"
-			icon="icons/full/etool16/new_jpaproject_wiz.gif"
-			category="org.eclipse.jpt"
-			project="true"
-			finalPerspective="org.eclipse.jpt.ui.jpaPerspective">
-			<description>%newJpaEEProjectWizardDesc</description>
-			<class class="org.eclipse.jpt.ui.internal.wizards.JpaEEProjectWizard"> 
-				<parameter name="javaeeproject" value="true"/> 
-				<parameter name="menuIndex" value="36"/> 
 			</class> 
 		</wizard>
 		
@@ -778,7 +808,6 @@
 			targetID="org.eclipse.jpt.ui.jpaPerspective">
 			
 			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaProject"/>
-			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaEEProject"/>
 			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newEntity"/>
 			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newMappingFile"/>
 			<newWizardShortcut id="org.eclipse.jdt.ui.wizards.NewPackageCreationWizard"/>
@@ -819,7 +848,7 @@
     	
 		<perspectiveExtension
 			targetID="org.eclipse.jst.j2ee.J2EEPerspective">
-			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaEEProject"/>
+			<newWizardShortcut id="org.eclipse.jpt.ui.wizard.newJpaProject"/>
 			<perspectiveShortcut id="org.eclipse.jpt.ui.jpaPerspective"/>
 		</perspectiveExtension>
 		
@@ -833,11 +862,11 @@
 			id="org.eclipse.jpt.ui.project.JPATools"
 			objectClass="org.eclipse.core.resources.IProject"
 			adaptable="true">
-
+			
 			<enablement>
 				<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa"/>
 			</enablement>
-
+			
 			<action
 				id="org.eclipse.jpt.ui.generateEntities"
 				label="%generateEntities"
@@ -851,32 +880,6 @@
 				class="org.eclipse.jpt.ui.internal.actions.GenerateDDLAction"
 				enablesFor="1"
 				menubarPath="org.eclipse.jpt.ui.menu.JpaTools/content"/>
-				
-		</objectContribution>
-		
-		<objectContribution
-			id="org.eclipse.jpt.ui.project.configure"
-			objectClass="org.eclipse.core.resources.IProject"
-			adaptable="true">
-			<visibility>
-				<and>
-					<objectState 
-						name="projectNature" 
-						value="org.eclipse.jdt.core.javanature"/>
-					<not>
-						<objectState 
-							name="projectNature" 
-							value="org.eclipse.wst.common.project.facet.core.nature"/>
-					</not>
-				</and>
-			</visibility>
-			
-			<action
-				id="org.eclipse.jpt.ui.convertToJpaProject"
-				label="%convertToJPAProject"
-				class="org.eclipse.jpt.ui.internal.actions.MigrateJavaProjectAction"
-				enablesFor="1"
-				menubarPath="org.eclipse.ui.projectConfigure/additions"/>
 				
 		</objectContribution>
 		
