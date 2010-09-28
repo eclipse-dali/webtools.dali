@@ -48,7 +48,7 @@ public class JpaProjectTests extends TestCase
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = DataModelFactory.createDataModel(new JpaFacetInstallDataModelProvider());		
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericPlatform.VERSION_1_0.getId());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, GenericPlatform.VERSION_1_0);
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}

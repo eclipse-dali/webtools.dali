@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.tests.extension.resource.ExtensionTestPlugin;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
@@ -31,6 +32,8 @@ import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 public class JpaPlatformExtensionTests extends ContextModelTestCase
 {
 	public static final String TEST_PLATFORM_ID = TestJpaPlatformProvider.ID;
+	public static final JpaPlatformDescription TEST_PLATFORM_DESC = 
+			JptCorePlugin.getJpaPlatformManager().getJpaPlatform(TEST_PLATFORM_ID);
 	public static final String TEST_PLATFORM_LABEL = "Test Jpa Platform";
 	
 	protected TestJpaProject testProject;
@@ -54,7 +57,7 @@ public class JpaPlatformExtensionTests extends ContextModelTestCase
 		IActionConfigFactory configFactory = new JpaFacetInstallDataModelProvider();
 		IDataModel config = (IDataModel) configFactory.create();
 		config.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
-		config.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, TEST_PLATFORM_ID);
+		config.setProperty(JpaFacetDataModelProperties.PLATFORM, TEST_PLATFORM_DESC);
 		return config;
 	}
 

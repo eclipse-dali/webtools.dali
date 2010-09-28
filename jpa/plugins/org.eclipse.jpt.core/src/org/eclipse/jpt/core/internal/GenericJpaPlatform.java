@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -30,6 +31,7 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;
@@ -69,6 +71,10 @@ public class GenericJpaPlatform
 	
 	public String getId() {
 		return this.id;
+	}
+	
+	public JpaPlatformDescription getDescription() {
+		return JptCorePlugin.getJpaPlatformManager().getJpaPlatform(getId());
 	}
 	
 	public Version getJpaVersion() {

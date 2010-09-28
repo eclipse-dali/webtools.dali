@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.facet;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.SchemaContainer;
@@ -83,8 +84,8 @@ public class JpaFacetInstallDataModelProvider
 	}
 	
 	@Override
-	protected String getDefaultPlatformId() {
-		return JptCorePlugin.getDefaultJpaPlatform(getProjectFacetVersion()).getId();
+	protected JpaPlatformDescription getDefaultPlatform() {
+		return JptCorePlugin.getDefaultJpaPlatform(getProjectFacetVersion());
 	}
 	
 	@Override
@@ -159,7 +160,7 @@ public class JpaFacetInstallDataModelProvider
 
 	@Override
 	public DataModelPropertyDescriptor[] getValidPropertyDescriptors(String propertyName) {
-		if (propertyName.equals(PLATFORM_ID)) {
+		if (propertyName.equals(PLATFORM)) {
 			return this.buildValidPlatformDescriptors();
 		}
 

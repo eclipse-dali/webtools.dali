@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
@@ -39,14 +40,11 @@ public abstract class JpaFacetActionDelegate
 		
 		SubMonitor subMonitor = SubMonitor.convert(monitor, 7);
 		
-		// NB: WTP Natures (including the JavaEMFNature)
-		// should already be added, as this facet should 
-		// always coexist with a module facet.
-		
 		IDataModel dataModel = (IDataModel) config;
 		
 		// project settings
-		JptCorePlugin.setJpaPlatformId(project, dataModel.getStringProperty(PLATFORM_ID));
+		JpaPlatformDescription platform = (JpaPlatformDescription) dataModel.getProperty(PLATFORM);
+		JptCorePlugin.setJpaPlatformId(project, platform.getId());
 		subMonitor.worked(1);
 		
 		// do NOT use IDataModel.getStringProperty(String) - or the connection profile name can
@@ -68,7 +66,7 @@ public abstract class JpaFacetActionDelegate
 		subMonitor.worked(1);
 		
 		// defaults settings
-		JptCorePlugin.setDefaultJpaPlatformId(fv.getVersionString(), dataModel.getStringProperty(PLATFORM_ID));
+		JptCorePlugin.setDefaultJpaPlatformId(fv.getVersionString(), platform.getId());
 		subMonitor.worked(1);
 		
 		//Delegate to LibraryInstallDelegate to configure the project classpath

@@ -49,8 +49,8 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** defaults **********************************************
 	
 	@Override
-	protected String getDefaultPlatformId() {
-		return getJpaProject().getJpaPlatform().getId();
+	protected JpaPlatformDescription getDefaultPlatform() {
+		return getJpaProject().getJpaPlatform().getDescription();
 	}
 	
 	@Override
@@ -87,25 +87,24 @@ public class JpaFacetVersionChangeDataModelProvider
 	// **************** valid property descriptors ****************************
 	
 	@Override
-	protected Iterable<String> buildValidPlatformIds() {
-		// add existing platform id to list of choices
-		Iterable<String> validPlatformIds = super.buildValidPlatformIds();
-		if (! CollectionTools.contains(validPlatformIds, getDefaultPlatformId())) {
-			validPlatformIds = new CompositeIterable(getDefaultPlatformId(), validPlatformIds);
+	protected Iterable<JpaPlatformDescription> buildValidPlatformDescriptions() {
+		// add existing platform to list of choices
+		Iterable<JpaPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
+		if (! CollectionTools.contains(validPlatformDescs, getDefaultPlatform())) {
+			validPlatformDescs = new CompositeIterable(getDefaultPlatform(), validPlatformDescs);
 		}
-		return validPlatformIds;
+		return validPlatformDescs;
 	}
 	
 	
 	// **************** validation ********************************************
 	
 	@Override
-	protected IStatus validatePlatformId() {
-		IStatus status = super.validatePlatformId();
+	protected IStatus validatePlatform() {
+		IStatus status = super.validatePlatform();
 		
 		if (status.isOK()) {
-			JpaPlatformDescription platform = JptCorePlugin.getJpaPlatformManager().getJpaPlatform(getPlatformId());
-			if (! platform.supportsJpaFacetVersion(getProjectFacetVersion())) {
+			if (! getPlatform().supportsJpaFacetVersion(getProjectFacetVersion())) {
 				status = PLATFORM_DOES_NOT_SUPPORT_FACET_VERSION_STATUS;
 			}
 		}

@@ -28,7 +28,7 @@ public abstract class EclipseLink2_0ContextModelTestCase extends EclipseLinkCont
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_2_0.getVersionString());
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, EclipseLinkPlatform.VERSION_2_0.getId());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_2_0);
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;
 	}

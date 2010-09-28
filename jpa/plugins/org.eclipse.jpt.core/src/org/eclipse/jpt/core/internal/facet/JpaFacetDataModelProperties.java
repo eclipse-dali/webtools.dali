@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -26,9 +26,9 @@ public interface JpaFacetDataModelProperties
 	String RUNTIME = PREFIX_ + "RUNTIME";
 	
 	/**
-	 * Required, type String, identifies Jpa Platform
+	 * Required, type JpaPlatformDescription, identifies Jpa Platform
 	 */
-	String PLATFORM_ID = PREFIX_ + "PLATFORM_ID";
+	String PLATFORM = PREFIX_ + "PLATFORM";
 	
 	/**
 	 * Required, type LibraryInstallDelegate, the library install delegate used to configure JPA provider library

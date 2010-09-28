@@ -91,7 +91,7 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 		// default facet version is 2.0 - most tests use 1.0
 		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
 		// most tests use the basic generic platform
-		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM_ID, GenericPlatform.VERSION_1_0.getId());
+		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, GenericPlatform.VERSION_1_0);
 		// most tests do use an orm.xml
 		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 		return dataModel;

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2010  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -104,7 +104,7 @@ public abstract class JpaFacetActionPage
 	@Override
 	protected String[] getValidationPropertyNames() {
 		return new String[] {
-			PLATFORM_ID,
+			PLATFORM,
 			CONNECTION,
 			USER_WANTS_TO_OVERRIDE_DEFAULT_CATALOG,
 			USER_OVERRIDE_DEFAULT_CATALOG,
@@ -157,7 +157,7 @@ public abstract class JpaFacetActionPage
 			PlatformUI.getWorkbench().getHelpSystem().setHelp(group, JpaHelpContextIds.DIALOG_JPA_PLATFORM);
 
 			platformCombo = createCombo(group, 1, true);
-			synchHelper.synchCombo(platformCombo, PLATFORM_ID, null);
+			synchHelper.synchCombo(platformCombo, PLATFORM, null);
 		}
 	}
 	

@@ -42,7 +42,7 @@ public abstract class EclipseLinkPersistenceUnitTestCase extends PersistenceUnit
 	@Override
 	protected IDataModel buildJpaConfigDataModel() {
 		IDataModel dataModel = super.buildJpaConfigDataModel();
-		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM_ID, EclipseLinkPlatform.VERSION_1_0.getId());
+		dataModel.setProperty(JpaFacetInstallDataModelProperties.PLATFORM, EclipseLinkPlatform.VERSION_1_0);
 		return dataModel;
 	}
 	

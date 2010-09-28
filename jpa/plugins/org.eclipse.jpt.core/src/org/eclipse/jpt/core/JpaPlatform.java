@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
 import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 
@@ -42,7 +43,7 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
  * @see JpaPlatformFactory
  * @see JpaPlatformProvider
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface JpaPlatform
@@ -51,6 +52,11 @@ public interface JpaPlatform
 	 * Get the ID for this platform
 	 */
 	String getId();
+	
+	/**
+	 * Return the description for this platform
+	 */
+	JpaPlatformDescription getDescription();
 	
 	/**
 	 * Get the version object for this platform. 
