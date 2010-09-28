@@ -1,0 +1,221 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jpt.jaxb.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appinfo>
+         <meta.schema plugin="org.eclipse.jpt.jaxb.core" id="jaxbPlatforms" name="JAXB Platforms"/>
+      </appinfo>
+      <documentation>
+         This is used for defining JAXB platforms and JAXB platform versions.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appinfo>
+            <meta.element />
+         </appinfo>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="jaxbPlatformGroup"/>
+            <element ref="jaxbPlatform"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jaxbPlatformGroup">
+      <annotation>
+         <documentation>
+            Declares a JAXB platform group.  Acts as a sort of &quot;super&quot; platform.  Most useful for enabling functionality for a set of platforms without having to enable the functionality for each platform separately.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for a JAXB platform group.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A translatable string representation of the JAXB platform group.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jaxbPlatform">
+      <annotation>
+         <documentation>
+            Declares a JAXB platform.  One JAXB platform will be selected per JAXB-faceted project. See &lt;samp&gt;org.eclipse.jpt.jaxb.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.  Also see the org.eclipse.jpt.ui.jpaPlatforms extension point.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A translatable string representation of the platform.
+               </documentation>
+               <appinfo>
+                  <meta.attribute translatable="true"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="factoryClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.jaxb.core.JpaPlatformDefinitionFactory&lt;/samp&gt;.
+               </documentation>
+               <appinfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.jaxb.core.JpaPlatformDefinitionFactory"/>
+               </appinfo>
+            </annotation>
+         </attribute>
+         <attribute name="group" type="string">
+            <annotation>
+               <documentation>
+                  Declares which JAXB platform group this platform belongs to.  If none is specified, this platform will be assumed to belong to its own group with the same id.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="jaxbFacetVersion" type="string">
+            <annotation>
+               <documentation>
+                  Declares the JAXB facet version for which this platform may be used. If no facet version is specified, this platform is available for all JAXB facet versions.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Declares whether this platform should be used as a default JAXB platform for new JAXB project content.  Note that if a workspace contains more than one default platform for a JAXB facet version, one of them will be chosen at random.  By default, a platform is not a default platform.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="since"/>
+      </appinfo>
+      <documentation>
+         JPT 3.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="examples"/>
+      </appinfo>
+      <documentation>
+         &lt;br&gt;
+&lt;p&gt;
+The following example is the included generic JAXB 2.2 platform and its platform group 
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;org.eclipse.jpt.jaxb.core.jaxbPlatforms&quot;&gt;
+
+   &lt;jaxbPlatformGroup
+      id=&quot;generic&quot;
+      label=&quot;%GENERIC_PLATFORM_GROUP_LABEL&quot;/&gt;
+
+   &lt;jaxbPlatform
+      id=&quot;generic_2_2&quot;
+      label=&quot;%GENERIC_2_2_PLATFORM_LABEL&quot;
+      factoryClass=&quot;org.eclipse.jpt.jaxb.core.internal.jaxb22.Generic_2_2_JaxbPlatformDefinitionFactory&quot;
+      group=&quot;generic&quot;
+      jaxbFacetVersion=&quot;2.2&quot;
+      default=&quot;false&quot;/&gt;
+
+   &lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="apiinfo"/>
+      </appinfo>
+      <documentation>
+         &lt;br&gt;
+Provisional API: This interface is part of an interim API that is still
+under development and expected to change significantly before reaching
+stability. It is available at this early stage to solicit feedback from
+pioneering adopters on the understanding that any code that uses this API
+will almost certainly be broken (repeatedly) as the API evolves.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="implementation"/>
+      </appinfo>
+      <documentation>
+         &lt;br&gt;
+&lt;p&gt;The org.eclipse.jpt.jaxb.core plug-in provides the following jaxb platforms:
+&lt;ul&gt;
+&lt;li&gt;generic_2_2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;
+&lt;p&gt;and the following jaxb platform groups:
+&lt;ul&gt;
+&lt;li&gt;generic&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/p&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appinfo>
+         <meta.section type="copyright"/>
+      </appinfo>
+      <documentation>
+         Copyright (c) 2010 Oracle. All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0, which accompanies this distribution
+and is available at http://www.eclipse.org/legal/epl-v10.html.
+ 
+Contributors:
+Oracle - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>

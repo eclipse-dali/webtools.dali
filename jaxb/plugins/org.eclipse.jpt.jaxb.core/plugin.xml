@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+     Copyright (c) 2010  Oracle. All rights reserved.
+     This program and the accompanying materials are made available under the
+     terms of the Eclipse Public License v1.0, which accompanies this distribution
+     and is available at http://www.eclipse.org/legal/epl-v10.html
+     
+     Contributors: 
+     	Oracle - initial API and implementation
+ -->
+
+<plugin>
+	
+	<!-- ***** extension points ***** -->
+	
+	<extension-point
+		id="jaxbPlatforms"
+		name="%JAXB_PLATFORMS"
+		schema="schema/jaxbPlatforms.exsd"/>
+	
+	
+	<!-- ***** extensions ***** -->
+	
+	<extension
+		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
+		
+		<jaxbPlatformGroup
+        	id="generic"
+        	label="%GENERIC_PLATFORM_GROUP_LABEL"/>
+		
+		<jaxbPlatform
+			id="generic_2_2"
+			label="%GENERIC_2_2_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.core.internal.jaxb22.Generic_2_2_JaxbPlatformDefinitionFactory"
+			group="generic"
+			jaxbFacetVersion="2.2"
+			default="false"/>
+		
+	</extension>
+	
+	
+	<extension 
+		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		
+		<provider
+			id="jaxb-no-op-library-provider"
+			extends="jpt-no-op-library-provider">
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test 
+						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+						value="jpt.jaxb" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</provider>
+		
+		<provider
+			id="jaxb-user-library-provider"
+			extends="temp-wtp-user-library-provider">
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+						value="jpt.jaxb" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+			<action type="INSTALL">
+				<config class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig"/>
+				<operation class="org.eclipse.jpt.core.internal.libprov.TempWtpUserLibraryProviderInstallOperation"/>
+			</action>
+		</provider>
+		
+		<provider 
+			id="jaxb-osgi-bundles-library-provider"
+			extends="temp-wtp-osgi-bundles-library-provider"
+			abstract="true">
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+						value="jpt.jaxb" forcePluginActivation="true"/>
+				</with>
+			</enablement>
+			<action type="INSTALL">
+				<config class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbOsgiBundlesLibraryProviderInstallOperationConfig"/>
+				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpOsgiBundlesLibraryProviderInstallOperation"/>
+			</action>
+		</provider>
+		
+	</extension>
+	
+	
+	<extension 
+		point="org.eclipse.wst.common.project.facet.core.runtimes">
+		
+		<supported>
+			<facet id="jpt.jaxb"/>
+			<runtime-component any="true"/>
+		</supported>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.wst.common.project.facet.core.facets">
+		
+		<project-facet id="jpt.jaxb">
+			<label>%JAXB_FACET_LABEL</label>
+			<description>%JAXB_FACET_DESCRIPTION</description>
+		</project-facet>
+		
+		<project-facet-version facet="jpt.jaxb" version="2.2">
+			<constraint>
+				<requires facet="java" version="[5.0"/>
+			</constraint>
+		</project-facet-version>
+		
+		<template id="jpt.jaxb.template">
+			<label>%JAXB_TEMPLATE_LABEL</label>
+			<fixed facet="jpt.jaxb"/>
+			<fixed facet="java"/>
+		</template>
+		
+		<action facet="jpt.jaxb" type="install" id="jpt.jaxb.install">
+			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfigFactory"/>
+			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDelegate"/>
+		</action>
+		
+		<!-- 
+			The uninstall action is only used to enable facet uninstallation
+			through the facet UI.  The delegate currently has no functionality. 
+		-->
+		<action facet="jpt.jaxb" type="uninstall" id="jpt.jaxb.uninstall">
+			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetUninstallDelegate"/>
+		</action>
+		
+	</extension>
+	
+</plugin>
