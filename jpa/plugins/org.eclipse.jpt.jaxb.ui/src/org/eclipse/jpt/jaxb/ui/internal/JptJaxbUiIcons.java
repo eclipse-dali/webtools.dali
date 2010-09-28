@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.ui;
+package org.eclipse.jpt.jaxb.ui.internal;
 
 @SuppressWarnings("nls")
 public class JptJaxbUiIcons
@@ -20,4 +20,5 @@ public class JptJaxbUiIcons
 
 	public static final String SCHEMA_GEN_WIZ_BANNER = "full/wizban/NewXSD";
 	public static final String CLASSES_GEN_WIZ_BANNER = "full/wizban/newclass_wiz";
+	public static final String JAXB_WIZ_BANNER = "full/wizban/new_jaxb_prj_wiz";
 }
