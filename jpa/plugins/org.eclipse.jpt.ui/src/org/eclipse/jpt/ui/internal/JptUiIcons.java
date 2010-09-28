@@ -66,7 +66,7 @@ public class JptUiIcons
 	
 	// **************** Wizard icons *******************************************
 	
-	public static final String JPA_WIZ_BANNER = "full/wizban/jpa_facet_wizban";
+	public static final String JPA_WIZ_BANNER = "full/wizban/new_jpa_prj_wiz";
 	
 	public static final String ENTITY_WIZ_BANNER = "full/wizban/new_entity_wizban";
 	
