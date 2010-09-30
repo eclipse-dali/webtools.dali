@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component  xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jpt.jaxb.branding">
+<description url=""></description>
+<component-depends unrestricted="true"></component-depends>
+<plugin id="org.eclipse.jpt.jaxb.branding" fragment="false"/>
+<plugin id="org.eclipse.jpt.jaxb.core" fragment="false"/>
+<plugin id="org.eclipse.jpt.jaxb.ui" fragment="false"/>
+</component>
