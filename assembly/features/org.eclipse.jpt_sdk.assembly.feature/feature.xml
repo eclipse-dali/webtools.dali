@@ -31,4 +31,12 @@
          id="org.eclipse.jpt.eclipselink_sdk.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.jpt.jaxb_sdk.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jpt.jaxb.eclipselink_sdk.feature"
+         version="0.0.0"/>
+
 </feature>
