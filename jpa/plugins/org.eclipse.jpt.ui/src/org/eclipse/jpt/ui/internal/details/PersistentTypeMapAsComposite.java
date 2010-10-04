@@ -80,8 +80,7 @@ public class PersistentTypeMapAsComposite
 			public String getName() {
 				return getSubject().getShortName();
 			}
-			
-			@SuppressWarnings("unchecked")
+
 			public Iterator<? extends MappingUiDefinition<? extends PersistentType, ?>> mappingUiDefinitions() {
 				return typeMappingUiDefinitions();
 			}
