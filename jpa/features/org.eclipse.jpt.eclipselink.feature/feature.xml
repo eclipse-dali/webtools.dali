@@ -44,13 +44,6 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.jaxb.eclipselink.core.schemagen"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.eclipse.jpt.eclipselink.branding"
          download-size="0"
          install-size="0"
