@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.2"?><!--
+<?eclipse version="3.2"?>
+<!--
   Copyright (c) 2007, 2010 Oracle. All rights reserved.
   This program and the accompanying materials are made available under the
   terms of the Eclipse Public License v1.0, which accompanies this distribution
@@ -403,6 +404,16 @@
 										property="org.eclipse.wst.common.project.facet.core.projectFacet" 
 										value="jpt.jpa"/>
 								</adapt>
+								<and>
+	        						<adapt
+	              						type="org.eclipse.core.resources.IResource">
+										<test
+											property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+											value="jpt.jpa"/>
+        							</adapt>
+        							<adapt
+        								type="org.eclipse.jdt.core.IJavaElement"/>
+								</and>
 							</or>
 						</iterate>
 					</with>
@@ -883,6 +894,32 @@
 				
 		</objectContribution>
 		
+		<objectContribution
+			id="org.eclipse.jpt.ui.MakePersistent"
+			objectClass="org.eclipse.jdt.core.IJavaElement"
+			adaptable="true">
+			
+			<enablement>
+   				<test property="org.eclipse.jdt.core.inSourceFolder" value="true"/>
+			</enablement>
+
+			<action
+         		class="org.eclipse.jpt.ui.internal.actions.MakePersistentAction"
+         		enablesFor="*"
+         		id="org.eclipse.jpt.ui.generateEntities"
+         		label="%makePersistent"
+         		menubarPath="org.eclipse.jpt.ui.menu.JpaTools/content">
+      			<enablement>
+        	 		<or>
+            			<objectClass name="org.eclipse.jdt.core.ICompilationUnit"/>
+            			<objectClass name="org.eclipse.jdt.core.IType"/>
+            			<objectClass name="org.eclipse.jdt.core.IPackageFragment"/>
+            			<objectClass name="org.eclipse.jdt.core.IPackageFragmentRoot"/>
+         			</or>
+      			</enablement>
+   			</action>
+		</objectContribution>
+
 		<objectContribution
 			id="org.eclipse.jpt.ui.persistenceXmlFileActions"
 			objectClass="org.eclipse.core.resources.IFile"

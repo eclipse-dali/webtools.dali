@@ -99,6 +99,17 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_userLibsLink;
 	public static String JpaFacetWizardPage_userServerLibLabel;
 	public static String JpaLibraryProviderInstallPanel_includeLibraries;
+	public static String JpaMakePersistentWizardPage_title;
+	public static String JpaMakePersistentWizardPage_message;
+	public static String JpaMakePersistentWizardPage_annotateInJavaRadioButton;
+	public static String JpaMakePersistentWizardPage_mappingFileRadioButton;
+	public static String JpaMakePersistentWizardPage_mappingFileLabel;
+	public static String JpaMakePersistentWizardPage_mappingFileBrowseButton;
+	public static String JpaMakePersistentWizardPage_typeTableColumn;
+	public static String JpaMakePersistentWizardPage_mappingTableColumn;
+	public static String JpaMakePersistentWizardPage_listInPersistenceXmlCheckBox;
+	public static String JpaMakePersistentWizardPage_selectedTypesPersistentError;
+	public static String JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
 	public static String JpaStructureView_linkWithEditorDesc;
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;

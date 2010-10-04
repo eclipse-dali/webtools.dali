@@ -11,22 +11,17 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
-import java.io.File;
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
@@ -35,9 +30,9 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
+import org.eclipse.jpt.ui.internal.wizards.SelectJpaOrmMappingFileDialog;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
@@ -54,10 +49,8 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
 import org.eclipse.ui.help.IWorkbenchHelpSystem;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -68,9 +61,8 @@ import org.eclipse.wst.common.frameworks.internal.plugin.WTPCommonPlugin;
 public class EntityClassWizardPage
 		extends NewJavaClassWizardPage {
 
-	private static final String META_INF = "META-INF";//$NON-NLS-1$
 	private static final String EMPTY = "";//$NON-NLS-1$
-	private static final char SLASH = '/';
+
 	private static final String SINGLE_TABLE = "SINGLE_TABLE";//$NON-NLS-1$
 	private static final String TABLE_PER_CLASS = "TABLE_PER_CLASS";//$NON-NLS-1$
 	private static final String JOINED = "JOINED";//$NON-NLS-1$
@@ -328,7 +320,7 @@ public class EntityClassWizardPage
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectMappingXMLDialog dialog = new SelectMappingXMLDialog(getShell(), labelProvider, contentProvider);
+		SelectJpaOrmMappingFileDialog dialog = new SelectJpaOrmMappingFileDialog(getShell(), labelProvider, contentProvider);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
@@ -377,61 +369,6 @@ public class EntityClassWizardPage
 	@Override
 	protected boolean isProjectValid(IProject project) {
 		return (project.isAccessible() && JpaFacet.isInstalled(project));	
-	}
-	
-	private class SelectMappingXMLDialog extends ElementTreeSelectionDialog
-	{	
-		private String xmlName = EMPTY;
-		
-		
-		public SelectMappingXMLDialog(Shell parent, ILabelProvider labelProvider, ITreeContentProvider contentProvider) {
-			super(parent, labelProvider, contentProvider);			
-		}
-		
-		
-		/**
-	     * @return the name of the alternative mapping XML
-	     */
-	    public String getChosenName() {
-	    	String result = EMPTY;
-			Object element = getFirstResult();
-			if (element instanceof IContainer) {
-				IContainer container = (IContainer) element;
-				result = container.getFullPath().toString() + File.separatorChar + xmlName;					
-			} else {
-				IFile f = (IFile) element;
-				result = f.getFullPath().toOSString();
-			}
-			result = removeRedundantSegmentFromName(result);
-			return result;
-	    }
-
-		@Override
-	    /*
-	     * @see ElementTreeSelectionDialog#updateOKStatus(Composite)
-	     */
-		protected void updateOKStatus() {
-			super.updateOKStatus();
-			TreeSelection selection = (TreeSelection)getTreeViewer().getSelection();
-			IResource selectedResource = (IResource) selection.getFirstElement();
-			if (selectedResource instanceof IFile) {
-				updateStatus(new Status(IStatus.OK, JptUiPlugin.PLUGIN_ID, ""));
-			}
-			else {
-				updateStatus(new Status(IStatus.ERROR, JptUiPlugin.PLUGIN_ID, ""));
-			}
-		}
-		
-		/** 
-		 * This method is for internal purposes only
-		 * @param input non formated path to the mapping XML
-		 * @return the formated path to the mapping XML
-		 */
-		private String removeRedundantSegmentFromName(String input) {
-			String output = input.substring(input.indexOf(META_INF));			 
-			output = output.replace(File.separatorChar, SLASH);
-			return output;
-		}
 	}
 	
 	protected final IWorkbenchHelpSystem getHelpSystem() {
