@@ -54,7 +54,6 @@ public class OrmFileCreationDataModelProvider
 	
 	@Override
 	public Set<String> getPropertyNames() {
-		@SuppressWarnings("unchecked")
 		Set<String> propertyNames = super.getPropertyNames();
 		propertyNames.add(DEFAULT_ACCESS);
 		propertyNames.add(ADD_TO_PERSISTENCE_UNIT);
