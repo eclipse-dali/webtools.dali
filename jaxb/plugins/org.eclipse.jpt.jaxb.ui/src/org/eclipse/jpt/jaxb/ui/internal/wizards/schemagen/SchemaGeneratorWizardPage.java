@@ -29,7 +29,7 @@ import org.eclipse.jface.viewers.ICheckStateListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.jpt.jaxb.core.internal.SchemaGenerator;
+import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.filters.ContainerFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.EmptyInnerPackageFilter;

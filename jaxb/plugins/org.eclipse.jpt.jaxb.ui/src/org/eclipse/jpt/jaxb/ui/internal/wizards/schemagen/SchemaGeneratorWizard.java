@@ -32,7 +32,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jpt.jaxb.core.internal.SchemaGenerator;
+import org.eclipse.jpt.jaxb.core.internal.gen.SchemaGenerator;
 import org.eclipse.jpt.jaxb.core.internal.operations.SchemaFileCreationDataModelProvider;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;

@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal;
+package org.eclipse.jpt.jaxb.core.internal.gen;
 
 import java.util.ArrayList;
 import java.util.List;

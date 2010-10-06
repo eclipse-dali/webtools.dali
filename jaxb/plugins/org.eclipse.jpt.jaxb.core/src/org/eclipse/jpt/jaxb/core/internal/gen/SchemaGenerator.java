@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal;
+package org.eclipse.jpt.jaxb.core.internal.gen;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -38,7 +38,7 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
 
@@ -299,7 +299,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 			JAXB_SCHEMA_GEN_JAR;
 
 		try {
-			File jarInstallDir = this.getBundleParentDir(JptJaxbUiPlugin.PLUGIN_ID);
+			File jarInstallDir = this.getBundleParentDir(JptJaxbCorePlugin.PLUGIN_ID);
 
 			List<File> result = new ArrayList<File>();
 			this.findFile(jarName, jarInstallDir, result);
