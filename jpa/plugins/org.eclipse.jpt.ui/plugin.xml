@@ -899,10 +899,6 @@
 			objectClass="org.eclipse.jdt.core.IJavaElement"
 			adaptable="true">
 			
-			<enablement>
-   				<test property="org.eclipse.jdt.core.inSourceFolder" value="true"/>
-			</enablement>
-
 			<action
          		class="org.eclipse.jpt.ui.internal.actions.MakePersistentAction"
          		enablesFor="*"

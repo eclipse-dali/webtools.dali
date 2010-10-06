@@ -30,9 +30,9 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.Signature;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaFacet;
-import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.operation.NewEntityClassOperation;
@@ -273,18 +273,25 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 		if (getBooleanProperty(XML_SUPPORT)) {
 			String projectName = this.model.getStringProperty(PROJECT_NAME);
 			IProject project = ProjectUtilities.getProject(projectName);
-			JpaFile jpaFile = null;
 			if (project != null && ! StringTools.stringIsEmpty(xmlName)) {
-				//TODO need to check content type as well since user can type in a file name, should have a different error message for invalid content type
-				jpaFile = JptCorePlugin.getJpaFile(project, new Path(xmlName));
-				if (jpaFile == null) {
+				JpaXmlResource ormXmlResource = getOrmXmlResource(xmlName);
+				if (ormXmlResource == null) {
 					return new Status(
 							IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
 							EntityWizardMsg.INVALID_XML_NAME);
 				}
+				else if (getTargetJpaProject().getJpaFile(ormXmlResource.getFile()).rootStructureNodesSize() == 0) {
+					return new Status(
+						IStatus.ERROR, JptUiPlugin.PLUGIN_ID,
+						EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);
+				}
 			}
 		}
 		return Status.OK_STATUS;
+	}
+
+	protected JpaXmlResource getOrmXmlResource(String xmlName) {
+		return getTargetJpaProject().getMappingFileXmlResource(new Path(xmlName));
 	}
 	
 	/**

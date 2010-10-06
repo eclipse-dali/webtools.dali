@@ -11,9 +11,11 @@
  ***********************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.entity;
 
+import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IJavaProject;
@@ -22,6 +24,7 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
@@ -34,6 +37,7 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.wizards.SelectJpaOrmMappingFileDialog;
 import org.eclipse.jpt.ui.internal.wizards.entity.data.model.IEntityDataModelProperties;
+import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jst.j2ee.internal.common.operations.INewJavaClassDataModelProperties;
 import org.eclipse.jst.j2ee.internal.plugin.J2EEUIMessages;
@@ -48,7 +52,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.ISelectionStatusValidator;
@@ -72,7 +76,7 @@ public class EntityClassWizardPage
 	private Button entityButton;
 	private Button mapedAsSuperclassButton;
 	private Button inheritanceButton;
-	private Label displayNameLabel;
+	private Link displayNameLink;
 	private Button xmlSupportButton;	
 	private boolean isFirstCheck = true;
 	private Text ormXmlName;
@@ -93,6 +97,10 @@ public class EntityClassWizardPage
 				new String[] {IEntityDataModelProperties.XML_NAME, IEntityDataModelProperties.XML_SUPPORT});
 	}
 
+	private IProject getProject() {
+		return (IProject) getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
+	}
+
 	/* Create top level composite (class properties) and add the entity's specific inheritance group
 	 * @see org.eclipse.jst.j2ee.internal.wizard.NewJavaClassWizardPage#createTopLevelComposite(org.eclipse.swt.widgets.Composite)
 	 */
@@ -102,7 +110,7 @@ public class EntityClassWizardPage
 		this.getHelpSystem().setHelp(composite, JpaHelpContextIds.NEW_JPA_ENTITY_ENTITY_CLASS);
 		
 		createInheritanceControl(composite);
-		inheritanceButton.addSelectionListener(new SelectionAdapter() {
+		this.inheritanceButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = inheritanceButton.getSelection();
@@ -118,7 +126,7 @@ public class EntityClassWizardPage
 			}
 		});		
 		createXMLstorageControl(composite);
-		xmlSupportButton.addSelectionListener(new SelectionAdapter() {
+		this.xmlSupportButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boolean isChecked = xmlSupportButton.getSelection();
@@ -186,9 +194,9 @@ public class EntityClassWizardPage
 	 */
 	private void createInheritanceControl(Composite parent) {
 		Group group = createGroup(parent, EntityWizardMsg.INHERITANCE_GROUP);
-		entityButton = createRadioButton(group, EntityWizardMsg.ENTITY, IEntityDataModelProperties.ENTITY);
-		mapedAsSuperclassButton = createRadioButton(group, EntityWizardMsg.MAPPED_AS_SUPERCLASS, IEntityDataModelProperties.MAPPED_AS_SUPERCLASS);
-		inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, EntityWizardMsg.INHERITANCE_CHECK_BOX, IEntityDataModelProperties.INHERITANCE);
+		this.entityButton = createRadioButton(group, EntityWizardMsg.ENTITY, IEntityDataModelProperties.ENTITY);
+		this.mapedAsSuperclassButton = createRadioButton(group, EntityWizardMsg.MAPPED_AS_SUPERCLASS, IEntityDataModelProperties.MAPPED_AS_SUPERCLASS);
+		this.inheritanceButton = createCheckButton(group, GridData.HORIZONTAL_ALIGN_FILL, 1/*horizontal span*/, EntityWizardMsg.INHERITANCE_CHECK_BOX, IEntityDataModelProperties.INHERITANCE);
 		createComboBox(group, IEntityDataModelProperties.INHERITANCE_STRATEGY);
 	}
 	
@@ -198,10 +206,10 @@ public class EntityClassWizardPage
 	 */
 	private void createXMLstorageControl(Composite parent) {
 		Group group = createGroup(parent, EntityWizardMsg.XML_STORAGE_GROUP);
-		xmlSupportButton = createCheckButton(group, GridData.FILL_HORIZONTAL, 3/*horizontal span*/, EntityWizardMsg.XML_SUPPORT, IEntityDataModelProperties.XML_SUPPORT);				
+		this.xmlSupportButton = createCheckButton(group, GridData.FILL_HORIZONTAL, 3/*horizontal span*/, EntityWizardMsg.XML_SUPPORT, IEntityDataModelProperties.XML_SUPPORT);				
 		createBrowseGroup(group, EntityWizardMsg.CHOOSE_XML, IEntityDataModelProperties.XML_NAME);
-		ormXmlName.setEnabled(false);		
-		browseButton.setEnabled(false);		
+		this.ormXmlName.setEnabled(false);		
+		this.browseButton.setEnabled(false);		
 	}
 	
 	/**
@@ -232,7 +240,7 @@ public class EntityClassWizardPage
 		groupGridData.horizontalSpan = 3;
 		button.setLayoutData(groupGridData);
 		button.setText(text);
-		synchHelper.synchRadio(button, property, /*dependentControls*/ null);		
+		this.synchHelper.synchRadio(button, property, /*dependentControls*/ null);		
 		return button;
 	}
 	
@@ -249,7 +257,7 @@ public class EntityClassWizardPage
 		groupGridData.horizontalSpan = horizontalSpan;
 		button.setLayoutData(groupGridData);
 		button.setText(text);		
-		synchHelper.synchCheckbox(button, property, /*dependentControls*/ null);
+		this.synchHelper.synchCheckbox(button, property, /*dependentControls*/ null);
 		return button;
 	}
 
@@ -260,14 +268,14 @@ public class EntityClassWizardPage
 	 * @return
 	 */
 	private Combo createComboBox(Composite parent, String property) {
-		inheritanceStrategyCombo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
+		this.inheritanceStrategyCombo = new Combo(parent, SWT.BORDER | SWT.READ_ONLY);
 		GridData groupGridData = new GridData(GridData.FILL_HORIZONTAL);		
 		groupGridData.horizontalSpan = 2;
-		inheritanceStrategyCombo.setLayoutData(groupGridData);
-		inheritanceStrategyCombo.setItems(INHERITANCE_STRATEGIES);		
-		synchHelper.synchCombo(inheritanceStrategyCombo, property, /*dependentControls*/ null);
-		inheritanceStrategyCombo.setEnabled(false);
-		return inheritanceStrategyCombo;		
+		this.inheritanceStrategyCombo.setLayoutData(groupGridData);
+		this.inheritanceStrategyCombo.setItems(INHERITANCE_STRATEGIES);		
+		this.synchHelper.synchCombo(this.inheritanceStrategyCombo, property, /*dependentControls*/ null);
+		this.inheritanceStrategyCombo.setEnabled(false);
+		return this.inheritanceStrategyCombo;		
 		
 	}	
 	
@@ -282,37 +290,62 @@ public class EntityClassWizardPage
 		Composite composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(3, false));
 		composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));	
-		displayNameLabel = new Label(composite, SWT.LEFT);
-		displayNameLabel.setText(label);
-		displayNameLabel.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
-		ormXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
-		ormXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		browseButton = new Button(composite, SWT.PUSH);
-		browseButton.setText(EntityWizardMsg.BROWSE_BUTTON_LABEL);
+
+		this.displayNameLink = new Link(composite, SWT.LEFT);
+		this.displayNameLink.setText(label);
+		this.displayNameLink.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING));
+		this.displayNameLink.addSelectionListener(
+			new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					openNewMappingFileWizard();
+				}
+			}
+		);
+
+		this.ormXmlName = new Text(composite, SWT.SINGLE | SWT.BORDER);
+		this.ormXmlName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		this.browseButton = new Button(composite, SWT.PUSH);
+		this.browseButton.setText(EntityWizardMsg.BROWSE_BUTTON_LABEL);
 		GridData browseButtonData = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
 		browseButtonData.horizontalSpan = 1;
-		browseButton.setLayoutData(browseButtonData);		
-		browseButton.addSelectionListener(new SelectionListener() {
+		this.browseButton.setLayoutData(browseButtonData);		
+		this.browseButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				handleChooseXmlButtonPressed();
 			}
 
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// Do nothing
+				widgetSelected(e);
 			}
 		});
-		synchHelper.synchText(ormXmlName, property, /*dependentControls*/null);
+		this.synchHelper.synchText(this.ormXmlName, property, /*dependentControls*/null);
 		
 		enableMappingXMLChooseGroup(false);		
 	}
+
+	private void openNewMappingFileWizard() {
+		IProject project = getProject();
+		IPath path = MappingFileWizard.createNewMappingFile(new StructuredSelection(project), getMappingFileName());
+		if (path != null) {
+			this.model.setProperty(IEntityDataModelProperties.XML_NAME, path.toString());
+			//have to validate in case the file name did not actually change, but the xml file was created
+			validatePage();
+		}
+	}
 	
+	protected String getMappingFileName() {
+		String mappingFileLocation = this.model.getStringProperty(IEntityDataModelProperties.XML_NAME);
+		return new File(mappingFileLocation).getName();
+	}
+
 	/**
 	 * Process browsing when the Browse... button have been pressed. Allow choosing of 
 	 * XML for entity mapping registration
 	 *  
 	 */
 	private void handleChooseXmlButtonPressed() {		
-		IProject project = (IProject) getDataModel().getProperty(INewJavaClassDataModelProperties.PROJECT);
+		IProject project = getProject();
 		if (project == null) {
 			return;
 		}
@@ -320,7 +353,7 @@ public class EntityClassWizardPage
 		ViewerFilter filter = getDialogViewerFilter(jpaProject);
 		ITreeContentProvider contentProvider = new WorkbenchContentProvider();
 		ILabelProvider labelProvider = new WorkbenchLabelProvider();
-		SelectJpaOrmMappingFileDialog dialog = new SelectJpaOrmMappingFileDialog(getShell(), labelProvider, contentProvider);
+		SelectJpaOrmMappingFileDialog dialog = new SelectJpaOrmMappingFileDialog(getShell(), project, labelProvider, contentProvider);
 		dialog.setTitle(EntityWizardMsg.MAPPING_XML_TITLE);
 		dialog.setMessage(EntityWizardMsg.CHOOSE_MAPPING_XML_MESSAGE);
 		dialog.addFilter(filter);
@@ -334,8 +367,7 @@ public class EntityClassWizardPage
 			dialog.setInitialSelection(initialSelection);
 		}
 		if (dialog.open() == Window.OK) {
-			this.ormXmlName.setText(dialog.getChosenName());
-			this.model.validateProperty(IEntityDataModelProperties.XML_NAME);
+			this.model.setProperty(IEntityDataModelProperties.XML_NAME, dialog.getChosenName());
 		}		
 	}
 	
@@ -348,10 +380,9 @@ public class EntityClassWizardPage
 	}
 	
 	private void enableMappingXMLChooseGroup(boolean enabled) {
-		displayNameLabel.setEnabled(enabled);
-		ormXmlName.setEnabled(enabled);
-		browseButton.setEnabled(enabled);
-
+		this.displayNameLink.setEnabled(enabled);
+		this.ormXmlName.setEnabled(enabled);
+		this.browseButton.setEnabled(enabled);
 	}
 	
 	/**

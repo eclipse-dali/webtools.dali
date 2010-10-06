@@ -27,8 +27,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
@@ -38,6 +40,8 @@ import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -188,7 +192,7 @@ public class MappingFileWizard extends Wizard
 		return this.firstPage.isPageComplete() && getDataModel().isValid();
 	}
 	
-	protected IDataModel getDataModel() {
+	public IDataModel getDataModel() {
 		if (this.dataModel == null) {
 			this.dataModel = DataModelFactory.createDataModel(getDefaultProvider());
 		}
@@ -315,4 +319,29 @@ public class MappingFileWizard extends Wizard
 		super.dispose();
 		getDataModel().dispose();
 	}
+	
+	public static IPath createNewMappingFile(IStructuredSelection selection, String xmlFileName) {
+		MappingFileWizard wizard = new MappingFileWizard(DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider()));
+		wizard.getDataModel().setProperty(FILE_NAME, xmlFileName);
+		wizard.init(PlatformUI.getWorkbench(), selection);
+		WizardDialog dialog = new WizardDialog(getCurrentShell(), wizard);
+		dialog.create();
+		if (dialog.open() == Window.OK) {
+			IPath containerPath = (IPath) wizard.getDataModel().getProperty(CONTAINER_PATH);
+			String fileName = wizard.getDataModel().getStringProperty(FILE_NAME);
+			IContainer container = PlatformTools.getContainer(containerPath);
+			IPath filePath = container.getFullPath().append(fileName);
+			IProject project = container.getProject();
+			IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
+			
+			return runtimePath;
+		}
+		return null;
+	}
+
+	private static Shell getCurrentShell() {
+	    return Display.getCurrent().getActiveShell();
+	}
+
+
 }

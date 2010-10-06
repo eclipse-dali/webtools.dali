@@ -41,6 +41,8 @@ public class EntityWizard
 	
 	protected String initialProjectName;
 	
+	protected IStructuredSelection selection;
+
     /**
      * Constructs the Entity wizard
      * @param model the data model
@@ -72,6 +74,10 @@ public class EntityWizard
 		addPage(page1);
 		EntityFieldsWizardPage page2 = new EntityFieldsWizardPage(getDataModel(), "pageTwo");
 		addPage(page2);
+	}
+
+	public IStructuredSelection getSelection() {
+		return this.selection;
 	}
 
 	/* Return the default data model provider (EntityDataModelProvider in our case)
@@ -134,6 +140,7 @@ public class EntityWizard
      * @see org.eclipse.ui.IWorkbenchWizard#init(org.eclipse.ui.IWorkbench, org.eclipse.jface.viewers.IStructuredSelection)
      */
     public void init(IWorkbench workbench, IStructuredSelection selection) {
+    	this.selection = selection;
     	this.initialProjectName = extractProjectName(selection);
 		getDataModel();
 	}

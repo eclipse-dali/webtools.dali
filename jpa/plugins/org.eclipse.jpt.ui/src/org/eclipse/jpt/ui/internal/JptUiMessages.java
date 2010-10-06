@@ -103,13 +103,14 @@ public class JptUiMessages {
 	public static String JpaMakePersistentWizardPage_message;
 	public static String JpaMakePersistentWizardPage_annotateInJavaRadioButton;
 	public static String JpaMakePersistentWizardPage_mappingFileRadioButton;
-	public static String JpaMakePersistentWizardPage_mappingFileLabel;
+	public static String JpaMakePersistentWizardPage_mappingFileLink;
 	public static String JpaMakePersistentWizardPage_mappingFileBrowseButton;
 	public static String JpaMakePersistentWizardPage_typeTableColumn;
 	public static String JpaMakePersistentWizardPage_mappingTableColumn;
 	public static String JpaMakePersistentWizardPage_listInPersistenceXmlCheckBox;
 	public static String JpaMakePersistentWizardPage_selectedTypesPersistentError;
 	public static String JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
+	public static String JpaMakePersistentWizardPage_mappingFileNotListedInPersistenceXmlError;
 	public static String JpaStructureView_linkWithEditorDesc;
 	public static String JpaStructureView_linkWithEditorText;
 	public static String JpaStructureView_linkWithEditorTooltip;
@@ -145,6 +146,7 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Ignore;
 	public static String JpaProblemSeveritiesPage_Info;
 	public static String JpaProblemSeveritiesPage_Warning;
+	public static String SelectJpaOrmMappingFileDialog_newButton;
 
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;

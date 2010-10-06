@@ -23,6 +23,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
+import org.eclipse.jpt.ui.internal.JptUiMessages;
 
 public class JpaMakePersistentWizard extends Wizard {	
 	
@@ -39,7 +40,7 @@ public class JpaMakePersistentWizard extends Wizard {
 		super();
 		this.selectedTypes = selectedTypes;
 		this.resourceManager = new LocalResourceManager(JFaceResources.getResources());
-		this.setWindowTitle("Make Persistent");
+		this.setWindowTitle(JptUiMessages.JpaMakePersistentWizardPage_title);
 		this.setDefaultPageImageDescriptor(JptUiPlugin.getImageDescriptor(JptUiIcons.ENTITY_WIZ_BANNER));
 	}
 	
