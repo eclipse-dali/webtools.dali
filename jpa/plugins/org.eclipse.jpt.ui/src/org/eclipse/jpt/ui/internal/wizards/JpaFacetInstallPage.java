@@ -120,7 +120,6 @@ public class JpaFacetInstallPage
 					@Override
 					public void widgetSelected(SelectionEvent e) {
 						openNewConnectionWizard();
-						updateConnectionStatus();
 					}
 				}
 			);
@@ -189,6 +188,7 @@ public class JpaFacetInstallPage
 			String connectionName = DTPUiTools.createNewConnectionProfile();
 			if (connectionName != null) {
 				model.setProperty(CONNECTION, connectionName);
+				updateConnectionStatus();
 			}
 		}
 		
