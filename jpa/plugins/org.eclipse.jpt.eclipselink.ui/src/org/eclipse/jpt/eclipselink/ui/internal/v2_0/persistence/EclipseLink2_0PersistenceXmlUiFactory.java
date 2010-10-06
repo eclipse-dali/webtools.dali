@@ -12,14 +12,17 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.EclipseLinkPersistenceXmlUiFactory;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.PersistenceXmlCachingTab;
+import org.eclipse.jpt.eclipselink.ui.internal.persistence.customization.PersistenceXmlCustomizationTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching.PersistenceXmlCaching2_0Tab;
+import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.customization.PersistenceXmlCustomization2_0Tab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.logging.PersistenceXmlLogging2_0Tab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options.PersistenceXmlOptions2_0Tab;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -36,6 +39,16 @@ public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenc
 	}
 
 	// ********** persistence unit tabs **********
+
+	@Override
+	protected PersistenceXmlCustomizationTab<Customization> buildCustomizationTab(
+				PropertyValueModel<EclipseLinkPersistenceUnit> subjectHolder,
+				Composite parent,
+				WidgetFactory widgetFactory) {
+		PropertyValueModel<Customization> customizationHolder = this.buildCustomizationHolder(subjectHolder);
+
+		return new PersistenceXmlCustomization2_0Tab(customizationHolder, parent, widgetFactory);
+	}
 
 	@Override
 	protected PersistenceXmlCachingTab<Caching> buildCachingTab(

@@ -21,9 +21,9 @@ import org.eclipse.ui.forms.widgets.Section;
 /**
  *  PersistenceUnitCustomizationComposite
  */
-public class EclipseLinkCustomizationComposite extends Pane<Customization>
+public class EclipseLinkCustomizationComposite<T extends Customization> extends Pane<T>
 {
-	public EclipseLinkCustomizationComposite(Pane<Customization> subjectHolder,
+	public EclipseLinkCustomizationComposite(Pane<T> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);
@@ -65,10 +65,13 @@ public class EclipseLinkCustomizationComposite extends Pane<Customization>
 		// Session Customizer
 		new SessionCustomizersComposite(this, composite);
 
-		// EntitiesList
-		new EntityListComposite(this, composite);
+		this.buildEntityListComposite(composite);
 
 		// Profiler:
 		new ProfilerComposite(this, composite);
+	}
+	
+	protected void buildEntityListComposite(Composite parent) {
+		new EntityListComposite(this, parent); 
 	}
 }

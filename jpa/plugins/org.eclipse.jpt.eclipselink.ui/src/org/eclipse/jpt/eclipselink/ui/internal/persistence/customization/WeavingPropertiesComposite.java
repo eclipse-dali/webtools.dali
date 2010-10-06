@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class WeavingPropertiesComposite extends Pane<Customization>
 {
-	public WeavingPropertiesComposite(Pane<Customization> subjectHolder,
+	public WeavingPropertiesComposite(Pane<? extends Customization> subjectHolder,
 	                                       Composite container) {
 
 		super(subjectHolder, container);

@@ -213,7 +213,7 @@ public class EclipseLinkPersistenceUnit
 	protected Customization buildEclipseLinkCustomization() {
 		return new EclipseLinkCustomization(this);
 	}
-	
+
 	protected Caching buildEclipseLinkCaching() {
 		return new EclipseLinkCaching(this);
 	}
@@ -431,6 +431,17 @@ public class EclipseLinkPersistenceUnit
 					)
 				);
 			}
+			for(Property property: this.getLegacyDescriptorCustomizerProperties()) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						EclipseLinkJpaValidationMessages.PERSISTENCE_UNIT_LEGACY_DESCRIPTOR_CUSTOMIZER,
+						new String[] {property.getName()},
+						this.getPersistenceUnit(),
+						property.getValidationTextRange()
+					)
+				);
+			}
 			this.validateDefaultCachingProperty(this.getCacheTypeDefaultProperty(), messages);
 			this.validateDefaultCachingProperty(this.getCacheSizeDefaultProperty(), messages);
 			this.validateDefaultCachingProperty(this.getFlushClearCacheProperty(), messages);
@@ -452,6 +463,12 @@ public class EclipseLinkPersistenceUnit
 				);
 			}
 		}
+	}
+
+	protected ArrayList<Property> getLegacyDescriptorCustomizerProperties() {
+		ArrayList<Property> result = new ArrayList<Property>();
+		CollectionTools.addAll(result, this.getDescriptorCustomizerProperties());
+		return result;
 	}
 
 	protected ArrayList<Property> getLegacyEntityCachingProperties() {
@@ -493,6 +510,13 @@ public class EclipseLinkPersistenceUnit
 	 */
 	private Iterable<Property> getEntityCacheTypeProperties() {
 		return this.getEntityPropertiesWithPrefix(Caching.ECLIPSELINK_CACHE_TYPE);
+	}
+	
+	/**
+	 * Returns Descriptor Customizer Properties.
+	 */
+	private Iterable<Property> getDescriptorCustomizerProperties() {
+		return this.getEntityPropertiesWithPrefix(Customization.ECLIPSELINK_DESCRIPTOR_CUSTOMIZER);
 	}
 	
 	/**

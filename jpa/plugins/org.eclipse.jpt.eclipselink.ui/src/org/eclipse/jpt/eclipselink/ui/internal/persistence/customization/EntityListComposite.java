@@ -49,7 +49,7 @@ public class EntityListComposite extends Pane<Customization>
 {
 	private WritablePropertyValueModel<Entity> entityHolder;
 
-	public EntityListComposite(Pane<Customization> parentComposite, Composite parent) {
+	public EntityListComposite(Pane<? extends Customization> parentComposite, Composite parent) {
 
 		super(parentComposite, parent);
 	}

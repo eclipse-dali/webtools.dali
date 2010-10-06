@@ -25,12 +25,12 @@ import org.eclipse.swt.widgets.Composite;
 /**
  *  PersistenceXmlCustomizationTabItem
  */
-public class PersistenceXmlCustomizationTab 
-								extends Pane<Customization>
+public class PersistenceXmlCustomizationTab<T extends Customization>
+								extends Pane<T>
 								implements JpaPageComposite
 {
 	public PersistenceXmlCustomizationTab(
-			PropertyValueModel<Customization> subjectHolder,
+			PropertyValueModel<T> subjectHolder,
 			Composite parent,
             WidgetFactory widgetFactory) {
 
@@ -40,9 +40,9 @@ public class PersistenceXmlCustomizationTab
 	@Override
 	protected void initializeLayout(Composite container) {
 		
-		new EclipseLinkCustomizationComposite(this, container);
+		this.buildEclipseLinkCustomizationComposite(container);
 	}
-
+	
 	// ********** JpaPageComposite implementation **********
 
 	public String getHelpID() {
@@ -85,4 +85,7 @@ public class PersistenceXmlCustomizationTab
 		container.setLayoutData(gridData);
 	}
 
+	protected void buildEclipseLinkCustomizationComposite(Composite container) {
+		new EclipseLinkCustomizationComposite<T>(this, container);
+	}
 }
