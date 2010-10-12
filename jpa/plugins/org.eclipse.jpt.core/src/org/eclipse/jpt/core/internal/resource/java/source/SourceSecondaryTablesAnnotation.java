@@ -94,7 +94,7 @@ public final class SourceSecondaryTablesAnnotation
 	}
 
 	private NestableSecondaryTableAnnotation buildSecondaryTable(int index) {
-		return SourceSecondaryTableAnnotation.createNestedSecondaryTable(this, this.member, index, this.daa);
+		return SourceSecondaryTableAnnotation.createNestedSecondaryTable(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableSecondaryTableAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

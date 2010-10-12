@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -42,10 +42,10 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	SourceEclipseLinkTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
 		this.transformerClassDeclarationAdapter = new ConversionDeclarationAnnotationElementAdapter<String>(daa, this.getTransformerClassElementName(), false, SimpleTypeStringExpressionConverter.instance());
-		this.transformerClassAdapter = new MemberAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
+		this.transformerClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
 
 		this.methodDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getMethodElementName(), false);
-		this.methodAdapter = new MemberAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
+		this.methodAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

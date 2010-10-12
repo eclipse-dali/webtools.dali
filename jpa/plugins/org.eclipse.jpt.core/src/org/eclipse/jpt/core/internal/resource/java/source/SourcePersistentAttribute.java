@@ -161,7 +161,7 @@ final class SourcePersistentAttribute
 
 	@Override
 	Annotation buildAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.member, annotationName);
+		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.annotatedElement, annotationName);
 	}
 
 	Annotation buildNullAnnotation_(String annotationName) {
@@ -169,14 +169,14 @@ final class SourcePersistentAttribute
 	}
 
 	public boolean isFor(MethodSignature signature, int occurrence) {
-		return ((MethodAttribute) this.member).matches(signature, occurrence);
+		return ((MethodAttribute) this.annotatedElement).matches(signature, occurrence);
 	}
 
 
 	// ******** JavaResourcePersistentAttribute implementation ********
 
 	public String getName() {
-		return this.member.getAttributeName();
+		return this.annotatedElement.getAttributeName();
 	}
 
 	@Override
@@ -185,7 +185,7 @@ final class SourcePersistentAttribute
 	}
 
 	public boolean isField() {
-		return this.member.isField();
+		return this.annotatedElement.isField();
 	}
 
 	public boolean isProperty() {
@@ -215,7 +215,7 @@ final class SourcePersistentAttribute
 	}
 
 	private ITypeBinding getTypeBinding(CompilationUnit astRoot) {
-		return this.member.getTypeBinding(astRoot);
+		return this.annotatedElement.getTypeBinding(astRoot);
 	}
 
 
@@ -234,7 +234,7 @@ final class SourcePersistentAttribute
 	 * zero seems like a reasonable default...
 	 */
 	private int buildModifiers(CompilationUnit astRoot) {
-		IBinding binding = this.member.getBinding(astRoot);
+		IBinding binding = this.annotatedElement.getBinding(astRoot);
 		return (binding == null) ? 0 : binding.getModifiers();
 	}
 

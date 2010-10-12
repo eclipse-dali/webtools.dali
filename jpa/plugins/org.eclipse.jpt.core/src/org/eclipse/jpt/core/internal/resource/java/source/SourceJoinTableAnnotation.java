@@ -144,7 +144,7 @@ public final class SourceJoinTableAnnotation
 	}
 
 	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return new SourceJoinColumnAnnotation(this, this.member, buildJoinColumnAnnotationAdapter(index));
+		return new SourceJoinColumnAnnotation(this, this.annotatedElement, buildJoinColumnAnnotationAdapter(index));
 	}
 
 	private IndexedDeclarationAnnotationAdapter buildJoinColumnAnnotationAdapter(int index) {
@@ -214,7 +214,7 @@ public final class SourceJoinTableAnnotation
 	}
 
 	private NestableJoinColumnAnnotation buildInverseJoinColumn(int index) {
-		return new SourceJoinColumnAnnotation(this, this.member, buildInverseJoinColumnAnnotationAdapter(index));
+		return new SourceJoinColumnAnnotation(this, this.annotatedElement, buildInverseJoinColumnAnnotationAdapter(index));
 	}
 
 	private IndexedDeclarationAnnotationAdapter buildInverseJoinColumnAnnotationAdapter(int index) {

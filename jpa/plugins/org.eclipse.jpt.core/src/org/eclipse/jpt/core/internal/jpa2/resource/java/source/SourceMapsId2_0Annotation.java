@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapsId2_0Annotation;
@@ -42,7 +42,7 @@ public final class SourceMapsId2_0Annotation
 	
 	public SourceMapsId2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new MemberAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, VALUE_ADAPTER);
 	}
 	
 	

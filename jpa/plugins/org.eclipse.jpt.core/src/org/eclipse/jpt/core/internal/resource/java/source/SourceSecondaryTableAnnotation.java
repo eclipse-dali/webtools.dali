@@ -15,8 +15,8 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
@@ -140,7 +140,7 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	private NestablePrimaryKeyJoinColumnAnnotation buildPrimaryKeyJoinColumn(int index) {
-		return SourcePrimaryKeyJoinColumnAnnotation.createSecondaryTablePrimaryKeyJoinColumn(this.daa, this, this.member, index);
+		return SourcePrimaryKeyJoinColumnAnnotation.createSecondaryTablePrimaryKeyJoinColumn(this.daa, this, this.annotatedElement, index);
 	}
 
 	void pkJoinColumnAdded(int index, NestablePrimaryKeyJoinColumnAnnotation joinColumn) {
@@ -192,12 +192,12 @@ public final class SourceSecondaryTableAnnotation
 	// ********** static methods **********
 
 	public static SourceSecondaryTableAnnotation createSecondaryTable(JavaResourceNode parent, Member member) {
-		return new SourceSecondaryTableAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+		return new SourceSecondaryTableAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
 	static SourceSecondaryTableAnnotation createNestedSecondaryTable(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceSecondaryTableAnnotation(parent, member, idaa, annotationAdapter);
 	}
 

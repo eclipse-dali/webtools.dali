@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.internal.jpa1.resource.java.binary.BinaryNamedQuery1
 import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceNamedQuery1_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
@@ -42,15 +42,15 @@ public final class NamedQueryAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceNamedQuery1_0Annotation(parent, (Type) member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceNamedQuery1_0Annotation(parent, (Type) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryNamedQuery1_0Annotation(parent, jdtAnnotation);
 	}
 

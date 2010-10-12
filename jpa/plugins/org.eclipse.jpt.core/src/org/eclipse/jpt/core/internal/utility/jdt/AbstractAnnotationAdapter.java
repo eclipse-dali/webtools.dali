@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,25 +12,25 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * Adapt a member and a declaration annotation adapter.
+ * Adapt an annotated element and a declaration annotation adapter.
  */
 public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
-	private final Member member;
+	private final AnnotatedElement annotatedElement;
 	private final DeclarationAnnotationAdapter daa;
 
 
 	// ********** constructor **********
 
-	public AbstractAnnotationAdapter(Member member, DeclarationAnnotationAdapter daa) {
+	public AbstractAnnotationAdapter(AnnotatedElement annotatedElement, DeclarationAnnotationAdapter daa) {
 		super();
-		this.member = member;
+		this.annotatedElement = annotatedElement;
 		this.daa = daa;
 	}
 
@@ -38,7 +38,7 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	// ********** AnnotationAdapter implementation **********
 
 	public Annotation getAnnotation(CompilationUnit astRoot) {
-		return this.daa.getAnnotation(this.member.getModifiedDeclaration(astRoot));
+		return this.daa.getAnnotation(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	public void newMarkerAnnotation() {
@@ -58,7 +58,7 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {
-		return this.daa.getAstNode(this.member.getModifiedDeclaration(astRoot));
+		return this.daa.getAstNode(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	@Override
@@ -69,33 +69,33 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 
 	// ********** internal methods **********
 
-	protected void edit(Member.Editor editor) {
-		this.member.edit(editor);
+	protected void edit(AnnotatedElement.Editor editor) {
+		this.annotatedElement.edit(editor);
 	}
 
 
 	// ********** factory methods **********
 
-	protected Member.Editor buildNewMarkerAnnotationEditor() {
+	protected AnnotatedElement.Editor buildNewMarkerAnnotationEditor() {
 		return new NewMarkerAnnotationEditor(this.daa);
 	}
 
-	protected Member.Editor buildNewSingleMemberAnnotationEditor() {
+	protected AnnotatedElement.Editor buildNewSingleMemberAnnotationEditor() {
 		return new NewSingleMemberAnnotationEditor(this.daa);
 	}
 
-	protected Member.Editor buildNewNormalAnnotationEditor() {
+	protected AnnotatedElement.Editor buildNewNormalAnnotationEditor() {
 		return new NewNormalAnnotationEditor(this.daa);
 	}
 
-	protected Member.Editor buildRemoveAnnotationEditor() {
+	protected AnnotatedElement.Editor buildRemoveAnnotationEditor() {
 		return new RemoveAnnotationEditor(this.daa);
 	}
 
 
 	// ********** member classes **********
 
-	protected static class NewMarkerAnnotationEditor implements Member.Editor {
+	protected static class NewMarkerAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
 		NewMarkerAnnotationEditor(DeclarationAnnotationAdapter daa) {
@@ -112,7 +112,7 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	}
 
 
-	protected static class NewSingleMemberAnnotationEditor implements Member.Editor {
+	protected static class NewSingleMemberAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
 		NewSingleMemberAnnotationEditor(DeclarationAnnotationAdapter daa) {
@@ -129,7 +129,7 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	}
 
 
-	protected static class NewNormalAnnotationEditor implements Member.Editor {
+	protected static class NewNormalAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
 		NewNormalAnnotationEditor(DeclarationAnnotationAdapter daa) {
@@ -146,7 +146,7 @@ public abstract class AbstractAnnotationAdapter implements AnnotationAdapter {
 	}
 
 
-	protected static class RemoveAnnotationEditor implements Member.Editor {
+	protected static class RemoveAnnotationEditor implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationAdapter daa;
 
 		RemoveAnnotationEditor(DeclarationAnnotationAdapter daa) {

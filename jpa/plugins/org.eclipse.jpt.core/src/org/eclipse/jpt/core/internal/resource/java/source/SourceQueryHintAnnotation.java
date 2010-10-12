@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -44,7 +44,7 @@ public final class SourceQueryHintAnnotation
 
 
 	public SourceQueryHintAnnotation(JavaResourceNode parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, type, idaa, new MemberIndexedAnnotationAdapter(type, idaa));
+		super(parent, type, idaa, new ElementIndexedAnnotationAdapter(type, idaa));
 		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
 		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
 		this.valueDeclarationAdapter = this.buildValueAdapter(idaa);
@@ -56,7 +56,7 @@ public final class SourceQueryHintAnnotation
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter adapter) {

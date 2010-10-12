@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -50,13 +50,13 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	public SourceEclipseLinkTimeOfDayAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa) {
 		super(parent, type, daa);
 		this.hourDeclarationAdapter = buildHourAdapter(daa);
-		this.hourAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.hourDeclarationAdapter);
+		this.hourAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.hourDeclarationAdapter);
 		this.minuteDeclarationAdapter = buildMinuteAdapter(daa);
-		this.minuteAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.minuteDeclarationAdapter);
+		this.minuteAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.minuteDeclarationAdapter);
 		this.secondDeclarationAdapter = buildSecondAdapter(daa);
-		this.secondAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.secondDeclarationAdapter);
+		this.secondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.secondDeclarationAdapter);
 		this.millisecondDeclarationAdapter = buildMillisecondAdapter(daa);
-		this.millisecondAdapter = new MemberAnnotationElementAdapter<Integer>(type, this.millisecondDeclarationAdapter);
+		this.millisecondAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, this.millisecondDeclarationAdapter);
 	}
 
 	public String getAnnotationName() {

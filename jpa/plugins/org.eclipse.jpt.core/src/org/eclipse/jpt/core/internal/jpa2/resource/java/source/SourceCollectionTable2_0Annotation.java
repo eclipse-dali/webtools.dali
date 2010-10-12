@@ -147,7 +147,7 @@ public final class SourceCollectionTable2_0Annotation
 	}
 
 	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return new SourceJoinColumnAnnotation(this, this.member, buildJoinColumnAnnotationAdapter(index));
+		return new SourceJoinColumnAnnotation(this, this.annotatedElement, buildJoinColumnAnnotationAdapter(index));
 	}
 
 	private IndexedDeclarationAnnotationAdapter buildJoinColumnAnnotationAdapter(int index) {

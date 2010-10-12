@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -42,7 +42,7 @@ public final class SourceEclipseLinkCustomizerAnnotation
 
 	public SourceEclipseLinkCustomizerAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new MemberAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,27 +12,27 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.internal.StringTools;
 
  /**
- * Adapt a member and a declaration annotation element adapter.
+ * Adapt an annotated element and a declaration annotation element adapter.
  */
-public class MemberAnnotationElementAdapter<T>
+public class AnnotatedElementAnnotationElementAdapter<T>
 	implements AnnotationElementAdapter<T>
 {
-	private final Member member;
+	private final AnnotatedElement annotatedElement;
 	private final DeclarationAnnotationElementAdapter<T> daea;
 
 
 	// ********** constructor **********
 
-	public MemberAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T> daea) {
+	public AnnotatedElementAnnotationElementAdapter(AnnotatedElement annotatedElement, DeclarationAnnotationElementAdapter<T> daea) {
 		super();
-		this.member = member;
+		this.annotatedElement = annotatedElement;
 		this.daea = daea;
 	}
 
@@ -40,11 +40,11 @@ public class MemberAnnotationElementAdapter<T>
 	// ********** AnnotationElementAdapter implementation **********
 
 	public T getValue() {
-		return this.daea.getValue(this.member.getModifiedDeclaration());
+		return this.daea.getValue(this.annotatedElement.getModifiedDeclaration());
 	}
 
 	public T getValue(CompilationUnit astRoot) {
-		return this.daea.getValue(this.member.getModifiedDeclaration(astRoot));
+		return this.daea.getValue(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	public void setValue(T value) {
@@ -52,11 +52,11 @@ public class MemberAnnotationElementAdapter<T>
 	}
 
 	public Expression getExpression(CompilationUnit astRoot) {
-		return this.daea.getExpression(this.member.getModifiedDeclaration(astRoot));
+		return this.daea.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	public ASTNode getAstNode(CompilationUnit astRoot) {
-		return this.daea.getAstNode(this.member.getModifiedDeclaration(astRoot));
+		return this.daea.getAstNode(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	@Override
@@ -67,18 +67,18 @@ public class MemberAnnotationElementAdapter<T>
 
 	// ********** internal methods **********
 
-	protected void edit(Member.Editor editor) {
-		this.member.edit(editor);
+	protected void edit(AnnotatedElement.Editor editor) {
+		this.annotatedElement.edit(editor);
 	}
 
-	protected Member.Editor buildSetValueEditor(T value) {
+	protected AnnotatedElement.Editor buildSetValueEditor(T value) {
 		return new SetValueEditor<T>(value, this.daea);
 	}
 
 
 	// ********** member classes **********
 
-	protected static class SetValueEditor<T> implements Member.Editor {
+	protected static class SetValueEditor<T> implements AnnotatedElement.Editor {
 		private final DeclarationAnnotationElementAdapter<T> daea;
 		private final T value;
 

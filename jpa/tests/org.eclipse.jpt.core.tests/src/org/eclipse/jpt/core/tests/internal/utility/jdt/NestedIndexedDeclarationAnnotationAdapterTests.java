@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
@@ -49,7 +49,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		// 0
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -59,7 +59,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		// 1
 		daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 1, "annot.Bar");
-		aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		annotation = aa.getAnnotation(astRoot);
 		assertNotNull(annotation);
 		assertEquals("annot.Bar", annotation.getTypeName().getFullyQualifiedName());
@@ -74,7 +74,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedIndexedDeclarationAnnotationAdapter(daa2, "yana", 0, "annot.Baz");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa3);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa3);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.Baz", annotation.getTypeName().getFullyQualifiedName());
@@ -89,7 +89,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedIndexedDeclarationAnnotationAdapter(daa2, "yana", 0, "annot.Baz");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa3);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa3);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -98,7 +98,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		// name mismatch
 		daa3 = new NestedIndexedDeclarationAnnotationAdapter(daa2, "yana", 0, "annot.Xyz");
-		aa = new MemberAnnotationAdapter(this.idField(cu), daa3);
+		aa = new ElementAnnotationAdapter(this.idField(cu), daa3);
 		annotation = aa.getAnnotation(astRoot);
 		assertNull(annotation);
 	}
@@ -109,7 +109,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		ICompilationUnit cu = this.createTestType("@annot.Foo()");
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -120,7 +120,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		ICompilationUnit cu = this.createTestType();
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -131,7 +131,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		ICompilationUnit cu = this.createTestType("@annot.Foo(nestedAnnotations=\"annot.Bar\")");
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -143,7 +143,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		ICompilationUnit cu = this.createTestType("@annot.Foo(nestedAnnotations=@annot.NotBar)");
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -154,7 +154,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		ICompilationUnit cu = this.createTestType("@annot.Foo(nestedAnnotations={@annot.Bar, @annot.Bar(\"two\")})");
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -168,7 +168,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedIndexedDeclarationAnnotationAdapter(daa2, "yana", 0, "annot.Xyz");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa3);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa3);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -184,7 +184,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -201,7 +201,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -218,7 +218,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -236,7 +236,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -253,7 +253,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -271,9 +271,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar", false);
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -293,7 +293,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -311,7 +311,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -327,9 +327,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -349,9 +349,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -374,7 +374,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 0, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -393,9 +393,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 1, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -415,9 +415,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -436,7 +436,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 1, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -454,9 +454,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -476,9 +476,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -499,9 +499,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "value", 3, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -522,9 +522,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -543,7 +543,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 1, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -561,9 +561,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -583,9 +583,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -606,9 +606,9 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		AnnotationAdapter aa1 = new MemberAnnotationAdapter(this.idField(cu), daa1);
+		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
 		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 3, "annot.Bar");
-		AnnotationAdapter aa2 = new MemberAnnotationAdapter(this.idField(cu), daa2);
+		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		CompilationUnit astRoot = this.buildASTRoot(cu);
 		Annotation annotation = aa2.getAnnotation(astRoot);
 		assertNotNull(annotation);
@@ -627,7 +627,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -643,7 +643,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -660,7 +660,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -677,7 +677,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -694,7 +694,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -711,7 +711,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -728,7 +728,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -745,7 +745,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -760,7 +760,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		assertNull(aa.getAnnotation(this.buildASTRoot(cu)));
 
 		aa.newMarkerAnnotation();
@@ -777,7 +777,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -795,7 +795,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -811,7 +811,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -828,7 +828,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -844,7 +844,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -862,7 +862,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -879,7 +879,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 1, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -896,7 +896,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -912,7 +912,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -929,7 +929,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -947,7 +947,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -964,7 +964,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -981,7 +981,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 0, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected, cu);
 	}
@@ -995,7 +995,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 2, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected, cu);
 	}
@@ -1009,7 +1009,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 2, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected, cu);
 	}
@@ -1025,7 +1025,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 4, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -1042,7 +1042,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 4, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -1254,7 +1254,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1272,7 +1272,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1314,7 +1314,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1355,7 +1355,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1447,7 +1447,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1515,7 +1515,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1736,7 +1736,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1754,7 +1754,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1794,7 +1794,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1833,7 +1833,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1919,7 +1919,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -1983,7 +1983,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotations", 5, "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -2021,7 +2021,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2038,7 +2038,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 1, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2055,7 +2055,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 3, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2072,7 +2072,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 3, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2089,7 +2089,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 2, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2106,7 +2106,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2123,7 +2123,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 3, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -2140,7 +2140,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 3, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -2156,7 +2156,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 0, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -2172,7 +2172,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 2, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 		iaa.moveAnnotation(1);
@@ -2186,7 +2186,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 1, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -2202,7 +2202,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 2, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -2218,7 +2218,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		IndexedDeclarationAnnotationAdapter idaa = new NestedIndexedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", 3, "annot.Bar");
-		IndexedAnnotationAdapter iaa = new MemberIndexedAnnotationAdapter(this.idField(cu), idaa);
+		IndexedAnnotationAdapter iaa = new ElementIndexedAnnotationAdapter(this.idField(cu), idaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 

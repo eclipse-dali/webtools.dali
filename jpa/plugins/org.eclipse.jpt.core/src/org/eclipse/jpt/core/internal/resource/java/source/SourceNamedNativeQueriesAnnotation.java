@@ -94,7 +94,7 @@ public final class SourceNamedNativeQueriesAnnotation
 	}
 
 	private NestableNamedNativeQueryAnnotation buildNamedNativeQuery(int index) {
-		return SourceNamedNativeQueryAnnotation.createNestedNamedNativeQuery(this, this.member, index, this.daa);
+		return SourceNamedNativeQueryAnnotation.createNestedNamedNativeQuery(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableNamedNativeQueryAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

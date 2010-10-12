@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryStaticMetam
 import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceStaticMetamodelAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.StaticMetamodelAnnotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
@@ -45,15 +45,15 @@ public final class StaticMetamodelAnnotationDefinition
 		super();
 	}
 
-	public StaticMetamodelAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceStaticMetamodelAnnotation((JavaResourcePersistentType) parent, (Type) member);
+	public StaticMetamodelAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceStaticMetamodelAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
 	}
 
-	public StaticMetamodelAnnotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public StaticMetamodelAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return null;
 	}
 
-	public StaticMetamodelAnnotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public StaticMetamodelAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryStaticMetamodelAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 

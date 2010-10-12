@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -49,11 +49,11 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	}
 
 	public SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
 	}
 
 	public SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
+		this(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 	}
 
 	public String getAnnotationName() {
@@ -145,7 +145,7 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 
 	static SourcePrimaryKeyJoinColumnAnnotation createNestedPrimaryKeyJoinColumn(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter pkJoinColumnsAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, pkJoinColumnsAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourcePrimaryKeyJoinColumnAnnotation(parent, member, idaa, annotationAdapter);
 	}
 

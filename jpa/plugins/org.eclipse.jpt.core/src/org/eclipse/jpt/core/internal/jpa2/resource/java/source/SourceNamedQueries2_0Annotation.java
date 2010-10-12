@@ -26,6 +26,6 @@ public final class SourceNamedQueries2_0Annotation
 
 	@Override
 	protected NestableNamedQueryAnnotation buildNamedQuery(int index) {
-		return SourceNamedQuery2_0Annotation.createNestedNamedQuery(this, member, index, this.daa);
+		return SourceNamedQuery2_0Annotation.createNestedNamedQuery(this, this.annotatedElement, index, this.daa);
 	}
 }

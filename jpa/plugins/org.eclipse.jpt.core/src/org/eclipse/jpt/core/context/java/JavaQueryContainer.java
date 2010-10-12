@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.QueryContainer;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
  * Provisional API: This interface is part of an interim API that is still
@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.3
  */
 public interface JavaQueryContainer
@@ -36,12 +36,12 @@ public interface JavaQueryContainer
 
 	JavaNamedNativeQuery addNamedNativeQuery(int index);
 	
-	void initialize(JavaResourcePersistentMember jrpm);
+	void initialize(JavaResourceAnnotatedElement jrae);
 	
 	/**
-	 * Update the JavaGeneratorContainer context model object to match the JavaResourcePersistentMember 
+	 * Update the JavaQueryContainer context model object to match the JavaResourceAnnotatedElement 
 	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
 	 */
-	void update(JavaResourcePersistentMember jrpm);
+	void update(JavaResourceAnnotatedElement jrae);
 
 }

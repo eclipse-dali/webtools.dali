@@ -94,7 +94,7 @@ public final class SourceAttributeOverridesAnnotation
 	}
 
 	private NestableAttributeOverrideAnnotation buildAttributeOverride(int index) {
-		return SourceAttributeOverrideAnnotation.buildNestedAttributeOverride(this, this.member, index, this.daa);
+		return SourceAttributeOverrideAnnotation.buildNestedAttributeOverride(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableAttributeOverrideAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

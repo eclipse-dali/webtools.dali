@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
@@ -24,6 +23,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.ImportDeclaration;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationExpression;
 import org.eclipse.jdt.core.dom.VariableDeclarationStatement;
@@ -52,6 +52,10 @@ public class JDTModifiedDeclaration
 
 	public JDTModifiedDeclaration(BodyDeclaration declaration) {
 		this(new BodyDeclarationAdapter(declaration));
+	}
+	
+	public JDTModifiedDeclaration(PackageDeclaration declaration) {
+		this(new PackageDeclarationAdapter(declaration));			
 	}
 
 	public JDTModifiedDeclaration(SingleVariableDeclaration declaration) {
@@ -476,6 +480,49 @@ public class JDTModifiedDeclaration
 			return StringTools.buildToStringFor(this, this.declaration.toString());
 		}
 	}
+	
+	public static class PackageDeclarationAdapter implements Adapter {
+		private final PackageDeclaration declaration;
+		public PackageDeclarationAdapter(PackageDeclaration declaration) {
+			super();
+			this.declaration = declaration;
+		}
+		public ASTNode getDeclaration() {
+			return this.declaration;
+		}
+		@SuppressWarnings("unchecked")
+		public List<IExtendedModifier> getModifiers() {
+			return this.declaration.annotations();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.declaration.toString());
+		}
+	}
+	
+	/*public static class ASTNodeAdapter implements Adapter {
+		private final ASTNode declaration;
+		public ASTNodeAdapter(ASTNode declaration) {
+			super();
+			this.declaration = declaration;
+		}
+		public ASTNode getDeclaration() {
+			return this.declaration;
+		}
+		@SuppressWarnings("unchecked")
+		public List<IExtendedModifier> getModifiers() {
+			if (declaration instanceof BodyDeclaration) {
+				return ((BodyDeclaration) declaration).modifiers();				
+			} else if (declaration instanceof PackageDeclaration) {
+				return ((PackageDeclaration) declaration).annotations();				
+			}
+			return Collections.emptyList();
+		}
+		@Override
+		public String toString() {
+			return StringTools.buildToStringFor(this, this.declaration.toString());
+		}
+	}*/
 
 	public static class SingleVariableDeclarationAdapter implements Adapter {
 		private final SingleVariableDeclaration declaration;

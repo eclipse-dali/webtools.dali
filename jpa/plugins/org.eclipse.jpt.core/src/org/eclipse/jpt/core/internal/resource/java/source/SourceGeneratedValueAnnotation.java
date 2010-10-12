@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.GenerationType;
@@ -45,8 +45,8 @@ public final class SourceGeneratedValueAnnotation
 		
 	public SourceGeneratedValueAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.strategyAdapter = new MemberAnnotationElementAdapter<String>(attribute, STRATEGY_ADAPTER);
-		this.generatorAdapter = new MemberAnnotationElementAdapter<String>(attribute, GENERATOR_ADAPTER);
+		this.strategyAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, STRATEGY_ADAPTER);
+		this.generatorAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, GENERATOR_ADAPTER);
 	}
 	
 	public String getAnnotationName() {

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -38,7 +38,7 @@ public final class SourceEntityAnnotation
 
 	public SourceEntityAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.nameAdapter = new MemberAnnotationElementAdapter<String>(this.member, NAME_ADAPTER);
+		this.nameAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, NAME_ADAPTER);
 	}
 
 	public String getAnnotationName() {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryGeneratedAn
 import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceGeneratedAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
@@ -45,15 +45,15 @@ public final class GeneratedAnnotationDefinition
 		super();
 	}
 
-	public GeneratedAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceGeneratedAnnotation((JavaResourcePersistentType) parent, (Type) member);
+	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceGeneratedAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
 	}
 
-	public GeneratedAnnotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public GeneratedAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return null;
 	}
 
-	public GeneratedAnnotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryGeneratedAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 

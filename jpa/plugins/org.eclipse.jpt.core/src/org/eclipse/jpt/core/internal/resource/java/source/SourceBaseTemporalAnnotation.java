@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.core.resource.java.TemporalType;
@@ -38,7 +38,7 @@ public abstract class SourceBaseTemporalAnnotation
 	protected SourceBaseTemporalAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
 		this.valueDeclarationAdapter = new EnumDeclarationAnnotationElementAdapter(daa, getValueElementName());
-		this.valueAdapter = new MemberAnnotationElementAdapter<String>(attribute, this.valueDeclarationAdapter);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.valueDeclarationAdapter);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

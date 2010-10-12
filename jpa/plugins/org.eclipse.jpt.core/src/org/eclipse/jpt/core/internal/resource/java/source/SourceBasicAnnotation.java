@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
@@ -45,8 +45,8 @@ public final class SourceBasicAnnotation
 
 	public SourceBasicAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.optionalAdapter = new MemberAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
-		this.fetchAdapter = new MemberAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.optionalAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(attribute, OPTIONAL_ADAPTER);
+		this.fetchAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 
 	public String getAnnotationName() {

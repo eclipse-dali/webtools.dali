@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceColumnAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
@@ -35,13 +35,13 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final MemberAnnotationAdapter columnAdapter;
+	private final ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
 
 
 	public SourceEclipseLinkWriteTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.columnAdapter = new MemberAnnotationAdapter(this.member, buildColumnAnnotationAdapter(this.daa));
+		this.columnAdapter = new ElementAnnotationAdapter(this.annotatedElement, buildColumnAnnotationAdapter(this.daa));
 	}
 
 	public String getAnnotationName() {
@@ -52,7 +52,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		if (this.columnAdapter.getAnnotation(astRoot) != null) {
-			this.column = createColumn(this, this.member, this.daa);
+			this.column = createColumn(this, this.annotatedElement, this.daa);
 			this.column.initialize(astRoot);
 		}
 	}
@@ -92,7 +92,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 		if (this.column != null) {
 			throw new IllegalStateException("'column' element already exists: " + this.column); //$NON-NLS-1$
 		}
-		this.column = createColumn(this, this.member, this.daa);
+		this.column = createColumn(this, this.annotatedElement, this.daa);
 		this.column.newAnnotation();
 		return this.column;
 	}
@@ -110,7 +110,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
-				ColumnAnnotation col = createColumn(this, this.member, this.daa);
+				ColumnAnnotation col = createColumn(this, this.annotatedElement, this.daa);
 				col.initialize(astRoot);
 				this.syncColumn_(col);
 			} else {

@@ -15,7 +15,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseNamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -78,7 +78,7 @@ abstract class SourceBaseNamedQueryAnnotation
 	 * convenience method
 	 */
 	protected AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	@Override

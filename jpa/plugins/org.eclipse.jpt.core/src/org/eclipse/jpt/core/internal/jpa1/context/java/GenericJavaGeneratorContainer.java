@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -33,7 +33,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	implements JavaGeneratorContainer
 {
-	protected JavaResourcePersistentMember javaResourcePersistentMember;
+	protected JavaResourceAnnotatedElement javaResourceAnnotatedElement;
 
 	protected JavaSequenceGenerator sequenceGenerator;
 
@@ -54,7 +54,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
 		TableGeneratorAnnotation tableGeneratorResource = 
-				(TableGeneratorAnnotation) this.javaResourcePersistentMember.
+				(TableGeneratorAnnotation) this.javaResourceAnnotatedElement.
 					addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		this.tableGenerator.initialize(tableGeneratorResource);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
@@ -67,7 +67,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		JavaTableGenerator oldTableGenerator = this.tableGenerator;
 		this.tableGenerator = null;
-		this.javaResourcePersistentMember.removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourceAnnotatedElement.removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
 	}
 	
@@ -87,7 +87,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
 		SequenceGeneratorAnnotation sequenceGeneratorResource = 
-				(SequenceGeneratorAnnotation) this.javaResourcePersistentMember.
+				(SequenceGeneratorAnnotation) this.javaResourceAnnotatedElement.
 					addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		this.sequenceGenerator.initialize(sequenceGeneratorResource);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
@@ -100,7 +100,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
 		this.sequenceGenerator = null;
-		this.javaResourcePersistentMember.removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.javaResourceAnnotatedElement.removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator,null);
 	}
 	
@@ -115,8 +115,8 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 	
 	
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void initialize(JavaResourceAnnotatedElement jrae) {
+		this.javaResourceAnnotatedElement = jrae;
 		this.initializeTableGenerator();
 		this.initializeSequenceGenerator();
 	}
@@ -135,8 +135,8 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 	}
 
-	public void update(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void update(JavaResourceAnnotatedElement jrae) {
+		this.javaResourceAnnotatedElement = jrae;
 		this.updateTableGenerator();
 		this.updateSequenceGenerator();
 	}
@@ -165,7 +165,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 	
 	protected TableGeneratorAnnotation getResourceTableGenerator() {
-		return (TableGeneratorAnnotation) this.javaResourcePersistentMember.
+		return (TableGeneratorAnnotation) this.javaResourceAnnotatedElement.
 				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
 
@@ -193,7 +193,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 	
 	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
-		return (SequenceGeneratorAnnotation) this.javaResourcePersistentMember.
+		return (SequenceGeneratorAnnotation) this.javaResourceAnnotatedElement.
 				getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
 	}
 	
@@ -264,7 +264,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentMember.getTextRange(astRoot);
+		return this.javaResourceAnnotatedElement.getTextRange(astRoot);
 	}
 
 }

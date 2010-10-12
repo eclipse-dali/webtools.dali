@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -37,7 +37,7 @@ public final class SourceAttributeOverrideAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final MemberAnnotationAdapter columnAdapter;
+	private final ElementAnnotationAdapter columnAdapter;
 	private NestableColumnAnnotation column;
 
 
@@ -45,7 +45,7 @@ public final class SourceAttributeOverrideAnnotation
 
 	public SourceAttributeOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.columnAdapter = new MemberAnnotationAdapter(this.member, SourceColumnAnnotation.buildAttributeOverrideAnnotationAdapter(this.daa));
+		this.columnAdapter = new ElementAnnotationAdapter(this.annotatedElement, SourceColumnAnnotation.buildAttributeOverrideAnnotationAdapter(this.daa));
 	}
 
 	public String getAnnotationName() {
@@ -56,7 +56,7 @@ public final class SourceAttributeOverrideAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		if (this.columnAdapter.getAnnotation(astRoot) != null) {
-			this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
+			this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
 			this.column.initialize(astRoot);
 		}
 	}
@@ -91,7 +91,7 @@ public final class SourceAttributeOverrideAnnotation
 		if (this.column != null) {
 			throw new IllegalStateException("'column' element already exists: " + this.column); //$NON-NLS-1$
 		}
-		this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
+		this.column = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
 		this.column.newAnnotation();
 		return this.column;
 	}
@@ -109,7 +109,7 @@ public final class SourceAttributeOverrideAnnotation
 			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
-				NestableColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.member, this.daa);
+				NestableColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
 				col.initialize(astRoot);
 				this.syncColumn_(col);
 			} else {
@@ -142,12 +142,12 @@ public final class SourceAttributeOverrideAnnotation
 	// ********** static methods **********
 
 	public static SourceAttributeOverrideAnnotation buildAttributeOverride(JavaResourceNode parent, Member member) {
-		return new SourceAttributeOverrideAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
+		return new SourceAttributeOverrideAnnotation(parent, member, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(member, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
 	static SourceAttributeOverrideAnnotation buildNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(member, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceAttributeOverrideAnnotation(parent, member, idaa, annotationAdapter);
 	}
 

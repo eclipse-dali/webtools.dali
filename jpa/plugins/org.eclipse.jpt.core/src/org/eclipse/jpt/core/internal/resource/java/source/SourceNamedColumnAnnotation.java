@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
@@ -45,7 +45,7 @@ public abstract class SourceNamedColumnAnnotation
 
 
 	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
 	}
 	
 	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -69,15 +69,15 @@ public abstract class SourceNamedColumnAnnotation
 	}
 
 	AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	protected AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
-		return new MemberAnnotationElementAdapter<Boolean>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
 	}
 
 	protected AnnotationElementAdapter<Integer> buildShortCircuitIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
-		return new MemberAnnotationElementAdapter<Integer>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
 	}
 
 	AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {

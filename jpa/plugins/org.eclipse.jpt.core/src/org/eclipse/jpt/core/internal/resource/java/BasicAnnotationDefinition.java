@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,10 +15,10 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceBasicAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * javax.persistence.Basic
@@ -43,15 +43,15 @@ public final class BasicAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceBasicAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceBasicAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return new NullBasicAnnotation((JavaResourcePersistentAttribute) parent);
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryBasicAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 

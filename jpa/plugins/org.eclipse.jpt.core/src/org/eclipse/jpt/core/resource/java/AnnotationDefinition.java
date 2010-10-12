@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 
 /**
  * Used to build Annotations discovered in the Java source code.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.2
+ * @version 3.0
  * @since 2.0
  */
 public interface AnnotationDefinition
@@ -39,18 +39,18 @@ public interface AnnotationDefinition
 	String getAnnotationName();
 	
 	/**
-	 * Build and return an annotation for the specified member.
+	 * Build and return an annotation for the specified annotated element.
 	 */
-	Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member);
+	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement);
 	
 	/**
 	 * Build and return an annotation for the specified JDT annotation
-	 * on the specified member.
+	 * on the specified annotated element.
 	 */
-	Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation);
+	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation);
 	
 	/**
-	 * Build and return a "null" annotation for the specified member.
+	 * Build and return a "null" annotation for the specified annotated element.
 	 * Only certain annotations are required to have "null" implementations;
 	 * typically the annotations with reasonably complex default behavior.
 	 * The "null" annotation is used by the corresponding default context model.
@@ -60,6 +60,6 @@ public interface AnnotationDefinition
 	 * new state to it. This reduces the number of null checks in the context
 	 * model (hopefully).
 	 */
-	Annotation buildNullAnnotation(JavaResourcePersistentMember parent);
+	Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent);
 
 }

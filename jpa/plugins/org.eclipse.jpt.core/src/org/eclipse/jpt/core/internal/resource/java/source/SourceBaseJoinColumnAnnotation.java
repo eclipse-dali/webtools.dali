@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.BaseJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -44,11 +44,11 @@ public abstract class SourceBaseJoinColumnAnnotation
 	}
 
 	protected SourceBaseJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
 	}
 
 	protected SourceBaseJoinColumnAnnotation(JavaResourceNode parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		this(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
+		this(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 	}
 
 	@Override

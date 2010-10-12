@@ -14,11 +14,11 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryOneToManyAnnotat
 import org.eclipse.jpt.core.internal.resource.java.source.SourceOneToManyAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * javax.persistence.OneToMany
@@ -43,15 +43,15 @@ public final class OneToManyAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceOneToManyAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceOneToManyAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		return new NullOneToManyAnnotation((JavaResourcePersistentAttribute) parent);
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryOneToManyAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 

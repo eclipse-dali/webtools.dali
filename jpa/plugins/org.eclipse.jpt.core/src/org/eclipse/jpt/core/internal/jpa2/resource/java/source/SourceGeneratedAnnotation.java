@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -64,11 +64,11 @@ public final class SourceGeneratedAnnotation
 	}
 
 	private AnnotationElementAdapter<String[]> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
-		return new MemberAnnotationElementAdapter<String[]>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String[]>(this.annotatedElement, daea);
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

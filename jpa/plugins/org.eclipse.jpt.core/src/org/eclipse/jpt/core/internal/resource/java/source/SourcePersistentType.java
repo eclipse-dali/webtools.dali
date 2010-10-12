@@ -149,7 +149,7 @@ final class SourcePersistentType
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		ITypeBinding binding = this.member.getBinding(astRoot);
+		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.name = this.buildName(binding);
 		this.qualifiedName = this.buildQualifiedName(binding);
 		this.packageName = this.buildPackageName(binding);
@@ -176,12 +176,12 @@ final class SourcePersistentType
 	void addInitialAnnotation(String jdtAnnotationName, CompilationUnit astRoot) {
 		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
 			if (this.staticMetamodelAnnotation == null) { // ignore duplicates
-				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
 				this.staticMetamodelAnnotation.initialize(astRoot);
 			}
 		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
 			if (this.generatedAnnotation == null) { // ignore duplicates
-				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
 				this.generatedAnnotation.initialize(astRoot);
 			}
 		} else {
@@ -195,7 +195,7 @@ final class SourcePersistentType
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
-		ITypeBinding binding = this.member.getBinding(astRoot);
+		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.syncName(this.buildName(binding));
 		this.syncQualifiedName(this.buildQualifiedName(binding));
 		this.syncPackageName(this.buildPackageName(binding));
@@ -221,7 +221,7 @@ final class SourcePersistentType
 	 * because we also have to handle removing these annotations separately.
 	 */
 	private void syncMetamodelAnnotations(CompilationUnit astRoot) {
-		ITypeBinding binding = this.member.getBinding(astRoot);
+		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.syncStaticMetamodelAnnotation(astRoot, binding);
 		this.syncGeneratedAnnotation(astRoot, binding);
 	}
@@ -232,7 +232,7 @@ final class SourcePersistentType
 				this.staticMetamodelAnnotation.synchronizeWith(astRoot);				
 			}
 			else {
-				StaticMetamodelAnnotation newStaticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				StaticMetamodelAnnotation newStaticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
 				newStaticMetamodelAnnotation.initialize(astRoot);				
 				this.setStaticMetamodelAnnotation(newStaticMetamodelAnnotation);
 			}
@@ -248,7 +248,7 @@ final class SourcePersistentType
 				this.generatedAnnotation.synchronizeWith(astRoot);				
 			}
 			else {
-				GeneratedAnnotation newGeneratedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.member);
+				GeneratedAnnotation newGeneratedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
 				newGeneratedAnnotation.initialize(astRoot);
 				this.setGeneratedAnnotation(newGeneratedAnnotation);
 			}
@@ -284,8 +284,8 @@ final class SourcePersistentType
 	}
 
 	@Override
-	Annotation buildAnnotation(String mappingAnnotationName) {
-		return this.getAnnotationProvider().buildTypeAnnotation(this, this.member, mappingAnnotationName);
+	Annotation buildAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildTypeAnnotation(this, this.annotatedElement, annotationName);
 	}
 
 	@Override
@@ -297,7 +297,7 @@ final class SourcePersistentType
 	public void resolveTypes(CompilationUnit astRoot) {
 		super.resolveTypes(astRoot);
 
-		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(this.member.getBinding(astRoot)));
+		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(this.annotatedElement.getBinding(astRoot)));
 
 		for (JavaResourcePersistentAttribute field : this.getFields()) {
 			field.resolveTypes(astRoot);
@@ -601,7 +601,7 @@ final class SourcePersistentType
 	}
 
 	private void initializeTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
+		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(astRoot);
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		for (TypeDeclaration td : typeDeclarations) {
 			String tdName = td.getName().getFullyQualifiedName();
@@ -611,7 +611,7 @@ final class SourcePersistentType
 	}
 
 	private void syncTypes(CompilationUnit astRoot) {
-		TypeDeclaration[] typeDeclarations = this.member.getTypes(astRoot);
+		TypeDeclaration[] typeDeclarations = this.annotatedElement.getTypes(astRoot);
 		CounterMap counters = new CounterMap(typeDeclarations.length);
 		HashSet<JavaResourcePersistentType> typesToRemove = new HashSet<JavaResourcePersistentType>(this.types);
 		for (TypeDeclaration typeDeclaration : typeDeclarations) {
@@ -630,7 +630,7 @@ final class SourcePersistentType
 	}
 
 	private JavaResourcePersistentType buildType(TypeDeclaration nestedTypeDeclaration, int occurrence, CompilationUnit astRoot) {
-		return newInstance(this.getJavaResourceCompilationUnit(), this.member, nestedTypeDeclaration, occurrence, astRoot);
+		return newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedTypeDeclaration, occurrence, astRoot);
 	}
 
 
@@ -675,7 +675,7 @@ final class SourcePersistentType
 	}
 
 	private void initializeFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
+		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(astRoot);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
@@ -687,7 +687,7 @@ final class SourcePersistentType
 	}
 
 	private void syncFields(CompilationUnit astRoot) {
-		FieldDeclaration[] fieldDeclarations = this.member.getFields(astRoot);
+		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(astRoot);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
 		HashSet<JavaResourcePersistentAttribute> fieldsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
@@ -708,7 +708,7 @@ final class SourcePersistentType
 	}
 
 	private JavaResourcePersistentAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return SourcePersistentAttribute.newInstance(this, this.member, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+		return SourcePersistentAttribute.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 	// minimize scope of suppressed warnings
@@ -759,7 +759,7 @@ final class SourcePersistentType
 	}
 
 	private void initializeMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
+		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(astRoot);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
@@ -769,7 +769,7 @@ final class SourcePersistentType
 	}
 
 	private void syncMethods(CompilationUnit astRoot) {
-		MethodDeclaration[] methodDeclarations = this.member.getMethods(astRoot);
+		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(astRoot);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
 		HashSet<JavaResourcePersistentAttribute> methodsToRemove = new HashSet<JavaResourcePersistentAttribute>(this.methods);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
@@ -788,7 +788,7 @@ final class SourcePersistentType
 	}
 
 	private JavaResourcePersistentAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
-		return SourcePersistentAttribute.newInstance(this, this.member, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+		return SourcePersistentAttribute.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 

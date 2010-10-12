@@ -9,9 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java source code or binary persistent member.
@@ -22,94 +20,14 @@ import org.eclipse.jpt.core.utility.TextRange;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.0
  */
 public interface JavaResourcePersistentMember
-	extends JavaResourceNode
+	extends JavaResourceAnnotatedElement
 {
+
 	// ********** annotations **********
-	
-	/**
-	 * String associated with changes to the "annotations" collection
-	 */
-	String ANNOTATIONS_COLLECTION = "annotations"; //$NON-NLS-1$
-	
-	/**
-	 * Return the member's annotations in the order that they appear.
-	 * Do not return duplicate annotations as this error is handled by the Java
-	 * compiler.
-	 */
-	Iterator<Annotation> annotations();
-	
-	/**
-	 * Return the number of annotations.
-	 */
-	int annotationsSize();
-	
-	/**
-	 * Return the annotation with the specified name.
-	 * Return the first if there are duplicates in the source code.
-	 */
-	Annotation getAnnotation(String annotationName);
-	
-	/**
-	 * Return the specified annotation.
-	 * Return the first if there are duplicates in the source code.
-	 * Do not return null, but a Null Object instead if no annotation
-	 * with the specified name exists in the source code.
-	 */
-	Annotation getNonNullAnnotation(String annotationName);
-	
-	/**
-	 * Return the nestable annotations with the specified name in the order that
-	 * they appear.
-	 * If nestable and container annotations are both specified on the
-	 * member directly, return only the nestable annotations specified within
-	 * the container annotation.
-	 */
-	// TODO tie the singular and plural annotations together so we can generate
-	// a validation error when both are specified
-	Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName);
-	
-	/**
-	 * Add an annotation with the specified name.
-	 * Return the newly-created annotation.
-	 */
-	Annotation addAnnotation(String annotationName);
-	
-	/**
-	 * Add a new nestable annotation with the specified name.
-	 * Create a new container annotation if necessary and add the nestable
-	 * annotation to it.
-	 * If both the nestable annotation and the container annotation already
-	 * exist, then add to the container annotation, leaving the existing
-	 * nestable annotation alone.
-	 * If only the nestable annotation exists, then create the new container
-	 * annotation and move the existing nestable annotation to it along with
-	 * the new one. If neither annotation exists, then create a new nestable
-	 * annotation.
-	 */
-	NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
-	
-	/**
-	 * Move the nestable annotation found in the specified container
-	 * annotation at the specified source index to the specified target index.
-	 */
-	void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
-	
-	/**
-	 * Remove the specified annotation.
-	 */
-	void removeAnnotation(String annotationName);
-	
-	/**
-	 * Remove the specified nestable annotation from the container annotation at the specified
-	 * index.
-	 * If there is no container, assume the index is zero and this does the same as 
-	 * {@link #removeAnnotation(String)}
-	 */
-	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
 	 * Sets the specified primary annotation as the first annotation, and removes all known 
@@ -117,8 +35,8 @@ public interface JavaResourcePersistentMember
 	 * in the supporting annotations.
 	 */
 	Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames);
-	
-	
+
+
 	// ********** queries **********
 	
 	/**
@@ -133,25 +51,14 @@ public interface JavaResourcePersistentMember
 	 */
 	boolean isFinal();
 		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
-		
-	/**
-	 * Return whether the underlying JDT member is currently annotated with any recognized
-	 * annotations.
-	 */
-	boolean isAnnotated();
 	
 	/**
 	 * Return whether the Java resource persistent member is for the specified
 	 * member.
 	 */
 	boolean isFor(String memberName, int occurrence);
-	
-	/**
-	 * Return the text range for the member's name.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-	
-	
+
+
 	// ********** behavior **********
 	
 	/**
@@ -159,4 +66,5 @@ public interface JavaResourcePersistentMember
 	 * in the workspace.
 	 */
 	void resolveTypes(CompilationUnit astRoot);
+
 }

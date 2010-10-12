@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -30,8 +30,8 @@ public class ShortCircuitAnnotationElementAdapter<T>
 
 	// ********** constructor **********
 
-	public ShortCircuitAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T> daea) {
-		this(new MemberAnnotationElementAdapter<T>(member, daea));
+	public ShortCircuitAnnotationElementAdapter(AnnotatedElement annotatedElement, DeclarationAnnotationElementAdapter<T> daea) {
+		this(new AnnotatedElementAnnotationElementAdapter<T>(annotatedElement, daea));
 	}
 
 	public ShortCircuitAnnotationElementAdapter(AnnotationElementAdapter<T> adapter) {

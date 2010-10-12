@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.TypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -43,10 +43,10 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	SourceBaseEclipseLinkTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
 		this.dataTypeDeclarationAdapter = this.buildTypeAdapter(this.getDataTypeElementName());
-		this.dataTypeAdapter = new MemberAnnotationElementAdapter<String>(this.member, this.dataTypeDeclarationAdapter);
+		this.dataTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.dataTypeDeclarationAdapter);
 
 		this.objectTypeDeclarationAdapter = this.buildTypeAdapter(this.getObjectTypeElementName());
-		this.objectTypeAdapter = new MemberAnnotationElementAdapter<String>(this.member, this.objectTypeDeclarationAdapter);
+		this.objectTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.objectTypeDeclarationAdapter);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildTypeAdapter(String elementName) {

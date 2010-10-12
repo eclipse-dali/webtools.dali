@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jpt.core.internal.resource.java.source.SourceBaseJoinColumnAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -38,11 +38,11 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 	}
 
 	public SourceMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
-		this(parent, attribute, daa, new MemberAnnotationAdapter(attribute, daa));
+		this(parent, attribute, daa, new ElementAnnotationAdapter(attribute, daa));
 	}
 
 	public SourceMapKeyJoinColumn2_0Annotation(JavaResourceNode parent, Attribute attribute, IndexedDeclarationAnnotationAdapter idaa) {
-		this(parent, attribute, idaa, new MemberIndexedAnnotationAdapter(attribute, idaa));
+		this(parent, attribute, idaa, new ElementIndexedAnnotationAdapter(attribute, idaa));
 	}
 
 	public String getAnnotationName() {
@@ -106,7 +106,7 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 
 	static SourceMapKeyJoinColumn2_0Annotation createNestedMapKeyJoinColumn(JavaResourceNode parent, Attribute attribute, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(attribute, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(attribute, idaa);
 		return new SourceMapKeyJoinColumn2_0Annotation(parent, attribute, idaa, annotationAdapter);
 	}
 

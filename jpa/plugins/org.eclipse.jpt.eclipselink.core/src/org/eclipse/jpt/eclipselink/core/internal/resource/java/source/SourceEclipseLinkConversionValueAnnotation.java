@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -45,7 +45,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 
 
 	SourceEclipseLinkConversionValueAnnotation(EclipseLinkObjectTypeConverterAnnotation parent, Member member, IndexedDeclarationAnnotationAdapter idaa) {
-		super(parent, member, idaa, new MemberIndexedAnnotationAdapter(member, idaa));
+		super(parent, member, idaa, new ElementIndexedAnnotationAdapter(member, idaa));
 		this.dataValueDeclarationAdapter = this.buildDataValueAdapter(idaa);
 		this.dataValueAdapter = this.buildAdapter(this.dataValueDeclarationAdapter);
 		this.objectValueDeclarationAdapter = this.buildObjectValueAdapter(idaa);
@@ -53,7 +53,7 @@ final class SourceEclipseLinkConversionValueAnnotation
 	}
 
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildDataValueAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.java.JavaQueryContainer;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
@@ -41,7 +41,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	implements JavaQueryContainer
 {
-	protected JavaResourcePersistentMember javaResourcePersistentMember;
+	protected JavaResourceAnnotatedElement javaResourceAnnotatedElement;
 
 	protected final List<JavaNamedQuery> namedQueries;
 
@@ -71,7 +71,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 		JavaNamedQuery namedQuery = getJpaFactory().buildJavaNamedQuery(this);
 		this.namedQueries.add(index, namedQuery);
 		NamedQueryAnnotation namedQueryAnnotation = 
-				(NamedQueryAnnotation) this.javaResourcePersistentMember.
+				(NamedQueryAnnotation) this.javaResourceAnnotatedElement.
 					addAnnotation(
 						index, NamedQueryAnnotation.ANNOTATION_NAME, 
 						NamedQueriesAnnotation.ANNOTATION_NAME);
@@ -94,7 +94,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	
 	public void removeNamedQuery(int index) {
 		JavaNamedQuery removedNamedQuery = this.namedQueries.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(
+		this.javaResourceAnnotatedElement.removeAnnotation(
 				index, NamedQueryAnnotation.ANNOTATION_NAME, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(NAMED_QUERIES_LIST, index, removedNamedQuery);
 	}	
@@ -105,7 +105,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	
 	public void moveNamedQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(
+		this.javaResourceAnnotatedElement.moveAnnotation(
 				targetIndex, sourceIndex, NamedQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(NAMED_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
@@ -122,7 +122,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 		JavaNamedNativeQuery namedNativeQuery = getJpaFactory().buildJavaNamedNativeQuery(this);
 		this.namedNativeQueries.add(index, namedNativeQuery);
 		NamedNativeQueryAnnotation namedNativeQueryAnnotation = 
-				(NamedNativeQueryAnnotation) this.javaResourcePersistentMember.
+				(NamedNativeQueryAnnotation) this.javaResourceAnnotatedElement.
 					addAnnotation(
 						index, NamedNativeQueryAnnotation.ANNOTATION_NAME, 
 						NamedNativeQueriesAnnotation.ANNOTATION_NAME);
@@ -145,7 +145,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	
 	public void removeNamedNativeQuery(int index) {
 		JavaNamedNativeQuery removedNamedNativeQuery = this.namedNativeQueries.remove(index);
-		this.javaResourcePersistentMember.removeAnnotation(
+		this.javaResourceAnnotatedElement.removeAnnotation(
 				index, NamedNativeQueryAnnotation.ANNOTATION_NAME, 
 				NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemRemoved(NAMED_NATIVE_QUERIES_LIST, index, removedNamedNativeQuery);
@@ -157,21 +157,21 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	
 	public void moveNamedNativeQuery(int targetIndex, int sourceIndex) {
 		CollectionTools.move(this.namedNativeQueries, targetIndex, sourceIndex);
-		this.javaResourcePersistentMember.moveAnnotation(
+		this.javaResourceAnnotatedElement.moveAnnotation(
 				targetIndex, sourceIndex, NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		fireItemMoved(NAMED_NATIVE_QUERIES_LIST, targetIndex, sourceIndex);		
 	}
 
 	
 	
-	public void initialize(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void initialize(JavaResourceAnnotatedElement jrae) {
+		this.javaResourceAnnotatedElement = jrae;
 		this.initializeNamedQueries();
 		this.initializeNamedNativeQueries();
 	}
 
 	protected void initializeNamedQueries() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.
+		for (Iterator<NestableAnnotation> stream = this.javaResourceAnnotatedElement.
 					annotations(
 						NamedQueryAnnotation.ANNOTATION_NAME, 
 						NamedQueriesAnnotation.ANNOTATION_NAME); 
@@ -181,7 +181,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	}
 	
 	protected void initializeNamedNativeQueries() {
-		for (Iterator<NestableAnnotation> stream = this.javaResourcePersistentMember.
+		for (Iterator<NestableAnnotation> stream = this.javaResourceAnnotatedElement.
 					annotations(
 						NamedNativeQueryAnnotation.ANNOTATION_NAME, 
 						NamedNativeQueriesAnnotation.ANNOTATION_NAME); 
@@ -202,8 +202,8 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 		return namedNativeQuery;
 	}
 
-	public void update(JavaResourcePersistentMember jrpm) {
-		this.javaResourcePersistentMember = jrpm;
+	public void update(JavaResourceAnnotatedElement jrae) {
+		this.javaResourceAnnotatedElement = jrae;
 		this.updateNamedQueries();
 		this.updateNamedNativeQueries();
 	}
@@ -211,7 +211,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	protected void updateNamedQueries() {
 		ListIterator<JavaNamedQuery> queries = namedQueries();
 		Iterator<NestableAnnotation> resourceNamedQueries = 
-				this.javaResourcePersistentMember.annotations(
+				this.javaResourceAnnotatedElement.annotations(
 					NamedQueryAnnotation.ANNOTATION_NAME, 
 					NamedQueriesAnnotation.ANNOTATION_NAME);
 		
@@ -233,7 +233,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	protected void updateNamedNativeQueries() {
 		ListIterator<JavaNamedNativeQuery> queries = namedNativeQueries();
 		Iterator<NestableAnnotation> resourceNamedNativeQueries = 
-				this.javaResourcePersistentMember.annotations(
+				this.javaResourceAnnotatedElement.annotations(
 					NamedNativeQueryAnnotation.ANNOTATION_NAME, 
 					NamedNativeQueriesAnnotation.ANNOTATION_NAME);
 		
@@ -287,7 +287,7 @@ public class GenericJavaQueryContainer extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourcePersistentMember.getTextRange(astRoot);
+		return this.javaResourceAnnotatedElement.getTextRange(astRoot);
 	}
 
 }

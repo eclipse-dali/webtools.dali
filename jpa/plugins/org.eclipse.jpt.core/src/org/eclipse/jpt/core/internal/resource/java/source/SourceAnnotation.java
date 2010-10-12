@@ -13,24 +13,24 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * some common state and behavior for Java source annotations;
  * and lots of convenience methods
  */
-public abstract class SourceAnnotation<M extends Member>
+public abstract class SourceAnnotation<A extends AnnotatedElement>
 	extends SourceNode
 	implements Annotation
 {
-	protected final M member;
+	protected final A annotatedElement;
 
 	protected final DeclarationAnnotationAdapter daa;
 
@@ -40,16 +40,16 @@ public abstract class SourceAnnotation<M extends Member>
 	/**
 	 * constructor for straight member annotation
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, M member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+	protected SourceAnnotation(JavaResourceNode parent, A annotatedElement, DeclarationAnnotationAdapter daa) {
+		this(parent, annotatedElement, daa, new ElementAnnotationAdapter(annotatedElement, daa));
 	}
 
 	/**
 	 * constructor for nested annotation (typically)
 	 */
-	protected SourceAnnotation(JavaResourceNode parent, M member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	protected SourceAnnotation(JavaResourceNode parent, A annotatedElement, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent);
-		this.member = member;
+		this.annotatedElement = annotatedElement;
 		this.daa = daa;
 		this.annotationAdapter = annotationAdapter;
 	}
@@ -132,7 +132,7 @@ public abstract class SourceAnnotation<M extends Member>
 	 * Return the specified AST DOM element.
 	 */
 	protected Expression getAnnotationElementExpression(DeclarationAnnotationElementAdapter<?> adapter, CompilationUnit astRoot) {
-		return adapter.getExpression(this.member.getModifiedDeclaration(astRoot));
+		return adapter.getExpression(this.annotatedElement.getModifiedDeclaration(astRoot));
 	}
 
 	/**

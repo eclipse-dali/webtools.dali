@@ -12,9 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkChangeTrackingAnnotation;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.source.SourceEclipseLinkChangeTrackingAnnotation;
@@ -43,15 +43,15 @@ public class EclipseLinkChangeTrackingAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceEclipseLinkChangeTrackingAnnotation((JavaResourcePersistentType) parent, (Type) member);
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceEclipseLinkChangeTrackingAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
 	}
 
-	public Annotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryEclipseLinkChangeTrackingAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
 	}
 

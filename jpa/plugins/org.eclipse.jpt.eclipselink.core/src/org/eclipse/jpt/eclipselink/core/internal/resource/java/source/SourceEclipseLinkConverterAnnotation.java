@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
@@ -41,7 +41,7 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	public SourceEclipseLinkConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.converterClassAdapter = new MemberAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
+		this.converterClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, CONVERTER_CLASS_ADAPTER);
 	}
 
 	public String getAnnotationName() {

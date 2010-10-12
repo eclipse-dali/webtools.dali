@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceNamedQuery1_0Annotation;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -35,7 +35,7 @@ public abstract class SourceNamedQueryAnnotation
 
 	// ********** constructors **********
 	public SourceNamedQueryAnnotation(JavaResourceNode parent, Type type) {
-		super(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+		super(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
 	public SourceNamedQueryAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -66,7 +66,7 @@ public abstract class SourceNamedQueryAnnotation
 
 	@Override
 	NestableQueryHintAnnotation buildHint(int index) {
-		return SourceQueryHintAnnotation.createNamedQueryQueryHint(this, this.member, this.daa, index);
+		return SourceQueryHintAnnotation.createNamedQueryQueryHint(this, this.annotatedElement, this.daa, index);
 	}
 
 
@@ -74,7 +74,7 @@ public abstract class SourceNamedQueryAnnotation
 
 	static SourceNamedQueryAnnotation createNestedNamedQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
 
 		return new SourceNamedQuery1_0Annotation(parent, type, idaa, annotationAdapter);
 	}

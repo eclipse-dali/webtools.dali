@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.core.utility.jdt.Member.Editor;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;

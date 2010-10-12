@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.Arrays;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * Wrap another annotation element adapter and short-circuit the
@@ -24,8 +24,8 @@ public class ShortCircuitArrayAnnotationElementAdapter<T>
 {
 	// ********** constructor **********
 
-	public ShortCircuitArrayAnnotationElementAdapter(Member member, DeclarationAnnotationElementAdapter<T[]> daea) {
-		super(member, daea);
+	public ShortCircuitArrayAnnotationElementAdapter(AnnotatedElement annotatedElement, DeclarationAnnotationElementAdapter<T[]> daea) {
+		super(annotatedElement, daea);
 	}
 
 	public ShortCircuitArrayAnnotationElementAdapter(AnnotationElementAdapter<T[]> adapter) {

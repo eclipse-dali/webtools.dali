@@ -358,7 +358,7 @@ public final class SourceTableGeneratorAnnotation
 	}
 
 	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return new SourceUniqueConstraintAnnotation(this, this.member, buildUniqueConstraintAnnotationAdapter(index));
+		return new SourceUniqueConstraintAnnotation(this, this.annotatedElement, buildUniqueConstraintAnnotationAdapter(index));
 	}
 
 	IndexedDeclarationAnnotationAdapter buildUniqueConstraintAnnotationAdapter(int index) {

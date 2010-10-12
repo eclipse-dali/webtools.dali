@@ -94,7 +94,7 @@ public final class SourcePrimaryKeyJoinColumnsAnnotation
 	}
 
 	private NestablePrimaryKeyJoinColumnAnnotation buildPrimaryKeyJoinColumn(int index) {
-		return SourcePrimaryKeyJoinColumnAnnotation.createNestedPrimaryKeyJoinColumn(this, this.member, index, this.daa);
+		return SourcePrimaryKeyJoinColumnAnnotation.createNestedPrimaryKeyJoinColumn(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestablePrimaryKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.jpa2.resource.java.ElementCollection2_0Annotation;
@@ -50,8 +50,8 @@ public final class SourceElementCollection2_0Annotation
 
 	public SourceElementCollection2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.targetClassAdapter = new MemberAnnotationElementAdapter<String>(attribute, TARGET_CLASS_ADAPTER);
-		this.fetchAdapter = new MemberAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
+		this.targetClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, TARGET_CLASS_ADAPTER);
+		this.fetchAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, FETCH_ADAPTER);
 	}
 
 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.DiscriminatorValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -38,7 +38,7 @@ public final class SourceDiscriminatorValueAnnotation
 
 	public SourceDiscriminatorValueAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.valueAdapter = new MemberAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
+		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {

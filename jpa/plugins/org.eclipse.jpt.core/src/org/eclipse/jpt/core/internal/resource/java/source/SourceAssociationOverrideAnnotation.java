@@ -120,7 +120,7 @@ public abstract class SourceAssociationOverrideAnnotation
 	}
 
 	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return SourceJoinColumnAnnotation.createAssociationOverrideJoinColumn(this.daa, this, this.member, index);
+		return SourceJoinColumnAnnotation.createAssociationOverrideJoinColumn(this.daa, this, this.annotatedElement, index);
 	}
 
 	void joinColumnAdded(int index, NestableJoinColumnAnnotation joinColumn) {

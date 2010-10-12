@@ -21,7 +21,6 @@ import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -97,7 +96,7 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 	}
 
 	private NestableMapKeyJoinColumnAnnotation buildMapKeyJoinColumn(int index) {
-		return SourceMapKeyJoinColumn2_0Annotation.createNestedMapKeyJoinColumn(this, this.member, index, this.daa);
+		return SourceMapKeyJoinColumn2_0Annotation.createNestedMapKeyJoinColumn(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableMapKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

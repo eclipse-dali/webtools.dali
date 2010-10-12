@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -73,21 +73,21 @@ public final class SourceEclipseLinkCacheAnnotation
 	private Boolean disableHits;
 
 	private static final NestedDeclarationAnnotationAdapter EXPIRY_TIME_OF_DAY_ADAPTER = buildExpiryTimeOfDayAdapter();
-	private final MemberAnnotationAdapter expiryTimeOfDayAdapter;
+	private final ElementAnnotationAdapter expiryTimeOfDayAdapter;
 	private CacheCoordinationType coordinationType;
 
 
 	public SourceEclipseLinkCacheAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.typeAdapter = new MemberAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
-		this.sizeAdapter = new MemberAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
-		this.sharedAdapter = new MemberAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
-		this.expiryAdapter = new MemberAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
-		this.alwaysRefreshAdapter = new MemberAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
-		this.refreshOnlyIfNewerAdapter = new MemberAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
-		this.disableHitsAdapter = new MemberAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
-		this.coordinationTypeAdapter = new MemberAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
-		this.expiryTimeOfDayAdapter = new MemberAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
+		this.typeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
+		this.sizeAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
+		this.sharedAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
+		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
+		this.alwaysRefreshAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
+		this.refreshOnlyIfNewerAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
+		this.disableHitsAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
+		this.coordinationTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
+		this.expiryTimeOfDayAdapter = new ElementAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -260,7 +260,7 @@ public final class SourceEclipseLinkCacheAnnotation
 	}
 
 	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
-		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.member, EXPIRY_TIME_OF_DAY_ADAPTER);
+		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
 	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {

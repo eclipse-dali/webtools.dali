@@ -31,7 +31,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.core.utility.jdt.Member.Editor;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;

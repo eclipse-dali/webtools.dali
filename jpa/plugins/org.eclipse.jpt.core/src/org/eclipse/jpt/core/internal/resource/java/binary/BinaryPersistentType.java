@@ -566,7 +566,7 @@ final class BinaryPersistentType
 			this.type = type;
 		}
 
-		public IType getMember() {
+		public IType getElement() {
 			return this.type;
 		}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,8 +16,8 @@ import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
@@ -41,7 +41,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID\")");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
@@ -54,7 +54,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID\")");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -65,7 +65,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(@annot.JoinColumn(name=\"ADDRESS_ID\"))");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
@@ -78,7 +78,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(@annot.JoinColumn(name=\"ADDRESS_ID\"))");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -89,7 +89,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
@@ -104,7 +104,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -115,7 +115,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
@@ -130,7 +130,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -141,7 +141,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID\")");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain("JoinColumn", cu);
 	}
@@ -152,7 +152,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(@annot.JoinColumn(name=\"ADDRESS_ID\"))");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain("JoinColumns", cu);
 		this.assertSourceDoesNotContain("JoinColumn", cu);
@@ -164,7 +164,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain("JoinColumns", cu);
 		this.assertSourceDoesNotContain("ADDRESS_ID2", cu);
@@ -177,7 +177,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain("JoinColumns", cu);
 		this.assertSourceDoesNotContain("ADDRESS_ID2", cu);
@@ -190,7 +190,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(comment=\"test\",columns={@annot.JoinColumn(name=\"ADDRESS_ID1\"), @annot.JoinColumn(name=\"ADDRESS_ID2\")})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceContains("@annot.JoinColumns(comment=\"test\",columns=@annot.JoinColumn(name=\"ADDRESS_ID1\"))", cu);
 	}
@@ -201,7 +201,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(null)");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
 		this.assertSourceContains("@annot.JoinColumns(null)", cu);
 	}
@@ -213,7 +213,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID0\")";
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -229,7 +229,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceContains("@annot.JoinColumn", cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -244,7 +244,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID0\")";
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -259,7 +259,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID0\"), null, null, @annot.JoinColumn(name=\"ADDRESS_ID3\")})";
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -274,7 +274,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@annot.JoinColumns({@annot.JoinColumn(name=\"ADDRESS_ID0\"), null, @annot.JoinColumn(name=\"ADDRESS_ID2\")})";
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 3);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -289,7 +289,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceContains("@annot.JoinColumn", cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -304,7 +304,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain("JoinColumn", cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -320,7 +320,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain("JoinColumns", cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -334,7 +334,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn, @annot.JoinColumn})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -348,7 +348,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(77)");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -364,7 +364,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns=@annot.JoinColumn(77))");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -379,7 +379,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns=@annot.JoinColumn(77))");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -393,7 +393,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(77)");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -407,7 +407,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumns(columns={@annot.JoinColumn(77),@annot.JoinColumn(88)})");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -421,7 +421,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(text=\"blah\",num=42)");
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -439,7 +439,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected2, cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -468,7 +468,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected3, cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -485,7 +485,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected2, cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 4);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -501,7 +501,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected2, cu);
 		DeclarationAnnotationAdapter daa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 4);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.newMarkerAnnotation();
 		this.assertSourceContains(expected1, cu);
 		this.assertSourceContains(expected2, cu);
@@ -515,7 +515,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -530,7 +530,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID1\")";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -546,7 +546,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID1\")";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 1);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -563,7 +563,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 3);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -579,7 +579,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 3);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -595,7 +595,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -611,7 +611,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -627,7 +627,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 3);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -643,7 +643,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		this.assertSourceDoesNotContain(expected, cu);
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 3);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -658,7 +658,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType(expected);  // the source should be unchanged
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 0);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -673,7 +673,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID0\")";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -689,7 +689,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID0\")";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "value", 2);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -704,7 +704,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		ICompilationUnit cu = this.createTestType("@annot.JoinColumn(name=\"ADDRESS_ID0\")");
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 1);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -719,7 +719,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@JoinColumn(name=\"ADDRESS_ID2\")";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 2);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -735,7 +735,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		String expected = "@annot.JoinColumns(columns={@annot.JoinColumn(name=\"ADDRESS_ID3\"), @annot.JoinColumn(name=\"ADDRESS_ID1\")})";
 		IndexedDeclarationAnnotationAdapter cidaa = new CombinationIndexedDeclarationAnnotationAdapter(
 				"annot.JoinColumn", "annot.JoinColumns", "columns", 3);
-		IndexedAnnotationAdapter iaa  = new MemberIndexedAnnotationAdapter(this.idField(cu), cidaa);
+		IndexedAnnotationAdapter iaa  = new ElementIndexedAnnotationAdapter(this.idField(cu), cidaa);
 		Annotation annotation = iaa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 

@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.StringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
@@ -54,7 +54,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	public SourceEclipseLinkObjectTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
-		this.defaultObjectValueAdapter = new MemberAnnotationElementAdapter<String>(member, DEFAULT_OBJECT_VALUE_ADAPTER);
+		this.defaultObjectValueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(member, DEFAULT_OBJECT_VALUE_ADAPTER);
 	}
 
 	public String getAnnotationName() {
@@ -168,7 +168,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	}
 
 	private NestableEclipseLinkConversionValueAnnotation buildConversionValue(int index) {
-		return SourceEclipseLinkConversionValueAnnotation.createConversionValue(this, this.member, this.daa, index);
+		return SourceEclipseLinkConversionValueAnnotation.createConversionValue(this, this.annotatedElement, this.daa, index);
 	}
 
 	void conversionValueAdded(int index, NestableEclipseLinkConversionValueAnnotation conversionValue) {

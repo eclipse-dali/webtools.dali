@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.List;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
@@ -21,6 +20,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutor;
 
@@ -87,7 +87,11 @@ public class JDTType
 
 
 	// ********** Member/Type implementation **********
-
+	@Override
+	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
+		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
+	}
+	
 	public ITypeBinding getBinding(CompilationUnit astRoot) {
 		TypeDeclaration td = this.getBodyDeclaration(astRoot);
 		return (td == null) ? null : td.resolveBinding();

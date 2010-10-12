@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
@@ -100,7 +100,7 @@ public final class SourceNamedNativeQueryAnnotation
 
 	@Override
 	NestableQueryHintAnnotation buildHint(int index) {
-		return SourceQueryHintAnnotation.createNamedNativeQueryQueryHint(this, this.member, this.daa, index);
+		return SourceQueryHintAnnotation.createNamedNativeQueryQueryHint(this, this.annotatedElement, this.daa, index);
 	}
 
 
@@ -196,12 +196,12 @@ public final class SourceNamedNativeQueryAnnotation
 	// ********** static methods **********
 
 	public static SourceNamedNativeQueryAnnotation createNamedNativeQuery(JavaResourceNode parent, Type type) {
-		return new SourceNamedNativeQueryAnnotation(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+		return new SourceNamedNativeQueryAnnotation(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
 	static SourceNamedNativeQueryAnnotation createNestedNamedNativeQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
 		return new SourceNamedNativeQueryAnnotation(parent, type, idaa, annotationAdapter);
 	}
 

@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotation
 import org.eclipse.jpt.core.internal.utility.jdt.EnumArrayDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.CascadeType;
@@ -61,15 +61,15 @@ abstract class SourceRelationshipMappingAnnotation
 		this.fetchDeclarationAdapter = this.getFetchAdapter();
 		this.fetchAdapter = this.buildAnnotationElementAdapter(this.fetchDeclarationAdapter);
 		this.cascadeDeclarationAdapter = this.getCascadeAdapter();
-		this.cascadeAdapter = new MemberAnnotationElementAdapter<String[]>(attribute, this.cascadeDeclarationAdapter);
+		this.cascadeAdapter = new AnnotatedElementAnnotationElementAdapter<String[]>(attribute, this.cascadeDeclarationAdapter);
 	}
 
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	protected AnnotationElementAdapter<Boolean> buildBooleanAnnotationElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
-		return new MemberAnnotationElementAdapter<Boolean>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,9 @@ import org.eclipse.jpt.core.internal.jpa1.resource.java.source.SourceAssociation
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
@@ -41,15 +43,15 @@ public final class AssociationOverridesAnnotationDefinition
 		super();
 	}
 
-	public AssociationOverridesAnnotation buildAnnotation(JavaResourcePersistentMember parent, Member member) {
-		return new SourceAssociationOverrides1_0Annotation(parent, member);
+	public AssociationOverridesAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+		return new SourceAssociationOverrides1_0Annotation((JavaResourcePersistentMember) parent, (Member) annotatedElement);
 	}
 
-	public AssociationOverridesAnnotation buildNullAnnotation(JavaResourcePersistentMember parent) {
+	public AssociationOverridesAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Annotation buildAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryAssociationOverrides1_0Annotation(parent, jdtAnnotation);
 	}
 

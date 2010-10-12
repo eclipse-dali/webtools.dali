@@ -14,8 +14,8 @@ import java.util.Vector;
 
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
@@ -63,7 +63,7 @@ public abstract class SourceBaseTableAnnotation
 
 
 	protected SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
-		this(parent, member, daa, new MemberAnnotationAdapter(member, daa));
+		this(parent, member, daa, new ElementAnnotationAdapter(member, daa));
 	}
 
 	protected SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
@@ -77,7 +77,7 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new MemberAnnotationElementAdapter<String>(this.member, daea);
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -259,7 +259,7 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	NestableUniqueConstraintAnnotation buildUniqueConstraint(int index) {
-		return new SourceUniqueConstraintAnnotation(this, this.member, buildUniqueConstraintAnnotationAdapter(index));
+		return new SourceUniqueConstraintAnnotation(this, this.annotatedElement, buildUniqueConstraintAnnotationAdapter(index));
 	}
 
 	IndexedDeclarationAnnotationAdapter buildUniqueConstraintAnnotationAdapter(int index) {

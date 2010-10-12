@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
@@ -39,7 +39,7 @@ public final class SourceInheritanceAnnotation
 
 	public SourceInheritanceAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.strategyAdapter = new MemberAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
+		this.strategyAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, STRATEGY_ADAPTER);
 	}
 
 	public String getAnnotationName() {

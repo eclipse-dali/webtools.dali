@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.LockModeType_2_0;
@@ -46,11 +46,11 @@ public final class SourceNamedQuery2_0Annotation
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
 		this.lockModeDeclarationAdapter = this.buildLockModeTypeAdapter(daa);
-		this.lockModeAdapter = new MemberAnnotationElementAdapter<String>(type, this.lockModeDeclarationAdapter);
+		this.lockModeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, this.lockModeDeclarationAdapter);
 	}
 	
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type) {
-		this(parent, type, DECLARATION_ANNOTATION_ADAPTER, new MemberAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+		this(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
 	}
 	
 	private DeclarationAnnotationElementAdapter<String> buildLockModeTypeAdapter(DeclarationAnnotationAdapter daAdapter) {
@@ -123,7 +123,7 @@ public final class SourceNamedQuery2_0Annotation
 
 	static SourceNamedQuery2_0Annotation createNestedNamedQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
 		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new MemberIndexedAnnotationAdapter(type, idaa);
+		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
 
 		return new SourceNamedQuery2_0Annotation(parent, type, idaa, annotationAdapter);
 	}

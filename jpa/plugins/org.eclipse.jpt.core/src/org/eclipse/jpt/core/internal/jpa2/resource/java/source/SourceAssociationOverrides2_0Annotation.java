@@ -27,7 +27,7 @@ public final class SourceAssociationOverrides2_0Annotation
 
 	@Override
 	protected NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
-		return SourceAssociationOverride2_0Annotation.buildNestedAssociationOverride(this, this.member, index, this.daa);
+		return SourceAssociationOverride2_0Annotation.buildNestedAssociationOverride(this, this.annotatedElement, index, this.daa);
 	}
 
 }

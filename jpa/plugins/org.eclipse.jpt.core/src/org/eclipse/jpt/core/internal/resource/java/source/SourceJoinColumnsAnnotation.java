@@ -93,7 +93,7 @@ public final class SourceJoinColumnsAnnotation
 	}
 
 	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return SourceJoinColumnAnnotation.createNestedJoinColumn(this, this.member, index, this.daa);
+		return SourceJoinColumnAnnotation.createNestedJoinColumn(this, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {

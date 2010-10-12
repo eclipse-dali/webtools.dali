@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
-import org.eclipse.jpt.core.internal.utility.jdt.MemberAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
@@ -40,7 +40,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.Bar", annotation.getTypeName().getFullyQualifiedName());
@@ -56,7 +56,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "nestedAnnotation", "annot.Bar");
 		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "yana", "annot.Baz");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa3);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa3);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 		assertEquals("annot.Baz", annotation.getTypeName().getFullyQualifiedName());
@@ -70,7 +70,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -82,7 +82,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -94,7 +94,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -107,7 +107,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 	}
@@ -121,7 +121,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -139,7 +139,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar", false);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -156,7 +156,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -173,7 +173,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -191,7 +191,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -210,7 +210,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daaFoo = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar");
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -232,7 +232,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		DeclarationAnnotationAdapter daaFoo = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar", false);
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz", false);
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
 
@@ -249,7 +249,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -265,7 +265,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -282,7 +282,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -299,7 +299,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -316,7 +316,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -333,7 +333,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -350,7 +350,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -367,7 +367,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 
@@ -407,7 +407,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
 				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "value", "annot.Bar");
-		AnnotationAdapter aa = new MemberAnnotationAdapter(this.idField(cu), daa);
+		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		SingleMemberAnnotation annotation = (SingleMemberAnnotation) aa.getAnnotation(this.buildASTRoot(cu));
 		assertNull(annotation);
 

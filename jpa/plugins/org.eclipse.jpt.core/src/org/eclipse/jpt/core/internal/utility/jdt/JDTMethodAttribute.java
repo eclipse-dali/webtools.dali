@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
@@ -21,6 +20,7 @@ import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.JavaType;
@@ -96,7 +96,11 @@ public class JDTMethodAttribute
 
 
 	// ********** Member/Attribute/MethodAttribute implementation **********
-
+	@Override
+	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
+		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
+	}
+	
 	public IMethodBinding getBinding(CompilationUnit astRoot) {
 		return this.getBodyDeclaration(astRoot).resolveBinding();
 	}

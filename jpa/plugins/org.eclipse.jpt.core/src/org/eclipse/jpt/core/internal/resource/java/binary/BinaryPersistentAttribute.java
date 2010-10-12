@@ -447,7 +447,7 @@ final class BinaryPersistentAttribute
 			this.field = field;
 		}
 
-		public IField getMember() {
+		public IField getElement() {
 			return this.field;
 		}
 
@@ -503,7 +503,7 @@ final class BinaryPersistentAttribute
 			this.method = method;
 		}
 
-		public IMethod getMember() {
+		public IMethod getElement() {
 			return this.method;
 		}
 
