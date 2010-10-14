@@ -48,7 +48,7 @@ import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceCompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -59,6 +59,8 @@ import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -680,7 +682,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit jdtCompilationUnit) {
-		return new SourceCompilationUnit(
+		return new SourceTypeCompilationUnit(
 					jdtCompilationUnit,
 					this.jpaPlatform.getAnnotationProvider(),
 					this.jpaPlatform.getAnnotationEditFormatter(),
@@ -916,6 +918,41 @@ public abstract class AbstractJpaProject
 					this.getExternalJavaResourceCompilationUnits(),
 					Collections.singleton(this.externalJavaResourcePersistentTypeCache)
 				);
+	}
+
+
+	// ********** Java resource persistent package look-up **********
+
+	public JavaResourcePackage getJavaResourcePackage(String packName) {
+		for (JavaResourcePackage jrpp : this.getJavaResourcePackages()) {
+			if (jrpp.getName().equals(packName)) {
+				return jrpp;
+			}
+		}
+		return null;
+	}
+
+	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
+		return new FilteringIterable<JavaResourcePackage>( 
+				new TransformationIterable<JpaFile, JavaResourcePackage>(this.getPackageInfoSourceJpaFiles()) {
+				@Override
+				protected JavaResourcePackage transform(JpaFile jpaFile) {
+					return ((JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel()).getPackage();
+				}
+			}) 
+			{
+			@Override
+			protected boolean accept(JavaResourcePackage packageInfo) {
+				return packageInfo != null;
+			}
+		};
+	}
+
+	/**
+	 * return JPA files with package-info source "content"
+	 */
+	protected Iterable<JpaFile> getPackageInfoSourceJpaFiles() {
+		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 

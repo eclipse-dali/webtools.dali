@@ -163,7 +163,17 @@ public class JptCorePlugin extends Plugin {
 	 * The resource type for Java source code files
 	 */
 	public static final JpaResourceType JAVA_SOURCE_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_CONTENT_TYPE);
-	
+
+	/**
+	 * The content type for package-info Java code files.
+	 */
+	public static final IContentType JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE = getJpaContentType("javaPackageInfo"); //$NON-NLS-1$
+
+	/**
+	 * The resource type for package-info Java code files
+	 */
+	public static final JpaResourceType JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+
 	/**
 	 * The content type for <code>persistence.xml</code> files.
 	 */

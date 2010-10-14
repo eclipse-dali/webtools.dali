@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.3
+ * @version 3.0
  * @since 2.2
  */
 public interface JpaAnnotationDefinitionProvider
@@ -43,4 +43,9 @@ public interface JpaAnnotationDefinitionProvider
 	 * Return all annotation definitions which can appear on an attribute
 	 */
 	Iterator<AnnotationDefinition> attributeAnnotationDefinitions();
+
+	/**
+	 * Return all annotation definitions which can appear on a package.
+	 */
+	Iterator<AnnotationDefinition> packageAnnotationDefinitions();
 }

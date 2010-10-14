@@ -89,6 +89,14 @@
 				<parameter name="signature" value="50 4B 03 04"/>
 			</describer>
 		</content-type>
+  		<content-type
+       		base-type="org.eclipse.jdt.core.javaSource"
+        	file-extensions=".java"
+       	 	file-names="package-info.java"
+        	id="org.eclipse.jpt.core.content.javaPackageInfo"
+        	name="%JAVA_PACKAGE_INFO_CONTENT"
+        	priority="normal">
+  		</content-type>
 		
 	</extension>
 	
@@ -628,7 +636,7 @@
 			</include>
 			<include>
 				<rules>
-					<contentType id="org.eclipse.jdt.core.javaSource"/>
+					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
 					<contentType id="org.eclipse.jpt.core.content.jar"/>
 					<contentType id="org.eclipse.jpt.core.content.baseJpaContent" exactMatch="false"/>
 				</rules>

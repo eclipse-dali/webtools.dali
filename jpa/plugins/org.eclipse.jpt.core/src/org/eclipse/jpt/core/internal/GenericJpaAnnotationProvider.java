@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,8 +17,10 @@ import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
+import org.eclipse.jpt.core.utility.jdt.Package;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -156,6 +158,44 @@ public class GenericJpaAnnotationProvider
 		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.attributeAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
 			throw new IllegalArgumentException("unsupported attribute annotation: " + annotationName); //$NON-NLS-1$
+		}
+		return annotationDefinition;
+	}
+
+
+	// ********** package annotations **********
+
+	public Iterator<String> packageAnnotationNames() {
+		return annotationNames(packageAnnotationDefinitions());
+	}
+
+	protected Iterator<AnnotationDefinition> packageAnnotationDefinitions() {
+		return new CompositeIterator<AnnotationDefinition> ( 
+			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
+				@Override
+				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.packageAnnotationDefinitions();
+				}
+			}
+		);
+	}
+
+	public Annotation buildPackageAnnotation(JavaResourcePackage parent, Package pack, String annotationName) {
+		return this.getPackageAnnotationDefinition(annotationName).buildAnnotation(parent, pack);
+	}
+
+	public Annotation buildPackageAnnotation(JavaResourcePackage parent, IAnnotation jdtAnnotation) {
+		return this.getPackageAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
+	}
+
+	public Annotation buildNullPackageAnnotation(JavaResourcePackage parent, String annotationName) {
+		return this.getPackageAnnotationDefinition(annotationName).buildNullAnnotation(parent);
+	}
+
+	protected AnnotationDefinition getPackageAnnotationDefinition(String annotationName) {
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.packageAnnotationDefinitions(), annotationName);
+		if (annotationDefinition == null) {
+			throw new IllegalArgumentException("unsupported package mapping annotation: " + annotationName); //$NON-NLS-1$
 		}
 		return annotationDefinition;
 	}

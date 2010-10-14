@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,17 +15,17 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 
 /**
- * Java source code
+ * Java package-info.java source code
  */
-public class JavaResourceModelProvider
+public class JavaPackageInfoResourceModelProvider
 	implements JpaResourceModelProvider
 {
 	// singleton
-	private static final JpaResourceModelProvider INSTANCE = new JavaResourceModelProvider();
+	private static final JpaResourceModelProvider INSTANCE = new JavaPackageInfoResourceModelProvider();
 
 	/**
 	 * Return the singleton.
@@ -37,21 +37,21 @@ public class JavaResourceModelProvider
 	/**
 	 * Ensure single instance.
 	 */
-	private JavaResourceModelProvider() {
+	private JavaPackageInfoResourceModelProvider() {
 		super();
 	}
 
 	public IContentType getContentType() {
-		return JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE;
+		return JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE;
 	}
 
 	public JavaResourceCompilationUnit buildResourceModel(JpaProject jpaProject, IFile file) {
-		return new SourceTypeCompilationUnit(
-					JavaCore.createCompilationUnitFrom(file),
-					jpaProject.getJpaPlatform().getAnnotationProvider(),
-					jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
-					jpaProject.getModifySharedDocumentCommandExecutor()
-				);
+		return new SourcePackageInfoCompilationUnit(
+			JavaCore.createCompilationUnitFrom(file),
+			jpaProject.getJpaPlatform().getAnnotationProvider(),
+			jpaProject.getJpaPlatform().getAnnotationEditFormatter(),
+			jpaProject.getModifySharedDocumentCommandExecutor()
+		);
 	}
 
 }

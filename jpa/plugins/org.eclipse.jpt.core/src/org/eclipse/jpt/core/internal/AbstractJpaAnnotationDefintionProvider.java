@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -25,6 +26,8 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 	private AnnotationDefinition[] typeMappingAnnotationDefinitions;
 
 	private AnnotationDefinition[] attributeAnnotationDefinitions;
+
+	private AnnotationDefinition[] packageAnnotationDefinitions;
 
 
 	protected AbstractJpaAnnotationDefintionProvider() {
@@ -96,6 +99,30 @@ public abstract class AbstractJpaAnnotationDefintionProvider
 	 * definitions.
 	 */
 	protected void addAttributeAnnotationDefinitionsTo(@SuppressWarnings("unused") List<AnnotationDefinition> definitions) {
+		// no op
+	}
+
+
+	// ********** package annotation definitions **********
+
+	public synchronized ListIterator<AnnotationDefinition> packageAnnotationDefinitions() {
+		if (this.packageAnnotationDefinitions == null) {
+			this.packageAnnotationDefinitions = this.buildPackageAnnotationDefinitions();
+		}
+		return new ArrayListIterator<AnnotationDefinition>(this.packageAnnotationDefinitions);
+	}
+
+	protected AnnotationDefinition[] buildPackageAnnotationDefinitions() {
+		ArrayList<AnnotationDefinition> definitions = new ArrayList<AnnotationDefinition>();
+		this.addPackageAnnotationDefinitionsTo(definitions);
+		return definitions.toArray(new AnnotationDefinition[definitions.size()]);
+	}
+
+	/**
+	 * Subclasses must override this to specify package annotation
+	 * definitions. No package annotation definitions by default.
+	 */
+	protected void addPackageAnnotationDefinitionsTo(@SuppressWarnings("unused") List<AnnotationDefinition> definitions) {
 		// no op
 	}
 }

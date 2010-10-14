@@ -21,6 +21,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentTypeCache;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -192,6 +193,18 @@ public interface JpaProject
 	 * Return null if invalid or absent.
 	 */
 	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
+
+	/**
+	 * Return the Java resource package for the specified package.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourcePackage getJavaResourcePackage(String packageName);
+
+	/**
+	 * Return the Java resource packages for the project.
+	 * Return null if invalid or absent.
+	 */
+	Iterable<JavaResourcePackage> getJavaResourcePackages();
 
 	/**
 	 * Return the Java resource package fragement root for the specified JAR.
