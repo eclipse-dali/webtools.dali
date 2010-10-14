@@ -96,7 +96,7 @@ public class JaxbPlatformDescriptionImpl
 	}
 	
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
-		JaxbPlatformDefinitionFactory factory = (JaxbPlatformDefinitionFactory) XPointUtil.instantiate(
+		JaxbPlatformDefinitionFactory factory = XPointUtil.instantiate(
 				this.pluginId, JaxbPlatformManagerImpl.QUALIFIED_EXTENSION_POINT_ID, 
 				this.factoryClassName, JaxbPlatformDefinitionFactory.class);
 		return factory.buildJaxbPlatformDefinition();
