@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
@@ -27,41 +28,46 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 	// singleton
 	private static final JpaAnnotationDefinitionProvider INSTANCE = 
 			new GenericJaxbJpaAnnotationDefinitionProvider();
-	
-	
+
+
 	/**
 	 * Return the singleton
 	 */
 	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private GenericJaxbJpaAnnotationDefinitionProvider() {
 		super();
 	}
-	
-	
+
+
+	@Override
+	protected void addPackageAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
+	}
+
 	@Override
 	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
 		definitions.add(XmlEnumAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
-	
+
 	@Override
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
-	
+
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 	}
-
 }

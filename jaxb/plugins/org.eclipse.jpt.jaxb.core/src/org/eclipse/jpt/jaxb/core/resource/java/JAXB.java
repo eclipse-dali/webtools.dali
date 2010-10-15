@@ -33,6 +33,9 @@ public interface JAXB {
 
 	// JAXB annotations
 
+	String XML_ACCESSOR_TYPE = PACKAGE_ + "XmlAccessorType";
+		String XML_ACCESSOR_TYPE__VALUE = "value";
+
 	String XML_ENUM = PACKAGE_ + "XmlEnum";
 		String XML_ENUM__VALUE = "value";
 
@@ -48,5 +51,14 @@ public interface JAXB {
 		String XML_TYPE__PROP_ORDER = "propOrder";
 
 	String XML_TRANSIENT = PACKAGE_ + "XmlTransient";
+
+	// JAXB enums
+
+	String XML_ACCESS_TYPE = PACKAGE_ + "XmlAccessType";
+		String XML_ACCESS_TYPE_ = XML_ACCESS_TYPE + '.';
+		String XML_ACCESS_TYPE__FIELD = XML_ACCESS_TYPE_ + "FIELD";
+		String XML_ACCESS_TYPE__NONE = XML_ACCESS_TYPE_ + "NONE";
+		String XML_ACCESS_TYPE__PROPERTY = XML_ACCESS_TYPE_ + "PROPERTY";
+		String XML_ACCESS_TYPE__PUBLIC_MEMBER = XML_ACCESS_TYPE_ + "PUBLIC_MEMBER";
 
 }
