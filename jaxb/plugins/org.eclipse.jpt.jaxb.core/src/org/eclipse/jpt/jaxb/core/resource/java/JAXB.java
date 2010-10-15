@@ -32,6 +32,8 @@ public interface JAXB {
 	// ********** API **********
 
 	// JAXB annotations
+	String XML_ACCESSOR_ORDER = PACKAGE_ + "XmlAccessorOrder";
+		String XML_ACCESSOR_ORDER__VALUE = "value";
 
 	String XML_ACCESSOR_TYPE = PACKAGE_ + "XmlAccessorType";
 		String XML_ACCESSOR_TYPE__VALUE = "value";
@@ -53,6 +55,10 @@ public interface JAXB {
 	String XML_TRANSIENT = PACKAGE_ + "XmlTransient";
 
 	// JAXB enums
+	String XML_ACCESS_ORDER = PACKAGE_ + "XmlAccessOrder";
+		String XML_ACCESS_ORDER_ = XML_ACCESS_ORDER + '.';
+		String XML_ACCESS_ORDER__ALPHABETICAL = XML_ACCESS_ORDER_ + "ALPHABETICAL";
+		String XML_ACCESS_ORDER__UNDEFINED = XML_ACCESS_ORDER_ + "UNDEFINED";
 
 	String XML_ACCESS_TYPE = PACKAGE_ + "XmlAccessType";
 		String XML_ACCESS_TYPE_ = XML_ACCESS_TYPE + '.';

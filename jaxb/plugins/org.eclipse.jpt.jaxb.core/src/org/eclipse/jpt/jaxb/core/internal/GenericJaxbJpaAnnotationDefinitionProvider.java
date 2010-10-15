@@ -13,6 +13,7 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
@@ -48,11 +49,13 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 
 	@Override
 	protected void addPackageAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlAccessorOrderAnnotationDefinition.instance());
 		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
 	}
 
 	@Override
 	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlAccessorOrderAnnotationDefinition.instance());
 		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
 		definitions.add(XmlEnumAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
