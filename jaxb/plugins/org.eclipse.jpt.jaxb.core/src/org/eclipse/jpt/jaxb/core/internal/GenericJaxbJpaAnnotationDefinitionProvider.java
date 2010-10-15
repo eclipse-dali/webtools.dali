@@ -13,6 +13,9 @@ import java.util.List;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 
 /**
@@ -44,15 +47,21 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 	
 	@Override
 	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlEnumAnnotationDefinition.instance());
+		definitions.add(XmlRootElementAnnotationDefinition.instance());
+		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
 	
 	@Override
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
 	
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlTransientAnnotationDefinition.instance());
 	}
+
 }

@@ -212,7 +212,7 @@ public final class SourceXmlTypeAnnotation
 		return this.getElementTextRange(NAME_ADAPTER, astRoot);
 	}
 
-	// ***** name
+	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
 	}

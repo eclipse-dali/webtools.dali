@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
+import org.eclipse.jpt.core.resource.java.Annotation;
+
 /**
- * JAXB Java-related stuff (annotations etc.)
- * <p>
+ * Corresponds to the JAXB annotation
+ * javax.xml.bind.annotation.XmlTransient
+ * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -21,32 +24,9 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  * @version 3.0
  * @since 3.0
  */
-@SuppressWarnings("nls")
-public interface JAXB {
-
-	// JAXB package
-	String PACKAGE = "javax.xml.bind.annotation";
-	String PACKAGE_ = PACKAGE + '.';
-
-
-	// ********** API **********
-
-	// JAXB annotations
-
-	String XML_ENUM = PACKAGE_ + "XmlEnum";
-		String XML_ENUM__VALUE = "value";
-
-	String XML_ROOT_ELEMENT = PACKAGE_ + "XmlRootElement";
-		String XML_ROOT_ELEMENT__NAME = "name";
-		String XML_ROOT_ELEMENT__NAMESPACE = "namespace";
-
-	String XML_TYPE = PACKAGE_ + "XmlType";
-		String XML_TYPE__FACTORY_CLASS = "factoryClass";
-		String XML_TYPE__FACTORY_METHOD = "factoryMethod";
-		String XML_TYPE__NAME = "name";
-		String XML_TYPE__NAMESPACE = "namespace";
-		String XML_TYPE__PROP_ORDER = "propOrder";
-
-	String XML_TRANSIENT = PACKAGE_ + "XmlTransient";
+public interface XmlTransientAnnotation
+	extends Annotation
+{
+	String ANNOTATION_NAME = JAXB.XML_TRANSIENT;
 
 }

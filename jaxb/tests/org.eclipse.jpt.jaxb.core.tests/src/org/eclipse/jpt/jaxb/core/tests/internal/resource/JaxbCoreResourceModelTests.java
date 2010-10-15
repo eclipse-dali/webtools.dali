@@ -15,21 +15,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jaxb.core.tests.internal.resource.java.JaxbJavaResourceModelTests;
 
-/**
- * Required Java system property:
- *   -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
- */
+
 public class JaxbCoreResourceModelTests extends TestCase
 {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreResourceModelTests.class.getName());
 
-//		if(JptCoreTests.requiredJarsExists()) {
-			suite.addTest(JaxbJavaResourceModelTests.suite());
-//		}
-//		else {
-//			suite.addTest(TestSuite.warning(JptCoreTests.buildMissingJarErrorMessage()));
-//		}
+		suite.addTest(JaxbJavaResourceModelTests.suite());
 		return suite;
 	}
 

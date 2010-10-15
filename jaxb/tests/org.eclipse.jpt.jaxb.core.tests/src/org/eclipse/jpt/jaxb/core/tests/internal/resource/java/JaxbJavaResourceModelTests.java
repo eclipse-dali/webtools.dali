@@ -16,8 +16,11 @@ public class JaxbJavaResourceModelTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbJavaResourceModelTests.class.getName());
+		suite.addTestSuite(XmlEnumAnnotationTests.class);
+		suite.addTestSuite(XmlRootElementAnnotationTests.class);
+		suite.addTestSuite(XmlTransientAnnotationTests.class);
 		suite.addTestSuite(XmlTypeAnnotationTests.class);
-			
+	
 		return suite;
 	}
 
