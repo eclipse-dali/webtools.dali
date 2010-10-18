@@ -45,6 +45,8 @@ public interface JAXB {
 	
 	String XML_INLINE_BINARY_DATA = PACKAGE_ + "XmlInlineBinaryData";
 
+	String XML_REGISTRY = PACKAGE_ + "XmlRegistry";
+
 	String XML_ROOT_ELEMENT = PACKAGE_ + "XmlRootElement";
 		String XML_ROOT_ELEMENT__NAME = "name";
 		String XML_ROOT_ELEMENT__NAMESPACE = "namespace";

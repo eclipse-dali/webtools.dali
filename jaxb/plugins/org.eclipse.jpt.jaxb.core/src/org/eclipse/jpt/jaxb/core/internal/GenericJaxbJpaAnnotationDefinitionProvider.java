@@ -19,6 +19,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinit
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlInlineBinaryDataAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdapterAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdaptersAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRegistryAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
@@ -67,6 +68,7 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 		definitions.add(XmlInlineBinaryDataAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
+		definitions.add(XmlRegistryAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
 		definitions.add(XmlSeeAlsoAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
@@ -75,6 +77,7 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 
 	@Override
 	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlRegistryAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
