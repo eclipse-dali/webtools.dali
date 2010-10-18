@@ -89,12 +89,13 @@
 				<parameter name="signature" value="50 4B 03 04"/>
 			</describer>
 		</content-type>
-  		<content-type
-       		base-type="org.eclipse.jdt.core.javaSource"
-        	file-extensions=".java"
-       	 	file-names="package-info.java"
-        	id="org.eclipse.jpt.core.content.javaPackageInfo"
+		
+  		<!-- package-info.java content type (for package annotations) -->
+		<content-type
+       		id="org.eclipse.jpt.core.content.javaPackageInfo"
         	name="%JAVA_PACKAGE_INFO_CONTENT"
+        	base-type="org.eclipse.jdt.core.javaSource"
+       	 	file-names="package-info.java"
         	priority="normal">
   		</content-type>
 		
