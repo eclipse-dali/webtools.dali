@@ -34,6 +34,11 @@ public interface XmlJavaTypeAdapterAnnotation
 	/**
 	 * Corresponds to the 'value' element of the XmlJavaTypeAdapter annotation.
 	 * Return null if the element does not exist in Java.
+	 * Return the portion of the value preceding ".class".
+	 * <pre>
+	 *     &#64;XmlJavaTypeAdapter(value=FooAdapter.class)
+	 * </pre>
+	 * will return "FooAdapter"
 	 */
 	String getValue();
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
