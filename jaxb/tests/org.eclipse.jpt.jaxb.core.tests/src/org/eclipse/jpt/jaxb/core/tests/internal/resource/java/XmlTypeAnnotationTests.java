@@ -108,7 +108,6 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestXmlTypeWithPropOrder() throws Exception {
-		this.createTestFactoryClass();
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
