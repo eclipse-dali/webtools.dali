@@ -17,11 +17,6 @@
       %license
    </license>
 
-<!-- ??? TODELETE required ??? -->
-   <requires>
-      <import feature="org.eclipse.jpt.tests.feature" version="2.4.0"/>
-   </requires>
-
    <plugin
          id="org.eclipse.jpt.jaxb.core.tests"
          download-size="0"
