@@ -25,4 +25,8 @@
          id="org.eclipse.jpt.tests.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.eclipse.jpt.jaxb.tests.feature"
+         version="0.0.0"/>
+
 </feature>
