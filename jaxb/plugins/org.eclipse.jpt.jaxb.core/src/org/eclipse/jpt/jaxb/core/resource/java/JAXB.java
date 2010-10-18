@@ -49,6 +49,9 @@ public interface JAXB {
 		String XML_ROOT_ELEMENT__NAME = "name";
 		String XML_ROOT_ELEMENT__NAMESPACE = "namespace";
 
+	String XML_SEE_ALSO = PACKAGE_ + "XmlSeeAlso";
+		String XML_SEE_ALSO__VALUE = "value";
+
 	String XML_TYPE = PACKAGE_ + "XmlType";
 		String XML_TYPE__FACTORY_CLASS = "factoryClass";
 		String XML_TYPE__FACTORY_METHOD = "factoryMethod";

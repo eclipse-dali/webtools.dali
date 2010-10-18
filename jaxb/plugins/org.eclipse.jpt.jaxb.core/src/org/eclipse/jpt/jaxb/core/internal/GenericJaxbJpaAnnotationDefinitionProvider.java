@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlInlineBinaryDataAnnot
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdapterAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdaptersAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 
@@ -67,6 +68,7 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
+		definitions.add(XmlSeeAlsoAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
 	}
