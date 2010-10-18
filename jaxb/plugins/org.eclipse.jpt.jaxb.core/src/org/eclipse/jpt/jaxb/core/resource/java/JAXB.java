@@ -28,6 +28,8 @@ public interface JAXB {
 	String PACKAGE = "javax.xml.bind.annotation";
 	String PACKAGE_ = PACKAGE + '.';
 
+	String ADAPTERS_PACKAGE = "javax.xml.bind.annotation.adapters";
+	String ADAPTERS_PACKAGE_ = ADAPTERS_PACKAGE + '.';
 
 	// ********** API **********
 
@@ -40,6 +42,8 @@ public interface JAXB {
 
 	String XML_ENUM = PACKAGE_ + "XmlEnum";
 		String XML_ENUM__VALUE = "value";
+	
+	String XML_INLINE_BINARY_DATA = PACKAGE_ + "XmlInlineBinaryData";
 
 	String XML_ROOT_ELEMENT = PACKAGE_ + "XmlRootElement";
 		String XML_ROOT_ELEMENT__NAME = "name";
@@ -53,6 +57,15 @@ public interface JAXB {
 		String XML_TYPE__PROP_ORDER = "propOrder";
 
 	String XML_TRANSIENT = PACKAGE_ + "XmlTransient";
+
+
+	// JAXB annotation adapters
+	String XML_JAVA_TYPE_ADAPTER = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapter";
+		String XML_JAVA_TYPE_ADAPTER__VALUE = "value";
+	
+	String XML_JAVA_TYPE_ADAPTERS = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapters";
+		String XML_JAVA_TYPE_ADAPTERS__VALUE = "value";
+
 
 	// JAXB enums
 	String XML_ACCESS_ORDER = PACKAGE_ + "XmlAccessOrder";

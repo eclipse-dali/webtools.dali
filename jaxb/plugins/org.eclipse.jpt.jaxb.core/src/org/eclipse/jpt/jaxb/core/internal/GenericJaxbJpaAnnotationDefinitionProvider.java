@@ -16,6 +16,9 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlInlineBinaryDataAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdapterAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdaptersAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
@@ -51,6 +54,8 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 	protected void addPackageAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(XmlAccessorOrderAnnotationDefinition.instance());
 		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 	}
 
 	@Override
@@ -58,6 +63,9 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 		definitions.add(XmlAccessorOrderAnnotationDefinition.instance());
 		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
 		definitions.add(XmlEnumAnnotationDefinition.instance());
+		definitions.add(XmlInlineBinaryDataAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 		definitions.add(XmlTypeAnnotationDefinition.instance());
@@ -71,6 +79,9 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
+		definitions.add(XmlInlineBinaryDataAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
+		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 		definitions.add(XmlTransientAnnotationDefinition.instance());
 	}
 }

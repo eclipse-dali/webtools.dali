@@ -19,6 +19,8 @@ public class JaxbJavaResourceModelTests {
 		suite.addTestSuite(XmlAccessorOrderAnnotationTests.class);
 		suite.addTestSuite(XmlAccessorTypeAnnotationTests.class);
 		suite.addTestSuite(XmlEnumAnnotationTests.class);
+		suite.addTestSuite(XmlInlineBinaryDataAnnotationTests.class);
+		suite.addTestSuite(XmlJavaTypeAdapterAnnotationTests.class);
 		suite.addTestSuite(XmlRootElementAnnotationTests.class);
 		suite.addTestSuite(XmlTransientAnnotationTests.class);
 		suite.addTestSuite(XmlTypeAnnotationTests.class);
