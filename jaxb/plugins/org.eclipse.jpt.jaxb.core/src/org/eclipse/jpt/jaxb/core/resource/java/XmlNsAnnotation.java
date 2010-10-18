@@ -10,12 +10,12 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JAXB annotation
- * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter
+ * javax.xml.bind.annotation.XmlNs
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,37 +26,46 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 3.0
  * @since 3.0
  */
-public interface XmlJavaTypeAdapterAnnotation
-		extends NestableAnnotation {
+public interface XmlNsAnnotation
+		extends Annotation {
 	
-	String ANNOTATION_NAME = JAXB.XML_JAVA_TYPE_ADAPTER;
+	String ANNOTATION_NAME = JAXB.XML_NS;
 	
 	/**
-	 * Corresponds to the 'value' element of the XmlJavaTypeAdapter annotation.
+	 * Corresponds to the 'namespace' element of the XmlNs annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	String getValue();
-		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	String getNamespace();
+		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the 'value' element of the XmlJavaTypeAdapter annotation.
+	 * Corresponds to the 'namespace' element of the XmlNs annotation.
 	 * Set to null to remove the element.
 	 */
-	void setValue(String value);
+	void setNamespace(String namespace);
 	
 	/**
-	 * Return the {@link TextRange} for the 'value' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlJavaTypeAdapter annotation.
+	 * Return the {@link TextRange} for the 'namespace' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlNs annotation.
 	 */
-	TextRange getValueTextRange(CompilationUnit astRoot);
+	TextRange getNamespaceTextRange(CompilationUnit astRoot);
 	
 	/**
-	 * Return the value's fully-qualified class name as resolved by the AST's bindings.
-	 * <pre>
-	 *     &#64;XmlJavaTypeAdapter(FooAdapter.class)
-	 * </pre>
-	 * will return "example.FooAdapter" if there is an import for example.FooAdapter.
+	 * Corresponds to the 'prefix' element of the XmlNs annotation.
+	 * Return null if the element does not exist in Java.
 	 */
-	String getFullyQualifiedValue();
-		String FULLY_QUALIFIED_VALUE_PROPERTY = "fullyQualifiedValue"; //$NON-NLS-1$
+	String getPrefix();
+		String PREFIX_PROPERTY = "prefix"; //$NON-NLS-1$
+	
+	/**
+	 * Corresponds to the 'prefix' element of the XmlNs annotation.
+	 * Set to null to remove the element.
+	 */
+	void setPrefix(String prefix);
+	
+	/**
+	 * Return the {@link TextRange} for the 'prefix' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlNs annotation.
+	 */
+	TextRange getPrefixTextRange(CompilationUnit astRoot);
 }

@@ -80,7 +80,7 @@ public class XmlJavaTypeAdapterAnnotationTests extends JaxbJavaResourceModelTest
 		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(xmlJavaTypeAdapterAnnotation != null);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
-		assertEquals("test." + XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getFullyQualifiedValueClassName());
+		assertEquals("test." + XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getFullyQualifiedValue());
 	}
 
 	public void testSetValue() throws Exception {

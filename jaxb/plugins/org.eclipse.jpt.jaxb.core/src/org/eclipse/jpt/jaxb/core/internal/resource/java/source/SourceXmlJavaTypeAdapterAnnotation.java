@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 
 /**
@@ -39,7 +38,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
  */
 public final class SourceXmlJavaTypeAdapterAnnotation
 	extends SourceAnnotation<AnnotatedElement>
-	implements NestableXmlJavaTypeAdapterAnnotation
+	implements XmlJavaTypeAdapterAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
@@ -47,7 +46,7 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
-	private String fullyQualifiedValueClassName;
+	private String fullyQualifiedValue;
 
 
 	// ********** constructors **********
@@ -79,12 +78,12 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
-		this.fullyQualifiedValueClassName = this.buildFullyQualifiedValueClassName(astRoot);
+		this.fullyQualifiedValue = this.buildFullyQualifiedValue(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
-		this.syncFullyQualifiedValueClassName(this.buildFullyQualifiedValueClassName(astRoot));
+		this.syncFullyQualifiedValue(this.buildFullyQualifiedValue(astRoot));
 	}
 
 	@Override
@@ -122,17 +121,17 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	}
 
 	// ***** fully-qualified value class name
-	public String getFullyQualifiedValueClassName() {
-		return this.fullyQualifiedValueClassName;
+	public String getFullyQualifiedValue() {
+		return this.fullyQualifiedValue;
 	}
 
-	private void syncFullyQualifiedValueClassName(String name) {
-		String old = this.fullyQualifiedValueClassName;
-		this.fullyQualifiedValueClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY, old, name);
+	private void syncFullyQualifiedValue(String name) {
+		String old = this.fullyQualifiedValue;
+		this.fullyQualifiedValue = name;
+		this.firePropertyChanged(FULLY_QUALIFIED_VALUE_PROPERTY, old, name);
 	}
 
-	private String buildFullyQualifiedValueClassName(CompilationUnit astRoot) {
+	private String buildFullyQualifiedValue(CompilationUnit astRoot) {
 		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
 	}
 

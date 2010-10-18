@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -29,85 +28,84 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters
  */
 public class SourceXmlJavaTypeAdaptersAnnotation
-	extends SourceAnnotation<AnnotatedElement>
-	implements XmlJavaTypeAdaptersAnnotation
-{
+		extends SourceAnnotation<AnnotatedElement>
+		implements XmlJavaTypeAdaptersAnnotation {
+	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
-	private final Vector<NestableXmlJavaTypeAdapterAnnotation> adapters = new Vector<NestableXmlJavaTypeAdapterAnnotation>();
-
-
+	
+	private final Vector<XmlJavaTypeAdapterAnnotation> adapters = new Vector<XmlJavaTypeAdapterAnnotation>();
+	
+	
 	public SourceXmlJavaTypeAdaptersAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 	}
-
+	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
+	
 	public void initialize(CompilationUnit astRoot) {
 		AnnotationContainerTools.initialize(this, astRoot);
 	}
-
+	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		AnnotationContainerTools.synchronize(this, astRoot);
 	}
-
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.adapters);
 	}
-
-
+	
+	
 	// ********** AnnotationContainer implementation **********
-
+	
 	public String getElementName() {
 		return JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE;
 	}
-
+	
 	public String getNestedAnnotationName() {
 		return XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME;
 	}
-
-	public Iterable<NestableXmlJavaTypeAdapterAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<NestableXmlJavaTypeAdapterAnnotation>(this.adapters);
+	
+	public Iterable<XmlJavaTypeAdapterAnnotation> getNestedAnnotations() {
+		return new LiveCloneIterable<XmlJavaTypeAdapterAnnotation>(this.adapters);
 	}
-
+	
 	public int getNestedAnnotationsSize() {
 		return this.adapters.size();
 	}
-
-	public NestableXmlJavaTypeAdapterAnnotation addNestedAnnotation() {
+	
+	public XmlJavaTypeAdapterAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.adapters.size());
 	}
-
-	private NestableXmlJavaTypeAdapterAnnotation addNestedAnnotation(int index) {
-		NestableXmlJavaTypeAdapterAnnotation adapter = this.buildXmlJavaTypeAdapterAnnotation(index);
+	
+	private XmlJavaTypeAdapterAnnotation addNestedAnnotation(int index) {
+		XmlJavaTypeAdapterAnnotation adapter = this.buildXmlJavaTypeAdapterAnnotation(index);
 		this.adapters.add(adapter);
 		return adapter;
 	}
-
+	
 	public void syncAddNestedAnnotation(Annotation astAnnotation) {
 		int index = this.adapters.size();
-		NestableXmlJavaTypeAdapterAnnotation namedQuery = this.addNestedAnnotation(index);
+		XmlJavaTypeAdapterAnnotation namedQuery = this.addNestedAnnotation(index);
 		namedQuery.initialize((CompilationUnit) astAnnotation.getRoot());
 		this.fireItemAdded(XML_JAVA_TYPE_ADAPTERS_LIST, index, namedQuery);
 	}
-
-	protected NestableXmlJavaTypeAdapterAnnotation buildXmlJavaTypeAdapterAnnotation(int index) {
+	
+	protected XmlJavaTypeAdapterAnnotation buildXmlJavaTypeAdapterAnnotation(int index) {
 		return SourceXmlJavaTypeAdapterAnnotation.createNestedXmlJavaTypeAdapterAnnotation(this, this.annotatedElement, index, this.daa);
 	}
-
-	public NestableXmlJavaTypeAdapterAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
+	
+	public XmlJavaTypeAdapterAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
 		return CollectionTools.move(this.adapters, targetIndex, sourceIndex).get(targetIndex);
 	}
-
-	public NestableXmlJavaTypeAdapterAnnotation removeNestedAnnotation(int index) {
+	
+	public XmlJavaTypeAdapterAnnotation removeNestedAnnotation(int index) {
 		return this.adapters.remove(index);
 	}
-
+	
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.adapters, XML_JAVA_TYPE_ADAPTERS_LIST);
 	}
-
 }

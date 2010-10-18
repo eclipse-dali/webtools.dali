@@ -27,9 +27,10 @@ public interface JAXB {
 	// JAXB package
 	String PACKAGE = "javax.xml.bind.annotation";
 	String PACKAGE_ = PACKAGE + '.';
-
-	String ADAPTERS_PACKAGE = "javax.xml.bind.annotation.adapters";
-	String ADAPTERS_PACKAGE_ = ADAPTERS_PACKAGE + '.';
+	
+	String ADAPTERS_PACKAGE = PACKAGE_ + "adapters";
+	String ADAPTERS_PACKAGE_ = ADAPTERS_PACKAGE + ".";
+	
 
 	// ********** API **********
 
@@ -44,16 +45,42 @@ public interface JAXB {
 		String XML_ENUM__VALUE = "value";
 	
 	String XML_INLINE_BINARY_DATA = PACKAGE_ + "XmlInlineBinaryData";
-
+	
+	String XML_JAVA_TYPE_ADAPTER = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapter";
+		String XML_JAVA_TYPE_ADAPTER__TYPE = "type";
+		String XML_JAVA_TYPE_ADAPTER__VALUE = "value";
+	
+	String XML_JAVA_TYPE_ADAPTERS = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapters";
+		String XML_JAVA_TYPE_ADAPTERS__VALUE = "value";
+	
+	String XML_NS = PACKAGE_ + "XmlNs";
+		String XML_NS__NAMESPACE_URI = "namespaceURI";
+		String XML_NS__PREFIX = "prefix";
+	
 	String XML_REGISTRY = PACKAGE_ + "XmlRegistry";
-
+	
 	String XML_ROOT_ELEMENT = PACKAGE_ + "XmlRootElement";
 		String XML_ROOT_ELEMENT__NAME = "name";
 		String XML_ROOT_ELEMENT__NAMESPACE = "namespace";
-
+	
+	String XML_SCHEMA = PACKAGE + "XmlSchema";
+		String XML_SCHEMA__ATTRIBUTE_FORM_DEFAULT = "attributeFormDefault";
+		String XML_SCHEMA__ELEMENT_FORM_DEFAULT = "elementFormDefault";
+		String XML_SCHEMA__LOCATION = "location";
+		String XML_SCHEMA__NAMESPACE = "namespace";
+		String XML_SCHEMA__XMLNS = "xmlns";
+	
+	String XML_SCHEMA_TYPE = PACKAGE + "XmlSchemaType";
+		String XML_SCHEMA_TYPE__NAME = "name";
+		String XML_SCHEMA_TYPE__NAMESPACE = "namespace";
+		String XML_SCHEMA_TYPE__TYPE = "type";
+	
+	String XML_SCHEMA_TYPES = PACKAGE + "XmlSchemaTypes";
+		String XML_SCHEMA_TYPES__VALUE = "value";
+	
 	String XML_SEE_ALSO = PACKAGE_ + "XmlSeeAlso";
 		String XML_SEE_ALSO__VALUE = "value";
-
+	
 	String XML_TYPE = PACKAGE_ + "XmlType";
 		String XML_TYPE__FACTORY_CLASS = "factoryClass";
 		String XML_TYPE__FACTORY_METHOD = "factoryMethod";
@@ -62,15 +89,6 @@ public interface JAXB {
 		String XML_TYPE__PROP_ORDER = "propOrder";
 
 	String XML_TRANSIENT = PACKAGE_ + "XmlTransient";
-
-
-	// JAXB annotation adapters
-	String XML_JAVA_TYPE_ADAPTER = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapter";
-		String XML_JAVA_TYPE_ADAPTER__VALUE = "value";
-	
-	String XML_JAVA_TYPE_ADAPTERS = ADAPTERS_PACKAGE_ + "XmlJavaTypeAdapters";
-		String XML_JAVA_TYPE_ADAPTERS__VALUE = "value";
-
 
 	// JAXB enums
 	String XML_ACCESS_ORDER = PACKAGE_ + "XmlAccessOrder";
@@ -84,5 +102,10 @@ public interface JAXB {
 		String XML_ACCESS_TYPE__NONE = XML_ACCESS_TYPE_ + "NONE";
 		String XML_ACCESS_TYPE__PROPERTY = XML_ACCESS_TYPE_ + "PROPERTY";
 		String XML_ACCESS_TYPE__PUBLIC_MEMBER = XML_ACCESS_TYPE_ + "PUBLIC_MEMBER";
-
+	
+	String XML_NS_FORM = PACKAGE_ + "XmlNsForm";
+	String XML_NS_FORM_ = XML_NS_FORM + ".";
+		String XML_NS_FORM__QUALIFIED = XML_NS_FORM_ + "QUALIFIED";
+		String XML_NS_FORM__UNQUALIFIED = XML_NS_FORM_ + "UNQUALIFIED";
+		String XML_NS_FORM__UNSET = XML_NS_FORM_ + "UNSET";
 }
