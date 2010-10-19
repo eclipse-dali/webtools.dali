@@ -7,7 +7,7 @@
 	<echo message="basedir ${basedir}" />
 	<echo message="eclipse place ${eclipse-home}" />
 	<!-- sets the properties plugin-name -->
-	<property name="plugin-name" value="org.eclipse.jaxb.core.tests"/>    <echo level="debug" message="testRoot: ${testRoot}" />
+	<property name="plugin-name" value="org.eclipse.jpt.jaxb.core.tests"/>    <echo level="debug" message="testRoot: ${testRoot}" />
     <fail message="testRoot must be set" unless="testRoot" />
 
 	<!-- This target holds all initialization code that needs to be done for -->
