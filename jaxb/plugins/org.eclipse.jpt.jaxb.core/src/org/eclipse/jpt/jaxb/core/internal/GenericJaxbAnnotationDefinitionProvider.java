@@ -28,12 +28,12 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinit
 /**
  * Support for JAXB annotations
  */
-public class GenericJaxbJpaAnnotationDefinitionProvider
+public class GenericJaxbAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefintionProvider
 {
 	// singleton
 	private static final JpaAnnotationDefinitionProvider INSTANCE = 
-			new GenericJaxbJpaAnnotationDefinitionProvider();
+			new GenericJaxbAnnotationDefinitionProvider();
 
 
 	/**
@@ -47,7 +47,7 @@ public class GenericJaxbJpaAnnotationDefinitionProvider
 	/**
 	 * Enforce singleton usage
 	 */
-	private GenericJaxbJpaAnnotationDefinitionProvider() {
+	private GenericJaxbAnnotationDefinitionProvider() {
 		super();
 	}
 
