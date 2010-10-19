@@ -41,16 +41,40 @@ class SimpleCatalogStrategy
 		super();
 	}
 
+	@SuppressWarnings("unchecked")
 	public boolean supportsCatalogs(Database database) {
+		// Bug 327572 - Unfortunately DTP allows for optional support of catalogs in extensions
+		List<Catalog> catalogs = database.getCatalogs();
+		if ((catalogs == null) || catalogs.isEmpty()) {
+			return false;
+		}
+		
+		// normal logic:
 		return true;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Catalog> getCatalogs(Database database) {
-		return database.getCatalogs();
+		List<Catalog> catalogs = database.getCatalogs();
+		// Bug 327572 - Unfortunately DTP allows for optional support of catalogs in extensions
+		if ((catalogs == null) || catalogs.isEmpty()) {
+			return Collections.emptyList();
+		}
+		
+		// normal logic:
+		return catalogs;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Schema> getSchemas(Database database) {
+		List<Catalog> catalogs = database.getCatalogs();
+		// Bug 327572 - Unfortunately DTP allows for optional support of catalogs in extensions
+		// if there are no catalogs, the database must hold the schemata directly
+		if ((catalogs == null) || catalogs.isEmpty()) {
+			return database.getSchemas();
+		}
+		
+		// normal logic:
 		return Collections.emptyList();
 	}
 
