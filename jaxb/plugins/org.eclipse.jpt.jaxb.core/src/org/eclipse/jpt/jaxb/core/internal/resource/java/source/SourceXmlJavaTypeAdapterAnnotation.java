@@ -50,12 +50,16 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 
 
 	// ********** constructors **********
-	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement type) {
-		this(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
+	/**
+	 * Parent is a JavaResourceNode instead of a JavaResourceAnnotatedElement because
+	 * the parent is sometimes the outer annotation XmlJavaTypeAdaptersAnnotation
+	 */
+	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement element) {
+		this(parent, element, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(element, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
-		super(parent, type, daa, annotationAdapter);
+	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+		super(parent, element, daa, annotationAdapter);
 		this.valueDeclarationAdapter = buildValueAdapter(daa);
 		this.valueAdapter = this.buildAnnotationElementAdapter(this.valueDeclarationAdapter);
 	}
