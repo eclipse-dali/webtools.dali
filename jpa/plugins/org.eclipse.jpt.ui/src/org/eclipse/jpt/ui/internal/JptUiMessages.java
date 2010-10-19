@@ -84,6 +84,7 @@ public class JptUiMessages {
 	public static String JpaFacetWizardPage_description;
 	public static String JpaFacetWizardPage_discoverClassesButton;
 	public static String JpaFacetWizardPage_driverLibraryLabel;
+	public static String JpaFacetWizardPage_facetsPageLink;
 	public static String JpaFacetWizardPage_metamodelSourceFolderLink;
 	public static String JpaFacetWizardPage_jpaImplementationLabel;
 	public static String JpaFacetWizardPage_jpaPrefsLink;

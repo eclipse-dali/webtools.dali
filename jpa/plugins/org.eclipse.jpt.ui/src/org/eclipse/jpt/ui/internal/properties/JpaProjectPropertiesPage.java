@@ -124,6 +124,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.ui.internal.FacetsPropertyPage;
+
 import com.ibm.icu.text.Collator;
 
 /**
@@ -513,6 +515,27 @@ public class JpaProjectPropertiesPage
 				platformDropDown,
 				JPA_PLATFORM_LABEL_CONVERTER
 		);
+		
+		Link facetsPageLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_facetsPageLink);
+		facetsPageLink.addSelectionListener(this.buildFacetsPageLinkListener());  // the link will be GCed
+		System.out.println(facetsPageLink.isEnabled());
+	}
+
+	private SelectionListener buildFacetsPageLinkListener() {
+		return new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				JpaProjectPropertiesPage.this.openProjectFacetsPage();
+			}
+			@Override
+			public String toString() {
+				return "facets page link listener"; //$NON-NLS-1$
+			}
+		};
+	}
+
+	protected void openProjectFacetsPage() {
+		((IWorkbenchPreferenceContainer)getContainer()).openPage(FacetsPropertyPage.ID, null);
 	}
 
 	/**
