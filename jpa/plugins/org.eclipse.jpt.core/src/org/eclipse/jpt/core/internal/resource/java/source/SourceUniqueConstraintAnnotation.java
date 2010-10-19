@@ -12,13 +12,11 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import java.util.Arrays;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
@@ -41,8 +39,6 @@ public final class SourceUniqueConstraintAnnotation
 	extends SourceAnnotation<Member>
 	implements NestableUniqueConstraintAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
-
 	private final DeclarationAnnotationElementAdapter<String[]> columnNamesDeclarationAdapter;
 	private final AnnotationElementAdapter<String[]> columnNamesAdapter;
 	private final Vector<String> columnNames = new Vector<String>();
