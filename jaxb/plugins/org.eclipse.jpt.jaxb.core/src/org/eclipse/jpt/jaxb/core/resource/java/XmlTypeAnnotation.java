@@ -49,6 +49,7 @@ public interface XmlTypeAnnotation
 	 * Set to null to remove the element.
 	 */
 	void setFactoryClass(String factoryClass);
+
 	/**
 	 * Return the {@link TextRange} for the 'factoryClass' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
