@@ -57,7 +57,7 @@ public interface XmlEnumAnnotation
 	/**
 	 * Return the fully-qualified value class name as resolved by the AST's bindings.
 	 * <pre>
-	 *     &#64;XmlType(value=EnumClass.class)
+	 *     &#64;XmlEnum(value=EnumClass.class)
 	 * </pre>
 	 * will return "model.EnumClass" if there is an import for model.EnumClass.
 	 * @return
