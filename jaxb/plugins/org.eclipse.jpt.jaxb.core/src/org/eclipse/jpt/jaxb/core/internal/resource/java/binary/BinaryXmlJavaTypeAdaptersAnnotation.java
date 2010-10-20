@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryContainerAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
@@ -28,7 +28,7 @@ public class BinaryXmlJavaTypeAdaptersAnnotation
 	private final Vector<XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapters;
 	
 	
-	public BinaryXmlJavaTypeAdaptersAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlJavaTypeAdaptersAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.xmlJavaTypeAdapters = this.buildXmlJavaTypeAdapters();
 	}

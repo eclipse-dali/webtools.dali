@@ -19,6 +19,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
+import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -50,14 +51,14 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 
 
 	// ********** constructors **********
+	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
+		this(parent, element, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(element, DECLARATION_ANNOTATION_ADAPTER));
+	}
+
 	/**
 	 * Parent is a JavaResourceNode instead of a JavaResourceAnnotatedElement because
 	 * the parent is sometimes the outer annotation XmlJavaTypeAdaptersAnnotation
 	 */
-	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement element) {
-		this(parent, element, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(element, DECLARATION_ANNOTATION_ADAPTER));
-	}
-
 	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.valueDeclarationAdapter = buildValueAdapter(daa);

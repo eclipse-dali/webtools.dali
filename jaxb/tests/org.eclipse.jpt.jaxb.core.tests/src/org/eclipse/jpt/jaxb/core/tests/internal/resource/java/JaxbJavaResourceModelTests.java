@@ -18,14 +18,25 @@ public class JaxbJavaResourceModelTests {
 		TestSuite suite = new TestSuite(JaxbJavaResourceModelTests.class.getName());
 		suite.addTestSuite(XmlAccessorOrderAnnotationTests.class);
 		suite.addTestSuite(XmlAccessorTypeAnnotationTests.class);
+		suite.addTestSuite(XmlAnyAttributeAnnotationTests.class);
+		suite.addTestSuite(XmlAttachmentRefAnnotationTests.class);
+		suite.addTestSuite(XmlElementAnnotationTests.class);
+		suite.addTestSuite(XmlElementRefAnnotationTests.class);
 		suite.addTestSuite(XmlEnumAnnotationTests.class);
+		suite.addTestSuite(XmlEnumValueAnnotationTests.class);
+		suite.addTestSuite(XmlIDAnnotationTests.class);
+		suite.addTestSuite(XmlIDREFAnnotationTests.class);
 		suite.addTestSuite(XmlInlineBinaryDataAnnotationTests.class);
 		suite.addTestSuite(XmlJavaTypeAdapterAnnotationTests.class);
+		suite.addTestSuite(XmlListAnnotationTests.class);
+		suite.addTestSuite(XmlMimeTypeAnnotationTests.class);
+		suite.addTestSuite(XmlMixedAnnotationTests.class);
 		suite.addTestSuite(XmlRegistryAnnotationTests.class);
 		suite.addTestSuite(XmlRootElementAnnotationTests.class);
 		suite.addTestSuite(XmlSeeAlsoAnnotationTests.class);
 		suite.addTestSuite(XmlTransientAnnotationTests.class);
 		suite.addTestSuite(XmlTypeAnnotationTests.class);
+		suite.addTestSuite(XmlValueAnnotationTests.class);
 
 		return suite;
 	}

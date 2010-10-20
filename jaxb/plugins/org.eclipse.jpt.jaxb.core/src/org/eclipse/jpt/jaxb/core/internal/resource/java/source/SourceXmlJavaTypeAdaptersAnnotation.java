@@ -88,9 +88,9 @@ public class SourceXmlJavaTypeAdaptersAnnotation
 	
 	public void syncAddNestedAnnotation(Annotation astAnnotation) {
 		int index = this.adapters.size();
-		XmlJavaTypeAdapterAnnotation namedQuery = this.addNestedAnnotation(index);
-		namedQuery.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(XML_JAVA_TYPE_ADAPTERS_LIST, index, namedQuery);
+		XmlJavaTypeAdapterAnnotation adapter = this.addNestedAnnotation(index);
+		adapter.initialize((CompilationUnit) astAnnotation.getRoot());
+		this.fireItemAdded(XML_JAVA_TYPE_ADAPTERS_LIST, index, adapter);
 	}
 	
 	protected XmlJavaTypeAdapterAnnotation buildXmlJavaTypeAdapterAnnotation(int index) {
