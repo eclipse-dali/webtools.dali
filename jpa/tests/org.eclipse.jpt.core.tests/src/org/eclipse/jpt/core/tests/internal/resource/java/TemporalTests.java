@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.TemporalType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class TemporalTests extends JavaResourceModelTestCase {
+public class TemporalTests extends JpaJavaResourceModelTestCase {
 
 	public TemporalTests(String name) {
 		super(name);

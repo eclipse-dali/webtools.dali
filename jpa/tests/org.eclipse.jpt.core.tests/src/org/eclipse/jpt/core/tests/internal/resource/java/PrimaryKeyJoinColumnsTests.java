@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class PrimaryKeyJoinColumnsTests extends JavaResourceModelTestCase {
+public class PrimaryKeyJoinColumnsTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
 	private static final String COLUMN_COLUMN_DEFINITION = "COLUMN_DEFINITION";

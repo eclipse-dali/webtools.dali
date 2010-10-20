@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EmbeddedIdTests extends JavaResourceModelTestCase {
+public class EmbeddedIdTests extends JpaJavaResourceModelTestCase {
 
 	public EmbeddedIdTests(String name) {
 		super(name);

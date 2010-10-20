@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class BasicTests extends JavaResourceModelTestCase {
+public class BasicTests extends JpaJavaResourceModelTestCase {
 	
 	public BasicTests(String name) {
 		super(name);

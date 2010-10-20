@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class JoinTableTests extends JavaResourceModelTestCase {
+public class JoinTableTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String SCHEMA_NAME = "MY_SCHEMA";

@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class PrimaryKeyJoinColumnTests extends JavaResourceModelTestCase {
+public class PrimaryKeyJoinColumnTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String COLUMN_NAME = "MY_COLUMN";
 	private static final String COLUMN_COLUMN_DEFINITION = "COLUMN_DEFINITION";

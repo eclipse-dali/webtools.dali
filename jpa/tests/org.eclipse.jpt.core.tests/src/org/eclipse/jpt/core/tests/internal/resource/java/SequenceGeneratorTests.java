@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class SequenceGeneratorTests extends JavaResourceModelTestCase {
+public class SequenceGeneratorTests extends JpaJavaResourceModelTestCase {
 
 	private static final String GENERATOR_NAME = "MY_GENERATOR";
 	private static final String GENERATOR_SEQUENCE_NAME = "MY_SEQUENCE";

@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class GeneratedValueTests extends JavaResourceModelTestCase {
+public class GeneratedValueTests extends JpaJavaResourceModelTestCase {
 
 	private static final String GENERATOR = "MY_GENERATOR";
 	public GeneratedValueTests(String name) {

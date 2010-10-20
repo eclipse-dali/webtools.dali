@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class MapKeyTests extends JavaResourceModelTestCase {
+public class MapKeyTests extends JpaJavaResourceModelTestCase {
 
 	public MapKeyTests(String name) {
 		super(name);

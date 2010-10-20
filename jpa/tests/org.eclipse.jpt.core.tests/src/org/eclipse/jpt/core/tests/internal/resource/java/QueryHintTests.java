@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class QueryHintTests extends JavaResourceModelTestCase {
+public class QueryHintTests extends JpaJavaResourceModelTestCase {
 
 	private static final String QUERY_HINT_NAME = "myHint";
 	private static final String QUERY_HINT_VALUE = "myValue";

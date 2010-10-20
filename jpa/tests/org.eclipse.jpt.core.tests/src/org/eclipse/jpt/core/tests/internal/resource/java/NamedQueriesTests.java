@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class NamedQueriesTests extends JavaResourceModelTestCase {
+public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 
 	private static final String QUERY_NAME = "myQuery";
 	private static final String QUERY_QUERY = "SELECT name FROM Employee";

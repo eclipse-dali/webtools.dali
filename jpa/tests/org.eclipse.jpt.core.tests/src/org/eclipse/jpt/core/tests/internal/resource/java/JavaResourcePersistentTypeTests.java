@@ -33,7 +33,7 @@ import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class JavaResourcePersistentTypeTests extends JavaResourceModelTestCase {
+public class JavaResourcePersistentTypeTests extends JpaJavaResourceModelTestCase {
 	
 	public JavaResourcePersistentTypeTests(String name) {
 		super(name);

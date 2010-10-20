@@ -1,12 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the
- * terms of the Eclipse Public License v1.0, which accompanies this distribution
- * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
- * Contributors:
- *     Oracle - initial API and implementation
- ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.resource.java;
 
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -19,47 +10,38 @@ import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
+import org.eclipse.jpt.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceTypeCompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 
-@SuppressWarnings("nls")
-public class JavaResourceModelTestCase extends AnnotationTestCase
-{
-	public static final String JAVAX_PERSISTENCE_PACKAGE_NAME = "javax.persistence"; //$NON-NLS-1$
 
+public class JavaResourceModelTestCase
+		extends AnnotationTestCase {
+	
 	private JavaElementChangeListener javaElementChangeListener;
 	protected JavaResourceCompilationUnit javaResourceCompilationUnit;
 	
-
+	
 	public JavaResourceModelTestCase(String name) {
 		super(name);
 	}
+	
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		addJpaJars();
 		this.javaElementChangeListener = new JavaElementChangeListener();
 		JavaCore.addElementChangedListener(this.javaElementChangeListener);
 	}
-
-	//TODO this hierarchy needs to be factored out appropriately to support both JPA and JAXB
-	//this is a temporary measure to avoid JAXB test failures in the build, 
-	//overriden in JaxbJavaResourceModelTestCase
-	protected void addJpaJars() throws Exception {
-		this.javaProject.addJar(TestJpaProject.jpaJarName());
-		if (TestJpaProject.eclipseLinkJarName() != null) {
-			this.javaProject.addJar(TestJpaProject.eclipseLinkJarName());
-		}
-	}
-
+	
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
@@ -67,29 +49,30 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		this.javaElementChangeListener = null;
 	}
 	
-	/**
-	 * Forward the Java element change event back to the JPA model manager.
-	 */
-	private class JavaElementChangeListener implements IElementChangedListener {
+	private class JavaElementChangeListener
+			implements IElementChangedListener {
+		
 		JavaElementChangeListener() {
 			super();
 		}
+		
 		public void elementChanged(ElementChangedEvent event) {
 			JavaResourceModelTestCase.this.javaElementChanged(event);
 		}
+		
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
 	}
-
+	
 	void javaElementChanged(ElementChangedEvent event) {
 		if (this.javaResourceCompilationUnit == null) {
 			return;
 		}
 		this.syncWithJavaDelta(event.getDelta());
 	}
-
+	
 	/**
 	 * NB: this is copied from GenericJpaProject, so it might need to be
 	 * kept in synch with that code if it changes... yech...
@@ -128,21 +111,24 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 		}
 		return delta.getKind() == IJavaElementDelta.CHANGED;
 	}
-
-	protected ICompilationUnit createAnnotationAndMembers(String annotationName, String annotationBody) throws Exception {
-		return createAnnotationAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, annotationName, annotationBody);
-	}
 	
 	protected ICompilationUnit createAnnotationAndMembers(String packageName, String annotationName, String annotationBody) throws Exception {
 		return this.javaProject.createCompilationUnit(packageName, annotationName + ".java", "public @interface " + annotationName + " { " + annotationBody + " }");
 	}
 	
-	protected ICompilationUnit createEnumAndMembers(String enumName, String enumBody) throws Exception {
-		return createEnumAndMembers(JAVAX_PERSISTENCE_PACKAGE_NAME, enumName, enumBody);
-	}
-	
 	protected ICompilationUnit createEnumAndMembers(String packageName, String enumName, String enumBody) throws Exception {
 		return this.javaProject.createCompilationUnit(packageName, enumName + ".java", "public enum " + enumName + " { " + enumBody + " }");
+	}
+	
+	protected JavaResourcePackage buildJavaResourcePackage(ICompilationUnit cu) {
+		JavaResourcePackageInfoCompilationUnit pkgCu = 
+				new SourcePackageInfoCompilationUnit(
+						cu,
+						this.buildAnnotationProvider(),
+						NullAnnotationEditFormatter.instance(),
+						CommandExecutor.Default.instance());
+		this.javaResourceCompilationUnit = pkgCu;
+		return pkgCu.getPackage();
 	}
 
 	protected JavaResourcePersistentType buildJavaTypeResource(ICompilationUnit cu) {
@@ -174,5 +160,4 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	protected JpaAnnotationDefinitionProvider annotationDefinitionProvider() {
 		return GenericJpaAnnotationDefinitionProvider.instance();
 	}
-
 }

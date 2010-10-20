@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class AssociationOverrideTests extends JavaResourceModelTestCase {
+public class AssociationOverrideTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE";
 	

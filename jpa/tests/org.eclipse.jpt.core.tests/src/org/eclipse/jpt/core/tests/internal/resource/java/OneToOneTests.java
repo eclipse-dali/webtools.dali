@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class OneToOneTests extends JavaResourceModelTestCase {
+public class OneToOneTests extends JpaJavaResourceModelTestCase {
 	
 	public OneToOneTests(String name) {
 		super(name);

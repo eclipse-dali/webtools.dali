@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class DiscriminatorValueTests extends JavaResourceModelTestCase {
+public class DiscriminatorValueTests extends JpaJavaResourceModelTestCase {
 
 	public DiscriminatorValueTests(String name) {
 		super(name);

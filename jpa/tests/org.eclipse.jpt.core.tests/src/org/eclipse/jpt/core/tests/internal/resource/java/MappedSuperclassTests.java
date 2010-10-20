@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class MappedSuperclassTests extends JavaResourceModelTestCase {
+public class MappedSuperclassTests extends JpaJavaResourceModelTestCase {
 
 	public MappedSuperclassTests(String name) {
 		super(name);

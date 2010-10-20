@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.LobAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class LobTests extends JavaResourceModelTestCase {
+public class LobTests extends JpaJavaResourceModelTestCase {
 
 	public LobTests(String name) {
 		super(name);

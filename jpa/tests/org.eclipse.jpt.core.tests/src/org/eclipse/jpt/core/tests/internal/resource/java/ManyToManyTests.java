@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class ManyToManyTests extends JavaResourceModelTestCase {
+public class ManyToManyTests extends JpaJavaResourceModelTestCase {
 	
 	public ManyToManyTests(String name) {
 		super(name);

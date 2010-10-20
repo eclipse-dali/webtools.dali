@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class SecondaryTablesTests extends JavaResourceModelTestCase {
+public class SecondaryTablesTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String TABLE_NAME = "MY_TABLE";
 	private static final String SCHEMA_NAME = "MY_SCHEMA";

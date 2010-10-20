@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class AssociationOverridesTests extends JavaResourceModelTestCase {
+public class AssociationOverridesTests extends JpaJavaResourceModelTestCase {
 	
 	private static final String ASSOCIATION_OVERRIDE_NAME = "MY_ASSOCIATION_OVERRIDE";
 	

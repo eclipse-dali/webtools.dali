@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class JPTToolsTests extends JavaResourceModelTestCase {
+public class JPTToolsTests extends JpaJavaResourceModelTestCase {
 
 	public JPTToolsTests(String name) {
 		super(name);

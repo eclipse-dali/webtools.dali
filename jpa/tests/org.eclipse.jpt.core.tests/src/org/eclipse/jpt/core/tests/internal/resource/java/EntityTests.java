@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class EntityTests extends JavaResourceModelTestCase {
+public class EntityTests extends JpaJavaResourceModelTestCase {
 
 	private static final String ENTITY_NAME = "Foo";
 	

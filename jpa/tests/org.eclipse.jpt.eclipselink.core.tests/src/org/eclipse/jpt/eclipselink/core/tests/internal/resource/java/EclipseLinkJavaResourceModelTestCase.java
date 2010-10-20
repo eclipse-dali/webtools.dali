@@ -12,10 +12,10 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.resource.java;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
+import org.eclipse.jpt.core.tests.internal.resource.java.JpaJavaResourceModelTestCase;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaAnnotationDefinitionProvider;
 
-public class EclipseLinkJavaResourceModelTestCase extends JavaResourceModelTestCase
+public class EclipseLinkJavaResourceModelTestCase extends JpaJavaResourceModelTestCase
 {	
 
 	public static final String ECLIPSELINK_ANNOTATIONS_PACKAGE_NAME = "org.eclipse.persistence.annotations"; //$NON-NLS-1$

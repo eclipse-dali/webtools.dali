@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class IdClassTests extends JavaResourceModelTestCase {
+public class IdClassTests extends JpaJavaResourceModelTestCase {
 
 	private static final String ID_CLASS_VALUE = "MyClass";
 	

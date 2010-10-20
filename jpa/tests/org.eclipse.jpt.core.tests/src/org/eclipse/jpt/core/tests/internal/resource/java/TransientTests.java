@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.TransientAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class TransientTests extends JavaResourceModelTestCase {
+public class TransientTests extends JpaJavaResourceModelTestCase {
 
 	public TransientTests(String name) {
 		super(name);

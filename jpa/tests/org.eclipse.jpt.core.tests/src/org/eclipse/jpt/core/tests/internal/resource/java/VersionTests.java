@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class VersionTests extends JavaResourceModelTestCase {
+public class VersionTests extends JpaJavaResourceModelTestCase {
 
 	public VersionTests(String name) {
 		super(name);

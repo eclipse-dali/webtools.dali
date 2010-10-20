@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class TableGeneratorTests extends JavaResourceModelTestCase {
+public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 
 	private static final String GENERATOR_NAME = "MY_GENERATOR";
 	private static final String GENERATOR_TABLE = "MY_TABLE";

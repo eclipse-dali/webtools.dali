@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class NamedQueryTests extends JavaResourceModelTestCase {
+public class NamedQueryTests extends JpaJavaResourceModelTestCase {
 
 	private static final String QUERY_NAME = "myQuery";
 	private static final String QUERY_QUERY = "SELECT name FROM Employee";

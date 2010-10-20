@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.resource.java.OrderByAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class OrderByTests extends JavaResourceModelTestCase {
+public class OrderByTests extends JpaJavaResourceModelTestCase {
 
 	public OrderByTests(String name) {
 		super(name);
