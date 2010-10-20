@@ -121,24 +121,19 @@ public interface XmlSchemaAnnotation
 	int getXmlnsSize();
 	
 	/**
-	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.
+	 * Corresponds to the 'xmlns' element of the XmlSchema annnotation.
 	 */
-	void addXmlns(XmlNsAnnotation xmlns);
+	XmlNsAnnotation xmlnsAt(int index);
 	
 	/**
 	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.
 	 */
-	void addXmlns(int index, XmlNsAnnotation xmlns);
+	XmlNsAnnotation addXmlns(int index);
 	
 	/**
 	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.
 	 */
 	void moveXmlns(int targetIndex, int sourceIndex);
-	
-	/**
-	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.
-	 */
-	void removeXmlns(XmlNsAnnotation xmlns);
 	
 	/**
 	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.

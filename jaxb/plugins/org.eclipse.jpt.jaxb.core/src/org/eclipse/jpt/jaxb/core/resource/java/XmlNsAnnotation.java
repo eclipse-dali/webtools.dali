@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlNsAnnotation
-		extends Annotation {
+		extends NestableAnnotation {
 	
 	String ANNOTATION_NAME = JAXB.XML_NS;
 	

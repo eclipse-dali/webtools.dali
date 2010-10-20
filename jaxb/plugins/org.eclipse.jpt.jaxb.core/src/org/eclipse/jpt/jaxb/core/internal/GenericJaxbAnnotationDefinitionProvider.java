@@ -33,6 +33,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMimeTypeAnnotationDef
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMixedAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRegistryAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
@@ -71,6 +72,7 @@ public class GenericJaxbAnnotationDefinitionProvider
 		definitions.add(XmlAccessorTypeAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
+		definitions.add(XmlSchemaAnnotationDefinition.instance());
 	}
 
 	@Override

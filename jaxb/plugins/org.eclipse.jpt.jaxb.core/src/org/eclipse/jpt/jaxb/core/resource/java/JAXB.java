@@ -112,19 +112,19 @@ public interface JAXB {
 		String XML_ROOT_ELEMENT__NAME = "name";
 		String XML_ROOT_ELEMENT__NAMESPACE = "namespace";
 	
-	String XML_SCHEMA = PACKAGE + "XmlSchema";
+	String XML_SCHEMA = PACKAGE_ + "XmlSchema";
 		String XML_SCHEMA__ATTRIBUTE_FORM_DEFAULT = "attributeFormDefault";
 		String XML_SCHEMA__ELEMENT_FORM_DEFAULT = "elementFormDefault";
 		String XML_SCHEMA__LOCATION = "location";
 		String XML_SCHEMA__NAMESPACE = "namespace";
 		String XML_SCHEMA__XMLNS = "xmlns";
 	
-	String XML_SCHEMA_TYPE = PACKAGE + "XmlSchemaType";
+	String XML_SCHEMA_TYPE = PACKAGE_ + "XmlSchemaType";
 		String XML_SCHEMA_TYPE__NAME = "name";
 		String XML_SCHEMA_TYPE__NAMESPACE = "namespace";
 		String XML_SCHEMA_TYPE__TYPE = "type";
 	
-	String XML_SCHEMA_TYPES = PACKAGE + "XmlSchemaTypes";
+	String XML_SCHEMA_TYPES = PACKAGE_ + "XmlSchemaTypes";
 		String XML_SCHEMA_TYPES__VALUE = "value";
 	
 	String XML_SEE_ALSO = PACKAGE_ + "XmlSeeAlso";
