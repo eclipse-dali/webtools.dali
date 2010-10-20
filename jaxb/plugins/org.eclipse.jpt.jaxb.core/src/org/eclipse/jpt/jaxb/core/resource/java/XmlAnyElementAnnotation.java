@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JAXB annotation
- * javax.xml.bind.annotation.XmlEnumValue
+ * javax.xml.bind.annotation.XmlAnyElement
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,29 +26,62 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 3.0
  * @since 3.0
  */
-public interface XmlEnumValueAnnotation
+public interface XmlAnyElementAnnotation
 	extends Annotation
 {
-	String ANNOTATION_NAME = JAXB.XML_ENUM_VALUE;
-
+	String ANNOTATION_NAME = JAXB.XML_ANY_ELEMENT;
 
 	/**
-	 * Corresponds to the 'value' element of the XmlEnumValue annotation.
+	 * Corresponds to the 'lax' element of the XmlAnyElement annotation.
 	 * Return null if the element does not exist in Java.
+	 */
+	Boolean getLax();
+		String LAX_PROPERTY = "lax"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'lax' element of the XmlAnyElement annotation.
+	 * Set to null to remove the element.
+	 */
+	void setLax(Boolean lax);
+
+	/**
+	 * Return the {@link TextRange} for the 'lax' element. If the element
+	 * does not exist return the {@link TextRange} for the XmlAnyElement annotation.
+	 */
+	TextRange getLaxTextRange(CompilationUnit astRoot);
+
+	/**
+	 * Corresponds to the 'value' element of the XmlAnyElement annotation.
+	 * Return null if the element does not exist in Java.
+	 * Return the portion of the value preceding ".class".
+	 * <pre>
+	 *     &#64;XmlAnyElement(value=Foo.class)
+	 * </pre>
+	 * will return "Foo"
 	 */
 	String getValue();
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 
 	/**
-	 * Corresponds to the 'value' element of the XmlEnumValue annotation.
+	 * Corresponds to the 'value' element of the XmlAnyElement annotation.
 	 * Set to null to remove the element.
 	 */
 	void setValue(String value);
 
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlEnumValue annotation.
+	 * does not exist return the {@link TextRange} for the XmlAnyElement annotation.
 	 */
 	TextRange getValueTextRange(CompilationUnit astRoot);
-	
+
+	/**
+	 * Return the fully-qualified value class name as resolved by the AST's bindings.
+	 * <pre>
+	 *     &#64;XmlAnyElement(value=Foo.class)
+	 * </pre>
+	 * will return "model.Foo" if there is an import for model.Foo.
+	 * @return
+	 */
+	String getFullyQualifiedValueClassName();
+		String FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY = "fullyQualifiedValueClassName"; //$NON-NLS-1$
 }

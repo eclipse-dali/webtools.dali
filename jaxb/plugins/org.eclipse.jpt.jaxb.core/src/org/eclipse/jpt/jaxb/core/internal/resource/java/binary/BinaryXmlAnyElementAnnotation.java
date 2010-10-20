@@ -15,20 +15,22 @@ import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 
 /**
- * javax.xml.bind.annotation.XmlEnumValue
+ * javax.xml.bind.annotation.XmlAnyElement
  */
-public final class BinaryXmlEnumValueAnnotation
+public final class BinaryXmlAnyElementAnnotation
 	extends BinaryAnnotation
-	implements XmlEnumValueAnnotation
+	implements XmlAnyElementAnnotation
 {
-
+	private Boolean lax;
 	private String value;
 
-	public BinaryXmlEnumValueAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+
+	public BinaryXmlAnyElementAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
+		this.lax = this.buildLax();
 		this.value = this.buildValue();
 	}
 
@@ -39,11 +41,41 @@ public final class BinaryXmlEnumValueAnnotation
 	@Override
 	public void update() {
 		super.update();
+		this.setLax_(this.buildLax());
 		this.setValue_(this.buildValue());
 	}
 
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.value);
+	}
 
-	// ********** XmlEnumValueAnnotation implementation **********
+
+	// ********** XmlAnyElementAnnotation implementation **********
+
+	// ***** lax
+	public Boolean getLax() {
+		return this.lax;
+	}
+
+	public void setLax(Boolean lax) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setLax_(Boolean lax) {
+		Boolean old = this.lax;
+		this.lax = lax;
+		this.firePropertyChanged(LAX_PROPERTY, old, lax);
+	}
+
+	private Boolean buildLax() {
+		return (Boolean) this.getJdtMemberValue(JAXB.XML_ANY_ELEMENT__LAX);
+	}
+
+	public TextRange getLaxTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
 	// ***** value
 	public String getValue() {
 		return this.value;
@@ -57,14 +89,20 @@ public final class BinaryXmlEnumValueAnnotation
 		String old = this.value;
 		this.value = value;
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+		this.firePropertyChanged(FULLY_QUALIFIED_VALUE_CLASS_NAME_PROPERTY, old, value);
 	}
 
 	private String buildValue() {
-		return (String) this.getJdtMemberValue(JAXB.XML_ENUM_VALUE__VALUE);
+		return (String) this.getJdtMemberValue(JAXB.XML_ANY_ELEMENT__VALUE);
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
+	}
+
+	// ***** fully-qualified value class name
+	public String getFullyQualifiedValueClassName() {
+		return this.value;
 	}
 
 }

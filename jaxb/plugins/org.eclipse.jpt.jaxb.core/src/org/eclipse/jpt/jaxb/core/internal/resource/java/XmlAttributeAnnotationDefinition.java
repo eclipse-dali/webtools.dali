@@ -15,19 +15,19 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlEnumValueAnnotation;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlEnumValueAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 
 /**
- * javax.xml.bind.annotation.XmlEnumValue
+ * javax.xml.bind.annotation.XmlAttribute
  */
-public final class XmlEnumValueAnnotationDefinition
+public final class XmlAttributeAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new XmlEnumValueAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new XmlAttributeAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -39,12 +39,12 @@ public final class XmlEnumValueAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private XmlEnumValueAnnotationDefinition() {
+	private XmlAttributeAnnotationDefinition() {
 		super();
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlEnumValueAnnotation((JavaResourcePersistentAttribute) parent, (FieldAttribute) annotatedElement);
+		return new SourceXmlAttributeAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,11 +52,11 @@ public final class XmlEnumValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlEnumValueAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
+		return new BinaryXmlAttributeAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return XmlEnumValueAnnotation.ANNOTATION_NAME;
+		return XmlAttributeAnnotation.ANNOTATION_NAME;
 	}
 
 }

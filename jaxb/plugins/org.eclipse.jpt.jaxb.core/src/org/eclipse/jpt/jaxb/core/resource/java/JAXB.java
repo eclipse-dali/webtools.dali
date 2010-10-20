@@ -61,6 +61,14 @@ public interface JAXB {
 		String XML_ELEMENT__REQUIRED = "required";
 		String XML_ELEMENT__TYPE = "type";
 
+	String XML_ELEMENT_DECL = PACKAGE_ + "XmlElementDecl";
+		String XML_ELEMENT_DECL__NAME = "name";
+		String XML_ELEMENT_DECL__NAMESPACE = "namespace";
+		String XML_ELEMENT_DECL__DEFAULT_VALUE = "defaultValue";
+		String XML_ELEMENT_DECL__SCOPE = "scope";
+		String XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAME = "substitutionHeadName";
+		String XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAMESPACE = "substitutionHeadNamespace";
+
 	String XML_ELEMENTS = PACKAGE_ + "XmlElements";
 		String XML_ELEMENTS__VALUE = "value";
 
@@ -82,6 +90,7 @@ public interface JAXB {
 		String XML_ENUM__VALUE = "value";
 
 	String XML_ENUM_VALUE = PACKAGE_ + "XmlEnumValue";
+		String XML_ENUM_VALUE__VALUE = "value";
 	
 	String XML_INLINE_BINARY_DATA = PACKAGE_ + "XmlInlineBinaryData";
 
@@ -99,6 +108,7 @@ public interface JAXB {
 	String XML_LIST = PACKAGE_ + "XmlList";
 
 	String XML_MIME_TYPE = PACKAGE_ + "XmlMimeType";
+		String XML_MIME_TYPE__VALUE = "value";
 
 	String XML_MIXED = PACKAGE_ + "XmlMixed";
 	

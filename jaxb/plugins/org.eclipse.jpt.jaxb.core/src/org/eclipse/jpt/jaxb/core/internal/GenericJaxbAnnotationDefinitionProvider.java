@@ -16,10 +16,14 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAnyAttributeAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAnyElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAttachmentRefAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAttributeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementDeclAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementRefAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementRefsAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementWrapperAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementsAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumValueAnnotationDefinition;
@@ -100,11 +104,15 @@ public class GenericJaxbAnnotationDefinitionProvider
 	@Override
 	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
 		definitions.add(XmlAnyAttributeAnnotationDefinition.instance());
+		definitions.add(XmlAnyElementAnnotationDefinition.instance());
 		definitions.add(XmlAttachmentRefAnnotationDefinition.instance());
+		definitions.add(XmlAttributeAnnotationDefinition.instance());
 		definitions.add(XmlElementAnnotationDefinition.instance());
+		definitions.add(XmlElementDeclAnnotationDefinition.instance());
 		definitions.add(XmlElementsAnnotationDefinition.instance());
 		definitions.add(XmlElementRefAnnotationDefinition.instance());
 		definitions.add(XmlElementRefsAnnotationDefinition.instance());
+		definitions.add(XmlElementWrapperAnnotationDefinition.instance());
 		definitions.add(XmlEnumValueAnnotationDefinition.instance());
 		definitions.add(XmlIDAnnotationDefinition.instance());
 		definitions.add(XmlIDREFAnnotationDefinition.instance());

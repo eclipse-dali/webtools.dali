@@ -80,19 +80,10 @@ public class XmlEnumAnnotationTests extends JaxbJavaResourceModelTestCase {
 		assertEquals(XML_ENUM_JAVA_TYPE, xmlEnumAnnotation.getValue());
 
 		assertSourceContains("@XmlEnum(" + XML_ENUM_JAVA_TYPE  + ".class)", cu);
-	}
-	
-	public void testSetValueNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlEnumWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) typeResource.getAnnotation(JAXB.XML_ENUM);
-		assertEquals(XML_ENUM_JAVA_TYPE, xmlEnumAnnotation.getValue());
 
 		xmlEnumAnnotation.setValue(null);
 		assertNull(xmlEnumAnnotation.getValue());
 
 		assertSourceContains("@XmlEnum", cu);
-		assertSourceDoesNotContain("@XmlEnum(value = " + XML_ENUM_JAVA_TYPE  + ".class)", cu);
 	}
 }

@@ -10,8 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 
 /**
@@ -22,11 +25,46 @@ public final class BinaryXmlMimeTypeAnnotation
 	implements XmlMimeTypeAnnotation
 {
 
+	private String value;
+
 	public BinaryXmlMimeTypeAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
+		this.value = this.buildValue();
 	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setValue_(this.buildValue());
+	}
+
+
+	// ********** XmlMimeTypeAnnotation implementation **********
+	// ***** value
+	public String getValue() {
+		return this.value;
+	}
+
+	public void setValue(String value) {
+		throw new UnsupportedOperationException();
+	}
+
+	private void setValue_(String value) {
+		String old = this.value;
+		this.value = value;
+		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+	}
+
+	private String buildValue() {
+		return (String) this.getJdtMemberValue(JAXB.XML_MIME_TYPE__VALUE);
+	}
+
+	public TextRange getValueTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+
 }

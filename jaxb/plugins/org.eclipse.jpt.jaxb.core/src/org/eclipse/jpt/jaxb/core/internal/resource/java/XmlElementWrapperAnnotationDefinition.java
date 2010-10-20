@@ -15,19 +15,19 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlEnumValueAnnotation;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlEnumValueAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementWrapperAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 
 /**
- * javax.xml.bind.annotation.XmlEnumValue
+ * javax.xml.bind.annotation.XmlElementWrapper
  */
-public final class XmlEnumValueAnnotationDefinition
+public final class XmlElementWrapperAnnotationDefinition
 	implements AnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new XmlEnumValueAnnotationDefinition();
+	private static final AnnotationDefinition INSTANCE = new XmlElementWrapperAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
@@ -39,12 +39,12 @@ public final class XmlEnumValueAnnotationDefinition
 	/**
 	 * Ensure single instance.
 	 */
-	private XmlEnumValueAnnotationDefinition() {
+	private XmlElementWrapperAnnotationDefinition() {
 		super();
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlEnumValueAnnotation((JavaResourcePersistentAttribute) parent, (FieldAttribute) annotatedElement);
+		return new SourceXmlElementWrapperAnnotation((JavaResourcePersistentAttribute) parent, (Attribute) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,11 +52,11 @@ public final class XmlEnumValueAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlEnumValueAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
+		return new BinaryXmlElementWrapperAnnotation((JavaResourcePersistentAttribute) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
-		return XmlEnumValueAnnotation.ANNOTATION_NAME;
+		return XmlElementWrapperAnnotation.ANNOTATION_NAME;
 	}
 
 }

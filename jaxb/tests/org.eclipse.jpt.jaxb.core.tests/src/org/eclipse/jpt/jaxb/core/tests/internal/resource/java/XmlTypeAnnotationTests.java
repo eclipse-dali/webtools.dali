@@ -152,14 +152,6 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 		assertEquals(XML_TYPE_NAME, xmlTypeAnnotation.getName());
 
 		assertSourceContains("@XmlType(name = \"" + XML_TYPE_NAME + "\")", cu);
-	}
-
-	public void testSetNameNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlTypeWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
-		assertEquals(XML_TYPE_NAME, xmlTypeAnnotation.getName());
 
 		xmlTypeAnnotation.setName(null);
 		assertNull(xmlTypeAnnotation.getName());
@@ -187,14 +179,6 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 		assertEquals(XML_TYPE_NAMESPACE, xmlTypeAnnotation.getNamespace());
 
 		assertSourceContains("@XmlType(namespace = \"" + XML_TYPE_NAMESPACE + "\")", cu);
-	}
-
-	public void testSetNamespaceNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlTypeWithNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
-		assertEquals(XML_TYPE_NAMESPACE, xmlTypeAnnotation.getNamespace());
 
 		xmlTypeAnnotation.setNamespace(null);
 		assertNull(xmlTypeAnnotation.getNamespace());
@@ -222,14 +206,6 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 		assertEquals(XML_TYPE_FACTORY_METHOD, xmlTypeAnnotation.getFactoryMethod());
 
 		assertSourceContains("@XmlType(factoryMethod = \"" + XML_TYPE_FACTORY_METHOD + "\")", cu);
-	}
-
-	public void testSetFactoryMethodNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlTypeWithFactoryMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
-		assertEquals(XML_TYPE_FACTORY_METHOD, xmlTypeAnnotation.getFactoryMethod());
 
 		xmlTypeAnnotation.setFactoryMethod(null);
 		assertNull(xmlTypeAnnotation.getFactoryMethod());
@@ -258,14 +234,6 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 		assertEquals(XML_TYPE_FACTORY_CLASS, xmlTypeAnnotation.getFactoryClass());
 
 		assertSourceContains("@XmlType(factoryClass = " + XML_TYPE_FACTORY_CLASS  + ".class", cu);
-	}
-
-	public void testSetFactoryClassNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlTypeWithFactoryClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
-		assertEquals(XML_TYPE_FACTORY_CLASS, xmlTypeAnnotation.getFactoryClass());
 
 		xmlTypeAnnotation.setFactoryClass(null);
 		assertNull(xmlTypeAnnotation.getFactoryClass());

@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JAXB annotation
@@ -28,5 +30,24 @@ public interface XmlMimeTypeAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = JAXB.XML_MIME_TYPE;
+
+	/**
+	 * Corresponds to the 'value' element of the XmlMimeType annotation.
+	 * Return null if the element does not exist in Java.
+	 */
+	String getValue();
+		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the 'value' element of the XmlMimeType annotation.
+	 * Set to null to remove the element.
+	 */
+	void setValue(String value);
+
+	/**
+	 * Return the {@link TextRange} for the 'value' element. If the element 
+	 * does not exist return the {@link TextRange} for the XmlMimeType annotation.
+	 */
+	TextRange getValueTextRange(CompilationUnit astRoot);
 
 }

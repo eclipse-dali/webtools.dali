@@ -94,14 +94,6 @@ public class XmlRootElementAnnotationTests extends JaxbJavaResourceModelTestCase
 		assertEquals(XML_ROOT_ELEMENT_NAME, xmlRootElementAnnotation.getName());
 
 		assertSourceContains("@XmlRootElement(name = \"" + XML_ROOT_ELEMENT_NAME + "\")", cu);
-	}
-	
-	public void testSetNameNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlRootElementWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
-		assertEquals(XML_ROOT_ELEMENT_NAME, xmlRootElementAnnotation.getName());
 
 		xmlRootElementAnnotation.setName(null);
 		assertNull(xmlRootElementAnnotation.getName());
@@ -129,14 +121,6 @@ public class XmlRootElementAnnotationTests extends JaxbJavaResourceModelTestCase
 		assertEquals(XML_ROOT_ELEMENT_NAMESPACE, xmlRootElementAnnotation.getNamespace());
 
 		assertSourceContains("@XmlRootElement(namespace = \"" + XML_ROOT_ELEMENT_NAMESPACE + "\")", cu);
-	}
-	
-	public void testSetNamespaceNull() throws Exception {
-		ICompilationUnit cu = this.createTestXmlRootElementWithNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
-		assertEquals(XML_ROOT_ELEMENT_NAMESPACE, xmlRootElementAnnotation.getNamespace());
 
 		xmlRootElementAnnotation.setNamespace(null);
 		assertNull(xmlRootElementAnnotation.getNamespace());
