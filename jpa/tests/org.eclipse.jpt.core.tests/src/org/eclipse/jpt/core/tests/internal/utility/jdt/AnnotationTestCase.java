@@ -28,13 +28,14 @@ import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
-import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
@@ -53,6 +54,8 @@ public abstract class AnnotationTestCase extends TestCase {
 	public static final String SEP = File.separator;
 	public static final String PROJECT_NAME = "AnnotationTestProject";
 	public static final String PACKAGE_NAME = "test";
+	public static final String PACKAGE_INFO_FILE_NAME = "package-info.java";
+	public static final IPath PACKAGE_INFO_FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + PACKAGE_INFO_FILE_NAME);
 	public static final String TYPE_NAME = "AnnotationTestType";
 	public static final String FULLY_QUALIFIED_TYPE_NAME = PACKAGE_NAME + "." + TYPE_NAME;
 	public static final String FILE_NAME = TYPE_NAME + ".java";
@@ -111,17 +114,53 @@ public abstract class AnnotationTestCase extends TestCase {
 		System.out.println(this.getSource(cu));
 		System.out.println();
 	}
-
-
+	
+	
+	// ********** package creation *********
+	
+	/** 
+	 * create an un-annotated package-info
+	 */
+	protected ICompilationUnit createTestPackageInfo() throws CoreException {
+		return this.createTestPackageInfo(new DefaultAnnotationWriter());
+	}
+	
+	/**
+	 * shortcut for simply adding an annotation to the package declaration
+	 */
+	protected ICompilationUnit createTestPackageInfo(
+			final String packageAnnotation, final String ... imports) 
+			throws CoreException {
+		
+		return createTestPackageInfo(
+				new DefaultAnnotationWriter() {
+					@Override
+					public Iterator<String> imports() {
+						return new ArrayIterator<String>(imports);
+					}
+					
+					@Override
+					public void appendPackageAnnotationTo(StringBuilder sb) {
+						sb.append(packageAnnotation);
+					}
+				});
+	}
+	
+	protected ICompilationUnit createTestPackageInfo(AnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(
+				PACKAGE_NAME, PACKAGE_INFO_FILE_NAME, this.createSourceWriter(annotationWriter, null));
+	}
+	
+	
 	// ********** type creation **********
-
+	
 	/**
 	 * create an un-annotated type
 	 */
 	protected ICompilationUnit createTestType() throws CoreException {
 		return this.createTestType(new DefaultAnnotationWriter());
 	}
-
+	
 	/**
 	 * shortcut for simply adding an annotation to the 'id' field
 	 */
@@ -139,14 +178,13 @@ public abstract class AnnotationTestCase extends TestCase {
 			}
 		});
 	}
-
+	
 	/**
 	 * shortcut for simply adding a fully-qualified annotation to the 'id' field
 	 */
 	protected ICompilationUnit createTestType(final String idFieldAnnotation) throws CoreException {
 		return this.createTestType(null, idFieldAnnotation);
 	}
-
 	
 	protected ICompilationUnit createTestType(AnnotationWriter annotationWriter) throws CoreException {
 		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createSourceWriter(annotationWriter));
@@ -155,7 +193,7 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected ICompilationUnit createTestType(String packageName, String fileName, String typeName, AnnotationWriter annotationWriter) throws CoreException {
 		return this.javaProject.createCompilationUnit(packageName, fileName, this.createSourceWriter(annotationWriter, typeName));
 	}
-
+	
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter) {
 		return new AnnotatedSourceWriter(annotationWriter);
 	}
@@ -163,8 +201,30 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter, String typeName) {
 		return new AnnotatedSourceWriter(annotationWriter, typeName);
 	}
-
-	protected void appendSourceTo(StringBuilder sb, AnnotationWriter annotationWriter, String typeName) {
+	
+	/**
+	 * writes source for package-info java files
+	 */
+	protected void appendSourceTo(
+			StringBuilder sb, AnnotationWriter annotationWriter, String packageName) {
+		
+		annotationWriter.appendPackageAnnotationTo(sb);
+		sb.append(CR);
+		sb.append("package ").append(packageName).append(";").append(CR);
+		sb.append(CR);
+		for (Iterator<String> stream = annotationWriter.imports(); stream.hasNext(); ) {
+			sb.append("import ").append(stream.next()).append(";").append(CR);
+		}
+	}
+	
+	/**
+	 * writes source for typical java files
+	 */
+	protected void appendSourceTo(
+			StringBuilder sb, AnnotationWriter annotationWriter, 
+			String packageName, String typeName) {
+		
+		sb.append("package ").append(packageName).append(";").append(CR);
 		sb.append(CR);
 		for (Iterator<String> stream = annotationWriter.imports(); stream.hasNext(); ) {
 			sb.append("import ");
@@ -464,6 +524,7 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	public interface AnnotationWriter {
 		Iterator<String> imports();
+		void appendPackageAnnotationTo(StringBuilder sb);
 		void appendTypeAnnotationTo(StringBuilder sb);
 		void appendExtendsImplementsTo(StringBuilder sb);
 		void appendIdFieldAnnotationTo(StringBuilder sb);
@@ -478,6 +539,7 @@ public abstract class AnnotationTestCase extends TestCase {
 
 	public static class DefaultAnnotationWriter implements AnnotationWriter {
 		public Iterator<String> imports() {return EmptyIterator.instance();}
+		public void appendPackageAnnotationTo(StringBuilder sb) {/* do nothing */}
 		public void appendTypeAnnotationTo(StringBuilder sb) {/* do nothing */}
 		public void appendExtendsImplementsTo(StringBuilder sb) {/* do nothing */}
 		public void appendIdFieldAnnotationTo(StringBuilder sb) {/* do nothing */}
@@ -497,6 +559,7 @@ public abstract class AnnotationTestCase extends TestCase {
 			this.aw = aw;
 		}
 		public Iterator<String> imports() {return aw.imports();}
+		public void appendPackageAnnotationTo(StringBuilder sb) {aw.appendPackageAnnotationTo(sb);}
 		public void appendTypeAnnotationTo(StringBuilder sb) {aw.appendTypeAnnotationTo(sb);}
 		public void appendExtendsImplementsTo(StringBuilder sb) {aw.appendExtendsImplementsTo(sb);}
 		public void appendIdFieldAnnotationTo(StringBuilder sb) {aw.appendIdFieldAnnotationTo(sb);}
@@ -509,19 +572,35 @@ public abstract class AnnotationTestCase extends TestCase {
 		public void appendTopLevelTypesTo(StringBuilder sb) {aw.appendTopLevelTypesTo(sb);}
 	}
 
-	public class AnnotatedSourceWriter implements SourceWriter {
+	public class AnnotatedSourceWriter
+			implements SourceWriter {
+		
 		private AnnotationWriter annotationWriter;
+		private String packageName;
 		private String typeName;
+		
 		public AnnotatedSourceWriter(AnnotationWriter annotationWriter) {
 			this(annotationWriter, TYPE_NAME);
 		}
+		
 		public AnnotatedSourceWriter(AnnotationWriter annotationWriter, String typeName) {
+			this(annotationWriter, PACKAGE_NAME, typeName);
+		}
+		
+		public AnnotatedSourceWriter(AnnotationWriter annotationWriter, String packageName, String typeName) {
 			super();
 			this.annotationWriter = annotationWriter;
+			this.packageName = packageName;
 			this.typeName = typeName;
 		}
+		
 		public void appendSourceTo(StringBuilder sb) {
-			AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, typeName);
+			if (typeName != null) {
+				AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, packageName, typeName);
+			}
+			else {
+				AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, packageName);
+			}
 		}
 	}
 

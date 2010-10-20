@@ -95,8 +95,6 @@ public class TestJavaProject extends TestFacetedProject {
 	 */
 	public ICompilationUnit createCompilationUnit(IPackageFragment packageFragment, String compilationUnitName, SourceWriter sourceWriter) throws CoreException {
 		StringBuilder sb = new StringBuilder(2000);
-		sb.append("package ").append(packageFragment.getElementName()).append(";").append(CR);
-		sb.append(CR);
 		sourceWriter.appendSourceTo(sb);
 		String source = sb.toString();
 		return packageFragment.createCompilationUnit(compilationUnitName, source, false, null);	// false = "no force"
