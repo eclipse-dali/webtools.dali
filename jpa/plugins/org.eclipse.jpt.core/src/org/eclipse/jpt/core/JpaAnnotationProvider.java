@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.Package;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
@@ -124,7 +124,7 @@ public interface JpaAnnotationProvider
 	 * @see #packageAnnotationNames()
 	 */
 	Annotation buildPackageAnnotation(
-			JavaResourcePackage parent, Package pack, String annotationName);
+			JavaResourcePackage parent, AnnotatedPackage pack, String annotationName);
 
 	/**
 	 * Build a package annotation for the specified JDT annotation.

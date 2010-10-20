@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.Package;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -180,7 +180,7 @@ public class GenericJpaAnnotationProvider
 		);
 	}
 
-	public Annotation buildPackageAnnotation(JavaResourcePackage parent, Package pack, String annotationName) {
+	public Annotation buildPackageAnnotation(JavaResourcePackage parent, AnnotatedPackage pack, String annotationName) {
 		return this.getPackageAnnotationDefinition(annotationName).buildAnnotation(parent, pack);
 	}
 

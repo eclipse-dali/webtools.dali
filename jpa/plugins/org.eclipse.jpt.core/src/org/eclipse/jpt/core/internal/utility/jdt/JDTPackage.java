@@ -17,7 +17,7 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.core.utility.jdt.Package;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.CommandExecutor;
  *
  */
 
-public class JDTPackage extends JDTAnnotatedElement implements Package {
+public class JDTPackage extends JDTAnnotatedElement implements AnnotatedPackage {
 	
 	
 	protected JDTPackage(PackageDeclaration declaringPackage,

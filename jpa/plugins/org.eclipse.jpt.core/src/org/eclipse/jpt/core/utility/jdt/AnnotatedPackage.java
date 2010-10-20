@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
  *
  * This interface is not intended to be implemented by clients.
  */
-public interface Package extends AnnotatedElement {	
+public interface AnnotatedPackage extends AnnotatedElement {	
 
 	/**
 	 * Covariant override.

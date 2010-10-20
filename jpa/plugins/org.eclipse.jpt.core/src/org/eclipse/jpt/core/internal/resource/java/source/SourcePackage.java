@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.JDTPackage;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.core.utility.jdt.Package;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 
 /**
  * @author Dmitry Geraskov
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.Package;
  *
  */
 public final class SourcePackage
-	extends SourceAnnotatedElement<Package>
+	extends SourceAnnotatedElement<AnnotatedPackage>
 	implements JavaResourcePackage {
 	
 	private String name;
@@ -39,7 +39,7 @@ public final class SourcePackage
 			JavaResourceCompilationUnit parent,
 			PackageDeclaration declaringPackage,
 			CompilationUnit astRoot) {
-		Package pack = new JDTPackage(
+		AnnotatedPackage pack = new JDTPackage(
 				declaringPackage,
 				parent.getCompilationUnit(), 
 				parent.getModifySharedDocumentCommandExecutor(),
@@ -51,7 +51,7 @@ public final class SourcePackage
 	
 	private SourcePackage(
 			JavaResourceCompilationUnit parent,
-			Package pack){
+			AnnotatedPackage pack){
 		super(parent, pack);
 	}
 	
