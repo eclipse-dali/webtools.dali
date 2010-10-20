@@ -22,6 +22,12 @@ public class JaxbJavaResourceModelTestCase extends JavaResourceModelTestCase
 	}
 
 	@Override
+	protected void addJpaJars() throws Exception {
+		//do not attempt to add JPA jars
+		//TODO this hierarchy needs to be factored out appropriately to support both JPA and JAXB
+	}
+
+	@Override
 	protected JpaAnnotationProvider buildAnnotationProvider() {
 		return new GenericJpaAnnotationProvider(GenericJaxbAnnotationDefinitionProvider.instance());
 	}

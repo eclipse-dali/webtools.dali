@@ -45,12 +45,19 @@ public class JavaResourceModelTestCase extends AnnotationTestCase
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
+		addJpaJars();
+		this.javaElementChangeListener = new JavaElementChangeListener();
+		JavaCore.addElementChangedListener(this.javaElementChangeListener);
+	}
+
+	//TODO this hierarchy needs to be factored out appropriately to support both JPA and JAXB
+	//this is a temporary measure to avoid JAXB test failures in the build, 
+	//overriden in JaxbJavaResourceModelTestCase
+	protected void addJpaJars() throws Exception {
 		this.javaProject.addJar(TestJpaProject.jpaJarName());
 		if (TestJpaProject.eclipseLinkJarName() != null) {
 			this.javaProject.addJar(TestJpaProject.eclipseLinkJarName());
 		}
-		this.javaElementChangeListener = new JavaElementChangeListener();
-		JavaCore.addElementChangedListener(this.javaElementChangeListener);
 	}
 
 	@Override
