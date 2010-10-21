@@ -15,8 +15,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
@@ -28,7 +28,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters
  */
 public class SourceXmlJavaTypeAdaptersAnnotation
-		extends SourceAnnotation<AnnotatedElement>
+		extends SourceAnnotation<AnnotatedPackage>
 		implements XmlJavaTypeAdaptersAnnotation {
 	
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -36,7 +36,7 @@ public class SourceXmlJavaTypeAdaptersAnnotation
 	private final Vector<XmlJavaTypeAdapterAnnotation> adapters = new Vector<XmlJavaTypeAdapterAnnotation>();
 	
 	
-	public SourceXmlJavaTypeAdaptersAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
+	public SourceXmlJavaTypeAdaptersAnnotation(JavaResourcePackage parent, AnnotatedPackage annotatedElement) {
 		super(parent, annotatedElement, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	
@@ -74,6 +74,10 @@ public class SourceXmlJavaTypeAdaptersAnnotation
 	
 	public int getNestedAnnotationsSize() {
 		return this.adapters.size();
+	}
+	
+	public XmlJavaTypeAdapterAnnotation getNestedAnnotation(int index) {
+		return this.adapters.get(index);
 	}
 	
 	public XmlJavaTypeAdapterAnnotation addNestedAnnotation() {

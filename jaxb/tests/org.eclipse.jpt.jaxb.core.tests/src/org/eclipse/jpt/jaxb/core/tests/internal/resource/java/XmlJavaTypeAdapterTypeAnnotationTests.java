@@ -18,11 +18,11 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class XmlJavaTypeAdapterAnnotationTests extends JaxbJavaResourceModelTestCase {
+public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	private static final String XML_JAVA_TYPE_ADAPTER_CLASS = "MyAdapterClass";
 
-	public XmlJavaTypeAdapterAnnotationTests(String name) {
+	public XmlJavaTypeAdapterTypeAnnotationTests(String name) {
 		super(name);
 	}
 
@@ -107,18 +107,5 @@ public class XmlJavaTypeAdapterAnnotationTests extends JaxbJavaResourceModelTest
 
 		assertSourceContains("@XmlJavaTypeAdapter", cu);
 		assertSourceDoesNotContain("@XmlJavaTypeAdapter(" + XML_JAVA_TYPE_ADAPTER_CLASS + ".class)", cu);
-	}
-
-	public void testAddXmlJavaTypeAdapterAnnotation() throws Exception {
-		ICompilationUnit cu = this.createTestXmlJavaTypeAdapterWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
-		assertTrue(xmlJavaTypeAdapterAnnotation != null);
-		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
-
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation2 = (XmlJavaTypeAdapterAnnotation) typeResource.addAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER, JAXB.XML_JAVA_TYPE_ADAPTERS);
-		xmlJavaTypeAdapterAnnotation2.setValue("Foo");
-		assertSourceContains("@XmlJavaTypeAdapters({@XmlJavaTypeAdapter(" + XML_JAVA_TYPE_ADAPTER_CLASS + ".class),@XmlJavaTypeAdapter(Foo.class)})", cu);
 	}
 }

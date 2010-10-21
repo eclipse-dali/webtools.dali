@@ -13,8 +13,9 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlJavaTypeAdaptersAnnotation;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlJavaTypeAdaptersAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 
@@ -22,39 +23,39 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdaptersAnnotation
  */
 public final class XmlJavaTypeAdaptersAnnotationDefinition
-	implements AnnotationDefinition
-{
+		implements AnnotationDefinition {
+	
 	// singleton
 	private static final AnnotationDefinition INSTANCE = new XmlJavaTypeAdaptersAnnotationDefinition();
-
+	
 	/**
 	 * Return the singleton.
 	 */
 	public static AnnotationDefinition instance() {
 		return INSTANCE;
 	}
-
+	
 	/**
 	 * Ensure single instance.
 	 */
 	private XmlJavaTypeAdaptersAnnotationDefinition() {
 		super();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlJavaTypeAdaptersAnnotation(parent, annotatedElement);
+		return new SourceXmlJavaTypeAdaptersAnnotation((JavaResourcePackage) parent, (AnnotatedPackage) annotatedElement);
 	}
-
+	
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
 		throw new UnsupportedOperationException();
 	}
-
+	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlJavaTypeAdaptersAnnotation(parent, jdtAnnotation);
+		// TODO
+		throw new UnsupportedOperationException();
 	}
-
+	
 	public String getAnnotationName() {
 		return XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME;
 	}
-
 }

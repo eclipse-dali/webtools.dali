@@ -31,7 +31,8 @@ public class JaxbJavaResourceModelTests {
 		suite.addTestSuite(XmlIDAnnotationTests.class);
 		suite.addTestSuite(XmlIDREFAnnotationTests.class);
 		suite.addTestSuite(XmlInlineBinaryDataAnnotationTests.class);
-		suite.addTestSuite(XmlJavaTypeAdapterAnnotationTests.class);
+		suite.addTestSuite(XmlJavaTypeAdapterPackageAnnotationTests.class);
+		suite.addTestSuite(XmlJavaTypeAdapterTypeAnnotationTests.class);
 		suite.addTestSuite(XmlListAnnotationTests.class);
 		suite.addTestSuite(XmlMimeTypeAnnotationTests.class);
 		suite.addTestSuite(XmlMixedAnnotationTests.class);

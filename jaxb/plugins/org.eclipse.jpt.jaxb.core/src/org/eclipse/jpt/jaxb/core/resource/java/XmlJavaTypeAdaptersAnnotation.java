@@ -30,4 +30,9 @@ public interface XmlJavaTypeAdaptersAnnotation
 	String ANNOTATION_NAME = JAXB.XML_JAVA_TYPE_ADAPTERS;
 	
 	String XML_JAVA_TYPE_ADAPTERS_LIST = "xmlJavaTypeAdapters"; //$NON-NLS-1$
+	
+	/**
+	 * shortcut API
+	 */
+	XmlJavaTypeAdapterAnnotation getNestedAnnotation(int index);
 }

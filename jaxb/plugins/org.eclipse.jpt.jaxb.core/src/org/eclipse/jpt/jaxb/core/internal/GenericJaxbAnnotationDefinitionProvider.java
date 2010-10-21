@@ -86,7 +86,6 @@ public class GenericJaxbAnnotationDefinitionProvider
 		definitions.add(XmlEnumAnnotationDefinition.instance());
 		definitions.add(XmlInlineBinaryDataAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
-		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 		definitions.add(XmlRegistryAnnotationDefinition.instance());
 		definitions.add(XmlRootElementAnnotationDefinition.instance());
 		definitions.add(XmlSeeAlsoAnnotationDefinition.instance());

@@ -26,10 +26,13 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 	
 	private String value;
 	
+	private String type;
+	
 	
 	public BinaryXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
-		this.value = this.buildValue();
+		this.value = buildValue();
+		this.type = buildType();
 	}
 	
 	public String getAnnotationName() {
@@ -39,7 +42,8 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 	@Override
 	public void update() {
 		super.update();
-		this.setValue_(this.buildValue());
+		setValue_(buildValue());
+		setType_(buildType());
 	}
 	
 	@Override
@@ -74,9 +78,35 @@ public final class BinaryXmlJavaTypeAdapterAnnotation
 		throw new UnsupportedOperationException();
 	}
 	
-	// ***** fully-qualified value class name
-	
 	public String getFullyQualifiedValue() {
 		return this.value;
+	}
+	
+	// ***** type
+	public String getType() {
+		return this.type;
+	}
+	
+	public void setType(String type) {
+		throw new UnsupportedOperationException();
+	}
+	
+	private void setType_(String type) {
+		String old = this.type;
+		this.type = type;
+		this.firePropertyChanged(TYPE_PROPERTY, old, type);
+		this.firePropertyChanged(FULLY_QUALIFIED_TYPE_PROPERTY, old, type);
+	}
+	
+	private String buildType() {
+		return (String) this.getJdtMemberValue(JAXB.XML_JAVA_TYPE_ADAPTER__TYPE);
+	}
+	
+	public TextRange getTypeTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public String getFullyQualifiedType() {
+		return this.type;
 	}
 }
