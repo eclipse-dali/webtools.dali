@@ -117,7 +117,6 @@ public class GenericJaxbAnnotationDefinitionProvider
 		definitions.add(XmlIDREFAnnotationDefinition.instance());
 		definitions.add(XmlInlineBinaryDataAnnotationDefinition.instance());
 		definitions.add(XmlJavaTypeAdapterAnnotationDefinition.instance());
-		definitions.add(XmlJavaTypeAdaptersAnnotationDefinition.instance());
 		definitions.add(XmlListAnnotationDefinition.instance());
 		definitions.add(XmlMimeTypeAnnotationDefinition.instance());
 		definitions.add(XmlMixedAnnotationDefinition.instance());
