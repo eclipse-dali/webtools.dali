@@ -18,9 +18,10 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class XmlAccessorOrderAnnotationTests extends JaxbJavaResourceModelTestCase {
-
-	public XmlAccessorOrderAnnotationTests(String name) {
+public class XmlAccessorOrderTypeAnnotationTests
+		extends JaxbJavaResourceModelTestCase {
+	
+	public XmlAccessorOrderTypeAnnotationTests(String name) {
 		super(name);
 	}
 

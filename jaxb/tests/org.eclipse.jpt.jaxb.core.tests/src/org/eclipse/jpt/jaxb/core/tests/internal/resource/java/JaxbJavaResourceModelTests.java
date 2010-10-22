@@ -16,8 +16,10 @@ public class JaxbJavaResourceModelTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbJavaResourceModelTests.class.getName());
-		suite.addTestSuite(XmlAccessorOrderAnnotationTests.class);
-		suite.addTestSuite(XmlAccessorTypeAnnotationTests.class);
+		suite.addTestSuite(XmlAccessorOrderPackageAnnotationTests.class);
+		suite.addTestSuite(XmlAccessorOrderTypeAnnotationTests.class);
+		suite.addTestSuite(XmlAccessorTypePackageAnnotationTests.class);
+		suite.addTestSuite(XmlAccessorTypeTypeAnnotationTests.class);
 		suite.addTestSuite(XmlAnyAttributeAnnotationTests.class);
 		suite.addTestSuite(XmlAnyElementAnnotationTests.class);
 		suite.addTestSuite(XmlAttachmentRefAnnotationTests.class);

@@ -18,9 +18,10 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class XmlAccessorTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
-
-	public XmlAccessorTypeAnnotationTests(String name) {
+public class XmlAccessorTypeTypeAnnotationTests
+		extends JaxbJavaResourceModelTestCase {
+	
+	public XmlAccessorTypeTypeAnnotationTests(String name) {
 		super(name);
 	}
 
