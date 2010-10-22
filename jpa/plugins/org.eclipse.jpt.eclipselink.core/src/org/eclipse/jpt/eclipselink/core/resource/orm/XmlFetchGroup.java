@@ -123,7 +123,7 @@ public class XmlFetchGroup extends AbstractJpaEObject implements XmlFetchGroup_2
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlFetchGroup_2_1_Name()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getName()

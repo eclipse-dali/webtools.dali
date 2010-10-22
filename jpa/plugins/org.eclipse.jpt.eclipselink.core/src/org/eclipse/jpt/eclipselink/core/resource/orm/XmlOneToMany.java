@@ -583,7 +583,7 @@ public class XmlOneToMany extends org.eclipse.jpt.core.resource.orm.XmlOneToMany
 	 * @return the value of the '<em>Map Key Convert</em>' attribute.
 	 * @see #setMapKeyConvert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCollectionMapping_2_0_MapKeyConvert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getMapKeyConvert()

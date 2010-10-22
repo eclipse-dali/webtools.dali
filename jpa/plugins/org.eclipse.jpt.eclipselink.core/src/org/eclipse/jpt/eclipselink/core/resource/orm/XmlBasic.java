@@ -56,7 +56,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlBasic_2_1, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic implements XmlBasic_1_1, XmlBasic_2_1, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
 {
 	/**
 	 * The cached value of the '{@link #getSequenceGenerator() <em>Sequence Generator</em>}' containment reference.
@@ -290,7 +290,7 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	 * @return the value of the '<em>Convert</em>' attribute.
 	 * @see #setConvert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getConvert()

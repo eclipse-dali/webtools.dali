@@ -272,7 +272,7 @@ public class XmlVersion extends org.eclipse.jpt.core.resource.orm.XmlVersion imp
 	 * @return the value of the '<em>Convert</em>' attribute.
 	 * @see #setConvert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getConvert()

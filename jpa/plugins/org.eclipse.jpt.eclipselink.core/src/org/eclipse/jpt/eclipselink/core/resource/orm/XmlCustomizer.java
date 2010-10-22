@@ -98,7 +98,7 @@ public class XmlCustomizer extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Customizer Class Name</em>' attribute.
 	 * @see #setCustomizerClassName(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlCustomizer_CustomizerClassName()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getCustomizerClassName()

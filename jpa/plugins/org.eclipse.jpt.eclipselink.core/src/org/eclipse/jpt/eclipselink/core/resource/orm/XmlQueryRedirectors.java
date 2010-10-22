@@ -210,7 +210,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>All Queries</em>' attribute.
 	 * @see #setAllQueries(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_AllQueries()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getAllQueries()
@@ -245,7 +245,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Read All</em>' attribute.
 	 * @see #setReadAll(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_ReadAll()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getReadAll()
@@ -280,7 +280,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Read Object</em>' attribute.
 	 * @see #setReadObject(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_ReadObject()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getReadObject()
@@ -315,7 +315,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Report</em>' attribute.
 	 * @see #setReport(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Report()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getReport()
@@ -350,7 +350,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Update</em>' attribute.
 	 * @see #setUpdate(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Update()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getUpdate()
@@ -385,7 +385,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Insert</em>' attribute.
 	 * @see #setInsert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Insert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getInsert()
@@ -420,7 +420,7 @@ public class XmlQueryRedirectors extends AbstractJpaEObject implements XmlQueryR
 	 * @return the value of the '<em>Delete</em>' attribute.
 	 * @see #setDelete(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlQueryRedirectors_2_0_Delete()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getDelete()

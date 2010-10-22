@@ -377,5 +377,7 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlVersion_2_1/attributeType"/>
       </genClasses>
     </nestedGenPackages>
+    <nestedGenPackages prefix="V2_2" basePackage="org.eclipse.jpt.eclipselink.core.resource.orm"
+        disposableProviderFactory="true" ecorePackage="eclipselink_orm.ecore#//v2_2"/>
   </genPackages>
 </genmodel:GenModel>

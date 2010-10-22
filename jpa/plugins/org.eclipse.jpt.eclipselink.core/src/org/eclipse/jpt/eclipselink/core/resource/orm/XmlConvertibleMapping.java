@@ -53,7 +53,7 @@ public interface XmlConvertibleMapping extends org.eclipse.jpt.core.resource.orm
 	 * @return the value of the '<em>Convert</em>' attribute.
 	 * @see #setConvert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConvertibleMapping_Convert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	String getConvert();

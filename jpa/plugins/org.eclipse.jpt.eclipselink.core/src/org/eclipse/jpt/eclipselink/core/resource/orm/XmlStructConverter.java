@@ -99,7 +99,7 @@ public class XmlStructConverter extends XmlNamedConverter
 	 * @return the value of the '<em>Converter</em>' attribute.
 	 * @see #setConverter(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlStructConverter_Converter()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getConverter()

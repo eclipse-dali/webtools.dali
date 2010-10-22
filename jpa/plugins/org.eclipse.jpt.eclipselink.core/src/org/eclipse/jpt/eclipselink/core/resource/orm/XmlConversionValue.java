@@ -123,7 +123,7 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Data Value</em>' attribute.
 	 * @see #setDataValue(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConversionValue_DataValue()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getDataValue()
@@ -158,7 +158,7 @@ public class XmlConversionValue extends AbstractJpaEObject implements JpaEObject
 	 * @return the value of the '<em>Object Value</em>' attribute.
 	 * @see #setObjectValue(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlConversionValue_ObjectValue()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getObjectValue()

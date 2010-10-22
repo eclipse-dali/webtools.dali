@@ -84,40 +84,13 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	public static final int XML_BASIC_21 = 0;
 
 	/**
-	 * The feature id for the '<em><b>Sequence Generator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_21__SEQUENCE_GENERATOR = EclipseLinkOrmV1_1Package.XML_BASIC_11__SEQUENCE_GENERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Table Generator</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_21__TABLE_GENERATOR = EclipseLinkOrmV1_1Package.XML_BASIC_11__TABLE_GENERATOR;
-
-	/**
-	 * The feature id for the '<em><b>Generated Value</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_BASIC_21__GENERATED_VALUE = EclipseLinkOrmV1_1Package.XML_BASIC_11__GENERATED_VALUE;
-
-	/**
 	 * The feature id for the '<em><b>Return Insert</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_21__RETURN_INSERT = EclipseLinkOrmV1_1Package.XML_BASIC_11_FEATURE_COUNT + 0;
+	public static final int XML_BASIC_21__RETURN_INSERT = 0;
 
 	/**
 	 * The feature id for the '<em><b>Return Update</b></em>' attribute.
@@ -126,7 +99,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_21__RETURN_UPDATE = EclipseLinkOrmV1_1Package.XML_BASIC_11_FEATURE_COUNT + 1;
+	public static final int XML_BASIC_21__RETURN_UPDATE = 1;
 
 	/**
 	 * The feature id for the '<em><b>Attribute Type</b></em>' attribute.
@@ -135,7 +108,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_21__ATTRIBUTE_TYPE = EclipseLinkOrmV1_1Package.XML_BASIC_11_FEATURE_COUNT + 2;
+	public static final int XML_BASIC_21__ATTRIBUTE_TYPE = 2;
 
 	/**
 	 * The number of structural features of the '<em>Xml Basic 21</em>' class.
@@ -144,7 +117,7 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_BASIC_21_FEATURE_COUNT = EclipseLinkOrmV1_1Package.XML_BASIC_11_FEATURE_COUNT + 3;
+	public static final int XML_BASIC_21_FEATURE_COUNT = 3;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlBatchFetch_2_1 <em>Xml Batch Fetch 21</em>}' class.
@@ -2013,7 +1986,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EclipseLinkOrmV1_1Package theEclipseLinkOrmV1_1Package = (EclipseLinkOrmV1_1Package)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV1_1Package.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
@@ -2023,7 +1995,6 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
-		xmlBasic_2_1EClass.getESuperTypes().add(theEclipseLinkOrmV1_1Package.getXmlBasic_1_1());
 		xmlElementCollection_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlJoinFetch());
 		xmlElementCollection_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlBatchFetchHolder());
 		xmlEmbeddable_2_1EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlAccessMethodsHolder());
@@ -2071,10 +2042,10 @@ public class EclipseLinkOrmV2_1Package extends EPackageImpl
 		initEClass(xmlEntityMappings_2_1EClass, XmlEntityMappings_2_1.class, "XmlEntityMappings_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(xmlFetchAttribute_2_1EClass, XmlFetchAttribute_2_1.class, "XmlFetchAttribute_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlFetchAttribute_2_1_Name(), ecorePackage.getEString(), "name", null, 0, 1, XmlFetchAttribute_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlFetchAttribute_2_1_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlFetchAttribute_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlFetchGroup_2_1EClass, XmlFetchGroup_2_1.class, "XmlFetchGroup_2_1", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getXmlFetchGroup_2_1_Name(), ecorePackage.getEString(), "name", null, 0, 1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getXmlFetchGroup_2_1_Name(), theXMLTypePackage.getString(), "name", null, 0, 1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getXmlFetchGroup_2_1_Load(), theXMLTypePackage.getBooleanObject(), "load", null, 0, 1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getXmlFetchGroup_2_1_Attributes(), theEclipseLinkOrmPackage.getXmlFetchAttribute(), null, "attributes", null, 0, -1, XmlFetchGroup_2_1.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 

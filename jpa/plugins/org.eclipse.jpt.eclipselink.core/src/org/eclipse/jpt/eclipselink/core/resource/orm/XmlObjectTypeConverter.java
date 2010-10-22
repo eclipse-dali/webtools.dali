@@ -153,7 +153,7 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 	 * @return the value of the '<em>Data Type</em>' attribute.
 	 * @see #setDataType(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter_DataType()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getDataType()
@@ -188,7 +188,7 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 	 * @return the value of the '<em>Object Type</em>' attribute.
 	 * @see #setObjectType(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter_ObjectType()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getObjectType()
@@ -246,7 +246,7 @@ public class XmlObjectTypeConverter extends XmlNamedConverter
 	 * @return the value of the '<em>Default Object Value</em>' attribute.
 	 * @see #setDefaultObjectValue(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlObjectTypeConverter_DefaultObjectValue()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	public String getDefaultObjectValue()

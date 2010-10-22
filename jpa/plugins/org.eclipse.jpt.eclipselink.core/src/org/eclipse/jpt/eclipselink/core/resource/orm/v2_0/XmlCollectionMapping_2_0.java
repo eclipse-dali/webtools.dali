@@ -46,7 +46,7 @@ public interface XmlCollectionMapping_2_0 extends XmlMapKeyAssociationOverrideCo
 	 * @return the value of the '<em>Map Key Convert</em>' attribute.
 	 * @see #setMapKeyConvert(String)
 	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLinkOrmV2_0Package#getXmlCollectionMapping_2_0_MapKeyConvert()
-	 * @model
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
 	String getMapKeyConvert();

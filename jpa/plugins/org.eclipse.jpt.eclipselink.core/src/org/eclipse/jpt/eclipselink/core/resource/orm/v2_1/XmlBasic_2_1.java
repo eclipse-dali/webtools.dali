@@ -11,8 +11,8 @@
 
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_1;
 
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlReturnInsert;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlBasic_1_1;
 
 /**
  * <!-- begin-user-doc -->
@@ -39,9 +39,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlBasic_1_1;
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package#getXmlBasic_2_1()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlBasic_2_1 extends XmlBasic_1_1
+public interface XmlBasic_2_1 extends JpaEObject
 {
 	/**
 	 * Returns the value of the '<em><b>Return Insert</b></em>' containment reference.
