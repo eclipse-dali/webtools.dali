@@ -15,4 +15,11 @@ public interface XmlSchemaTypesAnnotation
 		extends ContainerAnnotation<XmlSchemaTypeAnnotation> {
 	
 	String ANNOTATION_NAME = JAXB.XML_SCHEMA_TYPES;
+	
+	String XML_SCHEMA_TYPES_LIST = "xmlSchemaTypes"; //$NON-NLS-1$
+	
+	/**
+	 * shortcut API
+	 */
+	XmlSchemaTypeAnnotation getNestedAnnotation(int index);
 }

@@ -101,6 +101,6 @@ public interface XmlSchemaTypeAnnotation
 	 * javax.xml.datatype.XMLGregorianCalendar.
 	 * @return
 	 */
-	String getFullyQualifiedTypeName();
-		String FULLY_QUALIFIED_TYPE_NAME_PROPERTY = "fullyQualifiedTypeName"; //$NON-NLS-1$
+	String getFullyQualifiedType();
+		String FULLY_QUALIFIED_TYPE_PROPERTY = "fullyQualifiedType"; //$NON-NLS-1$
 }
