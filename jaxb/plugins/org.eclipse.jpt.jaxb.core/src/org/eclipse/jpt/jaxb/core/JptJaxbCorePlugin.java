@@ -62,6 +62,10 @@ public class JptJaxbCorePlugin
 	public static final String DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY = 
 			"defaultJaxbPlatform_" + JaxbFacet.VERSION_2_2.getVersionString(); //$NON-NLS-1$
 	
+	// **************** fields ************************************************
+	
+	private volatile GenericJaxbProjectManager projectManager;
+	
 	
 	// **************** singleton *********************************************
 	
@@ -73,6 +77,17 @@ public class JptJaxbCorePlugin
 	public static JptJaxbCorePlugin instance() {
 		return INSTANCE;
 	}
+	
+	
+	// ********** public static methods **********
+
+	/**
+	 * Return the singular JAXB project manager corresponding to the current workspace.
+	 */
+	public static JaxbProjectManager getProjectManager() {
+		return INSTANCE.getProjectManager_();
+	}
+	
 	
 	/**
 	 * Set the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
@@ -201,5 +216,16 @@ public class JptJaxbCorePlugin
 		super.stop(context);
 		// nothing yet...
 	}
+	
+	private synchronized GenericJaxbProjectManager getProjectManager_() {
+		if (this.projectManager == null) {
+			this.projectManager = this.buildProjectManager();
+			this.projectManager.start();
+		}
+		return this.projectManager;
+	}
 
+	private GenericJaxbProjectManager buildProjectManager() {
+		return new GenericJaxbProjectManager();
+	}
 }
