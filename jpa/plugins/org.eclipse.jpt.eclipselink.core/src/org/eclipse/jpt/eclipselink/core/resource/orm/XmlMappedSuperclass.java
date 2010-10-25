@@ -48,6 +48,10 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlMappedSuperclass_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlAdditionalCriteria_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlMappedSuperclass_2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -81,7 +85,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
+public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass implements XmlMappedSuperclass_1_1, XmlMappedSuperclass_2_0, XmlMappedSuperclass_2_1, XmlMappedSuperclass_2_2, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -252,6 +256,16 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	 * @ordered
 	 */
 	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAdditionalCriteria() <em>Additional Criteria</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAdditionalCriteria()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAdditionalCriteria_2_2 additionalCriteria;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -1651,6 +1665,66 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Additional Criteria</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
+	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlMappedSuperclass_2_2_AdditionalCriteria()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlAdditionalCriteria_2_2 getAdditionalCriteria()
+	{
+		return additionalCriteria;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria, NotificationChain msgs)
+	{
+		XmlAdditionalCriteria_2_2 oldAdditionalCriteria = additionalCriteria;
+		additionalCriteria = newAdditionalCriteria;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA, oldAdditionalCriteria, newAdditionalCriteria);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlMappedSuperclass#getAdditionalCriteria <em>Additional Criteria</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Additional Criteria</em>' containment reference.
+	 * @see #getAdditionalCriteria()
+	 * @generated
+	 */
+	public void setAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria)
+	{
+		if (newAdditionalCriteria != additionalCriteria)
+		{
+			NotificationChain msgs = null;
+			if (additionalCriteria != null)
+				msgs = ((InternalEObject)additionalCriteria).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA, null, msgs);
+			if (newAdditionalCriteria != null)
+				msgs = ((InternalEObject)newAdditionalCriteria).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA, null, msgs);
+			msgs = basicSetAdditionalCriteria(newAdditionalCriteria, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA, newAdditionalCriteria, newAdditionalCriteria));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1721,6 +1795,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return ((InternalEList<?>)getSqlResultSetMappings()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS:
 				return basicSetQueryRedirectors(null, msgs);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
+				return basicSetAdditionalCriteria(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CHANGE_TRACKING:
@@ -1789,6 +1865,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return getQueryRedirectors();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
 				return getParentClass();
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
+				return getAdditionalCriteria();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -1885,6 +1963,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
 				setParentClass((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
+				setAdditionalCriteria((XmlAdditionalCriteria_2_2)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -1995,6 +2076,9 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
 				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
+				setAdditionalCriteria((XmlAdditionalCriteria_2_2)null);
+				return;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -2084,6 +2168,8 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				return queryRedirectors != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS:
 				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
+			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA:
+				return additionalCriteria != null;
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__CUSTOMIZER:
@@ -2215,6 +2301,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__SQL_RESULT_SET_MAPPINGS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__SQL_RESULT_SET_MAPPINGS;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__QUERY_REDIRECTORS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__QUERY_REDIRECTORS;
 				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_MAPPED_SUPERCLASS_21__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlMappedSuperclass_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA: return EclipseLinkOrmV2_2Package.XML_MAPPED_SUPERCLASS_22__ADDITIONAL_CRITERIA;
 				default: return -1;
 			}
 		}
@@ -2373,6 +2467,14 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlMappedSuperclass_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_MAPPED_SUPERCLASS_22__ADDITIONAL_CRITERIA: return EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS__ADDITIONAL_CRITERIA;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -2485,6 +2587,7 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
 			buildAccessMethodsTranslator(),
+			buildAdditionalCriteriaTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildIdClassTranslator(),
@@ -2641,6 +2744,10 @@ public class XmlMappedSuperclass extends org.eclipse.jpt.core.resource.orm.XmlMa
 
 	protected static Translator buildParentClassTranslator() {
 		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlMappedSuperclass_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildAdditionalCriteriaTranslator() {
+		return XmlAdditionalCriteria.buildTranslator(EclipseLink2_2.ADDITIONAL_CRITERIA, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlMappedSuperclass_2_2_AdditionalCriteria());
 	}
 
 }

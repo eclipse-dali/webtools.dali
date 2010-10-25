@@ -33,6 +33,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.XmlBasic_1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlBasic_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -1405,6 +1407,7 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 			buildMutableTranslator(),
 			buildAttributeTypeTranslator(),
 			buildColumnTranslator(), 
+			buildIndexTranslator(), 
 			buildGeneratedValueTranslator(), 
 			buildLobTranslator(),
 			buildTemporalTranslator(),
@@ -1424,6 +1427,10 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	
 	protected static Translator buildMutableTranslator() {
 		return new Translator(EclipseLink.MUTABLE, EclipseLinkOrmPackage.eINSTANCE.getXmlMutable_Mutable(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildIndexTranslator() {
+		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlBasic_2_2_Index());
 	}
 	
 	protected static Translator buildGeneratedValueTranslator() {

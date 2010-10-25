@@ -52,7 +52,8 @@ public class EclipseLinkEntityMappings2_0DetailsProvider
 	@Override
 	protected boolean providesDetails(JpaResourceType resourceType) {
 		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE) ||
-		resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE);
+			resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE) ||
+			resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_2_RESOURCE_TYPE);
 	}
 	
 	public JpaDetailsPage<? extends JpaStructureNode> buildDetailsPage(

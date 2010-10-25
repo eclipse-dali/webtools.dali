@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
@@ -38,6 +39,9 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlMapKeyAssociationOv
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlElementCollection_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlElementCollection_2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -59,7 +63,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0, XmlElementCollection_2_1
+public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlElementCollection implements XmlElementCollection_2_0, XmlElementCollection_2_1, XmlElementCollection_2_2
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -256,6 +260,26 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	 * @ordered
 	 */
 	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CASCADE_ON_DELETE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cascadeOnDelete = CASCADE_ON_DELETE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -920,6 +944,41 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade On Delete</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #setCascadeOnDelete(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlElementCollection_2_2_CascadeOnDelete()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCascadeOnDelete()
+	{
+		return cascadeOnDelete;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection#getCascadeOnDelete <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 */
+	public void setCascadeOnDelete(Boolean newCascadeOnDelete)
+	{
+		Boolean oldCascadeOnDelete = cascadeOnDelete;
+		cascadeOnDelete = newCascadeOnDelete;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE, oldCascadeOnDelete, cascadeOnDelete));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -999,6 +1058,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				return getBatchFetch();
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				return getAttributeType();
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE:
+				return getCascadeOnDelete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -1068,6 +1129,9 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				setAttributeType((String)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE:
+				setCascadeOnDelete((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -1130,6 +1194,9 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE:
+				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -1176,6 +1243,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				return batchFetch != null;
 			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE:
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
+			case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE:
+				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -1285,6 +1354,14 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ELEMENT_COLLECTION_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlElementCollection_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE;
 				default: return -1;
 			}
 		}
@@ -1399,6 +1476,14 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlElementCollection_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_ELEMENT_COLLECTION_22__CASCADE_ON_DELETE: return EclipseLinkOrmPackage.XML_ELEMENT_COLLECTION__CASCADE_ON_DELETE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
@@ -1421,6 +1506,8 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 		result.append(joinFetch);
 		result.append(", attributeType: ");
 		result.append(attributeType);
+		result.append(", cascadeOnDelete: ");
+		result.append(cascadeOnDelete);
 		result.append(')');
 		return result.toString();
 	}
@@ -1492,6 +1579,7 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 			XmlConverter.buildTranslator(EclipseLink.OBJECT_TYPE_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_ObjectTypeConverter()),
 			XmlConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConverterHolder_StructConverter()),
 			XmlCollectionTable.buildTranslator(JPA2_0.COLLECTION_TABLE, OrmV2_0Package.eINSTANCE.getXmlElementCollection_2_0_CollectionTable()),
+			buildCascadeOnDeleteTranslator(),
 			buildJoinFetchTranslator(),
 			buildBatchFetchTranslator(),
 			buildPropertyTranslator(),
@@ -1529,6 +1617,10 @@ public class XmlElementCollection extends org.eclipse.jpt.core.resource.orm.XmlE
 	
 	protected static Translator buildBatchFetchTranslator() {
 		return XmlBatchFetch.buildTranslator(EclipseLink2_1.BATCH_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlBatchFetchHolder_BatchFetch());
+	}
+
+	protected static Translator buildCascadeOnDeleteTranslator() {
+		return CascadeType.buildTranslator(EclipseLink2_2.CASCADE_ON_DELETE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlElementCollection_2_2_CascadeOnDelete());
 	}
 
 }

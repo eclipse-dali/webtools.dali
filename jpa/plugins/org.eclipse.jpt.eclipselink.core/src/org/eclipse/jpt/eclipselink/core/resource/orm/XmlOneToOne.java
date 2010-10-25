@@ -22,8 +22,12 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlOneToOne_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlOneToOne_2_2;
 import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -48,7 +52,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne implements XmlOneToOne_2_1, XmlAttributeMapping, XmlPrivateOwned, XmlJoinFetch
+public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne implements XmlOneToOne_2_1, XmlOneToOne_2_2, XmlAttributeMapping, XmlPrivateOwned, XmlJoinFetch
 {
 	/**
 	 * The cached value of the '{@link #getBatchFetch() <em>Batch Fetch</em>}' containment reference.
@@ -59,6 +63,26 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	 * @ordered
 	 */
 	protected XmlBatchFetch batchFetch;
+
+	/**
+	 * The default value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CASCADE_ON_DELETE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cascadeOnDelete = CASCADE_ON_DELETE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -195,6 +219,41 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		}
 		else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_ONE__BATCH_FETCH, newBatchFetch, newBatchFetch));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade On Delete</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #setCascadeOnDelete(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlOneToOne_2_2_CascadeOnDelete()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCascadeOnDelete()
+	{
+		return cascadeOnDelete;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlOneToOne#getCascadeOnDelete <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 */
+	public void setCascadeOnDelete(Boolean newCascadeOnDelete)
+	{
+		Boolean oldCascadeOnDelete = cascadeOnDelete;
+		cascadeOnDelete = newCascadeOnDelete;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE, oldCascadeOnDelete, cascadeOnDelete));
 	}
 
 	/**
@@ -385,6 +444,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__BATCH_FETCH:
 				return getBatchFetch();
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE:
+				return getCascadeOnDelete();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
@@ -410,6 +471,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE:
+				setCascadeOnDelete((Boolean)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -441,6 +505,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__BATCH_FETCH:
 				setBatchFetch((XmlBatchFetch)null);
 				return;
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE:
+				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
+				return;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -469,6 +536,8 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__BATCH_FETCH:
 				return batchFetch != null;
+			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE:
+				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE__PROPERTIES:
@@ -501,6 +570,14 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		{
 			switch (derivedFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlOneToOne_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ONE_TO_ONE_22__CASCADE_ON_DELETE;
 				default: return -1;
 			}
 		}
@@ -569,6 +646,14 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlOneToOne_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_ONE_TO_ONE_22__CASCADE_ON_DELETE: return EclipseLinkOrmPackage.XML_ONE_TO_ONE__CASCADE_ON_DELETE;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlAccessMethodsHolder.class)
 		{
 			switch (baseFeatureID)
@@ -622,7 +707,9 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 		if (eIsProxy()) return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (privateOwned: ");
+		result.append(" (cascadeOnDelete: ");
+		result.append(cascadeOnDelete);
+		result.append(", privateOwned: ");
 		result.append(privateOwned);
 		result.append(", joinFetch: ");
 		result.append(joinFetch);
@@ -664,6 +751,7 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 			buildJoinColumnTranslator(),
 			buildJoinTableTranslator(),
 			buildCascadeTranslator(),
+			buildCascadeOnDeleteTranslator(),
 			buildPrivateOwnedTranslator(),
 			buildJoinFetchTranslator(),
 			buildBatchFetchTranslator(),
@@ -690,6 +778,10 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 
 	protected static Translator buildBatchFetchTranslator() {
 		return XmlBatchFetch.buildTranslator(EclipseLink2_1.BATCH_FETCH, EclipseLinkOrmPackage.eINSTANCE.getXmlBatchFetchHolder_BatchFetch());
+	}
+
+	protected static Translator buildCascadeOnDeleteTranslator() {
+		return CascadeType.buildTranslator(EclipseLink2_2.CASCADE_ON_DELETE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlOneToOne_2_2_CascadeOnDelete());
 	}
 
 }

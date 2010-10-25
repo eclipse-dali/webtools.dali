@@ -82,6 +82,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 		switch (eClass.getClassifierID())
 		{
 			case EclipseLinkOrmPackage.XML_ACCESS_METHODS: return (EObject)createXmlAccessMethods();
+			case EclipseLinkOrmPackage.XML_ADDITIONAL_CRITERIA: return (EObject)createXmlAdditionalCriteria();
 			case EclipseLinkOrmPackage.ATTRIBUTES: return (EObject)createAttributes();
 			case EclipseLinkOrmPackage.XML_BASIC: return (EObject)createXmlBasic();
 			case EclipseLinkOrmPackage.XML_BASIC_COLLECTION: return (EObject)createXmlBasicCollection();
@@ -103,6 +104,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_FETCH_ATTRIBUTE: return (EObject)createXmlFetchAttribute();
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP: return (EObject)createXmlFetchGroup();
 			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
+			case EclipseLinkOrmPackage.XML_INDEX: return (EObject)createXmlIndex();
 			case EclipseLinkOrmPackage.XML_INSTANTIATION_COPY_POLICY: return (EObject)createXmlInstantiationCopyPolicy();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
@@ -200,6 +202,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlAccessMethods xmlAccessMethods = new XmlAccessMethods();
 		return xmlAccessMethods;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlAdditionalCriteria createXmlAdditionalCriteria()
+	{
+		XmlAdditionalCriteria xmlAdditionalCriteria = new XmlAdditionalCriteria();
+		return xmlAdditionalCriteria;
 	}
 
 	/**
@@ -431,6 +444,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlId xmlId = new XmlId();
 		return xmlId;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlIndex createXmlIndex()
+	{
+		XmlIndex xmlIndex = new XmlIndex();
+		return xmlIndex;
 	}
 
 	/**

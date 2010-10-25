@@ -683,5 +683,5 @@ public class XmlBasic extends AbstractXmlAttributeMapping implements ColumnMappi
 	
 	protected static Translator buildEnumeratedTranslator() {
 		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
-	}	
+	}
 }

@@ -61,6 +61,7 @@
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAccessMethodsHolder">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//XmlAccessMethodsHolder/accessMethods"/>
     </genClasses>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlAdditionalCriteria"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlAttributeMapping"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//Attributes">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//Attributes/basicCollections"/>
@@ -151,6 +152,7 @@
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlFetchAttribute"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlFetchGroup"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlId"/>
+    <genClasses ecoreClass="eclipselink_orm.ecore#//XmlIndex"/>
     <genClasses ecoreClass="eclipselink_orm.ecore#//XmlInstantiationCopyPolicy"/>
     <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//XmlJoinFetch">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//XmlJoinFetch/joinFetch"/>
@@ -377,7 +379,58 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_1/XmlVersion_2_1/attributeType"/>
       </genClasses>
     </nestedGenPackages>
-    <nestedGenPackages prefix="V2_2" basePackage="org.eclipse.jpt.eclipselink.core.resource.orm"
-        disposableProviderFactory="true" ecorePackage="eclipselink_orm.ecore#//v2_2"/>
+    <nestedGenPackages prefix="EclipseLinkOrmV2_2" basePackage="org.eclipse.jpt.eclipselink.core.resource.orm"
+        disposableProviderFactory="true" adapterFactory="false" fileExtensions="EclipseLinkOrmV2_2"
+        ecorePackage="eclipselink_orm.ecore#//v2_2">
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlAdditionalCriteria_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlAdditionalCriteria_2_2/criteria"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlBasic_2_2">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlBasic_2_2/index"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlBasicCollection_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlBasicCollection_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlBasicMap_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlBasicMap_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlElementCollection_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlElementCollection_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlEntity_2_2">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlEntity_2_2/additionalCriteria"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlEntity_2_2/cascadeOnDelete"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlEntity_2_2/index"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlManyToMany_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlManyToMany_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlOneToOne_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlOneToOne_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlOneToMany_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlOneToMany_2_2/cascadeOnDelete"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlEmbeddable_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlEmbeddable_2_2/parentClass"/>
+      </genClasses>
+      <genClasses ecoreClass="eclipselink_orm.ecore#//v2_2/XmlId_2_2">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlId_2_2/index"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlIndex_2_2">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/name"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/schema"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/catalog"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/table"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/unique"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute eclipselink_orm.ecore#//v2_2/XmlIndex_2_2/columnNames"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlMappedSuperclass_2_2">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlMappedSuperclass_2_2/additionalCriteria"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="eclipselink_orm.ecore#//v2_2/XmlVersion_2_2">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference eclipselink_orm.ecore#//v2_2/XmlVersion_2_2/index"/>
+      </genClasses>
+    </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

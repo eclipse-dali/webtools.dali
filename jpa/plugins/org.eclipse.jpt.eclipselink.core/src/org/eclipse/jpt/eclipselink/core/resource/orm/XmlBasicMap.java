@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,6 +22,8 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlAttributeMapping;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlBasicMap_2_2;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -42,7 +44,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttributeMapping
+public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttributeMapping, XmlBasicMap_2_2
 {
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -63,6 +65,26 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 	 * @ordered
 	 */
 	protected EList<XmlProperty> properties;
+
+	/**
+	 * The default value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CASCADE_ON_DELETE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cascadeOnDelete = CASCADE_ON_DELETE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -169,6 +191,41 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade On Delete</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #setCascadeOnDelete(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlBasicMap_2_2_CascadeOnDelete()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCascadeOnDelete()
+	{
+		return cascadeOnDelete;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap#getCascadeOnDelete <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 */
+	public void setCascadeOnDelete(Boolean newCascadeOnDelete)
+	{
+		Boolean oldCascadeOnDelete = cascadeOnDelete;
+		cascadeOnDelete = newCascadeOnDelete;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE, oldCascadeOnDelete, cascadeOnDelete));
+	}
+
+	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -200,6 +257,8 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				return getProperties();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
+				return getCascadeOnDelete();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -222,6 +281,9 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				getProperties().clear();
 				getProperties().addAll((Collection<? extends XmlProperty>)newValue);
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
+				setCascadeOnDelete((Boolean)newValue);
+				return;
 		}
 		super.eSet(featureID, newValue);
 	}
@@ -242,6 +304,9 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				getProperties().clear();
 				return;
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
+				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -260,6 +325,8 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_BASIC_MAP__PROPERTIES:
 				return properties != null && !properties.isEmpty();
+			case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE:
+				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -292,6 +359,14 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 		{
 			switch (derivedFeatureID)
 			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlBasicMap_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_BASIC_MAP_22__CASCADE_ON_DELETE;
 				default: return -1;
 			}
 		}
@@ -329,7 +404,32 @@ public class XmlBasicMap extends AbstractXmlAttributeMapping implements XmlAttri
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlBasicMap_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_BASIC_MAP_22__CASCADE_ON_DELETE: return EclipseLinkOrmPackage.XML_BASIC_MAP__CASCADE_ON_DELETE;
+				default: return -1;
+			}
+		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public String toString()
+	{
+		if (eIsProxy()) return super.toString();
+
+		StringBuffer result = new StringBuffer(super.toString());
+		result.append(" (cascadeOnDelete: ");
+		result.append(cascadeOnDelete);
+		result.append(')');
+		return result.toString();
 	}
 
 	public String getMappingKey() {

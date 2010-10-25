@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
@@ -34,6 +35,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntity_2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlFetchGroupContainer_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlAdditionalCriteria_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlEntity_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**
@@ -67,7 +73,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
+public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity implements XmlEntity_1_1, XmlEntity_2_0, XmlEntity_2_1, XmlEntity_2_2, XmlReadOnly, XmlCustomizerHolder, XmlChangeTrackingHolder, XmlCacheHolder, XmlConvertersHolder, XmlQueryContainer, XmlPropertyContainer
 {
 	/**
 	 * The cached value of the '{@link #getPrimaryKey() <em>Primary Key</em>}' containment reference.
@@ -148,6 +154,46 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	 * @ordered
 	 */
 	protected String parentClass = PARENT_CLASS_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getAdditionalCriteria() <em>Additional Criteria</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAdditionalCriteria()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAdditionalCriteria_2_2 additionalCriteria;
+
+	/**
+	 * The default value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final Boolean CASCADE_ON_DELETE_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getCascadeOnDelete() <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 * @ordered
+	 */
+	protected Boolean cascadeOnDelete = CASCADE_ON_DELETE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIndex_2_2 index;
 
 	/**
 	 * The default value of the '{@link #getReadOnly() <em>Read Only</em>}' attribute.
@@ -1347,6 +1393,161 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 	}
 
 	/**
+	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Cascade On Delete</em>' attribute isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #setCascadeOnDelete(Boolean)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_2_CascadeOnDelete()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.BooleanObject"
+	 * @generated
+	 */
+	public Boolean getCascadeOnDelete()
+	{
+		return cascadeOnDelete;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getCascadeOnDelete <em>Cascade On Delete</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Cascade On Delete</em>' attribute.
+	 * @see #getCascadeOnDelete()
+	 * @generated
+	 */
+	public void setCascadeOnDelete(Boolean newCascadeOnDelete)
+	{
+		Boolean oldCascadeOnDelete = cascadeOnDelete;
+		cascadeOnDelete = newCascadeOnDelete;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE, oldCascadeOnDelete, cascadeOnDelete));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Index</em>' containment reference.
+	 * @see #setIndex(XmlIndex_2_2)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_2_Index()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlIndex_2_2 getIndex()
+	{
+		return index;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIndex(XmlIndex_2_2 newIndex, NotificationChain msgs)
+	{
+		XmlIndex_2_2 oldIndex = index;
+		index = newIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__INDEX, oldIndex, newIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getIndex <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Index</em>' containment reference.
+	 * @see #getIndex()
+	 * @generated
+	 */
+	public void setIndex(XmlIndex_2_2 newIndex)
+	{
+		if (newIndex != index)
+		{
+			NotificationChain msgs = null;
+			if (index != null)
+				msgs = ((InternalEObject)index).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__INDEX, null, msgs);
+			if (newIndex != null)
+				msgs = ((InternalEObject)newIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__INDEX, null, msgs);
+			msgs = basicSetIndex(newIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__INDEX, newIndex, newIndex));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Additional Criteria</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
+	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntity_2_2_AdditionalCriteria()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlAdditionalCriteria_2_2 getAdditionalCriteria()
+	{
+		return additionalCriteria;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria, NotificationChain msgs)
+	{
+		XmlAdditionalCriteria_2_2 oldAdditionalCriteria = additionalCriteria;
+		additionalCriteria = newAdditionalCriteria;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA, oldAdditionalCriteria, newAdditionalCriteria);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity#getAdditionalCriteria <em>Additional Criteria</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Additional Criteria</em>' containment reference.
+	 * @see #getAdditionalCriteria()
+	 * @generated
+	 */
+	public void setAdditionalCriteria(XmlAdditionalCriteria_2_2 newAdditionalCriteria)
+	{
+		if (newAdditionalCriteria != additionalCriteria)
+		{
+			NotificationChain msgs = null;
+			if (additionalCriteria != null)
+				msgs = ((InternalEObject)additionalCriteria).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA, null, msgs);
+			if (newAdditionalCriteria != null)
+				msgs = ((InternalEObject)newAdditionalCriteria).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA, null, msgs);
+			msgs = basicSetAdditionalCriteria(newAdditionalCriteria, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA, newAdditionalCriteria, newAdditionalCriteria));
+	}
+
+	/**
 	 * Returns the value of the '<em><b>Exclude Default Mappings</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -1403,6 +1604,10 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return ((InternalEList<?>)getFetchGroups()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR:
 				return basicSetClassExtractor(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA:
+				return basicSetAdditionalCriteria(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
+				return basicSetIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
 				return basicSetCustomizer(null, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY__CHANGE_TRACKING:
@@ -1457,6 +1662,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return getClassExtractor();
 			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
 				return getParentClass();
+			case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA:
+				return getAdditionalCriteria();
+			case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE:
+				return getCascadeOnDelete();
+			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
+				return getIndex();
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return getReadOnly();
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1525,6 +1736,15 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
 				setParentClass((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA:
+				setAdditionalCriteria((XmlAdditionalCriteria_2_2)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE:
+				setCascadeOnDelete((Boolean)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
+				setIndex((XmlIndex_2_2)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly((Boolean)newValue);
@@ -1615,6 +1835,15 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
 				setParentClass(PARENT_CLASS_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA:
+				setAdditionalCriteria((XmlAdditionalCriteria_2_2)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE:
+				setCascadeOnDelete(CASCADE_ON_DELETE_EDEFAULT);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
+				setIndex((XmlIndex_2_2)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				setReadOnly(READ_ONLY_EDEFAULT);
 				return;
@@ -1691,6 +1920,12 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				return classExtractor != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS:
 				return PARENT_CLASS_EDEFAULT == null ? parentClass != null : !PARENT_CLASS_EDEFAULT.equals(parentClass);
+			case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA:
+				return additionalCriteria != null;
+			case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE:
+				return CASCADE_ON_DELETE_EDEFAULT == null ? cascadeOnDelete != null : !CASCADE_ON_DELETE_EDEFAULT.equals(cascadeOnDelete);
+			case EclipseLinkOrmPackage.XML_ENTITY__INDEX:
+				return index != null;
 			case EclipseLinkOrmPackage.XML_ENTITY__READ_ONLY:
 				return READ_ONLY_EDEFAULT == null ? readOnly != null : !READ_ONLY_EDEFAULT.equals(readOnly);
 			case EclipseLinkOrmPackage.XML_ENTITY__CUSTOMIZER:
@@ -1774,6 +2009,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			{
 				case EclipseLinkOrmPackage.XML_ENTITY__CLASS_EXTRACTOR: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__CLASS_EXTRACTOR;
 				case EclipseLinkOrmPackage.XML_ENTITY__PARENT_CLASS: return EclipseLinkOrmV2_1Package.XML_ENTITY_21__PARENT_CLASS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntity_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__ADDITIONAL_CRITERIA;
+				case EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__CASCADE_ON_DELETE;
+				case EclipseLinkOrmPackage.XML_ENTITY__INDEX: return EclipseLinkOrmV2_2Package.XML_ENTITY_22__INDEX;
 				default: return -1;
 			}
 		}
@@ -1890,6 +2135,16 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 				default: return -1;
 			}
 		}
+		if (baseClass == XmlEntity_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_22__ADDITIONAL_CRITERIA: return EclipseLinkOrmPackage.XML_ENTITY__ADDITIONAL_CRITERIA;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_22__CASCADE_ON_DELETE: return EclipseLinkOrmPackage.XML_ENTITY__CASCADE_ON_DELETE;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_22__INDEX: return EclipseLinkOrmPackage.XML_ENTITY__INDEX;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlReadOnly.class)
 		{
 			switch (baseFeatureID)
@@ -1966,6 +2221,8 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (parentClass: ");
 		result.append(parentClass);
+		result.append(", cascadeOnDelete: ");
+		result.append(cascadeOnDelete);
 		result.append(", readOnly: ");
 		result.append(readOnly);
 		result.append(", existenceChecking: ");
@@ -2003,11 +2260,14 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 			buildExcludeDefaultMappingsTranslator(),
 			buildDescriptionTranslator(),
 			buildAccessMethodsTranslator(),
+			buildAdditionalCriteriaTranslator(),
 			buildCustomizerTranslator(),
 			buildChangeTrackingTranslator(),
 			buildTableTranslator(),
 			buildSecondaryTableTranslator(),
 			buildPrimaryKeyJoinColumnTranslator(),
+			buildCascadeOnDeleteTranslator(),
+			buildIndexTranslator(),
 			buildIdClassTranslator(),
 			buildPrimaryKeyTranslator(),
 			buildInheritanceTranslator(),
@@ -2138,6 +2398,18 @@ public class XmlEntity extends org.eclipse.jpt.core.resource.orm.XmlEntity imple
 
 	protected static Translator buildParentClassTranslator() {
 		return new Translator(EclipseLink2_1.PARENT_CLASS, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlEntity_2_1_ParentClass(), Translator.DOM_ATTRIBUTE);
+	}
+
+	protected static Translator buildAdditionalCriteriaTranslator() {
+		return XmlAdditionalCriteria.buildTranslator(EclipseLink2_2.ADDITIONAL_CRITERIA, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntity_2_2_AdditionalCriteria());
+	}
+
+	protected static Translator buildCascadeOnDeleteTranslator() {
+		return CascadeType.buildTranslator(EclipseLink2_2.CASCADE_ON_DELETE, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntity_2_2_CascadeOnDelete());
+	}
+
+	protected static Translator buildIndexTranslator() {
+		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntity_2_2_Index());
 	}
 
 }

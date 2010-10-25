@@ -23,7 +23,13 @@ import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlId_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlId_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.resource.orm.JPA;
+import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -48,7 +54,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements XmlId_2_1, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
+public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements XmlId_2_1, XmlId_2_2, XmlAttributeMapping, XmlMutable, XmlConvertibleMapping
 {
 	/**
 	 * The default value of the '{@link #getAttributeType() <em>Attribute Type</em>}' attribute.
@@ -69,6 +75,16 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	 * @ordered
 	 */
 	protected String attributeType = ATTRIBUTE_TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getIndex() <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getIndex()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlIndex_2_2 index;
 
 	/**
 	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
@@ -224,6 +240,66 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		attributeType = newAttributeType;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE, oldAttributeType, attributeType));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Index</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Index</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Index</em>' containment reference.
+	 * @see #setIndex(XmlIndex_2_2)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlId_2_2_Index()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlIndex_2_2 getIndex()
+	{
+		return index;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetIndex(XmlIndex_2_2 newIndex, NotificationChain msgs)
+	{
+		XmlIndex_2_2 oldIndex = index;
+		index = newIndex;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__INDEX, oldIndex, newIndex);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlId#getIndex <em>Index</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Index</em>' containment reference.
+	 * @see #getIndex()
+	 * @generated
+	 */
+	public void setIndex(XmlIndex_2_2 newIndex)
+	{
+		if (newIndex != index)
+		{
+			NotificationChain msgs = null;
+			if (index != null)
+				msgs = ((InternalEObject)index).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__INDEX, null, msgs);
+			if (newIndex != null)
+				msgs = ((InternalEObject)newIndex).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ID__INDEX, null, msgs);
+			msgs = basicSetIndex(newIndex, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ID__INDEX, newIndex, newIndex));
 	}
 
 	/**
@@ -629,6 +705,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ID__INDEX:
+				return basicSetIndex(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return basicSetAccessMethods(null, msgs);
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -657,6 +735,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
 				return getAttributeType();
+			case EclipseLinkOrmPackage.XML_ID__INDEX:
+				return getIndex();
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return getAccessMethods();
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -690,6 +770,9 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
 				setAttributeType((String)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ID__INDEX:
+				setIndex((XmlIndex_2_2)newValue);
 				return;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)newValue);
@@ -733,6 +816,9 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
 				setAttributeType(ATTRIBUTE_TYPE_EDEFAULT);
 				return;
+			case EclipseLinkOrmPackage.XML_ID__INDEX:
+				setIndex((XmlIndex_2_2)null);
+				return;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				setAccessMethods((XmlAccessMethods)null);
 				return;
@@ -773,6 +859,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 		{
 			case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE:
 				return ATTRIBUTE_TYPE_EDEFAULT == null ? attributeType != null : !ATTRIBUTE_TYPE_EDEFAULT.equals(attributeType);
+			case EclipseLinkOrmPackage.XML_ID__INDEX:
+				return index != null;
 			case EclipseLinkOrmPackage.XML_ID__ACCESS_METHODS:
 				return accessMethods != null;
 			case EclipseLinkOrmPackage.XML_ID__PROPERTIES:
@@ -806,6 +894,14 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			switch (derivedFeatureID)
 			{
 				case EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE: return EclipseLinkOrmV2_1Package.XML_ID_21__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlId_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ID__INDEX: return EclipseLinkOrmV2_2Package.XML_ID_22__INDEX;
 				default: return -1;
 			}
 		}
@@ -875,6 +971,14 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			switch (baseFeatureID)
 			{
 				case EclipseLinkOrmV2_1Package.XML_ID_21__ATTRIBUTE_TYPE: return EclipseLinkOrmPackage.XML_ID__ATTRIBUTE_TYPE;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlId_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_ID_22__INDEX: return EclipseLinkOrmPackage.XML_ID__INDEX;
 				default: return -1;
 			}
 		}
@@ -978,8 +1082,10 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			buildMutableTranslator(),
 			buildAttributeTypeTranslator(),
 			buildColumnTranslator(),
+			buildIndexTranslator(),
 			buildGeneratedValueTranslator(),
 			buildTemporalTranslator(),
+			buildEnumeratedTranslator(),
 			buildConvertTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
@@ -994,6 +1100,10 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	
 	protected static Translator buildMutableTranslator() {
 		return new Translator(EclipseLink.MUTABLE, EclipseLinkOrmPackage.eINSTANCE.getXmlMutable_Mutable(), Translator.DOM_ATTRIBUTE);
+	}
+	
+	protected static Translator buildIndexTranslator() {
+		return XmlIndex.buildTranslator(EclipseLink2_2.INDEX, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlId_2_2_Index());
 	}
 	
 	protected static Translator buildConvertTranslator() {
@@ -1027,5 +1137,8 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlId_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
-
+	
+	protected static Translator buildEnumeratedTranslator() {
+		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
+	}	
 }

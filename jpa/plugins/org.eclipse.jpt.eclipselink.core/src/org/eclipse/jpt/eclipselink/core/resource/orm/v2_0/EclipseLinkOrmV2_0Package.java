@@ -24,6 +24,7 @@ import org.eclipse.jpt.core.resource.xml.CommonPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLinkOrmV1_1Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLinkOrmV2_1Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 
 /**
  * <!-- begin-user-doc -->
@@ -331,22 +332,13 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	public static final int XML_ENTITY_20 = 2;
 
 	/**
-	 * The feature id for the '<em><b>Cacheable</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ENTITY_20__CACHEABLE = OrmV2_0Package.XML_ENTITY_20__CACHEABLE;
-
-	/**
 	 * The feature id for the '<em><b>Cache Interceptor</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20__CACHE_INTERCEPTOR = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 0;
+	public static final int XML_ENTITY_20__CACHE_INTERCEPTOR = 0;
 
 	/**
 	 * The feature id for the '<em><b>Query Redirectors</b></em>' containment reference.
@@ -355,7 +347,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20__QUERY_REDIRECTORS = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 1;
+	public static final int XML_ENTITY_20__QUERY_REDIRECTORS = 1;
 
 	/**
 	 * The number of structural features of the '<em>Xml Entity 20</em>' class.
@@ -364,7 +356,7 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ENTITY_20_FEATURE_COUNT = OrmV2_0Package.XML_ENTITY_20_FEATURE_COUNT + 2;
+	public static final int XML_ENTITY_20_FEATURE_COUNT = 2;
 
 	/**
 	 * The meta object id for the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.XmlManyToMany_2_0 <em>Xml Many To Many 20</em>}' class.
@@ -796,18 +788,21 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) instanceof EclipseLinkOrmPackage ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI) : EclipseLinkOrmPackage.eINSTANCE);
 		EclipseLinkOrmV1_1Package theEclipseLinkOrmV1_1Package = (EclipseLinkOrmV1_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV1_1Package.eNS_URI) instanceof EclipseLinkOrmV1_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV1_1Package.eNS_URI) : EclipseLinkOrmV1_1Package.eINSTANCE);
 		EclipseLinkOrmV2_1Package theEclipseLinkOrmV2_1Package = (EclipseLinkOrmV2_1Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) instanceof EclipseLinkOrmV2_1Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_1Package.eNS_URI) : EclipseLinkOrmV2_1Package.eINSTANCE);
+		EclipseLinkOrmV2_2Package theEclipseLinkOrmV2_2Package = (EclipseLinkOrmV2_2Package)(EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) instanceof EclipseLinkOrmV2_2Package ? EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmV2_2Package.eNS_URI) : EclipseLinkOrmV2_2Package.eINSTANCE);
 
 		// Create package meta-data objects
 		theEclipseLinkOrmV2_0Package.createPackageContents();
 		theEclipseLinkOrmPackage.createPackageContents();
 		theEclipseLinkOrmV1_1Package.createPackageContents();
 		theEclipseLinkOrmV2_1Package.createPackageContents();
+		theEclipseLinkOrmV2_2Package.createPackageContents();
 
 		// Initialize created meta-data
 		theEclipseLinkOrmV2_0Package.initializePackageContents();
 		theEclipseLinkOrmPackage.initializePackageContents();
 		theEclipseLinkOrmV1_1Package.initializePackageContents();
 		theEclipseLinkOrmV2_1Package.initializePackageContents();
+		theEclipseLinkOrmV2_2Package.initializePackageContents();
 
 		// Mark meta-data to indicate it can't be changed
 		theEclipseLinkOrmV2_0Package.freeze();
@@ -1242,8 +1237,8 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		// Obtain other dependent packages
 		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		EclipseLinkOrmPackage theEclipseLinkOrmPackage = (EclipseLinkOrmPackage)EPackage.Registry.INSTANCE.getEPackage(EclipseLinkOrmPackage.eNS_URI);
-		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
+		OrmV2_0Package theOrmV2_0Package = (OrmV2_0Package)EPackage.Registry.INSTANCE.getEPackage(OrmV2_0Package.eNS_URI);
 
 		// Create type parameters
 
@@ -1255,7 +1250,6 @@ public class EclipseLinkOrmV2_0Package extends EPackageImpl
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertibleMapping());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConvertersHolder());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
-		xmlEntity_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlEntity_2_0());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(theEclipseLinkOrmPackage.getXmlConverterHolder());
 		xmlManyToMany_2_0EClass.getESuperTypes().add(this.getXmlCollectionMapping_2_0());
 		xmlMappedSuperclass_2_0EClass.getESuperTypes().add(theOrmV2_0Package.getXmlCacheable_2_0());

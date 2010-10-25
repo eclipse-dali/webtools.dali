@@ -12,6 +12,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="accessMethods" eType="#//XmlAccessMethods"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlAdditionalCriteria" eSuperTypes="#//v2_2/XmlAdditionalCriteria_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlAttributeMapping" abstract="true"
       interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeMapping #//XmlAccessMethodsHolder #//XmlPropertyContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attributes" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//Attributes">
@@ -25,8 +26,8 @@
         eType="#//XmlVariableOneToOne" containment="true" resolveProxies="false"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBasic" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlBasic #//v1_1/XmlBasic_1_1 #//v2_1/XmlBasic_2_1 #//XmlAttributeMapping #//XmlMutable #//XmlConvertibleMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_2/XmlBasicCollection_2_2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping #//v2_2/XmlBasicMap_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBatchFetch" eSuperTypes="#//v2_1/XmlBatchFetch_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlBatchFetchHolder" abstract="true"
       interface="true">
@@ -108,8 +109,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="customizer" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlClassReference"
         containment="true" resolveProxies="false"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlElementCollection #//v2_0/XmlElementCollection_2_0 #//v2_1/XmlElementCollection_2_1"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//v2_1/XmlEmbeddable_2_1 #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlConvertersHolder #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlElementCollection #//v2_0/XmlElementCollection_2_0 #//v2_1/XmlElementCollection_2_1 #//v2_2/XmlElementCollection_2_2"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddable #//v2_1/XmlEmbeddable_2_1 #//v2_2/XmlEmbeddable_2_2 #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlConvertersHolder #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="instantiationCopyPolicy"
@@ -121,7 +122,7 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbedded" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbedded #//v2_1/XmlEmbedded_2_1 #//XmlAttributeMapping"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddedId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEmbeddedId #//v2_1/XmlEmbeddedId_2_1 #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//v1_1/XmlEntity_1_1 #//v2_0/XmlEntity_2_0 #//v2_1/XmlEntity_2_1 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlEntity" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntity #//v1_1/XmlEntity_1_1 #//v2_0/XmlEntity_2_0 #//v2_1/XmlEntity_2_1 #//v2_2/XmlEntity_2_2 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlQueryContainer #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -136,14 +137,15 @@
   <eClassifiers xsi:type="ecore:EClass" name="XmlEntityMappings" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlEntityMappings #//XmlConvertersHolder #//XmlQueryContainer"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlFetchAttribute" eSuperTypes="#//v2_1/XmlFetchAttribute_2_1"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlFetchGroup" eSuperTypes="#//v2_1/XmlFetchGroup_2_1"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlId #//v2_1/XmlId_2_1 #//XmlAttributeMapping #//XmlMutable #//XmlConvertibleMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlId" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlId #//v2_1/XmlId_2_1 #//v2_2/XmlId_2_2 #//XmlAttributeMapping #//XmlMutable #//XmlConvertibleMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlIndex" eSuperTypes="#//v2_2/XmlIndex_2_2"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlInstantiationCopyPolicy"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlJoinFetch" abstract="true" interface="true">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="joinFetch" eType="#//XmlJoinFetchType"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//v2_0/XmlManyToMany_2_0 #//v2_1/XmlManyToMany_2_1 #//XmlAttributeMapping #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToMany #//v2_0/XmlManyToMany_2_0 #//v2_1/XmlManyToMany_2_1 #//v2_2/XmlManyToMany_2_2 #//XmlAttributeMapping #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlManyToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlManyToOne #//v2_1/XmlManyToOne_2_1 #//XmlAttributeMapping #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0 #//v2_1/XmlMappedSuperclass_2_1 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer">
+  <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlMappedSuperclass #//v1_1/XmlMappedSuperclass_1_1 #//v2_0/XmlMappedSuperclass_2_0 #//v2_1/XmlMappedSuperclass_2_1 #//v2_2/XmlMappedSuperclass_2_2 #//XmlReadOnly #//XmlCustomizerHolder #//XmlChangeTrackingHolder #//XmlCacheHolder #//XmlConvertersHolder #//XmlPropertyContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="optimisticLocking" eType="#//XmlOptimisticLocking"
         containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="copyPolicy" eType="#//XmlCopyPolicy"
@@ -180,8 +182,8 @@
         eType="#//XmlConversionValue" containment="true" resolveProxies="false"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="defaultObjectValue" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToMany #//v2_0/XmlOneToMany_2_0 #//v2_1/XmlOneToMany_2_1 #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToOne #//v2_1/XmlOneToOne_2_1 #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToMany #//v2_0/XmlOneToMany_2_0 #//v2_1/XmlOneToMany_2_1 #//v2_2/XmlOneToMany_2_2 #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlOneToOne #//v2_1/XmlOneToOne_2_1 #//v2_2/XmlOneToOne_2_2 #//XmlAttributeMapping #//XmlPrivateOwned #//XmlJoinFetch"/>
   <eClassifiers xsi:type="ecore:EClass" name="XmlOptimisticLocking">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//XmlOptimisticLockingType"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascade" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
@@ -243,7 +245,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="objectType" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="XmlVariableOneToOne" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//AbstractXmlAttributeMapping #//XmlAttributeMapping"/>
-  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersion #//v2_1/XmlVersion_2_1 #//XmlAttributeMapping #//XmlMutable #//XmlConvertibleMapping"/>
+  <eClassifiers xsi:type="ecore:EClass" name="XmlVersion" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlVersion #//v2_1/XmlVersion_2_1 #//v2_2/XmlVersion_2_2 #//XmlAttributeMapping #//XmlMutable #//XmlConvertibleMapping"/>
   <eClassifiers xsi:type="ecore:EEnum" name="CacheCoordinationType">
     <eLiterals name="SEND_OBJECT_CHANGES"/>
     <eLiterals name="INVALIDATE_CHANGED_OBJECTS" value="1"/>
@@ -322,8 +324,7 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_0" abstract="true"
         interface="true" eSuperTypes="#//XmlAttributeMapping #//XmlConvertibleMapping #//XmlConvertersHolder #//v2_0/XmlCollectionMapping_2_0"/>
-    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_0" abstract="true" interface="true"
-        eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//v2_0/XmlEntity_2_0">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_0" abstract="true" interface="true">
       <eStructuralFeatures xsi:type="ecore:EReference" name="cacheInterceptor" eType="ecore:EClass ../../org.eclipse.jpt.core/model/orm.ecore#//XmlClassReference"
           containment="true" resolveProxies="false"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="queryRedirectors" eType="#//XmlQueryRedirectors"
@@ -465,5 +466,69 @@
       <eLiterals name="IN" value="2"/>
     </eClassifiers>
   </eSubpackages>
-  <eSubpackages name="v2_2" nsURI="jpt.eclipselink.orm.v2_2.xmi" nsPrefix="org.eclipse.jpt.eclipselink.core.resource.orm.v2_2"/>
+  <eSubpackages name="v2_2" nsURI="jpt.eclipselink.orm.v2_2.xmi" nsPrefix="org.eclipse.jpt.eclipselink.core.resource.orm.v2_2">
+    <eClassifiers xsi:type="ecore:EClass" name="XmlAdditionalCriteria_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="criteria" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlBasic_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlBasicCollection_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlBasicMap_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlElementCollection_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEntity_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="additionalCriteria" eType="#//v2_2/XmlAdditionalCriteria_2_2"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlManyToMany_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOneToOne_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlOneToMany_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="cascadeOnDelete" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlEmbeddable_2_2" abstract="true"
+        interface="true" eSuperTypes="../../org.eclipse.jpt.core/model/orm.ecore#//XmlAttributeOverrideContainer ../../org.eclipse.jpt.core/model/orm.ecore#//XmlAssociationOverrideContainer">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="parentClass" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlId_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlIndex_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="schema" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="catalog" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="table" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="unique" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//BooleanObject"/>
+      <eStructuralFeatures xsi:type="ecore:EAttribute" name="columnNames" unique="false"
+          upperBound="-1" eType="ecore:EDataType http://www.eclipse.org/emf/2003/XMLType#//String"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlMappedSuperclass_2_2" abstract="true"
+        interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="additionalCriteria" eType="#//v2_2/XmlAdditionalCriteria_2_2"
+          containment="true"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="XmlVersion_2_2" abstract="true" interface="true">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="index" eType="#//v2_2/XmlIndex_2_2"
+          containment="true"/>
+    </eClassifiers>
+  </eSubpackages>
 </ecore:EPackage>
