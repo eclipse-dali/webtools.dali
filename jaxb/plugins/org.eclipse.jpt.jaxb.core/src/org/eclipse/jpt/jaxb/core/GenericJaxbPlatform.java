@@ -29,6 +29,9 @@ public class GenericJaxbPlatform {
 	public static final JaxbPlatformGroupDescription GROUP 
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("generic"); //$NON-NLS-1$
 	
+	public static final JaxbPlatformDescription VERSION_2_1 
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("generic_2_1"); //$NON-NLS-1$
+	
 	public static final JaxbPlatformDescription VERSION_2_2 
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("generic_2_2"); //$NON-NLS-1$
 	

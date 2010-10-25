@@ -51,6 +51,12 @@ public class JptJaxbCorePlugin
 	private static final String JAXB_PLATFORM_PREF_KEY = PLUGIN_ID_ + "jaxbPlatform";  //$NON-NLS-1$
 
 	/**
+	 * The key for storing the default JAXB platform ID for JAXB 2.1 in the workspace preferences.
+	 */
+	public static final String DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY = 
+			"defaultJaxbPlatform_" + JaxbFacet.VERSION_2_1.getVersionString(); //$NON-NLS-1$
+
+	/**
 	 * The key for storing the default JAXB platform ID for JAXB 2.2 in the workspace preferences.
 	 */
 	public static final String DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY = 
@@ -81,7 +87,10 @@ public class JptJaxbCorePlugin
 	 */
 	public static void setDefaultJaxbPlatform(IProjectFacetVersion jaxbFacetVersion, JaxbPlatformDescription platform) {
 		String preferenceKey = null;
-		if (JaxbFacet.VERSION_2_2.equals(jaxbFacetVersion)) {
+		if (JaxbFacet.VERSION_2_1.equals(jaxbFacetVersion)) {
+			preferenceKey = DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY;
+		}
+		else if (JaxbFacet.VERSION_2_2.equals(jaxbFacetVersion)) {
 			preferenceKey = DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY;
 		}
 		else {
@@ -113,7 +122,11 @@ public class JptJaxbCorePlugin
 		
 		JaxbPlatformDescription defaultDefaultPlatform;
 		String preferenceKey;
-		if (jaxbFacetVersion.equals(JaxbFacet.VERSION_2_2)) {
+		if (jaxbFacetVersion.equals(JaxbFacet.VERSION_2_1)) {
+			defaultDefaultPlatform = GenericJaxbPlatform.VERSION_2_1;
+			preferenceKey = DEFAULT_JAXB_PLATFORM_2_1_PREF_KEY; 
+		}
+		else if (jaxbFacetVersion.equals(JaxbFacet.VERSION_2_2)) {
 			defaultDefaultPlatform = GenericJaxbPlatform.VERSION_2_2;
 			preferenceKey = DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY; 
 		}
@@ -166,15 +179,27 @@ public class JptJaxbCorePlugin
 	}
 	
 	
+	// ********** plug-in implementation **********
+
+	public JptJaxbCorePlugin() {
+		super();
+		if (INSTANCE != null) {
+			throw new IllegalStateException();
+		}
+		// this convention is *wack*...  ~bjv
+		INSTANCE = this;
+	}
+	
 	@Override
 	public void start(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
 		super.start(context);
+		// nothing yet...
 	}
 	
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		// TODO Auto-generated method stub
 		super.stop(context);
+		// nothing yet...
 	}
+
 }

@@ -32,6 +32,8 @@ public class JaxbFacet {
 	
 	public static final IProjectFacet FACET = ProjectFacetsManager.getProjectFacet(ID);
 	
+	public static final IProjectFacetVersion VERSION_2_1 = FACET.getVersion("2.1"); //$NON-NLS-1$
+	
 	public static final IProjectFacetVersion VERSION_2_2 = FACET.getVersion("2.2"); //$NON-NLS-1$
 	
 	

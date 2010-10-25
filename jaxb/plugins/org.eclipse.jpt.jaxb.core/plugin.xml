@@ -30,12 +30,20 @@
         	label="%GENERIC_PLATFORM_GROUP_LABEL"/>
 		
 		<jaxbPlatform
-			id="generic_2_2"
-			label="%GENERIC_2_2_PLATFORM_LABEL"
-			factoryClass="org.eclipse.jpt.jaxb.core.internal.jaxb22.Generic_2_2_JaxbPlatformDefinitionFactory"
+			id="generic_2_1"
+			label="%GENERIC_2_1_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbPlatformDefinitionFactory"
 			group="generic"
-			jaxbFacetVersion="2.2"
+			jaxbFacetVersion="2.1"
 			default="false"/>
+
+		<jaxbPlatform
+       	 	id="generic_2_2"
+       	 	label="%GENERIC_2_2_PLATFORM_LABEL"
+       	 	factoryClass="org.eclipse.jpt.jaxb.core.internal.jaxb22.Generic_2_2_JaxbPlatformDefinitionFactory"
+        	group="generic"
+        	jaxbFacetVersion="2.2"
+        	default="false"/>
 		
 	</extension>
 	
