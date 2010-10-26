@@ -72,6 +72,13 @@
 	        group="eclipselink"
 			jpaFacetVersion="2.0"/>
 		
+		<jpaPlatform
+	        id="eclipselink2_2"
+	        label="%ECLIPSELINK2_2_x_PLATFORM"
+	        factoryClass="org.eclipse.jpt.eclipselink.core.internal.v2_2.EclipseLink2_2JpaPlatformFactory"
+	        group="eclipselink"
+			jpaFacetVersion="2.0"/>
+		
 	</extension>
 	
 	
@@ -193,7 +200,7 @@
 			
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/orm"
-				uri="schemas/eclipselink_orm_2_1.xsd"/>
+				uri="schemas/eclipselink_orm_2_2.xsd"/>
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_1_0.xsd"
@@ -215,9 +222,13 @@
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_1.xsd"
 				uri="schemas/eclipselink_orm_2_1.xsd" />
 			
+			<uri
+				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_2.xsd"
+				uri="schemas/eclipselink_orm_2_2.xsd" />
+			
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence/oxm"
-				uri="schemas/eclipselink_oxm_2_1.xsd"/>
+				uri="schemas/eclipselink_oxm_2_2.xsd"/>
 
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_0.xsd"
@@ -226,10 +237,14 @@
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_1.xsd"
 				uri="schemas/eclipselink_oxm_2_1.xsd" />
+   			<uri
+         		name="http://www.eclipse.org/eclipselink/xsds/eclipselink_oxm_2_2.xsd"
+         		uri="schemas/eclipselink_oxm_2_2.xsd">
+  	 		</uri>
 				
 			<public
 				publicId="http://www.eclipse.org/eclipselink/xsds/persistence"
-				uri="schemas/eclipselink_oxm_2_1.xsd"/>				
+				uri="schemas/eclipselink_persistence_map_2.0.xsd"/>				
 			
 			<uri
 				name="http://www.eclipse.org/eclipselink/xsds/eclipselink_persistence_map_1.0.xsd"
