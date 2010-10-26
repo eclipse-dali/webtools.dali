@@ -164,10 +164,10 @@ public class JaxbPlatformManagerImpl
 			// default
 			String defaultString = element.getAttribute(DEFAULT_ATTRIBUTE);
 			if (defaultString != null) {
-				if (defaultString.equals("true")) {
+				if (defaultString.equals("true")) { //$NON-NLS-1$
 					desc.setDefault(true);
 				}
-				else if (defaultString.equals("false")) {
+				else if (defaultString.equals("false")) { //$NON-NLS-1$
 					desc.setDefault(false);
 				}
 				else {
@@ -247,7 +247,7 @@ public class JaxbPlatformManagerImpl
 		String jaxbPlatformId = JptCorePlugin.getJpaPlatformId(project);
 		JaxbPlatformDescriptionImpl platformDesc = this.platformDescriptions.getItem(jaxbPlatformId);
 		if (platformDesc == null) {
-			throw new IllegalArgumentException("Project does not have a recognized JAXB platform.");
+			throw new IllegalArgumentException("Project does not have a recognized JAXB platform."); //$NON-NLS-1$
 		}
 		return platformDesc.buildJaxbPlatformDefinition();
 	}

@@ -213,8 +213,14 @@ public class JptJaxbCorePlugin
 	
 	@Override
 	public void stop(BundleContext context) throws Exception {
-		super.stop(context);
-		// nothing yet...
+		try {
+			if (this.projectManager != null) {
+				this.projectManager.stop();
+				this.projectManager = null;
+			}
+		} finally {
+			super.stop(context);
+		}
 	}
 	
 	private synchronized GenericJaxbProjectManager getProjectManager_() {

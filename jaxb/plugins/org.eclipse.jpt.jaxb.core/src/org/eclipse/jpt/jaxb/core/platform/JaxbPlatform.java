@@ -9,6 +9,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.core.JpaAnnotationProvider;
+import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.jaxb.core.JaxbFactory;
+import org.eclipse.jpt.jaxb.core.JaxbFile;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
+
 /**
  * Provisional API: This class is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,5 +28,37 @@ package org.eclipse.jpt.jaxb.core.platform;
  */
 public interface JaxbPlatform {
 	
-	
+	// ********** factory **********
+
+	/**
+	 * Return a factory responsible for creating core (e.g. JaxbProject), resource
+	 * (e.g. PersistenceResource), and context (e.g. PersistenceUnit) model
+	 * objects
+	 */
+	JaxbFactory getFactory();
+
+
+	// ********** JAXB files **********
+
+	/**
+	 * Return a JAXB file corresponding to the specified Eclipse file.
+	 * Return null if the file's content is unsupported.
+	 */
+	JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file);
+
+
+	// ********** Java annotations **********
+
+	/**
+	 * Return an annotation provider responsible for determining what Java
+	 * annotations are supported and constructing java resource model objects.
+	 */
+	JpaAnnotationProvider getAnnotationProvider();
+
+	/**
+	 * Return a formatter that can clean up the Java annotations added to source
+	 * code.
+	 */
+	AnnotationEditFormatter getAnnotationEditFormatter();
+
 }

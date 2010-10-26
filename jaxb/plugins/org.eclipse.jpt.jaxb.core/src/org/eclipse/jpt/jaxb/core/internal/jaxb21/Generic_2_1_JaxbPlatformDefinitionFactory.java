@@ -17,9 +17,6 @@ public class Generic_2_1_JaxbPlatformDefinitionFactory
 		implements JaxbPlatformDefinitionFactory {
 
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
-
-		// TODO Auto-generated method stub
-		return null;
+		return GenericJaxbPlatformDefinition.instance();
 	}
-
 }
