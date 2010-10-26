@@ -71,7 +71,7 @@ public interface JavaResourcePersistentType
 		String MEMBER_TYPE_PROPERTY = "memberType"; //$NON-NLS-1$
 
 	/**
-	 * Return whether the type is abstract.
+	 * Return whether the type is static.
 	 */
 	boolean isStatic();
 		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
