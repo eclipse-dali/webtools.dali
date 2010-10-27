@@ -7,14 +7,16 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core;
+package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 
 /**
  * Java source code

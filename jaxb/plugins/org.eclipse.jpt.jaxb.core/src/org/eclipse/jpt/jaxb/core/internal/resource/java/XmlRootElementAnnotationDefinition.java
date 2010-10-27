@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlRootElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlRootElementAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlRootElementAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
+		return new SourceXmlRootElementAnnotation((JavaResourceType) parent, (Type) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlRootElementAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlRootElementAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
+		return new BinaryXmlRootElementAnnotation((JavaResourceType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

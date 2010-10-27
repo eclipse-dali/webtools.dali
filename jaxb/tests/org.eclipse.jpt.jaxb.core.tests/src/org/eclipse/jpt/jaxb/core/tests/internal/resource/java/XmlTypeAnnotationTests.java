@@ -12,9 +12,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -122,18 +122,18 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertEquals(XML_TYPE_NAME, xmlTypeAnnotation.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertNull(xmlTypeAnnotation.getName());
 		assertNull(xmlTypeAnnotation.getNamespace());
@@ -144,9 +144,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getName());
 		xmlTypeAnnotation.setName(XML_TYPE_NAME);
 		assertEquals(XML_TYPE_NAME, xmlTypeAnnotation.getName());
@@ -162,18 +162,18 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertEquals(XML_TYPE_NAMESPACE, xmlTypeAnnotation.getNamespace());
 	}
 
 	public void testSetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getNamespace());
 		xmlTypeAnnotation.setNamespace(XML_TYPE_NAMESPACE);
 		assertEquals(XML_TYPE_NAMESPACE, xmlTypeAnnotation.getNamespace());
@@ -189,18 +189,18 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetFactoryMethod() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithFactoryMethod();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertEquals(XML_TYPE_FACTORY_METHOD, xmlTypeAnnotation.getFactoryMethod());
 	}
 
 	public void testSetFactoryMethod() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryMethod());
 		xmlTypeAnnotation.setFactoryMethod(XML_TYPE_FACTORY_METHOD);
 		assertEquals(XML_TYPE_FACTORY_METHOD, xmlTypeAnnotation.getFactoryMethod());
@@ -216,9 +216,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetFactoryClass() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithFactoryClass();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertEquals(XML_TYPE_FACTORY_CLASS, xmlTypeAnnotation.getFactoryClass());
 		assertEquals("test." + XML_TYPE_FACTORY_CLASS, xmlTypeAnnotation.getFullyQualifiedFactoryClassName());
@@ -226,9 +226,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testSetFactoryClass() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertNull(xmlTypeAnnotation.getFactoryClass());
 		xmlTypeAnnotation.setFactoryClass(XML_TYPE_FACTORY_CLASS);
 		assertEquals(XML_TYPE_FACTORY_CLASS, xmlTypeAnnotation.getFactoryClass());
@@ -244,9 +244,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetPropOrder() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithPropOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		ListIterator<String> propOrder = xmlTypeAnnotation.getPropOrder().iterator();
 		assertEquals("foo", propOrder.next());
@@ -255,18 +255,18 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetPropOrderSize() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithPropOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 		assertEquals(2, xmlTypeAnnotation.getPropOrderSize());
 	}
 
 	public void testAddProp() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 
 		xmlTypeAnnotation.addProp("fooo");
@@ -277,9 +277,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testAddPropIndex() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 
 		xmlTypeAnnotation.addProp(0, "fooo");
@@ -291,9 +291,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testRemoveProp() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithPropOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 
 		xmlTypeAnnotation.removeProp("foo");
@@ -306,9 +306,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testRemovePropIndex() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTypeWithPropOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 
 		xmlTypeAnnotation.removeProp(0);
@@ -321,9 +321,9 @@ public class XmlTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testMoveProp() throws Exception {
 		ICompilationUnit cu = this.createTestXmlType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) typeResource.getAnnotation(JAXB.XML_TYPE);
+		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(JAXB.XML_TYPE);
 		assertTrue(xmlTypeAnnotation != null);
 
 		xmlTypeAnnotation.addProp("fooo");

@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 
-
+@SuppressWarnings("nls")
 public class XmlAccessorOrderPackageAnnotationTests
 		extends JaxbJavaResourceModelTestCase {
 	
@@ -35,10 +35,10 @@ public class XmlAccessorOrderPackageAnnotationTests
 			throws Exception {
 		
 		ICompilationUnit cu = createPackageInfoWithAccessorOrder();
-		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
+		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu); 
 		
 		XmlAccessorOrderAnnotation annotation = 
-				(XmlAccessorOrderAnnotation) packageResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+				(XmlAccessorOrderAnnotation) resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertTrue(annotation != null);
 		assertEquals(XmlAccessOrder.UNDEFINED, annotation.getValue());
 		
@@ -47,7 +47,7 @@ public class XmlAccessorOrderPackageAnnotationTests
 		assertSourceContains("@XmlAccessorOrder(ALPHABETICAL)", cu);
 		
 		annotation.setValue(null);
-		assertNull(packageResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER));
+		assertNull(resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_ORDER));
 		assertSourceDoesNotContain("@XmlAccessorOrder", cu);
 		
 //		TODO uncomment when bug 328400 is addressed

@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -53,26 +53,26 @@ public class XmlAccessorOrderTypeAnnotationTests
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertTrue(xmlAccessorOrderAnnotation != null);
 		assertNull(xmlAccessorOrderAnnotation.getValue());
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorOrderWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertEquals(XmlAccessOrder.ALPHABETICAL, xmlAccessorOrderAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorOrder();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertEquals(null, xmlAccessorOrderAnnotation.getValue());
 
 		xmlAccessorOrderAnnotation.setValue(XmlAccessOrder.UNDEFINED);
@@ -83,9 +83,9 @@ public class XmlAccessorOrderTypeAnnotationTests
 
 	public void testSetValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorOrderWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+		XmlAccessorOrderAnnotation xmlAccessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
 		assertEquals(XmlAccessOrder.ALPHABETICAL, xmlAccessorOrderAnnotation.getValue());
 
 		xmlAccessorOrderAnnotation.setValue(null);

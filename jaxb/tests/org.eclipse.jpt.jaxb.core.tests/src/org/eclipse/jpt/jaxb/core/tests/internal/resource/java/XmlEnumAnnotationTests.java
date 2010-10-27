@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -53,18 +53,18 @@ public class XmlEnumAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnum();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) typeResource.getAnnotation(JAXB.XML_ENUM);
+		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceType.getAnnotation(JAXB.XML_ENUM);
 		assertTrue(xmlEnumAnnotation != null);
 		assertNull(xmlEnumAnnotation.getValue());
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) typeResource.getAnnotation(JAXB.XML_ENUM);
+		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceType.getAnnotation(JAXB.XML_ENUM);
 		assertTrue(xmlEnumAnnotation != null);
 		assertEquals(XML_ENUM_JAVA_TYPE, xmlEnumAnnotation.getValue());
 		assertEquals("java.lang." + XML_ENUM_JAVA_TYPE, xmlEnumAnnotation.getFullyQualifiedValueClassName());
@@ -72,9 +72,9 @@ public class XmlEnumAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnum();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) typeResource.getAnnotation(JAXB.XML_ENUM);
+		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceType.getAnnotation(JAXB.XML_ENUM);
 		assertNull(xmlEnumAnnotation.getValue());
 		xmlEnumAnnotation.setValue(XML_ENUM_JAVA_TYPE);
 		assertEquals(XML_ENUM_JAVA_TYPE, xmlEnumAnnotation.getValue());

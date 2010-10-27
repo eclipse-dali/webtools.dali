@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
-import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 
@@ -27,7 +27,7 @@ public interface JaxbPlatformDefinition {
 	
 	JaxbFactory buildFactory();
 
-	JpaAnnotationDefinitionProvider[] getAnnotationDefinitionProviders();
+	AnnotationDefinitionProvider[] getAnnotationDefinitionProviders();
 
 	JaxbPlatformProvider buildPlatformProvider();
 

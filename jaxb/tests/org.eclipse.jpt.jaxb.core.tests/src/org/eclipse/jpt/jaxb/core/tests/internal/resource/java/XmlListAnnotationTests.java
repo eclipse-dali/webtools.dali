@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,13 +39,13 @@ public class XmlListAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlList() throws Exception {
 		ICompilationUnit cu = this.createTestXmlList();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) attributeResource.getAnnotation(JAXB.XML_LIST);
+		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(JAXB.XML_LIST);
 		assertTrue(xmlListAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_LIST);
+		resourceAttribute.removeAnnotation(JAXB.XML_LIST);
 		assertSourceDoesNotContain("@XmlList", cu);
 	}
 }

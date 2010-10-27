@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -90,20 +90,20 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertNull(xmlElementDeclAnnotation.getName());
 		assertNull(xmlElementDeclAnnotation.getNamespace());
@@ -115,10 +115,10 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getName());
 		xmlElementDeclAnnotation.setName(XML_ELEMENT_DECL_NAME);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getName());
@@ -134,20 +134,20 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_NAMESPACE, xmlElementDeclAnnotation.getNamespace());
 	}
 
 	public void testSetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getNamespace());
 		xmlElementDeclAnnotation.setNamespace(XML_ELEMENT_DECL_NAMESPACE);
 		assertEquals(XML_ELEMENT_DECL_NAMESPACE, xmlElementDeclAnnotation.getNamespace());
@@ -163,20 +163,20 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetDefaultValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithDefaultValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_DEFAULT_VALUE, xmlElementDeclAnnotation.getDefaultValue());
 	}
 
 	public void testSetDefaultValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getDefaultValue());
 		xmlElementDeclAnnotation.setDefaultValue(XML_ELEMENT_DECL_DEFAULT_VALUE);
 		assertEquals(XML_ELEMENT_DECL_DEFAULT_VALUE, xmlElementDeclAnnotation.getDefaultValue());
@@ -192,10 +192,10 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetScope() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithScope();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_SCOPE, xmlElementDeclAnnotation.getScope());
 		assertEquals("javax.xml.bind.annotation." + XML_ELEMENT_DECL_SCOPE, xmlElementDeclAnnotation.getFullyQualifiedScopeClassName());
@@ -203,10 +203,10 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testSetScope() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getScope());
 		xmlElementDeclAnnotation.setScope(XML_ELEMENT_DECL_SCOPE);
 		assertEquals(XML_ELEMENT_DECL_SCOPE, xmlElementDeclAnnotation.getScope());
@@ -222,20 +222,20 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetSubstitutionHeadName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithSubstitutionHeadName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getSubstitutionHeadName());
 	}
 
 	public void testSetSubstitutionHeadName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getSubstitutionHeadName());
 		xmlElementDeclAnnotation.setSubstitutionHeadName(XML_ELEMENT_DECL_NAME);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getSubstitutionHeadName());
@@ -251,20 +251,20 @@ public class XmlElementDeclAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetSubstitutionHeadNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDeclWithSubstitutionHeadNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertTrue(xmlElementDeclAnnotation != null);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getSubstitutionHeadNamespace());
 	}
 
 	public void testSetSubstitutionHeadNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementDecl();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.methods().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getMethod(resourceType, 0);
 
-		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) attributeResource.getAnnotation(JAXB.XML_ELEMENT_DECL);
+		XmlElementDeclAnnotation xmlElementDeclAnnotation = (XmlElementDeclAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_DECL);
 		assertNull(xmlElementDeclAnnotation.getSubstitutionHeadNamespace());
 		xmlElementDeclAnnotation.setSubstitutionHeadNamespace(XML_ELEMENT_DECL_NAME);
 		assertEquals(XML_ELEMENT_DECL_NAME, xmlElementDeclAnnotation.getSubstitutionHeadNamespace());

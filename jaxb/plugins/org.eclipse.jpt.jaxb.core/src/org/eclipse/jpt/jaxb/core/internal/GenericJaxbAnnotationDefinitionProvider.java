@@ -10,9 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAnyAttributeAnnotationDefinition;
@@ -44,22 +42,23 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefi
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlValueAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 
 /**
  * Support for JAXB annotations
  */
 public class GenericJaxbAnnotationDefinitionProvider
-	extends AbstractJpaAnnotationDefintionProvider
+	extends AbstractAnnotationDefintionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = 
+	private static final AnnotationDefinitionProvider INSTANCE = 
 			new GenericJaxbAnnotationDefinitionProvider();
 
 
 	/**
 	 * Return the singleton
 	 */
-	public static JpaAnnotationDefinitionProvider instance() {
+	public static AnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
 

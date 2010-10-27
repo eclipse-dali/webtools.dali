@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,13 +39,13 @@ public class XmlAnyAttributeAnnotationTests extends JaxbJavaResourceModelTestCas
 
 	public void testGetXmlAnyAttribute() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyAttribute();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlAnyAttributeAnnotation xmlAnyAttributeAnnotation = (XmlAnyAttributeAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ATTRIBUTE);
+		XmlAnyAttributeAnnotation xmlAnyAttributeAnnotation = (XmlAnyAttributeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ATTRIBUTE);
 		assertTrue(xmlAnyAttributeAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_ANY_ATTRIBUTE);
+		resourceAttribute.removeAnnotation(JAXB.XML_ANY_ATTRIBUTE);
 		assertSourceDoesNotContain("@XmlAnyAttribute", cu);
 	}
 }

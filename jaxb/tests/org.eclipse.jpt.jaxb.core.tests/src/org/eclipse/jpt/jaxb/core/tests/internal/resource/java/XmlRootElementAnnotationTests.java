@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -67,18 +67,18 @@ public class XmlRootElementAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRootElementWithName();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertTrue(xmlRootElementAnnotation != null);
 		assertEquals(XML_ROOT_ELEMENT_NAME, xmlRootElementAnnotation.getName());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRootElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertTrue(xmlRootElementAnnotation != null);
 		assertNull(xmlRootElementAnnotation.getName());
 		assertNull(xmlRootElementAnnotation.getNamespace());
@@ -86,9 +86,9 @@ public class XmlRootElementAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRootElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(xmlRootElementAnnotation.getName());
 		xmlRootElementAnnotation.setName(XML_ROOT_ELEMENT_NAME);
 		assertEquals(XML_ROOT_ELEMENT_NAME, xmlRootElementAnnotation.getName());
@@ -104,18 +104,18 @@ public class XmlRootElementAnnotationTests extends JaxbJavaResourceModelTestCase
 
 	public void testGetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRootElementWithNamespace();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertTrue(xmlRootElementAnnotation != null);
 		assertEquals(XML_ROOT_ELEMENT_NAMESPACE, xmlRootElementAnnotation.getNamespace());
 	}
 
 	public void testSetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRootElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) typeResource.getAnnotation(JAXB.XML_ROOT_ELEMENT);
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(JAXB.XML_ROOT_ELEMENT);
 		assertNull(xmlRootElementAnnotation.getNamespace());
 		xmlRootElementAnnotation.setNamespace(XML_ROOT_ELEMENT_NAMESPACE);
 		assertEquals(XML_ROOT_ELEMENT_NAMESPACE, xmlRootElementAnnotation.getNamespace());

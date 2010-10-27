@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -67,10 +67,10 @@ public class XmlAnyElementAnnotationTests extends JaxbJavaResourceModelTestCase 
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ELEMENT);
+		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ELEMENT);
 		assertTrue(xmlAnyElementAnnotation != null);
 		assertNull(xmlAnyElementAnnotation.getLax());
 		assertNull(xmlAnyElementAnnotation.getValue());
@@ -78,18 +78,18 @@ public class XmlAnyElementAnnotationTests extends JaxbJavaResourceModelTestCase 
 
 	public void testGetLax() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyElementWithBooleanElement("lax");
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ELEMENT);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ELEMENT);
 
 		assertEquals(Boolean.TRUE, xmlAnyElementAnnotation.getLax());
 	}
 
 	public void testSetLax() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
-		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ELEMENT);
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ELEMENT);
 
 		assertNotNull(xmlAnyElementAnnotation);
 		assertNull(xmlAnyElementAnnotation.getLax());
@@ -106,10 +106,10 @@ public class XmlAnyElementAnnotationTests extends JaxbJavaResourceModelTestCase 
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyElementWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ELEMENT);
+		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ELEMENT);
 		assertTrue(xmlAnyElementAnnotation != null);
 		assertEquals(XML_ANY_ELEMENT_VALUE, xmlAnyElementAnnotation.getValue());
 		assertEquals("java.lang." + XML_ANY_ELEMENT_VALUE, xmlAnyElementAnnotation.getFullyQualifiedValueClassName());
@@ -117,10 +117,10 @@ public class XmlAnyElementAnnotationTests extends JaxbJavaResourceModelTestCase 
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyElement();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) attributeResource.getAnnotation(JAXB.XML_ANY_ELEMENT);
+		XmlAnyElementAnnotation xmlAnyElementAnnotation = (XmlAnyElementAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ELEMENT);
 		assertNull(xmlAnyElementAnnotation.getValue());
 		xmlAnyElementAnnotation.setValue(XML_ANY_ELEMENT_VALUE);
 		assertEquals(XML_ANY_ELEMENT_VALUE, xmlAnyElementAnnotation.getValue());

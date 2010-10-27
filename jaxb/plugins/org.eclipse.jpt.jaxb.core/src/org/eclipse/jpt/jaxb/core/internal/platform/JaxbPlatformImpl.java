@@ -11,17 +11,17 @@ package org.eclipse.jpt.jaxb.core.internal.platform;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -31,14 +31,14 @@ public final class JaxbPlatformImpl
 	
 	private final JaxbFactory jaxbFactory;
 	
-	private final JpaAnnotationProvider annotationProvider;
+	private final AnnotationProvider annotationProvider;
 
 	private final JaxbPlatformProvider platformProvider;
 
 	public JaxbPlatformImpl(JaxbPlatformDefinition jaxbPlatformDefinition) {
 		super();
 		this.jaxbFactory = jaxbPlatformDefinition.buildFactory();
-		this.annotationProvider = new GenericJpaAnnotationProvider(jaxbPlatformDefinition.getAnnotationDefinitionProviders());
+		this.annotationProvider = new GenericAnnotationProvider(jaxbPlatformDefinition.getAnnotationDefinitionProviders());
 		this.platformProvider = jaxbPlatformDefinition.buildPlatformProvider();
 	}
 
@@ -87,7 +87,7 @@ public final class JaxbPlatformImpl
 
 	// ********** Java annotations **********
 
-	public JpaAnnotationProvider getAnnotationProvider() {
+	public AnnotationProvider getAnnotationProvider() {
 		return this.annotationProvider;
 	}
 

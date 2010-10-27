@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlTypeAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlTypeAnnotation((JavaResourcePersistentType) parent, (Type) annotatedElement);
+		return new SourceXmlTypeAnnotation((JavaResourceType) parent, (Type) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlTypeAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlTypeAnnotation((JavaResourcePersistentType) parent, jdtAnnotation);
+		return new BinaryXmlTypeAnnotation((JavaResourceType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

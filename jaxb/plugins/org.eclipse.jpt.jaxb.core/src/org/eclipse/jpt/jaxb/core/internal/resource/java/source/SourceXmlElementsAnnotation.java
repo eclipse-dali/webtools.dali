@@ -12,13 +12,11 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementsAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -36,7 +34,7 @@ public class SourceXmlElementsAnnotation
 	private final Vector<XmlElementAnnotation> elements = new Vector<XmlElementAnnotation>();
 	
 	
-	public SourceXmlElementsAnnotation(JavaResourcePersistentAttribute parent, Attribute attibute) {
+	public SourceXmlElementsAnnotation(JavaResourceAttribute parent, Attribute attibute) {
 		super(parent, attibute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	

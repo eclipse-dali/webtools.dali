@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -58,42 +58,42 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlMimeType() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) attributeResource.getAnnotation(JAXB.XML_MIME_TYPE);
+		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_MIME_TYPE);
+		resourceAttribute.removeAnnotation(JAXB.XML_MIME_TYPE);
 		assertSourceDoesNotContain("@XmlMimeType", cu);
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeTypeWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) attributeResource.getAnnotation(JAXB.XML_MIME_TYPE);
+		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
 		assertEquals(XML_MIME_TYPE_VALUE, xmlMimeTypeAnnotation.getValue());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) attributeResource.getAnnotation(JAXB.XML_MIME_TYPE);
+		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
 		assertNull(xmlMimeTypeAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) attributeResource.getAnnotation(JAXB.XML_MIME_TYPE);
+		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertNull(xmlMimeTypeAnnotation.getValue());
 		xmlMimeTypeAnnotation.setValue(XML_MIME_TYPE_VALUE);
 		assertEquals(XML_MIME_TYPE_VALUE, xmlMimeTypeAnnotation.getValue());

@@ -12,13 +12,11 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -36,7 +34,7 @@ public class SourceXmlElementRefsAnnotation
 	private final Vector<XmlElementRefAnnotation> elementRefs = new Vector<XmlElementRefAnnotation>();
 	
 	
-	public SourceXmlElementRefsAnnotation(JavaResourcePersistentAttribute parent, Attribute attibute) {
+	public SourceXmlElementRefsAnnotation(JavaResourceAttribute parent, Attribute attibute) {
 		super(parent, attibute, DECLARATION_ANNOTATION_ADAPTER);
 	}
 	

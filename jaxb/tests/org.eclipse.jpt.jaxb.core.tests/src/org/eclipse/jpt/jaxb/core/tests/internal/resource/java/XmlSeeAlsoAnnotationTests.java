@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -54,18 +54,18 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlso();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 		assertEquals(0, xmlSeeAlsoAnnotation.getClassesSize());
 	}
 
 	public void testGetClasses() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 		ListIterator<String> classes = xmlSeeAlsoAnnotation.getClasses().iterator();
 		assertEquals("Foo", classes.next());
@@ -74,18 +74,18 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetClassesSize() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 		assertEquals(2, xmlSeeAlsoAnnotation.getClassesSize());
 	}
 
 	public void testAddClass() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlso();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 
 		xmlSeeAlsoAnnotation.addClass("Fooo");
@@ -96,9 +96,9 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testAddClassIndex() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlso();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 
 		xmlSeeAlsoAnnotation.addClass(0, "Fooo");
@@ -110,9 +110,9 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testRemoveClass() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 
 		xmlSeeAlsoAnnotation.removeClass("Foo");
@@ -125,9 +125,9 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testRemoveClassIndex() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 
 		xmlSeeAlsoAnnotation.removeClass(0);
@@ -140,9 +140,9 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testMoveClass() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlso();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) typeResource.getAnnotation(JAXB.XML_SEE_ALSO);
+		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
 		assertTrue(xmlSeeAlsoAnnotation != null);
 
 		xmlSeeAlsoAnnotation.addClass("Fooo");

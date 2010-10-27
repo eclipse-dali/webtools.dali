@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -38,12 +38,12 @@ public class XmlInlineBinaryDataAnnotationTests extends JaxbJavaResourceModelTes
 
 	public void testGetXmlInlineBinaryData() throws Exception {
 		ICompilationUnit cu = this.createTestXmlInlineBinaryData();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlInlineBinaryDataAnnotation xmlInlineBinaryDataAnnotation = (XmlInlineBinaryDataAnnotation) typeResource.getAnnotation(JAXB.XML_INLINE_BINARY_DATA);
+		XmlInlineBinaryDataAnnotation xmlInlineBinaryDataAnnotation = (XmlInlineBinaryDataAnnotation) resourceType.getAnnotation(JAXB.XML_INLINE_BINARY_DATA);
 		assertTrue(xmlInlineBinaryDataAnnotation != null);
 
-		typeResource.removeAnnotation(JAXB.XML_INLINE_BINARY_DATA);
+		resourceType.removeAnnotation(JAXB.XML_INLINE_BINARY_DATA);
 		assertSourceDoesNotContain("@XmlInlineBinaryData", cu);
 	}
 }

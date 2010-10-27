@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**

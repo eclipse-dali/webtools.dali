@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -66,18 +66,18 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(xmlJavaTypeAdapterAnnotation != null);
 		assertNull(xmlJavaTypeAdapterAnnotation.getValue());
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapterWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(xmlJavaTypeAdapterAnnotation != null);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
 		assertEquals("test." + XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getFullyQualifiedValue());
@@ -85,9 +85,9 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapter();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(xmlJavaTypeAdapterAnnotation.getValue());
 		xmlJavaTypeAdapterAnnotation.setValue(XML_JAVA_TYPE_ADAPTER_CLASS);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
@@ -97,9 +97,9 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 
 	public void testSetValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapterWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) typeResource.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
 
 		xmlJavaTypeAdapterAnnotation.setValue(null);

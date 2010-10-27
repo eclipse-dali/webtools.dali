@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,13 +39,13 @@ public class XmlIDAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlID() throws Exception {
 		ICompilationUnit cu = this.createTestXmlID();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) attributeResource.getAnnotation(JAXB.XML_ID);
+		XmlIDAnnotation xmlIDAnnotation = (XmlIDAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ID);
 		assertTrue(xmlIDAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_ID);
+		resourceAttribute.removeAnnotation(JAXB.XML_ID);
 		assertSourceDoesNotContain("@XmlID", cu);
 	}
 }

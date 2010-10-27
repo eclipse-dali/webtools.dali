@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 
 /**
@@ -22,7 +21,7 @@ public final class BinaryXmlTransientAnnotation
 	implements XmlTransientAnnotation
 {
 
-	public BinaryXmlTransientAnnotation(JavaResourcePersistentMember parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlTransientAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

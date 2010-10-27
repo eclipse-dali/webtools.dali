@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -38,12 +38,12 @@ public class XmlRegistryAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlRegistry() throws Exception {
 		ICompilationUnit cu = this.createTestXmlRegistry();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlRegistryAnnotation xmlRegistryAnnotation = (XmlRegistryAnnotation) typeResource.getAnnotation(JAXB.XML_REGISTRY);
+		XmlRegistryAnnotation xmlRegistryAnnotation = (XmlRegistryAnnotation) resourceType.getAnnotation(JAXB.XML_REGISTRY);
 		assertTrue(xmlRegistryAnnotation != null);
 
-		typeResource.removeAnnotation(JAXB.XML_REGISTRY);
+		resourceType.removeAnnotation(JAXB.XML_REGISTRY);
 		assertSourceDoesNotContain("@XmlRegistry", cu);
 	}
 }

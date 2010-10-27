@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 
 /**
@@ -22,7 +21,7 @@ public final class BinaryXmlRegistryAnnotation
 	implements XmlRegistryAnnotation
 {
 
-	public BinaryXmlRegistryAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlRegistryAnnotation(JavaResourceType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

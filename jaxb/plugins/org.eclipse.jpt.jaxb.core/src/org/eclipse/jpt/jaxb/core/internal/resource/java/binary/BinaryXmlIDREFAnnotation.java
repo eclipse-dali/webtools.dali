@@ -10,8 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 
 /**
@@ -22,7 +21,7 @@ public final class BinaryXmlIDREFAnnotation
 	implements XmlIDREFAnnotation
 {
 
-	public BinaryXmlIDREFAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlIDREFAnnotation(JavaResourceAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

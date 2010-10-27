@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.jaxb21;
 
-import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
+import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericJaxbAnnotationDefinitionProvider;
@@ -44,8 +44,8 @@ public class GenericJaxbPlatformDefinition
 		return GenericJaxbPlatformProvider.instance();
 	}
 
-	public JpaAnnotationDefinitionProvider[] getAnnotationDefinitionProviders() {
-		return new JpaAnnotationDefinitionProvider[] {GenericJaxbAnnotationDefinitionProvider.instance()};
+	public AnnotationDefinitionProvider[] getAnnotationDefinitionProviders() {
+		return new AnnotationDefinitionProvider[] {GenericJaxbAnnotationDefinitionProvider.instance()};
 	}
 
 }

@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.internal;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.jaxb.core.JavaResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 
@@ -50,6 +49,9 @@ public class GenericJaxbPlatformProvider
 		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 		}
+		else if (contentType.equals(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+			return JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		}
 //		else if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
 //			return JptCorePlugin.JAR_RESOURCE_TYPE;
 //		}
@@ -66,7 +68,8 @@ public class GenericJaxbPlatformProvider
 	protected JaxbResourceModelProvider[] buildResourceModelProviders() {
 		// order should not be important here
 		return new JaxbResourceModelProvider[] {
-			JavaResourceModelProvider.instance()};
+			JavaResourceModelProvider.instance(),
+			JavaPackageInfoResourceModelProvider.instance()};
 	}
 	
 //	

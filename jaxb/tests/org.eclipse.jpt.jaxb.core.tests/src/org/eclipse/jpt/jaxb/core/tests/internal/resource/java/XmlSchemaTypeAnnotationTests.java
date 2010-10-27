@@ -13,12 +13,12 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypesAnnotation;
 
-
+@SuppressWarnings("nls")
 public class XmlSchemaTypeAnnotationTests
 		extends JaxbJavaResourceModelTestCase {
 	

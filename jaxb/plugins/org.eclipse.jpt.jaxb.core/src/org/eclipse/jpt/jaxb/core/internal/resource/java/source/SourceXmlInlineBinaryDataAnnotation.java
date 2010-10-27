@@ -10,11 +10,10 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.source.SourceAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
 
 /**
@@ -26,7 +25,7 @@ public final class SourceXmlInlineBinaryDataAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	public SourceXmlInlineBinaryDataAnnotation(JavaResourcePersistentMember parent, Member member) {
+	public SourceXmlInlineBinaryDataAnnotation(JavaResourceMember parent, Member member) {
 		super(parent, member, DECLARATION_ANNOTATION_ADAPTER);
 	}
 

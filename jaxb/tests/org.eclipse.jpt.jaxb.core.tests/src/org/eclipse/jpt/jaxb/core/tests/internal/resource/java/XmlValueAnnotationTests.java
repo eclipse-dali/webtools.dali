@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,13 +39,13 @@ public class XmlValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlValueAnnotation xmlValueAnnotation = (XmlValueAnnotation) attributeResource.getAnnotation(JAXB.XML_VALUE);
+		XmlValueAnnotation xmlValueAnnotation = (XmlValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_VALUE);
 		assertTrue(xmlValueAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_VALUE);
+		resourceAttribute.removeAnnotation(JAXB.XML_VALUE);
 		assertSourceDoesNotContain("@XmlValue", cu);
 	}
 }

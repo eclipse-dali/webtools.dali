@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -39,13 +39,13 @@ public class XmlIDREFAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlIDREF() throws Exception {
 		ICompilationUnit cu = this.createTestXmlIDREF();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) attributeResource.getAnnotation(JAXB.XML_IDREF);
+		XmlIDREFAnnotation xmlIDREFAnnotation = (XmlIDREFAnnotation) resourceAttribute.getAnnotation(JAXB.XML_IDREF);
 		assertTrue(xmlIDREFAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_IDREF);
+		resourceAttribute.removeAnnotation(JAXB.XML_IDREF);
 		assertSourceDoesNotContain("@XmlIDREF", cu);
 	}
 }

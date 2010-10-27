@@ -9,21 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
-import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.internal.GenericJpaAnnotationProvider;
-import org.eclipse.jpt.core.tests.internal.resource.java.JavaResourceModelTestCase;
+import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericJaxbAnnotationDefinitionProvider;
 
 public class JaxbJavaResourceModelTestCase
 		extends JavaResourceModelTestCase {	
-	
+
 	public JaxbJavaResourceModelTestCase(String name) {
 		super(name);
 	}
-	
 
 	@Override
-	protected JpaAnnotationProvider buildAnnotationProvider() {
-		return new GenericJpaAnnotationProvider(GenericJaxbAnnotationDefinitionProvider.instance());
+	protected AnnotationDefinitionProvider annotationDefinitionProvider() {
+		return GenericJaxbAnnotationDefinitionProvider.instance();
 	}
 }

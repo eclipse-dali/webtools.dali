@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 
-
+@SuppressWarnings("nls")
 public class XmlAccessorTypePackageAnnotationTests
 		extends JaxbJavaResourceModelTestCase {
 	
@@ -35,10 +35,10 @@ public class XmlAccessorTypePackageAnnotationTests
 			throws Exception {
 		
 		ICompilationUnit cu = createPackageInfoWithAccessorOrder();
-		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
+		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu); 
 		
 		XmlAccessorTypeAnnotation annotation = 
-				(XmlAccessorTypeAnnotation) packageResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
+				(XmlAccessorTypeAnnotation) resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertTrue(annotation != null);
 		assertEquals(XmlAccessType.PROPERTY, annotation.getValue());
 		
@@ -55,7 +55,7 @@ public class XmlAccessorTypePackageAnnotationTests
 		assertSourceContains("@XmlAccessorType(value = PUBLIC_MEMBER)", cu);
 		
 		annotation.setValue(null);
-		assertNull(packageResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE));
+		assertNull(resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_TYPE));
 		assertSourceDoesNotContain("@XmlAccessorType", cu);
 		
 //		TODO uncomment when bug 328400 is addressed

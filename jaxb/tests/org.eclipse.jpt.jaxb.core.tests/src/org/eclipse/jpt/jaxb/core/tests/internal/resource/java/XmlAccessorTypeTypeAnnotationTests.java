@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -53,26 +53,26 @@ public class XmlAccessorTypeTypeAnnotationTests
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
+		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertTrue(xmlAccessorTypeAnnotation != null);
 		assertNull(xmlAccessorTypeAnnotation.getValue());
 	}
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorTypeWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
+		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertEquals(XmlAccessType.FIELD, xmlAccessorTypeAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorType();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
+		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertEquals(null, xmlAccessorTypeAnnotation.getValue());
 
 		xmlAccessorTypeAnnotation.setValue(XmlAccessType.PUBLIC_MEMBER);
@@ -93,9 +93,9 @@ public class XmlAccessorTypeTypeAnnotationTests
 
 	public void testSetValueNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAccessorTypeWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu);
+		JavaResourceType resourceType = buildJavaResourceType(cu);
 
-		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) typeResource.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
+		XmlAccessorTypeAnnotation xmlAccessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(JAXB.XML_ACCESSOR_TYPE);
 		assertEquals(XmlAccessType.FIELD, xmlAccessorTypeAnnotation.getValue());
 
 		xmlAccessorTypeAnnotation.setValue(null);

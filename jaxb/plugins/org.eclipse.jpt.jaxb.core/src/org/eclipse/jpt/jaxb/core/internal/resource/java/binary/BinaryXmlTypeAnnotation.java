@@ -12,10 +12,9 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
@@ -34,7 +33,7 @@ public final class BinaryXmlTypeAnnotation
 	private final Vector<String> propOrder;
 
 
-	public BinaryXmlTypeAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlTypeAnnotation(JavaResourceType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.factoryClass = this.buildFactoryClass();
 		this.factoryMethod = this.buildFactoryMethod();

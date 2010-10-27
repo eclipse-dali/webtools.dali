@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.platform;
 
 import org.eclipse.core.resources.IFile;
-import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -53,7 +53,7 @@ public interface JaxbPlatform {
 	 * Return an annotation provider responsible for determining what Java
 	 * annotations are supported and constructing java resource model objects.
 	 */
-	JpaAnnotationProvider getAnnotationProvider();
+	AnnotationProvider getAnnotationProvider();
 
 	/**
 	 * Return a formatter that can clean up the Java annotations added to source

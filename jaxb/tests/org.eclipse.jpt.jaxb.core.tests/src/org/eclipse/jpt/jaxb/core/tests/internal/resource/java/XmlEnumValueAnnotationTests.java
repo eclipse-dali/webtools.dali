@@ -11,9 +11,9 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -58,43 +58,43 @@ public class XmlEnumValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlEnumValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) attributeResource.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 
-		attributeResource.removeAnnotation(JAXB.XML_ENUM_VALUE);
+		resourceAttribute.removeAnnotation(JAXB.XML_ENUM_VALUE);
 		assertSourceDoesNotContain("@XmlEnumValue", cu);
 	}
 
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValueWithValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) attributeResource.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 		assertEquals(XML_ENUM_VALUE_VALUE, xmlEnumValueAnnotation.getValue());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) attributeResource.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 		assertNull(xmlEnumValueAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourcePersistentType typeResource = buildJavaTypeResource(cu); 
-		JavaResourcePersistentAttribute attributeResource = typeResource.fields().next();
+		JavaResourceType resourceType = buildJavaResourceType(cu); 
+		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) attributeResource.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertNull(xmlEnumValueAnnotation.getValue());
 		xmlEnumValueAnnotation.setValue(XML_ENUM_VALUE_VALUE);
 		assertEquals(XML_ENUM_VALUE_VALUE, xmlEnumValueAnnotation.getValue());
