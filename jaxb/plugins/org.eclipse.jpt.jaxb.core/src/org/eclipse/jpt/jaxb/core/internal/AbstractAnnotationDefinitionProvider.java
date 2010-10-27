@@ -17,7 +17,7 @@ import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
-public abstract class AbstractAnnotationDefintionProvider
+public abstract class AbstractAnnotationDefinitionProvider
 		implements AnnotationDefinitionProvider
 {
 	private AnnotationDefinition[] typeAnnotationDefinitions;
@@ -29,7 +29,7 @@ public abstract class AbstractAnnotationDefintionProvider
 	private AnnotationDefinition[] packageAnnotationDefinitions;
 
 
-	protected AbstractAnnotationDefintionProvider() {
+	protected AbstractAnnotationDefinitionProvider() {
 		super();
 	}
 

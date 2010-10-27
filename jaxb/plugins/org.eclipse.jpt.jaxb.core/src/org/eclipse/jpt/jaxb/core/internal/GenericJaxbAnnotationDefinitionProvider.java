@@ -48,7 +48,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
  * Support for JAXB annotations
  */
 public class GenericJaxbAnnotationDefinitionProvider
-	extends AbstractAnnotationDefintionProvider
+	extends AbstractAnnotationDefinitionProvider
 {
 	// singleton
 	private static final AnnotationDefinitionProvider INSTANCE = 
