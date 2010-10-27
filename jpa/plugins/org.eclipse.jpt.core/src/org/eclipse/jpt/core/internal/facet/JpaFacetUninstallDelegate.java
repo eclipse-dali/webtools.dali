@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.facet;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.common.project.facet.core.IDelegate;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
@@ -21,10 +22,7 @@ public class JpaFacetUninstallDelegate
 	public void execute(IProject project, IProjectFacetVersion fv,
 			Object config, IProgressMonitor monitor) throws CoreException {
 		
-		// There is nothing to do here.  Everything is taken care of by the 
-		// JpaModelManager *whenever* the facet is removed (even via meta-file
-		// editing and CVS updating), but this delegate needs to be here because
-		// it is required by the facet extension point action element, and that 
-		// is required by the facet UI to allow uninstallation of this facet.
+		JptCorePlugin.clearProjectPreferences(project);
+		JptCorePlugin.clearProjectPersistentProperties(project);
 	}
 }

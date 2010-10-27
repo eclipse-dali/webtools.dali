@@ -425,6 +425,26 @@ public class JptCorePlugin extends Plugin {
 	}
 	
 	/**
+	 * Clears the project of JPA-specific preferences
+	 */
+	public static void clearProjectPreferences(IProject project) {
+		clearProjectPreferences(
+				project, 
+				JPA_PLATFORM_PREF_KEY, DISCOVER_ANNOTATED_CLASSES, METAMODEL_SOURCE_FOLDER_NAME);
+	}
+	
+	/**
+	 * Clears the specified preferences
+	 */
+	public static void clearProjectPreferences(IProject project, String ... preferenceKeys) {
+		IEclipsePreferences prefs = getProjectPreferences(project);
+		for (String preferenceKey : preferenceKeys) {
+			prefs.remove(preferenceKey);
+		}
+		flush(prefs);
+	}
+	
+	/**
 	 * Return the Dali preferences for the specified context.
 	 */
 	private static IEclipsePreferences getPreferences(IScopeContext context) {
@@ -580,6 +600,7 @@ public class JptCorePlugin extends Plugin {
 	 * Flush preferences in an asynchronous Job because the flush request will
 	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
 	 * when deleting the metamodel source folder).
+	 * Note: the flush will also remove the prefs node if it is empty
 	 */
 	private static void flush(IEclipsePreferences prefs) {
 		if (flushPreferences) {
@@ -679,6 +700,20 @@ public class JptCorePlugin extends Plugin {
 			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA, defaultSchema);
 		} catch (CoreException ex) {
 			log(ex);
+		}
+	}
+	
+	/**
+	 * Clear the JPA-specific project properties
+	 */
+	public static void clearProjectPersistentProperties(IProject project) {
+		try {
+			project.setPersistentProperty(DATA_SOURCE_CONNECTION_PROFILE_NAME, null);
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_CATALOG, null);
+			project.setPersistentProperty(USER_OVERRIDE_DEFAULT_SCHEMA, null);
+		}
+		catch (CoreException ce) {
+			log(ce);
 		}
 	}
 

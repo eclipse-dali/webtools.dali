@@ -88,6 +88,10 @@ public class JptJaxbCorePlugin
 		return INSTANCE.getProjectManager_();
 	}
 	
+	public static JaxbPlatformManager getJaxbPlatformManager() {
+		return JaxbPlatformManagerImpl.instance();
+	}
+	
 	
 	/**
 	 * Set the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
@@ -167,8 +171,8 @@ public class JptJaxbCorePlugin
 		return null;
 	}
 	
-	public static JaxbPlatformManager getJaxbPlatformManager() {
-		return JaxbPlatformManagerImpl.instance();
+	public static void clearProjectPreferences(IProject project) {
+		JptCorePlugin.clearProjectPreferences(project, JAXB_PLATFORM_PREF_KEY);
 	}
 	
 	
