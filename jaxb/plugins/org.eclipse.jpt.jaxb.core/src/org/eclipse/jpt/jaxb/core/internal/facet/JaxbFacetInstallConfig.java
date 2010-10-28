@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.facet;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.wst.common.project.facet.core.ActionConfig;
 import org.eclipse.wst.common.project.facet.core.IFacetedProjectWorkingCopy;
@@ -60,6 +61,11 @@ public class JaxbFacetInstallConfig
 		IProjectFacetVersion oldFv = getProjectFacetVersion();
 		super.setProjectFacetVersion(fv);
 		this.changeSupport.firePropertyChange(PROJECT_FACET_VERSION_PROPERTY, oldFv, fv);
+		adjustLibraryProviders();
+		if (getLibraryInstallDelegate().getProjectFacetVersion().equals(getProjectFacetVersion())) {
+			getLibraryInstallDelegate().dispose();
+			setLibraryInstallDelegate(buildLibraryInstallDelegate());
+		}
 	}
 	
 	public JaxbPlatformDescription getPlatform() {
@@ -70,10 +76,63 @@ public class JaxbFacetInstallConfig
 		JaxbPlatformDescription oldPlatform = this.platform;
 		this.platform = platform;
 		this.changeSupport.firePropertyChange(PLATFORM_PROPERTY, oldPlatform, platform);
+		adjustLibraryProviders();
 	}
 	
 	public LibraryInstallDelegate getLibraryInstallDelegate() {
+		if (this.libraryInstallDelegate == null) {
+			this.libraryInstallDelegate = buildLibraryInstallDelegate();
+		}
 		return this.libraryInstallDelegate;
+	}
+	
+	protected  LibraryInstallDelegate buildLibraryInstallDelegate() {
+		IFacetedProjectWorkingCopy fpjwc = this.getFacetedProjectWorkingCopy();
+		if (fpjwc == null) {
+			return null;
+		}
+		IProjectFacetVersion pfv = this.getProjectFacetVersion();
+		if (pfv == null) {
+			return null;
+		}
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(fpjwc, pfv);
+		lid.addListener(buildLibraryInstallDelegateListener());
+		return lid;
+	}
+	
+	protected IPropertyChangeListener buildLibraryInstallDelegateListener() {
+		return new IPropertyChangeListener() {
+				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
+						adjustLibraryProviders();
+					}
+				}
+			};
+	}
+	
+	protected void adjustLibraryProviders() {
+		LibraryInstallDelegate lid = getLibraryInstallDelegate();
+		if (lid != null) {
+//			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
+//					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
+//			// add the currently selected one first
+//			JpaLibraryProviderInstallOperationConfig currentJpaConfig = null;
+//			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
+//			if (config instanceof JpaLibraryProviderInstallOperationConfig) {
+//				currentJpaConfig = (JpaLibraryProviderInstallOperationConfig) config;
+//				jpaConfigs.add(currentJpaConfig);
+//			}
+//			for (ILibraryProvider lp : lid.getLibraryProviders()) {
+//				config = lid.getLibraryProviderOperationConfig(lp);
+//				if (config instanceof JpaLibraryProviderInstallOperationConfig
+//						&& ! config.equals(currentJpaConfig)) {
+//					jpaConfigs.add((JpaLibraryProviderInstallOperationConfig) config);
+//				}
+//			}
+//			for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
+//				jpaConfig.setJpaPlatformId(getPlatformId());
+//			}
+		}
 	}
 	
 	public void setLibraryInstallDelegate(LibraryInstallDelegate libraryInstallDelegate) {

@@ -61,6 +61,8 @@ public class JaxbFacetInstallDataModelProvider
 	
 	private PropertyChangeListener configListener;
 	
+	private IPropertyChangeListener libraryInstallDelegateListener;
+	
 	
 	public JaxbFacetInstallDataModelProvider() {
 		this(new JaxbFacetInstallConfig());
@@ -71,6 +73,7 @@ public class JaxbFacetInstallDataModelProvider
 		this.config = config;
 		this.configListener = buildConfigListener();
 		this.config.addPropertyChangeListener(this.configListener);
+		this.libraryInstallDelegateListener = buildLibraryInstallDelegateListener();
 	}
 	
 	
@@ -80,8 +83,28 @@ public class JaxbFacetInstallDataModelProvider
 				if (evt.getPropertyName().equals(JaxbFacetInstallConfig.FACETED_PROJECT_WORKING_COPY_PROPERTY)) {
 					
 				}
+				else if (evt.getPropertyName().equals(JaxbFacetInstallConfig.LIBRARY_INSTALL_DELEGATE_PROPERTY)) {
+					LibraryInstallDelegate oldLid = (LibraryInstallDelegate) evt.getOldValue();
+					if (oldLid != null) {
+						oldLid.removeListener(JaxbFacetInstallDataModelProvider.this.libraryInstallDelegateListener);
+					}
+					LibraryInstallDelegate newLid = (LibraryInstallDelegate) evt.getNewValue();
+					if (newLid != null) {
+						newLid.addListener(JaxbFacetInstallDataModelProvider.this.libraryInstallDelegateListener);
+					}
+					setLibraryInstallDelegate(newLid);
+				}
 			}
 		};
+	}
+	
+	protected IPropertyChangeListener buildLibraryInstallDelegateListener() {
+		return new IPropertyChangeListener() {
+				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					JaxbFacetInstallDataModelProvider.this.getDataModel().notifyPropertyChange(
+							LIBRARY_INSTALL_DELEGATE, IDataModel.VALUE_CHG);
+				}
+			};
 	}
 	
 	@Override
@@ -115,7 +138,7 @@ public class JaxbFacetInstallDataModelProvider
 		}
 		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
 			// means that library install delegate has not been initialized
-			LibraryInstallDelegate lid = buildLibraryInstallDelegate();
+			LibraryInstallDelegate lid = this.config.getLibraryInstallDelegate();
 			setLibraryInstallDelegate(lid);
 			return lid;
 		}
@@ -127,43 +150,12 @@ public class JaxbFacetInstallDataModelProvider
 		return JptJaxbCorePlugin.getDefaultPlatform(getProjectFacetVersion());
 	}
 	
-	protected  LibraryInstallDelegate buildLibraryInstallDelegate() {
-		IFacetedProjectWorkingCopy fpjwc = this.getFacetedProjectWorkingCopy();
-		if (fpjwc == null) {
-			return null;
-		}
-		IProjectFacetVersion pfv = this.getProjectFacetVersion();
-		if (pfv == null) {
-			return null;
-		}
-		LibraryInstallDelegate lid = new LibraryInstallDelegate(fpjwc, pfv);
-		lid.addListener(buildLibraryInstallDelegateListener());
-		return lid;
-	}
-	
-	protected IPropertyChangeListener buildLibraryInstallDelegateListener() {
-		return new IPropertyChangeListener() {
-				public void propertyChanged(String property, Object oldValue, Object newValue ) {
-					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
-						adjustLibraryProviders();
-					}
-					JaxbFacetInstallDataModelProvider.this.getDataModel().notifyPropertyChange(
-							LIBRARY_INSTALL_DELEGATE, IDataModel.VALUE_CHG);
-				}
-			};
-	}
-	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		
 		if (propertyName.equals(FACET_VERSION)) {
-			adjustLibraryProviders();
 			this.model.notifyPropertyChange(PLATFORM, IDataModel.DEFAULT_CHG);
-			if (getLibraryInstallDelegate().getProjectFacetVersion().equals(getProjectFacetVersion())) {
-				getLibraryInstallDelegate().dispose();
-				setLibraryInstallDelegate(buildLibraryInstallDelegate());
-			}
 		}
 		else if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)) {
 			getFacetedProjectWorkingCopy().addListener(
@@ -184,7 +176,6 @@ public class JaxbFacetInstallDataModelProvider
 		}
 		else if (propertyName.equals(PLATFORM)) {
 			this.config.setPlatform((JaxbPlatformDescription) propertyValue);
-			adjustLibraryProviders();
 		}
 		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
 			this.config.setLibraryInstallDelegate((LibraryInstallDelegate) propertyValue);
@@ -273,31 +264,6 @@ public class JaxbFacetInstallDataModelProvider
 	
 	protected void setLibraryInstallDelegate(LibraryInstallDelegate lid) {
 		getDataModel().setProperty(LIBRARY_INSTALL_DELEGATE, lid);
-	}
-	
-	protected void adjustLibraryProviders() {
-		LibraryInstallDelegate lid = getLibraryInstallDelegate();
-		if (lid != null) {
-//			List<JpaLibraryProviderInstallOperationConfig> jpaConfigs 
-//					= new ArrayList<JpaLibraryProviderInstallOperationConfig>();
-//			// add the currently selected one first
-//			JpaLibraryProviderInstallOperationConfig currentJpaConfig = null;
-//			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
-//			if (config instanceof JpaLibraryProviderInstallOperationConfig) {
-//				currentJpaConfig = (JpaLibraryProviderInstallOperationConfig) config;
-//				jpaConfigs.add(currentJpaConfig);
-//			}
-//			for (ILibraryProvider lp : lid.getLibraryProviders()) {
-//				config = lid.getLibraryProviderOperationConfig(lp);
-//				if (config instanceof JpaLibraryProviderInstallOperationConfig
-//						&& ! config.equals(currentJpaConfig)) {
-//					jpaConfigs.add((JpaLibraryProviderInstallOperationConfig) config);
-//				}
-//			}
-//			for (JpaLibraryProviderInstallOperationConfig jpaConfig : jpaConfigs) {
-//				jpaConfig.setJpaPlatformId(getPlatformId());
-//			}
-		}
 	}
 	
 	@Override
