@@ -46,10 +46,10 @@ public abstract class JaxbContextModelTestCase extends AnnotationTestCase
 //		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
 //		return dataModel;
 //	}
-
-	protected JaxbRootContextNode getRootContextNode() {
-		return this.getJaxbProject().getRootContextNode();
-	}
+//
+//	protected JaxbRootContextNode getRootContextNode() {
+//		return this.getJaxbProject().getRootContextNode();
+//	}
 	
 	@Override
 	protected TestJaxbProject getJavaProject() {
