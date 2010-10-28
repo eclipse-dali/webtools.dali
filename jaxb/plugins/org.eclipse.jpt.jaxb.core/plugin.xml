@@ -116,11 +116,16 @@
 			<description>%JAXB_FACET_DESCRIPTION</description>
 		</project-facet>
 		
-		<project-facet-version facet="jpt.jaxb" version="2.2">
+		<project-facet-version facet="jpt.jaxb" version="2.1">
 			<constraint>
 				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
+  		<project-facet-version facet="jpt.jaxb" version="2.2">
+     	<constraint>
+        	<requires facet="java" version="[5.0"/>
+     	</constraint>
+  		</project-facet-version>
 		
 		<template id="jpt.jaxb.template">
 			<label>%JAXB_TEMPLATE_LABEL</label>
