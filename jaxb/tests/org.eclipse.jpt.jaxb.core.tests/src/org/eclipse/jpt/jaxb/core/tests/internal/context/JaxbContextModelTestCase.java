@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
