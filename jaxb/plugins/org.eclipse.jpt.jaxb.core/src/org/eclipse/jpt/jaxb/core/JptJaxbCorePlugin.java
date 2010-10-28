@@ -87,6 +87,15 @@ public class JptJaxbCorePlugin
 	public static JaxbProjectManager getProjectManager() {
 		return INSTANCE.getProjectManager_();
 	}
+
+	/**
+	 * Return the JAXB project corresponding to the specified Eclipse project,
+	 * or <code>null</code> if unable to associate the specified project with a
+	 * JAXB project.
+	 */
+	public static JaxbProject getJaxbProject(IProject project) {
+		return getProjectManager().getJaxbProject(project);
+	}
 	
 	public static JaxbPlatformManager getJaxbPlatformManager() {
 		return JaxbPlatformManagerImpl.instance();
