@@ -9,7 +9,10 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
-import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.FILE_NAME;
+import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.PROJECT;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -22,6 +25,7 @@ import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
+import org.eclipse.ui.internal.ide.IDEWorkbenchMessages;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
 /**
@@ -65,6 +69,7 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 	public void createControl(Composite parent) {
     	super.createControl(parent);
     	
+    	this.setAllowExistingResources(true);
 		this.setFileName(DEFAULT_SCHEMA_NAME);
     }
 	
@@ -90,7 +95,8 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		if( ! valid) {
 			return valid;
 		}
-
+		this.overrideFileExistsWarning();
+		
 		valid = this.projectIsJavaProject(this.getProject());
 		if( ! valid) {
 			this.setErrorMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_errorNotJavaProject);
@@ -140,6 +146,17 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		}
 		String containerName = containerPath.segment(0);
 		return containerName;
+	}
+
+	private void overrideFileExistsWarning() {
+		String existsString= IDEWorkbenchMessages.ResourceGroup_nameExists;
+		existsString.toString();
+		
+		existsString = existsString.substring("''{0}''".length(), existsString.length());    //$NON-NLS-1$
+		String message = this.getMessage();
+		if(message != null && message.endsWith(existsString)) { 
+			this.setMessage(null);
+		}
 	}
 
 }

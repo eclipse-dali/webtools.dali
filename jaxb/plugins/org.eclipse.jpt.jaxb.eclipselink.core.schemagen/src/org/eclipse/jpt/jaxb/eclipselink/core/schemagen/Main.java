@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.eclipselink.core.schemagen;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +21,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal.JptEclipseLinkJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.eclipselink.core.schemagen.internal.Tools;
 import org.eclipse.persistence.jaxb.JAXBContext;
 import org.eclipse.persistence.jaxb.JAXBContextFactory;
 
@@ -80,14 +80,13 @@ public class Main
         if(jaxbContext != null) {
 			this.generateSchema(jaxbContext);
 		}
-		String result = (jaxbContext != null) ? 
-			this.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_GENERATED, this.targetSchemaName) : 
-			this.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName);
-		System.out.println(result);
+        else {
+        	Tools.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName);
+        }
 	}
 	
 	private JAXBContext buildJaxbContext() {
-		System.out.println(this.getString(JptEclipseLinkJaxbCoreMessages.LOADING_CLASSES));
+		System.out.println(Tools.getString(JptEclipseLinkJaxbCoreMessages.LOADING_CLASSES));
         JAXBContext jaxbContext = null;
 		try {
 			ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -108,7 +107,7 @@ public class Main
 	}
 	
 	private void generateSchema(JAXBContext jaxbContext) {
-		System.out.println(this.getString(JptEclipseLinkJaxbCoreMessages.GENERATING_SCHEMA));
+		System.out.println(Tools.getString(JptEclipseLinkJaxbCoreMessages.GENERATING_SCHEMA));
 		System.out.flush();
 
     	SchemaOutputResolver schemaOutputResolver = 
@@ -131,7 +130,7 @@ public class Main
 					System.out.println(className);
 			}
 			catch (ClassNotFoundException e) {
-				System.err.println(this.bind(JptEclipseLinkJaxbCoreMessages.NOT_FOUND, className));
+				System.err.println(Tools.bind(JptEclipseLinkJaxbCoreMessages.NOT_FOUND, className));
 			}
 		}
 		System.out.flush();
@@ -145,7 +144,7 @@ public class Main
 			System.err.println(message);
 		}
 		else if(linkedEx != null && linkedEx instanceof ClassNotFoundException) {
-			String errorMessage = this.bind(
+			String errorMessage = Tools.bind(
 				JptEclipseLinkJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
 			System.err.println(errorMessage);
 		}
@@ -157,19 +156,11 @@ public class Main
 	private void handleClassCastException(ClassCastException ex) {
 		String message = ex.getMessage();
 		if(message != null && message.indexOf(CANNOT_BE_CAST_TO_JAXBCONTEXT) > -1) {
-			System.err.println(this.getString(JptEclipseLinkJaxbCoreMessages.PROPERTIES_FILE_NOT_FOUND));
+			System.err.println(Tools.getString(JptEclipseLinkJaxbCoreMessages.PROPERTIES_FILE_NOT_FOUND));
 		}
 		else {
 			ex.printStackTrace();
 		}
-	}
-	
-	private String getString(String key) {
-		return JptEclipseLinkJaxbCoreMessages.getString(key);
-	}
-	
-	private String bind(String key, Object argument) {
-		return MessageFormat.format(this.getString(key), argument);
 	}
 
 	// ********** argument queries **********
@@ -233,18 +224,52 @@ public class Main
 
 class JptSchemaOutputResolver extends SchemaOutputResolver {
 	
-	private final String targetSchemaName;
+	private String defaultSchemaName;
 	
-	protected JptSchemaOutputResolver(String targetSchemaName) {
-		this.targetSchemaName = targetSchemaName;
+	protected JptSchemaOutputResolver(String defaultSchemaName) {
+		this.defaultSchemaName = defaultSchemaName;
 	}
-	
+
 	 @Override
     public Result createOutput(String namespaceURI, String suggestedFileName) throws IOException {
 
-        File file = new File(this.targetSchemaName );
+        String filePath = (Tools.stringIsEmpty(namespaceURI)) ? 
+        		this.buildFileNameFrom(this.defaultSchemaName, suggestedFileName) : 
+        		this.modifyFileName(namespaceURI);
+
+		File file = new File(filePath);
         StreamResult result = new StreamResult(file);
         result.setSystemId(file.toURI().toURL().toString());
+
+        System.out.print(Tools.bind(JptEclipseLinkJaxbCoreMessages.SCHEMA_GENERATED, file));
         return result;
     }
+
+	 private String buildFileNameFrom(String fileName, String suggestedFileName) {
+
+		 fileName = Tools.stripExtension(fileName);
+				 
+		 if(Tools.stringIsEmpty(fileName)) {
+			 return suggestedFileName;
+		 }
+		 
+		 String number = Tools.extractFileNumber(suggestedFileName);
+		 number = Tools.appendXsdExtension(number);
+		 
+		return fileName + number;
+	 }
+
+	 private String modifyFileName(String namespaceURI) throws IOException {
+
+		 String dir = Tools.extractDirectory(this.defaultSchemaName);
+
+		 String fileName = Tools.stripProtocol(namespaceURI);
+		 fileName = fileName.replaceAll("/", "_");		//$NON-NLS-1$
+		 fileName = Tools.appendXsdExtension(fileName);
+
+		String result = (Tools.stringIsEmpty(dir)) ? fileName : dir + File.separator + fileName;
+		
+		return result;
+	 }
+
 }

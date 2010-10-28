@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.core.schemagen;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +21,7 @@ import javax.xml.transform.Result;
 import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.jpt.jaxb.core.schemagen.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.schemagen.internal.Tools;
 
 /**
  *  Generate a JAXB Schema
@@ -79,14 +79,13 @@ public class Main
 		if(jaxbContext != null) {
 			this.generateSchema(jaxbContext);
 		}
-		String result = (jaxbContext != null) ? 
-				this.bind(JptJaxbCoreMessages.SCHEMA_GENERATED, this.targetSchemaName) : 
-				this.bind(JptJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName);
-		System.out.println(result);
+		else {
+			System.out.println(Tools.bind(JptJaxbCoreMessages.SCHEMA_NOT_CREATED, this.targetSchemaName));
+		}
     }
 	
 	private JAXBContext buildJaxbContext() {
-		System.out.println(this.getString(JptJaxbCoreMessages.LOADING_CLASSES));
+		System.out.println(Tools.getString(JptJaxbCoreMessages.LOADING_CLASSES));
 		JAXBContext jaxbContext = null;
 			try {
 				ClassLoader loader = Thread.currentThread().getContextClassLoader();
@@ -102,7 +101,7 @@ public class Main
 	 }
 	
 	private void generateSchema(JAXBContext jaxbContext) {
-		System.out.println(this.getString(JptJaxbCoreMessages.GENERATING_SCHEMA));
+		System.out.println(Tools.getString(JptJaxbCoreMessages.GENERATING_SCHEMA));
 		System.out.flush();
 		
 		SchemaOutputResolver schemaOutputResolver = 
@@ -125,7 +124,7 @@ public class Main
 					System.out.println(className);
 			}
 			catch (ClassNotFoundException e) {
-				System.err.println(this.bind(JptJaxbCoreMessages.NOT_FOUND, className));
+				System.err.println(Tools.bind(JptJaxbCoreMessages.NOT_FOUND, className));
 			}
 		}
 		System.out.flush();
@@ -139,20 +138,12 @@ public class Main
 			System.err.println(message);
 		}
 		else if(linkedEx != null && linkedEx instanceof ClassNotFoundException) {
-			String errorMessage = this.bind(JptJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
+			String errorMessage = Tools.bind(JptJaxbCoreMessages.CONTEXT_FACTORY_NOT_FOUND, linkedEx.getMessage());
 			System.err.println(errorMessage);
 		}
 		else {
 			ex.printStackTrace();
 		}
-	}
-	
-	private String getString(String key) {
-		return JptJaxbCoreMessages.getString(key);
-	}
-	
-	private String bind(String key, Object argument) {
-		return MessageFormat.format(this.getString(key), argument);
 	}
 
 	// ********** argument queries **********
@@ -216,26 +207,60 @@ public class Main
 
 class JptSchemaOutputResolver extends SchemaOutputResolver {
 	
-	private final String targetSchemaName;
+	private final String defaultSchemaName;
 	
-	protected JptSchemaOutputResolver(String targetSchemaName) {
-		this.targetSchemaName = targetSchemaName;
+	protected JptSchemaOutputResolver(String defaultSchemaName) {
+		this.defaultSchemaName = defaultSchemaName;
 	}
 	
 	 @Override
     public Result createOutput(String namespaceURI, String suggestedFileName) throws IOException {
-		String canonicalName = this.canonicalFileName(this.targetSchemaName);
-		File file = new File(canonicalName);
+	        
+        String filePath = (Tools.stringIsEmpty(namespaceURI)) ? 
+        		this.buildFileNameFrom(this.defaultSchemaName, suggestedFileName) : 
+        		this.modifyFileName(namespaceURI);
+	        	
+        filePath = this.canonicalFileName(filePath);
+		File file = new File(filePath);
 		StreamResult result = new StreamResult(file);
 		result.setSystemId(file.toURL().toExternalForm());
+
+		System.out.print(Tools.bind(JptJaxbCoreMessages.SCHEMA_GENERATED, file));
         return result;
     }
 
-	public String canonicalFileName(String fileName) {
-		return canonicalFile(new File(fileName)).getAbsolutePath();
+	 private String buildFileNameFrom(String fileName, String suggestedFileName) {
+
+		 fileName = Tools.stripExtension(fileName);
+				 
+		 if(Tools.stringIsEmpty(fileName)) {
+			 return suggestedFileName;
+		 }
+		 
+		 String number = Tools.extractFileNumber(suggestedFileName);
+		 number = Tools.appendXsdExtension(number);
+		 
+		return fileName + number;
+	 }
+	 
+	 private String modifyFileName(String namespaceURI) throws IOException {
+
+		 String dir = Tools.extractDirectory(this.defaultSchemaName);
+
+		 String fileName = Tools.stripProtocol(namespaceURI);
+		 fileName = fileName.replaceAll("/", "_");		//$NON-NLS-1$
+		 fileName = Tools.appendXsdExtension(fileName);
+
+		String result = (Tools.stringIsEmpty(dir)) ? fileName : dir + File.separator + fileName;
+		
+		return result;
+	 }
+
+	 private String canonicalFileName(String fileName) {
+		return this.canonicalFile(new File(fileName)).getAbsolutePath();
 	}
 	
-	public File canonicalFile(File file) {
+	 private File canonicalFile(File file) {
 		try {
 			return file.getCanonicalFile();
 		} 
