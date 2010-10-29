@@ -13,10 +13,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.libval.LibraryValidator;
+import org.eclipse.jst.j2ee.internal.common.classpath.WtpOsgiBundlesLibraryProviderInstallOperationConfig;
 
 
 public abstract class JptOsgiBundlesLibraryProviderInstallOperationConfig
-		extends TempWtpOsgiBundlesLibraryProviderInstallOperationConfig
+		extends WtpOsgiBundlesLibraryProviderInstallOperationConfig
 		implements JptLibraryProviderInstallOperationConfig {
 	
 	protected JptOsgiBundlesLibraryProviderInstallOperationConfig() {

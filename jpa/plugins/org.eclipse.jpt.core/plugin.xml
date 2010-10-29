@@ -350,8 +350,7 @@
 			extends="legacy-library-provider"
 			hidden="true">
 			<action type="UNINSTALL">
-				<operation
-					class="org.eclipse.jpt.core.internal.libprov.LegacyJpaLibraryProviderUninstallOperation"/>
+				<operation class="org.eclipse.jpt.core.internal.libprov.LegacyJpaLibraryProviderUninstallOperation"/>
 			</action>
 		</provider>
 		
@@ -365,19 +364,9 @@
 			</enablement>
 		</provider>
 		
-		<provider 
-			id="temp-wtp-user-library-provider" 
-			extends="user-library-provider"
-			abstract="true" >
-			<action type="INSTALL">
-				<config class="org.eclipse.jpt.core.internal.libprov.TempWtpUserLibraryProviderInstallOperationConfig"/>
-				<operation class="org.eclipse.jpt.core.internal.libprov.TempWtpUserLibraryProviderInstallOperation"/>
-			</action>
-		</provider>
-		
 		<provider
 			id="jpa-user-library-provider"
-			extends="temp-wtp-user-library-provider">
+			extends="wtp-user-library-provider">
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
@@ -386,7 +375,7 @@
 			</enablement>
 			<action type="INSTALL">
 				<config class="org.eclipse.jpt.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig"/>
-				<operation class="org.eclipse.jpt.core.internal.libprov.TempWtpUserLibraryProviderInstallOperation"/>
+				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperation"/>
 			</action>
 		</provider>
 		
@@ -414,18 +403,8 @@
 		</provider>
 		
 		<provider 
-			id="temp-wtp-osgi-bundles-library-provider" 
-			extends="osgi-bundles-library-provider" 
-			abstract="true">
-			<action type="INSTALL">
-				<config class="org.eclipse.jpt.core.internal.libprov.TempWtpOsgiBundlesLibraryProviderInstallOperationConfig"/>
-				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpOsgiBundlesLibraryProviderInstallOperation"/>
-			</action>
-		</provider>
-		
-		<provider 
 			id="jpa-osgi-bundles-library-provider"
-			extends="temp-wtp-osgi-bundles-library-provider"
+			extends="wtp-osgi-bundles-library-provider"
 			abstract="true">
 			<enablement>
 				<with variable="requestingProjectFacet">

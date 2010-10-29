@@ -98,19 +98,6 @@
 	</extension>
   	
 	
-	<extension point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
-		
-		<panel 
-			provider="temp-wtp-user-library-provider"
-			class="org.eclipse.jpt.ui.internal.libprov.TempWtpUserLibraryProviderInstallPanel"/>
-		
-		<panel 
-			provider="temp-wtp-osgi-bundles-library-provider"
-			class="org.eclipse.jpt.ui.internal.libprov.TempWtpOsgiBundlesLibraryProviderInstallPanel"/>
-		
-	</extension>
-	
-	
 	<extension
 		point="org.eclipse.ui.actionSets">
 		

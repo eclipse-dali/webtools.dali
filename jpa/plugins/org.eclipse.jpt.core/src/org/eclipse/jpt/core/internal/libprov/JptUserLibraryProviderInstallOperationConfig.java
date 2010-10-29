@@ -13,10 +13,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.libval.LibraryValidator;
+import org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperationConfig;
 
 
 public abstract class JptUserLibraryProviderInstallOperationConfig
-		extends TempWtpUserLibraryProviderInstallOperationConfig
+		extends WtpUserLibraryProviderInstallOperationConfig
 		implements JptLibraryProviderInstallOperationConfig {
 	
 	protected JptUserLibraryProviderInstallOperationConfig() {

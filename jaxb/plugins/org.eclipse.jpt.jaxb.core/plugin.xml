@@ -65,7 +65,7 @@
 		
 		<provider
 			id="jaxb-user-library-provider"
-			extends="temp-wtp-user-library-provider">
+			extends="wtp-user-library-provider">
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
@@ -74,13 +74,13 @@
 			</enablement>
 			<action type="INSTALL">
 				<config class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig"/>
-				<operation class="org.eclipse.jpt.core.internal.libprov.TempWtpUserLibraryProviderInstallOperation"/>
+				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpUserLibraryProviderInstallOperation"/>
 			</action>
 		</provider>
 		
 		<provider 
 			id="jaxb-osgi-bundles-library-provider"
-			extends="temp-wtp-osgi-bundles-library-provider"
+			extends="wtp-osgi-bundles-library-provider"
 			abstract="true">
 			<enablement>
 				<with variable="requestingProjectFacet">
@@ -121,11 +121,12 @@
 				<requires facet="java" version="[5.0"/>
 			</constraint>
 		</project-facet-version>
-  		<project-facet-version facet="jpt.jaxb" version="2.2">
-     	<constraint>
-        	<requires facet="java" version="[5.0"/>
-     	</constraint>
-  		</project-facet-version>
+		
+		<project-facet-version facet="jpt.jaxb" version="2.2">
+			<constraint>
+				<requires facet="java" version="[5.0"/>
+			</constraint>
+		</project-facet-version>
 		
 		<template id="jpt.jaxb.template">
 			<label>%JAXB_TEMPLATE_LABEL</label>
@@ -138,10 +139,13 @@
 			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDelegate"/>
 		</action>
 		
-		<!-- 
-			The uninstall action is only used to enable facet uninstallation
-			through the facet UI.  The delegate currently has no functionality. 
-		-->
+		<action facet="jpt.jaxb" type="version-change" id="jpt.jaxb.version-change">
+			<!-- 
+				TODO - once there is config.  This is here now to simply allow the version change.
+			-->
+			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeDelegate"/>
+		</action>
+		
 		<action facet="jpt.jaxb" type="uninstall" id="jpt.jaxb.uninstall">
 			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetUninstallDelegate"/>
 		</action>
