@@ -248,12 +248,11 @@ public class XmlSchemaTypeAnnotationTests
 					+ "\"),@XmlSchemaType(name = \"" + TEST_NAME
 					+ "\")})", cu);
 		
-//		TODO uncomment when bug 328400 is addressed
-//		packageResource.removeAnnotation(1, JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES);
-//		containerAnnotation = 
-//				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-//		assertNull(containerAnnotation);
-//		assertSourceContains(
-//				"@XmlSchemaType(name = \"" + TEST_NAME + "\")", cu);
+		packageResource.removeAnnotation(1, JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES);
+		containerAnnotation = 
+				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
+		assertNull(containerAnnotation);
+		assertSourceContains(
+				"@XmlSchemaType(name = \"" + TEST_NAME_2 + "\")", cu);
 	}
 }

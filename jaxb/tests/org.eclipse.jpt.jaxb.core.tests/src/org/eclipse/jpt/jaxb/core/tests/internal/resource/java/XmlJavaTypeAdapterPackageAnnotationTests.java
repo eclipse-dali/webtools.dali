@@ -258,12 +258,11 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 					+ ".class),@XmlJavaTypeAdapter(" + TEST_CLASS
 					+ ".class)})", cu);
 		
-//		TODO uncomment when bug 328400 is addressed
-//		resourcePackage.removeAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER, JAXB.XML_JAVA_TYPE_ADAPTERS);
-//		adaptersAnnotation = 
-//				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-//		assertNull(adaptersAnnotation);
-//		assertSourceContains(
-//				"@XmlJavaTypeAdapter(" + TEST_CLASS_2 + ")", cu);
+		resourcePackage.removeAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER, JAXB.XML_JAVA_TYPE_ADAPTERS);
+		adaptersAnnotation = 
+				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
+		assertNull(adaptersAnnotation);
+		assertSourceContains(
+				"@XmlJavaTypeAdapter(" + TEST_CLASS_2 + ".class)", cu);
 	}
 }
