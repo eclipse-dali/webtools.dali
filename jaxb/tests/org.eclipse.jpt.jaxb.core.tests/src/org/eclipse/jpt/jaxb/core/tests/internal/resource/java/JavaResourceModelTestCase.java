@@ -17,11 +17,11 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
-import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
@@ -164,16 +164,15 @@ public abstract class JavaResourceModelTestCase
 			throw new IllegalStateException();
 		}
 		return new SourceTypeCompilationUnit(
-			cu,
-			this.buildAnnotationProvider(),
-			NullAnnotationEditFormatter.instance(),
-			CommandExecutor.Default.instance()
-		);
+				cu,
+				this.buildAnnotationProvider(),
+				NullAnnotationEditFormatter.instance(),
+				CommandExecutor.Default.instance());
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {
-		return new GenericAnnotationProvider(this.annotationDefinitionProvider());
+		return new GenericAnnotationProvider(annotationDefinitions());
 	}
-
-	protected abstract AnnotationDefinitionProvider annotationDefinitionProvider();
+	
+	protected abstract AnnotationDefinition[] annotationDefinitions();
 }

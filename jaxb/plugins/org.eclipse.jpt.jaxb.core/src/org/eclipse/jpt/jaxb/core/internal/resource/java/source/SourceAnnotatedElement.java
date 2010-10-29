@@ -254,13 +254,19 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	private boolean annotationIsValid(String annotationName) {
 		return CollectionTools.contains(this.getValidAnnotationNames(), annotationName);
 	}
-
-	abstract Iterable<String> getValidAnnotationNames();
-
-	abstract Annotation buildAnnotation(String annotationName);
-
-	abstract Annotation buildNullAnnotation(String annotationName);
-
+	
+	Iterable<String> getValidAnnotationNames() {
+		return this.getAnnotationProvider().getAnnotationNames();
+	}
+	
+	Annotation buildAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildAnnotation(this, this.annotatedElement, annotationName);
+	}
+	
+	Annotation buildNullAnnotation(String annotationName) {
+		return this.getAnnotationProvider().buildNullAnnotation(this, annotationName);
+	}
+	
 	// minimize scope of suppressed warnings
 	@SuppressWarnings("unchecked")
 	private ContainerAnnotation<NestableAnnotation> buildContainerAnnotation(String annotationName) {

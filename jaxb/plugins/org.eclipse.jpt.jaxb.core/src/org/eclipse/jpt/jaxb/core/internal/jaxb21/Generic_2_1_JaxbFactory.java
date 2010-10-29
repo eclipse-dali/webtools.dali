@@ -15,11 +15,11 @@ import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbFactory;
 /**
  * Generic JAXB
  */
-public class GenericJaxbFactory
-	extends AbstractJaxbFactory
-{
+public class Generic_2_1_JaxbFactory
+		extends AbstractJaxbFactory {
+	
 	// singleton
-	private static final JaxbFactory INSTANCE = new GenericJaxbFactory();
+	private static final JaxbFactory INSTANCE = new Generic_2_1_JaxbFactory();
 
 	/**
 	 * Return the singleton.
@@ -31,7 +31,7 @@ public class GenericJaxbFactory
 	/**
 	 * Ensure single instance.
 	 */
-	private GenericJaxbFactory() {
+	private Generic_2_1_JaxbFactory() {
 		super();
 	}
 }

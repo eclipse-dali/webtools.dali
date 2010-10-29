@@ -9,9 +9,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.platform;
 
-import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
+import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
-import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
+import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Provisional API: This class is part of an interim API that is still
@@ -25,10 +28,37 @@ import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
  */
 public interface JaxbPlatformDefinition {
 	
-	JaxbFactory buildFactory();
-
-	AnnotationDefinitionProvider[] getAnnotationDefinitionProviders();
-
-	JaxbPlatformProvider buildPlatformProvider();
-
+	JaxbFactory getFactory();
+	
+	AnnotationDefinition[] getAnnotationDefinitions();
+	
+	/**
+	 * Return the resource model providers that apply to this platform.
+	 */
+	ListIterable<JaxbResourceModelProvider> getResourceModelProviders();
+	
+	/**
+	 * Return the most recent resource type for the given content type supported by this platform
+	 */
+	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	
+//	/**
+//	 * Return the resource definitions supported by this platform.
+//	 */
+//	ListIterator<ResourceDefinition> resourceDefinitions();
+//
+//	/**
+//	 * Return the java type mapping definitions that apply to this platform.
+//	 */
+//	ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions();
+//	
+//	/**
+//	 * Return the mapping definitions to use for default java attribute mappings for this platform.
+//	 */
+//	ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions();
+//
+//	/**
+//	 * Return the mapping definitions to use for specified java attribute mappings for this platform.
+//	 */
+//	ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions();
 }

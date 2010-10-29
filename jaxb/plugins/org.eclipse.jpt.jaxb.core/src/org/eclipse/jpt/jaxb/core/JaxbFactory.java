@@ -45,7 +45,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.core.internal.jaxb1.GenericJaxbFactory
+ * @see org.eclipse.jpt.core.internal.Generic_2_1_JaxbFactory.GenericJaxbFactory
  * 
  * @version 3.0
  * @since 3.0

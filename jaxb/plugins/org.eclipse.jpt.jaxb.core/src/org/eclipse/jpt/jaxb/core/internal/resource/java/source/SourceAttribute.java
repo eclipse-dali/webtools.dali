@@ -151,37 +151,23 @@ final class SourceAttribute
 
 
 	// ******** AbstractJavaResourcePersistentMember implementation ********
-
-	@Override
-	Iterable<String> getValidAnnotationNames() {
-		return this.getAnnotationProvider().getAttributeAnnotationNames();
-	}
-
-	@Override
-	Annotation buildAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.annotatedElement, annotationName);
-	}
-
-	Annotation buildNullAnnotation_(String annotationName) {
-		return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
-	}
-
+	
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return ((MethodAttribute) this.annotatedElement).matches(signature, occurrence);
 	}
-
-
+	
+	
 	// ******** JavaResourcePersistentAttribute implementation ********
-
+	
 	public String getName() {
 		return this.annotatedElement.getAttributeName();
 	}
-
+	
 	@Override
 	public Annotation buildNullAnnotation(String annotationName) {
-		return (annotationName == null) ? null : this.buildNullAnnotation_(annotationName);
+		return (annotationName == null) ? null : super.buildNullAnnotation(annotationName);
 	}
-
+	
 	public boolean isField() {
 		return this.annotatedElement.isField();
 	}

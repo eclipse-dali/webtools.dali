@@ -9,20 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal;
 
-import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * All the state in the JAXB platform should be "static" (i.e. unchanging once
- * it is initialized).
+ * All the state in the JAXB platform definition should be "static" 
+ * (i.e. unchanging once it is initialized).
  */
-public abstract class AbstractJaxbPlatformProvider
-	implements JaxbPlatformProvider
-{
+public abstract class AbstractJaxbPlatformDefinition
+		implements JaxbPlatformDefinition {
+	
+	private AnnotationDefinition[] annotationDefinitions;
+	
 	private JaxbResourceModelProvider[] resourceModelProviders;
-//
+	
 //	private JavaTypeMappingDefinition[] javaTypeMappingDefinitions;
 //
 //	private JavaAttributeMappingDefinition[] specifiedJavaAttributeMappingDefinitions;
@@ -35,12 +38,25 @@ public abstract class AbstractJaxbPlatformProvider
 	/**
 	 * zero-argument constructor
 	 */
-	protected AbstractJaxbPlatformProvider() {
+	protected AbstractJaxbPlatformDefinition() {
 		super();
 	}
-
-
+	
+	
+	// ********** annotation definitions **********
+	
+	public AnnotationDefinition[] getAnnotationDefinitions() {
+		if (this.annotationDefinitions == null) {
+			this.annotationDefinitions = this.buildAnnotationDefinitions();
+		}
+		return this.annotationDefinitions;
+	}
+	
+	protected abstract AnnotationDefinition[] buildAnnotationDefinitions();
+	
+	
 	// ********** resource models **********
+	
 	public ListIterable<JaxbResourceModelProvider> getResourceModelProviders() {
 		return new ArrayListIterable<JaxbResourceModelProvider>(getResourceModelProviders_());
 	}

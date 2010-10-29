@@ -27,7 +27,6 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -164,21 +163,6 @@ final class SourceType
 
 
 	// ********** SourceAnnotatedElement implementation **********
-
-	@Override
-	Iterable<String> getValidAnnotationNames() {
-		return this.getAnnotationProvider().getTypeAnnotationNames();
-	}
-
-	@Override
-	Annotation buildAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildTypeAnnotation(this, this.annotatedElement, annotationName);
-	}
-
-	@Override
-	Annotation buildNullAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullTypeAnnotation(this, annotationName);
-	}
 
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
@@ -396,22 +380,9 @@ final class SourceType
 	}
 
 	public boolean isMapped() {
-		for (Annotation each : this.getAnnotations()) {
-			if (this.annotationIsMappingAnnotation(each)) {
-				return true;
-			}
-		}
-		return false;
+		return ! CollectionTools.isEmpty(getAnnotations());
 	}
-
-	private boolean annotationIsMappingAnnotation(Annotation annotation) {
-		return CollectionTools.contains(this.getMappingAnnotationNames(), annotation.getAnnotationName());
-	}
-
-	private Iterable<String> getMappingAnnotationNames() {
-		return this.getAnnotationProvider().getTypeMappingAnnotationNames();
-	}
-
+	
 	/**
 	 * check only persistable attributes
 	 */

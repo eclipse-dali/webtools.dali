@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
-import org.eclipse.jpt.jaxb.core.AnnotationDefinitionProvider;
-import org.eclipse.jpt.jaxb.core.internal.GenericJaxbAnnotationDefinitionProvider;
+import org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 
 public class JaxbJavaResourceModelTestCase
 		extends JavaResourceModelTestCase {	
@@ -18,9 +18,10 @@ public class JaxbJavaResourceModelTestCase
 	public JaxbJavaResourceModelTestCase(String name) {
 		super(name);
 	}
-
+	
+	
 	@Override
-	protected AnnotationDefinitionProvider annotationDefinitionProvider() {
-		return GenericJaxbAnnotationDefinitionProvider.instance();
+	protected AnnotationDefinition[] annotationDefinitions() {
+		return Generic_2_1_JaxbPlatformDefinition.instance().getAnnotationDefinitions();
 	}
 }

@@ -17,6 +17,6 @@ public class Generic_2_1_JaxbPlatformDefinitionFactory
 		implements JaxbPlatformDefinitionFactory {
 
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
-		return GenericJaxbPlatformDefinition.instance();
+		return Generic_2_1_JaxbPlatformDefinition.instance();
 	}
 }

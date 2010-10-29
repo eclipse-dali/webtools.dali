@@ -18,7 +18,6 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
-import org.eclipse.jpt.jaxb.core.JaxbPlatformProvider;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
@@ -29,27 +28,25 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 public final class JaxbPlatformImpl
 		implements JaxbPlatform {
 	
-	private final JaxbFactory jaxbFactory;
+	private JaxbPlatformDefinition platformDefinition;
 	
-	private final AnnotationProvider annotationProvider;
-
-	private final JaxbPlatformProvider platformProvider;
-
+	private AnnotationProvider annotationProvider;
+	
+	
 	public JaxbPlatformImpl(JaxbPlatformDefinition jaxbPlatformDefinition) {
 		super();
-		this.jaxbFactory = jaxbPlatformDefinition.buildFactory();
-		this.annotationProvider = new GenericAnnotationProvider(jaxbPlatformDefinition.getAnnotationDefinitionProviders());
-		this.platformProvider = jaxbPlatformDefinition.buildPlatformProvider();
+		this.platformDefinition = jaxbPlatformDefinition;
+		this.annotationProvider = new GenericAnnotationProvider(this.platformDefinition.getAnnotationDefinitions());
 	}
 
 
 	// ********** factory **********
 
 	public JaxbFactory getFactory() {
-		return this.jaxbFactory;
+		return this.platformDefinition.getFactory();
 	}
-
-
+	
+	
 	// ********** JAXB file/resource models **********
 
 	public JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file) {
@@ -59,7 +56,7 @@ public final class JaxbPlatformImpl
 
 	protected JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType) {
 		JpaResourceModel resourceModel = this.buildResourceModel(jaxbProject, file, contentType);
-		return (resourceModel == null) ? null : this.jaxbFactory.buildJaxbFile(jaxbProject, file, contentType, resourceModel);
+		return (resourceModel == null) ? null : getFactory().buildJaxbFile(jaxbProject, file, contentType, resourceModel);
 	}
 
 	protected JpaResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file, IContentType contentType) {
@@ -81,12 +78,12 @@ public final class JaxbPlatformImpl
 	}
 
 	protected ListIterable<JaxbResourceModelProvider> getResourceModelProviders() {
-		return this.platformProvider.getResourceModelProviders();
+		return this.platformDefinition.getResourceModelProviders();
 	}
-
-
+	
+	
 	// ********** Java annotations **********
-
+	
 	public AnnotationProvider getAnnotationProvider() {
 		return this.annotationProvider;
 	}

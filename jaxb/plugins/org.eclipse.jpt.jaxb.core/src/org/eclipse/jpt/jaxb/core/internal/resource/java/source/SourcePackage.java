@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTPackage;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
@@ -89,24 +88,6 @@ public final class SourcePackage
 		this.syncName(this.buildName(astRoot));
 	}
 	
-	// ********** SourceAnnotatedElement implementation **********
-	
-	@Override
-	Iterable<String> getValidAnnotationNames() {
-		return this.getAnnotationProvider().getPackageAnnotationNames();
-	}
-	
-	
-	@Override
-	Annotation buildAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildPackageAnnotation(this, this.annotatedElement, annotationName);
-	}
-
-	@Override
-	Annotation buildNullAnnotation(String annotationName) {
-		return this.getAnnotationProvider().buildNullPackageAnnotation(this, annotationName);
-	}
-
 
 	@Override
 	public void toString(StringBuilder sb) {
