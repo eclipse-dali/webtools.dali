@@ -16,6 +16,13 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
+import org.eclipse.jpt.jaxb.core.internal.context.GenericRootContextNode;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -39,9 +46,17 @@ public abstract class AbstractJaxbFactory
 		return new GenericJaxbFile(jaxbProject, file, contentType, resourceModel);
 	}
 
-//	// ********** Context Nodes **********
-//	
-//	public JpaRootContextNode buildRootContextNode(JpaProject parent) {
-//		return new GenericRootContextNode(parent);
-//	}
+	// ********** Context Nodes **********
+
+	public JaxbRootContextNode buildRootContextNode(JaxbProject parent) {
+		return new GenericRootContextNode(parent);
+	}
+
+	public JaxbPackage buildPackage(JaxbRootContextNode parent, JavaResourcePackage resourcePackage) {
+		return new GenericPackage(parent, resourcePackage);
+	}
+
+	public JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
+		return new GenericJavaPackageInfo(parent, resourcePackage);
+	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.utility.internal.synchronizers;
 
 import java.util.Vector;
-
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedObject;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 
 /**
  * This synchronizer will synchronize immediately and not return until the

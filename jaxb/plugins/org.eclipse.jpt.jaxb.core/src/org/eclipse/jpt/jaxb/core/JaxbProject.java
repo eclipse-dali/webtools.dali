@@ -16,8 +16,13 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 
 /**
  * A JAXB project is associated with an Eclipse project (and its corresponding
@@ -64,11 +69,11 @@ public interface JaxbProject
 	 * and its contents.
 	 */
 	JaxbPlatform getJaxbPlatform();
-//
-//	/**
-//	 * Return the root of the JPA project's context model.
-//	 */
-//	JpaRootContextNode getRootContextNode();
+
+	/**
+	 * Return the root of the JAXB project's context model.
+	 */
+	JaxbRootContextNode getRootContextNode();
 
 	/**
 	 * The JAXB project has been removed from the JJAXBPA model. Clean up any
@@ -129,69 +134,38 @@ public interface JaxbProject
 //	 */
 //	JavaResourcePersistentTypeCache getExternalJavaResourcePersistentTypeCache();
 //
-//
-//	// ********** XML resources **********
-//	
-//	/**
-//	 * Return the XML resource model corresponding to the file with runtime path
-//	 * <code>META-INF/persistence.xml</code> if that file has the persistence content type
-//	 * (<code>"org.eclipse.jpt.core.content.persistence"</code>).
-//	 * 
-//	 * @see JptCorePlugin#DEFAULT_PERSISTENCE_XML_RUNTIME_PATH
-//	 * @see JptCorePlugin#PERSISTENCE_XML_CONTENT_TYPE
-//	 */
-//	JpaXmlResource getPersistenceXmlResource();
-//	
-//	/**
-//	 * Return the XML resource model corresponding to the file with the specified
-//	 * runtime path if that file has the mapping file content type
-//	 * (<code>"org.eclipse.jpt.core.content.mappingFile"</code>)
-//	 * 
-//	 * @see JptCorePlugin#MAPPING_FILE_CONTENT_TYPE
-//	 */
-//	JpaXmlResource getMappingFileXmlResource(IPath runtimePath);
-//
-//	/**
-//	 * Return the XML resource model corresponding to the file
-//	 * <code>META-INF/orm.xml</code> if that file has the mapping file content type.
-//	 * 
-//	 * @see JptCorePlugin#DEFAULT_ORM_XML_RUNTIME_PATH
-//	 */
-//	JpaXmlResource getDefaultOrmXmlResource();
-//	
-//	
-//	// ********** Java resources **********
-//
-//	/**
-//	 * Return the names of the JPA project's annotated Java classes
-//	 * (ignoring classes in JARs referenced in the persistence.xml).
-//	 */
-//	Iterator<String> annotatedJavaSourceClassNames();
-//	
-//	/**
-//	 * Return the names of the JPA project's mapped (i.e. annotated with @Entity, etc.) Java 
-//	 * classes (ignoring classes in JARs referenced in the persistence.xml).
-//	 */
-//	Iterable<String> getMappedJavaSourceClassNames();
-//
-//	/**
-//	 * Return the Java resource persistent type for the specified type.
-//	 * Return null if invalid or absent.
-//	 */
-//	JavaResourcePersistentType getJavaResourcePersistentType(String typeName);
-//
-//	/**
-//	 * Return the Java resource package for the specified package.
-//	 * Return null if invalid or absent.
-//	 */
-//	JavaResourcePackage getJavaResourcePackage(String packageName);
-//
-//	/**
-//	 * Return the Java resource packages for the project.
-//	 * Return null if invalid or absent.
-//	 */
-//	Iterable<JavaResourcePackage> getJavaResourcePackages();
-//
+	
+	// ********** Java resources **********
+
+	/**
+	 * Return the names of the JAXB project's annotated Java classes
+	 */
+	Iterable<String> getAnnotatedJavaSourceClassNames();
+
+	/**
+	 * Return the Java resource persistent type for the specified type.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourceType getJavaResourceType(String typeName);
+
+	/**
+	 * Return the Java resource package for the specified package.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourcePackage getJavaResourcePackage(String packageName);
+
+	/**
+	 * Return the Java resource packages for the project.
+	 * Return null if invalid or absent. These correspond to package-info.java files
+	 */
+	Iterable<JavaResourcePackage> getJavaResourcePackages();
+
+	/**
+	 * Return the java resource packages that are annotated with
+	 * 1 or more valid JAXB package annotations
+	 */
+	Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages();
+
 //	/**
 //	 * Return the Java resource package fragement root for the specified JAR.
 //	 * Return null if absent.
@@ -213,106 +187,91 @@ public interface JaxbProject
 	void javaElementChanged(ElementChangedEvent event);
 
 
+
 	// ********** synchronize context model with resource model **********
 
+	/**
+	 * Return the synchronizer that will synchronize the context model with
+	 * the resource model whenever the resource model changes.
+	 */
+	Synchronizer getContextModelSynchronizer();
+
+	/**
+	 * Set the synchronizer that will keep the context model synchronized with
+	 * the resource model whenever the resource model changes.
+	 * Before setting the synchronizer, clients should save the current
+	 * synchronizer so it can be restored later.
+	 * 
+	 * @see #getContextModelSynchronizer()
+	 */
+	void setContextModelSynchronizer(Synchronizer synchronizer);
+
+	/**
+	 * The JAXB project's resource model has changed; synchronize the JPA
+	 * project's context model with it. This method is typically called when the
+	 * resource model state has changed when it is synchronized with its
+	 * underlying Eclipse resource as the result of an Eclipse resource change
+	 * event. This method can also be called when a client (e.g. a JUnit test
+	 * case) has manipulated the resource model via its API (as opposed to
+	 * modifying the underlying Eclipse resource directly) and needs the context
+	 * model to be synchronized accordingly (since manipulating the resource
+	 * model via its API will not trigger this method). Whether the context
+	 * model is synchronously (or asynchronously) depends on the current context
+	 * model synchronizer.
+	 * 
+	 * @see #synchronizeContextModelAndWait()
+	 */
 	void synchronizeContextModel();
 
+	/**
+	 * Force the JAXB project's context model to synchronize with it resource
+	 * model <em>synchronously</em>.
+	 * 
+	 * @see #synchronizeContextModel()
+	 * @see #updateAndWait()
+	 */
+	void synchronizeContextModelAndWait();
+
+	/**
+	 * This is the callback used by the context model synchronizer to perform
+	 * the actual "synchronize".
+	 */
+	IStatus synchronizeContextModel(IProgressMonitor monitor);
 
 	// ********** project "update" **********
 
 	/**
-	 * Return the implementation of the Updater
-	 * interface that will be used to "update" the JPA project.
+	 * Return the synchronizer that will update the context model whenever
+	 * it has any changes. This allows any intra-JAXB project dependencies to
+	 * be updated.
 	 */
-	Updater getUpdater();
+	CallbackSynchronizer getUpdateSynchronizer();
 
 	/**
-	 * Set the implementation of the Updater
-	 * interface that will be used to "update" the JPA project.
-	 * Before setting the updater, clients should save the current updater so
-	 * it can be restored later.
+	 * Set the synchronizer that will update the context model whenever
+	 * it has any changes. This allows any intra-JAXB project dependencies to
+	 * be updated.
+	 * Before setting the update synchronizer, clients should save the current
+	 * synchronizer so it can be restored later.
+	 * 
+	 * @see #getUpdateSynchronizer()
 	 */
-	void setUpdater(Updater updater);
+	void setUpdateSynchronizer(CallbackSynchronizer synchronizer);
 
 	/**
-	 * The JPA project's state has changed, "update" those parts of the
-	 * JPA project that are dependent on other parts of the JPA project.
-	 * This is called when<ul>
-	 * <li>(almost) any state in the JPA project changes
-	 * <li>the JPA project's database connection is changed, opened, or closed
-	 * </ul>
+	 * Force the JAXB project to "update" <em>synchronously</em>.
+	 * 
+	 * @see #synchronizeContextModelAndWait()
 	 */
-	void update();
+	void updateAndWait();
 
 	/**
-	 * This is the callback used by the updater to perform the actual
-	 * "update", which most likely will happen asynchronously.
+	 * This is the callback used by the update synchronizer to perform the
+	 * actual "update".
 	 */
 	IStatus update(IProgressMonitor monitor);
 
-	/**
-	 * This is the callback used by the updater to notify the JPA project that
-	 * the "update" has quiesced (i.e. the "update" has completed and there
-	 * are no outstanding requests for further "updates").
-	 */
-	void updateQuiesced();
 
-
-	/**
-	 * Define a strategy that can be used to "update" a JPA project whenever
-	 * something changes.
-	 */
-	interface Updater {
-
-		/**
-		 * The updater has just been assigned to its JPA project.
-		 */
-		void start();
-
-		/**
-		 * Update the JPA project.
-		 * <p>
-		 * {@link JaxbProject#update()} will call {@link Updater#update()},
-		 * from which the updater is to call {@link JaxbProject#update(IProgressMonitor)}
-		 * as appropriate (typically from an asynchronously executing job).
-		 * Once the updating has quiesced (i.e. there are no outstanding requests
-		 * for another update), the updater is to call {@link JaxbProject#updateQuiesced()}.
-		 */
-		void update();
-
-		/**
-		 * The JPA project is disposed; stop the updater.
-		 */
-		void stop();
-
-		/**
-		 * This updater does nothing. Useful for testing.
-		 */
-		final class Null implements Updater {
-			private static final Updater INSTANCE = new Null();
-			public static Updater instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private Null() {
-				super();
-			}
-			public void start() {
-				// do nothing
-			}
-			public void update() {
-				// do nothing
-			}
-			public void stop() {
-				// do nothing
-			}
-			@Override
-			public String toString() {
-				return "JpaProject.Updater.Null"; //$NON-NLS-1$
-			}
-		}
-
-	}
 
 
 //	// ********** utility **********
@@ -359,12 +318,12 @@ public interface JaxbProject
 	interface Config {
 
 		/**
-		 * Return the Eclipse project to be associated with the new JPA project.
+		 * Return the Eclipse project to be associated with the new JAXB project.
 		 */
 		IProject getProject();
 
 		/**
-		 * Return the JPA platform to be associated with the new JPA project.
+		 * Return the JAXB platform to be associated with the new JAXB project.
 		 */
 		JaxbPlatform getJaxbPlatform();
 

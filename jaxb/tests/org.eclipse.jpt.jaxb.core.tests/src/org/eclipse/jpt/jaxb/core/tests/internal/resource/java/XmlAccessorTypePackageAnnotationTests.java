@@ -25,7 +25,7 @@ public class XmlAccessorTypePackageAnnotationTests
 	}
 	
 	
-	private ICompilationUnit createPackageInfoWithAccessorOrder() throws CoreException {
+	private ICompilationUnit createPackageInfoWithAccessorType() throws CoreException {
 		return createTestPackageInfo(
 				"@XmlAccessorType(value = XmlAccessType.PROPERTY)",
 				JAXB.XML_ACCESS_TYPE, JAXB.XML_ACCESSOR_TYPE);
@@ -34,7 +34,7 @@ public class XmlAccessorTypePackageAnnotationTests
 	public void testValue() 
 			throws Exception {
 		
-		ICompilationUnit cu = createPackageInfoWithAccessorOrder();
+		ICompilationUnit cu = createPackageInfoWithAccessorType();
 		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu); 
 		
 		XmlAccessorTypeAnnotation annotation = 

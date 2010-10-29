@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
 
 /**
  * Extend the job synchronizer to notify listeners

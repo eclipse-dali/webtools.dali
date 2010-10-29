@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
 
 /**
  * Adapt the "callback synchronizer" interface to the JPA project "updater"

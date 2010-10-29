@@ -62,7 +62,7 @@ public class JaxbFacetInstallConfig
 		super.setProjectFacetVersion(fv);
 		this.changeSupport.firePropertyChange(PROJECT_FACET_VERSION_PROPERTY, oldFv, fv);
 		adjustLibraryProviders();
-		if (getLibraryInstallDelegate().getProjectFacetVersion().equals(getProjectFacetVersion())) {
+		if (getLibraryInstallDelegate() != null && getLibraryInstallDelegate().getProjectFacetVersion().equals(getProjectFacetVersion())) {
 			getLibraryInstallDelegate().dispose();
 			setLibraryInstallDelegate(buildLibraryInstallDelegate());
 		}

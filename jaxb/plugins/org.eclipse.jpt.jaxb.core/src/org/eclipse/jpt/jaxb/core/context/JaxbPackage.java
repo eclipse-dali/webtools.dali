@@ -7,16 +7,13 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core;
+package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.core.IResourcePart;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
 /**
- * JAXB-specific protocol. All JAXB objects belong to a JAXB project, are
- * associated with a resource, and have a parent (excepting the JAXB project).
  * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,18 +23,11 @@ import org.eclipse.jpt.utility.model.Model;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbNode
-	extends Model, IAdaptable, IResourcePart
+public interface JaxbPackage
+	extends JaxbContextNode
 {
-	/**
-	 * Return the JAXB project the node belongs to.
-	 */
-	JaxbProject getJaxbProject();
 
-	/**
-	 * Return the JAXB node's parent. The JAXB project will not have a parent.
-	 */
-	JaxbNode getParent();
+	JavaResourcePackage getResourcePackage();
 
-	void stateChanged();
+	JaxbPackageInfo getPackageInfo();
 }

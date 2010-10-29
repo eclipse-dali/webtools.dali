@@ -30,7 +30,6 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.jaxb.core.internal.AsynchronousJaxbProjectUpdater;
 import org.eclipse.jpt.jaxb.core.internal.SimpleJaxbProjectConfig;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
@@ -379,7 +378,7 @@ class GenericJaxbProjectManager
 		if (jaxbProject == null) {
 			return null;
 		}
-		jaxbProject.setUpdater(new AsynchronousJaxbProjectUpdater(jaxbProject));
+//		jaxbProject.setUpdateSynchronizer(new CallbackAsynchronousSynchronizer());
 		return jaxbProject;
 	}
 

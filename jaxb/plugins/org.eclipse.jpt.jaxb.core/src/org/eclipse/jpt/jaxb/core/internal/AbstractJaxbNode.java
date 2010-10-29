@@ -130,7 +130,7 @@ public abstract class AbstractJaxbNode
 //			String msg = Thread.currentThread() + " aspect change: " + this + ": " + aspectName;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
-			this.getJaxbProject().update();
+			this.stateChanged();
 		}
 	}
 
@@ -138,8 +138,11 @@ public abstract class AbstractJaxbNode
 		return ! this.aspectDoesNotTriggerUpdate(aspectName);
 	}
 
-	private boolean aspectDoesNotTriggerUpdate(String aspectName) {
-		return this.nonUpdateAspectNames().contains(aspectName);
+	protected boolean aspectDoesNotTriggerUpdate(String aspectName) {
+		// ignore state changes so we don't get a stack overflow :-)
+		// (and we don't use state changes except here)
+		return (aspectName == null) ||
+				this.nonUpdateAspectNames().contains(aspectName);
 	}
 
 	protected final Set<String> nonUpdateAspectNames() {
@@ -159,6 +162,13 @@ public abstract class AbstractJaxbNode
 	protected void addNonUpdateAspectNamesTo(@SuppressWarnings("unused") Set<String> nonUpdateAspectNames) {
 	// when you override this method, don't forget to include:
 	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+	}
+
+	public void stateChanged() {
+		this.fireStateChanged();
+		if (this.parent != null) {
+			this.parent.stateChanged();
+		}
 	}
 
 }

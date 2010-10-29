@@ -20,6 +20,7 @@ import org.eclipse.core.resources.IResourceProxyVisitor;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.ElementChangedEvent;
@@ -33,31 +34,41 @@ import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.ResourceLocator;
-import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 
 /**
- * JPA project. Holds all the JPA stuff.
+ * JAXB project. Holds all the JAXB stuff.
  * 
- * The JPA platform provides the hooks for vendor-specific stuff.
+ * The JAXB platform provides the hooks for vendor-specific stuff.
  * 
- * The JPA files are the "resource" model (i.e. objects that correspond directly
+ * The JAXB files are the "resource" model (i.e. objects that correspond directly
  * to Eclipse resources; e.g. Java source code files, XML files, JAR files).
  * 
- * The root context node is the "context"model (i.e. objects that attempt to
- * model the JPA spec, using the "resource" model as an adapter to the Eclipse
+ * The root context node is the "context" model (i.e. objects that attempt to
+ * model the JAXB spec, using the "resource" model as an adapter to the Eclipse
  * resources).
- * 
- * The data source is an adapter to the DTP meta-data model.
  */
 public abstract class AbstractJaxbProject
 	extends AbstractJaxbNode
@@ -98,25 +109,42 @@ public abstract class AbstractJaxbProject
 	 */
 	protected final JpaResourceModelListener resourceModelListener;
 
-//	/**
-//	 * The root of the model representing the collated resources associated with 
-//	 * the JPA project.
-//	 */
-//	protected final JpaRootContextNode rootContextNode;
+	/**
+	 * The root of the model representing the collated resources associated with 
+	 * the JAXB project.
+	 */
+	protected final JaxbRootContextNode rootContextNode;
 
 	/**
-	 * A pluggable updater that can be used to "update" the JPA project either
+	 * A pluggable synchronizer that keeps the JAXB
+	 * project's context model synchronized with its resource model, either
+	 * synchronously or asynchronously (or not at all). A synchronous synchronizer
+	 * is the default. For performance reasons, a UI should
+	 * immediately change this to an asynchronous synchronizer. A synchronous
+	 * synchronizer can be used when the project is being manipulated by a "batch"
+	 * (or non-UI) client (e.g. when testing "synchronization"). A null updater
+	 * can used during tests that do not care whether "synchronization" occur.
+	 * Clients will need to explicitly configure the synchronizer if they require
+	 * an asynchronous synchronizer.
+	 */
+	protected volatile Synchronizer contextModelSynchronizer;
+	protected volatile boolean synchronizingContextModel = false;
+
+	/**
+	 * A pluggable synchronizer that "updates" the JAXB project, either
 	 * synchronously or asynchronously (or not at all). A synchronous updater
-	 * is the default, allowing a newly-constructed JPA project to be "updated"
+	 * is the default, allowing a newly-constructed JAXB project to be "updated"
 	 * upon return from the constructor. For performance reasons, a UI should
 	 * immediately change this to an asynchronous updater. A synchronous
 	 * updater can be used when the project is being manipulated by a "batch"
 	 * (or non-UI) client (e.g. when testing the "update" behavior). A null
-	 * updater can used during tests that do not care whether "updates" occur.
+	 * updater can used during tests that do not care whether "synchronization"
+	 * occur.
 	 * Clients will need to explicitly configure the updater if they require
-	 * something other than a synchronous updater.
+	 * an asynchronous updater.
 	 */
-	protected Updater updater;
+	protected volatile CallbackSynchronizer updateSynchronizer;
+	protected final CallbackSynchronizer.Listener updateSynchronizerListener;
 
 	/**
 	 * Support for modifying documents shared with the UI.
@@ -140,14 +168,18 @@ public abstract class AbstractJaxbProject
 		// build the JPA files corresponding to the Eclipse project's files
 		InitialResourceProxyVisitor visitor = this.buildInitialResourceProxyVisitor();
 		visitor.visitProject(this.project);
-//
-//		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
-//
-//		this.rootContextNode = this.buildRootContextNode();
 
+//		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
+
+		this.rootContextNode = this.buildRootContextNode();
+
+		// there *shouldn't* be any changes to the resource model...
+		this.setContextModelSynchronizer_(this.buildSynchronousContextModelSynchronizer());
+
+		this.updateSynchronizerListener = this.buildUpdateSynchronizerListener();
 		// "update" the project before returning
-		this.setUpdater_(new SynchronousJaxbProjectUpdater(this));
-//
+		this.setUpdateSynchronizer_(this.buildSynchronousUpdateSynchronizer());
+
 //		// start listening to this cache once the context model has been built
 //		// and all the external types are faulted in
 //		this.externalJavaResourcePersistentTypeCache.addResourceModelListener(this.resourceModelListener);
@@ -167,10 +199,6 @@ public abstract class AbstractJaxbProject
 		return new ThreadLocalCommandExecutor();
 	}
 
-	protected JpaResourceModelListener buildResourceModelListener() {
-		return new DefaultResourceModelListener();
-	}
-
 	protected InitialResourceProxyVisitor buildInitialResourceProxyVisitor() {
 		return new InitialResourceProxyVisitor();
 	}
@@ -178,10 +206,10 @@ public abstract class AbstractJaxbProject
 //	protected JavaResourcePersistentTypeCache buildExternalJavaResourcePersistentTypeCache() {
 //		return new BinaryPersistentTypeCache(this.jpaPlatform.getAnnotationProvider());
 //	}
-//
-//	protected JpaRootContextNode buildRootContextNode() {
-//		return this.getJpaFactory().buildRootContextNode(this);
-//	}
+
+	protected JaxbRootContextNode buildRootContextNode() {
+		return this.getFactory().buildRootContextNode(this);
+	}
 
 	// ***** inner class
 	protected class InitialResourceProxyVisitor implements IResourceProxyVisitor {
@@ -496,15 +524,15 @@ public abstract class AbstractJaxbProject
 //		jrcu.removeResourceModelListener(this.resourceModelListener);
 //		this.removeItemFromCollection(jrcu, this.externalJavaResourceCompilationUnits, EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION);
 //	}
-//
-//
-//	// ********** context model **********
-//
-//	public JpaRootContextNode getRootContextNode() {
-//		return this.rootContextNode;
-//	}
-//
-//
+
+
+	// ********** context model **********
+
+	public JaxbRootContextNode getRootContextNode() {
+		return this.rootContextNode;
+	}
+
+
 //	// ********** utility **********
 //
 //	public IFile getPlatformFile(IPath runtimePath) {
@@ -532,92 +560,53 @@ public abstract class AbstractJaxbProject
 //		JpaFile jpaFile = this.getJpaFile(file);
 //		return (jpaFile == null) ? null : jpaFile.getResourceModel(contentType);
 //	}
-//
-//
-//	// ********** annotated Java source classes **********
-//	
-//	public Iterator<String> annotatedJavaSourceClassNames() {
-//		return this.getAnnotatedJavaSourceClassNames().iterator();
-//	}
-//	
-//	protected Iterable<String> getAnnotatedJavaSourceClassNames() {
-//		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
-//			@Override
-//			protected String transform(JavaResourcePersistentType jrpType) {
-//				return jrpType.getQualifiedName();
-//			}
-//		};
-//	}
-//	
-//	/**
-//	 * return only those valid annotated Java resource persistent types that are part of the 
-//	 * JPA project, ignoring those in JARs referenced in persistence.xml
-//	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
-//	 */
-//	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
-//		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
-//			@Override
-//			protected boolean accept(JavaResourcePersistentType jrpType) {
-//				return jrpType.isPersistable() && jrpType.isAnnotated();  // i.e. the type is valid and has a valid type annotation
-//			}
-//		};
-//	}
-//
-//	public Iterable<String> getMappedJavaSourceClassNames() {
-//		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalMappedSourceJavaResourcePersistentTypes()) {
-//			@Override
-//			protected String transform(JavaResourcePersistentType jrpType) {
-//				return jrpType.getQualifiedName();
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * return only those valid "mapped" (i.e. annotated with @Entity, @Embeddable, etc.) Java 
-//	 * resource persistent types that are part of the JPA project, ignoring those in JARs 
-//	 * referenced in persistence.xml
-//	 */
-//	protected Iterable<JavaResourcePersistentType> getInternalMappedSourceJavaResourcePersistentTypes() {
-//		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
-//			@Override
-//			protected boolean accept(JavaResourcePersistentType jrpType) {
-//				return jrpType.isMapped();  // i.e. the type is already persistable and annotated
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * return only those Java resource persistent types that are
-//	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-//	 */
-//	protected Iterable<JavaResourcePersistentType2_0> getInternalSourceJavaResourcePersistentTypes2_0() {
-//		return new SubIterableWrapper<JavaResourcePersistentType, JavaResourcePersistentType2_0>(this.getInternalSourceJavaResourcePersistentTypes());
-//	}
-//
-//	/**
-//	 * return only those Java resource persistent types that are
-//	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-//	 */
-//	protected Iterable<JavaResourcePersistentType> getInternalSourceJavaResourcePersistentTypes() {
-//		return new CompositeIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypeSets());
-//	}
-//
-//	/**
-//	 * return only those Java resource persistent types that are
-//	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-//	 */
-//	protected Iterable<Iterable<JavaResourcePersistentType>> getInternalSourceJavaResourcePersistentTypeSets() {
-//		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourcePersistentType>>(this.getInternalJavaResourceCompilationUnits()) {
-//			@Override
-//			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceCompilationUnit compilationUnit) {
-//				return new Iterable<JavaResourcePersistentType>() {
-//					public Iterator<JavaResourcePersistentType> iterator() {
-//						return compilationUnit.persistentTypes();  // *all* the types in the compilation unit
-//					}
-//				};
-//			}
-//		};
-//	}
+
+
+	// ********** annotated Java source classes **********
+	
+	public Iterable<String> getAnnotatedJavaSourceClassNames() {
+		return new TransformationIterable<JavaResourceType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
+			@Override
+			protected String transform(JavaResourceType type) {
+				return type.getQualifiedName();
+			}
+		};
+	}
+
+	/**
+	 * return only those valid annotated Java resource persistent types that are part of the 
+	 * JPA project, ignoring those in JARs referenced in persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 */
+	protected Iterable<JavaResourceType> getInternalAnnotatedSourceJavaResourceTypes() {
+		return new FilteringIterable<JavaResourceType>(this.getInternalSourceJavaResourcePTypes()) {
+			@Override
+			protected boolean accept(JavaResourceType type) {
+				return type.isPersistable() && type.isAnnotated();  // i.e. the type is valid and has a valid type annotation
+			}
+		};
+	}
+
+	/**
+	 * return only those Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 */
+	protected Iterable<JavaResourceType> getInternalSourceJavaResourcePTypes() {
+		return new CompositeIterable<JavaResourceType>(this.getInternalSourceJavaResourceTypeSets());
+	}
+
+	/**
+	 * return only those Java resource persistent types that are
+	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	 */
+	protected Iterable<Iterable<JavaResourceType>> getInternalSourceJavaResourceTypeSets() {
+		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceType>>(this.getInternalJavaResourceCompilationUnits()) {
+			@Override
+			protected Iterable<JavaResourceType> transform(JavaResourceCompilationUnit compilationUnit) {
+				return compilationUnit.getTypes();
+			}
+		};
+	}
 
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
 		return new TransformationIterable<JaxbFile, JavaResourceCompilationUnit>(this.getJavaSourceJaxbFiles()) {
@@ -636,103 +625,109 @@ public abstract class AbstractJaxbProject
 	}
 
 
-//	// ********** Java resource persistent type look-up **********
-//
-//	public JavaResourcePersistentType getJavaResourcePersistentType(String typeName) {
-//		for (JavaResourcePersistentType jrpType : this.getPersistableJavaResourcePersistentTypes()) {
-//			if (jrpType.getQualifiedName().equals(typeName)) {
-//				return jrpType;
-//			}
-//		}
+	// ********** Java resource persistent type look-up **********
+
+	public JavaResourceType getJavaResourceType(String typeName) {
+		for (JavaResourceType jrpType : this.getPersistableJavaResourceTypes()) {
+			if (jrpType.getQualifiedName().equals(typeName)) {
+				return jrpType;
+			}
+		}
+		return null;
 //		// if we don't have a type already, try to build new one from the project classpath
 //		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
-//	}
-//
-//	/**
-//	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
-//	 * persistence.xml
-//	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
-//	 */
-//	protected Iterable<JavaResourcePersistentType> getPersistableJavaResourcePersistentTypes() {
-//		return new FilteringIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
-//			@Override
-//			protected boolean accept(JavaResourcePersistentType jrpType) {
-//				return jrpType.isPersistable();
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * return *all* the Java resource persistent types, including those in JARs referenced in
-//	 * persistence.xml
-//	 */
-//	protected Iterable<JavaResourcePersistentType> getJavaResourcePersistentTypes() {
-//		return new CompositeIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypeSets());
-//	}
-//
-//	/**
-//	 * return *all* the Java resource persistent types, including those in JARs referenced in
-//	 * persistence.xml
-//	 */
-//	protected Iterable<Iterable<JavaResourcePersistentType>> getJavaResourcePersistentTypeSets() {
-//		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourcePersistentType>>(this.getJavaResourceNodeRoots()) {
-//			@Override
-//			protected Iterable<JavaResourcePersistentType> transform(final JavaResourceNode.Root root) {
-//				return new Iterable<JavaResourcePersistentType>() {
-//					public Iterator<JavaResourcePersistentType> iterator() {
-//						return root.persistentTypes();  // *all* the types held by the root
-//					}
-//				};
-//			}
-//		};
-//	}
-//
-//	@SuppressWarnings("unchecked")
-//	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
-//		return new CompositeIterable<JavaResourceNode.Root>(
-//					this.getInternalJavaResourceCompilationUnits(),
-//					this.getInternalJavaResourcePackageFragmentRoots(),
-//					this.getExternalJavaResourceCompilationUnits(),
-//					Collections.singleton(this.externalJavaResourcePersistentTypeCache)
-//				);
-//	}
-//
-//
-//	// ********** Java resource persistent package look-up **********
-//
-//	public JavaResourcePackage getJavaResourcePackage(String packName) {
-//		for (JavaResourcePackage jrpp : this.getJavaResourcePackages()) {
-//			if (jrpp.getName().equals(packName)) {
-//				return jrpp;
-//			}
-//		}
-//		return null;
-//	}
-//
-//	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
-//		return new FilteringIterable<JavaResourcePackage>( 
-//				new TransformationIterable<JpaFile, JavaResourcePackage>(this.getPackageInfoSourceJpaFiles()) {
-//				@Override
-//				protected JavaResourcePackage transform(JpaFile jpaFile) {
-//					return ((JavaResourcePackageInfoCompilationUnit) jpaFile.getResourceModel()).getPackage();
-//				}
-//			}) 
-//			{
-//			@Override
-//			protected boolean accept(JavaResourcePackage packageInfo) {
-//				return packageInfo != null;
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * return JPA files with package-info source "content"
-//	 */
-//	protected Iterable<JpaFile> getPackageInfoSourceJpaFiles() {
-//		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
-//	}
-//
-//
+	}
+
+	/**
+	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 */
+	protected Iterable<JavaResourceType> getPersistableJavaResourceTypes() {
+		return new FilteringIterable<JavaResourceType>(this.getJavaResourceTypes()) {
+			@Override
+			protected boolean accept(JavaResourceType jrpType) {
+				return jrpType.isPersistable();
+			}
+		};
+	}
+
+	/**
+	 * return *all* the Java resource persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 */
+	protected Iterable<JavaResourceType> getJavaResourceTypes() {
+		return new CompositeIterable<JavaResourceType>(this.getJavaResourceTypeSets());
+	}
+
+	/**
+	 * return *all* the Java resource persistent types, including those in JARs referenced in
+	 * persistence.xml
+	 */
+	protected Iterable<Iterable<JavaResourceType>> getJavaResourceTypeSets() {
+		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourceType>>(this.getJavaResourceNodeRoots()) {
+			@Override
+			protected Iterable<JavaResourceType> transform(JavaResourceNode.Root root) {
+				return root.getTypes();
+			}
+		};
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
+		return new CompositeIterable<JavaResourceNode.Root>(
+					this.getInternalJavaResourceCompilationUnits()/*,
+					this.getInternalJavaResourcePackageFragmentRoots(),
+					this.getExternalJavaResourceCompilationUnits(),
+					Collections.singleton(this.externalJavaResourcePersistentTypeCache)*/
+				);
+	}
+
+
+	// ********** Java resource persistent package look-up **********
+
+	public JavaResourcePackage getJavaResourcePackage(String packName) {
+		for (JavaResourcePackage jrpp : this.getJavaResourcePackages()) {
+			if (jrpp.getName().equals(packName)) {
+				return jrpp;
+			}
+		}
+		return null;
+	}
+
+	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
+		return new FilteringIterable<JavaResourcePackage>( 
+				new TransformationIterable<JaxbFile, JavaResourcePackage>(this.getPackageInfoSourceJaxbFiles()) {
+				@Override
+				protected JavaResourcePackage transform(JaxbFile jaxbFile) {
+					return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
+				}
+			}) 
+			{
+			@Override
+			protected boolean accept(JavaResourcePackage packageInfo) {
+				return packageInfo != null;
+			}
+		};
+	}
+
+	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
+		return new FilteringIterable<JavaResourcePackage>(this.getJavaResourcePackages()) {
+			@Override
+			protected boolean accept(JavaResourcePackage resourcePackage) {
+				return resourcePackage.isAnnotated();  // i.e. the package has a valid package annotation
+			}
+		};
+	}
+
+	/**
+	 * return JPA files with package-info source "content"
+	 */
+	protected Iterable<JaxbFile> getPackageInfoSourceJaxbFiles() {
+		return this.getJaxbFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+	}
+
+
 //	// ********** JARs **********
 //
 //	// TODO
@@ -897,55 +892,55 @@ public abstract class AbstractJaxbProject
 	 * as appropriate.
 	 */
 	protected void rebuild(IJavaProject javaProject) {
-//		// if the classpath has changed, we need to update everything since
-//		// class references could now be resolved (or not) etc.
-//		if (javaProject.equals(this.getJavaProject())) {
-//			this.removeDeadJpaFiles();
-//			this.update(this.getInternalJavaResourceCompilationUnits());
-//		} else {
-//			// TODO see if changed project is on our classpath?
-//			this.update(this.getExternalJavaResourceCompilationUnits());
-//		}
+		// if the classpath has changed, we need to update everything since
+		// class references could now be resolved (or not) etc.
+		if (javaProject.equals(this.getJavaProject())) {
+			this.removeDeadJpaFiles();
+			this.synchronizeWithJavaSource(this.getInternalJavaResourceCompilationUnits());
+		} else {
+			// TODO see if changed project is on our classpath?
+			//this.synchronizeWithJavaSource(this.getExternalJavaResourceCompilationUnits());
+		}
 	}
-//
-//	/**
-//	 * Loop through all our JPA files, remove any that are no longer on the
-//	 * classpath.
-//	 */
-//	protected void removeDeadJpaFiles() {
-//		for (JpaFile jpaFile : this.getJpaFiles()) {
-//			if (this.jpaFileIsDead(jpaFile)) {
-//				this.removeJpaFile(jpaFile);
-//			}
-//		}
-//	}
-//
-//	protected boolean jpaFileIsDead(JpaFile jpaFile) {
-//		return ! this.jpaFileIsAlive(jpaFile);
-//	}
-//
-//	/**
-//	 * Sometimes (e.g. during tests), when a project has been deleted, we get a
-//	 * Java change event that indicates the Java project is CHANGED (as
-//	 * opposed to REMOVED, which is what typically happens). The event's delta
-//	 * indicates that everything in the Java project has been deleted and the
-//	 * classpath has changed. All entries in the classpath have been removed;
-//	 * but single entry for the Java project's root folder has been added. (!)
-//	 * This means any file in the project is on the Java project's classpath.
-//	 * This classpath change is what triggers us to rebuild the JPA project; so
-//	 * we put an extra check here to make sure the JPA file's resource file is
-//	 * still present.
-//	 * <p>
-//	 * This would not be a problem if Dali received the resource change event
-//	 * <em>before</em> JDT and simply removed the JPA project; but JDT receives
-//	 * the resource change event first and converts it into the problematic
-//	 * Java change event.... 
-//	 */
-//	protected boolean jpaFileIsAlive(JpaFile jpaFile) {
-//		IFile file = jpaFile.getFile();
-//		return this.getJavaProject().isOnClasspath(file) &&
-//				file.exists();
-//	}
+
+	/**
+	 * Loop through all our JPA files, remove any that are no longer on the
+	 * classpath.
+	 */
+	protected void removeDeadJpaFiles() {
+		for (JaxbFile jaxbFile : this.getJaxbFiles()) {
+			if (this.jaxbFileIsDead(jaxbFile)) {
+				this.removeJaxbFile(jaxbFile);
+			}
+		}
+	}
+
+	protected boolean jaxbFileIsDead(JaxbFile jaxbFile) {
+		return ! this.jaxbFileIsAlive(jaxbFile);
+	}
+
+	/**
+	 * Sometimes (e.g. during tests), when a project has been deleted, we get a
+	 * Java change event that indicates the Java project is CHANGED (as
+	 * opposed to REMOVED, which is what typically happens). The event's delta
+	 * indicates that everything in the Java project has been deleted and the
+	 * classpath has changed. All entries in the classpath have been removed;
+	 * but single entry for the Java project's root folder has been added. (!)
+	 * This means any file in the project is on the Java project's classpath.
+	 * This classpath change is what triggers us to rebuild the JPA project; so
+	 * we put an extra check here to make sure the JPA file's resource file is
+	 * still present.
+	 * <p>
+	 * This would not be a problem if Dali received the resource change event
+	 * <em>before</em> JDT and simply removed the JPA project; but JDT receives
+	 * the resource change event first and converts it into the problematic
+	 * Java change event.... 
+	 */
+	protected boolean jaxbFileIsAlive(JaxbFile jaxbFile) {
+		IFile file = jaxbFile.getFile();
+		return this.getJavaProject().isOnClasspath(file) &&
+				file.exists();
+	}
 
 	/**
 	 * pre-condition:
@@ -955,11 +950,12 @@ public abstract class AbstractJaxbProject
 		return this.deltaFlagIsSet(delta, IJavaElementDelta.F_RESOLVED_CLASSPATH_CHANGED);
 	}
 
-	protected void update(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
+	protected void synchronizeWithJavaSource(Iterable<JavaResourceCompilationUnit> javaResourceCompilationUnits) {
 		for (JavaResourceCompilationUnit javaResourceCompilationUnit : javaResourceCompilationUnits) {
 			javaResourceCompilationUnit.synchronizeWithJavaSource();
 		}
 	}
+
 
 	// ***** package fragment root
 	protected void processJavaPackageFragmentRootDelta(IJavaElementDelta delta) {
@@ -1066,17 +1062,24 @@ public abstract class AbstractJaxbProject
 	// ********** dispose **********
 
 	public void dispose() {
-		this.updater.stop();
+		this.contextModelSynchronizer.stop();
+		this.updateSynchronizer.stop();
+		this.updateSynchronizer.removeListener(this.updateSynchronizerListener);
 		// the XML resources are held indefinitely by the WTP translator framework,
-		// so we better remove our listener or the JPA project will not be GCed
-//		for (JpaFile jpaFile : this.getJpaFiles()) {
-//			jpaFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
-//		}
+		// so we better remove our listener or the JAXB project will not be GCed
+		for (JaxbFile jaxbFile : this.getJaxbFiles()) {
+			jaxbFile.getResourceModel().removeResourceModelListener(this.resourceModelListener);
+		}
 	}
+
 	
 	
 	// ********** resource model listener **********
 	
+	protected JpaResourceModelListener buildResourceModelListener() {
+		return new DefaultResourceModelListener();
+	}
+
 	protected class DefaultResourceModelListener 
 		implements JpaResourceModelListener 
 	{
@@ -1093,19 +1096,23 @@ public abstract class AbstractJaxbProject
 		
 		public void resourceModelReverted(JpaResourceModel jpaResourceModel) {
 //			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
-//			AbstractJaxbProject.this.removeJpaFile(file);
-//			AbstractJaxbProject.this.addJpaFile(file);
+//			AbstractJaxbProject.this.removeJaxbFile(file);
+//			AbstractJaxbProject.this.addJaxbFile(file);
 		}
 		
 		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
 //			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
-//			AbstractJaxbProject.this.removeJpaFile(file);
+//			AbstractJaxbProject.this.removeJaxbFile(file);
 		}
 	}
-	
-	
+
+	protected void synchronizeContextModel(@SuppressWarnings("unused") JpaResourceModel jpaResourceModel) {
+		this.synchronizeContextModel();
+	}
+
+
 	// ********** resource events **********
-	
+
 	// TODO need to do the same thing for external projects and compilation units
 	public void projectChanged(IResourceDelta delta) {
 		if (delta.getResource().equals(this.getProject())) {
@@ -1116,77 +1123,74 @@ public abstract class AbstractJaxbProject
 	}
 
 	protected void internalProjectChanged(IResourceDelta delta) {
-		if (delta.getKind() == IResourceDelta.REMOVED) {
-			setUpdater(JaxbProject.Updater.Null.instance());
+		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
+		resourceDeltaVisitor.visitDelta(delta);
+		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
+		// any changes to the resource model during the "resolve" will trigger further "updates";
+		// there should be no need to "resolve" external Java types (they can't have references to
+		// the internal Java types)
+		if (resourceDeltaVisitor.encounteredSignificantChange()) {
+			this.resolveInternalJavaTypes();
 		}
-//		ResourceDeltaVisitor resourceDeltaVisitor = this.buildInternalResourceDeltaVisitor();
-//		resourceDeltaVisitor.visitDelta(delta);
-//		// at this point, if we have added and/or removed JpaFiles, an "update" will have been triggered;
-//		// any changes to the resource model during the "resolve" will trigger further "updates";
-//		// there should be no need to "resolve" external Java types (they can't have references to
-//		// the internal Java types)
-//		if (resourceDeltaVisitor.encounteredSignificantChange()) {
-//			this.resolveInternalJavaTypes();
-//		}
 	}
-//
-//	protected ResourceDeltaVisitor buildInternalResourceDeltaVisitor() {
-//		return new ResourceDeltaVisitor() {
-//			@Override
-//			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
-//				return AbstractJaxbProject.this.synchronizeJpaFiles(file, deltaKind);
-//			}
-//		};
-//	}
-//
-//	/**
-//	 * Internal resource delta visitor callback.
-//	 * Return true if a JpaFile was either added or removed.
-//	 */
-//	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
-//		switch (deltaKind) {
-//			case IResourceDelta.ADDED :
-//				return this.addJpaFile(file);
-//			case IResourceDelta.REMOVED :
-//				return this.removeJpaFile(file);
-//			case IResourceDelta.CHANGED :
-//				return this.checkForChangedFileContent(file);
-//			case IResourceDelta.ADDED_PHANTOM :
-//				break;  // ignore
-//			case IResourceDelta.REMOVED_PHANTOM :
-//				break;  // ignore
-//			default :
-//				break;  // only worried about added/removed/changed files
-//		}
-//
-//		return false;
-//	}
-//
-//	protected boolean checkForChangedFileContent(IFile file) {
-//		JpaFile jpaFile = this.getJpaFile(file);
-//		if (jpaFile == null) {
-//			// the file might have changed its content to something that we are interested in
-//			return this.addJpaFile(file);
-//		}
-//
-//		if (jpaFile.getContentType().equals(PlatformTools.getContentType(file))) {
-//			// content has not changed - ignore
-//			return false;
-//		}
-//
-//		// the content type changed, we need to build a new JPA file
-//		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
-//		this.removeJpaFile(jpaFile);
-//		this.addJpaFile(file);
-//		return true;  // at the least, we have removed a JPA file
-//	}
-//
-//	protected void resolveInternalJavaTypes() {
-//		for (JavaResourceCompilationUnit jrcu : this.getInternalJavaResourceCompilationUnits()) {
-//			jrcu.resolveTypes();
-//		}
-//	}
-//
+
+	protected ResourceDeltaVisitor buildInternalResourceDeltaVisitor() {
+		return new ResourceDeltaVisitor() {
+			@Override
+			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
+				return AbstractJaxbProject.this.synchronizeJpaFiles(file, deltaKind);
+			}
+		};
+	}
+
+	/**
+	 * Internal resource delta visitor callback.
+	 * Return true if a JpaFile was either added or removed.
+	 */
+	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
+		switch (deltaKind) {
+			case IResourceDelta.ADDED :
+				return this.addJaxbFile(file);
+			case IResourceDelta.REMOVED :
+				return this.removeJaxbFile(file);
+			case IResourceDelta.CHANGED :
+				return this.checkForChangedFileContent(file);
+			case IResourceDelta.ADDED_PHANTOM :
+				break;  // ignore
+			case IResourceDelta.REMOVED_PHANTOM :
+				break;  // ignore
+			default :
+				break;  // only worried about added/removed/changed files
+		}
+
+		return false;
+	}
+
+	protected boolean checkForChangedFileContent(IFile file) {
+		JaxbFile jaxbFile = this.getJaxbFile(file);
+		if (jaxbFile == null) {
+			// the file might have changed its content to something that we are interested in
+			return this.addJaxbFile(file);
+		}
+
+		if (jaxbFile.getContentType().equals(PlatformTools.getContentType(file))) {
+			// content has not changed - ignore
+			return false;
+		}
+
+		// the content type changed, we need to build a new JPA file
+		// (e.g. the schema of an orm.xml file changed from JPA to EclipseLink)
+		this.removeJaxbFile(jaxbFile);
+		this.addJaxbFile(file);
+		return true;  // at the least, we have removed a JPA file
+	}
+
+	protected void resolveInternalJavaTypes() {
+		for (JavaResourceCompilationUnit jrcu : this.getInternalJavaResourceCompilationUnits()) {
+			jrcu.resolveTypes();
+		}
+	}
+
 //	protected void externalProjectChanged(IResourceDelta delta) {
 //		if (this.getJavaProject().isOnClasspath(delta.getResource())) {
 //			ResourceDeltaVisitor resourceDeltaVisitor = this.buildExternalResourceDeltaVisitor();
@@ -1338,60 +1342,179 @@ public abstract class AbstractJaxbProject
 
 	// ********** synchronize context model with resource model **********
 
-	// TODO ...
-	protected void synchronizeContextModel(@SuppressWarnings("unused") JpaResourceModel jpaResourceModel) {
-		this.synchronizeContextModel();
+	public Synchronizer getContextModelSynchronizer() {
+		return this.contextModelSynchronizer;
 	}
 
+	public void setContextModelSynchronizer(Synchronizer synchronizer) {
+		if (synchronizer == null) {
+			throw new NullPointerException();
+		}
+		this.contextModelSynchronizer.stop();
+		this.setContextModelSynchronizer_(synchronizer);
+	}
+
+	protected void setContextModelSynchronizer_(Synchronizer synchronizer) {
+		this.contextModelSynchronizer = synchronizer;
+		this.contextModelSynchronizer.start();
+	}
+
+	/**
+	 * Delegate to the context model synchronizer so clients can configure how
+	 * synchronizations occur.
+	 */
 	public void synchronizeContextModel() {
+		this.synchronizingContextModel = true;
+		this.contextModelSynchronizer.synchronize();
+		this.synchronizingContextModel = false;
+
+		// There are some changes to the resource model that will not change
+		// the existing context model and trigger an update (e.g. adding an
+		// @Entity annotation when the the JPA project is automatically
+		// discovering annotated classes); so we explicitly execute an update
+		// here to discover those changes.
 		this.update();
+	}
+
+	/**
+	 * Called by the context model synchronizer.
+	 */
+	public IStatus synchronizeContextModel(IProgressMonitor monitor) {
+		this.rootContextNode.synchronizeWithResourceModel();
+		return Status.OK_STATUS;
+	}
+
+	public void synchronizeContextModelAndWait() {
+		Synchronizer temp = this.contextModelSynchronizer;
+		this.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
+		this.synchronizeContextModel();
+		this.setContextModelSynchronizer(temp);
+	}
+
+
+	// ********** default context model synchronizer (synchronous) **********
+
+	protected Synchronizer buildSynchronousContextModelSynchronizer() {
+		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousContextModelSynchronizerCommand() {
+		return new SynchronousContextModelSynchronizerCommand();
+	}
+
+	protected class SynchronousContextModelSynchronizerCommand
+		implements Command
+	{
+		public void execute() {
+			AbstractJaxbProject.this.synchronizeContextModel(new NullProgressMonitor());
+		}
 	}
 
 
 	// ********** project "update" **********
 
-	public Updater getUpdater() {
-		return this.updater;
+	public CallbackSynchronizer getUpdateSynchronizer() {
+		return this.updateSynchronizer;
 	}
 
-	public void setUpdater(Updater updater) {
-		if (updater == null) {
+	public void setUpdateSynchronizer(CallbackSynchronizer synchronizer) {
+		if (synchronizer == null) {
 			throw new NullPointerException();
 		}
-		this.updater.stop();
-		this.setUpdater_(updater);
+		this.updateSynchronizer.stop();
+		this.updateSynchronizer.removeListener(this.updateSynchronizerListener);
+		this.setUpdateSynchronizer_(synchronizer);
 	}
 
-	protected void setUpdater_(Updater updater) {
-		this.updater = updater;
-		this.updater.start();
+	protected void setUpdateSynchronizer_(CallbackSynchronizer synchronizer) {
+		this.updateSynchronizer = synchronizer;
+		this.updateSynchronizer.addListener(this.updateSynchronizerListener);
+		this.updateSynchronizer.start();
+	}
+
+	@Override
+	public void stateChanged() {
+		super.stateChanged();
+		this.update();
 	}
 
 	/**
-	 * Delegate to the updater so clients can configure how updates occur.
+	 * The JAXB project's state has changed, "update" those parts of the
+	 * JAXB project that are dependent on other parts of the JAXB project.
+	 * <p>
+	 * Delegate to the update synchronizer so clients can configure how
+	 * updates occur.
+	 * <p>
+	 * Ignore any <em>updates</em> that occur while we are synchronizing
+	 * the context model with the resource model because we will <em>update</em>
+	 * the context model at the completion of the <em>sync</em>. This is really
+	 * only useful for synchronous <em>syncs</em> and <em>updates</em>; since
+	 * the job scheduling rules will prevent the <em>sync</em> and
+	 * <em>update</em> jobs from running concurrently.
+	 * 
+	 * @see #updateAndWait()
 	 */
-	public void update() {
-		this.updater.update();
+	protected void update() {
+		if ( ! this.synchronizingContextModel) {
+			this.updateSynchronizer.synchronize();
+		}
 	}
 
 	/**
-	 * Called by the updater.
+	 * Called by the update synchronizer.
 	 */
 	public IStatus update(IProgressMonitor monitor) {
-		this.update_(monitor);
+		this.rootContextNode.update();
 		return Status.OK_STATUS;
 	}
 
-	protected void update_(IProgressMonitor monitor) {
-//		this.rootContextNode.update(monitor);
-//		this.rootContextNode.postUpdate();
-	}
-
 	/**
-	 * Also called by the updater.
+	 * This is the callback used by the update synchronizer to notify the JAXB
+	 * project that the "update" has quiesced (i.e. the "update" has completed
+	 * and there are no outstanding requests for further "updates").
 	 */
-	public void updateQuiesced() {
-		//nothing yet
+ 	public void updateQuiesced() {
+ 		//nothing yet
 	}
 
+	public void updateAndWait() {
+		CallbackSynchronizer temp = this.updateSynchronizer;
+		this.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
+		this.update();
+		this.setUpdateSynchronizer(temp);
+	}
+
+
+	// ********** default update synchronizer (synchronous) **********
+
+	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
+		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousUpdateSynchronizerCommand() {
+		return new SynchronousUpdateSynchronizerCommand();
+	}
+
+	protected class SynchronousUpdateSynchronizerCommand
+		implements Command
+	{
+		public void execute() {
+			AbstractJaxbProject.this.update(new NullProgressMonitor());
+		}
+	}
+
+
+	// ********** update synchronizer listener **********
+
+	protected CallbackSynchronizer.Listener buildUpdateSynchronizerListener() {
+		return new UpdateSynchronizerListener();
+	}
+
+	protected class UpdateSynchronizerListener
+		implements CallbackSynchronizer.Listener
+	{
+		public void synchronizationQuiesced(CallbackSynchronizer synchronizer) {
+			AbstractJaxbProject.this.updateQuiesced();
+		}
+	}
 }

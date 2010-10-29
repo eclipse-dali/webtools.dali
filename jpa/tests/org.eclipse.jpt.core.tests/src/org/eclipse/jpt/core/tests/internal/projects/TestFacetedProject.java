@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -64,12 +63,18 @@ public class TestFacetedProject extends TestPlatformProject {
 	/**
 	 * if 'config' is null (and 'facetName' is "jpt.jpa"), the JPA project will be built with the defaults
 	 * defined in JpaFacetInstallDataModelProvider#getDefaultProperty(String)
+	 * In JPA the config object will be an IDataModel
+	 * In JAXB the config object will be a JaxbFacetInstallConfig
 	 */
-	public void installFacet(String facetName, String versionName, IDataModel config) throws CoreException {
+	public void installFacet(String facetName, String versionName, Object config) throws CoreException {
 		this.facetedProject.installProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
 
-	public void uninstallFacet(String facetName, String versionName, IDataModel config) throws CoreException {
+	/**
+	 * In JPA the config object will be an IDataModel
+	 * In JAXB the config object will be a JaxbFacetUninstallConfig
+	 */
+	public void uninstallFacet(String facetName, String versionName, Object config) throws CoreException {
 		this.facetedProject.uninstallProjectFacet(this.facetVersion(facetName, versionName), config, null);
 	}
 

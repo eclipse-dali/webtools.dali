@@ -11,9 +11,14 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context;
 
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 @SuppressWarnings("nls")
 public abstract class JaxbContextModelTestCase extends AnnotationTestCase
@@ -27,28 +32,32 @@ public abstract class JaxbContextModelTestCase extends AnnotationTestCase
 	
 	@Override
 	protected TestJavaProject buildJavaProject(boolean autoBuild) throws Exception {
-		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, null);
+		return buildJaxbProject(BASE_PROJECT_NAME, autoBuild, buildJaxbFacetInstallConfig());
 	}
 	
-	protected TestJaxbProject buildJaxbProject(String projectName, boolean autoBuild, IDataModel jaxbConfig) 
+	protected TestJaxbProject buildJaxbProject(String projectName, boolean autoBuild, JaxbFacetInstallConfig jaxbConfig) 
 			throws Exception {
 		return TestJaxbProject.buildJaxbProject(projectName, autoBuild, jaxbConfig);
 	}
 	
-//	protected IDataModel buildJaxbConfigDataModel() {
-//		IDataModel dataModel = DataModelFactory.createDataModel(new JaxbFacetInstallDataModelProvider());		
-//		// default facet version is 2.0 - most tests use 1.0
-//		dataModel.setProperty(IFacetDataModelProperties.FACET_VERSION_STR, JpaFacet.VERSION_1_0.getVersionString());
-//		// most tests use the basic generic platform
-//		dataModel.setProperty(JpaFacetDataModelProperties.PLATFORM, GenericPlatform.VERSION_1_0);
-//		// most tests do use an orm.xml
-//		dataModel.setProperty(JpaFacetInstallDataModelProperties.CREATE_ORM_XML, Boolean.TRUE);
-//		return dataModel;
-//	}
-//
-//	protected JaxbRootContextNode getRootContextNode() {
-//		return this.getJaxbProject().getRootContextNode();
-//	}
+	protected JaxbFacetInstallConfig buildJaxbFacetInstallConfig() {
+		JaxbFacetInstallConfig config = new JaxbFacetInstallConfig();
+		config.setProjectFacetVersion(getProjectFacetVersion());
+		config.setPlatform(getPlatform());
+		return config;
+	}
+	
+	protected JaxbPlatformDescription getPlatform() {
+		return JptJaxbCorePlugin.getDefaultPlatform(getProjectFacetVersion());
+	}
+
+	protected IProjectFacetVersion getProjectFacetVersion() {
+		return JaxbFacet.VERSION_2_1;
+	}
+
+	protected JaxbRootContextNode getRootContextNode() {
+		return this.getJaxbProject().getRootContextNode();
+	}
 	
 	@Override
 	protected TestJaxbProject getJavaProject() {
@@ -58,8 +67,4 @@ public abstract class JaxbContextModelTestCase extends AnnotationTestCase
 	protected JaxbProject getJaxbProject() {
 		return this.getJavaProject().getJaxbProject();
 	}
-//	
-//	protected void deleteResource(Resource resource) throws CoreException {
-//		WorkbenchResourceHelper.deleteResource(resource);
-//	}
 }

@@ -14,7 +14,7 @@ import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.synchronizers.AsynchronousSynchronizer;
-import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.tests.internal.MultiThreadedTestCase;
 
 @SuppressWarnings("nls")

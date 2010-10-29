@@ -7,15 +7,11 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core;
+package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.core.IResourcePart;
-import org.eclipse.jpt.utility.model.Model;
 
 /**
- * JAXB-specific protocol. All JAXB objects belong to a JAXB project, are
- * associated with a resource, and have a parent (excepting the JAXB project).
+ * 
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,18 +22,38 @@ import org.eclipse.jpt.utility.model.Model;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbNode
-	extends Model, IAdaptable, IResourcePart
+public interface XmlAccessOrderHolder
+	extends JaxbContextNode
 {
 	/**
-	 * Return the JAXB project the node belongs to.
+	 * Return the access order, whether specified or defaulted.
+	 * This should never return null since at least the default will be set
 	 */
-	JaxbProject getJaxbProject();
+	XmlAccessOrder getAccessOrder();
 
 	/**
-	 * Return the JAXB node's parent. The JAXB project will not have a parent.
+	 * Return the default access order, never null
 	 */
-	JaxbNode getParent();
+	XmlAccessOrder getDefaultAccessOrder();
 
-	void stateChanged();
+		/**
+		 * String constant associated with changes to the default access order
+		 */
+		String DEFAULT_ACCESS_ORDER_PROPERTY = "defaultAccessOrder"; //$NON-NLS-1$
+
+	/**
+	 * Return the specified access order;
+	 */
+	XmlAccessOrder getSpecifiedAccessOrder();
+
+	/**
+	 * Set the specified access order.
+	 */
+	void setSpecifiedAccessOrder(XmlAccessOrder newSpecifiedAccessOrder);
+
+		/**
+		 * String constant associated with changes to the specified access order
+		 */
+		String SPECIFIED_ACCESS_ORDER_PROPERTY = "specifiedAccessOrder"; //$NON-NLS-1$
+
 }

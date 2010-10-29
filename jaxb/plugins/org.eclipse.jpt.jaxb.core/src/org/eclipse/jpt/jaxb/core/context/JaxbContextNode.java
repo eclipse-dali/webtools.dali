@@ -7,16 +7,15 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core;
+package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.core.IResourcePart;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.jaxb.core.JaxbNode;
 
 /**
- * JAXB-specific protocol. All JAXB objects belong to a JAXB project, are
- * associated with a resource, and have a parent (excepting the JAXB project).
- * 
+ * Common protocol for JAXB objects that have a context, as opposed to
+ * resource objects.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,18 +25,22 @@ import org.eclipse.jpt.utility.model.Model;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbNode
-	extends Model, IAdaptable, IResourcePart
+public interface JaxbContextNode
+	extends JaxbNode
 {
 	/**
-	 * Return the JAXB project the node belongs to.
+	 * Return the resource type of the context node's resource.
 	 */
-	JaxbProject getJaxbProject();
+	JpaResourceType getResourceType();
+
+
+	// ********** updating **********
+
+	void synchronizeWithResourceModel();
 
 	/**
-	 * Return the JAXB node's parent. The JAXB project will not have a parent.
+	 * Update the context model with the content of the JAXB resource model.
 	 */
-	JaxbNode getParent();
+	void update();
 
-	void stateChanged();
 }

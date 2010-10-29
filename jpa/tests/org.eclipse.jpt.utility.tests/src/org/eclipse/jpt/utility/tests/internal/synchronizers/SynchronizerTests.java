@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,7 @@
 package org.eclipse.jpt.utility.tests.internal.synchronizers;
 
 import junit.framework.TestCase;
-
-import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 
 public class SynchronizerTests extends TestCase {
 

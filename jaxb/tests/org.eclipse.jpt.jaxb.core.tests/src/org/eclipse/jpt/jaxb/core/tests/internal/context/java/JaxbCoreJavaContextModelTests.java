@@ -7,23 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core.tests.internal;
+package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import junit.framework.Test;
+import junit.framework.TestCase;
 import junit.framework.TestSuite;
-import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbCoreContextModelTests;
-import org.eclipse.jpt.jaxb.core.tests.internal.resource.JaxbCoreResourceModelTests;
 
-public class JaxbCoreTests {
-
+public class JaxbCoreJavaContextModelTests extends TestCase
+{
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JaxbCoreTests.class.getPackage().getName());
-		suite.addTest(JaxbCoreResourceModelTests.suite());
-		suite.addTest(JaxbCoreContextModelTests.suite());
+		TestSuite suite = new TestSuite(JaxbCoreJavaContextModelTests.class.getName());
+		suite.addTestSuite(GenericJavaPackageInfoTests.class);
 		return suite;
 	}
-	
-	private JaxbCoreTests() {
+
+	private JaxbCoreJavaContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

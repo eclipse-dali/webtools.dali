@@ -87,4 +87,5 @@ Export-Package: org.eclipse.jpt.utility,
  org.eclipse.jpt.utility.model,
  org.eclipse.jpt.utility.model.event,
  org.eclipse.jpt.utility.model.listener,
- org.eclipse.jpt.utility.model.value
+ org.eclipse.jpt.utility.model.value,
+ org.eclipse.jpt.utility.synchronizers

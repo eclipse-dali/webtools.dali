@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
 
 /**
  * This builds and holds a "JAXB" project.
@@ -30,14 +30,9 @@ public class TestJaxbProject extends TestJavaProject {
 
 	// ********** builders **********
 
-	public static TestJaxbProject buildJaxbProject(String baseProjectName, boolean autoBuild, IDataModel jpaConfig)
+	public static TestJaxbProject buildJaxbProject(String baseProjectName, boolean autoBuild, JaxbFacetInstallConfig config)
 			throws CoreException {
-		return new TestJaxbProject(baseProjectName, autoBuild, jpaConfig);
-	}
-
-	public static TestJaxbProject buildJaxbProject(String baseProjectName, boolean autoBuild)
-			throws CoreException {
-		return buildJaxbProject(baseProjectName, autoBuild, null);
+		return new TestJaxbProject(baseProjectName, autoBuild, config);
 	}
 
 	// ********** constructors/initialization **********
@@ -50,13 +45,10 @@ public class TestJaxbProject extends TestJavaProject {
 		this(projectName, autoBuild, null);
 	}
 
-	public TestJaxbProject(String projectName, boolean autoBuild, IDataModel jaxbConfig) throws CoreException {
+	public TestJaxbProject(String projectName, boolean autoBuild, JaxbFacetInstallConfig config) throws CoreException {
 		super(projectName, autoBuild);
-		String jaxbFacetVersion = JaxbFacet.VERSION_2_1.getVersionString();
-//		if (jaxbConfig != null) {
-//			jaxbFacetVersion = jaxbConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
-//		}
-		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, jaxbConfig);
+		String jaxbFacetVersion = config.getProjectFacetVersion().getVersionString();
+		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, config);
 		this.jaxbProject = JptJaxbCorePlugin.getJaxbProject(this.getProject());
 //		this.jaxbProject.setUpdater(new SynchronousJpaProjectUpdater(this.jaxbProject));
 	}

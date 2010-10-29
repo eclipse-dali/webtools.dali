@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.utility.CallbackJobSynchronizer;
 import org.eclipse.jpt.core.internal.utility.JobCommand;
-import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.osgi.util.NLS;
 
 /**

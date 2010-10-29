@@ -10,6 +10,9 @@
 package org.eclipse.jpt.jaxb.core.tests;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
+import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -40,9 +43,9 @@ public class JptJaxbCoreTestsPlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-//		JpaProjectManager jpaProjectManager = JptCorePlugin.getJpaProjectManager();
-//		ReflectionTools.executeMethod(jpaProjectManager, "handleEventsSynchronously");
-//		ReflectionTools.executeStaticMethod(JptCorePlugin.class, "doNotFlushPreferences");
+		JaxbProjectManager jaxbProjectManager = JptJaxbCorePlugin.getProjectManager();
+		ReflectionTools.executeMethod(jaxbProjectManager, "handleEventsSynchronously");
+//		ReflectionTools.executeStaticMethod(JptJaxbCorePlugin.class, "doNotFlushPreferences");
 	}
 
 	@Override

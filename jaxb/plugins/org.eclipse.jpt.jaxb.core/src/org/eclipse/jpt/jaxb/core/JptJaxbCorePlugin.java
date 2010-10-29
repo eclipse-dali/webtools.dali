@@ -179,7 +179,29 @@ public class JptJaxbCorePlugin
 		}
 		return null;
 	}
-	
+
+	/**
+	 * Return the JAXB platform ID associated with the specified Eclipse project.
+	 */
+	public static String getJaxbPlatformId(IProject project) {
+		return JptCorePlugin.getProjectPreferences(project).get(JAXB_PLATFORM_PREF_KEY, GenericJaxbPlatform.VERSION_2_1.getId());
+	}
+
+	/**
+	 * Return the JAXB platform description associated with the specified Eclipse project.
+	 */
+	public static JaxbPlatformDescription getJaxbPlatformDescription(IProject project) {
+		String jpaPlatformId = getJaxbPlatformId(project);
+		return getJaxbPlatformManager().getJaxbPlatform(jpaPlatformId);
+	}
+
+	/**
+	 * Set the JAXB platform ID associated with the specified Eclipse project.
+	 */
+	public static void setJaxbPlatformId(IProject project, String jpaPlatformId) {
+		JptCorePlugin.setProjectPreference(project, JAXB_PLATFORM_PREF_KEY, jpaPlatformId);
+	}
+
 	public static void clearProjectPreferences(IProject project) {
 		JptCorePlugin.clearProjectPreferences(project, JAXB_PLATFORM_PREF_KEY);
 	}

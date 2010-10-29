@@ -14,6 +14,7 @@ import java.util.concurrent.ThreadFactory;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.ConsumerThreadCoordinator;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 
 /**
  * This synchronizer will perform synchronizations in a separate thread,

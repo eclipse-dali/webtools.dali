@@ -12,8 +12,8 @@ package org.eclipse.jpt.utility.tests.internal.synchronizers;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.CompositeException;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
-import org.eclipse.jpt.utility.internal.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.utility.tests.internal.MultiThreadedTestCase;
 import org.eclipse.jpt.utility.tests.internal.TestTools;
 

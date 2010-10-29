@@ -18,7 +18,6 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -244,7 +243,7 @@ public class JaxbPlatformManagerImpl
 	}
 	
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition(IProject project) {
-		String jaxbPlatformId = JptCorePlugin.getJpaPlatformId(project);
+		String jaxbPlatformId = JptJaxbCorePlugin.getJaxbPlatformId(project);
 		JaxbPlatformDescriptionImpl platformDesc = this.platformDescriptions.getItem(jaxbPlatformId);
 		if (platformDesc == null) {
 			throw new IllegalArgumentException("Project does not have a recognized JAXB platform."); //$NON-NLS-1$
