@@ -67,22 +67,22 @@ public class SourceXmlSchemaAnnotation
 	
 	private static DeclarationAnnotationElementAdapter<String> buildAttributeFormDefaultAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(
-				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__ATTRIBUTE_FORM_DEFAULT, false); // false = do not remove annotation when empty
+				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__ATTRIBUTE_FORM_DEFAULT); //remove annotation when empty
 	}
 	
 	private static DeclarationAnnotationElementAdapter<String> buildElementFormDefaultAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(
-				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__ELEMENT_FORM_DEFAULT, false); // false = do not remove annotation when empty
+				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__ELEMENT_FORM_DEFAULT); // remove annotation when empty
 	}
 	
 	private static DeclarationAnnotationElementAdapter<String> buildLocationAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(
-				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__LOCATION, false); // false = do not remove annotation when empty
+				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__LOCATION); // remove annotation when empty
 	}
 	
 	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(
-				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__NAMESPACE, false); // false = do not remove annotation when empty
+				DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SCHEMA__NAMESPACE); // remove annotation when empty
 	}
 	
 	

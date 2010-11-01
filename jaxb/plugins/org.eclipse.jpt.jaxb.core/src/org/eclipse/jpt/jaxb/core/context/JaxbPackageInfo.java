@@ -32,4 +32,8 @@ public interface JaxbPackageInfo
 
 	JavaResourcePackage getResourcePackage();
 
+	/**
+	 * Return the XML schema for this package info, this will not be null.
+	 */
+	XmlSchema getXmlSchema();
 }

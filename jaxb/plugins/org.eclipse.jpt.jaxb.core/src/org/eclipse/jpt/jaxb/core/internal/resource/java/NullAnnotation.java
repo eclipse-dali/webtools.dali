@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,8 +13,8 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.AbstractJavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 
 /**
@@ -61,8 +61,8 @@ public abstract class NullAnnotation
 	 * Convenience method: Cast the annotation's parent to a
 	 * persistent member.
 	 */
-	protected JavaResourceMember getMember() {
-		return (JavaResourceMember) this.parent;
+	protected JavaResourceAnnotatedElement getAnnotatedElement() {
+		return (JavaResourceAnnotatedElement) this.parent;
 	}
 	
 	/**
@@ -72,7 +72,7 @@ public abstract class NullAnnotation
 	 * (type or attribute).
 	 */
 	protected Annotation addAnnotation() {
-		return this.getMember().addAnnotation(this.getAnnotationName());
+		return this.getAnnotatedElement().addAnnotation(this.getAnnotationName());
 	}
 	
 }

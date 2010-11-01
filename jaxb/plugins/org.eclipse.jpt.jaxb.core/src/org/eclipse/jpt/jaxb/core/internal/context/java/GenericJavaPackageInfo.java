@@ -13,6 +13,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -25,6 +26,8 @@ public class GenericJavaPackageInfo
 
 	protected final JavaResourcePackage resourcePackage;
 
+	protected final XmlSchema xmlSchema;
+
 	protected XmlAccessType specifiedAccessType;
 
 	protected XmlAccessOrder specifiedAccessOrder;
@@ -32,6 +35,7 @@ public class GenericJavaPackageInfo
 	public GenericJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		super(parent);
 		this.resourcePackage = resourcePackage;
+		this.xmlSchema = getFactory().buildJavaXmlSchema(this);
 		this.specifiedAccessType = getResourceAccessType();
 		this.specifiedAccessOrder = getResourceAccessOrder();
 	}
@@ -40,12 +44,13 @@ public class GenericJavaPackageInfo
 	// ********** synchronize/update **********
 
 	public void synchronizeWithResourceModel() {
+		this.xmlSchema.synchronizeWithResourceModel();
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
 	}
 
 	public void update() {
-		//nothing yet
+		this.xmlSchema.update();
 	}
 
 
@@ -55,6 +60,11 @@ public class GenericJavaPackageInfo
 		return this.resourcePackage;
 	}
 
+	// ********** xml schema **********
+
+	public XmlSchema getXmlSchema() {
+		return this.xmlSchema;
+	}
 
 	// ********** access type **********
 

@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
 /**
@@ -45,7 +46,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.core.internal.Generic_2_1_JaxbFactory.GenericJaxbFactory
+ * @see org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbFactory
  * 
  * @version 3.0
  * @since 3.0
@@ -80,5 +81,10 @@ public interface JaxbFactory
 
 	JaxbPackage buildPackage(JaxbRootContextNode parent, JavaResourcePackage resourcePackage);
 
+
+	// ********** Java Context Nodes **********
+
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
+
+	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
 }

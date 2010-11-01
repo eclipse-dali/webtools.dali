@@ -18,6 +18,7 @@ public class JaxbCoreJavaContextModelTests extends TestCase
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreJavaContextModelTests.class.getName());
 		suite.addTestSuite(GenericJavaPackageInfoTests.class);
+		suite.addTestSuite(GenericJavaXmlSchemaTests.class);
 		return suite;
 	}
 

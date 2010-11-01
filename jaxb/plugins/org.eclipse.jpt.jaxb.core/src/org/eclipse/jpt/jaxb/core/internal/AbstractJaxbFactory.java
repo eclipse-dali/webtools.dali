@@ -19,9 +19,11 @@ import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
 /**
@@ -56,7 +58,13 @@ public abstract class AbstractJaxbFactory
 		return new GenericPackage(parent, resourcePackage);
 	}
 
+	// ********** Java Context Nodes **********
+
 	public JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		return new GenericJavaPackageInfo(parent, resourcePackage);
+	}
+
+	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
+		return new GenericJavaXmlSchema(parent);
 	}
 }

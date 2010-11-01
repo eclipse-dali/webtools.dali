@@ -11,13 +11,16 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context;
 
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 @SuppressWarnings("nls")
@@ -57,6 +60,10 @@ public abstract class JaxbContextModelTestCase extends AnnotationTestCase
 
 	protected JaxbRootContextNode getRootContextNode() {
 		return this.getJaxbProject().getRootContextNode();
+	}
+	
+	protected AnnotatedElement annotatedElement(JavaResourceAnnotatedElement resource) {
+		return (AnnotatedElement) ReflectionTools.getFieldValue(resource, "annotatedElement");
 	}
 	
 	@Override

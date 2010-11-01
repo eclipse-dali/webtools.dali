@@ -11,6 +11,10 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
@@ -18,6 +22,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 
@@ -81,24 +86,36 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertEquals(XmlAccessType.PROPERTY, contextPackageInfo.getAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getDefaultAccessType());
 		
-		XmlAccessorTypeAnnotation accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourcePackage.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
-		accessorTypeAnnotation.setValue(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.FIELD);
-		getJaxbProject().synchronizeContextModel();
+		//set the accesser type value to FIELD
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__FIELD);
+			}
+		});
 		assertEquals(XmlAccessType.FIELD, contextPackageInfo.getAccessType());
 
-		accessorTypeAnnotation.setValue(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.PUBLIC_MEMBER);
-		getJaxbProject().synchronizeContextModel();
+		//set the accesser type value to PUBLIC_MEMBER
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__PUBLIC_MEMBER);
+			}
+		});
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getAccessType());
 
-		accessorTypeAnnotation.setValue(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType.NONE);
-		getJaxbProject().synchronizeContextModel();
+		//set the accesser type value to NONE
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.setEnumMemberValuePair(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_TYPE__NONE);
+			}
+		});
 		assertEquals(XmlAccessType.NONE, contextPackageInfo.getAccessType());
 		
-		//add another package annotation so that the context model object doesn't get removed when 
-		//removing the XmlAccessorType annotation. Only "annotated" packages are added to the context model
-		resourcePackage.addAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME); 
-		resourcePackage.removeAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
-		getJaxbProject().synchronizeContextModel();
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlAccessorTypeAnnotation(declaration);
+			}
+		});
 		assertNull(contextPackageInfo.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getDefaultAccessType());
@@ -135,19 +152,41 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertEquals(XmlAccessOrder.ALPHABETICAL, contextPackageInfo.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getDefaultAccessOrder());
 		
-		XmlAccessorOrderAnnotation accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourcePackage.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		accessorOrderAnnotation.setValue(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.UNDEFINED);
-		getJaxbProject().synchronizeContextModel();
+		//set the access order value to UNDEFINED
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.setEnumMemberValuePair(declaration, XmlAccessorOrderAnnotation.ANNOTATION_NAME, JAXB.XML_ACCESS_ORDER__UNDEFINED);
+			}
+		});
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getAccessOrder());
-		
-		//add another package annotation so that the context model object doesn't get removed when 
-		//removing the XmlAccessorOrder annotation. Only "annotated" packages are added to the context model
-		resourcePackage.addAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME); 
-		resourcePackage.removeAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		getJaxbProject().synchronizeContextModel();
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlAccessorOrderAnnotation(declaration);
+			}
+		});
 		assertNull(contextPackageInfo.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getDefaultAccessOrder());
 	}
 
+	protected void setEnumMemberValuePair(ModifiedDeclaration declaration, String annotationName, String enumValue) {
+		this.setEnumMemberValuePair((NormalAnnotation) declaration.getAnnotationNamed(annotationName), "value", enumValue);
+
+	}
+
+	//add another package annotation so that the context model object doesn't get removed when 
+	//removing the XmlAccessorType annotation. Only "annotated" packages are added to the context model
+	protected void removeXmlAccessorTypeAnnotation(ModifiedDeclaration declaration) {
+		this.addMarkerAnnotation(declaration.getDeclaration(), XmlSchemaAnnotation.ANNOTATION_NAME);
+		this.removeAnnotation(declaration, XmlAccessorTypeAnnotation.ANNOTATION_NAME);		
+	}
+
+	//add another package annotation so that the context model object doesn't get removed when 
+	//removing the XmlAccessorOrder annotation. Only "annotated" packages are added to the context model
+	protected void removeXmlAccessorOrderAnnotation(ModifiedDeclaration declaration) {
+		this.addMarkerAnnotation(declaration.getDeclaration(), XmlSchemaAnnotation.ANNOTATION_NAME);
+		this.removeAnnotation(declaration, XmlAccessorOrderAnnotation.ANNOTATION_NAME);		
+	}
 }
