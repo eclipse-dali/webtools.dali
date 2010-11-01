@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.utility.jdt;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import junit.framework.TestCase;
@@ -19,12 +20,17 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
+import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.IExtendedModifier;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.NumberLiteral;
+import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
@@ -34,6 +40,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
@@ -519,6 +526,124 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.addMemberValuePair(annotation, this.newMemberValuePair(annotation.getAST(), name, value));
 	}
 
+	/**
+	 * Add the specified member value pair to the marker annotation
+	 * by first replacing it with a normal annotation.
+	 * Return the resulting normal annotation.
+	 */
+	protected NormalAnnotation addMemberValuePair(MarkerAnnotation annotation, String name, String value) {
+		NormalAnnotation normalAnnotation = this.replaceMarkerAnnotation(annotation);
+		this.addMemberValuePair(normalAnnotation, this.newMemberValuePair(annotation.getAST(), name, value));
+		return normalAnnotation;
+	}
+
+	protected void setEnumMemberValuePair(NormalAnnotation annotation, String elementName, String enumValue) {
+		MemberValuePair memberValuePair = this.memberValuePair(annotation, elementName);
+		memberValuePair.setValue(annotation.getAST().newName(enumValue));
+	}
+
+	protected void addEnumMemberValuePair(MarkerAnnotation markerAnnotation, String elementName, String value) {
+		this.addEnumMemberValuePair(this.replaceMarkerAnnotation(markerAnnotation), elementName, value);
+	}
+
+	protected void addEnumMemberValuePair(NormalAnnotation annotation, String elementName, String value) {
+		this.addMemberValuePair(annotation, elementName, annotation.getAST().newName(value));
+	}
+
+	protected void addMemberValuePair(NormalAnnotation annotation, String elementName, Expression value) {
+		MemberValuePair memberValuePair = this.newMemberValuePair(annotation.getAST(), elementName, value);
+		this.addMemberValuePair(annotation, memberValuePair);
+	}
+
+	/**
+	 * Replace the given marker annotation with a normal annotation.
+	 * Return the resulting normal annotation.
+	 */
+	protected NormalAnnotation replaceMarkerAnnotation(MarkerAnnotation annotation) {
+		List<IExtendedModifier> annotations = this.annotations(annotation.getParent());
+		int index = annotations.indexOf(annotation);
+		NormalAnnotation normalAnnotation = newNormalAnnotation(annotation.getAST(), annotation.getTypeName().getFullyQualifiedName());
+		annotations.set(index, normalAnnotation);
+		return normalAnnotation;
+	}
+
+	/**
+	 * Build a normal annotation and set its name.
+	 */
+	protected NormalAnnotation newNormalAnnotation(AST ast, String name) {
+		NormalAnnotation annotation = ast.newNormalAnnotation();
+		annotation.setTypeName(ast.newName(name));
+		return annotation;
+	}
+
+	/**
+	 * Add the normal annotation to the given AST node. 
+	 * This should be a PackageDeclaration or a BodyDeclaration.
+	 * Return the resulting normal annotation.
+	 */
+	protected NormalAnnotation addNormalAnnotation(ASTNode astNode, String name) {
+		NormalAnnotation annotation = this.newNormalAnnotation(astNode.getAST(), name);
+		this.addAnnotation(astNode, annotation);
+		return annotation;
+	}
+
+	/**
+	 * Add the annotation to the given AST node. 
+	 * This should be a PackageDeclaration or a BodyDeclaration.
+	 */
+	protected void addAnnotation(ASTNode astNode, Annotation annotation) {
+		this.annotations(astNode).add(annotation);
+	}
+
+	/**
+	 * Build a marker annotation and set its name.
+	 */
+	protected MarkerAnnotation newMarkerAnnotation(AST ast, String name) {
+		MarkerAnnotation annotation = ast.newMarkerAnnotation();
+		annotation.setTypeName(ast.newName(name));
+		return annotation;
+	}
+
+	/**
+	 * Add the normal annotation to the given AST node. 
+	 * This should be a PackageDeclaration or a BodyDeclaration.
+	 * Return the resulting normal annotation.
+	 */
+	protected MarkerAnnotation addMarkerAnnotation(ASTNode astNode, String name) {
+		MarkerAnnotation annotation = this.newMarkerAnnotation(astNode.getAST(), name);
+		this.addAnnotation(astNode, annotation);
+		return annotation;
+	}
+
+	/**
+	 * Remove the annotation with the specified name
+	 */
+	protected void removeAnnotation(ModifiedDeclaration declaration, String name) {
+		this.removeAnnotation(declaration.getDeclaration(), declaration.getAnnotationNamed(name));
+	}
+
+	/**
+	 * Remove the specified annotation from the AST node.
+	 * This should be a PackageDeclaration or a BodyDeclaration.
+	 */
+	protected void removeAnnotation(ASTNode astNode, Annotation annotation) {
+		this.annotations(astNode).remove(annotation);
+	}
+
+	/**
+	 * minimize the scope of the suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<IExtendedModifier> annotations(ASTNode astNode) {
+		if (astNode instanceof BodyDeclaration) {
+			return ((BodyDeclaration) astNode).modifiers();
+		}
+		else if (astNode instanceof PackageDeclaration) {
+			return ((PackageDeclaration) astNode).annotations();
+		}
+		return Collections.emptyList();
+	}
+
 
 	// ********** member classes **********
 
@@ -595,7 +720,7 @@ public abstract class AnnotationTestCase extends TestCase {
 		}
 		
 		public void appendSourceTo(StringBuilder sb) {
-			if (typeName != null) {
+			if (this.typeName != null) {
 				AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, packageName, typeName);
 			}
 			else {
