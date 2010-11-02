@@ -22,6 +22,7 @@ import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
@@ -42,6 +43,7 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -537,6 +539,16 @@ public abstract class AnnotationTestCase extends TestCase {
 		return normalAnnotation;
 	}
 
+	/**
+	 * Add the specified member value pair to the marker annotation
+	 * by first replacing it with a normal annotation.
+	 * Return the resulting normal annotation.
+	 */
+	protected NormalAnnotation addMemberValuePair(MarkerAnnotation annotation, MemberValuePair pair) {
+		NormalAnnotation normalAnnotation = this.replaceMarkerAnnotation(annotation);
+		return this.addMemberValuePair(normalAnnotation, pair);
+	}
+
 	protected void setEnumMemberValuePair(NormalAnnotation annotation, String elementName, String enumValue) {
 		MemberValuePair memberValuePair = this.memberValuePair(annotation, elementName);
 		memberValuePair.setValue(annotation.getAST().newName(enumValue));
@@ -553,6 +565,76 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected void addMemberValuePair(NormalAnnotation annotation, String elementName, Expression value) {
 		MemberValuePair memberValuePair = this.newMemberValuePair(annotation.getAST(), elementName, value);
 		this.addMemberValuePair(annotation, memberValuePair);
+	}
+
+	/**
+	 * Add the array element to an annotation that is either a normal annotation or a marker annotation.
+	 * If it is a marker annotation first make it a normal annotation.
+	 */
+	protected void addArrayElement(Annotation annotation, int index, String elementName, Expression arrayElement) {
+		NormalAnnotation normalAnnotation;
+		if (annotation.getNodeType() == ASTNode.MARKER_ANNOTATION) {
+			normalAnnotation = this.replaceMarkerAnnotation((MarkerAnnotation) annotation);
+		}
+		else {
+			normalAnnotation = (NormalAnnotation) annotation;
+		}
+		this.addArrayElement(normalAnnotation, index, elementName, arrayElement);
+	}
+
+	/**
+	 * Add the array element to the given normal annotation's element named elementName.
+	 * Add a new member value pair if one does not exist.
+	 * If the member value pair exists but the value is not yet an array, make it an array.
+	 */
+	protected void addArrayElement(NormalAnnotation annotation, int index, String elementName, Expression arrayElement) {
+		MemberValuePair pair = this.memberValuePair(annotation, elementName);
+		if (pair == null) {
+			pair = this.newMemberValuePair(annotation.getAST(), elementName, arrayElement);
+			this.addMemberValuePair(annotation, pair);
+		}
+		else {
+			Expression value = pair.getValue();
+			if (value.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+				this.expressions((ArrayInitializer) value).add(index, arrayElement);
+			}
+			else {
+				ArrayInitializer arrayInitializer = annotation.getAST().newArrayInitializer();
+				pair.setValue(arrayInitializer);
+				this.expressions(arrayInitializer).add(value);
+				this.expressions(arrayInitializer).add(index, arrayElement);
+			}
+		}
+	}
+
+	/**
+	 * This assumes an element with name elementName exists with an array as its value.
+	 * Move the array element at sourceIndex to the targetIndex
+	 */
+	protected void moveArrayElement(NormalAnnotation annotation, String elementName, int targetIndex, int sourceIndex) {
+		MemberValuePair pair = this.memberValuePair(annotation, elementName);
+		ArrayInitializer array = (ArrayInitializer) pair.getValue();
+		CollectionTools.move(this.expressions(array), targetIndex, sourceIndex);
+	}
+
+	/**
+	 * This assumes an element with name elementName exists with potentially an array as its value.
+	 * If the value is not an array, then the member value pair is removed.
+	 * If the array element is removed and there is only 1 array element left, the array itself is removed
+	 * and the remaining element is set as the value of the member value pair
+	 */
+	protected void removeArrayElement(NormalAnnotation annotation, String elementName, int index) {
+		MemberValuePair pair = this.memberValuePair(annotation, elementName);
+		if (pair.getValue().getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			ArrayInitializer array = (ArrayInitializer) pair.getValue();
+			this.expressions(array).remove(index);
+			if (this.expressions(array).size() == 1) {
+				pair.setValue(this.expressions(array).remove(0));
+			}
+		}
+		else {
+			this.values(annotation).remove(pair);
+		}
 	}
 
 	/**
@@ -642,6 +724,14 @@ public abstract class AnnotationTestCase extends TestCase {
 			return ((PackageDeclaration) astNode).annotations();
 		}
 		return Collections.emptyList();
+	}
+
+	/**
+	 * minimize the scope of the suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<Expression> expressions(ArrayInitializer arrayInitializer) {
+		return arrayInitializer.expressions();
 	}
 
 
