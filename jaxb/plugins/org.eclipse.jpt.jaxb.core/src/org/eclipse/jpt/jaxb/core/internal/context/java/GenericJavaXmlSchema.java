@@ -15,7 +15,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.jaxb.core.internal.context.ContextContainer;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
@@ -36,7 +36,7 @@ public class GenericJavaXmlSchema
 	protected XmlNsForm specifiedElementFormDefault;
 
 	protected final Vector<XmlNs> xmlNsPrefixes = new Vector<XmlNs>();
-	protected final XmlNsPrefixContainerAdapter xmlNsPrefixContainerAdapter = new XmlNsPrefixContainerAdapter();
+	protected final XmlNsPrefixContainer xmlNsPrefixContainer = new XmlNsPrefixContainer();
 
 	public GenericJavaXmlSchema(JaxbPackageInfo parent) {
 		super(parent);
@@ -240,7 +240,7 @@ public class GenericJavaXmlSchema
 	}
 
 	protected void syncXmlNsPrefixes() {
-		ContextContainerTools.synchronizeWithResourceModel(this.xmlNsPrefixContainerAdapter);
+		this.xmlNsPrefixContainer.synchronizeWithResourceModel();
 	}
 
 	protected Iterable<XmlNsAnnotation> getXmlNsAnnotations() {
@@ -265,24 +265,30 @@ public class GenericJavaXmlSchema
 	/**
 	 * xml ns prefix container adapter
 	 */
-	protected class XmlNsPrefixContainerAdapter
-		implements ContextContainerTools.Adapter<XmlNs, XmlNsAnnotation>
+	protected class XmlNsPrefixContainer
+		extends ContextContainer<XmlNs, XmlNsAnnotation>
 	{
+		@Override
 		public Iterable<XmlNs> getContextElements() {
 			return GenericJavaXmlSchema.this.getXmlNsPrefixes();
 		}
+		@Override
 		public Iterable<XmlNsAnnotation> getResourceElements() {
 			return GenericJavaXmlSchema.this.getXmlSchemaAnnotation().getXmlns();
 		}
+		@Override
 		public XmlNsAnnotation getResourceElement(XmlNs contextElement) {
 			return contextElement.getResourceXmlNs();
 		}
+		@Override
 		public void moveContextElement(int index, XmlNs element) {
 			GenericJavaXmlSchema.this.moveXmlNsPrefix_(index, element);
 		}
+		@Override
 		public void addContextElement(int index, XmlNsAnnotation resourceElement) {
 			GenericJavaXmlSchema.this.addXmlNsPrefix_(index, resourceElement);
 		}
+		@Override
 		public void removeContextElement(XmlNs element) {
 			GenericJavaXmlSchema.this.removeXmlNsPrefix_(element);
 		}

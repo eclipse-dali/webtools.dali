@@ -30,7 +30,7 @@ public class GenericRootContextNode
 
 	/* Main context objects. */
 	protected final Vector<JaxbPackage> packages = new Vector<JaxbPackage>();
-	protected final PackageContainerAdapter packageContainerAdapter = new PackageContainerAdapter();
+	protected final PackageContainer packageContainer = new PackageContainer();
 
 
 	public GenericRootContextNode(JaxbProject jaxbProject) {
@@ -103,13 +103,13 @@ public class GenericRootContextNode
 	}
 
 	protected void syncPackages() {
-		ContextContainerTools.synchronizeWithResourceModel(this.packageContainerAdapter);
+		this.packageContainer.synchronizeWithResourceModel();
 	}
 
 	protected void updatePackages() {
 		//In this case we need to actually "sync" the list of packages since this is dependent on JaxbFiles
 		//and an update will be called when jaxb files are added/removed, not a synchronizeWithResourceModel
-		ContextContainerTools.update(this.packageContainerAdapter);
+		this.packageContainer.update();
 	}
 
 	protected JaxbPackage buildPackage(JavaResourcePackage resourcePackage) {
@@ -120,24 +120,30 @@ public class GenericRootContextNode
 	/**
 	 * package container adapter
 	 */
-	protected class PackageContainerAdapter
-		implements ContextContainerTools.Adapter<JaxbPackage, JavaResourcePackage>
+	protected class PackageContainer
+		extends ContextContainer<JaxbPackage, JavaResourcePackage>
 	{
+		@Override
 		public Iterable<JaxbPackage> getContextElements() {
 			return GenericRootContextNode.this.getPackages();
 		}
+		@Override
 		public Iterable<JavaResourcePackage> getResourceElements() {
 			return GenericRootContextNode.this.getJaxbProject().getAnnotatedJavaResourcePackages();
 		}
+		@Override
 		public JavaResourcePackage getResourceElement(JaxbPackage contextElement) {
 			return contextElement.getResourcePackage();
 		}
+		@Override
 		public void moveContextElement(int index, JaxbPackage element) {
 			//ignore since we don't need order for packages
 		}
+		@Override
 		public void addContextElement(int index, JavaResourcePackage resourceElement) {
 			GenericRootContextNode.this.addPackage(resourceElement);
 		}
+		@Override
 		public void removeContextElement(JaxbPackage element) {
 			GenericRootContextNode.this.removePackage(element);
 		}
