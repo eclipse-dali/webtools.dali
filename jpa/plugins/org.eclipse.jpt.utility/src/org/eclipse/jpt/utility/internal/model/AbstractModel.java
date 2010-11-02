@@ -536,6 +536,10 @@ public abstract class AbstractModel
 		this.getChangeSupport().moveItemInList(targetIndex, sourceIndex, list, listName);
 	}
 
+	protected <E> void moveItemInList(int targetIndex, E item, List<E> list, String listName) {
+		this.getChangeSupport().moveItemInList(targetIndex, item, list, listName);
+	}
+
 	protected boolean clearList(List<?> list, String listName) {
 		return this.getChangeSupport().clearList(list, listName);
 	}

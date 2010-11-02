@@ -31,23 +31,23 @@ public interface XmlNsAnnotation
 	String ANNOTATION_NAME = JAXB.XML_NS;
 	
 	/**
-	 * Corresponds to the 'namespace' element of the XmlNs annotation.
+	 * Corresponds to the 'namespaceURI' element of the XmlNs annotation.
 	 * Return null if the element does not exist in Java.
 	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+	String getNamespaceURI();
+		String NAMESPACE_URI_PROPERTY = "namespaceURI"; //$NON-NLS-1$
 	
 	/**
-	 * Corresponds to the 'namespace' element of the XmlNs annotation.
+	 * Corresponds to the 'namespaceURI' element of the XmlNs annotation.
 	 * Set to null to remove the element.
 	 */
-	void setNamespace(String namespace);
+	void setNamespaceURI(String namespaceURI);
 	
 	/**
 	 * Return the {@link TextRange} for the 'namespace' element. If the element 
 	 * does not exist return the {@link TextRange} for the XmlNs annotation.
 	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
+	TextRange getNamespaceURITextRange(CompilationUnit astRoot);
 	
 	/**
 	 * Corresponds to the 'prefix' element of the XmlNs annotation.

@@ -2262,6 +2262,15 @@ public class ChangeSupport
 	}
 
 	/**
+	 * Move an item in the specified list from the specified source index to the
+	 * specified target index.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean moveItemInList(int targetIndex, E item, List<E> list, String listName) {
+		return this.moveItemInList(targetIndex, list.indexOf(item), list, listName);
+	}
+
+	/**
 	 * Clear the entire list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.

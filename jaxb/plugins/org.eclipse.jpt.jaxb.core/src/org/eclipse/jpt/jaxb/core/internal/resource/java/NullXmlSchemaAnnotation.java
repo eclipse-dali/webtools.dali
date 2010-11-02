@@ -15,6 +15,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
@@ -103,33 +104,27 @@ public final class NullXmlSchemaAnnotation
 	}
 
 	public ListIterable<XmlNsAnnotation> getXmlns() {
-		// TODO Auto-generated method stub
-		return null;
+		return EmptyListIterable.instance();
 	}
 
 	public int getXmlnsSize() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public XmlNsAnnotation xmlnsAt(int index) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public XmlNsAnnotation addXmlns(int index) {
-		// TODO Auto-generated method stub
-		return null;
+		return this.addAnnotation().addXmlns(index);
 	}
 
 	public void moveXmlns(int targetIndex, int sourceIndex) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 	public void removeXmlns(int index) {
-		// TODO Auto-generated method stub
-		
+		throw new UnsupportedOperationException();
 	}
 
 }

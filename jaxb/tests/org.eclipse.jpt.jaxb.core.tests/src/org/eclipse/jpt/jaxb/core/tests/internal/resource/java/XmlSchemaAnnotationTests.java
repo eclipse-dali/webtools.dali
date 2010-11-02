@@ -188,14 +188,14 @@ public class XmlSchemaAnnotationTests
 		
 		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA);
 		XmlNsAnnotation xmlnsAnnotation = schemaAnnotation.xmlnsAt(0);
-		assertNotNull(xmlnsAnnotation.getNamespace());
+		assertNotNull(xmlnsAnnotation.getNamespaceURI());
 		
-		xmlnsAnnotation.setNamespace(null);
-		assertNull(xmlnsAnnotation.getNamespace());
+		xmlnsAnnotation.setNamespaceURI(null);
+		assertNull(xmlnsAnnotation.getNamespaceURI());
 		assertSourceContains("@XmlSchema(xmlns = @XmlNs)", cu);
 		
-		xmlnsAnnotation.setNamespace(TEST_NAMESPACE_2);
-		assertEquals(TEST_NAMESPACE_2, xmlnsAnnotation.getNamespace());
+		xmlnsAnnotation.setNamespaceURI(TEST_NAMESPACE_2);
+		assertEquals(TEST_NAMESPACE_2, xmlnsAnnotation.getNamespaceURI());
 		assertSourceContains("@XmlSchema(xmlns = @XmlNs(namespaceURI = \"" + TEST_NAMESPACE_2 + "\"))", cu);
 	}
 	
@@ -233,10 +233,10 @@ public class XmlSchemaAnnotationTests
 		assertSourceContains("@XmlSchema(xmlns = {@XmlNs,@XmlNs})", cu);
 		
 		XmlNsAnnotation xmlnsAnnotation1 = schemaAnnotation.xmlnsAt(0);
-		xmlnsAnnotation1.setNamespace(TEST_NAMESPACE);
+		xmlnsAnnotation1.setNamespaceURI(TEST_NAMESPACE);
 		xmlnsAnnotation1.setPrefix(TEST_PREFIX);
 		XmlNsAnnotation xmlnsAnnotation2 = schemaAnnotation.xmlnsAt(1);
-		xmlnsAnnotation2.setNamespace(TEST_NAMESPACE_2);
+		xmlnsAnnotation2.setNamespaceURI(TEST_NAMESPACE_2);
 		xmlnsAnnotation2.setPrefix(TEST_PREFIX_2);
 		assertSourceContains(
 				"@XmlSchema(xmlns = {@XmlNs(namespaceURI = \"" + TEST_NAMESPACE 

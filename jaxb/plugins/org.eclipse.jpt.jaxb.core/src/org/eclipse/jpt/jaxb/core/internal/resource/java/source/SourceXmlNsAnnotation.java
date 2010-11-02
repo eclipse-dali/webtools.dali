@@ -30,9 +30,9 @@ public class SourceXmlNsAnnotation
 		extends SourceAnnotation<AnnotatedPackage>
 		implements XmlNsAnnotation {
 	
-	private final DeclarationAnnotationElementAdapter<String> namespaceDeclarationAdapter;
-	private final AnnotationElementAdapter<String> namespaceAdapter;
-	private String namespace;
+	private final DeclarationAnnotationElementAdapter<String> namespaceURIDeclarationAdapter;
+	private final AnnotationElementAdapter<String> namespaceURIAdapter;
+	private String namespaceURI;
 	
 	private final DeclarationAnnotationElementAdapter<String> prefixDeclarationAdapter;
 	private final AnnotationElementAdapter<String> prefixAdapter;
@@ -41,14 +41,14 @@ public class SourceXmlNsAnnotation
 	
 	public SourceXmlNsAnnotation(JavaResourceNode parent, AnnotatedPackage pack, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, pack, idaa, new ElementIndexedAnnotationAdapter(pack, idaa));
-		this.namespaceDeclarationAdapter = buildNamespaceDeclarationAdapter(idaa);
-		this.namespaceAdapter = buildAdapter(this.namespaceDeclarationAdapter);
-		this.prefixDeclarationAdapter = buildPrefixDeclarationAdapter(idaa);
+		this.namespaceURIDeclarationAdapter = this.buildNamespaceURIDeclarationAdapter(idaa);
+		this.namespaceURIAdapter = this.buildAdapter(this.namespaceURIDeclarationAdapter);
+		this.prefixDeclarationAdapter = this.buildPrefixDeclarationAdapter(idaa);
 		this.prefixAdapter = buildAdapter(this.prefixDeclarationAdapter);
 	}
 	
 	
-	protected DeclarationAnnotationElementAdapter<String> buildNamespaceDeclarationAdapter(
+	protected DeclarationAnnotationElementAdapter<String> buildNamespaceURIDeclarationAdapter(
 			DeclarationAnnotationAdapter daa) {
 		
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_NS__NAMESPACE_URI, false);
@@ -69,46 +69,46 @@ public class SourceXmlNsAnnotation
 	}
 	
 	public void initialize(CompilationUnit astRoot) {
-		this.namespace = buildNamespace(astRoot);
+		this.namespaceURI = buildNamespaceURI(astRoot);
 		this.prefix = buildPrefix(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
-		syncNamespace(buildNamespace(astRoot));
+		syncNamespaceURI(buildNamespaceURI(astRoot));
 		syncPrefix(buildPrefix(astRoot));
 	}
 	
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.namespace);
+		sb.append(this.namespaceURI);
 	}
 	
 	
 	// **************** namespace *********************************************
 	
-	public String getNamespace() {
-		return this.namespace;
+	public String getNamespaceURI() {
+		return this.namespaceURI;
 	}
 	
-	public void setNamespace(String namespace) {
-		if (attributeValueHasChanged(this.namespace, namespace)) {
-			this.namespace = namespace;
-			this.namespaceAdapter.setValue(namespace);
+	public void setNamespaceURI(String namespaceURI) {
+		if (attributeValueHasChanged(this.namespaceURI, namespaceURI)) {
+			this.namespaceURI = namespaceURI;
+			this.namespaceURIAdapter.setValue(namespaceURI);
 		}
 	}
 	
-	private String buildNamespace(CompilationUnit astRoot) {
-		return this.namespaceAdapter.getValue(astRoot);
+	private String buildNamespaceURI(CompilationUnit astRoot) {
+		return this.namespaceURIAdapter.getValue(astRoot);
 	}
 	
-	private void syncNamespace(String namespace) {
-		String old = this.namespace;
-		this.namespace = namespace;
-		firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
+	private void syncNamespaceURI(String namespaceURI) {
+		String old = this.namespaceURI;
+		this.namespaceURI = namespaceURI;
+		firePropertyChanged(NAMESPACE_URI_PROPERTY, old, namespaceURI);
 	}
 	
-	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(this.namespaceDeclarationAdapter, astRoot);
+	public TextRange getNamespaceURITextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(this.namespaceURIDeclarationAdapter, astRoot);
 	}
 	
 	
@@ -144,7 +144,7 @@ public class SourceXmlNsAnnotation
 	
 	public void initializeFrom(NestableAnnotation oldAnnotation) {
 		XmlNsAnnotation oldXmlNsAnnotation = (XmlNsAnnotation) oldAnnotation;
-		this.setNamespace(oldXmlNsAnnotation.getNamespace());
+		this.setNamespaceURI(oldXmlNsAnnotation.getNamespaceURI());
 		this.setPrefix(oldXmlNsAnnotation.getPrefix());
 	}
 	

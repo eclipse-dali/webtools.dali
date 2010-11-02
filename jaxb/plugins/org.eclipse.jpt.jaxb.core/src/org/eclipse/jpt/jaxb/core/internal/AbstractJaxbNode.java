@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
 import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
@@ -120,6 +121,12 @@ public abstract class AbstractJaxbNode
 
 	protected JaxbFile getJaxbFile(IFile file) {
 		return this.getJaxbProject().getJaxbFile(file);
+	}
+
+	protected void updateNodes(Iterable<? extends JaxbContextNode> nodes) {
+		for (JaxbContextNode node : nodes) {
+			node.update();
+		}
 	}
 
 

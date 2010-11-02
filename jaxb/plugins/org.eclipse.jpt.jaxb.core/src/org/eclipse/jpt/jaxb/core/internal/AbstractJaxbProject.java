@@ -34,7 +34,6 @@ import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.ResourceLocator;
-import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -705,8 +704,8 @@ public abstract class AbstractJaxbProject
 			}) 
 			{
 			@Override
-			protected boolean accept(JavaResourcePackage packageInfo) {
-				return packageInfo != null;
+			protected boolean accept(JavaResourcePackage resourcePackage) {
+				return resourcePackage != null;
 			}
 		};
 	}

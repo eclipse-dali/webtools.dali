@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+
 /**
  * 
  * <p>
@@ -124,5 +126,15 @@ public interface XmlSchema
 		 */
 		String SPECIFIED_ELEMENT_FROM_DEFAULT_PROPERTY = "specifiedElementFormDefault"; //$NON-NLS-1$
 
-//    * xmlns - @XmlNs array; specifies prefixes for namespaces involved in XML instances representing this package; default is no prefixes
+
+	// ********** xml namespace prefixes **********
+
+	ListIterable<XmlNs> getXmlNsPrefixes();
+	int getXmlNsPrefixesSize();
+	XmlNs addXmlNsPrefix(int index);
+	void removeXmlNsPrefix(int index);
+	void removeXmlNsPrefix(XmlNs xmlNsPrefix);
+	void moveXmlNsPrefix(int targetIndex, int sourceIndex);
+		String XML_NS_PREFIXES_LIST = "xmlNsPrefixes"; //$NON-NLS-1$
+
 }

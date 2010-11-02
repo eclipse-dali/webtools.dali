@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
+import java.util.ListIterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -19,14 +21,17 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 
 @SuppressWarnings("nls")
@@ -41,6 +46,12 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		return createTestPackageInfo(
 				"@XmlSchema",
 				JAXB.XML_SCHEMA);
+	}
+	
+	private ICompilationUnit createPackageInfoWithAccessorType() throws CoreException {
+		return createTestPackageInfo(
+				"@XmlAccessorType(value = XmlAccessType.PROPERTY)",
+				JAXB.XML_ACCESS_TYPE, JAXB.XML_ACCESSOR_TYPE);
 	}
 	
 	public void testModifyNamespace() throws Exception {
@@ -350,6 +361,317 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertNull(contextXmlSchema.getSpecifiedElementFormDefault());
 	}
 
+	public void testGetXmlNsPrefixes() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlNs> xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes();
+		assertFalse(xmlNsPrefixes.iterator().hasNext());
+
+		//add 2 XmlNs prefixes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 0, "bar", "barPrefix");
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 1, "foo", "fooPrefix");
+			}
+		});
+
+		xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes();
+		ListIterator<XmlNs> xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		XmlNs xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("bar", xmlNsPref.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("foo", xmlNsPref.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+	}
+	
+	protected void addXmlNs(ModifiedDeclaration declaration, int index, String namespaceURI, String prefix) {
+		NormalAnnotation arrayElement = this.newXmlNsAnnotation(declaration.getAst(), namespaceURI, prefix);
+		this.addArrayElement(declaration.getAnnotationNamed(XmlSchemaAnnotation.ANNOTATION_NAME), index, JAXB.XML_SCHEMA__XMLNS, arrayElement);		
+	}
+
+	protected NormalAnnotation newXmlNsAnnotation(AST ast, String namespaceURI, String prefix) {
+		NormalAnnotation annotation = this.newNormalAnnotation(ast, JAXB.XML_NS);
+		this.addMemberValuePair(annotation, JAXB.XML_NS__NAMESPACE_URI, namespaceURI);
+		this.addMemberValuePair(annotation, JAXB.XML_NS__PREFIX, prefix);
+		return annotation;
+	}
+
+	public void testGetXmlNsPrexiesSize() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		assertEquals(0, contextXmlSchema.getXmlNsPrefixesSize());
+
+		//add 2 XmlNs prefixes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 0, "bar", "barPrefix");
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 1, "foo", "fooPrefix");
+			}
+		});
+		assertEquals(2, contextXmlSchema.getXmlNsPrefixesSize());
+	}
+
+	public void testAddXmlNsPrefix() throws Exception {
+		//create a package info with an annotation other than XmlSchema to test
+		//adding things to the null schema annotation
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		XmlNs xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(0);
+		xmlNsPrefix.setNamespaceURI("bar");
+		xmlNsPrefix.setPrefix("barPrefix");
+		xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(0);
+		xmlNsPrefix.setNamespaceURI("foo");
+		xmlNsPrefix.setPrefix("fooPrefix");
+		xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(0);
+		xmlNsPrefix.setNamespaceURI("baz");
+		xmlNsPrefix.setPrefix("bazPrefix");
+
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+
+		XmlNsAnnotation xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("baz", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsAnnotation.getPrefix());
+		xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("foo", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsAnnotation.getPrefix());
+		xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("bar", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsAnnotation.getPrefix());
+		assertFalse(xmlNsPrefixes.hasNext());
+	}
+
+	public void testAddXmlNsPrefix2() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		XmlNs xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(0);
+		xmlNsPrefix.setNamespaceURI("bar");
+		xmlNsPrefix.setPrefix("barPrefix");
+		xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(1);
+		xmlNsPrefix.setNamespaceURI("foo");
+		xmlNsPrefix.setPrefix("fooPrefix");
+		xmlNsPrefix = contextXmlSchema.addXmlNsPrefix(0);
+		xmlNsPrefix.setNamespaceURI("baz");
+		xmlNsPrefix.setPrefix("bazPrefix");
+
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+
+		XmlNsAnnotation xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("baz", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsAnnotation.getPrefix());
+		xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("bar", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsAnnotation.getPrefix());
+		xmlNsAnnotation = xmlNsPrefixes.next();
+		assertEquals("foo", xmlNsAnnotation.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsAnnotation.getPrefix());
+		assertFalse(xmlNsPrefixes.hasNext());
+	}
+
+	public void testRemoveXmlNsPrefix() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextXmlSchema.addXmlNsPrefix(0).setNamespaceURI("bar");
+		contextXmlSchema.addXmlNsPrefix(1).setNamespaceURI("foo");
+		contextXmlSchema.addXmlNsPrefix(2).setNamespaceURI("baz");
+
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+		assertEquals(3, schemaAnnotation.getXmlnsSize());
+
+		contextXmlSchema.removeXmlNsPrefix(1);
+
+		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());		
+		assertEquals("baz", xmlNsPrefixes.next().getNamespaceURI());
+		assertFalse(xmlNsPrefixes.hasNext());
+
+		contextXmlSchema.removeXmlNsPrefix(1);
+		xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());
+		assertFalse(xmlNsPrefixes.hasNext());
+
+		contextXmlSchema.removeXmlNsPrefix(0);
+		xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		assertFalse(xmlNsPrefixes.hasNext());
+	}
+
+	public void testMoveXmlNsPrefix() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextXmlSchema.addXmlNsPrefix(0).setNamespaceURI("bar");
+		contextXmlSchema.addXmlNsPrefix(1).setNamespaceURI("foo");
+		contextXmlSchema.addXmlNsPrefix(2).setNamespaceURI("baz");
+
+
+		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
+
+		assertEquals(3, schemaAnnotation.getXmlnsSize());		
+
+		contextXmlSchema.moveXmlNsPrefix(2, 0);
+		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		assertEquals("foo", xmlNsPrefixes.next().getNamespaceURI());
+		assertEquals("baz", xmlNsPrefixes.next().getNamespaceURI());
+		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());		
+		assertFalse(xmlNsPrefixes.hasNext());
+
+		ListIterator<XmlNsAnnotation> xmlNsAnnotations = schemaAnnotation.getXmlns().iterator();
+		assertEquals("foo", xmlNsAnnotations.next().getNamespaceURI());
+		assertEquals("baz", xmlNsAnnotations.next().getNamespaceURI());
+		assertEquals("bar", xmlNsAnnotations.next().getNamespaceURI());
+
+
+		contextXmlSchema.moveXmlNsPrefix(0, 1);
+		xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		assertEquals("baz", xmlNsPrefixes.next().getNamespaceURI());
+		assertEquals("foo", xmlNsPrefixes.next().getNamespaceURI());
+		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());		
+		assertFalse(xmlNsPrefixes.hasNext());
+
+		xmlNsAnnotations = schemaAnnotation.getXmlns().iterator();
+		assertEquals("baz", xmlNsAnnotations.next().getNamespaceURI());
+		assertEquals("foo", xmlNsAnnotations.next().getNamespaceURI());
+		assertEquals("bar", xmlNsAnnotations.next().getNamespaceURI());
+	}
+
+	public void testSyncXmlNsPrefixes() throws Exception {
+		this.createPackageInfoWithXmlSchema();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlNs> xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes();
+		assertFalse(xmlNsPrefixes.iterator().hasNext());
+
+		//add 3 XmlNs prefixes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 0, "bar", "barPrefix");
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 1, "foo", "fooPrefix");
+				GenericJavaXmlSchemaTests.this.addXmlNs(declaration, 2, "baz", "bazPrefix");
+			}
+		});
+
+		xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes();
+		ListIterator<XmlNs> xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		XmlNs xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("bar", xmlNsPref.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("foo", xmlNsPref.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("baz", xmlNsPref.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.moveXmlNsPrefix(declaration, 2, 0);
+			}
+		});
+
+		xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("foo", xmlNsPref.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("baz", xmlNsPref.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("bar", xmlNsPref.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.moveXmlNsPrefix(declaration, 0, 1);
+			}
+		});
+
+		xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("baz", xmlNsPref.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("foo", xmlNsPref.getNamespaceURI());
+		assertEquals("fooPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("bar", xmlNsPref.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.removeXmlNsPrefix(declaration, 1);
+			}
+		});
+
+		xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("baz", xmlNsPref.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsPref.getPrefix());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("bar", xmlNsPref.getNamespaceURI());
+		assertEquals("barPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.removeXmlNsPrefix(declaration, 1);
+			}
+		});
+
+		xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertTrue(xmlNsPrefixesIterator.hasNext());
+		xmlNsPref = xmlNsPrefixesIterator.next();
+		assertEquals("baz", xmlNsPref.getNamespaceURI());
+		assertEquals("bazPrefix", xmlNsPref.getPrefix());
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlSchemaTests.this.removeXmlNsPrefix(declaration, 0);
+			}
+		});
+
+		xmlNsPrefixesIterator = xmlNsPrefixes.iterator();
+		assertFalse(xmlNsPrefixesIterator.hasNext());
+	}
+
 	protected void addXmlSchemaEnumMemberValuePair(ModifiedDeclaration declaration, String elementName, String value) {
 		this.addEnumMemberValuePair((MarkerAnnotation) this.getXmlSchemaAnnotation(declaration), elementName, value);
 	}
@@ -373,4 +695,11 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		return declaration.getAnnotationNamed(XmlSchemaAnnotation.ANNOTATION_NAME);
 	}
 
+	protected void moveXmlNsPrefix(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
+		this.moveArrayElement((NormalAnnotation) getXmlSchemaAnnotation(declaration), JAXB.XML_SCHEMA__XMLNS, targetIndex, sourceIndex);
+	}
+
+	protected void removeXmlNsPrefix(ModifiedDeclaration declaration, int index) {
+		this.removeArrayElement((NormalAnnotation) getXmlSchemaAnnotation(declaration), JAXB.XML_SCHEMA__XMLNS, index);
+	}
 }
