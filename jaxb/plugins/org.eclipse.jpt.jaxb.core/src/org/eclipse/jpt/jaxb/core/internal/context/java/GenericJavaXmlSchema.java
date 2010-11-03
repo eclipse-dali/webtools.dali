@@ -9,18 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import java.util.Vector;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.internal.context.ContextContainer;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 public class GenericJavaXmlSchema
 	extends AbstractJaxbContextNode
@@ -35,8 +32,7 @@ public class GenericJavaXmlSchema
 
 	protected XmlNsForm specifiedElementFormDefault;
 
-	protected final Vector<XmlNs> xmlNsPrefixes = new Vector<XmlNs>();
-	protected final XmlNsPrefixContainer xmlNsPrefixContainer = new XmlNsPrefixContainer();
+	protected final XmlNsPrefixContainer xmlNsPrefixContainer;
 
 	public GenericJavaXmlSchema(JaxbPackageInfo parent) {
 		super(parent);
@@ -44,7 +40,7 @@ public class GenericJavaXmlSchema
 		this.specifiedLocation = this.getResourceLocation();
 		this.specifiedAttributeFormDefault = this.getResourceAttributeFormDefault();
 		this.specifiedElementFormDefault = this.getResourceElementFormDefault();
-		this.initializeXmlNsPrefixes();
+		this.xmlNsPrefixContainer = new XmlNsPrefixContainer();
 	}
 
 
@@ -191,48 +187,34 @@ public class GenericJavaXmlSchema
 	// ********** xml namespace prefixes **********
 
 	public ListIterable<XmlNs> getXmlNsPrefixes() {
-		return new LiveCloneListIterable<XmlNs>(this.xmlNsPrefixes);
+		return this.xmlNsPrefixContainer.getContextElements();
 	}
 
 	public int getXmlNsPrefixesSize() {
-		return this.xmlNsPrefixes.size();
-	}
-
-	public XmlNs getXmlNsPrefix(int index) {
-		return this.xmlNsPrefixes.get(index);
+		return this.xmlNsPrefixContainer.getContextElementsSize();
 	}
 
 	public XmlNs addXmlNsPrefix() {
-		return this.addXmlNsPrefix(this.xmlNsPrefixes.size());
+		return this.addXmlNsPrefix(this.getXmlNsPrefixesSize());
 	}
 
 	public XmlNs addXmlNsPrefix(int index) {
 		XmlNsAnnotation annotation = this.getXmlSchemaAnnotation().addXmlns(index);
-		return this.addXmlNsPrefix_(index, annotation);
+		return this.xmlNsPrefixContainer.addContextElement(index, annotation);
 	}
 
 	public void removeXmlNsPrefix(XmlNs xmlNsPrefix) {
-		this.removeXmlNsPrefix(this.xmlNsPrefixes.indexOf(xmlNsPrefix));
+		this.removeXmlNsPrefix(this.xmlNsPrefixContainer.indexOfContextElement(xmlNsPrefix));
 	}
 
 	public void removeXmlNsPrefix(int index) {
 		this.getXmlSchemaAnnotation().removeXmlns(index);
-		this.removeXmlNsPrefix_(index);
-	}
-
-	protected void removeXmlNsPrefix_(int index) {
-		this.removeItemFromList(index, this.xmlNsPrefixes, XML_NS_PREFIXES_LIST);
+		this.xmlNsPrefixContainer.removeContextElement(index);
 	}
 
 	public void moveXmlNsPrefix(int targetIndex, int sourceIndex) {
 		this.getXmlSchemaAnnotation().moveXmlns(targetIndex, sourceIndex);
-		this.moveItemInList(targetIndex, sourceIndex, this.xmlNsPrefixes, XML_NS_PREFIXES_LIST);
-	}
-
-	protected void initializeXmlNsPrefixes() {
-		for (XmlNsAnnotation xmlNsAnnotation : this.getXmlNsAnnotations()) {
-			this.xmlNsPrefixes.add(this.buildXmlNs(xmlNsAnnotation));
-		}
+		this.xmlNsPrefixContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
 	protected XmlNs buildXmlNs(XmlNsAnnotation xmlNsAnnotation) {
@@ -247,50 +229,29 @@ public class GenericJavaXmlSchema
 		return getXmlSchemaAnnotation().getXmlns();
 	}
 
-	protected void moveXmlNsPrefix_(int index, XmlNs xmlNs) {
-		this.moveItemInList(index, xmlNs, this.xmlNsPrefixes, XML_NS_PREFIXES_LIST);
-	}
-
-	protected XmlNs addXmlNsPrefix_(int index, XmlNsAnnotation xmlNsAnnotation) {
-		XmlNs xmlNs = this.buildXmlNs(xmlNsAnnotation);
-		this.addItemToList(index, xmlNs, this.xmlNsPrefixes, XML_NS_PREFIXES_LIST);
-		return xmlNs;
-	}
-
-	protected void removeXmlNsPrefix_(XmlNs xmlNs) {
-		this.removeXmlNsPrefix_(this.xmlNsPrefixes.indexOf(xmlNs));
-	}
-
 
 	/**
 	 * xml ns prefix container adapter
 	 */
 	protected class XmlNsPrefixContainer
-		extends ContextContainer<XmlNs, XmlNsAnnotation>
+		extends ContextListContainer<XmlNs, XmlNsAnnotation>
 	{
+
 		@Override
-		public Iterable<XmlNs> getContextElements() {
-			return GenericJavaXmlSchema.this.getXmlNsPrefixes();
+		protected String getContextElementsPropertyName() {
+			return XML_NS_PREFIXES_LIST;
 		}
 		@Override
-		public Iterable<XmlNsAnnotation> getResourceElements() {
-			return GenericJavaXmlSchema.this.getXmlSchemaAnnotation().getXmlns();
+		protected XmlNs buildContextElement(XmlNsAnnotation resourceElement) {
+			return GenericJavaXmlSchema.this.buildXmlNs(resourceElement);
 		}
 		@Override
-		public XmlNsAnnotation getResourceElement(XmlNs contextElement) {
+		protected Iterable<XmlNsAnnotation> getResourceElements() {
+			return GenericJavaXmlSchema.this.getXmlNsAnnotations();
+		}
+		@Override
+		protected XmlNsAnnotation getResourceElement(XmlNs contextElement) {
 			return contextElement.getResourceXmlNs();
-		}
-		@Override
-		public void moveContextElement(int index, XmlNs element) {
-			GenericJavaXmlSchema.this.moveXmlNsPrefix_(index, element);
-		}
-		@Override
-		public void addContextElement(int index, XmlNsAnnotation resourceElement) {
-			GenericJavaXmlSchema.this.addXmlNsPrefix_(index, resourceElement);
-		}
-		@Override
-		public void removeContextElement(XmlNs element) {
-			GenericJavaXmlSchema.this.removeXmlNsPrefix_(element);
 		}
 	}
 

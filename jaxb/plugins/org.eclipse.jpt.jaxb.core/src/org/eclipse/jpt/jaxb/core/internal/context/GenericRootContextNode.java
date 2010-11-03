@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
-import java.util.Vector;
+import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * the context model root
@@ -29,8 +28,7 @@ public class GenericRootContextNode
 	protected final JaxbProject jaxbProject;
 
 	/* Main context objects. */
-	protected final Vector<JaxbPackage> packages = new Vector<JaxbPackage>();
-	protected final PackageContainer packageContainer = new PackageContainer();
+	protected final PackageContainer packageContainer;
 
 
 	public GenericRootContextNode(JaxbProject jaxbProject) {
@@ -39,7 +37,7 @@ public class GenericRootContextNode
 			throw new NullPointerException();
 		}
 		this.jaxbProject = jaxbProject;
-		this.initializePackages();
+		this.packageContainer = new PackageContainer();
 	}
 
 
@@ -77,29 +75,20 @@ public class GenericRootContextNode
 	// ************* packages ***************
 	
 	public Iterable<JaxbPackage> getPackages() {
-		return new LiveCloneIterable<JaxbPackage>(this.packages);
+		return this.packageContainer.getContextElements();
 	}
 
 	public int getPackagesSize() {
-		return this.packages.size();
+		return this.packageContainer.getContextElementsSize();
 	}
 
-	protected void addPackage(JavaResourcePackage resourcePackage) {
-		addPackage(this.buildPackage(resourcePackage));
-	}
-
-	protected void addPackage(JaxbPackage contextPackage) {
-		this.addItemToCollection(contextPackage, this.packages, PACKAGES_COLLECTION);
+	protected JaxbPackage addPackage(JaxbPackage contextPackage, List<JaxbPackage> packages) {
+		this.addItemToCollection(contextPackage, packages, PACKAGES_COLLECTION);
+		return contextPackage;
 	}
 	
-	protected void removePackage(JaxbPackage contextPackage) {
-		this.removeItemFromCollection(contextPackage, this.packages, PACKAGES_COLLECTION);
-	}
-
-	protected void initializePackages() {
-		for (JavaResourcePackage resourcePackage : this.getJaxbProject().getAnnotatedJavaResourcePackages()) {
-			this.packages.add(this.buildPackage(resourcePackage));
-		}
+	protected void removePackage(JaxbPackage contextPackage, List<JaxbPackage> packages) {
+		this.removeItemFromCollection(contextPackage, packages, PACKAGES_COLLECTION);
 	}
 
 	protected void syncPackages() {
@@ -116,36 +105,31 @@ public class GenericRootContextNode
 		return this.getFactory().buildPackage(this, resourcePackage);
 	}
 
+	protected Iterable<JavaResourcePackage> getResourcePackages() {
+		return this.getJaxbProject().getAnnotatedJavaResourcePackages();
+	}
 
 	/**
 	 * package container adapter
 	 */
 	protected class PackageContainer
-		extends ContextContainer<JaxbPackage, JavaResourcePackage>
+		extends ContextCollectionContainer<JaxbPackage, JavaResourcePackage>
 	{
 		@Override
-		public Iterable<JaxbPackage> getContextElements() {
-			return GenericRootContextNode.this.getPackages();
+		protected String getContextElementsPropertyName() {
+			return PACKAGES_COLLECTION;
+		}
+		@Override
+		public JaxbPackage buildContextElement(JavaResourcePackage resourceElement) {
+			return GenericRootContextNode.this.buildPackage(resourceElement);
 		}
 		@Override
 		public Iterable<JavaResourcePackage> getResourceElements() {
-			return GenericRootContextNode.this.getJaxbProject().getAnnotatedJavaResourcePackages();
+			return GenericRootContextNode.this.getResourcePackages();
 		}
 		@Override
 		public JavaResourcePackage getResourceElement(JaxbPackage contextElement) {
 			return contextElement.getResourcePackage();
-		}
-		@Override
-		public void moveContextElement(int index, JaxbPackage element) {
-			//ignore since we don't need order for packages
-		}
-		@Override
-		public void addContextElement(int index, JavaResourcePackage resourceElement) {
-			GenericRootContextNode.this.addPackage(resourceElement);
-		}
-		@Override
-		public void removeContextElement(JaxbPackage element) {
-			GenericRootContextNode.this.removePackage(element);
 		}
 	}
 
