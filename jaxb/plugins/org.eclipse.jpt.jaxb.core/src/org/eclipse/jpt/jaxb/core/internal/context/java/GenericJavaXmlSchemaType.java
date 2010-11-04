@@ -123,7 +123,7 @@ public class GenericJavaXmlSchemaType
 	protected void setSpecifiedType_(String type) {
 		String old = this.specifiedType;
 		this.specifiedType = type;
-		this.firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, old, type);
+		this.firePropertyChanged(SPECIFIED_TYPE_PROPERTY, old, type);
 	}
 
 	public String getDefaultType() {
