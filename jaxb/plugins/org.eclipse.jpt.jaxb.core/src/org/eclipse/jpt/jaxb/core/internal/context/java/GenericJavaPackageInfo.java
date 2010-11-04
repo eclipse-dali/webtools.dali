@@ -13,12 +13,15 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypesAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -38,6 +41,8 @@ public class GenericJavaPackageInfo
 
 	protected final XmlSchemaTypeContainer xmlSchemaTypeContainer;
 
+	protected final XmlJavaTypeAdapterContainer xmlJavaTypeAdapterContainer;
+
 	public GenericJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		super(parent);
 		this.resourcePackage = resourcePackage;
@@ -45,6 +50,7 @@ public class GenericJavaPackageInfo
 		this.specifiedAccessType = getResourceAccessType();
 		this.specifiedAccessOrder = getResourceAccessOrder();
 		this.xmlSchemaTypeContainer = new XmlSchemaTypeContainer();
+		this.xmlJavaTypeAdapterContainer = new XmlJavaTypeAdapterContainer();
 	}
 
 
@@ -55,6 +61,7 @@ public class GenericJavaPackageInfo
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
 		this.syncXmlSchemaTypes();
+		this.syncXmlJavaTypeAdapters();
 	}
 
 	public void update() {
@@ -185,6 +192,48 @@ public class GenericJavaPackageInfo
 	}
 
 
+	// ********** xml java type adapters **********
+
+	public ListIterable<XmlJavaTypeAdapter> getXmlJavaTypeAdapters() {
+		return this.xmlJavaTypeAdapterContainer.getContextElements();
+	}
+
+	public int getXmlJavaTypeAdaptersSize() {
+		return this.xmlJavaTypeAdapterContainer.getContextElementsSize();
+	}
+
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter(int index) {
+		XmlJavaTypeAdapterAnnotation annotation = (XmlJavaTypeAdapterAnnotation) this.resourcePackage.addAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		return this.xmlJavaTypeAdapterContainer.addContextElement(index, annotation);
+	}
+
+	public void removeXmlJavaTypeAdapter(XmlJavaTypeAdapter xmlSchemaType) {
+		this.removeXmlJavaTypeAdapter(this.xmlJavaTypeAdapterContainer.indexOfContextElement(xmlSchemaType));
+	}
+
+	public void removeXmlJavaTypeAdapter(int index) {
+		this.resourcePackage.removeAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		this.xmlJavaTypeAdapterContainer.removeContextElement(index);
+	}
+
+	public void moveXmlJavaTypeAdapter(int targetIndex, int sourceIndex) {
+		this.resourcePackage.moveAnnotation(targetIndex, sourceIndex, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		this.xmlJavaTypeAdapterContainer.moveContextElement(targetIndex, sourceIndex);
+	}
+
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlSchemaTypeAnnotation) {
+		return this.getFactory().buildJavaXmlJavaTypeAdapter(this, xmlSchemaTypeAnnotation);
+	}
+
+	protected void syncXmlJavaTypeAdapters() {
+		this.xmlJavaTypeAdapterContainer.synchronizeWithResourceModel();
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
+		return (Iterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+	}
+
 	/**
 	 * xml schema type container
 	 */
@@ -206,6 +255,30 @@ public class GenericJavaPackageInfo
 		@Override
 		protected XmlSchemaTypeAnnotation getResourceElement(XmlSchemaType contextElement) {
 			return contextElement.getResourceXmlSchemaType();
+		}
+	}
+
+	/**
+	 * xml java type adapter container
+	 */
+	protected class XmlJavaTypeAdapterContainer
+		extends ListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return XML_JAVA_TYPE_ADAPTERS_LIST;
+		}
+		@Override
+		protected XmlJavaTypeAdapter buildContextElement(XmlJavaTypeAdapterAnnotation resourceElement) {
+			return GenericJavaPackageInfo.this.buildXmlJavaTypeAdapter(resourceElement);
+		}
+		@Override
+		protected Iterable<XmlJavaTypeAdapterAnnotation> getResourceElements() {
+			return GenericJavaPackageInfo.this.getXmlJavaTypeAdapterAnnotations();
+		}
+		@Override
+		protected XmlJavaTypeAdapterAnnotation getResourceElement(XmlJavaTypeAdapter contextElement) {
+			return contextElement.getResourceXmlJavaTypeAdapter();
 		}
 	}
 }

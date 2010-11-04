@@ -16,19 +16,23 @@ import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
@@ -74,8 +78,12 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaXmlSchema(parent);
 	}
 
-	public XmlSchemaType buildJavaXmlSchemaType(JaxbPackageInfo parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
-		return new GenericJavaXmlSchemaType(parent, xmlSchemaTypeAnnotation);
+	public XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation resourceXmlSchemaType) {
+		return new GenericJavaXmlSchemaType(parent, resourceXmlSchemaType);
+	}
+
+	public XmlJavaTypeAdapter buildJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resourceXmlJavaTypeAdapter) {
+		return new GenericJavaXmlJavaTypeAdapter(parent, resourceXmlJavaTypeAdapter);
 	}
 
 	public XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {

@@ -34,12 +34,13 @@ public interface JaxbPackageInfo
 	JavaResourcePackage getResourcePackage();
 
 
-	/**************** xml schema *****************/
+	// ********** xml schema **********
 
 	/**
 	 * Return the XML schema for this package info, this will not be null.
 	 */
 	XmlSchema getXmlSchema();
+
 
 	// ********** xml schema types **********
 
@@ -50,5 +51,16 @@ public interface JaxbPackageInfo
 	void removeXmlSchemaType(XmlSchemaType xmlSchemaType);
 	void moveXmlSchemaType(int targetIndex, int sourceIndex);
 		String XML_SCHEMA_TYPES_LIST = "xmlSchemaTypes"; //$NON-NLS-1$
+
+	
+	// ********** xml java type adapters **********
+
+	ListIterable<XmlJavaTypeAdapter> getXmlJavaTypeAdapters();
+	int getXmlJavaTypeAdaptersSize();
+	XmlJavaTypeAdapter addXmlJavaTypeAdapter(int index);
+	void removeXmlJavaTypeAdapter(int index);
+	void removeXmlJavaTypeAdapter(XmlJavaTypeAdapter xmlJavaTypeAdapter);
+	void moveXmlJavaTypeAdapter(int targetIndex, int sourceIndex);
+		String XML_JAVA_TYPE_ADAPTERS_LIST = "xmlJavaTypeAdapters"; //$NON-NLS-1$
 
 }
