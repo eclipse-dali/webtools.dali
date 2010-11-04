@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * 
@@ -32,8 +33,22 @@ public interface JaxbPackageInfo
 
 	JavaResourcePackage getResourcePackage();
 
+
+	/**************** xml schema *****************/
+
 	/**
 	 * Return the XML schema for this package info, this will not be null.
 	 */
 	XmlSchema getXmlSchema();
+
+	// ********** xml schema types **********
+
+	ListIterable<XmlSchemaType> getXmlSchemaTypes();
+	int getXmlSchemaTypesSize();
+	XmlSchemaType addXmlSchemaType(int index);
+	void removeXmlSchemaType(int index);
+	void removeXmlSchemaType(XmlSchemaType xmlSchemaType);
+	void moveXmlSchemaType(int targetIndex, int sourceIndex);
+		String XML_SCHEMA_TYPES_LIST = "xmlSchemaTypes"; //$NON-NLS-1$
+
 }

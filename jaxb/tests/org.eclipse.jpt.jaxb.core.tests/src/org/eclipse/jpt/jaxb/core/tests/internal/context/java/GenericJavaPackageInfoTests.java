@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
+import java.util.Iterator;
+import java.util.ListIterator;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -18,13 +21,16 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 
 @SuppressWarnings("nls")
@@ -188,5 +194,263 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	protected void removeXmlAccessorOrderAnnotation(ModifiedDeclaration declaration) {
 		this.addMarkerAnnotation(declaration.getDeclaration(), XmlSchemaAnnotation.ANNOTATION_NAME);
 		this.removeAnnotation(declaration, XmlAccessorOrderAnnotation.ANNOTATION_NAME);		
+	}
+
+	public void testGetXmlSchemaTypes() throws Exception {
+		this.createPackageInfoWithAccessorOrder();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		assertFalse(xmlSchemaTypes.iterator().hasNext());
+
+		//add 2 XmlSchemaTypes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 0, "bar");
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 1, "foo");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+	}
+	
+	protected void addXmlSchemaType(ModifiedDeclaration declaration, int index, String name) {
+		NormalAnnotation arrayElement = this.newXmlSchemaTypeAnnotation(declaration.getAst(), name);
+		this.addArrayElement(declaration, JAXB.XML_SCHEMA_TYPES, index, JAXB.XML_SCHEMA_TYPES__VALUE, arrayElement);		
+	}
+
+	protected NormalAnnotation newXmlSchemaTypeAnnotation(AST ast, String name) {
+		NormalAnnotation annotation = this.newNormalAnnotation(ast, JAXB.XML_SCHEMA_TYPE);
+		this.addMemberValuePair(annotation, JAXB.XML_SCHEMA_TYPE__NAME, name);
+		return annotation;
+	}
+
+	public void testGetXmlSchemaTypesSize() throws Exception {
+		this.createPackageInfoWithAccessorOrder();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		assertEquals(0, contextPackageInfo.getXmlSchemaTypesSize());
+
+		//add 2 XmlSchemaTypes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 0, "bar");
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 1, "foo");
+			}
+		});
+		assertEquals(2, contextPackageInfo.getXmlSchemaTypesSize());
+	}
+
+	public void testAddXmlSchemaType() throws Exception {
+		//create a package info with an annotation other than XmlSchema to test
+		//adding things to the null schema annotation
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlSchemaType(0).setName("bar");
+		contextPackageInfo.addXmlSchemaType(0).setName("foo");
+		contextPackageInfo.addXmlSchemaType(0).setName("baz");
+
+		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertEquals("foo", xmlSchemaTypes.next().getName());
+		assertEquals("bar", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterator<XmlSchemaTypeAnnotation> getSchemaTypeAnnotations(JavaResourcePackage resourcePackage) {
+		return (Iterator<XmlSchemaTypeAnnotation>) resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES).iterator();
+	}
+
+	public void testAddXmlSchemaType2() throws Exception {
+		//create a package info with an annotation other than XmlSchema to test
+		//adding things to the null schema annotation
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlSchemaType(0).setName("bar");
+		contextPackageInfo.addXmlSchemaType(1).setName("foo");
+		contextPackageInfo.addXmlSchemaType(0).setName("baz");
+
+		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertEquals("bar", xmlSchemaTypes.next().getName());
+		assertEquals("foo", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+	}
+
+	public void testRemoveXmlSchemaType() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlSchemaType(0).setName("bar");
+		contextPackageInfo.addXmlSchemaType(1).setName("foo");
+		contextPackageInfo.addXmlSchemaType(2).setName("baz");
+
+		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("bar", xmlSchemaTypes.next().getName());		
+		assertEquals("foo", xmlSchemaTypes.next().getName());		
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+
+		contextPackageInfo.removeXmlSchemaType(1);
+
+		xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("bar", xmlSchemaTypes.next().getName());		
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+
+		contextPackageInfo.removeXmlSchemaType(1);
+		xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("bar", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+
+		contextPackageInfo.removeXmlSchemaType(0);
+		xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertFalse(xmlSchemaTypes.hasNext());
+	}
+
+	public void testMoveXmlSchemaType() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlSchemaType(0).setName("bar");
+		contextPackageInfo.addXmlSchemaType(1).setName("foo");
+		contextPackageInfo.addXmlSchemaType(2).setName("baz");
+
+		Iterator<XmlSchemaTypeAnnotation> xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("bar", xmlSchemaTypes.next().getName());		
+		assertEquals("foo", xmlSchemaTypes.next().getName());		
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertFalse(xmlSchemaTypes.hasNext());
+
+		contextPackageInfo.moveXmlSchemaType(2, 0);
+		xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("foo", xmlSchemaTypes.next().getName());
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertEquals("bar", xmlSchemaTypes.next().getName());		
+		assertFalse(xmlSchemaTypes.hasNext());
+
+		contextPackageInfo.moveXmlSchemaType(0, 1);
+		xmlSchemaTypes = this.getSchemaTypeAnnotations(resourcePackage);
+		assertEquals("baz", xmlSchemaTypes.next().getName());
+		assertEquals("foo", xmlSchemaTypes.next().getName());
+		assertEquals("bar", xmlSchemaTypes.next().getName());		
+		assertFalse(xmlSchemaTypes.hasNext());
+	}
+
+	public void testSyncXmlSchemaTypes() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		assertFalse(xmlSchemaTypes.iterator().hasNext());
+
+		//add 3 XmlSchemaTypes
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 0, "bar");
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 1, "foo");
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 2, "baz");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.moveXmlSchemaType(declaration, 2, 0);
+			}
+		});
+
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.moveXmlSchemaType(declaration, 0, 1);
+			}
+		});
+
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlSchemaType(declaration, 1);
+			}
+		});
+
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlSchemaType(declaration, 1);
+			}
+		});
+
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlSchemaType(declaration, 0);
+			}
+		});
+
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+	}
+
+
+	protected void moveXmlSchemaType(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
+		this.moveArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPES), JAXB.XML_SCHEMA_TYPES__VALUE, targetIndex, sourceIndex);
+	}
+
+	protected void removeXmlSchemaType(ModifiedDeclaration declaration, int index) {
+		this.removeArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPES), JAXB.XML_SCHEMA_TYPES__VALUE, index);
 	}
 }

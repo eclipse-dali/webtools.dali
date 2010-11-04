@@ -29,12 +29,15 @@ import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.MemberValuePair;
+import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.NumberLiteral;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jdt.core.dom.SimpleName;
+import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.SingleMemberAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
@@ -484,6 +487,20 @@ public abstract class AnnotationTestCase extends TestCase {
 		return stringLiteral;
 	}
 
+	protected TypeLiteral newTypeLiteral(AST ast, String typeName) {
+		TypeLiteral typeLiteral = ast.newTypeLiteral();
+		typeLiteral.setType(this.newSimpleType(ast, typeName));
+		return typeLiteral;
+	}
+
+	protected SimpleType newSimpleType(AST ast, String typeName) {
+		return this.newSimpleType(ast, ast.newName(typeName));
+	}
+
+	protected SimpleType newSimpleType(AST ast, Name typeName) {
+		return ast.newSimpleType(typeName);
+	}
+
 	protected MemberValuePair newMemberValuePair(AST ast, SimpleName name, Expression value) {
 		MemberValuePair pair = ast.newMemberValuePair();
 		pair.setName(name);
@@ -567,13 +584,22 @@ public abstract class AnnotationTestCase extends TestCase {
 		this.addMemberValuePair(annotation, memberValuePair);
 	}
 
+	protected void addMemberValuePair(MarkerAnnotation annotation, String elementName, Expression value) {
+		MemberValuePair memberValuePair = this.newMemberValuePair(annotation.getAST(), elementName, value);
+		this.addMemberValuePair(annotation, memberValuePair);
+	}
+
 	/**
 	 * Add the array element to an annotation that is either a normal annotation or a marker annotation.
 	 * If it is a marker annotation first make it a normal annotation.
 	 */
-	protected void addArrayElement(Annotation annotation, int index, String elementName, Expression arrayElement) {
+	protected void addArrayElement(ModifiedDeclaration declaration, String annotationName, int index, String elementName, Expression arrayElement) {
+		Annotation annotation = declaration.getAnnotationNamed(annotationName);
 		NormalAnnotation normalAnnotation;
-		if (annotation.getNodeType() == ASTNode.MARKER_ANNOTATION) {
+		if (annotation == null) {
+			normalAnnotation = this.addNormalAnnotation(declaration.getDeclaration(), annotationName);
+		}
+		else if (annotation.getNodeType() == ASTNode.MARKER_ANNOTATION) {
 			normalAnnotation = this.replaceMarkerAnnotation((MarkerAnnotation) annotation);
 		}
 		else {

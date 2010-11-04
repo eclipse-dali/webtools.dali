@@ -187,16 +187,16 @@ public abstract class AbstractJaxbNode
 
 	
 	/**
-	 * Adapter used to synchronize a context container with its corresponding
+	 * Adapter used to synchronize a context collection container with its corresponding
 	 * resource container.
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ContextCollectionContainer<C extends JaxbContextNode, R> {
+	protected abstract class CollectionContainer<C extends JaxbContextNode, R> {
 
 		protected final Vector<C> contextElements = new Vector<C>();
 
-		protected ContextCollectionContainer() {
+		protected CollectionContainer() {
 			super();
 			this.initializeContextElements();
 		}
@@ -338,15 +338,15 @@ public abstract class AbstractJaxbNode
 	}
 	
 	/**
-	 * Adapter used to synchronize a context container with its corresponding
+	 * Adapter used to synchronize a context list container with its corresponding
 	 * resource container.
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ContextListContainer<C extends JaxbContextNode, R> extends ContextCollectionContainer<C, R> {
-
+	protected abstract class ListContainer<C extends JaxbContextNode, R>
+		extends CollectionContainer<C, R> {
 		
-		protected ContextListContainer() {
+		protected ListContainer() {
 			super();
 		}
 

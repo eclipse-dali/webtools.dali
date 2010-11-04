@@ -194,10 +194,6 @@ public class GenericJavaXmlSchema
 		return this.xmlNsPrefixContainer.getContextElementsSize();
 	}
 
-	public XmlNs addXmlNsPrefix() {
-		return this.addXmlNsPrefix(this.getXmlNsPrefixesSize());
-	}
-
 	public XmlNs addXmlNsPrefix(int index) {
 		XmlNsAnnotation annotation = this.getXmlSchemaAnnotation().addXmlns(index);
 		return this.xmlNsPrefixContainer.addContextElement(index, annotation);
@@ -234,9 +230,8 @@ public class GenericJavaXmlSchema
 	 * xml ns prefix container adapter
 	 */
 	protected class XmlNsPrefixContainer
-		extends ContextListContainer<XmlNs, XmlNsAnnotation>
+		extends ListContainer<XmlNs, XmlNsAnnotation>
 	{
-
 		@Override
 		protected String getContextElementsPropertyName() {
 			return XML_NS_PREFIXES_LIST;

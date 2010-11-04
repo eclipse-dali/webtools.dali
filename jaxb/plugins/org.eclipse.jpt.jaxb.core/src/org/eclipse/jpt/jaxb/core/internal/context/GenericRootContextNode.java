@@ -113,7 +113,7 @@ public class GenericRootContextNode
 	 * package container adapter
 	 */
 	protected class PackageContainer
-		extends ContextCollectionContainer<JaxbPackage, JavaResourcePackage>
+		extends CollectionContainer<JaxbPackage, JavaResourcePackage>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {

@@ -393,7 +393,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	
 	protected void addXmlNs(ModifiedDeclaration declaration, int index, String namespaceURI, String prefix) {
 		NormalAnnotation arrayElement = this.newXmlNsAnnotation(declaration.getAst(), namespaceURI, prefix);
-		this.addArrayElement(declaration.getAnnotationNamed(XmlSchemaAnnotation.ANNOTATION_NAME), index, JAXB.XML_SCHEMA__XMLNS, arrayElement);		
+		this.addArrayElement(declaration, JAXB.XML_SCHEMA, index, JAXB.XML_SCHEMA__XMLNS, arrayElement);		
 	}
 
 	protected NormalAnnotation newXmlNsAnnotation(AST ast, String namespaceURI, String prefix) {

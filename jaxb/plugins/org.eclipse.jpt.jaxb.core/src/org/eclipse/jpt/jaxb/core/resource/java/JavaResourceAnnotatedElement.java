@@ -69,7 +69,7 @@ public interface JavaResourceAnnotatedElement
 	 */
 	// TODO tie the singular and plural annotations together so we can generate
 	// a validation error when both are specified
-	Iterable<NestableAnnotation> getAnnotations(String nestableAnnotationName, String containerAnnotationName);
+	Iterable<? extends NestableAnnotation> getAnnotations(String nestableAnnotationName, String containerAnnotationName);
 	
 	/**
 	 * Add an annotation with the specified name.
