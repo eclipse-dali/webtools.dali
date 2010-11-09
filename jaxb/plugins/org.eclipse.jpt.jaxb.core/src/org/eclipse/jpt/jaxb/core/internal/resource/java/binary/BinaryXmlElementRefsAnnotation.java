@@ -15,7 +15,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefsAnnotation;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 /**
  * javax.xml.bind.annotation.adapters.XmlElementRefs
@@ -36,8 +37,8 @@ public class BinaryXmlElementRefsAnnotation
 		return ANNOTATION_NAME;
 	}
 	
-	public Iterable<XmlElementRefAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<XmlElementRefAnnotation>(this.xmlElementRefs);
+	public ListIterable<XmlElementRefAnnotation> getNestedAnnotations() {
+		return new LiveCloneListIterable<XmlElementRefAnnotation>(this.xmlElementRefs);
 	}
 	
 	public int getNestedAnnotationsSize() {

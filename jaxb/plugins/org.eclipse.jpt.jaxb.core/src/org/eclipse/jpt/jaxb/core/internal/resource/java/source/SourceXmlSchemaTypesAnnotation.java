@@ -20,7 +20,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypesAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 
 public class SourceXmlSchemaTypesAnnotation
@@ -66,8 +67,8 @@ public class SourceXmlSchemaTypesAnnotation
 		return JAXB.XML_SCHEMA_TYPE;
 	}
 	
-	public Iterable<XmlSchemaTypeAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<XmlSchemaTypeAnnotation>(this.schemaTypes);
+	public ListIterable<XmlSchemaTypeAnnotation> getNestedAnnotations() {
+		return new LiveCloneListIterable<XmlSchemaTypeAnnotation>(this.schemaTypes);
 	}
 	
 	public int getNestedAnnotationsSize() {

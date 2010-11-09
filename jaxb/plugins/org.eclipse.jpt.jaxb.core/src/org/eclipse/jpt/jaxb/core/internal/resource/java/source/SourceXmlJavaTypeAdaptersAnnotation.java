@@ -20,7 +20,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 /**
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapters
@@ -66,8 +67,8 @@ public class SourceXmlJavaTypeAdaptersAnnotation
 		return XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME;
 	}
 	
-	public Iterable<XmlJavaTypeAdapterAnnotation> getNestedAnnotations() {
-		return new LiveCloneIterable<XmlJavaTypeAdapterAnnotation>(this.adapters);
+	public ListIterable<XmlJavaTypeAdapterAnnotation> getNestedAnnotations() {
+		return new LiveCloneListIterable<XmlJavaTypeAdapterAnnotation>(this.adapters);
 	}
 	
 	public int getNestedAnnotationsSize() {

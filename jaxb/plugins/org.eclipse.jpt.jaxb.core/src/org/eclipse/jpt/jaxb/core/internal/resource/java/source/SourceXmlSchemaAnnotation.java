@@ -322,7 +322,7 @@ public class SourceXmlSchemaAnnotation
 			return JAXB.XML_NS;
 		}
 		
-		public Iterable<XmlNsAnnotation> getNestedAnnotations() {
+		public ListIterable<XmlNsAnnotation> getNestedAnnotations() {
 			return SourceXmlSchemaAnnotation.this.getXmlns();
 		}
 		

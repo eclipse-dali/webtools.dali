@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Common behavior for all annotation "containers".
@@ -49,7 +50,7 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	/**
 	 * Return the nested annotations held by the container.
 	 */
-	Iterable<T> getNestedAnnotations();
+	ListIterable<T> getNestedAnnotations();
 
 	/**
 	 * Return the number of nested annotations held by the container.
