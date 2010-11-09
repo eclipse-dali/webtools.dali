@@ -74,11 +74,7 @@ public class SourceXmlElementsAnnotation
 		return this.elements.size();
 	}
 	
-	public XmlElementAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.elements.size());
-	}
-	
-	private XmlElementAnnotation addNestedAnnotation(int index) {
+	public XmlElementAnnotation addNestedAnnotation(int index) {
 		XmlElementAnnotation element = this.buildXmlElementAnnotation(index);
 		this.elements.add(element);
 		return element;

@@ -39,7 +39,7 @@ public final class AnnotationContainerTools {
 	public static <T extends NestableAnnotation> NestableAnnotation addNestedAnnotation(int index, AnnotationContainer<T> annotationContainer) {
 		// add a new annotation to the end of the list...
 		int sourceIndex = annotationContainer.getNestedAnnotationsSize();
-		T nestedAnnotation = annotationContainer.addNestedAnnotation();
+		T nestedAnnotation = annotationContainer.addNestedAnnotation(sourceIndex);
 		nestedAnnotation.newAnnotation();
 		// ...then move it to the specified index
 		moveNestedAnnotation(index, sourceIndex, annotationContainer);
@@ -124,7 +124,7 @@ public final class AnnotationContainerTools {
 		// (maybe someday we can use them during initialization...)
 		int size = getNestedAstAnnotations(astRoot, annotationContainer).size();
 		for (int i = 0; i < size; i++) {
-			T nestedAnnotation = annotationContainer.addNestedAnnotation();
+			T nestedAnnotation = annotationContainer.addNestedAnnotation(i);
 			nestedAnnotation.initialize(astRoot);
 		}
 	}

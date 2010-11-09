@@ -78,11 +78,7 @@ public class SourceXmlJavaTypeAdaptersAnnotation
 		return this.adapters.get(index);
 	}
 	
-	public XmlJavaTypeAdapterAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.adapters.size());
-	}
-	
-	private XmlJavaTypeAdapterAnnotation addNestedAnnotation(int index) {
+	public XmlJavaTypeAdapterAnnotation addNestedAnnotation(int index) {
 		XmlJavaTypeAdapterAnnotation adapter = this.buildXmlJavaTypeAdapterAnnotation(index);
 		this.adapters.add(adapter);
 		return adapter;

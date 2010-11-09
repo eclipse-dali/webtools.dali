@@ -35,7 +35,7 @@ public abstract class BinaryContainerAnnotation<T extends NestableAnnotation>
 		throw new UnsupportedOperationException();
 	}
 
-	public T addNestedAnnotation() {
+	public T addNestedAnnotation(int index) {
 		throw new UnsupportedOperationException();
 	}
 

@@ -78,11 +78,7 @@ public class SourceXmlSchemaTypesAnnotation
 		return this.schemaTypes.get(index);
 	}
 	
-	public XmlSchemaTypeAnnotation addNestedAnnotation() {
-		return this.addNestedAnnotation(this.schemaTypes.size());
-	}
-	
-	private XmlSchemaTypeAnnotation addNestedAnnotation(int index) {
+	public XmlSchemaTypeAnnotation addNestedAnnotation(int index) {
 		XmlSchemaTypeAnnotation adapter = this.buildXmlSchemaTypeAnnotation(index);
 		this.schemaTypes.add(adapter);
 		return adapter;

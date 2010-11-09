@@ -171,9 +171,9 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		this.annotations.add(containerAnnotation);
 		containerAnnotation.newAnnotation();
 
-		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotation();
+		NestableAnnotation nestedAnnotation0 = containerAnnotation.addNestedAnnotation(0);
 		nestedAnnotation0.newAnnotation();
-		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotation();
+		NestableAnnotation nestedAnnotation1 = containerAnnotation.addNestedAnnotation(1);
 		nestedAnnotation1.newAnnotation();
 		this.removeAnnotation(standAloneAnnotation);
 

@@ -261,10 +261,6 @@ public class SourceXmlSchemaAnnotation
 		return (XmlNsAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.xmlnsContainer);
 	}
 	
-	protected XmlNsAnnotation addXmlns_() {
-		return addXmlns_(this.xmlns.size());
-	}
-	
 	protected XmlNsAnnotation addXmlns_(int index) {
 		XmlNsAnnotation xmlns = buildXmlns(index);
 		this.xmlns.add(index, xmlns);
@@ -334,8 +330,8 @@ public class SourceXmlSchemaAnnotation
 			return SourceXmlSchemaAnnotation.this.getXmlnsSize();
 		}
 		
-		public XmlNsAnnotation addNestedAnnotation() {
-			return SourceXmlSchemaAnnotation.this.addXmlns_();
+		public XmlNsAnnotation addNestedAnnotation(int index) {
+			return SourceXmlSchemaAnnotation.this.addXmlns_(index);
 		}
 		
 		public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {

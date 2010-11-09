@@ -60,7 +60,7 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	 * Add a nested annotation to the container
 	 * without firing change notification.
 	 */
-	T addNestedAnnotation();
+	T addNestedAnnotation(int index);
 
 	/**
 	 * The specified nested annotation was added to the container at the
