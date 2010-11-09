@@ -41,8 +41,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * various Dali interfaces.
  */
 public abstract class AbstractJaxbFactory
-	implements JaxbFactory
-{
+		implements JaxbFactory {
+	
 	protected AbstractJaxbFactory() {
 		super();
 	}
@@ -53,39 +53,41 @@ public abstract class AbstractJaxbFactory
 	public JaxbProject buildJaxbProject(Config config) {
 		return new GenericJaxbProject(config);
 	}
-
+	
 	public JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
 		return new GenericJaxbFile(jaxbProject, file, contentType, resourceModel);
 	}
-
-	// ********** Context Nodes **********
-
+	
+	
+	// ********** Non-resource-specific context nodes **********
+	
 	public JaxbRootContextNode buildRootContextNode(JaxbProject parent) {
 		return new GenericRootContextNode(parent);
 	}
-
-	public JaxbPackage buildPackage(JaxbRootContextNode parent, JavaResourcePackage resourcePackage) {
-		return new GenericPackage(parent, resourcePackage);
+	
+	public JaxbPackage buildPackage(JaxbRootContextNode parent, String packageName) {
+		return new GenericPackage(parent, packageName);
 	}
-
-	// ********** Java Context Nodes **********
-
+	
+	
+	// ********** Java context nodes **********
+	
 	public JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		return new GenericJavaPackageInfo(parent, resourcePackage);
 	}
-
+	
 	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
 		return new GenericJavaXmlSchema(parent);
 	}
-
+	
 	public XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation resourceXmlSchemaType) {
 		return new GenericJavaXmlSchemaType(parent, resourceXmlSchemaType);
 	}
-
+	
 	public XmlJavaTypeAdapter buildJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resourceXmlJavaTypeAdapter) {
 		return new GenericJavaXmlJavaTypeAdapter(parent, resourceXmlJavaTypeAdapter);
 	}
-
+	
 	public XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
 		return new GenericJavaXmlNs(parent, xmlNsAnnotation);
 	}

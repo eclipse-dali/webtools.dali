@@ -684,32 +684,32 @@ public abstract class AbstractJaxbProject
 
 
 	// ********** Java resource persistent package look-up **********
-
-	public JavaResourcePackage getJavaResourcePackage(String packName) {
-		for (JavaResourcePackage jrpp : this.getJavaResourcePackages()) {
-			if (jrpp.getName().equals(packName)) {
-				return jrpp;
-			}
-		}
-		return null;
-	}
-
+	
 	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
 		return new FilteringIterable<JavaResourcePackage>( 
 				new TransformationIterable<JaxbFile, JavaResourcePackage>(this.getPackageInfoSourceJaxbFiles()) {
-				@Override
-				protected JavaResourcePackage transform(JaxbFile jaxbFile) {
-					return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
-				}
-			}) 
-			{
+					@Override
+					protected JavaResourcePackage transform(JaxbFile jaxbFile) {
+						return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
+					}
+				}) {
+			
 			@Override
 			protected boolean accept(JavaResourcePackage resourcePackage) {
 				return resourcePackage != null;
 			}
 		};
 	}
-
+	
+	public JavaResourcePackage getJavaResourcePackage(String packageName) {
+		for (JavaResourcePackage jrp : this.getJavaResourcePackages()) {
+			if (jrp.getName().equals(packageName)) {
+				return jrp;
+			}
+		}
+		return null;
+	}
+	
 	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
 		return new FilteringIterable<JavaResourcePackage>(this.getJavaResourcePackages()) {
 			@Override
@@ -718,7 +718,12 @@ public abstract class AbstractJaxbProject
 			}
 		};
 	}
-
+	
+	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {
+		JavaResourcePackage jrp = getJavaResourcePackage(packageName);
+		return (jrp.isAnnotated()) ? jrp : null;
+	}
+	
 	/**
 	 * return JPA files with package-info source "content"
 	 */

@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-
 /**
  * 
  * <p>
@@ -24,10 +22,17 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
  * @since 3.0
  */
 public interface JaxbPackage
-	extends JaxbContextNode
-{
-
-	JavaResourcePackage getResourcePackage();
-
+		extends JaxbContextNode {
+	
+	/**
+	 * The package name.
+	 * This is unchanging in that, if a package name changes, a new JaxbPackage is created.
+	 */
+	String getName();
+	
+	/**
+	 * The optional package-info
+	 */
 	JaxbPackageInfo getPackageInfo();
+	public final static String PACKAGE_INFO_PROPERTY = "package-info"; //$NON-NLS-1$
 }

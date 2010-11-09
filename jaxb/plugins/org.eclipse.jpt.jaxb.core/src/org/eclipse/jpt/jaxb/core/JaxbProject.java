@@ -136,43 +136,50 @@ public interface JaxbProject
 //
 	
 	// ********** Java resources **********
-
-	/**
-	 * Return the names of the JAXB project's annotated Java classes
-	 */
-	Iterable<String> getAnnotatedJavaSourceClassNames();
-
-	/**
-	 * Return the Java resource persistent type for the specified type.
-	 * Return null if invalid or absent.
-	 */
-	JavaResourceType getJavaResourceType(String typeName);
-
-	/**
-	 * Return the Java resource package for the specified package.
-	 * Return null if invalid or absent.
-	 */
-	JavaResourcePackage getJavaResourcePackage(String packageName);
-
+	
 	/**
 	 * Return the Java resource packages for the project.
 	 * Return null if invalid or absent. These correspond to package-info.java files
 	 */
 	Iterable<JavaResourcePackage> getJavaResourcePackages();
-
+	
+	/**
+	 * Return the Java resource package for the specified package.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourcePackage getJavaResourcePackage(String packageName);
+	
 	/**
 	 * Return the java resource packages that are annotated with
 	 * 1 or more valid JAXB package annotations
 	 */
 	Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages();
-
+	
+	/**
+	 * Return the java resource package for the specified package if and only if it has
+	 * recognized annotations.
+	 * Return null otherwise.
+	 */
+	JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName);
+	
 //	/**
 //	 * Return the Java resource package fragement root for the specified JAR.
 //	 * Return null if absent.
 //	 */
 //	JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName);
-
-
+	
+	/**
+	 * Return the names of the JAXB project's annotated Java classes
+	 */
+	Iterable<String> getAnnotatedJavaSourceClassNames();
+	
+	/**
+	 * Return the Java resource persistent type for the specified type.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourceType getJavaResourceType(String typeName);
+	
+	
 	// ********** model synchronization **********
 
 	/**

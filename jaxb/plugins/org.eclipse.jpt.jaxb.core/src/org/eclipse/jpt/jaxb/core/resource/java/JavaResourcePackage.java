@@ -22,14 +22,11 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface JavaResourcePackage
-	extends
-		JavaResourceAnnotatedElement
-{
+		extends JavaResourceAnnotatedElement {
 	
 	/**
 	 * The Java resource persistent package's name.
 	 */
 	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
+	String NAME_PROPERTY = "name"; //$NON-NLS-1$
 }

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 /**
- * Root of the Dali context model.
+ * Root of the JAXB context model.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,20 +22,18 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface JaxbRootContextNode
-	extends JaxbContextNode
-{
-
+		extends JaxbContextNode {
+	
+	/**
+	 * The root context node's packages.
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 */
 	Iterable<JaxbPackage> getPackages();
-
+	public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
+	
 	int getPackagesSize();
-
-		/**
-		 * String constant associated with changes to the packages property
-		 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
-		 */
-		public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
-
-
+	
+	
 //	// ********** validation **********
 //
 //	/**

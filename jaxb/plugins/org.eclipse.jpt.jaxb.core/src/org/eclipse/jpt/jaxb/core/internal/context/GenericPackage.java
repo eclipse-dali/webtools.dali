@@ -14,38 +14,64 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
-//TODO for now we will assume a 1-1 relationship between a package and a package-info.
-//Later there could be annotated types in a package that has no package-info.java
-//Or we could have a mapping file instead and this would have the PackageInfo in it.
 public class GenericPackage
-	extends AbstractJaxbContextNode
-	implements JaxbPackage
-{
-
-	protected final JaxbPackageInfo packageInfo;
-
-	public GenericPackage(JaxbRootContextNode parent, JavaResourcePackage resourcePackage) {
+		extends AbstractJaxbContextNode
+		implements JaxbPackage {
+	
+	protected final String name;
+	
+	protected JaxbPackageInfo packageInfo;
+	
+	
+	public GenericPackage(JaxbRootContextNode parent, String name) {
 		super(parent);
-		this.packageInfo = buildPackageInfo(resourcePackage);
+		this.name = name;
+		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);
+		if (jrp != null) {
+			this.packageInfo = buildPackageInfo(jrp);
+		}
 	}
 	
+	
 	public void synchronizeWithResourceModel() {
-		this.packageInfo.synchronizeWithResourceModel();
+		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);
+		if (jrp == null) {
+			if (this.packageInfo != null) {
+				setPackageInfo_(null);
+			}
+		}
+		else {
+			if (this.packageInfo == null) {
+				setPackageInfo_(buildPackageInfo(jrp));
+			}
+			this.packageInfo.synchronizeWithResourceModel();
+		}
 	}
 
 	public void update() {
-		this.packageInfo.update();
+		if (this.packageInfo != null) { 
+			this.packageInfo.update();
+		}
 	}
-
-	public JavaResourcePackage getResourcePackage() {
-		return this.packageInfo.getResourcePackage();
+	
+	
+	// **************** name **************************************************
+	
+	public String getName() {
+		return this.name;
 	}
-
-
-	// ********** package info **********
+	
+	
+	// **************** package info ******************************************
 
 	public JaxbPackageInfo getPackageInfo() {
 		return this.packageInfo;
+	}
+	
+	protected void setPackageInfo_(JaxbPackageInfo packageInfo) {
+		JaxbPackageInfo old = this.packageInfo;
+		this.packageInfo = packageInfo;
+		this.firePropertyChanged(PACKAGE_INFO_PROPERTY, old, this.packageInfo);
 	}
 	
 	protected JaxbPackageInfo buildPackageInfo(JavaResourcePackage resourcePackage) {

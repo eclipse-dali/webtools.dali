@@ -58,8 +58,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbFactory 
-{
+public interface JaxbFactory  {
+	
 	// ********** Core Model **********
 	
 	/**
@@ -74,10 +74,10 @@ public interface JaxbFactory
 	 * and resource model.
 	 */
 	JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JpaResourceModel resourceModel);
-
-
-	// ********** Context Nodes **********
-
+	
+	
+	// ********** Non-resource-specific context nodes **********
+	
 	/**
 	 * Build a (/an updated) root context node to be associated with the given 
 	 * JAXB project.
@@ -85,19 +85,19 @@ public interface JaxbFactory
 	 * @see JaxbProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
 	JaxbRootContextNode buildRootContextNode(JaxbProject jaxbProject);
-
-	JaxbPackage buildPackage(JaxbRootContextNode parent, JavaResourcePackage resourcePackage);
-
-
-	// ********** Java Context Nodes **********
-
+	
+	JaxbPackage buildPackage(JaxbRootContextNode parent, String packageName);
+	
+	
+	// ********** Java context nodes **********
+	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
-
+	
 	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
-
+	
 	XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation);
-
+	
 	XmlJavaTypeAdapter buildJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation);
-
+	
 	XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation);
 }
