@@ -26,8 +26,10 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.internal.ddlgen.EclipseLinkDDLGenerator;
+import org.eclipse.jpt.eclipselink.ui.JptEclipseLinkUiPlugin;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards.GenerateDDLWizard;
+import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -132,12 +134,8 @@ public class EclipseLinkDDLGeneratorUi
 			catch (OperationCanceledException e) {
 				return Status.CANCEL_STATUS;
 			}
-			catch (RuntimeException re) {
-				String msg = re.getMessage();
-				String message = (msg == null) ? re.toString() : msg;
-				
-				this.logError(message);
-				throw new RuntimeException(re);
+			catch (RuntimeException re) {				
+				this.logException(re);
 			}
 			return Status.OK_STATUS;
 		}
@@ -146,16 +144,23 @@ public class EclipseLinkDDLGeneratorUi
 			EclipseLinkDDLGenerator.generate(puName, project, monitor);
 		}
 
-		protected void logError(String message) {
+		protected void logException(RuntimeException re) {
+			String msg = re.getMessage();
+			String message = (msg == null) ? re.toString() : msg;
 			this.displayError(message);
+			JptEclipseLinkUiPlugin.log(re);
 		}
 		
-		private void displayError(String message) {
-			MessageDialog.openError(
-					getShell(),
-					EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_error,
-					message
-				);
+		private void displayError(final String message) {
+			SWTUtil.syncExec(new Runnable() {
+				public void run() {
+					MessageDialog.openError(
+						getShell(),
+						EclipseLinkUiMessages.EclipseLinkDDLGeneratorUi_error,
+						message
+					);
+				}
+			});
 		}
 
 		private Shell getShell() {
