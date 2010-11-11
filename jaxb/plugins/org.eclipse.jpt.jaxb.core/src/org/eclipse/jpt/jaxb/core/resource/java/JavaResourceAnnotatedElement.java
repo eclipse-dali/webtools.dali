@@ -35,6 +35,11 @@ public interface JavaResourceAnnotatedElement
 	String ANNOTATIONS_COLLECTION = "annotations"; //$NON-NLS-1$
 	
 	/**
+	 * String associated with changes to the "containerAannotations" collection
+	 */
+	String CONTAINER_ANNOTATIONS_COLLECTION = "containreAnnotations"; //$NON-NLS-1$
+	
+	/**
 	 * Return the member's annotations in the order that they appear.
 	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler.

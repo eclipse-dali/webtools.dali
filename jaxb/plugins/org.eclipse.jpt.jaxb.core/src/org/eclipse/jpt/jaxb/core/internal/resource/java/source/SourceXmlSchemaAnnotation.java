@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
@@ -22,16 +21,12 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 
 public class SourceXmlSchemaAnnotation
@@ -61,7 +56,6 @@ public class SourceXmlSchemaAnnotation
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 	
-	private final Vector<XmlNsAnnotation> xmlns = new Vector<XmlNsAnnotation>();
 	private final XmlnsAnnotationContainer xmlnsContainer = new XmlnsAnnotationContainer();
 	
 	
@@ -114,7 +108,7 @@ public class SourceXmlSchemaAnnotation
 		this.elementFormDefault = buildElementFormDefault(astRoot);
 		this.location = buildLocation(astRoot);
 		this.namespace = buildNamespace(astRoot);
-		AnnotationContainerTools.initialize(this.xmlnsContainer, astRoot);
+		this.xmlnsContainer.initialize(astRoot);
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
@@ -122,7 +116,7 @@ public class SourceXmlSchemaAnnotation
 		syncElementFormDefault(buildElementFormDefault(astRoot));
 		syncLocation(buildLocation(astRoot));
 		syncNamespace(buildNamespace(astRoot));
-		AnnotationContainerTools.synchronize(this.xmlnsContainer, astRoot);
+		this.xmlnsContainer.synchronize(astRoot);
 	}
 	
 	@Override
@@ -246,25 +240,19 @@ public class SourceXmlSchemaAnnotation
 	// **************** xmlns *************************************************
 	
 	public ListIterable<XmlNsAnnotation> getXmlns() {
-		return new LiveCloneListIterable<XmlNsAnnotation>(this.xmlns);
+		return this.xmlnsContainer.getNestedAnnotations();
 	}
 	
 	public int getXmlnsSize() {
-		return this.xmlns.size();
+		return this.xmlnsContainer.getNestedAnnotationsSize();
 	}
 	
 	public XmlNsAnnotation xmlnsAt(int index) {
-		return this.xmlns.get(index);
+		return this.xmlnsContainer.nestedAnnotationAt(index);
 	}
 	
 	public XmlNsAnnotation addXmlns(int index) {
-		return (XmlNsAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.xmlnsContainer);
-	}
-	
-	protected XmlNsAnnotation addXmlns_(int index) {
-		XmlNsAnnotation xmlns = buildXmlns(index);
-		this.xmlns.add(index, xmlns);
-		return xmlns;
+		return this.xmlnsContainer.addNestedAnnotation(index);
 	}
 	
 	private XmlNsAnnotation buildXmlns(int index) {
@@ -277,82 +265,35 @@ public class SourceXmlSchemaAnnotation
 				this.daa, JAXB.XML_SCHEMA__XMLNS, index, JAXB.XML_NS, false);
 	}
 	
-	protected void syncAddXmlns(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
-		int index = this.xmlns.size();
-		XmlNsAnnotation xmlns = addXmlns(index);
-		xmlns.initialize((CompilationUnit) astAnnotation.getRoot());
-		this.fireItemAdded(XMLNS_LIST, index, xmlns);
-	}
-	
 	public void moveXmlns(int targetIndex, int sourceIndex) {
-		AnnotationContainerTools.moveNestedAnnotation(targetIndex, sourceIndex, this.xmlnsContainer);
-	}
-	
-	protected XmlNsAnnotation moveXmlns_(int targetIndex, int sourceIndex) {
-		return CollectionTools.move(this.xmlns, targetIndex, sourceIndex).get(targetIndex);
+		this.xmlnsContainer.moveNestedAnnotation(targetIndex, sourceIndex);
 	}
 	
 	public void removeXmlns(int index) {
-		AnnotationContainerTools.removeNestedAnnotation(index, this.xmlnsContainer);
-	}
-	
-	protected XmlNsAnnotation removeXmlns_(int index) {
-		return this.xmlns.remove(index);
-	}
-	
-	protected void syncRemoveXmlns(int index) {
-		this.removeItemsFromList(index, this.xmlns, XMLNS_LIST);
+		this.xmlnsContainer.removeNestedAnnotation(index);
 	}
 	
 	/**
 	 * adapt the AnnotationContainer interface to the xml schema's xmlns
 	 */
-	class XmlnsAnnotationContainer
-		implements AnnotationContainer<XmlNsAnnotation>
+	class XmlnsAnnotationContainer 
+		extends AnnotationContainer<XmlNsAnnotation>
 	{
-		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
-			return SourceXmlSchemaAnnotation.this.getAstAnnotation(astRoot);
+		@Override
+		protected String getAnnotationsPropertyName() {
+			return XMLNS_LIST;
 		}
-		
-		public String getElementName() {
+		@Override
+		protected String getElementName() {
 			return JAXB.XML_SCHEMA__XMLNS;
 		}
-		
-		public String getNestedAnnotationName() {
+		@Override
+		protected String getNestedAnnotationName() {
 			return JAXB.XML_NS;
 		}
-		
-		public ListIterable<XmlNsAnnotation> getNestedAnnotations() {
-			return SourceXmlSchemaAnnotation.this.getXmlns();
-		}
-		
-		public int getNestedAnnotationsSize() {
-			return SourceXmlSchemaAnnotation.this.getXmlnsSize();
-		}
-		
-		public XmlNsAnnotation addNestedAnnotation(int index) {
-			return SourceXmlSchemaAnnotation.this.addXmlns_(index);
-		}
-		
-		public void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
-			SourceXmlSchemaAnnotation.this.syncAddXmlns(astAnnotation);
-		}
-		
-		public XmlNsAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
-			return SourceXmlSchemaAnnotation.this.moveXmlns_(targetIndex, sourceIndex);
-		}
-		
-		public XmlNsAnnotation removeNestedAnnotation(int index) {
-			return SourceXmlSchemaAnnotation.this.removeXmlns_(index);
-		}
-		
-		public void syncRemoveNestedAnnotations(int index) {
-			SourceXmlSchemaAnnotation.this.syncRemoveXmlns(index);
-		}
-		
 		@Override
-		public String toString() {
-			return StringTools.buildToStringFor(this);
-		}		
+		protected XmlNsAnnotation buildNestedAnnotation(int index) {
+			return SourceXmlSchemaAnnotation.this.buildXmlns(index);
+		}
 	}
 }
