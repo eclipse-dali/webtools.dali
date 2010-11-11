@@ -87,7 +87,10 @@ public class MakePersistentAction implements IObjectActionDelegate {
 	}
 	
 	private void addSelectedType(ICompilationUnit compilationUnit, Map<IProject, List<IType>> types) {
-		addSelectedType(getPrimaryType(compilationUnit), types);
+		IType primaryType = this.getPrimaryType(compilationUnit);
+		if (primaryType != null) {
+			this.addSelectedType(primaryType, types);
+		}
 	}
 	
 	private void addSelectedType(IType primaryType, Map<IProject, List<IType>> typesMap) {
