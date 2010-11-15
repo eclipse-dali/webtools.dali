@@ -94,18 +94,13 @@ public class StringArrayExpressionConverter
 	 * AnnotationStringArrayExpressionConverter
 	 */
 	public String[] convertArrayInitializer(ArrayInitializer arrayInitializer) {
-		List<Expression> expressions = this.downcastExpressions(arrayInitializer);
+		List<Expression> expressions = this.expressions(arrayInitializer);
 		int len = expressions.size();
 		String[] strings = new String[len];
 		for (int i = len; i-- > 0; ) {
 			strings[i] = this.elementConverter.convert(expressions.get(i));
 		}
 		return strings;
-	}
-
-	@SuppressWarnings("unchecked")
-	private List<Expression> downcastExpressions(ArrayInitializer arrayInitializer) {
-		return arrayInitializer.expressions();
 	}
 
 }
