@@ -624,8 +624,58 @@ public abstract class AbstractJaxbProject
 	}
 
 
-	// ********** Java resource persistent type look-up **********
+	// ********** Java resource package look-up **********
+	
+	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
+		return new FilteringIterable<JavaResourcePackage>( 
+				new TransformationIterable<JaxbFile, JavaResourcePackage>(this.getPackageInfoSourceJaxbFiles()) {
+					@Override
+					protected JavaResourcePackage transform(JaxbFile jaxbFile) {
+						return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
+					}
+				}) {
+			
+			@Override
+			protected boolean accept(JavaResourcePackage resourcePackage) {
+				return resourcePackage != null;
+			}
+		};
+	}
+	
+	public JavaResourcePackage getJavaResourcePackage(String packageName) {
+		for (JavaResourcePackage jrp : this.getJavaResourcePackages()) {
+			if (jrp.getName().equals(packageName)) {
+				return jrp;
+			}
+		}
+		return null;
+	}
+	
+	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
+		return new FilteringIterable<JavaResourcePackage>(this.getJavaResourcePackages()) {
+			@Override
+			protected boolean accept(JavaResourcePackage resourcePackage) {
+				return resourcePackage.isAnnotated();  // i.e. the package has a valid package annotation
+			}
+		};
+	}
+	
+	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {
+		JavaResourcePackage jrp = getJavaResourcePackage(packageName);
+		return (jrp.isAnnotated()) ? jrp : null;
+	}
+	
+	/**
+	 * return JPA files with package-info source "content"
+	 */
+	protected Iterable<JaxbFile> getPackageInfoSourceJaxbFiles() {
+		return this.getJaxbFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+	}
 
+	
+	// ********** Java resource type look-up **********
+	
+	
 	public JavaResourceType getJavaResourceType(String typeName) {
 		for (JavaResourceType jrpType : this.getPersistableJavaResourceTypes()) {
 			if (jrpType.getQualifiedName().equals(typeName)) {
@@ -682,56 +732,7 @@ public abstract class AbstractJaxbProject
 				);
 	}
 
-
-	// ********** Java resource persistent package look-up **********
 	
-	public Iterable<JavaResourcePackage> getJavaResourcePackages(){
-		return new FilteringIterable<JavaResourcePackage>( 
-				new TransformationIterable<JaxbFile, JavaResourcePackage>(this.getPackageInfoSourceJaxbFiles()) {
-					@Override
-					protected JavaResourcePackage transform(JaxbFile jaxbFile) {
-						return ((JavaResourcePackageInfoCompilationUnit) jaxbFile.getResourceModel()).getPackage();
-					}
-				}) {
-			
-			@Override
-			protected boolean accept(JavaResourcePackage resourcePackage) {
-				return resourcePackage != null;
-			}
-		};
-	}
-	
-	public JavaResourcePackage getJavaResourcePackage(String packageName) {
-		for (JavaResourcePackage jrp : this.getJavaResourcePackages()) {
-			if (jrp.getName().equals(packageName)) {
-				return jrp;
-			}
-		}
-		return null;
-	}
-	
-	public Iterable<JavaResourcePackage> getAnnotatedJavaResourcePackages() {
-		return new FilteringIterable<JavaResourcePackage>(this.getJavaResourcePackages()) {
-			@Override
-			protected boolean accept(JavaResourcePackage resourcePackage) {
-				return resourcePackage.isAnnotated();  // i.e. the package has a valid package annotation
-			}
-		};
-	}
-	
-	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {
-		JavaResourcePackage jrp = getJavaResourcePackage(packageName);
-		return (jrp.isAnnotated()) ? jrp : null;
-	}
-	
-	/**
-	 * return JPA files with package-info source "content"
-	 */
-	protected Iterable<JaxbFile> getPackageInfoSourceJaxbFiles() {
-		return this.getJaxbFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
-	}
-
-
 //	// ********** JARs **********
 //
 //	// TODO

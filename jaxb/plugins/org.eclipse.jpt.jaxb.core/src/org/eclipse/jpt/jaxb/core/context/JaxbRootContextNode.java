@@ -25,13 +25,21 @@ public interface JaxbRootContextNode
 		extends JaxbContextNode {
 	
 	/**
-	 * The root context node's packages.
+	 * The set of packages.  Includes any package with any interesting JAXB content.
 	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
 	 */
 	Iterable<JaxbPackage> getPackages();
 	public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
 	
 	int getPackagesSize();
+	
+//	/**
+//	 * The set of classes.  These may be explicitly or implicitly included.
+//	 */
+//	Iterable<JaxbType> getClasses();
+//	public final static String CLASSES_COLLECTION = "classes"; //$NON-NLS-1$
+//	
+//	int getClassesSize();
 	
 	
 //	// ********** validation **********

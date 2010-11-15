@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -18,6 +19,10 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.utility.internal.ClassName;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * the context model root
@@ -29,8 +34,11 @@ public class GenericRootContextNode
 	/* This object has no parent, so it must point to the JAXB project explicitly. */
 	protected final JaxbProject jaxbProject;
 	
-	/* Main context objects. */
-	protected final PackageContainer packageContainer;
+	/* The map of package name to JaxbPackage objects */
+	protected final Map<String, JaxbPackage> packages;
+	
+//	/* The map of class name to JaxbType objects */
+//	protected final Map<String, JaxbType> classes;
 	
 	
 	public GenericRootContextNode(JaxbProject jaxbProject) {
@@ -39,7 +47,8 @@ public class GenericRootContextNode
 			throw new NullPointerException();
 		}
 		this.jaxbProject = jaxbProject;
-		this.packageContainer = new PackageContainer();
+		this.packages = new HashMap<String, JaxbPackage>();
+//		this.classes = new HashMap<String, JaxbType>();
 	}
 	
 	
@@ -49,11 +58,63 @@ public class GenericRootContextNode
 	}
 	
 	public void synchronizeWithResourceModel() {
-		this.syncPackages();
+		for (JaxbPackage each : getPackages()) {
+			each.synchronizeWithResourceModel();
+		}
+//		for (JaxbType each : getClasses()) {
+//			each.synchronizeWithResourceModel();
+//		}
 	}
 	
 	public void update() {
-		this.updatePackages();
+		final Set<String> explicitJaxbContextPackageNames = calculateExplicitJaxbContextPackageNames();
+		final Set<String> explicitJaxbContextClassNames = calculateExplicitJaxbContextClassNames();
+		final Set<String> implicitJaxbContextClassNames = new HashSet<String>();
+		
+		for (String packageName : explicitJaxbContextPackageNames) {
+			if (! this.packages.containsKey(packageName)) {
+				addPackage(buildPackage(packageName));
+			}
+		}
+		
+		for (String className : explicitJaxbContextClassNames) {
+			String packageName = ClassName.getPackageName(className);
+			if (! this.packages.containsKey(packageName)) {
+				addPackage(buildPackage(packageName));
+			}
+//			if (! this.classes.containsKey(className)) {
+//				addClass(buildClass(className));
+//			}
+		}
+		
+		for (JaxbPackage each : getPackages()) {
+			each.update();
+		}
+		
+//		for (JaxbType each : getClasses()) {
+//			each.update();
+//		}
+		
+		for (JaxbPackage each : getPackages()) {
+			if (isEmpty(each)) {
+				removePackage(each);
+			}
+		}
+	}
+	
+	protected Set<String> calculateExplicitJaxbContextPackageNames() {
+		return CollectionTools.set(
+				new TransformationIterable<JavaResourcePackage, String>(
+						getJaxbProject().getAnnotatedJavaResourcePackages()) {
+					@Override
+					protected String transform(JavaResourcePackage o) {
+						return o.getName();
+					}
+				});
+	}
+	
+	protected Set<String> calculateExplicitJaxbContextClassNames() {
+		return new HashSet<String>();
 	}
 	
 	
@@ -77,70 +138,67 @@ public class GenericRootContextNode
 	// ************* packages ***************
 	
 	public Iterable<JaxbPackage> getPackages() {
-		return this.packageContainer.getContextElements();
+		return new LiveCloneIterable<JaxbPackage>(this.packages.values());
 	}
 	
 	public int getPackagesSize() {
-		return this.packageContainer.getContextElementsSize();
+		return this.packages.size();
 	}
 	
-	protected JaxbPackage addPackage(JaxbPackage contextPackage, List<JaxbPackage> packages) {
-		this.addItemToCollection(contextPackage, packages, PACKAGES_COLLECTION);
+	protected JaxbPackage addPackage(JaxbPackage contextPackage) {
+		if (this.packages.containsKey(contextPackage.getName())) {
+			throw new IllegalArgumentException("Package with that name already exists.");
+		}
+		this.packages.put(contextPackage.getName(), contextPackage);
+		fireItemAdded(PACKAGES_COLLECTION, contextPackage);
 		return contextPackage;
 	}
 	
-	protected void removePackage(JaxbPackage contextPackage, List<JaxbPackage> packages) {
-		this.removeItemFromCollection(contextPackage, packages, PACKAGES_COLLECTION);
-	}
-	
-	protected void syncPackages() {
-		this.packageContainer.synchronizeWithResourceModel();
-	}
-	
-	protected void updatePackages() {
-		//In this case we need to actually "sync" the list of packages since this is dependent on JaxbFiles
-		//and an update will be called when jaxb files are added/removed, not a synchronizeWithResourceModel
-		this.packageContainer.update();
+	protected void removePackage(JaxbPackage contextPackage) {
+		if (! this.packages.containsKey(contextPackage.getName())) {
+			throw new IllegalArgumentException("No package with that name exists.");
+		}
+		this.packages.remove(contextPackage.getName());
+		fireItemRemoved(PACKAGES_COLLECTION, contextPackage);
 	}
 	
 	protected JaxbPackage buildPackage(String packageName) {
 		return this.getFactory().buildPackage(this, packageName);
 	}
 	
-	protected Iterable<String> getPackageNames() {
-		Set<String> packageNames = new HashSet<String>();
-		for (JavaResourcePackage each : getJaxbProject().getAnnotatedJavaResourcePackages()) {
-			packageNames.add(each.getName());
-		}
-		
-		return packageNames;
+	protected boolean isEmpty(JaxbPackage jaxbPackage) {
+		return jaxbPackage.isEmpty();
 	}
 	
 	
-	/**
-	 * package container adapter
-	 */
-	protected class PackageContainer
-			extends CollectionContainer<JaxbPackage, String> {
-		
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PACKAGES_COLLECTION;
-		}
-		
-		@Override
-		public JaxbPackage buildContextElement(String packageName) {
-			return GenericRootContextNode.this.buildPackage(packageName);
-		}
-		
-		@Override
-		public Iterable<String> getResourceElements() {
-			return GenericRootContextNode.this.getPackageNames();
-		}
-		
-		@Override
-		public String getResourceElement(JaxbPackage jaxbPackage) {
-			return jaxbPackage.getName();
-		}
-	}
+	// ************* classes ***************
+	
+//	public Iterable<JaxbType> getClasses() {
+//		return new LiveCloneIterable<JaxbType>(this.classes.values());
+//	}
+//	
+//	public int getClassesSize() {
+//		return this.classes.size();
+//	}
+//	
+//	protected JaxbType addClass(JaxbType jaxbClass) {
+//		if (this.classes.containsKey(jaxbClass.getName())) {
+//			throw new IllegalArgumentException("Class with that name already exists.");
+//		}
+//		this.classes.put(jaxbClass.getName(), jaxbClass);
+//		fireItemAdded(CLASSES_COLLECTION, jaxbClass);
+//		return jaxbClass;
+//	}
+//	
+//	protected void removeClass(JaxbType jaxbClass) {
+//		if (! this.classes.containsKey(jaxbClass.getName())) {
+//			throw new IllegalArgumentException("No class with that name exists.");
+//		}
+//		this.classes.remove(jaxbClass.getName());
+//		fireItemRemoved(CLASSES_COLLECTION, jaxbClass);
+//	}
+//	
+//	protected JaxbType buildClass(String className) {
+//		return this.getFactory().buildClass(this, className);
+//	}
 }

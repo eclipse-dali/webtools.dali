@@ -71,10 +71,15 @@ public class GenericPackage
 	protected void setPackageInfo_(JaxbPackageInfo packageInfo) {
 		JaxbPackageInfo old = this.packageInfo;
 		this.packageInfo = packageInfo;
-		this.firePropertyChanged(PACKAGE_INFO_PROPERTY, old, this.packageInfo);
+		firePropertyChanged(PACKAGE_INFO_PROPERTY, old, this.packageInfo);
 	}
 	
 	protected JaxbPackageInfo buildPackageInfo(JavaResourcePackage resourcePackage) {
 		return getFactory().buildJavaPackageInfo(this, resourcePackage);
+	}
+	
+	
+	public boolean isEmpty() {
+		return getPackageInfo() == null;
 	}
 }

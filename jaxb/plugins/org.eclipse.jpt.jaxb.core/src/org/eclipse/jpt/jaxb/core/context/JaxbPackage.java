@@ -35,4 +35,13 @@ public interface JaxbPackage
 	 */
 	JaxbPackageInfo getPackageInfo();
 	public final static String PACKAGE_INFO_PROPERTY = "package-info"; //$NON-NLS-1$
+	
+	/**
+	 * Return whether this package has no useful information.
+	 * Useful information includes:
+	 * 	- annotated package-info.java
+	 *  - jaxb.index
+	 *  - object factory
+	 */
+	boolean isEmpty();
 }
