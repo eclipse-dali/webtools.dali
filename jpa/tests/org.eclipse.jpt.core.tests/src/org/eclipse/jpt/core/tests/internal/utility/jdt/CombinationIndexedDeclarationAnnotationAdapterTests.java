@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.tests.internal.utility.jdt;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
-import org.eclipse.jdt.core.dom.MemberValuePair;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
 import org.eclipse.jdt.core.dom.StringLiteral;
 import org.eclipse.jpt.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
@@ -94,7 +93,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isNormalAnnotation());
-		String value = ((StringLiteral) ((MemberValuePair) ((NormalAnnotation) annotation).values().get(0)).getValue()).getLiteralValue();
+		String value = ((StringLiteral) this.values((NormalAnnotation) annotation).get(0).getValue()).getLiteralValue();
 		assertEquals("ADDRESS_ID2", value);
 	}
 
@@ -120,7 +119,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNotNull(annotation);
 		assertEquals("annot.JoinColumn", annotation.getTypeName().getFullyQualifiedName());
 		assertTrue(annotation.isNormalAnnotation());
-		String value = ((StringLiteral) ((MemberValuePair) ((NormalAnnotation) annotation).values().get(0)).getValue()).getLiteralValue();
+		String value = ((StringLiteral) this.values(((NormalAnnotation) annotation)).get(0).getValue()).getLiteralValue();
 		assertEquals("ADDRESS_ID2", value);
 	}
 
