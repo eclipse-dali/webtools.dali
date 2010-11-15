@@ -113,8 +113,8 @@ public final class GenericAnnotationProvider
 		return getNestableAnnotationDefinitionForContainer(containerAnnotationName).getNestableAnnotationName();
 	}
 
-	public String getNestableElementName(String containerAnnotationName) {
-		return getNestableAnnotationDefinitionForContainer(containerAnnotationName).getElementName();		
+	public String getNestableElementName(String nestableAnnotationName) {
+		return getNestableAnnotationDefinition(nestableAnnotationName).getElementName();		
 	}
 
 	private NestableAnnotationDefinition getNestableAnnotationDefinitionForContainer(String containerAnnotationName) {

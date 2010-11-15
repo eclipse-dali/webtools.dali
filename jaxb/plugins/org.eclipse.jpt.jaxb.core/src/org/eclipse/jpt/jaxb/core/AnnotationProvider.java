@@ -47,7 +47,7 @@ public interface AnnotationProvider {
 
 	String getNestableAnnotationName(String containerAnnotationName);
 
-	String getNestableElementName(String containerAnnotationName);
+	String getNestableElementName(String nestableAnnotationName);
 
 	/**
 	 * Build an annotation with the specified name.

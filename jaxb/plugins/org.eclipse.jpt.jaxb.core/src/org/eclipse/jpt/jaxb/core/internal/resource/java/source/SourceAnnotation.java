@@ -432,8 +432,9 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 
 		private void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation) {
 			int index = this.getNestedAnnotationsSize();
-			T nestedAnnotation = this.addNestedAnnotation(index);
+			T nestedAnnotation = this.buildNestedAnnotation(index);
 			nestedAnnotation.initialize((CompilationUnit) astAnnotation.getRoot());
+			this.nestedAnnotations.add(index, nestedAnnotation);
 			SourceAnnotation.this.fireItemAdded(this.getAnnotationsPropertyName(), index, nestedAnnotation);
 		}
 

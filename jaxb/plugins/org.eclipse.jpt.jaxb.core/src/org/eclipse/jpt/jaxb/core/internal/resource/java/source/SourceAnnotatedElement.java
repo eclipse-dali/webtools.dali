@@ -98,7 +98,7 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 			else if(this.annotationIsValidContainer(jdtAnnotationName)) {
 				String nestableAnnotationName = this.getNestableAnnotationName(jdtAnnotationName);
 				List<org.eclipse.jdt.core.dom.Annotation> nestedAnnotations = 
-					this.getNestedAstAnnotations(node, this.getNestableElementName(jdtAnnotationName), nestableAnnotationName);
+					this.getNestedAstAnnotations(node, this.getNestableElementName(nestableAnnotationName), nestableAnnotationName);
 				int index = 0;
 				Vector<NestableAnnotation> annotations = new Vector<NestableAnnotation>();
 				for (org.eclipse.jdt.core.dom.Annotation nestedAstAnnotation : nestedAnnotations) {
@@ -270,8 +270,8 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 		return getAnnotationProvider().getNestableAnnotationName(containerAnnotationName);
 	}
 
-	private String getNestableElementName(String containerAnnotationName) {
-		return getAnnotationProvider().getNestableElementName(containerAnnotationName);		
+	private String getNestableElementName(String nestableAnnotationName) {
+		return getAnnotationProvider().getNestableElementName(nestableAnnotationName);		
 	}
 
 	public Annotation addAnnotation(String annotationName) {
@@ -494,7 +494,7 @@ abstract class SourceAnnotatedElement<A extends AnnotatedElement>
 	private void addOrSyncContainerAnnotation_(org.eclipse.jdt.core.dom.Annotation node, String containerAnnotationName, CompilationUnit astRoot, Set<NestableAnnotation> annotationsToRemove) {
 		String nestableAnnotationName = this.getNestableAnnotationName(containerAnnotationName);
 		List<org.eclipse.jdt.core.dom.Annotation> nestedAstAnnotations = 
-			this.getNestedAstAnnotations(node, this.getNestableElementName(containerAnnotationName), nestableAnnotationName);
+			this.getNestedAstAnnotations(node, this.getNestableElementName(nestableAnnotationName), nestableAnnotationName);
 		List<NestableAnnotation> nestedAnnotations = this.nestableAnnotations.get(nestableAnnotationName);
 		if (nestedAnnotations == null) {
 			nestedAnnotations = new Vector<NestableAnnotation>();
