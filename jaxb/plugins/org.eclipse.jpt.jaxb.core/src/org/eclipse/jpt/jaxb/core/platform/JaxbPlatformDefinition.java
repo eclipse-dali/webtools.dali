@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
@@ -31,6 +32,8 @@ public interface JaxbPlatformDefinition {
 	JaxbFactory getFactory();
 	
 	AnnotationDefinition[] getAnnotationDefinitions();
+
+	NestableAnnotationDefinition[] getNestableAnnotationDefinitions();
 	
 	/**
 	 * Return the resource model providers that apply to this platform.

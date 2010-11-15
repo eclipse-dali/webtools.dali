@@ -15,24 +15,26 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlElement
  */
 public final class XmlElementAnnotationDefinition
-	implements AnnotationDefinition
+	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new XmlElementAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new XmlElementAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -43,12 +45,8 @@ public final class XmlElementAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlElementAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement);
-	}
-
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceXmlElementAnnotation.buildSourceXmlElementAnnotation((JavaResourceAttribute) parent, (Attribute) annotatedElement, index);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
@@ -59,4 +57,15 @@ public final class XmlElementAnnotationDefinition
 		return XmlElementAnnotation.ANNOTATION_NAME;
 	}
 
+	public String getNestableAnnotationName() {
+		return JAXB.XML_ELEMENT;
+	}
+
+	public String getContainerAnnotationName() {
+		return JAXB.XML_ELEMENTS;
+	}
+
+	public String getElementName() {
+		return JAXB.XML_ELEMENTS__VALUE;
+	}
 }

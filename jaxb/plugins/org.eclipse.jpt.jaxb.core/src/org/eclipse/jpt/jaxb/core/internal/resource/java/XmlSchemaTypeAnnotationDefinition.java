@@ -14,23 +14,23 @@ import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 
 public class XmlSchemaTypeAnnotationDefinition
-		implements AnnotationDefinition {
+		implements NestableAnnotationDefinition {
 	
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new XmlSchemaTypeAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new XmlSchemaTypeAnnotationDefinition();
 	
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 	
@@ -38,22 +38,24 @@ public class XmlSchemaTypeAnnotationDefinition
 	private XmlSchemaTypeAnnotationDefinition() {
 		super();
 	}
-	
-	
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlSchemaTypeAnnotation((JavaResourceNode) parent, (AnnotatedPackage) annotatedElement);
-	}
-	
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceXmlSchemaTypeAnnotation.buildSourceXmlSchemaTypeAnnotation(parent, (AnnotatedPackage) annotatedElement, index);
 	}
 	
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		// TODO
 		throw new UnsupportedOperationException();
 	}
 	
-	public String getAnnotationName() {
+	public String getNestableAnnotationName() {
 		return JAXB.XML_SCHEMA_TYPE;
+	}
+
+	public String getContainerAnnotationName() {
+		return JAXB.XML_SCHEMA_TYPES;
+	}
+
+	public String getElementName() {
+		return JAXB.XML_SCHEMA_TYPES__VALUE;
 	}
 }

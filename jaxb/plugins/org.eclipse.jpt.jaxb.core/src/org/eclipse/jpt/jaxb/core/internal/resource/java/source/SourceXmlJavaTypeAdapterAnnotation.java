@@ -12,15 +12,13 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -29,8 +27,6 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 
 /**
@@ -40,7 +36,8 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	extends SourceAnnotation<AnnotatedElement>
 	implements XmlJavaTypeAdapterAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_JAVA_TYPE_ADAPTERS);
 
 	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
 	private final AnnotationElementAdapter<String> valueAdapter;
@@ -54,15 +51,21 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	
 	
 	// ********** constructors **********
-	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element) {
-		this(parent, element, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(element, DECLARATION_ANNOTATION_ADAPTER));
+	public static SourceXmlJavaTypeAdapterAnnotation buildSourceXmlJavaTypeAdapterAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildXmlJavaTypeAdapterDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildXmlJavaTypeAdapterAnnotationAdapter(annotatedElement, idaa);
+		return new SourceXmlJavaTypeAdapterAnnotation(
+			parent,
+			annotatedElement,
+			idaa,
+			iaa);
 	}
-	
-	/**
-	 * Parent is a JavaResourceNode instead of a JavaResourceAnnotatedElement because
-	 * the parent is sometimes the outer annotation XmlJavaTypeAdaptersAnnotation
-	 */
-	public SourceXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement element, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+
+	private SourceXmlJavaTypeAdapterAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedElement element,
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
 		super(parent, element, daa, annotationAdapter);
 		this.valueDeclarationAdapter = buildValueAdapter(daa);
 		this.valueAdapter = this.buildAnnotationElementAdapter(this.valueDeclarationAdapter);
@@ -199,16 +202,6 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
 	 */
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		XmlJavaTypeAdapterAnnotation oldJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) oldAnnotation;
-		setValue(oldJavaTypeAdapterAnnotation.getValue());
-		setType(oldJavaTypeAdapterAnnotation.getType());
-	}
-	
-	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
-	 */
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
@@ -219,15 +212,18 @@ public final class SourceXmlJavaTypeAdapterAnnotation
 	
 	
 	// ********** static methods **********
-	
-	static SourceXmlJavaTypeAdapterAnnotation createNestedXmlJavaTypeAdapterAnnotation(JavaResourceNode parent, AnnotatedElement annotatedElement, int index, DeclarationAnnotationAdapter javaTypeAdaptersAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, javaTypeAdaptersAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
-		
-		return new SourceXmlJavaTypeAdapterAnnotation(parent, annotatedElement, idaa, annotationAdapter);
+
+	private static IndexedAnnotationAdapter buildXmlJavaTypeAdapterAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
-	
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter javaTypeAdaptersAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(javaTypeAdaptersAdapter, index, JAXB.XML_JAVA_TYPE_ADAPTER);
+
+	private static IndexedDeclarationAnnotationAdapter buildXmlJavaTypeAdapterDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JAXB.XML_JAVA_TYPE_ADAPTER);
+		return idaa;
 	}
 }

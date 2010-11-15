@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 
 /**
  * JAR annotation
@@ -88,9 +87,6 @@ public abstract class BinaryAnnotation
 
 	// ********** NestableAnnotation implementation **********
 	public void moveAnnotation(@SuppressWarnings("unused") int index) {
-		throw new UnsupportedOperationException();
-	}
-	public void initializeFrom(@SuppressWarnings("unused") NestableAnnotation oldAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 

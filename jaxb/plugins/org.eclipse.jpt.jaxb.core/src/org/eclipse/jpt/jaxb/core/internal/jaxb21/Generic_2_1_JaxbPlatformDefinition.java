@@ -26,16 +26,13 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAttributeAnnotationDe
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementDeclAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementRefAnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementRefsAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementWrapperAnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementsAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlIDAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlIDREFAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlInlineBinaryDataAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdapterAnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlJavaTypeAdaptersAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlListAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMimeTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlMixedAnnotationDefinition;
@@ -43,13 +40,13 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRegistryAnnotationDef
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlRootElementAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaTypeAnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSchemaTypesAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlSeeAlsoAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 public class Generic_2_1_JaxbPlatformDefinition
 	extends  AbstractJaxbPlatformDefinition
@@ -84,31 +81,33 @@ public class Generic_2_1_JaxbPlatformDefinition
 				XmlAnyElementAnnotationDefinition.instance(),
 				XmlAttachmentRefAnnotationDefinition.instance(),
 				XmlAttributeAnnotationDefinition.instance(),
-				XmlElementAnnotationDefinition.instance(),
 				XmlElementDeclAnnotationDefinition.instance(),
-				XmlElementsAnnotationDefinition.instance(),
-				XmlElementRefAnnotationDefinition.instance(),
-				XmlElementRefsAnnotationDefinition.instance(),
 				XmlElementWrapperAnnotationDefinition.instance(),
 				XmlEnumAnnotationDefinition.instance(),
 				XmlEnumValueAnnotationDefinition.instance(),
 				XmlIDAnnotationDefinition.instance(),
 				XmlIDREFAnnotationDefinition.instance(),
 				XmlInlineBinaryDataAnnotationDefinition.instance(),
-				XmlJavaTypeAdapterAnnotationDefinition.instance(),
-				XmlJavaTypeAdaptersAnnotationDefinition.instance(),
 				XmlListAnnotationDefinition.instance(),
 				XmlMimeTypeAnnotationDefinition.instance(),
 				XmlMixedAnnotationDefinition.instance(),
 				XmlRegistryAnnotationDefinition.instance(),
 				XmlRootElementAnnotationDefinition.instance(),
 				XmlSchemaAnnotationDefinition.instance(),
-				XmlSchemaTypeAnnotationDefinition.instance(),
-				XmlSchemaTypesAnnotationDefinition.instance(),
 				XmlSeeAlsoAnnotationDefinition.instance(),
 				XmlTransientAnnotationDefinition.instance(),
 				XmlTypeAnnotationDefinition.instance(),
 				XmlValueAnnotationDefinition.instance()};
+	}
+
+	@Override
+	protected NestableAnnotationDefinition[] buildNestableAnnotationDefinitions() {
+		return new NestableAnnotationDefinition[] {
+			XmlElementAnnotationDefinition.instance(),
+			XmlElementRefAnnotationDefinition.instance(),
+			XmlJavaTypeAdapterAnnotationDefinition.instance(),
+			XmlSchemaTypeAnnotationDefinition.instance()
+		};
 	}
 	
 	// ********** resource models **********

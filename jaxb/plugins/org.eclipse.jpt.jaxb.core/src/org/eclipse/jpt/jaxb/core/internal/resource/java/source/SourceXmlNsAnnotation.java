@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 
 
@@ -141,12 +140,6 @@ public class SourceXmlNsAnnotation
 	
 	
 	// **************** NestableAnnotation impl *******************************
-	
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		XmlNsAnnotation oldXmlNsAnnotation = (XmlNsAnnotation) oldAnnotation;
-		this.setNamespaceURI(oldXmlNsAnnotation.getNamespaceURI());
-		this.setPrefix(oldXmlNsAnnotation.getPrefix());
-	}
 	
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);

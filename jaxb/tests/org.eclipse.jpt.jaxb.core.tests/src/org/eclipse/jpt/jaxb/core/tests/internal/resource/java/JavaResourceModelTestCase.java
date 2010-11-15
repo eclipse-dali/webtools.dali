@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -171,8 +172,10 @@ public abstract class JavaResourceModelTestCase
 	}
 
 	protected AnnotationProvider buildAnnotationProvider() {
-		return new GenericAnnotationProvider(annotationDefinitions());
+		return new GenericAnnotationProvider(this.annotationDefinitions(), this.nestableAnnotationDefinitions());
 	}
 	
 	protected abstract AnnotationDefinition[] annotationDefinitions();
+	
+	protected abstract NestableAnnotationDefinition[] nestableAnnotationDefinitions();
 }

@@ -68,7 +68,7 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapter();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(xmlJavaTypeAdapterAnnotation != null);
 		assertNull(xmlJavaTypeAdapterAnnotation.getValue());
 	}
@@ -77,7 +77,7 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapterWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(xmlJavaTypeAdapterAnnotation != null);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
 		assertEquals("test." + XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getFullyQualifiedValue());
@@ -87,7 +87,7 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapter();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertNull(xmlJavaTypeAdapterAnnotation.getValue());
 		xmlJavaTypeAdapterAnnotation.setValue(XML_JAVA_TYPE_ADAPTER_CLASS);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
@@ -99,7 +99,7 @@ public class XmlJavaTypeAdapterTypeAnnotationTests extends JaxbJavaResourceModel
 		ICompilationUnit cu = this.createTestXmlJavaTypeAdapterWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
-		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertEquals(XML_JAVA_TYPE_ADAPTER_CLASS, xmlJavaTypeAdapterAnnotation.getValue());
 
 		xmlJavaTypeAdapterAnnotation.setValue(null);

@@ -12,15 +12,14 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -28,8 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 /**
@@ -39,8 +37,8 @@ public class SourceXmlSchemaTypeAnnotation
 		extends SourceAnnotation<AnnotatedPackage>
 		implements XmlSchemaTypeAnnotation {
 	
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = 
-			new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_SCHEMA_TYPES);
 	
 	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
 	private final AnnotationElementAdapter<String> nameAdapter;
@@ -57,13 +55,21 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	
 	// ********** constructors **********
-	public SourceXmlSchemaTypeAnnotation(JavaResourceNode parent, AnnotatedPackage element) {
-		this(parent, element, DECLARATION_ANNOTATION_ADAPTER, 
-				new ElementAnnotationAdapter(element, DECLARATION_ANNOTATION_ADAPTER));
+	public static SourceXmlSchemaTypeAnnotation buildSourceXmlSchemaTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedPackage annotatedElement, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildXmlSchemaTypeDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildXmlSchemaTypeAnnotationAdapter(annotatedElement, idaa);
+		return new SourceXmlSchemaTypeAnnotation(
+			parent,
+			annotatedElement,
+			idaa,
+			iaa);
 	}
 	
-	public SourceXmlSchemaTypeAnnotation(JavaResourceNode parent, AnnotatedPackage element, 
-				DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	private SourceXmlSchemaTypeAnnotation(
+			JavaResourceAnnotatedElement parent,
+			AnnotatedPackage element, 
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
 		
 		super(parent, element, daa, annotationAdapter);
 		this.nameDeclarationAdapter = buildNameAdapter(daa);
@@ -229,17 +235,6 @@ public class SourceXmlSchemaTypeAnnotation
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
 	 */
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		XmlSchemaTypeAnnotation oldSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) oldAnnotation;
-		setName(oldSchemaTypeAnnotation.getName());
-		setNamespace(oldSchemaTypeAnnotation.getNamespace());
-		setType(oldSchemaTypeAnnotation.getType());
-	}
-	
-	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
-	 */
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
@@ -247,24 +242,21 @@ public class SourceXmlSchemaTypeAnnotation
 	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
-	
-	
+
+
 	// ********** static methods **********
-	
-	static SourceXmlSchemaTypeAnnotation createNestedXmlSchemaTypeAnnotation(
-			JavaResourceNode parent, AnnotatedPackage annotatedElement, int index, 
-			DeclarationAnnotationAdapter schemaTypesAdapter) {
-		
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, schemaTypesAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
-		
-		return new SourceXmlSchemaTypeAnnotation(parent, annotatedElement, idaa, annotationAdapter);
+
+	private static IndexedAnnotationAdapter buildXmlSchemaTypeAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
-	
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(
-			int index, DeclarationAnnotationAdapter schemaTypesAdapter) {
-		
-		return new NestedIndexedDeclarationAnnotationAdapter(
-				schemaTypesAdapter, index, JAXB.XML_SCHEMA_TYPE);
+
+	private static IndexedDeclarationAnnotationAdapter buildXmlSchemaTypeDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JAXB.XML_SCHEMA_TYPE);
+		return idaa;
 	}
 }

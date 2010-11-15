@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
 import org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 public class JaxbJavaResourceModelTestCase
 		extends JavaResourceModelTestCase {	
@@ -23,5 +24,10 @@ public class JaxbJavaResourceModelTestCase
 	@Override
 	protected AnnotationDefinition[] annotationDefinitions() {
 		return Generic_2_1_JaxbPlatformDefinition.instance().getAnnotationDefinitions();
+	}
+	
+	@Override
+	protected NestableAnnotationDefinition[] nestableAnnotationDefinitions() {
+		return Generic_2_1_JaxbPlatformDefinition.instance().getNestableAnnotationDefinitions();
 	}
 }

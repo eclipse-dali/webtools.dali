@@ -50,13 +50,13 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 
 		contextXmlJavaTypeAdapter.setValue("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", javaTypeAdapterAnnotation.getValue());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getValue());
 
 		 //verify the xml schema type annotation is not removed when the value is set to null
 		contextXmlJavaTypeAdapter.setValue(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(javaTypeAdapterAnnotation.getValue());
 		assertNull(contextXmlJavaTypeAdapter.getValue());
 	}
@@ -97,7 +97,7 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
 
 		contextXmlJavaTypeAdapter.setSpecifiedType("foo");
-		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", javaTypeAdapterAnnotation.getType());
 		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getType());
@@ -105,7 +105,7 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 
 		 //verify the xml schema type annotation is not removed when the type is set to null
 		contextXmlJavaTypeAdapter.setSpecifiedType(null);
-		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(javaTypeAdapterAnnotation.getType());
 		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
 		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getType());

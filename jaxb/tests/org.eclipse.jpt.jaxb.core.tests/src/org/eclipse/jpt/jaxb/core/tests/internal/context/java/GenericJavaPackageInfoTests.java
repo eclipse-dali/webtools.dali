@@ -21,11 +21,13 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -271,7 +273,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	@SuppressWarnings("unchecked")
 	protected Iterator<XmlSchemaTypeAnnotation> getSchemaTypeAnnotations(JavaResourcePackage resourcePackage) {
-		return (Iterator<XmlSchemaTypeAnnotation>) resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES).iterator();
+		return (Iterator<XmlSchemaTypeAnnotation>) resourcePackage.getAnnotations(JAXB.XML_SCHEMA_TYPE).iterator();
 	}
 
 	public void testAddXmlSchemaType2() throws Exception {
@@ -445,6 +447,74 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertFalse(xmlSchemaTypesIterator.hasNext());
 	}
 
+	public void testSyncAddXmlSchemaTypes() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		assertFalse(xmlSchemaTypes.iterator().hasNext());
+
+		//add 1 XmlSchemaType when none exist
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 0, "bar");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		ListIterator<XmlSchemaType> xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+
+		//add 1 XmlSchemaType when 1 standalone exists
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 1, "foo");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+		//add 1 XmlSchemaType when a container annotations exists
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 2, "baz");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+
+		//add 1 XmlSchemaType to beginning of list when a container annotations exists
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlSchemaType(declaration, 0, "foobaz");
+			}
+		});
+
+		xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
+		xmlSchemaTypesIterator = xmlSchemaTypes.iterator();
+		assertTrue(xmlSchemaTypesIterator.hasNext());
+		assertEquals("foobaz", xmlSchemaTypesIterator.next().getName());
+		assertEquals("bar", xmlSchemaTypesIterator.next().getName());
+		assertEquals("foo", xmlSchemaTypesIterator.next().getName());
+		assertEquals("baz", xmlSchemaTypesIterator.next().getName());
+		assertFalse(xmlSchemaTypesIterator.hasNext());
+	}
 
 	protected void moveXmlSchemaType(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
 		this.moveArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPES), JAXB.XML_SCHEMA_TYPES__VALUE, targetIndex, sourceIndex);
@@ -452,5 +522,281 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	protected void removeXmlSchemaType(ModifiedDeclaration declaration, int index) {
 		this.removeArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_SCHEMA_TYPES), JAXB.XML_SCHEMA_TYPES__VALUE, index);
+	}
+
+
+
+
+	
+	public void testGetXmlJavaTypeAdapters() throws Exception {
+		this.createPackageInfoWithAccessorOrder();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlJavaTypeAdapter> xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		assertFalse(xmlJavaTypeAdapters.iterator().hasNext());
+
+		//add 2 XmlJavaTypeAdapters
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 0, "String");
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 1, "Integer");
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		ListIterator<XmlJavaTypeAdapter> xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("String", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("Integer", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+	}
+	
+	protected void addXmlJavaTypeAdapter(ModifiedDeclaration declaration, int index, String name) {
+		NormalAnnotation arrayElement = this.newXmlJavaTypeAdapterAnnotation(declaration.getAst(), name);
+		this.addArrayElement(declaration, JAXB.XML_JAVA_TYPE_ADAPTERS, index, JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE, arrayElement);		
+	}
+
+	protected NormalAnnotation newXmlJavaTypeAdapterAnnotation(AST ast, String valueTypeName) {
+		NormalAnnotation annotation = this.newNormalAnnotation(ast, JAXB.XML_JAVA_TYPE_ADAPTER);
+		this.addMemberValuePair(
+			annotation,
+			JAXB.XML_JAVA_TYPE_ADAPTER__VALUE, 
+			this.newTypeLiteral(ast, valueTypeName));
+		return annotation;
+	}
+
+	public void testGetXmlJavaTypeAdaptersSize() throws Exception {
+		this.createPackageInfoWithAccessorOrder();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		assertEquals(0, contextPackageInfo.getXmlJavaTypeAdaptersSize());
+
+		//add 2 XmlJavaTypeAdapters
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 0, "String");
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 1, "Integer");
+			}
+		});
+		assertEquals(2, contextPackageInfo.getXmlJavaTypeAdaptersSize());
+	}
+
+	public void testAddXmlJavaTypeAdapter() throws Exception {
+		//create a package info with an annotation other than XmlSchema to test
+		//adding things to the null schema annotation
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("foo");
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("baz");
+
+		Iterator<XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdapters.next().getValue());
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+	}
+
+	@SuppressWarnings("unchecked")
+	protected Iterator<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations(JavaResourcePackage resourcePackage) {
+		return (Iterator<XmlJavaTypeAdapterAnnotation>) resourcePackage.getAnnotations(JAXB.XML_JAVA_TYPE_ADAPTER).iterator();
+	}
+
+	public void testAddXmlJavaTypeAdapter2() throws Exception {
+		//create a package info with an annotation other than XmlSchema to test
+		//adding things to the null schema annotation
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
+		contextPackageInfo.addXmlJavaTypeAdapter(1).setValue("foo");
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("baz");
+
+		Iterator<XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+	}
+
+	public void testRemoveXmlJavaTypeAdapter() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("String");
+		contextPackageInfo.addXmlJavaTypeAdapter(1).setValue("foo");
+		contextPackageInfo.addXmlJavaTypeAdapter(2).setValue("baz");
+
+		Iterator<XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		XmlJavaTypeAdapterAnnotation adapterAnnotation = xmlJavaTypeAdapters.next();
+		assertEquals("String", adapterAnnotation.getValue());		
+		assertEquals("java.lang.String", adapterAnnotation.getFullyQualifiedValue());		
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());		
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+
+		contextPackageInfo.removeXmlJavaTypeAdapter(1);
+
+		xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		adapterAnnotation = xmlJavaTypeAdapters.next();
+		assertEquals("String", adapterAnnotation.getValue());		
+		assertEquals("java.lang.String", adapterAnnotation.getFullyQualifiedValue());		
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+
+		contextPackageInfo.removeXmlJavaTypeAdapter(1);
+		xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		adapterAnnotation = xmlJavaTypeAdapters.next();
+		assertEquals("String", adapterAnnotation.getValue());		
+		assertEquals("java.lang.String", adapterAnnotation.getFullyQualifiedValue());		
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+
+		contextPackageInfo.removeXmlJavaTypeAdapter(0);
+		xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+	}
+
+	public void testMoveXmlJavaTypeAdapter() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
+		contextPackageInfo.addXmlJavaTypeAdapter(1).setValue("foo");
+		contextPackageInfo.addXmlJavaTypeAdapter(2).setValue("baz");
+
+		Iterator<XmlJavaTypeAdapterAnnotation> xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		assertEquals("bar", xmlJavaTypeAdapters.next().getValue());		
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());		
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+
+		contextPackageInfo.moveXmlJavaTypeAdapter(2, 0);
+		xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdapters.next().getValue());		
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+
+		contextPackageInfo.moveXmlJavaTypeAdapter(0, 1);
+		xmlJavaTypeAdapters = this.getXmlJavaTypeAdapterAnnotations(resourcePackage);
+		assertEquals("baz", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("foo", xmlJavaTypeAdapters.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdapters.next().getValue());		
+		assertFalse(xmlJavaTypeAdapters.hasNext());
+	}
+
+	public void testSyncXmlJavaTypeAdapters() throws Exception {
+		this.createPackageInfoWithAccessorType();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
+
+		ListIterable<XmlJavaTypeAdapter> xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		assertFalse(xmlJavaTypeAdapters.iterator().hasNext());
+
+		//add 3 XmlJavaTypeAdapters
+		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 0, "bar");
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 1, "foo");
+				GenericJavaPackageInfoTests.this.addXmlJavaTypeAdapter(declaration, 2, "baz");
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		ListIterator<XmlJavaTypeAdapter> xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("bar", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("foo", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("baz", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.moveXmlJavaTypeAdapter(declaration, 2, 0);
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("foo", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("baz", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.moveXmlJavaTypeAdapter(declaration, 0, 1);
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("baz", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("foo", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlJavaTypeAdapter(declaration, 1);
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("baz", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertEquals("bar", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlJavaTypeAdapter(declaration, 1);
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertTrue(xmlJavaTypeAdaptersIterator.hasNext());
+		assertEquals("baz", xmlJavaTypeAdaptersIterator.next().getValue());
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+
+
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPackageInfoTests.this.removeXmlJavaTypeAdapter(declaration, 0);
+			}
+		});
+
+		xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
+		xmlJavaTypeAdaptersIterator = xmlJavaTypeAdapters.iterator();
+		assertFalse(xmlJavaTypeAdaptersIterator.hasNext());
+	}
+
+
+	protected void moveXmlJavaTypeAdapter(ModifiedDeclaration declaration, int targetIndex, int sourceIndex) {
+		this.moveArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_JAVA_TYPE_ADAPTERS), JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE, targetIndex, sourceIndex);
+	}
+
+	protected void removeXmlJavaTypeAdapter(ModifiedDeclaration declaration, int index) {
+		this.removeArrayElement((NormalAnnotation) declaration.getAnnotationNamed(JAXB.XML_JAVA_TYPE_ADAPTERS), JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE, index);
 	}
 }

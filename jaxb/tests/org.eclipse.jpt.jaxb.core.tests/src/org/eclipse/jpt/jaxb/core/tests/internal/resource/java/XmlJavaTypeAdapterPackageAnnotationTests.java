@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 
 @SuppressWarnings("nls")
 public class XmlJavaTypeAdapterPackageAnnotationTests
@@ -88,7 +87,7 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		createTestClass2();
 		
 		XmlJavaTypeAdapterAnnotation annotation = 
-				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(annotation != null);
 		assertEquals(TEST_CLASS, annotation.getValue());
 		assertEquals(FQ_TEST_CLASS, annotation.getFullyQualifiedValue());
@@ -118,7 +117,7 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		createTestClass2();
 		
 		XmlJavaTypeAdapterAnnotation annotation = 
-				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(annotation != null);
 		assertEquals(TEST_CLASS, annotation.getType());
 		assertEquals(FQ_TEST_CLASS, annotation.getFullyQualifiedType());
@@ -148,7 +147,7 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		createTestClass2();
 		
 		XmlJavaTypeAdapterAnnotation annotation = 
-				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTER);
+				(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertTrue(annotation != null);
 		assertEquals(TEST_CLASS, annotation.getValue());
 		assertSourceContains("@XmlJavaTypeAdapter(" + TEST_CLASS + ".class)", cu);
@@ -182,9 +181,8 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu);
 		createTestClass();
 		
-		XmlJavaTypeAdaptersAnnotation adaptersAnnotation = 
-				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-		XmlJavaTypeAdapterAnnotation adapterAnnotation = adaptersAnnotation.getNestedAnnotation(0);
+		XmlJavaTypeAdapterAnnotation adapterAnnotation = 
+			(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		
 		adapterAnnotation.setValue(TEST_CLASS);
 		assertEquals(TEST_CLASS, adapterAnnotation.getValue());
@@ -207,15 +205,21 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu);
 		createTestClass();
 		
-		XmlJavaTypeAdaptersAnnotation adaptersAnnotation = 
-				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-		XmlJavaTypeAdapterAnnotation adapterAnnotation = adaptersAnnotation.getNestedAnnotation(1);
+		XmlJavaTypeAdapterAnnotation adapterAnnotation = 
+			(XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER);
 		
 		adapterAnnotation.setType(TEST_CLASS);
 		assertEquals(TEST_CLASS, adapterAnnotation.getType());
 		assertEquals(FQ_TEST_CLASS, adapterAnnotation.getFullyQualifiedType());
 		assertSourceContains(
 				"@XmlJavaTypeAdapters({@XmlJavaTypeAdapter,@XmlJavaTypeAdapter(type = " + TEST_CLASS + ".class)})", cu);
+		
+		resourcePackage.moveAnnotation(0, 1, JAXB.XML_JAVA_TYPE_ADAPTER);
+		adapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertEquals(TEST_CLASS, adapterAnnotation.getType());
+		assertEquals(FQ_TEST_CLASS, adapterAnnotation.getFullyQualifiedType());
+		assertSourceContains(
+				"@XmlJavaTypeAdapters({@XmlJavaTypeAdapter(type = " + TEST_CLASS + ".class),@XmlJavaTypeAdapter})", cu);
 		
 		adapterAnnotation.setType(null);
 		assertNull(adapterAnnotation.getType());
@@ -233,36 +237,31 @@ public class XmlJavaTypeAdapterPackageAnnotationTests
 		createTestClass();
 		createTestClass2();
 		
-		XmlJavaTypeAdaptersAnnotation adaptersAnnotation = 
-				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-		assertNull(adaptersAnnotation);
+		assertEquals(1, resourcePackage.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 		
-		resourcePackage.addAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER, JAXB.XML_JAVA_TYPE_ADAPTERS);
-		adaptersAnnotation = 
-				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-		assertEquals(2, adaptersAnnotation.getNestedAnnotationsSize());
-		assertSourceContains("@XmlJavaTypeAdapters({@XmlJavaTypeAdapter,@XmlJavaTypeAdapter})", cu);
+		resourcePackage.addAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertEquals(2, resourcePackage.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
+		assertSourceContains("@XmlJavaTypeAdapters({ @XmlJavaTypeAdapter, @XmlJavaTypeAdapter })", cu);
 		
-		XmlJavaTypeAdapterAnnotation adapterAnnotation1 = adaptersAnnotation.getNestedAnnotation(0);
+		XmlJavaTypeAdapterAnnotation adapterAnnotation1 = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
 		adapterAnnotation1.setValue(TEST_CLASS);
-		XmlJavaTypeAdapterAnnotation adapterAnnotation2 = adaptersAnnotation.getNestedAnnotation(1);
+		XmlJavaTypeAdapterAnnotation adapterAnnotation2 = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER);
 		adapterAnnotation2.setValue(TEST_CLASS_2);
 		assertSourceContains(
-				"@XmlJavaTypeAdapters({@XmlJavaTypeAdapter(" + TEST_CLASS
-					+ ".class),@XmlJavaTypeAdapter(" + TEST_CLASS_2
-					+ ".class)})", cu);
+				"@XmlJavaTypeAdapters({ @XmlJavaTypeAdapter(" + TEST_CLASS
+					+ ".class), @XmlJavaTypeAdapter(" + TEST_CLASS_2
+					+ ".class) })", cu);
 		
-		resourcePackage.moveAnnotation(0, 1, JAXB.XML_JAVA_TYPE_ADAPTERS);
+		resourcePackage.moveAnnotation(0, 1, JAXB.XML_JAVA_TYPE_ADAPTER);
 		assertSourceContains(
-				"@XmlJavaTypeAdapters({@XmlJavaTypeAdapter(" + TEST_CLASS_2
-					+ ".class),@XmlJavaTypeAdapter(" + TEST_CLASS
-					+ ".class)})", cu);
+				"@XmlJavaTypeAdapters({ @XmlJavaTypeAdapter(" + TEST_CLASS_2
+					+ ".class), @XmlJavaTypeAdapter(" + TEST_CLASS
+					+ ".class) })", cu);
 		
-		resourcePackage.removeAnnotation(1, JAXB.XML_JAVA_TYPE_ADAPTER, JAXB.XML_JAVA_TYPE_ADAPTERS);
-		adaptersAnnotation = 
-				(XmlJavaTypeAdaptersAnnotation) resourcePackage.getAnnotation(JAXB.XML_JAVA_TYPE_ADAPTERS);
-		assertNull(adaptersAnnotation);
+		resourcePackage.removeAnnotation(0, JAXB.XML_JAVA_TYPE_ADAPTER);
+		assertEquals(1, resourcePackage.getAnnotationsSize(JAXB.XML_JAVA_TYPE_ADAPTER));
 		assertSourceContains(
-				"@XmlJavaTypeAdapter(" + TEST_CLASS_2 + ".class)", cu);
+				"@XmlJavaTypeAdapter(" + TEST_CLASS + ".class)", cu);
+		assertSourceDoesNotContain("@XmlJavaTypeAdapters", cu);
 	}
 }

@@ -14,23 +14,24 @@ import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
 /**
  * javax.xml.bind.annotation.adapters.XmlJavaTypeAdapterAnnotation
  */
 public final class XmlJavaTypeAdapterAnnotationDefinition
-	implements AnnotationDefinition
+	implements NestableAnnotationDefinition
 {
 	// singleton
-	private static final AnnotationDefinition INSTANCE = new XmlJavaTypeAdapterAnnotationDefinition();
+	private static final NestableAnnotationDefinition INSTANCE = new XmlJavaTypeAdapterAnnotationDefinition();
 
 	/**
 	 * Return the singleton.
 	 */
-	public static AnnotationDefinition instance() {
+	public static NestableAnnotationDefinition instance() {
 		return INSTANCE;
 	}
 
@@ -41,20 +42,23 @@ public final class XmlJavaTypeAdapterAnnotationDefinition
 		super();
 	}
 
-	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlJavaTypeAdapterAnnotation(parent, annotatedElement);
-	}
-
-	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+		return SourceXmlJavaTypeAdapterAnnotation.buildSourceXmlJavaTypeAdapterAnnotation(parent, annotatedElement, index);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
 		return new BinaryXmlJavaTypeAdapterAnnotation(parent, jdtAnnotation);
 	}
 
-	public String getAnnotationName() {
-		return XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME;
+	public String getNestableAnnotationName() {
+		return JAXB.XML_JAVA_TYPE_ADAPTER;
 	}
 
+	public String getContainerAnnotationName() {
+		return JAXB.XML_JAVA_TYPE_ADAPTERS;
+	}
+
+	public String getElementName() {
+		return JAXB.XML_JAVA_TYPE_ADAPTERS__VALUE;
+	}
 }

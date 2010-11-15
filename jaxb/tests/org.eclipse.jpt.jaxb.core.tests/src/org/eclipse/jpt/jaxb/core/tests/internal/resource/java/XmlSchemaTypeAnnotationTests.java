@@ -16,7 +16,6 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypesAnnotation;
 
 @SuppressWarnings("nls")
 public class XmlSchemaTypeAnnotationTests
@@ -76,7 +75,7 @@ public class XmlSchemaTypeAnnotationTests
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
 		
 		XmlSchemaTypeAnnotation annotation = 
-				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPE);
+				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertTrue(annotation != null);
 		assertEquals(TEST_NAME, annotation.getName());
 		assertSourceContains("@XmlSchemaType(name = \"" + TEST_NAME + "\")", cu);
@@ -101,7 +100,7 @@ public class XmlSchemaTypeAnnotationTests
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
 		
 		XmlSchemaTypeAnnotation annotation = 
-				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPE);
+				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertTrue(annotation != null);
 		assertEquals(TEST_NAMESPACE, annotation.getNamespace());
 		assertSourceContains("@XmlSchemaType(namespace = \"" + TEST_NAMESPACE + "\")", cu);
@@ -126,7 +125,7 @@ public class XmlSchemaTypeAnnotationTests
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu); 
 		
 		XmlSchemaTypeAnnotation annotation = 
-				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPE);
+				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		assertTrue(annotation != null);
 		assertEquals(TEST_CLASS, annotation.getType());
 		assertEquals(FQ_TEST_CLASS, annotation.getFullyQualifiedType());
@@ -155,9 +154,8 @@ public class XmlSchemaTypeAnnotationTests
 		ICompilationUnit cu = createPackageInfoWithSchemaTypes();
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu);
 		
-		XmlSchemaTypesAnnotation containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		XmlSchemaTypeAnnotation containedAnnotation = containerAnnotation.getNestedAnnotation(0);
+		XmlSchemaTypeAnnotation containedAnnotation = 
+				(XmlSchemaTypeAnnotation) packageResource.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		
 		containedAnnotation.setName(TEST_NAME);
 		assertEquals(TEST_NAME, containedAnnotation.getName());
@@ -177,9 +175,8 @@ public class XmlSchemaTypeAnnotationTests
 		ICompilationUnit cu = createPackageInfoWithSchemaTypes();
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu);
 		
-		XmlSchemaTypesAnnotation containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		XmlSchemaTypeAnnotation containedAnnotation = containerAnnotation.getNestedAnnotation(0);
+		XmlSchemaTypeAnnotation containedAnnotation = 
+			(XmlSchemaTypeAnnotation) packageResource.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		
 		containedAnnotation.setNamespace(TEST_NAMESPACE);
 		assertEquals(TEST_NAMESPACE, containedAnnotation.getNamespace());
@@ -199,9 +196,8 @@ public class XmlSchemaTypeAnnotationTests
 		ICompilationUnit cu = createPackageInfoWithSchemaTypes();
 		JavaResourcePackage packageResource = buildJavaResourcePackage(cu);
 		
-		XmlSchemaTypesAnnotation containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		XmlSchemaTypeAnnotation containedAnnotation = containerAnnotation.getNestedAnnotation(1);
+		XmlSchemaTypeAnnotation containedAnnotation = 
+			(XmlSchemaTypeAnnotation) packageResource.getAnnotation(1, JAXB.XML_SCHEMA_TYPE);
 		
 		containedAnnotation.setType(TEST_CLASS);
 		assertEquals(TEST_CLASS, containedAnnotation.getType());
@@ -221,38 +217,34 @@ public class XmlSchemaTypeAnnotationTests
 		// test adding/removing/moving
 		
 		ICompilationUnit cu = createPackageInfoWithSchemaType();
-		JavaResourcePackage packageResource = buildJavaResourcePackage(cu);
+		JavaResourcePackage resourcePackage = buildJavaResourcePackage(cu);
 		
-		XmlSchemaTypesAnnotation containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		assertNull(containerAnnotation);
+		assertEquals(1, resourcePackage.getAnnotationsSize(JAXB.XML_SCHEMA_TYPE));
 		
-		packageResource.addAnnotation(1, JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES);
-		containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		assertEquals(2, containerAnnotation.getNestedAnnotationsSize());
-		assertSourceContains("@XmlSchemaTypes({@XmlSchemaType,@XmlSchemaType})", cu);
+		resourcePackage.addAnnotation(1, JAXB.XML_SCHEMA_TYPE);
+
+		assertEquals(2, resourcePackage.getAnnotationsSize(JAXB.XML_SCHEMA_TYPE));
+		assertSourceContains("@XmlSchemaTypes({ @XmlSchemaType, @XmlSchemaType })", cu);
 		
-		XmlSchemaTypeAnnotation containedAnnotation1 = containerAnnotation.getNestedAnnotation(0);
+		XmlSchemaTypeAnnotation containedAnnotation1 = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
 		containedAnnotation1.setName(TEST_NAME);
-		XmlSchemaTypeAnnotation containedAnnotation2 = containerAnnotation.getNestedAnnotation(1);
+		XmlSchemaTypeAnnotation containedAnnotation2 = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(1, JAXB.XML_SCHEMA_TYPE);
 		containedAnnotation2.setName(TEST_NAME_2);
 		assertSourceContains(
-				"@XmlSchemaTypes({@XmlSchemaType(name = \"" + TEST_NAME
-					+ "\"),@XmlSchemaType(name = \"" + TEST_NAME_2
-					+ "\")})", cu);
+				"@XmlSchemaTypes({ @XmlSchemaType(name = \"" + TEST_NAME
+					+ "\"), @XmlSchemaType(name = \"" + TEST_NAME_2
+					+ "\") })", cu);
 		
-		packageResource.moveAnnotation(0, 1, JAXB.XML_SCHEMA_TYPES);
+		resourcePackage.moveAnnotation(0, 1, JAXB.XML_SCHEMA_TYPE);
 		assertSourceContains(
-				"@XmlSchemaTypes({@XmlSchemaType(name = \"" + TEST_NAME_2
-					+ "\"),@XmlSchemaType(name = \"" + TEST_NAME
-					+ "\")})", cu);
+				"@XmlSchemaTypes({ @XmlSchemaType(name = \"" + TEST_NAME_2
+					+ "\"), @XmlSchemaType(name = \"" + TEST_NAME
+					+ "\") })", cu);
 		
-		packageResource.removeAnnotation(1, JAXB.XML_SCHEMA_TYPE, JAXB.XML_SCHEMA_TYPES);
-		containerAnnotation = 
-				(XmlSchemaTypesAnnotation) packageResource.getAnnotation(JAXB.XML_SCHEMA_TYPES);
-		assertNull(containerAnnotation);
+		resourcePackage.removeAnnotation(1, JAXB.XML_SCHEMA_TYPE);
+		assertEquals(1, resourcePackage.getAnnotationsSize(JAXB.XML_SCHEMA_TYPE));
 		assertSourceContains(
 				"@XmlSchemaType(name = \"" + TEST_NAME_2 + "\")", cu);
+		assertSourceDoesNotContain("@XmlSchemaTypes", cu);
 	}
 }

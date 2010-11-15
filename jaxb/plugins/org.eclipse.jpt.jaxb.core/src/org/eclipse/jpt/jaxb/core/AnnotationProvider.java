@@ -13,6 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 
 /**
  * This is used to provide type and attribute annotations.
@@ -34,26 +35,41 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface AnnotationProvider {
-	
+
 	/**
 	 * Return the names of the annotations.
 	 */
 	Iterable<String> getAnnotationNames();
-	
+
+	Iterable<String> getContainerAnnotationNames();
+
+	Iterable<String> getNestableAnnotationNames();
+
+	String getNestableAnnotationName(String containerAnnotationName);
+
+	String getNestableElementName(String containerAnnotationName);
+
 	/**
 	 * Build an annotation with the specified name.
 	 * Throw an IllegalArgumentException if the specified name is unsupported.
 	 * @see #getAnnotationNames()
 	 */
 	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, String annotationName);
-	
+
+	/**
+	 * Build a nestable annotation with the specified name and index.
+	 * Throw an IllegalArgumentException if the specified name is unsupported.
+	 * @see #getNestableAnnotationNames()
+	 */
+	NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement element, String annotationName, int index);
+
 	/**
 	 * Build an annotation for the specified JDT annotation.
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
 	 * @see #getAnnotationNames()
 	 */
 	Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation);
-	
+
 	/**
 	 * Build a null annotation with the specified name.
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.

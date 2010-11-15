@@ -12,14 +12,13 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.CombinationIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -29,8 +28,6 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 
 /**
@@ -40,7 +37,8 @@ public final class SourceXmlElementRefAnnotation
 	extends SourceAnnotation<Attribute>
 	implements XmlElementRefAnnotation
 {
-	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
+	public static final SimpleDeclarationAnnotationAdapter CONTAINER_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(JAXB.XML_ELEMENT_REFS);
 	
 	private String fullyQualifiedTypeName;
 
@@ -57,15 +55,21 @@ public final class SourceXmlElementRefAnnotation
 	private String type;
 
 	// ********** constructors **********
-	public SourceXmlElementRefAnnotation(JavaResourceAttribute parent, Attribute attribute) {
-		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(attribute, DECLARATION_ANNOTATION_ADAPTER));
+	public static SourceXmlElementRefAnnotation buildSourceXmlElementRefAnnotation(JavaResourceAttribute parent, Attribute attribute, int index) {
+		IndexedDeclarationAnnotationAdapter idaa = buildXmlElementRefDeclarationAnnotationAdapter(index);
+		IndexedAnnotationAdapter iaa = buildXmlElementRefAnnotationAdapter(attribute, idaa);
+		return new SourceXmlElementRefAnnotation(
+			parent,
+			attribute,
+			idaa,
+			iaa);
 	}
-
-	/**
-	 * Parent is a JavaResourceNode instead of a JavaResourcePersistentAttribute because
-	 * the parent is sometimes the outer annotation XmlElementRefsAnnotation
-	 */
-	public SourceXmlElementRefAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	
+	private SourceXmlElementRefAnnotation(
+			JavaResourceAttribute parent,
+			Attribute attribute, 
+			IndexedDeclarationAnnotationAdapter daa,
+			IndexedAnnotationAdapter annotationAdapter) {
 		super(parent, attribute, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
@@ -221,17 +225,6 @@ public final class SourceXmlElementRefAnnotation
 	 * convenience implementation of method from NestableAnnotation interface
 	 * for subclasses
 	 */
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		XmlElementRefAnnotation oldXmlElementRefAnnotation = (XmlElementRefAnnotation) oldAnnotation;
-		this.setName(oldXmlElementRefAnnotation.getName());
-		this.setNamespace(oldXmlElementRefAnnotation.getNamespace());
-		this.setType(oldXmlElementRefAnnotation.getType());
-	}
-
-	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
-	 */
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
@@ -240,17 +233,21 @@ public final class SourceXmlElementRefAnnotation
 		return (IndexedAnnotationAdapter) this.annotationAdapter;
 	}
 
+
 	// ********** static methods **********
 
-	static SourceXmlElementRefAnnotation createNestedXmlElementRefAnnotation(JavaResourceNode parent, Attribute attribute, int index, DeclarationAnnotationAdapter elementsAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, elementsAdapter);
-		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(attribute, idaa);
-
-		return new SourceXmlElementRefAnnotation(parent, attribute, idaa, annotationAdapter);
+	private static IndexedAnnotationAdapter buildXmlElementRefAnnotationAdapter(AnnotatedElement annotatedElement, IndexedDeclarationAnnotationAdapter idaa) {
+		return new ElementIndexedAnnotationAdapter(annotatedElement, idaa);
 	}
 
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter elementsAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(elementsAdapter, index, JAXB.XML_ELEMENT_REF);
+	private static IndexedDeclarationAnnotationAdapter buildXmlElementRefDeclarationAnnotationAdapter(int index) {
+		IndexedDeclarationAnnotationAdapter idaa = 
+			new CombinationIndexedDeclarationAnnotationAdapter(
+				DECLARATION_ANNOTATION_ADAPTER,
+				CONTAINER_DECLARATION_ANNOTATION_ADAPTER,
+				index,
+				JAXB.XML_ELEMENT_REF);
+		return idaa;
 	}
 
 }

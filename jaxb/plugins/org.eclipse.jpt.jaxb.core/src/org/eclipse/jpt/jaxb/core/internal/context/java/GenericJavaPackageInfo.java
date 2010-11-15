@@ -21,9 +21,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdaptersAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypesAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaPackageInfo
@@ -160,7 +158,7 @@ public class GenericJavaPackageInfo
 	}
 
 	public XmlSchemaType addXmlSchemaType(int index) {
-		XmlSchemaTypeAnnotation annotation = (XmlSchemaTypeAnnotation) this.resourcePackage.addAnnotation(index, XmlSchemaTypeAnnotation.ANNOTATION_NAME, XmlSchemaTypesAnnotation.ANNOTATION_NAME);
+		XmlSchemaTypeAnnotation annotation = (XmlSchemaTypeAnnotation) this.resourcePackage.addAnnotation(index, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		return this.xmlSchemaTypeContainer.addContextElement(index, annotation);
 	}
 
@@ -169,12 +167,12 @@ public class GenericJavaPackageInfo
 	}
 
 	public void removeXmlSchemaType(int index) {
-		this.resourcePackage.removeAnnotation(index, XmlSchemaTypeAnnotation.ANNOTATION_NAME, XmlSchemaTypesAnnotation.ANNOTATION_NAME);
+		this.resourcePackage.removeAnnotation(index, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		this.xmlSchemaTypeContainer.removeContextElement(index);
 	}
 
 	public void moveXmlSchemaType(int targetIndex, int sourceIndex) {
-		this.resourcePackage.moveAnnotation(targetIndex, sourceIndex, XmlSchemaTypesAnnotation.ANNOTATION_NAME);
+		this.resourcePackage.moveAnnotation(targetIndex, sourceIndex, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		this.xmlSchemaTypeContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -188,7 +186,7 @@ public class GenericJavaPackageInfo
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<XmlSchemaTypeAnnotation> getXmlSchemaTypeAnnotations() {
-		return (Iterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME, XmlSchemaTypesAnnotation.ANNOTATION_NAME);
+		return (Iterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -203,7 +201,7 @@ public class GenericJavaPackageInfo
 	}
 
 	public XmlJavaTypeAdapter addXmlJavaTypeAdapter(int index) {
-		XmlJavaTypeAdapterAnnotation annotation = (XmlJavaTypeAdapterAnnotation) this.resourcePackage.addAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		XmlJavaTypeAdapterAnnotation annotation = (XmlJavaTypeAdapterAnnotation) this.resourcePackage.addAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		return this.xmlJavaTypeAdapterContainer.addContextElement(index, annotation);
 	}
 
@@ -212,12 +210,12 @@ public class GenericJavaPackageInfo
 	}
 
 	public void removeXmlJavaTypeAdapter(int index) {
-		this.resourcePackage.removeAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		this.resourcePackage.removeAnnotation(index, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		this.xmlJavaTypeAdapterContainer.removeContextElement(index);
 	}
 
 	public void moveXmlJavaTypeAdapter(int targetIndex, int sourceIndex) {
-		this.resourcePackage.moveAnnotation(targetIndex, sourceIndex, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		this.resourcePackage.moveAnnotation(targetIndex, sourceIndex, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		this.xmlJavaTypeAdapterContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
@@ -231,7 +229,7 @@ public class GenericJavaPackageInfo
 
 	@SuppressWarnings("unchecked")
 	protected Iterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
-		return (Iterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME, XmlJavaTypeAdaptersAnnotation.ANNOTATION_NAME);
+		return (Iterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 	}
 
 	/**

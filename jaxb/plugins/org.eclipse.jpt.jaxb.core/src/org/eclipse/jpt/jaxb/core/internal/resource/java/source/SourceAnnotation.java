@@ -328,6 +328,7 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 				}
 			}
 		}
+
 		// minimize scope of suppressed warnings
 		@SuppressWarnings("unchecked")
 		private List<Expression> expressions(ArrayInitializer arrayInitializer) {

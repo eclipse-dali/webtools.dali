@@ -19,17 +19,12 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.0
+ * @version 3.0
  * @since 2.0
  */
 public interface NestableAnnotation
 	extends Annotation
 {
-	// currently using this when the NestableAnnotation is moved from
-	// stand-alone to nested or from nested to stand-alone;
-	// not the greatest, since you have to make sure to call all setter methods
-	void initializeFrom(NestableAnnotation oldAnnotation);
-
 	/**
 	 * Move the annotation to the specified index within its container annotation.
 	 * This should only be called when the annotation is actually nested.

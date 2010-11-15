@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Java source code or binary annotated element.
@@ -33,6 +34,11 @@ public interface JavaResourceAnnotatedElement
 	 * String associated with changes to the "annotations" collection
 	 */
 	String ANNOTATIONS_COLLECTION = "annotations"; //$NON-NLS-1$
+	
+	/**
+	 * String associated with changes to the "nestableAnnotations" collection
+	 */
+	String NESTABLE_ANNOTATIONS_COLLECTION = "nestableAnnotations"; //$NON-NLS-1$
 	
 	/**
 	 * Return the member's annotations in the order that they appear.
@@ -64,12 +70,25 @@ public interface JavaResourceAnnotatedElement
 	 * Return the nestable annotations with the specified name in the order that
 	 * they appear.
 	 * If nestable and container annotations are both specified on the
-	 * member directly, return only the nestable annotations specified within
-	 * the container annotation.
+	 * member directly, the behavior is undefined
 	 */
 	// TODO tie the singular and plural annotations together so we can generate
 	// a validation error when both are specified
-	Iterable<? extends NestableAnnotation> getAnnotations(String nestableAnnotationName, String containerAnnotationName);
+	ListIterable<? extends NestableAnnotation> getAnnotations(String nestableAnnotationName);
+	
+	/**
+	 * Return the number of nestable annotations with the specified name.
+	 * If nestable and container annotations are both specified on the
+	 * member directly, the behavior is undefined
+	 */
+	int getAnnotationsSize(String nestableAnnotationName);
+	
+	/**
+	 * Return the nestable annotation at the specified index with the specified name.
+	 * If nestable and container annotations are both specified on the
+	 * member directly, the behavior is undefined
+	 */
+	NestableAnnotation getAnnotation(int index, String nestableAnnotationName);
 	
 	/**
 	 * Add an annotation with the specified name.
@@ -89,13 +108,12 @@ public interface JavaResourceAnnotatedElement
 	 * the new one. If neither annotation exists, then create a new nestable
 	 * annotation.
 	 */
-	NestableAnnotation addAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+	NestableAnnotation addAnnotation(int index, String nestableAnnotationName);
 	
 	/**
-	 * Move the nestable annotation found in the specified container
-	 * annotation at the specified source index to the specified target index.
+	 * Move the nestable annotation at the specified source index to the specified target index.
 	 */
-	void moveAnnotation(int targetIndex, int sourceIndex, String containerAnnotationName);
+	void moveAnnotation(int targetIndex, int sourceIndex, String nestableAnnotationName);
 	
 	/**
 	 * Remove the specified annotation.
@@ -105,10 +123,9 @@ public interface JavaResourceAnnotatedElement
 	/**
 	 * Remove the specified nestable annotation from the container annotation at the specified
 	 * index.
-	 * If there is no container, assume the index is zero and this does the same as 
-	 * {@link #removeAnnotation(String)}
+	 * If there is no container, assume the index is zero and just remove the nestable annotation
 	 */
-	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
+	void removeAnnotation(int index, String nestableAnnotationName);
 	
 	
 	// ********** queries **********

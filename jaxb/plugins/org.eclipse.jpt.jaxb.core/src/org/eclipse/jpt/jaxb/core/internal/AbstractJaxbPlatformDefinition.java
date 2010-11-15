@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
@@ -23,6 +24,8 @@ public abstract class AbstractJaxbPlatformDefinition
 		implements JaxbPlatformDefinition {
 	
 	private AnnotationDefinition[] annotationDefinitions;
+
+	private NestableAnnotationDefinition[] nestableAnnotationDefinitions;
 	
 	private JaxbResourceModelProvider[] resourceModelProviders;
 	
@@ -53,6 +56,18 @@ public abstract class AbstractJaxbPlatformDefinition
 	}
 	
 	protected abstract AnnotationDefinition[] buildAnnotationDefinitions();
+
+
+	// ********** nestable annotation definitions **********
+
+	public NestableAnnotationDefinition[] getNestableAnnotationDefinitions() {
+		if (this.nestableAnnotationDefinitions == null) {
+			this.nestableAnnotationDefinitions = this.buildNestableAnnotationDefinitions();
+		}
+		return this.nestableAnnotationDefinitions;
+	}
+
+	protected abstract NestableAnnotationDefinition[] buildNestableAnnotationDefinitions();
 	
 	
 	// ********** resource models **********

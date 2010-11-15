@@ -36,7 +36,7 @@ public final class JaxbPlatformImpl
 	public JaxbPlatformImpl(JaxbPlatformDefinition jaxbPlatformDefinition) {
 		super();
 		this.platformDefinition = jaxbPlatformDefinition;
-		this.annotationProvider = new GenericAnnotationProvider(this.platformDefinition.getAnnotationDefinitions());
+		this.annotationProvider = new GenericAnnotationProvider(this.platformDefinition.getAnnotationDefinitions(), this.platformDefinition.getNestableAnnotationDefinitions());
 	}
 
 
