@@ -108,7 +108,7 @@ public class SourceXmlSchemaAnnotation
 		this.elementFormDefault = buildElementFormDefault(astRoot);
 		this.location = buildLocation(astRoot);
 		this.namespace = buildNamespace(astRoot);
-		this.xmlnsContainer.initialize(astRoot);
+		this.xmlnsContainer.initialize(this.getAstAnnotation(astRoot));
 	}
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
@@ -116,7 +116,7 @@ public class SourceXmlSchemaAnnotation
 		syncElementFormDefault(buildElementFormDefault(astRoot));
 		syncLocation(buildLocation(astRoot));
 		syncNamespace(buildNamespace(astRoot));
-		this.xmlnsContainer.synchronize(astRoot);
+		this.xmlnsContainer.synchronize(this.getAstAnnotation(astRoot));
 	}
 	
 	@Override
