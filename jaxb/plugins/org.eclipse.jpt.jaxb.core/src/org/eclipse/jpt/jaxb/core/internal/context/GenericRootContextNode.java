@@ -10,17 +10,20 @@
 package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
@@ -37,8 +40,8 @@ public class GenericRootContextNode
 	/* The map of package name to JaxbPackage objects */
 	protected final Map<String, JaxbPackage> packages;
 	
-//	/* The map of class name to JaxbType objects */
-//	protected final Map<String, JaxbType> classes;
+	/* The map of class name to JaxbPersistentClass objects */
+	protected final Map<String, JaxbPersistentClass> persistentClasses;
 	
 	
 	public GenericRootContextNode(JaxbProject jaxbProject) {
@@ -48,7 +51,8 @@ public class GenericRootContextNode
 		}
 		this.jaxbProject = jaxbProject;
 		this.packages = new HashMap<String, JaxbPackage>();
-//		this.classes = new HashMap<String, JaxbType>();
+		this.persistentClasses = new HashMap<String, JaxbPersistentClass>();
+		initialize();
 	}
 	
 	
@@ -57,53 +61,84 @@ public class GenericRootContextNode
 		return false;
 	}
 	
+	protected void initialize() {
+		// determine initial set of persistent classes
+		// (persistent classes that can be determined purely by resource model)
+		final Set<String> initialPersistentClasses = calculateInitialPersistentClasses();
+		
+		// determine initial set of packages
+		final Set<String> initialPackages = calculateInitialPackages(initialPersistentClasses);
+		
+		final Set<String> packagesToBuild = CollectionTools.set(initialPackages);
+		final Set<String> persistentClassesToBuild = CollectionTools.set(initialPersistentClasses);
+		
+		for (String packageToBuild : packagesToBuild) {
+			this.packages.put(packageToBuild, buildPackage(packageToBuild));
+		}
+		
+		for (String classToBuild : persistentClassesToBuild) {
+			this.persistentClasses.put(classToBuild, buildPersistentClass(classToBuild));
+		}
+	}
+	
 	public void synchronizeWithResourceModel() {
 		for (JaxbPackage each : getPackages()) {
 			each.synchronizeWithResourceModel();
 		}
-//		for (JaxbType each : getClasses()) {
-//			each.synchronizeWithResourceModel();
-//		}
+		for (JaxbPersistentClass each : getPersistentClasses()) {
+			each.synchronizeWithResourceModel();
+		}
 	}
 	
 	public void update() {
-		final Set<String> explicitJaxbContextPackageNames = calculateExplicitJaxbContextPackageNames();
-		final Set<String> explicitJaxbContextClassNames = calculateExplicitJaxbContextClassNames();
-		final Set<String> implicitJaxbContextClassNames = new HashSet<String>();
+		// determine initial set of persistent classes
+		// (persistent classes that can be determined purely by resource model)
+		final Set<String> initialPersistentClasses = calculateInitialPersistentClasses();
 		
-		for (String packageName : explicitJaxbContextPackageNames) {
-			if (! this.packages.containsKey(packageName)) {
-				addPackage(buildPackage(packageName));
+		// determine initial set of packages
+		final Set<String> initialPackages = calculateInitialPackages(initialPersistentClasses);
+		
+		final Set<String> packagesToBuild = CollectionTools.set(initialPackages);
+		final Set<String> packagesToUpdate = CollectionTools.<String>set();
+		final Set<String> persistentClassesToBuild = CollectionTools.set(initialPersistentClasses);
+		final Set<String> persistentClassesToUpdate = CollectionTools.<String>set();
+		
+		for (String packageToBuild : packagesToBuild) {
+			if (this.packages.containsKey(packageToBuild)) {
+				packagesToUpdate.add(packageToBuild);
+			}
+			else {
+				this.packages.put(packageToBuild, buildPackage(packageToBuild));
 			}
 		}
 		
-		for (String className : explicitJaxbContextClassNames) {
-			String packageName = ClassName.getPackageName(className);
-			if (! this.packages.containsKey(packageName)) {
-				addPackage(buildPackage(packageName));
+		for (String classToBuild : persistentClassesToBuild) {
+			if (this.persistentClasses.containsKey(classToBuild)) {
+				persistentClassesToUpdate.add(classToBuild);
 			}
-//			if (! this.classes.containsKey(className)) {
-//				addClass(buildClass(className));
-//			}
+			else {
+				this.persistentClasses.put(classToBuild, buildPersistentClass(classToBuild));
+			}
 		}
 		
-		for (JaxbPackage each : getPackages()) {
-			each.update();
+		for (String packageToUpdate : packagesToUpdate) {
+			this.packages.get(packageToUpdate).update();
 		}
 		
-//		for (JaxbType each : getClasses()) {
-//			each.update();
-//		}
-		
-		for (JaxbPackage each : getPackages()) {
-			if (isEmpty(each)) {
-				removePackage(each);
-			}
+		for (String classToUpdate : persistentClassesToUpdate) {
+			this.persistentClasses.get(classToUpdate).update();
 		}
 	}
 	
-	protected Set<String> calculateExplicitJaxbContextPackageNames() {
-		return CollectionTools.set(
+	/*
+	 * calculate set of packages that can be determined purely by resource model and the given
+	 * set of classes.
+	 * This should include:
+	 *  - any annotated package 
+	 *  - any package containing an included class
+	 */
+	protected Set<String> calculateInitialPackages(final Set<String> initialClasses) {
+		final Set<String> packages = CollectionTools.set(
 				new TransformationIterable<JavaResourcePackage, String>(
 						getJaxbProject().getAnnotatedJavaResourcePackages()) {
 					@Override
@@ -111,10 +146,31 @@ public class GenericRootContextNode
 						return o.getName();
 					}
 				});
+		for (String className : initialClasses) {
+			packages.add(ClassName.getPackageName(className));
+		}
+		return packages;
 	}
 	
-	protected Set<String> calculateExplicitJaxbContextClassNames() {
-		return new HashSet<String>();
+	/*
+	 * calculate set of persistent classes that can be determined purely by resource model
+	 * (so far, this should be all persistentClasses with the @XmlType annotation)
+	 */
+	protected Set<String> calculateInitialPersistentClasses() {
+		return CollectionTools.set(
+				new TransformationIterable<JavaResourceType, String>(
+						new FilteringIterable<JavaResourceType>(
+								getJaxbProject().getJavaSourceResourceTypes()) {
+							@Override
+							protected boolean accept(JavaResourceType o) {
+								return o.getAnnotation(JAXB.XML_TYPE) != null;
+							}
+						}) {
+					@Override
+					protected String transform(JavaResourceType o) {
+						return o.getName();
+					}
+				});
 	}
 	
 	
@@ -171,34 +227,38 @@ public class GenericRootContextNode
 	}
 	
 	
-	// ************* classes ***************
+	// ************* persistentClasses ***************
 	
-//	public Iterable<JaxbType> getClasses() {
-//		return new LiveCloneIterable<JaxbType>(this.classes.values());
-//	}
-//	
-//	public int getClassesSize() {
-//		return this.classes.size();
-//	}
-//	
-//	protected JaxbType addClass(JaxbType jaxbClass) {
-//		if (this.classes.containsKey(jaxbClass.getName())) {
-//			throw new IllegalArgumentException("Class with that name already exists.");
-//		}
-//		this.classes.put(jaxbClass.getName(), jaxbClass);
-//		fireItemAdded(CLASSES_COLLECTION, jaxbClass);
-//		return jaxbClass;
-//	}
-//	
-//	protected void removeClass(JaxbType jaxbClass) {
-//		if (! this.classes.containsKey(jaxbClass.getName())) {
-//			throw new IllegalArgumentException("No class with that name exists.");
-//		}
-//		this.classes.remove(jaxbClass.getName());
-//		fireItemRemoved(CLASSES_COLLECTION, jaxbClass);
-//	}
-//	
-//	protected JaxbType buildClass(String className) {
-//		return this.getFactory().buildClass(this, className);
-//	}
+	public Iterable<JaxbPersistentClass> getPersistentClasses() {
+		return new LiveCloneIterable<JaxbPersistentClass>(this.persistentClasses.values());
+	}
+	
+	public int getPersistentClassesSize() {
+		return this.persistentClasses.size();
+	}
+	
+	protected JaxbPersistentClass addPersistentClass(JaxbPersistentClass persistentClass) {
+		if (this.persistentClasses.containsKey(persistentClass.getName())) {
+			throw new IllegalArgumentException("Class with that name already exists.");
+		}
+		this.persistentClasses.put(persistentClass.getName(), persistentClass);
+		fireItemAdded(PERSISTENT_CLASSES_COLLECTION, persistentClass);
+		return persistentClass;
+	}
+	
+	protected void removePersistentClass(JaxbPersistentClass persistentClass) {
+		if (! this.persistentClasses.containsKey(persistentClass.getName())) {
+			throw new IllegalArgumentException("No class with that name exists.");
+		}
+		this.persistentClasses.remove(persistentClass.getName());
+		fireItemRemoved(PERSISTENT_CLASSES_COLLECTION, persistentClass);
+	}
+	
+	protected JaxbPersistentClass buildPersistentClass(String className) {
+		JavaResourceType resourceType = getJaxbProject().getJavaResourceType(className);
+		if (resourceType == null) {
+			throw new IllegalArgumentException("No resource type exists for class named " + className);
+		}
+		return this.getFactory().buildPersistentClass(this, resourceType);
+	}
 }

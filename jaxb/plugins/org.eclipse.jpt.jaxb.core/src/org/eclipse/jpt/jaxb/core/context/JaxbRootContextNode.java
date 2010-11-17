@@ -33,13 +33,13 @@ public interface JaxbRootContextNode
 	
 	int getPackagesSize();
 	
-//	/**
-//	 * The set of classes.  These may be explicitly or implicitly included.
-//	 */
-//	Iterable<JaxbType> getClasses();
-//	public final static String CLASSES_COLLECTION = "classes"; //$NON-NLS-1$
-//	
-//	int getClassesSize();
+	/**
+	 * The set of persistent classes.  These may be explicitly or implicitly included.
+	 */
+	Iterable<JaxbPersistentClass> getPersistentClasses();
+	public final static String PERSISTENT_CLASSES_COLLECTION = "persistentClasses"; //$NON-NLS-1$
+	
+	int getPersistentClassesSize();
 	
 	
 //	// ********** validation **********

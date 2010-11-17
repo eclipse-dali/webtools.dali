@@ -19,6 +19,7 @@ import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -27,11 +28,13 @@ import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -74,6 +77,10 @@ public abstract class AbstractJaxbFactory
 	
 	public JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage) {
 		return new GenericJavaPackageInfo(parent, resourcePackage);
+	}
+	
+	public JaxbPersistentClass buildPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType) {
+		return new GenericJavaPersistentClass(parent, resourceType);
 	}
 	
 	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {

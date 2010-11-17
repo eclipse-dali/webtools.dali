@@ -10,8 +10,8 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 /**
- * Represents a java class (/enum/interface) of note.  The actual variety of class is indicated by
- * the "mapping" (e.g. @XmlType, @XmlRegistry ...) field.
+ * Represents a JAXB persistent class.  
+ * (A class with either an explicit or implicit @XmlType annotation)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +22,7 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbType
+public interface JaxbPersistentClass
 		extends JaxbContextNode {
 	
 	/**

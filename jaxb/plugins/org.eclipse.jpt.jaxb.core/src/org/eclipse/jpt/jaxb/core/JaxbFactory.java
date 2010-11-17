@@ -18,12 +18,14 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -92,6 +94,8 @@ public interface JaxbFactory  {
 	// ********** Java context nodes **********
 	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
+	
+	JaxbPersistentClass buildPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType);
 	
 	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
 	

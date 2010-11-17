@@ -563,42 +563,39 @@ public abstract class AbstractJaxbProject
 
 	// ********** annotated Java source classes **********
 	
-	public Iterable<String> getAnnotatedJavaSourceClassNames() {
-		return new TransformationIterable<JavaResourceType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
-			@Override
-			protected String transform(JavaResourceType type) {
-				return type.getQualifiedName();
-			}
-		};
-	}
-
 	/**
-	 * return only those valid annotated Java resource persistent types that are part of the 
-	 * JPA project, ignoring those in JARs referenced in persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * Return all {@link JavaResourceType}s that are represented by java source within this project
 	 */
-	protected Iterable<JavaResourceType> getInternalAnnotatedSourceJavaResourceTypes() {
-		return new FilteringIterable<JavaResourceType>(this.getInternalSourceJavaResourcePTypes()) {
+	public Iterable<JavaResourceType> getJavaSourceResourceTypes() {
+		return new CompositeIterable<JavaResourceType>(this.getInternalJavaSourceResourceTypeSets());
+	}
+	
+	/**
+	 * Return all {@link JavaResourceType}s that are represented by java source within this project,
+	 * that are also annotated (and persistable) with a recognized annotation
+	 */
+	public Iterable<JavaResourceType> getAnnotatedJavaSourceResourceTypes() {
+		return new FilteringIterable<JavaResourceType>(getJavaSourceResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceType type) {
 				return type.isPersistable() && type.isAnnotated();  // i.e. the type is valid and has a valid type annotation
 			}
 		};
 	}
-
-	/**
-	 * return only those Java resource persistent types that are
-	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
+	
+//	public Iterable<String> getAnnotatedJavaSourceClassNames() {
+//		return new TransformationIterable<JavaResourceType, String>(this.getInternalAnnotatedSourceJavaResourceTypes()) {
+//			@Override
+//			protected String transform(JavaResourceType type) {
+//				return type.getQualifiedName();
+//			}
+//		};
+//	}
+	
+	/*
+	 * Return the sets of {@link JavaResourceType}s that are represented by java source within this project
 	 */
-	protected Iterable<JavaResourceType> getInternalSourceJavaResourcePTypes() {
-		return new CompositeIterable<JavaResourceType>(this.getInternalSourceJavaResourceTypeSets());
-	}
-
-	/**
-	 * return only those Java resource persistent types that are
-	 * part of the JPA project, ignoring those in JARs referenced in persistence.xml
-	 */
-	protected Iterable<Iterable<JavaResourceType>> getInternalSourceJavaResourceTypeSets() {
+	protected Iterable<Iterable<JavaResourceType>> getInternalJavaSourceResourceTypeSets() {
 		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceType>>(this.getInternalJavaResourceCompilationUnits()) {
 			@Override
 			protected Iterable<JavaResourceType> transform(JavaResourceCompilationUnit compilationUnit) {
@@ -606,7 +603,7 @@ public abstract class AbstractJaxbProject
 			}
 		};
 	}
-
+	
 	protected Iterable<JavaResourceCompilationUnit> getInternalJavaResourceCompilationUnits() {
 		return new TransformationIterable<JaxbFile, JavaResourceCompilationUnit>(this.getJavaSourceJaxbFiles()) {
 			@Override

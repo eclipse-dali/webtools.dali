@@ -169,9 +169,20 @@ public interface JaxbProject
 //	JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName);
 	
 	/**
-	 * Return the names of the JAXB project's annotated Java classes
+	 * Return all {@link JavaResourceType}s that are represented by java source within this project
 	 */
-	Iterable<String> getAnnotatedJavaSourceClassNames();
+	Iterable<JavaResourceType> getJavaSourceResourceTypes();
+	
+	/**
+	 * Return all {@link JavaResourceType}s that are represented by java source within this project,
+	 * that are also annotated with a recognized annotation (and are persistable) 
+	 */
+	Iterable<JavaResourceType> getAnnotatedJavaSourceResourceTypes();
+	
+//	/**
+//	 * Return the names of the JAXB project's annotated Java classes
+//	 */
+//	Iterable<String> getAnnotatedJavaSourceClassNames();
 	
 	/**
 	 * Return the Java resource persistent type for the specified type.
