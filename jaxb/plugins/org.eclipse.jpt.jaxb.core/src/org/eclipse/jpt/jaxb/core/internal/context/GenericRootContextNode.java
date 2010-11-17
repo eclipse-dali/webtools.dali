@@ -100,15 +100,17 @@ public class GenericRootContextNode
 		
 		final Set<String> packagesToBuild = CollectionTools.set(initialPackages);
 		final Set<String> packagesToUpdate = CollectionTools.<String>set();
+		final Set<String> packagesToRemove = CollectionTools.set(this.packages.keySet());
 		final Set<String> persistentClassesToBuild = CollectionTools.set(initialPersistentClasses);
 		final Set<String> persistentClassesToUpdate = CollectionTools.<String>set();
 		
 		for (String packageToBuild : packagesToBuild) {
 			if (this.packages.containsKey(packageToBuild)) {
 				packagesToUpdate.add(packageToBuild);
+				packagesToRemove.remove(packageToBuild);
 			}
 			else {
-				this.packages.put(packageToBuild, buildPackage(packageToBuild));
+				this.addPackage(this.buildPackage(packageToBuild));
 			}
 		}
 		
@@ -117,7 +119,7 @@ public class GenericRootContextNode
 				persistentClassesToUpdate.add(classToBuild);
 			}
 			else {
-				this.persistentClasses.put(classToBuild, buildPersistentClass(classToBuild));
+				this.addPersistentClass(this.buildPersistentClass(classToBuild));
 			}
 		}
 		
@@ -127,6 +129,10 @@ public class GenericRootContextNode
 		
 		for (String classToUpdate : persistentClassesToUpdate) {
 			this.persistentClasses.get(classToUpdate).update();
+		}
+		
+		for (String packageToRemove : packagesToRemove) {
+			this.removePackage(packageToRemove);
 		}
 	}
 	
@@ -203,7 +209,7 @@ public class GenericRootContextNode
 	
 	protected JaxbPackage addPackage(JaxbPackage contextPackage) {
 		if (this.packages.containsKey(contextPackage.getName())) {
-			throw new IllegalArgumentException("Package with that name already exists.");
+			throw new IllegalArgumentException("Package with that name already exists."); //$NON-NLS-1$
 		}
 		this.packages.put(contextPackage.getName(), contextPackage);
 		fireItemAdded(PACKAGES_COLLECTION, contextPackage);
@@ -211,11 +217,15 @@ public class GenericRootContextNode
 	}
 	
 	protected void removePackage(JaxbPackage contextPackage) {
-		if (! this.packages.containsKey(contextPackage.getName())) {
-			throw new IllegalArgumentException("No package with that name exists.");
+		this.removePackage(contextPackage.getName());
+	}
+	
+	protected void removePackage(String packageName) {
+		if (! this.packages.containsKey(packageName)) {
+			throw new IllegalArgumentException("No package with that name exists."); //$NON-NLS-1$
 		}
-		this.packages.remove(contextPackage.getName());
-		fireItemRemoved(PACKAGES_COLLECTION, contextPackage);
+		JaxbPackage removedPackage = this.packages.remove(packageName);
+		fireItemRemoved(PACKAGES_COLLECTION, removedPackage);
 	}
 	
 	protected JaxbPackage buildPackage(String packageName) {
@@ -239,7 +249,7 @@ public class GenericRootContextNode
 	
 	protected JaxbPersistentClass addPersistentClass(JaxbPersistentClass persistentClass) {
 		if (this.persistentClasses.containsKey(persistentClass.getName())) {
-			throw new IllegalArgumentException("Class with that name already exists.");
+			throw new IllegalArgumentException("Class with that name already exists."); //$NON-NLS-1$
 		}
 		this.persistentClasses.put(persistentClass.getName(), persistentClass);
 		fireItemAdded(PERSISTENT_CLASSES_COLLECTION, persistentClass);
@@ -248,7 +258,7 @@ public class GenericRootContextNode
 	
 	protected void removePersistentClass(JaxbPersistentClass persistentClass) {
 		if (! this.persistentClasses.containsKey(persistentClass.getName())) {
-			throw new IllegalArgumentException("No class with that name exists.");
+			throw new IllegalArgumentException("No class with that name exists."); //$NON-NLS-1$
 		}
 		this.persistentClasses.remove(persistentClass.getName());
 		fireItemRemoved(PERSISTENT_CLASSES_COLLECTION, persistentClass);
@@ -257,7 +267,7 @@ public class GenericRootContextNode
 	protected JaxbPersistentClass buildPersistentClass(String className) {
 		JavaResourceType resourceType = getJaxbProject().getJavaResourceType(className);
 		if (resourceType == null) {
-			throw new IllegalArgumentException("No resource type exists for class named " + className);
+			throw new IllegalArgumentException("No resource type exists for class named " + className); //$NON-NLS-1$
 		}
 		return this.getFactory().buildPersistentClass(this, resourceType);
 	}

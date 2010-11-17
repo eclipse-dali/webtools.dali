@@ -137,6 +137,13 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.createTestPackageInfo(new DefaultAnnotationWriter());
 	}
 	
+	/** 
+	 * create an un-annotated package-info in a package the given name
+	 */
+	protected ICompilationUnit createTestPackageInfo(String packageName) throws CoreException {
+		return this.createTestPackageInfo(packageName, new DefaultAnnotationWriter());
+	}
+	
 	/**
 	 * shortcut for simply adding an annotation to the package declaration
 	 */
@@ -159,8 +166,12 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 	
 	protected ICompilationUnit createTestPackageInfo(AnnotationWriter annotationWriter) throws CoreException {
+		return this.createTestPackageInfo(PACKAGE_NAME, annotationWriter);
+	}
+	
+	protected ICompilationUnit createTestPackageInfo(String packageName, AnnotationWriter annotationWriter) throws CoreException {
 		return this.javaProject.createCompilationUnit(
-				PACKAGE_NAME, PACKAGE_INFO_FILE_NAME, this.createSourceWriter(annotationWriter, null));
+			packageName, PACKAGE_INFO_FILE_NAME, this.createSourceWriter(annotationWriter, packageName, null));
 	}
 	
 	
@@ -212,6 +223,10 @@ public abstract class AnnotationTestCase extends TestCase {
 	
 	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter, String typeName) {
 		return new AnnotatedSourceWriter(annotationWriter, typeName);
+	}
+	
+	protected SourceWriter createSourceWriter(AnnotationWriter annotationWriter, String packageName, String typeName) {
+		return new AnnotatedSourceWriter(annotationWriter, packageName, typeName);
 	}
 	
 	/**
