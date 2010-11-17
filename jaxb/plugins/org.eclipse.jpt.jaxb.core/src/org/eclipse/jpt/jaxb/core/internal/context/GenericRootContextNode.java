@@ -103,6 +103,7 @@ public class GenericRootContextNode
 		final Set<String> packagesToRemove = CollectionTools.set(this.packages.keySet());
 		final Set<String> persistentClassesToBuild = CollectionTools.set(initialPersistentClasses);
 		final Set<String> persistentClassesToUpdate = CollectionTools.<String>set();
+		final Set<String> persistentClassesToRemove = CollectionTools.set(this.persistentClasses.keySet());
 		
 		for (String packageToBuild : packagesToBuild) {
 			if (this.packages.containsKey(packageToBuild)) {
@@ -117,6 +118,7 @@ public class GenericRootContextNode
 		for (String classToBuild : persistentClassesToBuild) {
 			if (this.persistentClasses.containsKey(classToBuild)) {
 				persistentClassesToUpdate.add(classToBuild);
+				persistentClassesToRemove.remove(classToBuild);
 			}
 			else {
 				this.addPersistentClass(this.buildPersistentClass(classToBuild));
@@ -133,6 +135,10 @@ public class GenericRootContextNode
 		
 		for (String packageToRemove : packagesToRemove) {
 			this.removePackage(packageToRemove);
+		}
+		
+		for (String persistentClassToRemove : persistentClassesToRemove) {
+			this.removePersistentClass(persistentClassToRemove);
 		}
 	}
 	
@@ -174,7 +180,7 @@ public class GenericRootContextNode
 						}) {
 					@Override
 					protected String transform(JavaResourceType o) {
-						return o.getName();
+						return o.getQualifiedName();
 					}
 				});
 	}
@@ -257,11 +263,15 @@ public class GenericRootContextNode
 	}
 	
 	protected void removePersistentClass(JaxbPersistentClass persistentClass) {
-		if (! this.persistentClasses.containsKey(persistentClass.getName())) {
+		this.removePersistentClass(persistentClass.getName());
+	}
+	
+	protected void removePersistentClass(String persistentClassName) {
+		if (! this.persistentClasses.containsKey(persistentClassName)) {
 			throw new IllegalArgumentException("No class with that name exists."); //$NON-NLS-1$
 		}
-		this.persistentClasses.remove(persistentClass.getName());
-		fireItemRemoved(PERSISTENT_CLASSES_COLLECTION, persistentClass);
+		JaxbPersistentClass removedPersistentClass = this.persistentClasses.remove(persistentClassName);
+		fireItemRemoved(PERSISTENT_CLASSES_COLLECTION, removedPersistentClass);
 	}
 	
 	protected JaxbPersistentClass buildPersistentClass(String className) {

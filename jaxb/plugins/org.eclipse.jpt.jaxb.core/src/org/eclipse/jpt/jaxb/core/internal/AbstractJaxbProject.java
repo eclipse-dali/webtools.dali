@@ -665,7 +665,7 @@ public abstract class AbstractJaxbProject
 	
 	public JavaResourcePackage getAnnotatedJavaResourcePackage(String packageName) {
 		JavaResourcePackage jrp = getJavaResourcePackage(packageName);
-		return (jrp.isAnnotated()) ? jrp : null;
+		return (jrp != null && jrp.isAnnotated()) ? jrp : null;
 	}
 	
 	/**

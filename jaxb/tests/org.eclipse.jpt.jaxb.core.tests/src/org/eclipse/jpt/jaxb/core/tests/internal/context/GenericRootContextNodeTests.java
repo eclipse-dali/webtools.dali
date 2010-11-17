@@ -17,9 +17,11 @@ import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 
 @SuppressWarnings("nls")
@@ -38,6 +40,23 @@ public class GenericRootContextNodeTests extends JaxbContextModelTestCase
 
 	private ICompilationUnit createUnannotatedPackageInfo(String packageName) throws CoreException {
 		return createTestPackageInfo(packageName);
+	}
+
+	private ICompilationUnit createTypeWithXmlType() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType");
+			}
+		});
+	}
+	
+	private ICompilationUnit createUnannotatedTestTypeNamed(String typeName) throws Exception {
+		return this.createTestType(PACKAGE_NAME, typeName + ".java", typeName, new DefaultAnnotationWriter());
 	}
 
 	public void testGetPackages() throws Exception {
@@ -89,6 +108,48 @@ public class GenericRootContextNodeTests extends JaxbContextModelTestCase
 
 	protected void removeXmlAccessorTypeAnnotation(ModifiedDeclaration declaration) {
 		this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
+	}
+
+	public void testGetPersistentClasses() throws Exception {
+		this.createTypeWithXmlType();
+		Iterator<JaxbPersistentClass> persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
+		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertFalse(persistentClasses.hasNext());
+
+		//add an unannotated class and make sure it's not added to the root context node
+		this.createUnannotatedTestTypeNamed("Foo");
+		persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
+		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertFalse(persistentClasses.hasNext());
+
+		//annotate the class with @XmlType and test it's added to the root context node
+		JavaResourceType fooResourcePackage = getJaxbProject().getJavaResourceType("test.Foo");
+		AnnotatedElement annotatedElement = this.annotatedElement(fooResourcePackage);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericRootContextNodeTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
+			}
+		});
+
+		persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
+		assertEquals(2, this.getRootContextNode().getPersistentClassesSize());
+		assertEquals("test.Foo", persistentClasses.next().getName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertFalse(persistentClasses.hasNext());
+
+		//remove the annotation from the package-info.java and test it's removed from the root context node
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericRootContextNodeTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
+			}
+		});
+
+		persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
+		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertFalse(persistentClasses.hasNext());
 	}
 
 //	public void testGetXmlSchemaTypesSize() throws Exception {
