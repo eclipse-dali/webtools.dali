@@ -22,6 +22,26 @@
 	
 	<!-- ***** extensions ***** -->
 	
+	<!-- =================================================================================== -->
+	<!-- Extension: JAXB Problem Marker                                                       -->
+	<!-- **** Do NOT qualify the marker id with org.eclipse.jpt.jaxb.core, see bug 252891 		 -->
+	<!-- =================================================================================== -->
+	<extension
+		point="org.eclipse.core.resources.markers"
+		id="jaxbProblemMarker" 
+		name="%JAXB_PROBLEM_MARKER">
+
+		<persistent value="true"/>
+		
+		<!-- Can't use text marker until we have specific models for each input type (XML, java)
+		<super type="org.eclipse.core.resources.textmarker"/>
+		-->
+		
+		<super type="org.eclipse.wst.validation.problemmarker2"/>
+		<super type="org.eclipse.jdt.core.problem"/>
+	</extension>
+	
+	
 	<extension
 		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
 		
@@ -152,4 +172,28 @@
 		
 	</extension>
 	
+	
+	<extension
+		point="org.eclipse.wst.validation.validatorV2"
+		id="jaxbValidator"
+		name="%JAXB_VALIDATOR">
+		
+		<validator
+        	class="org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidator"
+        	markerId="org.eclipse.jpt.jaxb.core.jaxbProblemMarker">
+			<include>
+				<rules>
+					<facet id="jpt.jaxb"/>
+				</rules>
+			</include>
+			<include>
+				<rules>
+					<contentType id="org.eclipse.jdt.core.javaSource" exactMatch="false"/>
+					<contentType id="org.eclipse.jpt.core.content.javaPackageInfo" exactMatch="false"/>
+				</rules>
+			</include>
+		</validator>
+		
+	</extension>
+		
 </plugin>

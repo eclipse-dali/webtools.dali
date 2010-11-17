@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
@@ -51,11 +53,15 @@ import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
 import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
 import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.utility.synchronizers.Synchronizer;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * JAXB project. Holds all the JAXB stuff.
@@ -1023,22 +1029,21 @@ public abstract class AbstractJaxbProject
 
 
 	// ********** validation **********
-//	
-//	public Iterator<IMessage> validationMessages(IReporter reporter) {
-//		List<IMessage> messages = new ArrayList<IMessage>();
-//		this.validate(messages, reporter);
-//		return messages.iterator();
-//	}
-//	
-//	protected void validate(List<IMessage> messages, IReporter reporter) {
-//		if (reporter.isCancelled()) {
-//			throw new ValidationCancelledException();
-//		}
-//		validateLibraryProvider(messages);
-//		validateConnection(messages);
-//		this.rootContextNode.validate(messages, reporter);
-//	}
-//	
+	
+	public Iterable<IMessage> validationMessages(IReporter reporter) {
+		List<IMessage> messages = new ArrayList<IMessage>();
+		this.validate(messages, reporter);
+		return new SnapshotCloneIterable<IMessage>(messages);
+	}
+	
+	protected void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
+		//validateLibraryProvider(messages);
+		//this.rootContextNode.validate(messages, reporter);
+	}
+	
 //	protected void validateLibraryProvider(List<IMessage> messages) {
 //		try {
 //			ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
@@ -1047,9 +1052,9 @@ public abstract class AbstractJaxbProject
 //			if (! libraryProvider.isEnabledFor(
 //					facetedProject, facetVersion)) {
 //				messages.add(
-//						DefaultJpaValidationMessages.buildMessage(
+//						DefaultValidationMessages.buildMessage(
 //							IMessage.HIGH_SEVERITY,
-//							JpaValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+//							JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
 //							this));
 //			}
 //		}
@@ -1058,8 +1063,7 @@ public abstract class AbstractJaxbProject
 //			JptCorePlugin.log(ce);
 //		}
 //	}
-
-
+	
 	
 	// ********** dispose **********
 

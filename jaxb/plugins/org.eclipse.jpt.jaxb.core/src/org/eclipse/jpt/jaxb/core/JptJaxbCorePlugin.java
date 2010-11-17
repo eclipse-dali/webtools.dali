@@ -62,6 +62,14 @@ public class JptJaxbCorePlugin
 	public static final String DEFAULT_JAXB_PLATFORM_2_2_PREF_KEY = 
 			"defaultJaxbPlatform_" + JaxbFacet.VERSION_2_2.getVersionString(); //$NON-NLS-1$
 	
+	/**
+	 * The identifier for the JAXB validation marker
+	 * (value <code>"org.eclipse.jpt.jaxb.core.jaxbProblemMarker"</code>).
+	 */
+	public static final String VALIDATION_MARKER_ID = PLUGIN_ID + ".jaxbProblemMarker";  //$NON-NLS-1$
+
+	
+	
 	// **************** fields ************************************************
 	
 	private volatile GenericJaxbProjectManager projectManager;

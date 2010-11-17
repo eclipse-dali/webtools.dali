@@ -23,6 +23,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.utility.synchronizers.Synchronizer;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * A JAXB project is associated with an Eclipse project (and its corresponding
@@ -298,17 +300,16 @@ public interface JaxbProject
 //	 * Return an {@link IFile} that best represents the given runtime location
 //	 */
 //	IFile getPlatformFile(IPath runtimePath);
-//
-//
-//	// ********** validation **********
-//
-//	/**
-//	 * Return JPA project's validation messages.
-//	 */
-//	Iterator<IMessage> validationMessages(IReporter reporter);
-
-
-
+	
+	
+	// ********** validation **********
+	
+	/**
+	 * Return project's validation messages.
+	 */
+	Iterable<IMessage> validationMessages(IReporter reporter);
+	
+	
 	// ********** modifying shared documents **********
 
 	/**
