@@ -30,6 +30,6 @@ public class GenericJavaPersistentClass
 	// ********** JaxbPersistentClass impl **********
 	
 	public String getName() {
-		return this.resourceType.getName();
+		return this.resourceType.getQualifiedName();
 	}
 }

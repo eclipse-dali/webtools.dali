@@ -26,7 +26,7 @@ public interface JaxbPersistentClass
 		extends JaxbContextNode {
 	
 	/**
-	 * The class name.
+	 * The fully qualified class name.
 	 * This is unchanging in that, if a class name changes, a new JaxbType is created.
 	 */
 	String getName();
