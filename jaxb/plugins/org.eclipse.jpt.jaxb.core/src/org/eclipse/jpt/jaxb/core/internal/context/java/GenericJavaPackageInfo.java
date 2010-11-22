@@ -185,8 +185,8 @@ public class GenericJavaPackageInfo
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Iterable<XmlSchemaTypeAnnotation> getXmlSchemaTypeAnnotations() {
-		return (Iterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+	protected ListIterable<XmlSchemaTypeAnnotation> getXmlSchemaTypeAnnotations() {
+		return (ListIterable<XmlSchemaTypeAnnotation>) this.resourcePackage.getAnnotations(XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -228,15 +228,15 @@ public class GenericJavaPackageInfo
 	}
 
 	@SuppressWarnings("unchecked")
-	protected Iterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
-		return (Iterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+	protected ListIterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
+		return (ListIterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 	}
 
 	/**
 	 * xml schema type container
 	 */
 	protected class XmlSchemaTypeContainer
-		extends ListContainer<XmlSchemaType, XmlSchemaTypeAnnotation>
+		extends ContextListContainer<XmlSchemaType, XmlSchemaTypeAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
@@ -247,7 +247,7 @@ public class GenericJavaPackageInfo
 			return GenericJavaPackageInfo.this.buildXmlSchemaType(resourceElement);
 		}
 		@Override
-		protected Iterable<XmlSchemaTypeAnnotation> getResourceElements() {
+		protected ListIterable<XmlSchemaTypeAnnotation> getResourceElements() {
 			return GenericJavaPackageInfo.this.getXmlSchemaTypeAnnotations();
 		}
 		@Override
@@ -260,7 +260,7 @@ public class GenericJavaPackageInfo
 	 * xml java type adapter container
 	 */
 	protected class XmlJavaTypeAdapterContainer
-		extends ListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation>
+		extends ContextListContainer<XmlJavaTypeAdapter, XmlJavaTypeAdapterAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
@@ -271,7 +271,7 @@ public class GenericJavaPackageInfo
 			return GenericJavaPackageInfo.this.buildXmlJavaTypeAdapter(resourceElement);
 		}
 		@Override
-		protected Iterable<XmlJavaTypeAdapterAnnotation> getResourceElements() {
+		protected ListIterable<XmlJavaTypeAdapterAnnotation> getResourceElements() {
 			return GenericJavaPackageInfo.this.getXmlJavaTypeAdapterAnnotations();
 		}
 		@Override

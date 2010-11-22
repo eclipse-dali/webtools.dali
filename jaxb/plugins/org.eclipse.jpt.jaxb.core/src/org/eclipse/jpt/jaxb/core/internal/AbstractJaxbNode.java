@@ -117,7 +117,7 @@ public abstract class AbstractJaxbNode
 	protected JaxbPlatform getJaxbPlatform() {
 		return this.getJaxbProject().getJaxbPlatform();
 	}
-	
+
 //	protected JaxbPlatform.Version getJaxbPlatformVersion() {
 //		return this.getJaxbPlatform().getJaxbPlatformVersion();
 //	}
@@ -185,14 +185,14 @@ public abstract class AbstractJaxbNode
 		}
 	}
 
-	
+
 	/**
 	 * Adapter used to synchronize a context collection container with its corresponding
 	 * resource container.
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class CollectionContainer<C extends JaxbContextNode, R> {
+	protected abstract class CollectionContainer<C, R> {
 
 		protected final Vector<C> contextElements = new Vector<C>();
 
@@ -248,14 +248,14 @@ public abstract class AbstractJaxbNode
 		 * specified index.
 		 */
 		public C addContextElement(int index, R resourceElement) {
-			return this.addContextElement(index, this.buildContextElement(resourceElement));
+			return this.addContextElement_(index, this.buildContextElement(resourceElement));
 		}
 
 		/**
 		 * Add the specified context element to the collection ignoring
 		 * the specified index as we only have a collection
 		 */
-		protected C addContextElement(@SuppressWarnings("unused") int index, C contextElement) {
+		protected C addContextElement_(@SuppressWarnings("unused") int index, C contextElement) {
 			AbstractJaxbNode.this.addItemToCollection(contextElement, this.contextElements, this.getContextElementsPropertyName());
 			return contextElement;
 		}
@@ -263,7 +263,7 @@ public abstract class AbstractJaxbNode
 		/**
 		 * Remove the specified context element from the container.
 		 */
-		protected void removeContextElement(C element) {
+		public void removeContextElement(C element) {
 			AbstractJaxbNode.this.removeItemFromCollection(element, this.contextElements, this.getContextElementsPropertyName());
 		}
 
@@ -271,7 +271,19 @@ public abstract class AbstractJaxbNode
 		protected void moveContextElement(int index, C element) {
 			//no-op, not a list
 		}
+	}
 
+	/**
+	 * Adapter used to synchronize a context collection container with its corresponding
+	 * resource container.
+	 * @param <C> the type of context elements
+	 * @param <R> the type of resource elements
+	 */
+	protected abstract class ContextCollectionContainer<C extends JaxbContextNode, R> extends CollectionContainer<C, R> {
+
+		protected ContextCollectionContainer() {
+			super();
+		}
 
 		/**
 		 * Using the specified adapter, synchronize a context container with its
@@ -336,16 +348,16 @@ public abstract class AbstractJaxbNode
 			}
 		}
 	}
-	
+
 	/**
 	 * Adapter used to synchronize a context list container with its corresponding
 	 * resource container.
 	 * @param <C> the type of context elements
 	 * @param <R> the type of resource elements
 	 */
-	protected abstract class ListContainer<C extends JaxbContextNode, R>
+	protected abstract class ListContainer<C, R>
 		extends CollectionContainer<C, R> {
-		
+
 		protected ListContainer() {
 			super();
 		}
@@ -355,6 +367,9 @@ public abstract class AbstractJaxbNode
 			return new LiveCloneListIterable<C>(this.contextElements);
 		}
 
+		@Override
+		protected abstract ListIterable<R> getResourceElements();
+
 		/**
 		 * Return the index of the specified context element.
 		 */
@@ -362,12 +377,16 @@ public abstract class AbstractJaxbNode
 			return this.contextElements.indexOf(contextElement);
 		}
 
+		public C contextElementAt(int index) {
+			return this.contextElements.elementAt(index);
+		}
+
 		/**
 		 * Add a context element for the specified resource element at the
 		 * specified index.
 		 */
 		@Override
-		protected C addContextElement(int index, C contextElement) {
+		protected C addContextElement_(int index, C contextElement) {
 			AbstractJaxbNode.this.addItemToList(index, contextElement, this.contextElements, this.getContextElementsPropertyName());
 			return contextElement;
 		}
@@ -384,7 +403,94 @@ public abstract class AbstractJaxbNode
 		 * Move the specified context element to the specified index.
 		 */
 		@Override
-		protected void moveContextElement(int index, C element) {
+		public void moveContextElement(int index, C element) {
+			AbstractJaxbNode.this.moveItemInList(index, element, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		/**
+		 * Remove the context element at the specified index from the container.
+		 */
+		public void removeContextElement(int index) {
+			AbstractJaxbNode.this.removeItemFromList(index, this.contextElements, this.getContextElementsPropertyName());
+		}
+
+		public void synchronizeWithResourceModel() {
+			ListIterable<R> resourceElements = getResourceElements();
+			
+			int index = 0;
+			for (R resourceElement : resourceElements) {
+				if (this.getContextElementsSize() > index) {
+					if (this.contextElementAt(index) != resourceElement) {
+						this.addContextElement(index, resourceElement);
+					}
+				}
+				else {
+					this.addContextElement(index, resourceElement);			
+				}
+				index++;
+			}
+			
+			for ( ; index < this.getContextElementsSize(); ) {
+				this.removeContextElement(index);
+			}
+		}
+	}
+
+	/**
+	 * Adapter used to synchronize a context list container with its corresponding
+	 * resource container.
+	 * @param <C> the type of context elements
+	 * @param <R> the type of resource elements
+	 */
+	protected abstract class ContextListContainer<C extends JaxbContextNode, R>
+		extends ContextCollectionContainer<C, R> {
+
+		protected ContextListContainer() {
+			super();
+		}
+
+		@Override
+		public ListIterable<C> getContextElements() {
+			return new LiveCloneListIterable<C>(this.contextElements);
+		}
+
+		@Override
+		protected abstract ListIterable<R> getResourceElements();
+
+		/**
+		 * Return the index of the specified context element.
+		 */
+		public int indexOfContextElement(C contextElement) {
+			return this.contextElements.indexOf(contextElement);
+		}
+
+		public C contextElementAt(int index) {
+			return this.contextElements.elementAt(index);
+		}
+
+		/**
+		 * Add a context element for the specified resource element at the
+		 * specified index.
+		 */
+		@Override
+		protected C addContextElement_(int index, C contextElement) {
+			AbstractJaxbNode.this.addItemToList(index, contextElement, this.contextElements, this.getContextElementsPropertyName());
+			return contextElement;
+		}
+
+		/**
+		 * Move the context element at the specified target index to the 
+		 * specified source index.
+		 */
+		public void moveContextElement(int targetIndex, int sourceIndex) {
+			this.moveContextElement(targetIndex, this.contextElements.get(sourceIndex));
+		}
+
+		/**
+		 * Move the specified context element to the specified index.
+		 */
+		@Override
+		public void moveContextElement(int index, C element) {
 			AbstractJaxbNode.this.moveItemInList(index, element, this.contextElements, this.getContextElementsPropertyName());
 		}
 

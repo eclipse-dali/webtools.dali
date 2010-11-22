@@ -221,7 +221,7 @@ public class GenericJavaXmlSchema
 		this.xmlNsPrefixContainer.synchronizeWithResourceModel();
 	}
 
-	protected Iterable<XmlNsAnnotation> getXmlNsAnnotations() {
+	protected ListIterable<XmlNsAnnotation> getXmlNsAnnotations() {
 		return getXmlSchemaAnnotation().getXmlns();
 	}
 
@@ -230,7 +230,7 @@ public class GenericJavaXmlSchema
 	 * xml ns prefix container adapter
 	 */
 	protected class XmlNsPrefixContainer
-		extends ListContainer<XmlNs, XmlNsAnnotation>
+		extends ContextListContainer<XmlNs, XmlNsAnnotation>
 	{
 		@Override
 		protected String getContextElementsPropertyName() {
@@ -241,7 +241,7 @@ public class GenericJavaXmlSchema
 			return GenericJavaXmlSchema.this.buildXmlNs(resourceElement);
 		}
 		@Override
-		protected Iterable<XmlNsAnnotation> getResourceElements() {
+		protected ListIterable<XmlNsAnnotation> getResourceElements() {
 			return GenericJavaXmlSchema.this.getXmlNsAnnotations();
 		}
 		@Override
