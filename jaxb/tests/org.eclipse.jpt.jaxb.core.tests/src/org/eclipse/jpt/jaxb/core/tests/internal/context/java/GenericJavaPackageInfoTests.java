@@ -179,11 +179,6 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getDefaultAccessOrder());
 	}
 
-	protected void setEnumMemberValuePair(ModifiedDeclaration declaration, String annotationName, String enumValue) {
-		this.setEnumMemberValuePair((NormalAnnotation) declaration.getAnnotationNamed(annotationName), "value", enumValue);
-
-	}
-
 	//add another package annotation so that the context model object doesn't get removed when 
 	//removing the XmlAccessorType annotation. Only "annotated" packages are added to the context model
 	protected void removeXmlAccessorTypeAnnotation(ModifiedDeclaration declaration) {

@@ -532,7 +532,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		assertEquals(3, schemaAnnotation.getXmlnsSize());		
 
 		contextXmlSchema.moveXmlNsPrefix(2, 0);
-		ListIterator<XmlNsAnnotation> xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		ListIterator<XmlNs> xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes().iterator();
 		assertEquals("foo", xmlNsPrefixes.next().getNamespaceURI());
 		assertEquals("baz", xmlNsPrefixes.next().getNamespaceURI());
 		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());		
@@ -545,7 +545,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 
 
 		contextXmlSchema.moveXmlNsPrefix(0, 1);
-		xmlNsPrefixes = schemaAnnotation.getXmlns().iterator();
+		xmlNsPrefixes = contextXmlSchema.getXmlNsPrefixes().iterator();
 		assertEquals("baz", xmlNsPrefixes.next().getNamespaceURI());
 		assertEquals("foo", xmlNsPrefixes.next().getNamespaceURI());
 		assertEquals("bar", xmlNsPrefixes.next().getNamespaceURI());		

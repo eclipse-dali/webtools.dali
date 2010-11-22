@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+
 /**
  * Represents a JAXB persistent class.  
  * (A class with either an explicit or implicit @XmlType annotation)
@@ -23,11 +26,71 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface JaxbPersistentClass
-		extends JaxbContextNode {
+	extends 
+		JaxbContextNode, 
+		XmlAccessTypeHolder,
+		XmlAccessOrderHolder
+{
 	
 	/**
 	 * The fully qualified class name.
 	 * This is unchanging in that, if a class name changes, a new JaxbType is created.
 	 */
 	String getName();
+
+	JavaResourceType getJaxbResourceType();
+
+	JaxbPersistentClass getSuperPersistentClass();
+		String SUPER_PERSISTENT_CLASS_PROPERTY = "superPersistentClass"; //$NON-NLS-1$
+
+
+	/**************** factory class *****************/
+
+	/**
+	 * factory class corresponds to the XmlType annotation factoryClass element
+	 */
+	String getFactoryClass();
+	void setFactoryClass(String factoryClass);
+		String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
+
+
+	/**************** factory method *****************/
+
+	/**
+	 * factory method corresponds to the XmlType annotation factoryMethod element
+	 */
+	String getFactoryMethod();
+	void setFactoryMethod(String factoryMethod);
+		String FACTORY_METHOD_PROPERTY = "factoryMethod"; //$NON-NLS-1$
+
+
+	/**************** name *****************/
+
+	/**
+	 * Schema type name corresponds to the XmlType annotation name element
+	 */
+	String getSchemaTypeName();
+	void setSchemaTypeName(String schemaTypeName);
+		String SCHEMA_TYPE_NAME_PROPERTY = "schemaTypeName"; //$NON-NLS-1$
+
+
+	/**************** namespace *****************/
+
+	/**
+	 * namespace corresponds to the XmlType annotation namespace element
+	 */
+	String getNamespace();
+	void setNamespace(String namespace);
+		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+
+
+	// ********** propOrder **********
+
+	ListIterable<String> getPropOrder();
+	int getPropOrderSize();
+	void addProp(int index, String prop);
+	void removeProp(int index);
+	void removeProp(String prop);
+	void moveProp(int targetIndex, int sourceIndex);
+		String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
 }
