@@ -11,6 +11,12 @@
 
 <plugin>
 	
+	<extension-point 
+		id="jaxbPlatformUis" 
+		name="%jaxbPlatformUi" 
+		schema="schema/jaxbPlatformUis.exsd"/>
+	
+	
 	<extension 
 		point="org.eclipse.core.runtime.adapters">
 		
@@ -61,6 +67,91 @@
 				<parameter name="menuIndex" value="35"/> 
 			</class>
 		</wizard>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.jpt.jaxb.ui.jaxbPlatformUis">
+		
+		<jaxbPlatformUi
+			id="generic_2_1.ui"
+			jaxbPlatform="generic_2_1"
+			class="org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_PlatformUi"/>
+		
+		<jaxbPlatformUi
+			id="generic_2_2.ui"
+			jaxbPlatform="generic_2_2"
+			class="org.eclipse.jpt.jaxb.ui.internal.jaxb22.GenericJaxb_2_2_PlatformUi"/>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.navigator.navigatorContent">
+		
+		<navigatorContent
+			id="org.eclipse.jpt.jaxb.ui.jaxbNavigatorContent"
+			name="%jaxbNavigatorContent"
+			priority="higher"
+			icon="icons/full/obj16/jaxb_content.gif"
+			activeByDefault="true"
+			contentProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorContentProvider"
+			labelProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorLabelProvider">
+			
+			<triggerPoints>
+				<or>
+					<instanceof
+						value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+					<and>
+						<adapt type="org.eclipse.core.resources.IProject"> 
+							<test 
+								forcePluginActivation="true"
+								property="org.eclipse.wst.common.project.facet.core.projectFacet"
+								value="jpt.jaxb" />
+						</adapt>
+					</and>
+				</or>
+			</triggerPoints>
+			
+			<possibleChildren>
+				<instanceof
+					value="org.eclipse.jpt.jaxb.core.context.JaxbContextNode"/>
+			</possibleChildren>
+			
+			<!--
+			<actionProvider
+				class="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorActionProvider"
+				id="org.eclipse.jpt.ui.jpaActionProvider">
+				<enablement>
+					<and>
+						<instanceof
+							value="org.eclipse.jpt.core.context.JpaContextNode"/>
+					</and>
+				</enablement>
+			</actionProvider>
+			-->
+			
+			<!--
+			<commonSorter
+				id="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter"
+				class="org.eclipse.jst.j2ee.navigator.internal.J2EEViewerSorter" />
+			-->
+			
+		</navigatorContent>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.navigator.viewer">
+		
+		<viewerContentBinding
+			viewerId="org.eclipse.ui.navigator.ProjectExplorer">
+			<includes>
+				<contentExtension pattern="org.eclipse.jpt.jaxb.ui.*"/>
+			</includes>
+		</viewerContentBinding>
 		
 	</extension>
 	

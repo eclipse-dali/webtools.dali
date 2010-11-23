@@ -13,7 +13,11 @@ package org.eclipse.jpt.jaxb.ui.internal;
 public class JptJaxbUiIcons
 {
 	// **************** General icons **************************************
-
+	
+	public static final String JAXB_CONTENT = "full/obj16/jaxb_content";
+	public static final String PACKAGE = "full/obj16/package";
+	public static final String PERSISTENT_CLASS = "full/obj16/persistent_class";
+	
 	public static final String SCHEMA_GEN = "full/wizban/NewXSD";
 
 	// **************** Wizard icons *******************************************

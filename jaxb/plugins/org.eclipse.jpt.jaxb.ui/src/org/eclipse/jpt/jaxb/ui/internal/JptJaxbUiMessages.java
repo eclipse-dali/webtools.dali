@@ -29,7 +29,8 @@ public class JptJaxbUiMessages {
 	public static String ClassesGeneratorWizard_errorDialogTitle;
 	public static String ClassesGeneratorWizard_couldNotCreate;
 	
-
+	public static String JaxbContent_label;
+	
 	public static String SchemaWizardPage_title;
 	public static String SchemaWizardPage_desc;
 	
