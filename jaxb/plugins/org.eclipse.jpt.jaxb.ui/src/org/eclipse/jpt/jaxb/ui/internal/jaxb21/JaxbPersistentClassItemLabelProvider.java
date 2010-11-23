@@ -37,13 +37,13 @@ public class JaxbPersistentClassItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel(((JaxbPersistentClass) model()).getTypeQualifiedname());
+		return new StaticPropertyValueModel(((JaxbPersistentClass) model()).getTypeQualifiedName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
 		JaxbPersistentClass jpc = (JaxbPersistentClass) model();
 		return new StaticPropertyValueModel(
-				jpc.getFullyQualifiedName() + "\" - " + jpc.getResource().getFullPath().makeRelative());
+				jpc.getFullyQualifiedName() + " - " + jpc.getResource().getFullPath().makeRelative());
 	}
 }

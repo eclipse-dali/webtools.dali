@@ -42,6 +42,8 @@ public class JaxbPackageItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return buildTextModel();
+		JaxbPackage jaxbPackage = (JaxbPackage) model();
+		return new StaticPropertyValueModel(
+				jaxbPackage.getName() + " - " + jaxbPackage.getResource().getFullPath().makeRelative());
 	}
 }
