@@ -239,7 +239,7 @@ public abstract class AbstractJaxbProject
 				case IResource.FOLDER :
 					return true;  // visit children
 				case IResource.FILE :
-//					AbstractJaxbProject.this.addJpaFile_((IFile) resource.requestResource());
+					AbstractJaxbProject.this.addJaxbFile_((IFile) resource.requestResource());
 					return false;  // no children
 				default :
 					return false;  // no children
@@ -1144,16 +1144,16 @@ public abstract class AbstractJaxbProject
 		return new ResourceDeltaVisitor() {
 			@Override
 			public boolean fileChangeIsSignificant(IFile file, int deltaKind) {
-				return AbstractJaxbProject.this.synchronizeJpaFiles(file, deltaKind);
+				return AbstractJaxbProject.this.synchronizeJaxbFiles(file, deltaKind);
 			}
 		};
 	}
 
 	/**
 	 * Internal resource delta visitor callback.
-	 * Return true if a JpaFile was either added or removed.
+	 * Return true if a JaxbFile was either added or removed.
 	 */
-	protected boolean synchronizeJpaFiles(IFile file, int deltaKind) {
+	protected boolean synchronizeJaxbFiles(IFile file, int deltaKind) {
 		switch (deltaKind) {
 			case IResourceDelta.ADDED :
 				return this.addJaxbFile(file);
