@@ -44,7 +44,7 @@ public interface JaxbPersistentClass
 	 * including qualification for any enclosing types,
 	 * but not including package qualification.
 	 */
-	String getTypeQualifiedname();
+	String getTypeQualifiedName();
 	
 	/**
 	 * Return the name of the class without any package or type qualifiers

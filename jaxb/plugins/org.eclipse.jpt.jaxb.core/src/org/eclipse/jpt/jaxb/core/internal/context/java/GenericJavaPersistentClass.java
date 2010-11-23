@@ -102,7 +102,7 @@ public class GenericJavaPersistentClass
 		return this.resourceType.getPackageName();
 	}
 	
-	public String getTypeQualifiedname() {
+	public String getTypeQualifiedName() {
 		String packageName = getPackageName();
 		return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
 	}
