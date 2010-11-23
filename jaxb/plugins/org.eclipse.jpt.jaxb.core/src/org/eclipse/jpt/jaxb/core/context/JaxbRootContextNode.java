@@ -41,6 +41,11 @@ public interface JaxbRootContextNode
 	
 	int getPersistentClassesSize();
 	
+	/**
+	 * Return the set of persistent classes that are in the given package
+	 */
+	Iterable<JaxbPersistentClass> getPersistentClasses(JaxbPackage jaxbPackage);
+	
 	
 //	// ********** validation **********
 //
