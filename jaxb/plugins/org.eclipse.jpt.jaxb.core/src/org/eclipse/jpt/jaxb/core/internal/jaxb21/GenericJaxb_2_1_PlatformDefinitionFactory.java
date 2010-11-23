@@ -13,10 +13,10 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory;
 
 
-public class Generic_2_1_JaxbPlatformDefinitionFactory
+public class GenericJaxb_2_1_PlatformDefinitionFactory
 		implements JaxbPlatformDefinitionFactory {
 
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
-		return Generic_2_1_JaxbPlatformDefinition.instance();
+		return GenericJaxb_2_1_PlatformDefinition.instance();
 	}
 }

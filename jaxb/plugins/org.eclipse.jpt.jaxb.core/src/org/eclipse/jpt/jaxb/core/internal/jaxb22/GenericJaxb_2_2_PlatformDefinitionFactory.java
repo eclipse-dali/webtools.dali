@@ -9,16 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.jaxb22;
 
-import org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory;
 
 
-public class Generic_2_2_JaxbPlatformDefinitionFactory
+public class GenericJaxb_2_2_PlatformDefinitionFactory
 		implements JaxbPlatformDefinitionFactory {
 
 	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
-		return Generic_2_1_JaxbPlatformDefinition.instance();
+		return GenericJaxb_2_2_PlatformDefinition.instance();
 	}
 
 }

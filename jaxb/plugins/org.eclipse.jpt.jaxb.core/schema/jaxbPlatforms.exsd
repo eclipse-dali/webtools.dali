@@ -161,7 +161,7 @@ The following example is the included generic JAXB 2.2 platform and its platform
    &lt;jaxbPlatform
       id=&quot;generic_2_2&quot;
       label=&quot;%GENERIC_2_2_PLATFORM_LABEL&quot;
-      factoryClass=&quot;org.eclipse.jpt.jaxb.core.internal.jaxb22.Generic_2_2_JaxbPlatformDefinitionFactory&quot;
+      factoryClass=&quot;org.eclipse.jpt.jaxb.core.internal.jaxb22.GenericJaxb_2_2_PlatformDefinitionFactory&quot;
       group=&quot;generic&quot;
       jaxbFacetVersion=&quot;2.2&quot;
       default=&quot;false&quot;/&gt;

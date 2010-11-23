@@ -12,6 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal.jaxb21;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbPlatformDefinition;
@@ -45,14 +46,15 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTransientAnnotationDe
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
-public class Generic_2_1_JaxbPlatformDefinition
+public class GenericJaxb_2_1_PlatformDefinition
 	extends  AbstractJaxbPlatformDefinition
 {
 	// singleton
-	private static final JaxbPlatformDefinition INSTANCE = new Generic_2_1_JaxbPlatformDefinition();
+	private static final JaxbPlatformDefinition INSTANCE = new GenericJaxb_2_1_PlatformDefinition();
 
 	/**
 	 * Return the singleton.
@@ -60,16 +62,18 @@ public class Generic_2_1_JaxbPlatformDefinition
 	public static JaxbPlatformDefinition instance() {
 		return INSTANCE;
 	}
-
-	/**
-	 * Ensure single instance.
-	 */
-	private Generic_2_1_JaxbPlatformDefinition() {
+	
+	protected GenericJaxb_2_1_PlatformDefinition() {
 		super();
+	}
+	
+	
+	public JaxbPlatformDescription getDescription() {
+		return GenericJaxbPlatform.VERSION_2_1;
 	}
 
 	public JaxbFactory getFactory() {
-		return Generic_2_1_JaxbFactory.instance();
+		return GenericJaxb_2_1_Factory.instance();
 	}
 	
 	@Override

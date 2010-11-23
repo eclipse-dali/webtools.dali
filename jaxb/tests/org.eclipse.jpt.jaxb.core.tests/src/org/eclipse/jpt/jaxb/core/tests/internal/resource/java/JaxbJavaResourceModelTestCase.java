@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 
-import org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 
@@ -23,11 +23,11 @@ public class JaxbJavaResourceModelTestCase
 	
 	@Override
 	protected AnnotationDefinition[] annotationDefinitions() {
-		return Generic_2_1_JaxbPlatformDefinition.instance().getAnnotationDefinitions();
+		return GenericJaxb_2_1_PlatformDefinition.instance().getAnnotationDefinitions();
 	}
 	
 	@Override
 	protected NestableAnnotationDefinition[] nestableAnnotationDefinitions() {
-		return Generic_2_1_JaxbPlatformDefinition.instance().getNestableAnnotationDefinitions();
+		return GenericJaxb_2_1_PlatformDefinition.instance().getNestableAnnotationDefinitions();
 	}
 }

@@ -55,7 +55,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  *
- * @see org.eclipse.jpt.jaxb.core.internal.jaxb21.Generic_2_1_JaxbFactory
+ * @see org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory
  * 
  * @version 3.0
  * @since 3.0
