@@ -116,7 +116,7 @@ public class LibraryValidatorManager {
 			lvConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.libraryValidatorConfigs.containsKey(lvConfig.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, lvConfig.getId());
+				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, lvConfig.getId());
 				throw new XPointException();
 			}
 			

@@ -114,7 +114,7 @@ public class JpaPlatformManagerImpl
 			desc.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.jpaPlatformGroupDescriptions.containsKey(desc.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, desc.getId());
+				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, desc.getId());
 				throw new XPointException();
 			}
 			
@@ -140,7 +140,7 @@ public class JpaPlatformManagerImpl
 			desc.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.jpaPlatformDescriptions.containsKey(desc.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, desc.getId());
+				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, desc.getId());
 				throw new XPointException();
 			}
 			

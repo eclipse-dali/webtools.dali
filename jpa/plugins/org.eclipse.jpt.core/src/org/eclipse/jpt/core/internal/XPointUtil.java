@@ -77,9 +77,9 @@ public class XPointUtil {
 		return (Class<T>) clazz;
     }
 	
-	public static void logDuplicateExtension(String extensionPoint, String id) {
+	public static void logDuplicateExtension(String extensionPoint, String nodeName, String value) {
 		
-		log(JptCoreMessages.REGISTRY_DUPLICATE, extensionPoint, id);
+		log(JptCoreMessages.REGISTRY_DUPLICATE, extensionPoint, nodeName, value);
 	}
 	
 	public static void logMissingAttribute(

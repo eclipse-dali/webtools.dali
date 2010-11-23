@@ -122,7 +122,7 @@ public class ResourceLocatorManager {
 			rlConfig.setId(findRequiredAttribute(element, ID_ATTRIBUTE));
 			
 			if (this.resourceLocatorConfigs.containsKey(rlConfig.getId())) {
-				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, rlConfig.getId());
+				logDuplicateExtension(QUALIFIED_EXTENSION_POINT_ID, ID_ATTRIBUTE, rlConfig.getId());
 				throw new XPointException();
 			}
 			
