@@ -28,6 +28,8 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
  */
 public interface JaxbPlatform {
 	
+	JaxbPlatformDescription getDescription();
+	
 	// ********** factory **********
 
 	/**

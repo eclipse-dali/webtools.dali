@@ -29,6 +29,8 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  */
 public interface JaxbPlatformDefinition {
 	
+	JaxbPlatformDescription getDescription();
+	
 	JaxbFactory getFactory();
 	
 	AnnotationDefinition[] getAnnotationDefinitions();

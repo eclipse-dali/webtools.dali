@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public final class JaxbPlatformImpl
@@ -38,8 +39,12 @@ public final class JaxbPlatformImpl
 		this.platformDefinition = jaxbPlatformDefinition;
 		this.annotationProvider = new GenericAnnotationProvider(this.platformDefinition.getAnnotationDefinitions(), this.platformDefinition.getNestableAnnotationDefinitions());
 	}
-
-
+	
+	
+	public JaxbPlatformDescription getDescription() {
+		return this.platformDefinition.getDescription();
+	}
+	
 	// ********** factory **********
 
 	public JaxbFactory getFactory() {
