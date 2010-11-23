@@ -120,19 +120,19 @@ public class GenericRootContextNodeTests extends JaxbContextModelTestCase
 		this.createTypeWithXmlType();
 		Iterator<JaxbPersistentClass> persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
 		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 
 		//add an unannotated class and make sure it's not added to the root context node
 		this.createUnannotatedTestTypeNamed("Foo");
 		persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
 		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 
 		//annotate the class with @XmlType and test it's added to the root context node
-		JavaResourceType fooResourcePackage = getJaxbProject().getJavaResourceType("test.Foo");
-		AnnotatedElement annotatedElement = this.annotatedElement(fooResourcePackage);
+		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AnnotatedElement annotatedElement = this.annotatedElement(fooResourceType);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericRootContextNodeTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
@@ -142,14 +142,14 @@ public class GenericRootContextNodeTests extends JaxbContextModelTestCase
 		Iterable<String> persistentClassNames = new TransformationIterable<JaxbPersistentClass, String>(this.getRootContextNode().getPersistentClasses()) {
 			@Override
 			protected String transform(JaxbPersistentClass o) {
-				return o.getName();
+				return o.getFullyQualifiedName();
 			}
 		};
 		assertEquals(2, this.getRootContextNode().getPersistentClassesSize());
 		assertTrue(CollectionTools.contains(persistentClassNames, "test.Foo"));
 		assertTrue(CollectionTools.contains(persistentClassNames, FULLY_QUALIFIED_TYPE_NAME));
 
-		//remove the annotation from the package-info.java and test it's removed from the root context node
+		//remove the annotation from the class and test it's removed from the root context node
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericRootContextNodeTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
@@ -158,7 +158,7 @@ public class GenericRootContextNodeTests extends JaxbContextModelTestCase
 
 		persistentClasses = this.getRootContextNode().getPersistentClasses().iterator();
 		assertEquals(1, this.getRootContextNode().getPersistentClassesSize());
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getName());
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 	}
 }

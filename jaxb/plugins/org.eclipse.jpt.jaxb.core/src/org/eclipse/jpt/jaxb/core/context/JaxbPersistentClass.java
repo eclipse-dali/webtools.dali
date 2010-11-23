@@ -26,18 +26,31 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JaxbPersistentClass
-	extends 
-		JaxbContextNode, 
-		XmlAccessTypeHolder,
-		XmlAccessOrderHolder
-{
+		extends JaxbContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
 	
 	/**
-	 * The fully qualified class name.
-	 * This is unchanging in that, if a class name changes, a new JaxbType is created.
+	 * Returns the fully qualified name of this class,
+	 * including qualification for any containing types and packages.
 	 */
-	String getName();
-
+	String getFullyQualifiedName();
+	
+	/**
+	 * Return the name of the class' package.  Empty string if none.
+	 */
+	String getPackageName();
+	
+	/**
+	 * Returns the type-qualified name of this type,
+	 * including qualification for any enclosing types,
+	 * but not including package qualification.
+	 */
+	String getTypeQualifiedname();
+	
+	/**
+	 * Return the name of the class without any package or type qualifiers
+	 */
+	String getSimpleName();
+	
 	JavaResourceType getJaxbResourceType();
 
 	JaxbPersistentClass getSuperPersistentClass();

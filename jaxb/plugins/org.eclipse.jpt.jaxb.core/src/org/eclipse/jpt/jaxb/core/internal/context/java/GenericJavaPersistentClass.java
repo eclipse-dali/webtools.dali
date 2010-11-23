@@ -94,8 +94,21 @@ public class GenericJavaPersistentClass
 		return this.resourceType;
 	}
 	
-	public String getName() {
+	public String getFullyQualifiedName() {
 		return this.resourceType.getQualifiedName();
+	}
+	
+	public String getPackageName() {
+		return this.resourceType.getPackageName();
+	}
+	
+	public String getTypeQualifiedname() {
+		String packageName = getPackageName();
+		return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
+	}
+	
+	public String getSimpleName() {
+		return resourceType.getName();
 	}
 
 	// ********** xml type annotation **********
