@@ -20,6 +20,7 @@ public class JaxbCoreJavaContextModelTests extends TestCase
 		suite.addTestSuite(GenericJavaPackageInfoTests.class);
 		suite.addTestSuite(GenericJavaPersistentClassTests.class);
 		suite.addTestSuite(GenericJavaXmlJavaTypeAdapterTests.class);
+		suite.addTestSuite(GenericJavaXmlRootElementTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTypeTests.class);
 		return suite;

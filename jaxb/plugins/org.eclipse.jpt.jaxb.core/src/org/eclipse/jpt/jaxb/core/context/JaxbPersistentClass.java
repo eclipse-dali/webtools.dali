@@ -106,4 +106,27 @@ public interface JaxbPersistentClass
 	void removeProp(String prop);
 	void moveProp(int targetIndex, int sourceIndex);
 		String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
+
+
+	// ********** root element ************
+	/**
+	 * Return whether this class is a root element (has the XmlRootElement annotation)
+	 */
+	boolean isRootElement();
+
+	/**
+	 * Return the root element or null if it is not a root element.
+	 */
+	XmlRootElement getRootElement();
+
+	/**
+	 * Set the root element name, this will add the XmlRootElement annotation
+	 * and set its name to the specified name.
+	 * To remove the XmlRootElement annotation, pass in null.
+	 * To set the name when the class is already a root element,
+	 * set it directly on the XmlRootElement.
+	 */
+	XmlRootElement setRootElement(String name);
+		String ROOT_ELEMENT = "rootElement"; //$NON-NLS-1$
+
 }

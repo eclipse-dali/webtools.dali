@@ -26,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -695,5 +696,58 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 
 	protected void removeProp(ModifiedDeclaration declaration, int index) {
 		this.removeArrayElement((NormalAnnotation) getXmlTypeAnnotation(declaration), JAXB.XML_TYPE__PROP_ORDER, index);
+	}
+
+	public void testModifyXmlRootElement() throws Exception {
+		createTypeWithXmlType();
+		
+		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+
+		assertNull(persistentClass.getRootElement());
+		assertFalse(persistentClass.isRootElement());
+
+		persistentClass.setRootElement("foo");
+		XmlRootElementAnnotation xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		assertEquals("foo", xmlRootElementAnnotation.getName());
+		assertEquals("foo", persistentClass.getRootElement().getName());
+		assertTrue(persistentClass.isRootElement());
+
+		persistentClass.setRootElement(null);
+		xmlRootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		assertNull(xmlRootElementAnnotation);
+		assertNull(persistentClass.getRootElement());
+		assertFalse(persistentClass.isRootElement());
+	}
+
+	public void testUpdateXmlRootElement() throws Exception {
+		createTypeWithXmlType();
+		
+		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+	
+		assertNull(persistentClass.getRootElement());
+		assertFalse(persistentClass.isRootElement());
+		
+		
+		//add a XmlRootElement annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				NormalAnnotation annotation = GenericJavaPersistentClassTests.this.addNormalAnnotation(declaration.getDeclaration(), JAXB.XML_ROOT_ELEMENT);
+				GenericJavaPersistentClassTests.this.addMemberValuePair(annotation, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
+			}
+		});
+		assertEquals("foo", persistentClass.getRootElement().getName());
+		assertTrue(persistentClass.isRootElement());
+
+		//remove the XmlRootElement annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_ROOT_ELEMENT);
+			}
+		});
+		assertNull(persistentClass.getRootElement());
+		assertFalse(persistentClass.isRootElement());
 	}
 }

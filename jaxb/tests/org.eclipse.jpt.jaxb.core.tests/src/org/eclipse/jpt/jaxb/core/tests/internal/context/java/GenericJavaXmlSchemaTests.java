@@ -688,7 +688,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 	//removing the XmlSchema annotation. Only "annotated" packages are added to the context model
 	protected void removeXmlSchemaAnnotation(ModifiedDeclaration declaration) {
 		this.addMarkerAnnotation(declaration.getDeclaration(), XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		this.removeAnnotation(declaration, XmlSchemaAnnotation.ANNOTATION_NAME);		
+		this.removeAnnotation(declaration, XmlSchemaAnnotation.ANNOTATION_NAME);
 	}
 
 	protected Annotation getXmlSchemaAnnotation(ModifiedDeclaration declaration) {

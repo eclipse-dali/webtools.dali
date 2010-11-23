@@ -12,12 +12,14 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
@@ -43,6 +45,8 @@ public class GenericJavaPersistentClass
 	protected XmlAccessOrder defaultAccessOrder;
 	protected XmlAccessOrder specifiedAccessOrder;
 
+	protected XmlRootElement rootElement;
+
 	public GenericJavaPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
@@ -56,6 +60,7 @@ public class GenericJavaPersistentClass
 		this.specifiedAccessOrder = this.getResourceAccessOrder();
 		this.defaultAccessType = this.buildDefaultAccessType();
 		this.defaultAccessOrder = this.buildDefaultAccessOrder();
+		this.rootElement = this.buildRootElement();
 	}
 
 	@Override
@@ -79,6 +84,7 @@ public class GenericJavaPersistentClass
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
 		this.syncPropOrder();
+		this.syncRootElement();
 	}
 
 	public void update() {
@@ -108,7 +114,7 @@ public class GenericJavaPersistentClass
 	}
 	
 	public String getSimpleName() {
-		return resourceType.getName();
+		return this.resourceType.getName();
 	}
 
 	// ********** xml type annotation **********
@@ -429,6 +435,63 @@ public class GenericJavaPersistentClass
 		return packageInfo == null ? null : packageInfo.getAccessOrder();
 	}
 
+
+	// *************** root element *********************
+
+	public XmlRootElement getRootElement() {
+		return this.rootElement;
+	}
+
+	public boolean isRootElement() {
+		return this.rootElement != null;
+	}
+
+	public XmlRootElement setRootElement(String name) {
+		if (name == null) {
+			this.getJaxbResourceType().removeAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+			this.setRootElement_(null);
+			return null;
+		}
+		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJaxbResourceType().addAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		resourceRootElement.setName(name);
+		XmlRootElement contextRootElement = this.buildRootElement(resourceRootElement);
+		this.setRootElement_(contextRootElement);
+		return contextRootElement;
+	}
+
+	protected void setRootElement_(XmlRootElement rootElement) {
+		XmlRootElement old = this.rootElement;
+		this.rootElement = rootElement;
+		this.firePropertyChanged(ROOT_ELEMENT, old, rootElement);
+	}
+
+	protected XmlRootElement buildRootElement() {
+		XmlRootElementAnnotation resourceRootElement = this.getRootElementAnnotation();
+		return resourceRootElement == null ? null : this.buildRootElement(resourceRootElement);
+	}
+
+	protected XmlRootElement buildRootElement(XmlRootElementAnnotation resourceRootElement) {
+		return getFactory().buildJavaXmlRootElement(this, resourceRootElement);
+	}
+
+	protected void syncRootElement() {
+		XmlRootElementAnnotation resourceRootElement = this.getRootElementAnnotation();
+		if (resourceRootElement != null) {
+			if (this.rootElement != null) {
+				this.rootElement.synchronizeWithResourceModel();
+			}
+			else {
+				this.setRootElement_(this.buildRootElement(resourceRootElement));
+			}
+		}
+		else if (this.rootElement != null) {
+			this.setRootElement_(null);
+		}
+	}
+
+	protected XmlRootElementAnnotation getRootElementAnnotation() {
+		return (XmlRootElementAnnotation) this.getJaxbResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+	}
 
 	/**
 	 * xml java type adapter container
