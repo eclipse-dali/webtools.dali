@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.jpt.jaxb.ui.internal.platform.JaxbPlatformUiManagerImpl;
+import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
@@ -91,6 +93,12 @@ public class JptJaxbUiPlugin extends AbstractUIPlugin
 		return image;
 	}
 
+	
+	public static JaxbPlatformUiManager getJaxbPlatformUiManager() {
+		return JaxbPlatformUiManagerImpl.instance();
+	}
+	
+	
 	// ********** XMLCorePlugin API **********
 	
 	public ICatalog getDefaultXMLCatalog() {
