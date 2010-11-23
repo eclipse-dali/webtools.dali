@@ -17,9 +17,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class XmlTransientAnnotationTests extends JaxbJavaResourceModelTestCase {
+public class XmlTransientTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
-	public XmlTransientAnnotationTests(String name) {
+	public XmlTransientTypeAnnotationTests(String name) {
 		super(name);
 	}
 

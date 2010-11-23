@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
@@ -34,7 +33,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  * javax.xml.bind.annotation.XmlSchemaType
  */
 public class SourceXmlSchemaTypeAnnotation
-		extends SourceAnnotation<AnnotatedPackage>
+		extends SourceAnnotation<AnnotatedElement>
 		implements XmlSchemaTypeAnnotation {
 	
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -55,7 +54,7 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	
 	// ********** constructors **********
-	public static SourceXmlSchemaTypeAnnotation buildSourceXmlSchemaTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedPackage annotatedElement, int index) {
+	public static SourceXmlSchemaTypeAnnotation buildSourceXmlSchemaTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildXmlSchemaTypeDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildXmlSchemaTypeAnnotationAdapter(annotatedElement, idaa);
 		return new SourceXmlSchemaTypeAnnotation(
@@ -67,7 +66,7 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	private SourceXmlSchemaTypeAnnotation(
 			JavaResourceAnnotatedElement parent,
-			AnnotatedPackage element, 
+			AnnotatedElement element, 
 			IndexedDeclarationAnnotationAdapter daa,
 			IndexedAnnotationAdapter annotationAdapter) {
 		

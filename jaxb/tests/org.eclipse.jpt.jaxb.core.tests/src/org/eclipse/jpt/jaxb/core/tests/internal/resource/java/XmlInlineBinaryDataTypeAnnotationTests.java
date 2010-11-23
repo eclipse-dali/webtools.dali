@@ -17,9 +17,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlInlineBinaryDataAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
-public class XmlInlineBinaryDataAnnotationTests extends JaxbJavaResourceModelTestCase {
+public class XmlInlineBinaryDataTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 
-	public XmlInlineBinaryDataAnnotationTests(String name) {
+	public XmlInlineBinaryDataTypeAnnotationTests(String name) {
 		super(name);
 	}
 

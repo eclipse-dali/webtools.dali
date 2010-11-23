@@ -32,7 +32,8 @@ public class JaxbJavaResourceModelTests {
 		suite.addTestSuite(XmlEnumValueAnnotationTests.class);
 		suite.addTestSuite(XmlIDAnnotationTests.class);
 		suite.addTestSuite(XmlIDREFAnnotationTests.class);
-		suite.addTestSuite(XmlInlineBinaryDataAnnotationTests.class);
+		suite.addTestSuite(XmlInlineBinaryDataAttributeAnnotationTests.class);
+		suite.addTestSuite(XmlInlineBinaryDataTypeAnnotationTests.class);
 		suite.addTestSuite(XmlJavaTypeAdapterPackageAnnotationTests.class);
 		suite.addTestSuite(XmlJavaTypeAdapterTypeAnnotationTests.class);
 		suite.addTestSuite(XmlListAnnotationTests.class);
@@ -41,9 +42,11 @@ public class JaxbJavaResourceModelTests {
 		suite.addTestSuite(XmlRegistryAnnotationTests.class);
 		suite.addTestSuite(XmlRootElementAnnotationTests.class);
 		suite.addTestSuite(XmlSchemaAnnotationTests.class);
-		suite.addTestSuite(XmlSchemaTypeAnnotationTests.class);
+		suite.addTestSuite(XmlSchemaTypeAttributeAnnotationTests.class);
+		suite.addTestSuite(XmlSchemaTypePackageAnnotationTests.class);
 		suite.addTestSuite(XmlSeeAlsoAnnotationTests.class);
-		suite.addTestSuite(XmlTransientAnnotationTests.class);
+		suite.addTestSuite(XmlTransientAttributeAnnotationTests.class);
+		suite.addTestSuite(XmlTransientTypeAnnotationTests.class);
 		suite.addTestSuite(XmlTypeAnnotationTests.class);
 		suite.addTestSuite(XmlValueAnnotationTests.class);
 
