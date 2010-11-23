@@ -54,7 +54,12 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	
 	// ********** constructors **********
-	public static SourceXmlSchemaTypeAnnotation buildSourceXmlSchemaTypeAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
+	
+	public static SourceXmlSchemaTypeAnnotation buildSourceXmlSchemaTypeAnnotation(
+			JavaResourceAnnotatedElement parent, 
+			AnnotatedElement annotatedElement, 
+			int index) {
+		
 		IndexedDeclarationAnnotationAdapter idaa = buildXmlSchemaTypeDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildXmlSchemaTypeAnnotationAdapter(annotatedElement, idaa);
 		return new SourceXmlSchemaTypeAnnotation(
@@ -66,11 +71,11 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	private SourceXmlSchemaTypeAnnotation(
 			JavaResourceAnnotatedElement parent,
-			AnnotatedElement element, 
+			AnnotatedElement annotatedElement, 
 			IndexedDeclarationAnnotationAdapter daa,
 			IndexedAnnotationAdapter annotationAdapter) {
 		
-		super(parent, element, daa, annotationAdapter);
+		super(parent, annotatedElement, daa, annotationAdapter);
 		this.nameDeclarationAdapter = buildNameAdapter(daa);
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
 		this.namespaceDeclarationAdapter = buildNamespaceAdapter(daa);
