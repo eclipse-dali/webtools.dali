@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
@@ -96,6 +97,8 @@ public interface JaxbFactory  {
 	// ********** Java context nodes **********
 	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
+	
+	JaxbRegistry buildRegistry(JaxbContextRoot parent, JavaResourceType resourceType);
 	
 	JaxbPersistentClass buildPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType);
 	

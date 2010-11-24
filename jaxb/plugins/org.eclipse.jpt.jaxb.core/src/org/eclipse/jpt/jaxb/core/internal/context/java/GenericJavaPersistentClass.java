@@ -15,7 +15,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
-import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
@@ -24,10 +23,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaPersistentClass
-		extends AbstractJaxbContextNode
+		extends AbstractJavaType
 		implements JaxbPersistentClass {
-
-	protected final JavaResourceType resourceType;
 
 	protected String factoryClass;
 	protected String factoryMethod;
@@ -47,8 +44,7 @@ public class GenericJavaPersistentClass
 	protected XmlRootElement rootElement;
 
 	public GenericJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
-		super(parent);
-		this.resourceType = resourceType;
+		super(parent, resourceType);
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();
 		this.schemaTypeName = this.getResourceSchemaTypeName();
@@ -93,33 +89,17 @@ public class GenericJavaPersistentClass
 	}
 
 
-	// ********** JaxbPersistentClass implementation **********
-
-	public JavaResourceType getJaxbResourceType() {
-		return this.resourceType;
+	// ********** JaxbType impl **********
+	
+	public Kind getKind() {
+		return Kind.PERSISTENT_CLASS;
 	}
 	
-	public String getFullyQualifiedName() {
-		return this.resourceType.getQualifiedName();
-	}
 	
-	public String getPackageName() {
-		return this.resourceType.getPackageName();
-	}
-	
-	public String getTypeQualifiedName() {
-		String packageName = getPackageName();
-		return (packageName.length() == 0) ? getFullyQualifiedName() : getFullyQualifiedName().substring(packageName.length() + 1);
-	}
-	
-	public String getSimpleName() {
-		return this.resourceType.getName();
-	}
-
 	// ********** xml type annotation **********
 
 	protected XmlTypeAnnotation getXmlTypeAnnotation() {
-		return (XmlTypeAnnotation) this.getJaxbResourceType().getNonNullAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
+		return (XmlTypeAnnotation) this.getJavaResourceType().getNonNullAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 	}
 
 
@@ -336,7 +316,7 @@ public class GenericJavaPersistentClass
 	}
 
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {
-		return (XmlAccessorTypeAnnotation) this.resourceType.getNonNullAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
 	}
 
 	/**
@@ -403,7 +383,7 @@ public class GenericJavaPersistentClass
 	}
 
 	protected XmlAccessorOrderAnnotation getAccessorOrderAnnotation() {
-		return (XmlAccessorOrderAnnotation) this.resourceType.getNonNullAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
+		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
 	}
 
 	/**
@@ -447,11 +427,11 @@ public class GenericJavaPersistentClass
 
 	public XmlRootElement setRootElement(String name) {
 		if (name == null) {
-			this.getJaxbResourceType().removeAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+			this.getJavaResourceType().removeAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 			this.setRootElement_(null);
 			return null;
 		}
-		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJaxbResourceType().addAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJavaResourceType().addAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		resourceRootElement.setName(name);
 		XmlRootElement contextRootElement = this.buildRootElement(resourceRootElement);
 		this.setRootElement_(contextRootElement);
@@ -489,7 +469,7 @@ public class GenericJavaPersistentClass
 	}
 
 	protected XmlRootElementAnnotation getRootElementAnnotation() {
-		return (XmlRootElementAnnotation) this.getJaxbResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 	}
 
 	/**

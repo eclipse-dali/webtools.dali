@@ -53,7 +53,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(contextRootElement.getNamespace());
 		
@@ -72,7 +72,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertNull(contextRootElement.getNamespace());
 		
@@ -98,7 +98,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(contextRootElement.getName());
 		
@@ -117,7 +117,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertNull(contextRootElement.getName());
 		

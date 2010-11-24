@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 
 public class JaxbPackageItemContentProvider
-		extends AbstractTreeItemContentProvider<JaxbPersistentClass> {
+		extends AbstractTreeItemContentProvider<JaxbType> {
 	
 	public JaxbPackageItemContentProvider(
 			JaxbPackage jaxbPackage, DelegatingTreeContentAndLabelProvider contentProvider) {
@@ -39,12 +39,12 @@ public class JaxbPackageItemContentProvider
 	}
 	
 	@Override
-	protected CollectionValueModel<JaxbPersistentClass> buildChildrenModel() {
-		return new CollectionAspectAdapter<JaxbContextRoot, JaxbPersistentClass>(
-				JaxbContextRoot.PERSISTENT_CLASSES_COLLECTION, getParent()) {
+	protected CollectionValueModel<JaxbType> buildChildrenModel() {
+		return new CollectionAspectAdapter<JaxbContextRoot, JaxbType>(
+				JaxbContextRoot.TYPES_COLLECTION, getParent()) {
 			@Override
-			protected Iterable<JaxbPersistentClass> getIterable() {
-				return this.subject.getPersistentClasses(getModel());
+			protected Iterable<JaxbType> getIterable() {
+				return this.subject.getTypes(getModel());
 			}
 		};
 	}

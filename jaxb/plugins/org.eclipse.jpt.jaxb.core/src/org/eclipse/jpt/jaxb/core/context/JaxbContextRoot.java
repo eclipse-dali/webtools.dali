@@ -33,17 +33,38 @@ public interface JaxbContextRoot
 	int getPackagesSize();
 	
 	/**
+	 * Return the set of all JAXB types within this context root.
+	 */
+	Iterable<JaxbType> getTypes();
+	public final static String TYPES_COLLECTION = "types"; //$NON-NLS-1$
+	
+	int getTypesSize();
+	
+	/**
+	 * Return the set of types that are in the given package
+	 */
+	Iterable<JaxbType> getTypes(JaxbPackage jaxbPackage);
+	
+	/**
 	 * The set of persistent classes.  These may be explicitly or implicitly included.
 	 */
 	Iterable<JaxbPersistentClass> getPersistentClasses();
-	public final static String PERSISTENT_CLASSES_COLLECTION = "persistentClasses"; //$NON-NLS-1$
-	
-	int getPersistentClassesSize();
 	
 	/**
 	 * Return the set of persistent classes that are in the given package
 	 */
 	Iterable<JaxbPersistentClass> getPersistentClasses(JaxbPackage jaxbPackage);
+	
+	/**
+	 * The set of registries.
+	 */
+	Iterable<JaxbRegistry> getRegistries();
+	
+	/**
+	 * Return the set of registries that are in the given package
+	 * (There should typically be a max of 1, but there are invalid states ...)
+	 */
+	Iterable<JaxbRegistry> getRegistries(JaxbPackage jaxbPackage);
 	
 	
 //	// ********** validation **********

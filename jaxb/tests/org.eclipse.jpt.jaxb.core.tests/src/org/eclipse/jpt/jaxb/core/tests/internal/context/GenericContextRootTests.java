@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -42,6 +43,19 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 
 	private ICompilationUnit createUnannotatedPackageInfo(String packageName) throws CoreException {
 		return createTestPackageInfo(packageName);
+	}
+
+	private ICompilationUnit createTypeWithXmlRegistry() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_REGISTRY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlRegistry");
+			}
+		});
 	}
 
 	private ICompilationUnit createTypeWithXmlType() throws Exception {
@@ -116,49 +130,146 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
 	}
 
+	public void testGetRegistries() throws Exception {
+		createTypeWithXmlRegistry();
+		Iterator<JaxbRegistry> registries = getContextRoot().getRegistries().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, registries.next().getFullyQualifiedName());
+		assertFalse(registries.hasNext());
+		
+		//add an unannotated class and make sure it's not added to the context root
+		createUnannotatedTestTypeNamed("Foo");
+		registries = getContextRoot().getRegistries().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, registries.next().getFullyQualifiedName());
+		assertFalse(registries.hasNext());
+		
+		//annotate the class with @XmlRegistry and test it's added to the root context node
+		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_REGISTRY);
+					}
+				});
+		
+		Iterable<String> registryNames = 
+				new TransformationIterable<JaxbRegistry, String>(
+						getContextRoot().getRegistries()) {
+					@Override
+					protected String transform(JaxbRegistry o) {
+						return o.getFullyQualifiedName();
+					}
+				};
+		assertEquals(2, CollectionTools.size(getContextRoot().getRegistries()));
+		assertTrue(CollectionTools.contains(registryNames, "test.Foo"));
+		assertTrue(CollectionTools.contains(registryNames, FULLY_QUALIFIED_TYPE_NAME));
+		
+		//remove the annotation from the class and test it's removed from the context root
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_REGISTRY);
+					}
+				});
+		
+		registries = getContextRoot().getRegistries().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, registries.next().getFullyQualifiedName());
+		assertFalse(registries.hasNext());
+	}
+	
 	public void testGetPersistentClasses() throws Exception {
 		this.createTypeWithXmlType();
 		Iterator<JaxbPersistentClass> persistentClasses = this.getContextRoot().getPersistentClasses().iterator();
-		assertEquals(1, this.getContextRoot().getPersistentClassesSize());
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
-
-		//add an unannotated class and make sure it's not added to the root context node
-		this.createUnannotatedTestTypeNamed("Foo");
+		
+		//add an unannotated class and make sure it's not added to the context root
+		createUnannotatedTestTypeNamed("Foo");
 		persistentClasses = this.getContextRoot().getPersistentClasses().iterator();
-		assertEquals(1, this.getContextRoot().getPersistentClassesSize());
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 
-		//annotate the class with @XmlType and test it's added to the root context node
+		//annotate the class with @XmlType and test it's added to the context root
 		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
-		AnnotatedElement annotatedElement = this.annotatedElement(fooResourceType);
-		annotatedElement.edit(new Member.Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				GenericContextRootTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
-			}
-		});
-
-		Iterable<String> persistentClassNames = new TransformationIterable<JaxbPersistentClass, String>(this.getContextRoot().getPersistentClasses()) {
-			@Override
-			protected String transform(JaxbPersistentClass o) {
-				return o.getFullyQualifiedName();
-			}
-		};
-		assertEquals(2, this.getContextRoot().getPersistentClassesSize());
+		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
+					}
+				});
+		
+		Iterable<String> persistentClassNames = 
+				new TransformationIterable<JaxbPersistentClass, String>(
+						getContextRoot().getPersistentClasses()) {
+					@Override
+					protected String transform(JaxbPersistentClass o) {
+						return o.getFullyQualifiedName();
+					}
+				};
+		assertEquals(2, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertTrue(CollectionTools.contains(persistentClassNames, "test.Foo"));
 		assertTrue(CollectionTools.contains(persistentClassNames, FULLY_QUALIFIED_TYPE_NAME));
 
 		//remove the annotation from the class and test it's removed from the root context node
-		annotatedElement.edit(new Member.Editor() {
-			public void edit(ModifiedDeclaration declaration) {
-				GenericContextRootTests.this.removeAnnotation(declaration, JAXB.XML_TYPE);
-			}
-		});
-
-		persistentClasses = this.getContextRoot().getPersistentClasses().iterator();
-		assertEquals(1, this.getContextRoot().getPersistentClassesSize());
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_TYPE);
+					}
+				});
+		
+		persistentClasses = getContextRoot().getPersistentClasses().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
+	}
+	
+	public void testChangeTypeKind() throws Exception {
+		createTypeWithXmlRegistry();
+		createUnannotatedTestTypeNamed("Foo");
+		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_REGISTRY);
+					}
+				});
+		
+		assertEquals(2, getContextRoot().getTypesSize());
+		assertEquals(2, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(0, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		
+		// remove the @XmlRegistry annotation and add an @XmlType annotation
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_REGISTRY);
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
+					}
+				});
+		
+		assertEquals(2, getContextRoot().getTypesSize());
+		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		
+		// remove the @XmlType annotation and add an @XmlRegistry annotation
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_TYPE);
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_REGISTRY);
+					}
+				});
+		
+		assertEquals(2, getContextRoot().getTypesSize());
+		assertEquals(2, CollectionTools.size(getContextRoot().getRegistries()));
+		assertEquals(0, CollectionTools.size(getContextRoot().getPersistentClasses()));
 	}
 }

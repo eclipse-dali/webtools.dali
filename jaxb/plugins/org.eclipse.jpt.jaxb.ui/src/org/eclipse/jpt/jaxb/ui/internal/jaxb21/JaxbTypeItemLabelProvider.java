@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
@@ -19,13 +19,13 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 
 
-public class JaxbPersistentClassItemLabelProvider
+public class JaxbTypeItemLabelProvider
 		extends AbstractItemLabelProvider {
 	
-	public JaxbPersistentClassItemLabelProvider(
-			JaxbPersistentClass jaxbPersistentClass, DelegatingContentAndLabelProvider labelProvider) {
+	public JaxbTypeItemLabelProvider(
+			JaxbType jaxbType, DelegatingContentAndLabelProvider labelProvider) {
 		
-		super(jaxbPersistentClass, labelProvider);
+		super(jaxbType, labelProvider);
 	}
 	
 	
@@ -37,13 +37,13 @@ public class JaxbPersistentClassItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel(((JaxbPersistentClass) model()).getTypeQualifiedName());
+		return new StaticPropertyValueModel(((JaxbType) model()).getTypeQualifiedName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		JaxbPersistentClass jpc = (JaxbPersistentClass) model();
+		JaxbType type = (JaxbType) model();
 		return new StaticPropertyValueModel(
-				jpc.getFullyQualifiedName() + " - " + jpc.getResource().getFullPath().makeRelative());
+				type.getFullyQualifiedName() + " - " + type.getResource().getFullPath().makeRelative());
 	}
 }
