@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -75,7 +75,7 @@ public interface JaxbProject
 	/**
 	 * Return the root of the JAXB project's context model.
 	 */
-	JaxbRootContextNode getRootContextNode();
+	JaxbContextRoot getContextRoot();
 
 	/**
 	 * The JAXB project has been removed from the JJAXBPA model. Clean up any

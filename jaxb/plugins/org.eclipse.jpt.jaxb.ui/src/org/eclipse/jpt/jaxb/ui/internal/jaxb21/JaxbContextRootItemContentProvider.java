@@ -10,25 +10,26 @@
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 
-public class RootContextItemContentProvider
+public class JaxbContextRootItemContentProvider
 		extends AbstractTreeItemContentProvider<JaxbPackage> {
 	
-	public RootContextItemContentProvider(
-			JaxbRootContextNode rootContext, DelegatingTreeContentAndLabelProvider contentProvider) {
+	public JaxbContextRootItemContentProvider(
+			JaxbContextRoot rootContext, DelegatingTreeContentAndLabelProvider contentProvider) {
 		super(rootContext, contentProvider);
 	}
 	
+	
 	@Override
-	public JaxbRootContextNode getModel() {
-		return (JaxbRootContextNode) super.getModel();
+	public JaxbContextRoot getModel() {
+		return (JaxbContextRoot) super.getModel();
 	}
 	
 	@Override
@@ -38,8 +39,8 @@ public class RootContextItemContentProvider
 	
 	@Override
 	protected CollectionValueModel<JaxbPackage> buildChildrenModel() {
-		return new CollectionAspectAdapter<JaxbRootContextNode, JaxbPackage>(
-				JaxbRootContextNode.PACKAGES_COLLECTION,
+		return new CollectionAspectAdapter<JaxbContextRoot, JaxbPackage>(
+				JaxbContextRoot.PACKAGES_COLLECTION,
 				getModel()) {
 			
 			@Override

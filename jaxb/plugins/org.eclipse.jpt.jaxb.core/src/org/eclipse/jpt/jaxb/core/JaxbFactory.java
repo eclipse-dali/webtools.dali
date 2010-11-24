@@ -16,13 +16,13 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
-import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
@@ -88,16 +88,16 @@ public interface JaxbFactory  {
 	 * The root context node will be built once, but updated many times.
 	 * @see JaxbProject#update(org.eclipse.core.runtime.IProgressMonitor)
 	 */
-	JaxbRootContextNode buildRootContextNode(JaxbProject jaxbProject);
+	JaxbContextRoot buildContextRoot(JaxbProject jaxbProject);
 	
-	JaxbPackage buildPackage(JaxbRootContextNode parent, String packageName);
+	JaxbPackage buildPackage(JaxbContextRoot parent, String packageName);
 	
 	
 	// ********** Java context nodes **********
 	
 	JaxbPackageInfo buildJavaPackageInfo(JaxbPackage parent, JavaResourcePackage resourcePackage);
 	
-	JaxbPersistentClass buildPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType);
+	JaxbPersistentClass buildPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType);
 	
 	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
 	

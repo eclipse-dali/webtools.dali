@@ -57,7 +57,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	
 	public void testModifyAccessType() throws Exception {
 		createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertEquals(XmlAccessType.PROPERTY, contextPackageInfo.getSpecifiedAccessType());
@@ -87,7 +87,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	
 	public void testUpdateAccessType() throws Exception {
 		createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertEquals(XmlAccessType.PROPERTY, contextPackageInfo.getSpecifiedAccessType());
@@ -131,7 +131,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	
 	public void testModifyAccessOrder() throws Exception {
 		createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertEquals(XmlAccessOrder.ALPHABETICAL, contextPackageInfo.getSpecifiedAccessOrder());
@@ -153,7 +153,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	
 	public void testUpdateAccessOrder() throws Exception {
 		createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
 		assertEquals(XmlAccessOrder.ALPHABETICAL, contextPackageInfo.getSpecifiedAccessOrder());
@@ -195,7 +195,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testGetXmlSchemaTypes() throws Exception {
 		this.createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
@@ -231,7 +231,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testGetXmlSchemaTypesSize() throws Exception {
 		this.createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		assertEquals(0, contextPackageInfo.getXmlSchemaTypesSize());
@@ -251,7 +251,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		//create a package info with an annotation other than XmlSchema to test
 		//adding things to the null schema annotation
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlSchemaType(0).setName("bar");
@@ -275,7 +275,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		//create a package info with an annotation other than XmlSchema to test
 		//adding things to the null schema annotation
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlSchemaType(0).setName("bar");
@@ -292,7 +292,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testRemoveXmlSchemaType() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlSchemaType(0).setName("bar");
@@ -324,7 +324,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testMoveXmlSchemaType() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlSchemaType(0).setName("bar");
@@ -354,7 +354,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testSyncXmlSchemaTypes() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
@@ -444,7 +444,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testSyncAddXmlSchemaTypes() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		ListIterable<XmlSchemaType> xmlSchemaTypes = contextPackageInfo.getXmlSchemaTypes();
@@ -525,7 +525,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 	
 	public void testGetXmlJavaTypeAdapters() throws Exception {
 		this.createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		ListIterable<XmlJavaTypeAdapter> xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();
@@ -564,7 +564,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testGetXmlJavaTypeAdaptersSize() throws Exception {
 		this.createPackageInfoWithAccessorOrder();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		assertEquals(0, contextPackageInfo.getXmlJavaTypeAdaptersSize());
@@ -584,7 +584,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		//create a package info with an annotation other than XmlSchema to test
 		//adding things to the null schema annotation
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
@@ -608,7 +608,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		//create a package info with an annotation other than XmlSchema to test
 		//adding things to the null schema annotation
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
@@ -625,7 +625,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testRemoveXmlJavaTypeAdapter() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("String");
@@ -663,7 +663,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testMoveXmlJavaTypeAdapter() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		contextPackageInfo.addXmlJavaTypeAdapter(0).setValue("bar");
@@ -693,7 +693,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 
 	public void testSyncXmlJavaTypeAdapters() throws Exception {
 		this.createPackageInfoWithAccessorType();
-		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getRootContextNode().getPackages(), 0).getPackageInfo();
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		ListIterable<XmlJavaTypeAdapter> xmlJavaTypeAdapters = contextPackageInfo.getXmlJavaTypeAdapters();

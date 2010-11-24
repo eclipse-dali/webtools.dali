@@ -51,7 +51,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 	
 	public void testModifyNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
 	
@@ -70,7 +70,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 	
 	public void testUpdateNamespace() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
 
@@ -96,7 +96,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 
 	public void testModifyName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
 	
@@ -115,7 +115,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 	
 	public void testUpdateName() throws Exception {
 		createTypeWithXmlTypeWithXmlRootElement();
-		JaxbPersistentClass persistentClass = CollectionTools.get(getRootContextNode().getPersistentClasses(), 0);
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		JavaResourceType resourceType = persistentClass.getJaxbResourceType();
 

@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
@@ -20,15 +20,20 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;
 
 
-public class RootContextItemLabelProvider
+public class JaxbContextRootItemLabelProvider
 		 extends AbstractItemLabelProvider {
 	
-	public RootContextItemLabelProvider(
-			JaxbRootContextNode rootContextNode, DelegatingContentAndLabelProvider labelProvider) {
+	public JaxbContextRootItemLabelProvider(
+			JaxbContextRoot rootContextNode, DelegatingContentAndLabelProvider labelProvider) {
 		
 		super(rootContextNode, labelProvider);
 	}
 	
+	
+	@Override
+	public JaxbContextRoot model() {
+		return (JaxbContextRoot) super.model();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
@@ -44,6 +49,6 @@ public class RootContextItemLabelProvider
 	protected PropertyValueModel<String> buildDescriptionModel() {
 		return new StaticPropertyValueModel<String>(
 				JptJaxbUiMessages.JaxbContent_label
-						+ " - " + ((JaxbRootContextNode) model()).getResource().getFullPath().makeRelative());
+						+ " - " + model().getResource().getFullPath().makeRelative());
 	}
 }

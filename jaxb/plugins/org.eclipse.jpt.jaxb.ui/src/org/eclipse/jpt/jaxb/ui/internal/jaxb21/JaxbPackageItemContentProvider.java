@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
@@ -27,20 +27,21 @@ public class JaxbPackageItemContentProvider
 		super(jaxbPackage, contentProvider);
 	}
 	
+	
 	@Override
 	public JaxbPackage getModel() {
 		return (JaxbPackage) super.getModel();
 	}
 	
 	@Override
-	public JaxbRootContextNode getParent() {
-		return (JaxbRootContextNode) getModel().getParent();
+	public JaxbContextRoot getParent() {
+		return (JaxbContextRoot) getModel().getParent();
 	}
 	
 	@Override
 	protected CollectionValueModel<JaxbPersistentClass> buildChildrenModel() {
-		return new CollectionAspectAdapter<JaxbRootContextNode, JaxbPersistentClass>(
-				JaxbRootContextNode.PERSISTENT_CLASSES_COLLECTION, getParent()) {
+		return new CollectionAspectAdapter<JaxbContextRoot, JaxbPersistentClass>(
+				JaxbContextRoot.PERSISTENT_CLASSES_COLLECTION, getParent()) {
 			@Override
 			protected Iterable<JaxbPersistentClass> getIterable() {
 				return this.subject.getPersistentClasses(getModel());

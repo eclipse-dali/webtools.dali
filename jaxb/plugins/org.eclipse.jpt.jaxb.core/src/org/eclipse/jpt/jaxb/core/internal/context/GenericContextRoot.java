@@ -15,9 +15,9 @@ import java.util.Set;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -29,9 +29,9 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 /**
  * the context model root
  */
-public class GenericRootContextNode
+public class GenericContextRoot
 		extends AbstractJaxbContextNode
-		implements JaxbRootContextNode {
+		implements JaxbContextRoot {
 	
 	/* This object has no parent, so it must point to the JAXB project explicitly. */
 	protected final JaxbProject jaxbProject;
@@ -43,7 +43,7 @@ public class GenericRootContextNode
 	protected final Map<String, JaxbPersistentClass> persistentClasses;
 	
 	
-	public GenericRootContextNode(JaxbProject jaxbProject) {
+	public GenericContextRoot(JaxbProject jaxbProject) {
 		super(null);  // the JPA project is not really a "parent"...
 		if (jaxbProject == null) {
 			throw new NullPointerException();
@@ -54,6 +54,11 @@ public class GenericRootContextNode
 		initialize();
 	}
 	
+	
+	@Override
+	public JaxbContextRoot getContextRoot() {
+		return this;
+	}
 	
 	@Override
 	protected boolean requiresParent() {

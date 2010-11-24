@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
@@ -40,8 +40,8 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 			Object item,
 			DelegatingContentAndLabelProvider contentAndLabelProvider) {
 		
-		if (item instanceof JaxbRootContextNode) {
-			return new RootContextItemLabelProvider((JaxbRootContextNode) item, contentAndLabelProvider);
+		if (item instanceof JaxbContextRoot) {
+			return new JaxbContextRootItemLabelProvider((JaxbContextRoot) item, contentAndLabelProvider);
 		}
 		else if (item instanceof JaxbPackage) {
 			return new JaxbPackageItemLabelProvider((JaxbPackage) item, contentAndLabelProvider);

@@ -39,7 +39,7 @@ import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
@@ -118,7 +118,7 @@ public abstract class AbstractJaxbProject
 	 * The root of the model representing the collated resources associated with 
 	 * the JAXB project.
 	 */
-	protected final JaxbRootContextNode rootContextNode;
+	protected final JaxbContextRoot contextRoot;
 
 	/**
 	 * A pluggable synchronizer that keeps the JAXB
@@ -176,7 +176,7 @@ public abstract class AbstractJaxbProject
 
 //		this.externalJavaResourcePersistentTypeCache = this.buildExternalJavaResourcePersistentTypeCache();
 
-		this.rootContextNode = this.buildRootContextNode();
+		this.contextRoot = this.buildContextRoot();
 
 		// there *shouldn't* be any changes to the resource model...
 		this.setContextModelSynchronizer_(this.buildSynchronousContextModelSynchronizer());
@@ -212,8 +212,8 @@ public abstract class AbstractJaxbProject
 //		return new BinaryPersistentTypeCache(this.jpaPlatform.getAnnotationProvider());
 //	}
 
-	protected JaxbRootContextNode buildRootContextNode() {
-		return this.getFactory().buildRootContextNode(this);
+	protected JaxbContextRoot buildContextRoot() {
+		return this.getFactory().buildContextRoot(this);
 	}
 
 	// ***** inner class
@@ -532,9 +532,9 @@ public abstract class AbstractJaxbProject
 
 
 	// ********** context model **********
-
-	public JaxbRootContextNode getRootContextNode() {
-		return this.rootContextNode;
+	
+	public JaxbContextRoot getContextRoot() {
+		return this.contextRoot;
 	}
 
 
@@ -1386,7 +1386,7 @@ public abstract class AbstractJaxbProject
 	 * Called by the context model synchronizer.
 	 */
 	public IStatus synchronizeContextModel(IProgressMonitor monitor) {
-		this.rootContextNode.synchronizeWithResourceModel();
+		this.contextRoot.synchronizeWithResourceModel();
 		return Status.OK_STATUS;
 	}
 
@@ -1470,7 +1470,7 @@ public abstract class AbstractJaxbProject
 	 * Called by the update synchronizer.
 	 */
 	public IStatus update(IProgressMonitor monitor) {
-		this.rootContextNode.update();
+		this.contextRoot.update();
 		return Status.OK_STATUS;
 	}
 

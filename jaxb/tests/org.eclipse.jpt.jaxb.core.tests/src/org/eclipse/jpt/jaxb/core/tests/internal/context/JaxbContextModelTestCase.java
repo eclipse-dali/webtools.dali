@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
@@ -58,8 +58,8 @@ public abstract class JaxbContextModelTestCase extends AnnotationTestCase
 		return JaxbFacet.VERSION_2_1;
 	}
 
-	protected JaxbRootContextNode getRootContextNode() {
-		return this.getJaxbProject().getRootContextNode();
+	protected JaxbContextRoot getContextRoot() {
+		return this.getJaxbProject().getContextRoot();
 	}
 	
 	protected AnnotatedElement annotatedElement(JavaResourceAnnotatedElement resource) {

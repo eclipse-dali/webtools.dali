@@ -21,12 +21,11 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbRootContextNode
+public interface JaxbContextRoot
 		extends JaxbContextNode {
 	
 	/**
 	 * The set of packages.  Includes any package with any interesting JAXB content.
-	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
 	 */
 	Iterable<JaxbPackage> getPackages();
 	public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$

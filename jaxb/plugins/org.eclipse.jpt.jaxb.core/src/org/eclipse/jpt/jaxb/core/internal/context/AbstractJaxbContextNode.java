@@ -12,36 +12,36 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbNode;
 
 public abstract class AbstractJaxbContextNode
 	extends AbstractJaxbNode
 	implements JaxbContextNode
 {
-
+	
 	// ********** constructor **********
-
+	
 	protected AbstractJaxbContextNode(JaxbNode parent) {
 		super(parent);
 	}
-
-
-	// ********** JpaNode implentation **********
-
-	/**
-	 * covariant override
-	 */
+	
+	
+	// ********** JaxbNode implentation **********
+	
 	@Override
 	public JaxbContextNode getParent() {
-		return (JaxbContextNode) super.getParent();
+		return (JaxbContextNode) super.getParent();	
 	}
-
-
+	
+	
 	// ********** JaxbContextNode implementation **********
+	
+	public JaxbContextRoot getContextRoot() {
+		return getParent().getContextRoot();
+	}
 	
 	public JpaResourceType getResourceType() {
 		return getParent().getResourceType();
 	}
-	
-
 }

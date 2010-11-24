@@ -17,22 +17,22 @@ import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
-import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
-import org.eclipse.jpt.jaxb.core.internal.context.GenericRootContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentClass;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
@@ -67,11 +67,11 @@ public abstract class AbstractJaxbFactory
 	
 	// ********** Non-resource-specific context nodes **********
 	
-	public JaxbRootContextNode buildRootContextNode(JaxbProject parent) {
-		return new GenericRootContextNode(parent);
+	public JaxbContextRoot buildContextRoot(JaxbProject parent) {
+		return new GenericContextRoot(parent);
 	}
 	
-	public JaxbPackage buildPackage(JaxbRootContextNode parent, String packageName) {
+	public JaxbPackage buildPackage(JaxbContextRoot parent, String packageName) {
 		return new GenericPackage(parent, packageName);
 	}
 	
@@ -82,7 +82,7 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaPackageInfo(parent, resourcePackage);
 	}
 	
-	public JaxbPersistentClass buildPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType) {
+	public JaxbPersistentClass buildPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		return new GenericJavaPersistentClass(parent, resourceType);
 	}
 	

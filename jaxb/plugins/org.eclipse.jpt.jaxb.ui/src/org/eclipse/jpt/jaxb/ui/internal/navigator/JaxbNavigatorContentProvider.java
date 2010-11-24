@@ -137,7 +137,7 @@ public class JaxbNavigatorContentProvider
 							JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(desc);
 					
 					if (platformUi != null) {
-						return new Object[] {jaxbProject.getRootContextNode()};
+						return new Object[] {jaxbProject.getContextRoot()};
 					}
 				}	
 			}

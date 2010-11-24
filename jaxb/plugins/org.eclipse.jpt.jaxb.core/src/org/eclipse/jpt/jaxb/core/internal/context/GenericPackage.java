@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
 public class GenericPackage
@@ -23,7 +23,7 @@ public class GenericPackage
 	protected JaxbPackageInfo packageInfo;
 	
 	
-	public GenericPackage(JaxbRootContextNode parent, String name) {
+	public GenericPackage(JaxbContextRoot parent, String name) {
 		super(parent);
 		this.name = name;
 		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);

@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
-import org.eclipse.jpt.jaxb.core.context.JaxbRootContextNode;
-import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -24,9 +24,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaPersistentClass
-	extends AbstractJaxbContextNode
-	implements JaxbPersistentClass
-{
+		extends AbstractJaxbContextNode
+		implements JaxbPersistentClass {
 
 	protected final JavaResourceType resourceType;
 
@@ -47,7 +46,7 @@ public class GenericJavaPersistentClass
 
 	protected XmlRootElement rootElement;
 
-	public GenericJavaPersistentClass(JaxbRootContextNode parent, JavaResourceType resourceType) {
+	public GenericJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		this.factoryClass = this.getResourceFactoryClass();
@@ -64,8 +63,8 @@ public class GenericJavaPersistentClass
 	}
 
 	@Override
-	public JaxbRootContextNode getParent() {
-		return (JaxbRootContextNode) super.getParent();
+	public JaxbContextRoot getParent() {
+		return (JaxbContextRoot) super.getParent();
 	}
 
 	protected JaxbPackageInfo getPackageInfo() {

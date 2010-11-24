@@ -26,8 +26,13 @@ import org.eclipse.jpt.jaxb.core.JaxbNode;
  * @since 3.0
  */
 public interface JaxbContextNode
-	extends JaxbNode
-{
+		extends JaxbNode {
+	
+	/**
+	 * Return the root of the context model
+	 */
+	JaxbContextRoot getContextRoot();
+	
 	/**
 	 * Return the resource type of the context node's resource.
 	 */
