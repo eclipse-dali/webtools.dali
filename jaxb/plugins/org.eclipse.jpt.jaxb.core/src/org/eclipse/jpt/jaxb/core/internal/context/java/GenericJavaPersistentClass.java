@@ -9,7 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.Collection;
+import java.util.HashSet;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
@@ -20,6 +23,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaPersistentClass
@@ -64,9 +69,8 @@ public class GenericJavaPersistentClass
 	}
 
 	protected JaxbPackageInfo getPackageInfo() {
-		//TODO
-		return null;
-		//return this.getParent().getPackageInfo();
+		JaxbPackage jaxbPackage = getParent().getPackage(this.getPackageName());
+		return jaxbPackage == null ? null : jaxbPackage.getPackageInfo();
 	}
 
 	// ********** synchronize/update **********
@@ -237,48 +241,66 @@ public class GenericJavaPersistentClass
 		this.firePropertyChanged(SUPER_PERSISTENT_CLASS_PROPERTY, old, superPersistentClass);
 	}
 
-	//TODO super persistent class
 	protected JaxbPersistentClass buildSuperPersistentClass() {
-		return null;
-//		HashSet<JavaResourcePersistentType> visited = new HashSet<JavaResourcePersistentType>();
-//		visited.add(this.resourcePersistentType);
-//		PersistentType spt = this.getSuperPersistentType(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
-//		if (spt == null) {
-//			return null;
-//		}
-//		if (CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
-//			return null;  // short-circuit in this case, we have circular inheritance
-//		}
-//		return spt.isMapped() ? spt : spt.getSuperPersistentType();
+		HashSet<JavaResourceType> visited = new HashSet<JavaResourceType>();
+		visited.add(this.resourceType);
+		JaxbPersistentClass spc = this.getSuperPersistentClass(this.resourceType.getSuperclassQualifiedName(), visited);
+		if (spc == null) {
+			return null;
+		}
+		if (CollectionTools.contains(spc.getInheritanceHierarchy(), this)) {
+			return null;  // short-circuit in this case, we have circular inheritance
+		}
+		return spc;
 	}
-//
-//	/**
-//	 * The JPA spec allows non-persistent types in a persistent type's
-//	 * inheritance hierarchy. We check for a persistent type with the
-//	 * specified name in the persistence unit. If it is not found we use
-//	 * resource persistent type and look for *its* super type.
-//	 * 
-//	 * The 'visited' collection is used to detect a cycle in the *resource* type
-//	 * inheritance hierarchy and prevent the resulting stack overflow.
-//	 * Any cycles in the *context* type inheritance hierarchy are handled in
-//	 * #buildSuperPersistentType().
-//	 */
-//	protected PersistentType getSuperPersistentType(String typeName, Collection<JavaResourcePersistentType> visited) {
-//		if (typeName == null) {
-//			return null;
-//		}
-//		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
-//		if ((resourceType == null) || visited.contains(resourceType)) {
-//			return null;
-//		}
-//		visited.add(resourceType);
-//		PersistentType spt = this.getPersistentType(typeName);
-//		return (spt != null) ? spt : this.getSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
-//	}
-//
-//	protected PersistentType getPersistentType(String typeName) {
-//		return this.getPersistenceUnit().getPersistentType(typeName);
-//	}
+
+	/**
+	 * The JPA spec allows non-persistent types in a persistent type's
+	 * inheritance hierarchy. We check for a persistent type with the
+	 * specified name in the persistence unit. If it is not found we use
+	 * resource persistent type and look for *its* super type.
+	 * 
+	 * The 'visited' collection is used to detect a cycle in the *resource* type
+	 * inheritance hierarchy and prevent the resulting stack overflow.
+	 * Any cycles in the *context* type inheritance hierarchy are handled in
+	 * #buildSuperPersistentType().
+	 */
+	protected JaxbPersistentClass getSuperPersistentClass(String typeName, Collection<JavaResourceType> visited) {
+		if (typeName == null) {
+			return null;
+		}
+		JavaResourceType resourceType = this.getJaxbProject().getJavaResourceType(typeName);
+		if ((resourceType == null) || visited.contains(resourceType)) {
+			return null;
+		}
+		visited.add(resourceType);
+		JaxbPersistentClass spc = this.getPersistentClass(typeName);
+		return (spc != null && resourceType.isMapped()) ? spc : this.getSuperPersistentClass(resourceType.getSuperclassQualifiedName(), visited);  // recurse
+	}
+
+	protected JaxbPersistentClass getPersistentClass(String fullyQualifiedTypeName) {
+		return this.getParent().getPersistentClass(fullyQualifiedTypeName);
+	}
+
+	// ********** inheritance **********
+
+	public Iterable<JaxbPersistentClass> getInheritanceHierarchy() {
+		return this.getInheritanceHierarchyOf(this);
+	}
+
+	public Iterable<JaxbPersistentClass> getAncestors() {
+		return this.getInheritanceHierarchyOf(this.superPersistentClass);
+	}
+
+	protected Iterable<JaxbPersistentClass> getInheritanceHierarchyOf(JaxbPersistentClass start) {
+		// using a chain iterator to traverse up the inheritance tree
+		return new ChainIterable<JaxbPersistentClass>(start) {
+			@Override
+			protected JaxbPersistentClass nextLink(JaxbPersistentClass persistentType) {
+				return persistentType.getSuperPersistentClass();
+			}
+		};
+	}
 
 	// ********** access type **********
 
@@ -470,6 +492,12 @@ public class GenericJavaPersistentClass
 
 	protected XmlRootElementAnnotation getRootElementAnnotation() {
 		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.getFullyQualifiedName());
 	}
 
 	/**

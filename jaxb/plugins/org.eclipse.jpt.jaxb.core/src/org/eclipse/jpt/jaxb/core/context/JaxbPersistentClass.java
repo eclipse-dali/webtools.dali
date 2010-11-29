@@ -31,6 +31,22 @@ public interface JaxbPersistentClass
 	JaxbPersistentClass getSuperPersistentClass();
 		String SUPER_PERSISTENT_CLASS_PROPERTY = "superPersistentClass"; //$NON-NLS-1$
 
+	/**
+	 * Return the persistent type's "persistence" inheritance hierarchy,
+	 * <em>including</em> the persistent type itself.
+	 * The returned iterator will return elements infinitely if the hierarchy
+	 * has a loop.
+	 */
+	Iterable<JaxbPersistentClass> getInheritanceHierarchy();
+
+	/**
+	 * Return the persistent type's "persistence" inheritance hierarchy,
+	 * <em>excluding</em> the persistent type itself.
+	 * The returned iterator will return elements infinitely if the hierarchy
+	 * has a loop.
+	 */
+	Iterable<JaxbPersistentClass> getAncestors();
+
 
 	/**************** factory class *****************/
 

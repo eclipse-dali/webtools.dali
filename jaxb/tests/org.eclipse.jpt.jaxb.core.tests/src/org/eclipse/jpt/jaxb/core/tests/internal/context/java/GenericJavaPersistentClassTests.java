@@ -16,9 +16,11 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
@@ -53,6 +55,24 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 			}
 		});
 	}
+
+	private void createTestSubType() throws Exception {
+		SourceWriter sourceWriter = new SourceWriter() {
+			public void appendSourceTo(StringBuilder sb) {
+				sb.append(CR);
+					sb.append("import ");
+					sb.append(JAXB.XML_TYPE);
+					sb.append(";");
+					sb.append(CR);
+				sb.append("@XmlType");
+				sb.append(CR);
+				sb.append("public class ").append("AnnotationTestTypeChild").append(" ");
+				sb.append("extends " + TYPE_NAME + " ");
+				sb.append("{}").append(CR);
+			}
+		};
+		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestTypeChild.java", sourceWriter);
+	}
 	
 	private ICompilationUnit createXmlTypeWithAccessorType() throws CoreException {
 		return this.createTestType(new DefaultAnnotationWriter() {
@@ -80,6 +100,12 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 				sb.append("@XmlAccessorOrder(value = XmlAccessOrder.ALPHABETICAL)");
 			}
 		});
+	}
+
+	private ICompilationUnit createPackageInfoWithAccessorType() throws CoreException {
+		return createTestPackageInfo(
+				"@XmlAccessorType(value = XmlAccessType.PROPERTY)",
+				JAXB.XML_ACCESS_TYPE, JAXB.XML_ACCESSOR_TYPE);
 	}
 
 	public void testModifyFactoryClass() throws Exception {
@@ -309,9 +335,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		});
 		assertNull(persistentClass.getNamespace());
 	}
-	
-	//TODO test super type with @XmlAccessorType
-	//TODO test package-info.java with @XmlAccessorType
+
 	public void testModifyAccessType() throws Exception {
 		createXmlTypeWithAccessorType();
 		
@@ -387,21 +411,71 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
 	}
-	
+
+	/**
+	 * If there is a @XmlAccessorType on a class, then it is used.
+	 * Otherwise, if a @XmlAccessorType exists on one of its super classes, then it is inherited.
+	 * Otherwise, the @XmlAccessorType on a package is inherited. 	
+	 */
+	public void testGetDefaultAccessType() throws Exception {
+		this.createTypeWithXmlType();
+		this.createTestSubType();
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentClass childPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, childPersistentClass.getDefaultAccessType());
+
+		this.createPackageInfoWithAccessorType();
+		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+
+		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
+		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+
+		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
+		persistentClass.setSpecifiedAccessType(null);
+		assertEquals(XmlAccessType.PROPERTY, childPersistentClass.getDefaultAccessType());
+		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
+		assertEquals(XmlAccessType.FIELD, childPersistentClass.getDefaultAccessType());
+
+		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.NONE);
+		assertEquals(XmlAccessType.NONE, childPersistentClass.getDefaultAccessType());
+
+		contextPackageInfo.setSpecifiedAccessType(null);
+		assertEquals(XmlAccessType.PUBLIC_MEMBER, childPersistentClass.getDefaultAccessType());
+	}
+
+	public void testGetSuperPersistentClass() throws Exception {
+		this.createTypeWithXmlType();
+		this.createTestSubType();
+		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
+		JaxbPersistentClass childPersistentClass = getContextRoot().getPersistentClass(PACKAGE_NAME + ".AnnotationTestTypeChild");
+
+		assertEquals(persistentClass, childPersistentClass.getSuperPersistentClass());
+
+		//This test will change when we no longer depend on there being an @XmlType annotation for something to be persistent
+		AnnotatedElement annotatedElement = this.annotatedElement(persistentClass.getJavaResourceType());
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlTypeAnnotation.ANNOTATION_NAME);
+			}
+		});
+		assertNull(childPersistentClass.getSuperPersistentClass());
+	}
+
 	public void testModifyAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
+
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
-		
+
 		persistentClass.setSpecifiedAccessOrder(XmlAccessOrder.UNDEFINED);
 		XmlAccessorOrderAnnotation accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
 		assertEquals(org.eclipse.jpt.jaxb.core.resource.java.XmlAccessOrder.UNDEFINED, accessorOrderAnnotation.getValue());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
-		
+
 		persistentClass.setSpecifiedAccessOrder(null);
 		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
 		assertNull(accessorOrderAnnotation);
@@ -409,16 +483,16 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
 	}
-	
+
 	public void testUpdateAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
+
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());
-		
+
 		//set the access order value to UNDEFINED
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
 		annotatedElement.edit(new Member.Editor() {
@@ -460,7 +534,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		assertEquals("foo", props.next());
 		assertFalse(props.hasNext());
 	}
-	
+
 	protected void addProp(ModifiedDeclaration declaration, int index, String prop) {
 		this.addArrayElement(declaration, JAXB.XML_TYPE, index, JAXB.XML_TYPE__PROP_ORDER, this.newStringLiteral(declaration.getAst(), prop));		
 	}

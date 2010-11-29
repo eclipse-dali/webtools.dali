@@ -26,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
@@ -268,6 +269,15 @@ public class GenericContextRoot
 	public int getPackagesSize() {
 		return this.packages.size();
 	}
+
+	public JaxbPackage getPackage(String packageName) {
+		for (JaxbPackage jaxbPackage : this.getPackages()) {
+			if (StringTools.stringsAreEqual(jaxbPackage.getName(), packageName)) {
+				return jaxbPackage;
+			}
+		}
+		return null;
+	}
 	
 	protected JaxbPackage addPackage(JaxbPackage contextPackage) {
 		if (this.packages.containsKey(contextPackage.getName())) {
@@ -388,6 +398,15 @@ public class GenericContextRoot
 				return o.getPackageName().equals(jaxbPackage.getName());
 			}
 		};
+	}
+
+	public JaxbPersistentClass getPersistentClass(String className) {
+		for (JaxbPersistentClass jaxbClass : this.getPersistentClasses()) {
+			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
+				return jaxbClass;
+			}
+		}
+		return null;
 	}
 
 	@Override

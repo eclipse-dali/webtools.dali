@@ -34,23 +34,25 @@ public class GenericPackage
 	
 	
 	public void synchronizeWithResourceModel() {
-		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);
-		if (jrp == null) {
-			if (this.packageInfo != null) {
-				setPackageInfo_(null);
-			}
-		}
-		else {
-			if (this.packageInfo == null) {
-				setPackageInfo_(buildPackageInfo(jrp));
-			}
+		if (this.packageInfo != null) { 
 			this.packageInfo.synchronizeWithResourceModel();
 		}
 	}
 
+	//Building/removing of the packageInfo is in the update because this is dependent
+	//on a JaxbFile being added/removed which only causes an update of the model.
 	public void update() {
-		if (this.packageInfo != null) { 
-			this.packageInfo.update();
+		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);
+		if (jrp == null) {
+			this.setPackageInfo_(null);
+		}
+		else {
+			if (this.packageInfo == null) {
+				this.setPackageInfo_(this.buildPackageInfo(jrp));
+			}
+			else {
+				this.packageInfo.update();
+			}
 		}
 	}
 	

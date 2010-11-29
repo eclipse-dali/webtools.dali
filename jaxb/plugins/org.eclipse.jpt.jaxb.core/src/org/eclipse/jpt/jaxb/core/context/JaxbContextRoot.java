@@ -31,6 +31,11 @@ public interface JaxbContextRoot
 	public final static String PACKAGES_COLLECTION = "packages"; //$NON-NLS-1$
 	
 	int getPackagesSize();
+
+	/**
+	 * Return the package with the given name
+	 */
+	JaxbPackage getPackage(String packageName);
 	
 	/**
 	 * Return the set of all JAXB types within this context root.
@@ -54,6 +59,11 @@ public interface JaxbContextRoot
 	 * Return the set of persistent classes that are in the given package
 	 */
 	Iterable<JaxbPersistentClass> getPersistentClasses(JaxbPackage jaxbPackage);
+
+	/**
+	 * Return the persistent class with the given fully qualified name
+	 */
+	JaxbPersistentClass getPersistentClass(String fullyQualifiedTypeName);
 	
 	/**
 	 * The set of registries.
