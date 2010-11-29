@@ -140,24 +140,34 @@ public class GenericContextRoot
 		for (JavaResourceType resourceType : registries) {
 			String className = resourceType.getQualifiedName();
 			typesToRemove.remove(className);
-			if (this.types.containsKey(className) && this.types.get(className).getKind() == Kind.REGISTRY) {
-				typesToUpdate.add(className);
+			if (this.types.containsKey(className)) {
+				if (this.types.get(className).getKind() == Kind.REGISTRY) {
+					typesToUpdate.add(className);
+				}
+				else {
+					this.removeType(className); // this will remove a type of another kind
+					this.addType(buildRegistry(resourceType));
+				}
 			}
 			else {
-				this.types.remove(className); // this will remove a type of another kind, if it exists
-				addType(buildRegistry(resourceType));
+				this.addType(buildRegistry(resourceType));
 			}
 		}
 		
 		for (JavaResourceType resourceType : initialPersistentClasses) {
 			String className = resourceType.getQualifiedName();
 			typesToRemove.remove(className);
-			if (this.types.containsKey(className) && this.types.get(className).getKind() == Kind.PERSISTENT_CLASS) {
-				typesToUpdate.add(className);
+			if (this.types.containsKey(className)) {
+				if (this.types.get(className).getKind() == Kind.PERSISTENT_CLASS) {
+					typesToUpdate.add(className);
+				}
+				else {
+					this.removeType(className); // this will remove a type of another kind
+					this.addType(buildPersistentClass(resourceType));
+				}
 			}
 			else {
-				this.types.remove(className); // this will remove a type of another kind, if it exists
-				addType(buildPersistentClass(resourceType));
+				this.addType(buildPersistentClass(resourceType));
 			}
 		}
 		
@@ -203,6 +213,7 @@ public class GenericContextRoot
 	/*
 	 * Calculate set of persistent classes that can be determined purely by resource model
 	 * (so far, this should be all resource types with the @XmlType annotation)
+	 * If both @XmlType and @XmlRegistry exist on a class, we will let @XmlRegistry take precedence
 	 */
 	protected Set<JavaResourceType> calculateInitialPersistentClasses() {
 		return CollectionTools.set(
@@ -210,7 +221,7 @@ public class GenericContextRoot
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceType o) {
-						return o.getAnnotation(JAXB.XML_TYPE) != null;
+						return o.getAnnotation(JAXB.XML_TYPE) != null && o.getAnnotation(JAXB.XML_REGISTRY) == null;
 					}
 				});
 	}
@@ -378,4 +389,11 @@ public class GenericContextRoot
 			}
 		};
 	}
+
+	@Override
+    public void stateChanged() {
+		super.stateChanged();
+		// forward to JAXB project
+		this.jaxbProject.stateChanged();
+    }
 }
