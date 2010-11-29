@@ -94,6 +94,7 @@
 			id="org.eclipse.jpt.jaxb.ui.jaxbNavigatorContent"
 			name="%jaxbNavigatorContent"
 			priority="higher"
+			appearsBefore="org.eclipse.jst.servlet.ui.EnhancedJavaRendering"
 			icon="icons/full/obj16/jaxb_content.gif"
 			activeByDefault="true"
 			contentProvider="org.eclipse.jpt.jaxb.ui.internal.navigator.JaxbNavigatorContentProvider"
