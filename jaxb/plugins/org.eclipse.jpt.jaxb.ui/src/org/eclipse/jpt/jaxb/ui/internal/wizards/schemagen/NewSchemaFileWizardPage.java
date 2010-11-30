@@ -12,6 +12,9 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.CONTAINER_PATH;
 import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.FILE_NAME;
 import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.PROJECT;
+import static org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.SchemaGeneratorWizard.XSD_EXTENSION;
+
+import java.io.File;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -20,8 +23,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
+import org.eclipse.jpt.utility.internal.FileTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
@@ -37,7 +42,7 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 
 	private IStructuredSelection initialSelection;
 	
-	static public String DEFAULT_SCHEMA_NAME = "NewXMLSchema" + SchemaGeneratorWizard.XSD_EXTENSION;   //$NON-NLS-1$
+	static public String DEFAULT_SCHEMA_NAME = "NewXMLSchema" + XSD_EXTENSION;   //$NON-NLS-1$
 	
 	// ********** constructor **********
 	
@@ -97,10 +102,17 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		}
 		this.overrideFileExistsWarning();
 		
+		// Validate Project
 		valid = this.projectIsJavaProject(this.getProject());
 		if( ! valid) {
 			this.setErrorMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_errorNotJavaProject);
-				return valid;
+			return valid;
+		}
+		// Validate XSD file not exists.
+		valid = this.xsdFileNotExists();
+		if( ! valid) {
+			this.setMessage(JptJaxbUiMessages.NewSchemaFileWizardPage_overwriteExistingSchemas, IMessageProvider.WARNING);
+			return true;
 		}
 		this.setErrorMessage(null);
 
@@ -157,6 +169,35 @@ public class NewSchemaFileWizardPage extends WizardNewFileCreationPage {
 		if(message != null && message.endsWith(existsString)) { 
 			this.setMessage(null);
 		}
+	}
+
+	private boolean xsdFileNotExists() {
+		
+		return ! this.xsdFileExists(this.getContainerAbsolutePath().toFile());
+	}
+	
+	private boolean xsdFileExists(File directory) {
+		
+		if(directory.listFiles() == null) {
+			throw new RuntimeException("Could not find directory: " + directory);   //$NON-NLS-1$
+		}
+		for(File file : directory.listFiles()) {
+			if (file.isDirectory()) {
+				continue;
+			}
+			else if(XSD_EXTENSION.equalsIgnoreCase(FileTools.extension(file))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private IPath getContainerAbsolutePath() {
+		IPath projectRelativePath = this.getContainerFullPath().makeRelativeTo(this.getProject().getFullPath());
+		IResource directory = (projectRelativePath.isEmpty()) ?
+				this.getProject() :
+				this.getProject().getFile(projectRelativePath);
+		return directory.getLocation();
 	}
 
 }

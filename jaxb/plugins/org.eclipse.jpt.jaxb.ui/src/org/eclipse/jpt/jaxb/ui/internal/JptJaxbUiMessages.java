@@ -125,6 +125,7 @@ public class JptJaxbUiMessages {
 	public static String SchemaGeneratorWizard_generateSchemaTask;
 	
 	public static String NewSchemaFileWizardPage_errorNotJavaProject;
+	public static String NewSchemaFileWizardPage_overwriteExistingSchemas;
 	
 	
 	// new project wizard
