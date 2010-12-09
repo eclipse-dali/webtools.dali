@@ -937,15 +937,20 @@
 		
 		<page
 			id="org.eclipse.jpt.ui.preferences"
-			class="org.eclipse.jpt.ui.internal.preferences.JpaPreferencesPage"
-			name="%jpaPreferencePage">
-		</page>
+			name="%javaPersistenceNode"
+			class="org.eclipse.ui.internal.dialogs.EmptyPreferencePage"/>
 		
 		<page
+			id="org.eclipse.jpt.ui.jpaPreferences"
 			category="org.eclipse.jpt.ui.preferences"
+			class="org.eclipse.jpt.ui.internal.preferences.JpaPreferencesPage"
+			name="%jpaNode"/>
+		
+		<page
+			id="org.eclipse.jpt.ui.jpaProblemSeveritiesPreferences"
+			category="org.eclipse.jpt.ui.jpaPreferences"
 			class="org.eclipse.jpt.ui.internal.preferences.JpaProblemSeveritiesPage"
-			id="org.eclipse.jpt.ui.preferences.problemSeverities"
-			name="%jpaProblemSeveritiesPageName">
+			name="%jpaProblemSeveritiesNode">
 		</page>
 		
 	</extension>
@@ -955,35 +960,37 @@
 		point="org.eclipse.ui.propertyPages">
 		
 		<page
-			id="org.eclipse.jpt.ui.jpaProjectPropertiesPage"
-			name="%jpaProjectPropertiesPage"
+			id="org.eclipse.jpt.ui.jpaProjectProperties"
+			name="%jpaNode"
 			class="org.eclipse.jpt.ui.internal.properties.JpaProjectPropertiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-			        <test 
-			            forcePluginActivation="true"
-			            property="org.eclipse.wst.common.project.facet.core.projectFacet"
-			            value="jpt.jpa"/>
-		        </adapt>
+					<test 
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jpa"/>
+				</adapt>
 			</enabledWhen>
 		</page>
+		
 		<page
-         id="org.eclipse.jpt.ui.propertyPages.problemSeverities"
-         name="%jpaProblemSeveritiesPageName"
-         category="org.eclipse.jpt.ui.jpaProjectPropertiesPage"
-         class="org.eclipse.jpt.ui.internal.preferences.JpaProblemSeveritiesPage">
+			id="org.eclipse.jpt.ui.jpaProblemSeveritiesProperties"
+			name="%jpaProblemSeveritiesNode"
+			category="org.eclipse.jpt.ui.jpaProjectProperties"
+			class="org.eclipse.jpt.ui.internal.preferences.JpaProblemSeveritiesPage">
 			<enabledWhen>
 				<adapt type="org.eclipse.core.resources.IProject">
-			        <test 
-			            forcePluginActivation="true"
-			            property="org.eclipse.wst.common.project.facet.core.projectFacet"
-			            value="jpt.jpa"/>
-		        </adapt>
+					<test
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jpa"/>
+				</adapt>
 			</enabledWhen>
 		</page>
+		
 	</extension>
 	
-	  		
+	
 	<extension
 		point="org.eclipse.ui.views">
 		

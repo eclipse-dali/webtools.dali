@@ -26,6 +26,12 @@
 			<adapter type="org.eclipse.wst.common.frameworks.datamodel.IDataModel"/>
 		</factory>
 		
+		<factory 
+			class="org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model.JaxbFacetVersionChangeConfigToDataModelAdapterFactory" 
+			adaptableType="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeConfig">
+			<adapter type="org.eclipse.wst.common.frameworks.datamodel.IDataModel"/>
+		</factory>
+		
 	</extension>
   
   
@@ -181,6 +187,66 @@
 	
 	
 	<extension
+		point="org.eclipse.ui.preferencePages">
+		
+		<!-- no actual preferences yet
+		<page
+			id="org.eclipse.jpt.jaxb.ui.jaxbPreferences"
+			category="org.eclipse.jpt.ui.preferences"
+			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbPreferencesPage"
+			name="%jaxbNode"/>
+		-->
+		
+		<!--
+		<page
+			id="org.eclipse.jpt.jaxb.ui.jaxbProblemSeveritiesPreferences"
+			category="org.eclipse.jpt.jaxb.ui.jaxbPreferences"
+			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbProblemSeveritiesPage"
+			name="%jaxbProblemSeveritiesNode">
+		</page>
+		-->
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.ui.propertyPages">
+		
+		<page
+			id="org.eclipse.jpt.jaxb.ui.jaxbProjectProperties"
+			name="%jaxbNode"
+			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbProjectPropertiesPage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					<test 
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jaxb"/>
+				</adapt>
+			</enabledWhen>
+		</page>
+		
+		<!--
+		<page
+			id="org.eclipse.jpt.ui.jaxbProblemSeveritiesProperties"
+			name="%jaxbProblemSeveritiesNode"
+			category="org.eclipse.jpt.jaxb.ui.jaxbProjectProperties"
+			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbProblemSeveritiesPage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					<test
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jaxb"/>
+				</adapt>
+			</enabledWhen>
+		</page>
+		-->
+		
+	</extension>
+	
+	
+	<extension
 		point="org.eclipse.wst.common.project.facet.ui.images">
 		
 		<image facet="jpt.jaxb" path="icons/full/etool16/jaxb_facet.gif"/>
@@ -193,6 +259,10 @@
 		
 		<wizard-pages action="jpt.jaxb.install">
 			<page class="org.eclipse.jpt.jaxb.ui.internal.wizards.facet.JaxbFacetInstallPage"/>
+		</wizard-pages>
+		
+		<wizard-pages action="jpt.jaxb.version-change">
+			<page class="org.eclipse.jpt.jaxb.ui.internal.wizards.facet.JaxbFacetVersionChangePage"/>
 		</wizard-pages>
 		
 	</extension>

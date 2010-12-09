@@ -10,34 +10,19 @@
 package org.eclipse.jpt.ui.internal.properties;
 
 import static org.eclipse.jst.common.project.facet.ui.libprov.LibraryProviderFrameworkUi.createInstallLibraryPanel;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRunnable;
-import org.eclipse.core.resources.IncrementalProjectBuilder;
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.IPreferenceChangeListener;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences.PreferenceChangeEvent;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableContext;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
@@ -63,7 +48,6 @@ import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
 import org.eclipse.jpt.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.BitTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NotBooleanTransformer;
@@ -83,7 +67,6 @@ import org.eclipse.jpt.utility.internal.model.value.ExtendedListValueModelWrappe
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SetCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -91,26 +74,21 @@ import org.eclipse.jpt.utility.internal.model.value.TransformationWritableProper
 import org.eclipse.jpt.utility.model.Model;
 import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
-import org.eclipse.jpt.utility.model.listener.ChangeListener;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeAdapter;
 import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
-import org.eclipse.jpt.utility.model.listener.SimpleChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
-import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
-import org.eclipse.jst.common.project.facet.ui.libprov.LibraryFacetPropertyPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -122,54 +100,48 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
-import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import org.eclipse.wst.common.project.facet.ui.internal.FacetsPropertyPage;
-
 import com.ibm.icu.text.Collator;
 
 /**
  * Way more complicated UI than you would think....
  */
 public class JpaProjectPropertiesPage
-	extends LibraryFacetPropertyPage 
-{
-	public static final String PROP_ID = "org.eclipse.jpt.ui.jpaProjectPropertiesPage"; //$NON-NLS-1$
-
-	private final WritablePropertyValueModel<IProject> projectModel;
-	private final PropertyValueModel<JpaProject> jpaProjectModel;
-	private final BufferedWritablePropertyValueModel.Trigger trigger;
-
-	private final BufferedWritablePropertyValueModel<String> platformIdModel;
-	private final PropertyChangeListener platformIdListener;
-
-	private final BufferedWritablePropertyValueModel<String> connectionModel;
-	private final PropertyValueModel<ConnectionProfile> connectionProfileModel;
-	private final PropertyValueModel<Boolean> disconnectedModel;
-	private final PropertyChangeListener disconnectedModelListener;
+		extends JptProjectPropertiesPage  {
+	
+	public static final String PROP_ID = "org.eclipse.jpt.ui.jpaProjectProperties"; //$NON-NLS-1$
+	
+	private PropertyValueModel<JpaProject> jpaProjectModel;
+	
+	private BufferedWritablePropertyValueModel<String> platformIdModel;
+	private PropertyChangeListener platformIdListener;
+	
+	private BufferedWritablePropertyValueModel<String> connectionModel;
+	private PropertyValueModel<ConnectionProfile> connectionProfileModel;
+	private PropertyValueModel<Boolean> disconnectedModel;
+	private PropertyChangeListener disconnectedModelListener;
 	private Link connectLink;
-
-	private final BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
-	private final BufferedWritablePropertyValueModel<String> userOverrideDefaultCatalogModel;
-	private final WritablePropertyValueModel<String> defaultCatalogModel;
-	private final ListValueModel<String> catalogChoicesModel;
-
-	private final BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
-	private final BufferedWritablePropertyValueModel<String> userOverrideDefaultSchemaModel;
-	private final WritablePropertyValueModel<String> defaultSchemaModel;
-	private final ListValueModel<String> schemaChoicesModel;
-
-	private final BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
-	private final WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
-
-	private final PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
-
-	private final BufferedWritablePropertyValueModel<String> metamodelSourceFolderModel;
-	private final ListValueModel<String> javaSourceFolderChoicesModel;
+	
+	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultCatalogFlagModel;
+	private BufferedWritablePropertyValueModel<String> userOverrideDefaultCatalogModel;
+	private WritablePropertyValueModel<String> defaultCatalogModel;
+	private ListValueModel<String> catalogChoicesModel;
+	
+	private BufferedWritablePropertyValueModel<Boolean> userOverrideDefaultSchemaFlagModel;
+	private BufferedWritablePropertyValueModel<String> userOverrideDefaultSchemaModel;
+	private WritablePropertyValueModel<String> defaultSchemaModel;
+	private ListValueModel<String> schemaChoicesModel;
+	
+	private BufferedWritablePropertyValueModel<Boolean> discoverAnnotatedClassesModel;
+	private WritablePropertyValueModel<Boolean> listAnnotatedClassesModel;
+	
+	private PropertyValueModel<Boolean> jpa2_0ProjectFlagModel;
+	
+	private BufferedWritablePropertyValueModel<String> metamodelSourceFolderModel;
+	private ListValueModel<String> javaSourceFolderChoicesModel;
+	
 	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
-
-	private final ChangeListener validationListener;
-
+	
 
 	@SuppressWarnings("unchecked")
 	/* private */ static final Comparator<String> STRING_COMPARATOR = Collator.getInstance();
@@ -179,15 +151,15 @@ public class JpaProjectPropertiesPage
 
 	public JpaProjectPropertiesPage() {
 		super();
-
-		this.projectModel = new SimplePropertyValueModel<IProject>();
+	}
+	
+	@Override
+	protected void buildModels() {
 		this.jpaProjectModel = new JpaProjectModel(this.projectModel);
-		this.trigger = new BufferedWritablePropertyValueModel.Trigger();
-
+		
 		this.platformIdModel = this.buildPlatformIdModel();
 		this.platformIdListener = this.buildPlatformIdListener();
-		this.platformIdModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.platformIdListener);
-
+		
 		this.connectionModel = this.buildConnectionModel();
 		this.connectionProfileModel = this.buildConnectionProfileModel();
 		this.disconnectedModel = this.buildDisconnectedModel();
@@ -210,9 +182,6 @@ public class JpaProjectPropertiesPage
 
 		this.metamodelSourceFolderModel = this.buildMetamodelSourceFolderModel();
 		this.javaSourceFolderChoicesModel = this.buildJavaSourceFolderChoicesModel();
-
-		this.validationListener = this.buildValidationListener();
-		this.engageValidationListener();
 	}
 
 	// ***** platform ID model
@@ -383,11 +352,6 @@ public class JpaProjectPropertiesPage
 		return flagIsSet(this.userOverrideDefaultCatalogFlagModel);
 	}
 
-	/* private */ static boolean flagIsSet(PropertyValueModel<Boolean> flagModel) {
-		Boolean flag = flagModel.getValue();
-		return (flag != null) && flag.booleanValue();
-	}
-
 	private String getUserOverrideDefaultCatalog() {
 		return this.userOverrideDefaultCatalogModel.getValue();
 	}
@@ -411,24 +375,8 @@ public class JpaProjectPropertiesPage
 	public IProjectFacetVersion getProjectFacetVersion() {
 		return this.getFacetedProject().getInstalledVersion(JpaFacet.FACET);
 	}
-
+	
 	@Override
-	protected LibraryInstallDelegate createLibraryInstallDelegate(IFacetedProject project, IProjectFacetVersion fv) {
-		LibraryInstallDelegate lid = new LibraryInstallDelegate(project, fv, null);
-		lid.addListener(buildLibraryProviderListener());
-		return lid;
-	}
-	
-	protected IPropertyChangeListener buildLibraryProviderListener() {
-		return new IPropertyChangeListener() {
-				public void propertyChanged(String property, Object oldValue, Object newValue ) {
-					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
-						adjustLibraryProviders();
-					}
-				}
-			};
-	}
-	
 	protected void adjustLibraryProviders() {
 		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
 		if (lid != null) {
@@ -456,50 +404,40 @@ public class JpaProjectPropertiesPage
 	
 	
 	// ********** page **********
-
+	
 	@Override
-	protected Control createPageContents(Composite parent) {
-		this.projectModel.setValue(this.getProject());
+	protected void createWidgets(Composite parent) {
+		this.buildPlatformGroup(parent);
 		
-		Composite composite = new Composite(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginWidth = 0;
-		layout.marginHeight = 0;
-		composite.setLayout(layout);
-
-		this.buildPlatformGroup(composite);
-
 		Control libraryProviderComposite = createInstallLibraryPanel(
-				composite, 
+				parent, 
 				this.getLibraryInstallDelegate(), 
 				JptUiMessages.JpaFacetWizardPage_jpaImplementationLabel);
-
- 		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		this.buildConnectionGroup(composite);
-		this.buildPersistentClassManagementGroup(composite);
-		this.buildMetamodelGroup(composite);
-
-		Dialog.applyDialogFont(composite);
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(composite, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
 		
-		adjustLibraryProviders();
-		this.updateValidation();
-
-		return composite;
+ 		libraryProviderComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+ 		
+		this.buildConnectionGroup(parent);
+		this.buildPersistentClassManagementGroup(parent);
+		this.buildMetamodelGroup(parent);
+		
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, JpaHelpContextIds.PROPERTIES_JAVA_PERSISTENCE);
 	}
-
-	/**
-	 * Don't allow {@link org.eclipse.jface.preference.PreferencePage#computeSize()}
-	 * to cache the page's size, since the size of the "Library" panel can
-	 * change depending on the user's selection from the drop-down list.
-	 */
+	
 	@Override
-	public Point computeSize() {
-		return this.doComputeSize();
+	protected void engageListeners() {
+		super.engageListeners();
+		this.platformIdModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.platformIdListener);
+		this.disconnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
 	}
-
-
+	
+	@Override
+	protected void disengageListeners() {
+		this.platformIdModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.platformIdListener);
+		this.disconnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
+		super.disengageListeners();
+	}
+	
+	
 	// ********** platform group **********
 
 	private void buildPlatformGroup(Composite composite) {
@@ -507,35 +445,15 @@ public class JpaProjectPropertiesPage
 		group.setText(JptUiMessages.JpaFacetWizardPage_platformLabel);
 		group.setLayout(new GridLayout());
 		group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		Combo platformDropDown = this.buildDropDown(group);
+		
+		Combo platformDropDown = buildDropDown(group);
 		SWTTools.bind(
-				this.buildPlatformChoicesModel(),
+				buildPlatformChoicesModel(),
 				this.platformIdModel,
 				platformDropDown,
-				JPA_PLATFORM_LABEL_CONVERTER
-		);
+				JPA_PLATFORM_LABEL_CONVERTER);
 		
-		Link facetsPageLink = this.buildLink(group, JptUiMessages.JpaFacetWizardPage_facetsPageLink);
-		facetsPageLink.addSelectionListener(this.buildFacetsPageLinkListener());  // the link will be GCed
-		System.out.println(facetsPageLink.isEnabled());
-	}
-
-	private SelectionListener buildFacetsPageLinkListener() {
-		return new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				JpaProjectPropertiesPage.this.openProjectFacetsPage();
-			}
-			@Override
-			public String toString() {
-				return "facets page link listener"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	protected void openProjectFacetsPage() {
-		((IWorkbenchPreferenceContainer)getContainer()).openPage(FacetsPropertyPage.ID, null);
+		buildFacetsPageLink(group, JptUiMessages.JpaFacetWizardPage_facetsPageLink);
 	}
 
 	/**
@@ -623,8 +541,7 @@ public class JpaProjectPropertiesPage
 		this.connectLink = this.buildLink(group, buildConnectLinkText());
 		SWTTools.controlEnabledState(this.disconnectedModel, this.connectLink);
 		this.connectLink.addSelectionListener(this.buildConnectLinkListener());  // the link will be GCed
-		this.disconnectedModel.addPropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
-
+		
 		// override default catalog
 		Button overrideDefaultCatalogCheckBox = this.buildCheckBox(group, 3, JptUiMessages.JpaFacetWizardPage_overrideDefaultCatalogLabel);
 		SWTTools.bind(this.userOverrideDefaultCatalogFlagModel, overrideDefaultCatalogCheckBox);
@@ -779,134 +696,21 @@ public class JpaProjectPropertiesPage
 		container.openPage(BUILD_PATHS_PROPERTY_PAGE_ID, null);
 	}
 	
-	// ********** widgets **********
-
-	private Button buildCheckBox(Composite parent, int horizontalSpan, String text) {
-		return this.buildButton(parent, horizontalSpan, text, SWT.CHECK);
-	}
-
-	private Button buildRadioButton(Composite parent, int horizontalSpan, String text) {
-		return this.buildButton(parent, horizontalSpan, text, SWT.RADIO);
-	}
-
-	private Button buildButton(Composite parent, int horizontalSpan, String text, int style) {
-		Button button = new Button(parent, SWT.NONE | style);
-		button.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = horizontalSpan;
-		button.setLayoutData(gd);
-		return button;
-	}
-
-	private Combo buildDropDown(Composite parent) {
-		return this.buildDropDown(parent, 1);
-	}
-
-	private Combo buildDropDown(Composite parent, int horizontalSpan) {
-		Combo combo = new Combo(parent, SWT.READ_ONLY);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		gd.horizontalSpan = horizontalSpan;
-		combo.setLayoutData(gd);
-		return combo;
-	}
-
-	private Label buildLabel(Composite parent, String text) {
-		Label label = new Label(parent, SWT.LEFT);
-		label.setText(text);
-		GridData gd = new GridData();
-		gd.horizontalSpan = 1;
-		label.setLayoutData(gd);
-		return label;
-	}
-
-	private Link buildLink(Composite parent, String text) {
-		Link link = new Link(parent, SWT.NONE);
-		GridData data = new GridData(GridData.END, GridData.CENTER, false, false);
-		data.horizontalSpan = 2;
-		link.setLayoutData(data);
-		link.setText(text);
-		return link;
-	}
-
-
 	// ********** OK/Revert/Apply behavior **********
-
+	
 	@Override
-	public boolean performOk() {
-		super.performOk();
-
-		try {
-			// true=fork; false=uncancellable
-			this.buildOkProgressMonitorDialog().run(true, false, this.buildOkRunnableWithProgress());
-		}
-		catch (InterruptedException ex) {
-			return false;
-		} 
-		catch (InvocationTargetException ex) {
-			throw new RuntimeException(ex.getTargetException());
-		}
-
-		return true;
+	protected boolean projectRebuildRequired() {
+		return this.platformIdModel.isBuffering();
 	}
-
-	private IRunnableContext buildOkProgressMonitorDialog() {
-		return new ProgressMonitorDialog(this.getShell());
+	
+	@Override
+	protected void rebuildProject() {
+		// if the JPA platform is changed, we need to completely rebuild the JPA project
+		JptCorePlugin.rebuildJpaProject(this.getProject());	
 	}
-
-	private IRunnableWithProgress buildOkRunnableWithProgress() {
-		return new IRunnableWithProgress() {
-			public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-				IWorkspace ws = ResourcesPlugin.getWorkspace();
-				try {
-					// the build we execute in #performOk_() locks the workspace root,
-					// so we need to use the workspace root as our scheduling rule here
-					ws.run(
-							JpaProjectPropertiesPage.this.buildOkWorkspaceRunnable(),
-							ws.getRoot(),
-							IWorkspace.AVOID_UPDATE,
-							monitor
-					);
-				}
-				catch (CoreException ex) {
-					throw new InvocationTargetException(ex);
-				}
-			}
-		};
-	}
-
-	/* private */ IWorkspaceRunnable buildOkWorkspaceRunnable() {
-		return new IWorkspaceRunnable() {
-			public void run(IProgressMonitor monitor) throws CoreException {
-				JpaProjectPropertiesPage.this.performOk_(monitor);
-			}
-		};
-	}
-
-	void performOk_(IProgressMonitor monitor) throws CoreException {
-		if (this.isBuffering()) {
-			boolean platformChanged = this.platformIdModel.isBuffering();
-			this.trigger.accept();
-			if (platformChanged) {
-				// if the JPA platform is changed, we need to completely rebuild the JPA project
-				JptCorePlugin.rebuildJpaProject(this.getProject());
-			}
-			this.getProject().build(IncrementalProjectBuilder.FULL_BUILD, monitor);
-		}
-	}
-
-	/**
-	 * Return whether any of the models are buffering a change.
-	 */
-	private boolean isBuffering() {
-		for (BufferedWritablePropertyValueModel<?> model : this.buildBufferedModels()) {
-			if (model.isBuffering()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private BufferedWritablePropertyValueModel<?>[] buildBufferedModels() {
+	
+	@Override
+	protected BufferedWritablePropertyValueModel<?>[] buildBufferedModels() {
 		return new BufferedWritablePropertyValueModel[] {
 				this.platformIdModel,
 				this.connectionModel,
@@ -918,53 +722,12 @@ public class JpaProjectPropertiesPage
 				this.metamodelSourceFolderModel
 		};
 	}
-
-	@Override
-	protected void performDefaults() {
-		super.performDefaults();
-		this.trigger.reset();
-	}
-
-
-	// ********** dispose **********
-
-	@Override
-	public void dispose() {
-		this.disengageValidationListener();
-		this.platformIdModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.platformIdListener);
-		this.disconnectedModel.removePropertyChangeListener(PropertyValueModel.VALUE, this.disconnectedModelListener);
-		super.dispose();
-	}
-
-
+	
+	
 	// ********** validation **********
 
-	private ChangeListener buildValidationListener() {
-		return new SimpleChangeListener() {
-			@Override
-			protected void modelChanged() {
-				JpaProjectPropertiesPage.this.validate();
-			}
-			@Override
-			public String toString() {
-				return "validation listener"; //$NON-NLS-1$
-			}
-		};
-	}
-
-	void validate() {
-		if ( ! this.getControl().isDisposed()) {
-			this.updateValidation();
-		}
-	}
-
-	private void engageValidationListener() {
-		for (Model model : this.buildValidationModels()) {
-			model.addChangeListener(this.validationListener);
-		}
-	}
-
-	private Model[] buildValidationModels() {
+	@Override
+	protected Model[] buildValidationModels() {
 		return new Model[] {
 				this.platformIdModel,
 				this.connectionModel,
@@ -975,36 +738,14 @@ public class JpaProjectPropertiesPage
 				this.discoverAnnotatedClassesModel
 		};
 	}
-
-	private void disengageValidationListener() {
-		for (Model model : this.buildReverseValidationModels()) {
-			model.removeChangeListener(this.validationListener);
-		}
-	}
-
-	private Model[] buildReverseValidationModels() {
-		return ArrayTools.reverse(this.buildValidationModels());
-	}
-
-	private static final Integer ERROR_STATUS = Integer.valueOf(IStatus.ERROR);
-	private static final Integer WARNING_STATUS = Integer.valueOf(IStatus.WARNING);
-	private static final Integer INFO_STATUS = Integer.valueOf(IStatus.INFO);
-	private static final Integer OK_STATUS = Integer.valueOf(IStatus.OK);
-
+	
 	@Override
-	protected IStatus performValidation() {
-		HashMap<Integer, ArrayList<IStatus>> statuses = new HashMap<Integer, ArrayList<IStatus>>();
-		statuses.put(ERROR_STATUS, new ArrayList<IStatus>());
-		statuses.put(WARNING_STATUS, new ArrayList<IStatus>());
-		statuses.put(INFO_STATUS, new ArrayList<IStatus>());
-		statuses.put(OK_STATUS, CollectionTools.list(Status.OK_STATUS));
-		
+	protected void performValidation(Map<Integer, ArrayList<IStatus>> statuses) {	
 		/* platform */
 		// user is unable to unset the platform, so no validation necessary
 		
 		/* library provider */
-		IStatus lpStatus = super.performValidation();
-		statuses.get(Integer.valueOf(lpStatus.getSeverity())).add(lpStatus);
+		super.performValidation(statuses);
 		
 		/* connection */
 		ConnectionProfile connectionProfile = this.getConnectionProfile();
@@ -1013,8 +754,7 @@ public class JpaProjectPropertiesPage
 			if (connectionProfile == null) {
 				statuses.get(ERROR_STATUS).add(this.buildErrorStatus(NLS.bind(
 						JptCoreMessages.VALIDATE_CONNECTION_INVALID,
-						connectionName
-				)));
+						connectionName)));
 			}
 			else if ( ! connectionProfile.isActive()) {
 				statuses.get(INFO_STATUS).add(this.buildInfoStatus(JptCoreMessages.VALIDATE_CONNECTION_NOT_CONNECTED));
@@ -1052,38 +792,9 @@ public class JpaProjectPropertiesPage
 				)));
 			}
 		}
-
-		if ( ! statuses.get(ERROR_STATUS).isEmpty()) {
-			return statuses.get(ERROR_STATUS).get(0);
-		}
-		else if ( ! statuses.get(WARNING_STATUS).isEmpty()) {
-			return statuses.get(WARNING_STATUS).get(0);
-		}
-		else if ( ! statuses.get(INFO_STATUS).isEmpty()) {
-			return statuses.get(INFO_STATUS).get(0);
-		}
-		else {
-			return statuses.get(OK_STATUS).get(0);
-		}
 	}
 	
-	private IStatus buildInfoStatus(String message) {
-		return this.buildStatus(IStatus.INFO, message);
-	}
-
-	private IStatus buildWarningStatus(String message) {
-		return this.buildStatus(IStatus.WARNING, message);
-	}
-
-	private IStatus buildErrorStatus(String message) {
-		return this.buildStatus(IStatus.ERROR, message);
-	}
-
-	private IStatus buildStatus(int severity, String message) {
-		return new Status(severity, JptCorePlugin.PLUGIN_ID, message);
-	}
-
-
+	
 	// ********** UI model adapters **********
 
 	/**
@@ -1095,14 +806,8 @@ public class JpaProjectPropertiesPage
 	 * Eclipse project's preferences).
 	 */
 	static class JpaProjectModel
-		extends AspectPropertyValueModelAdapter<IProject, JpaProject>
-	{
-		/**
-		 * The JPA project's platform is stored as a preference.
-		 * If it changes, a new JPA project is built.
-		 */
-		private final IPreferenceChangeListener preferenceChangeListener;
-		
+			extends AspectPropertyValueModelAdapter<IProject, JpaProject> {
+				
 		/**
 		 * The JPA project may also change via another page (notably, the project facets page).
 		 * In that case, the preference change occurs before we actually have another project,
@@ -1113,22 +818,7 @@ public class JpaProjectPropertiesPage
 		
 		JpaProjectModel(PropertyValueModel<IProject> projectModel) {
 			super(projectModel);
-			this.preferenceChangeListener = this.buildPreferenceChangeListener();
 			this.projectManagerListener = buildProjectManagerListener();
-		}
-		
-		private IPreferenceChangeListener buildPreferenceChangeListener() {
-			return new IPreferenceChangeListener() {
-				public void preferenceChange(PreferenceChangeEvent event) {
-					if (event.getKey().equals(JptCorePlugin.getJpaPlatformIdPrefKey())) {
-						JpaProjectModel.this.platformChanged();
-					}
-				}
-				@Override
-				public String toString() {
-					return "preference change listener"; //$NON-NLS-1$
-				}
-			};
 		}
 		
 		private CollectionChangeListener buildProjectManagerListener() {
@@ -1149,14 +839,12 @@ public class JpaProjectPropertiesPage
 		
 		@Override
 		protected void engageSubject_() {
-			this.getPreferences().addPreferenceChangeListener(this.preferenceChangeListener);
 			JptCorePlugin.getJpaProjectManager().addCollectionChangeListener(
 						JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectManagerListener);
 		}
 		
 		@Override
 		protected void disengageSubject_() {
-			this.getPreferences().removePreferenceChangeListener(this.preferenceChangeListener);
 			JptCorePlugin.getJpaProjectManager().removeCollectionChangeListener(
 						JpaProjectManager.JPA_PROJECTS_COLLECTION, this.projectManagerListener);
 		}
@@ -1165,13 +853,9 @@ public class JpaProjectPropertiesPage
 		protected JpaProject buildValue_() {
 			return JptCorePlugin.getJpaProject(this.subject);
 		}
-		
-		private IEclipsePreferences getPreferences() {
-			return JptCorePlugin.getProjectPreferences(this.subject);
-		}
 	}
-
-
+	
+	
 	/**
 	 * The JPA project's data source is an auxiliary object that never changes;
 	 * so if we have a JPA project, we have a JPA data source also.

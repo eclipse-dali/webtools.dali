@@ -77,24 +77,24 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  */
 public abstract class AbstractJaxbProject
 	extends AbstractJaxbNode
-	implements JaxbProject
-{
+	implements JaxbProject {
+	
 	/**
 	 * The Eclipse project corresponding to the JAXB project.
 	 */
 	protected final IProject project;
-
+	
 	/**
 	 * The vendor-specific JAXB platform that builds the JAXB project
 	 * and all its contents.
 	 */
 	protected final JaxbPlatform jaxbPlatform;
-
+	
 	/**
-	 * The JPA files associated with the JPA project:
-	 *     persistence.xml
-	 *     orm.xml
+	 * The JAXB files associated with the JAXB project:
 	 *     java
+	 *     jaxb.index
+	 *     platform-specific files
 	 */
 	protected final Vector<JaxbFile> jaxbFiles = new Vector<JaxbFile>();
 
@@ -166,7 +166,7 @@ public abstract class AbstractJaxbProject
 		}
 		this.project = config.getProject();
 		this.jaxbPlatform = config.getJaxbPlatform();
-
+		
 		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
 
 		this.resourceModelListener = this.buildResourceModelListener();

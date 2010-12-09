@@ -7,31 +7,33 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal.gen;
+package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.osgi.util.NLS;
 
 /**
  * Localized messages used by Dali JAXB Core.
- *
- * @version 3.0
  */
 public class JptJaxbCoreMessages {
 	
-	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
-
 	public static String ClassesGenerator_generatingClasses;
 	public static String ClassesGenerator_generatingClassesTask;
-
-
+	
+	public static String JaxbFacetConfig_validatePlatformNotSpecified;
+	public static String JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion;
+	
+	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
+	
+	
 	private static final String BUNDLE_NAME = "jpt_jaxb_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptJaxbCoreMessages.class;
+	
 	static {
 		NLS.initializeMessages(BUNDLE_NAME, BUNDLE_CLASS);
 	}
-
+	
+	
 	private JptJaxbCoreMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }

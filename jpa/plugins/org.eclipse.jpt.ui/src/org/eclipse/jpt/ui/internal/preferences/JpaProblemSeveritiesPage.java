@@ -116,13 +116,13 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 	 * The unique identifier for this page when it is shown in the IDE
 	 * preferences dialog.
 	 */
-	private static final String JPT_PREFERENCES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.preferences.problemSeverities"; //$NON-NLS-1$
+	private static final String JPT_PREFERENCES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.jpaProblemSeveritiesPreferences"; //$NON-NLS-1$
 
 	/**
 	 * The unique identifier for this page when it is shown in the project
 	 * preferences dialog.
 	 */
-	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.propertyPages.problemSeverities"; //$NON-NLS-1$
+	private static final String JPT_PROPERTY_PAGES_PROBLEM_SEVERITIES_ID = "org.eclipse.jpt.ui.jpaProblemSeveritiesProperties"; //$NON-NLS-1$
 
 	/**
 	 * A constant used to store and retrieve the preference key (message ID) from

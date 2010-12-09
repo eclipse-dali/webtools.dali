@@ -39,6 +39,7 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.osgi.framework.Bundle;
 

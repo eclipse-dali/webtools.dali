@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
@@ -18,8 +19,11 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformManagerImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 /**
@@ -46,10 +50,15 @@ public class JptJaxbCorePlugin
 	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 	
 	/**
-	 * The key for storing a JAXB project's platform ID in the Eclipse project's preferences.
+	 * The node for storing a JAXB project's platform in the project's preferences.
 	 */
-	private static final String JAXB_PLATFORM_PREF_KEY = PLUGIN_ID_ + "jaxbPlatform";  //$NON-NLS-1$
-
+	public static final String PLATFORM_PREF_NODE = "platform";  //$NON-NLS-1$
+	
+	/**
+	 * The key for storing the platform id
+	 */
+	public static final String PLATFORM_ID_PREF_KEY = "platform-id";  //$NON-NLS-1$
+	
 	/**
 	 * The key for storing the default JAXB platform ID for JAXB 2.1 in the workspace preferences.
 	 */
@@ -109,12 +118,18 @@ public class JptJaxbCorePlugin
 		return JaxbPlatformManagerImpl.instance();
 	}
 	
-	
-	/**
-	 * Set the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
-	 */
-	public static void setJaxbPlatform(IProject project, JaxbPlatformDescription platform) {
-		JptCorePlugin.setProjectPreference(project, JAXB_PLATFORM_PREF_KEY, platform.getId());
+	public static Preferences getProjectPreferences(IProject project) {
+		try {
+			IFacetedProject fproj = ProjectFacetsManager.create(project);
+			return fproj.getPreferences(JaxbFacet.FACET);
+		}
+		catch (BackingStoreException bse) {
+			log(bse);
+		}
+		catch (CoreException ce) {
+			log(ce);
+		}
+		return null;
 	}
 	
 	/**
@@ -192,28 +207,33 @@ public class JptJaxbCorePlugin
 	 * Return the JAXB platform ID associated with the specified Eclipse project.
 	 */
 	public static String getJaxbPlatformId(IProject project) {
-		return JptCorePlugin.getProjectPreferences(project).get(JAXB_PLATFORM_PREF_KEY, GenericJaxbPlatform.VERSION_2_1.getId());
+		Preferences prefs = getProjectPreferences(project);
+		Preferences platformPrefs = prefs.node(PLATFORM_PREF_NODE);
+		return platformPrefs.get(PLATFORM_ID_PREF_KEY, GenericJaxbPlatform.VERSION_2_1.getId());
 	}
 
 	/**
-	 * Return the JAXB platform description associated with the specified Eclipse project.
+	 * Return the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
 	 */
 	public static JaxbPlatformDescription getJaxbPlatformDescription(IProject project) {
 		String jpaPlatformId = getJaxbPlatformId(project);
 		return getJaxbPlatformManager().getJaxbPlatform(jpaPlatformId);
 	}
-
-	/**
-	 * Set the JAXB platform ID associated with the specified Eclipse project.
-	 */
-	public static void setJaxbPlatformId(IProject project, String jpaPlatformId) {
-		JptCorePlugin.setProjectPreference(project, JAXB_PLATFORM_PREF_KEY, jpaPlatformId);
-	}
-
-	public static void clearProjectPreferences(IProject project) {
-		JptCorePlugin.clearProjectPreferences(project, JAXB_PLATFORM_PREF_KEY);
-	}
 	
+	/**
+	 * Set the {@link JaxbPlatformDescription} associated with the specified Eclipse project.
+	 */
+	public static void setJaxbPlatform(IProject project, JaxbPlatformDescription platform) {
+		Preferences prefs = getProjectPreferences(project);
+		Preferences platformPrefs = prefs.node(PLATFORM_PREF_NODE);
+		platformPrefs.put(PLATFORM_ID_PREF_KEY, platform.getId());
+		try {
+			platformPrefs.flush();
+		}
+		catch (BackingStoreException bse) {
+			log(bse);
+		}
+	}
 	
 	/**
 	 * Log the specified status.

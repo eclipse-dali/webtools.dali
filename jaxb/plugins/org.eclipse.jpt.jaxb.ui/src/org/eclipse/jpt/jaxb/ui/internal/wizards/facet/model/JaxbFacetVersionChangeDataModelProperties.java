@@ -7,10 +7,10 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal.facet;
+package org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model;
 
 
-public class JaxbFacetInstallDelegate
-		extends JaxbFacetDelegate {
+public interface JaxbFacetVersionChangeDataModelProperties
+		extends JaxbFacetDataModelProperties {
 	
 }

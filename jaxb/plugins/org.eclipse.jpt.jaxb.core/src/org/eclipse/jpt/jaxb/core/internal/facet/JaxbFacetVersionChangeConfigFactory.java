@@ -9,18 +9,13 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.facet;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.wst.common.project.facet.core.IDelegate;
-import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.IActionConfigFactory;
 
-
-public class JaxbFacetUninstallDelegate
-		implements IDelegate {
+public class JaxbFacetVersionChangeConfigFactory
+		implements IActionConfigFactory {
 	
-	public void execute(IProject project, IProjectFacetVersion fv,
-			Object config, IProgressMonitor monitor) throws CoreException {
-		
+	public Object create() throws CoreException {
+		return new JaxbFacetVersionChangeConfig();
 	}
 }

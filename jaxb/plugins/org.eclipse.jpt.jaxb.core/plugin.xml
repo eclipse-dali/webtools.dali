@@ -160,9 +160,7 @@
 		</action>
 		
 		<action facet="jpt.jaxb" type="version-change" id="jpt.jaxb.version-change">
-			<!-- 
-				TODO - once there is config.  This is here now to simply allow the version change.
-			-->
+			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeConfigFactory"/>
 			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeDelegate"/>
 		</action>
 		
