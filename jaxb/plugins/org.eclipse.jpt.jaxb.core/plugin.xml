@@ -74,6 +74,7 @@
 		<provider
 			id="jaxb-no-op-library-provider"
 			extends="jpt-no-op-library-provider">
+			<param name="message" value="%JAXB_NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<test 

@@ -341,8 +341,8 @@
 			id="jpt-no-op-library-provider" 
 			extends="no-op-library-provider"
 			abstract="true">
-			<param name="message" value="%NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
 			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
+
 		</provider>
 		
 		<provider 
@@ -357,6 +357,7 @@
 		<provider
 			id="jpa-no-op-library-provider"
 			extends="jpt-no-op-library-provider">
+			<param name="message" value="%NO_OP_LIBRARY_PROVIDER_MESSAGE"/>
 			<enablement>
 				<with variable="requestingProjectFacet">
 					<test property="org.eclipse.wst.common.project.facet.core.projectFacet" value="jpt.jpa" forcePluginActivation="true"/>
