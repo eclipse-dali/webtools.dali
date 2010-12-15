@@ -25,6 +25,8 @@ import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IExtendedModifier;
 import org.eclipse.jdt.core.dom.MarkerAnnotation;
@@ -229,6 +231,40 @@ public abstract class AnnotationTestCase extends TestCase {
 		return new AnnotatedSourceWriter(annotationWriter, packageName, typeName);
 	}
 	
+	protected ICompilationUnit createTestEnum(EnumAnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, FILE_NAME, this.createEnumSourceWriter(annotationWriter));
+	}
+	
+	protected ICompilationUnit createTestEnum(String packageName, String fileName, String enumName, EnumAnnotationWriter annotationWriter) throws CoreException {
+		return this.javaProject.createCompilationUnit(packageName, fileName, this.createEnumSourceWriter(annotationWriter, enumName));
+	}
+	
+	protected SourceWriter createEnumSourceWriter(EnumAnnotationWriter annotationWriter) {
+		return new EnumAnnotatedSourceWriter(annotationWriter);
+	}
+	
+	protected SourceWriter createEnumSourceWriter(EnumAnnotationWriter annotationWriter, String enumName) {
+		return new EnumAnnotatedSourceWriter(annotationWriter, enumName);
+	}
+	
+	protected SourceWriter createEnumSourceWriter(EnumAnnotationWriter annotationWriter, String packageName, String enumName) {
+		return new EnumAnnotatedSourceWriter(annotationWriter, packageName, enumName);
+	}
+	
+	protected ICompilationUnit createAnnotatedEnumAndMembers(String enumName, String enumBody) throws Exception {
+		StringBuilder sb = new StringBuilder();
+		sb.append("package ").append(PACKAGE_NAME).append(";").append(CR);
+		sb.append(CR);
+		sb.append("import javax.xml.bind.annotation.XmlEnum;");
+		sb.append(CR);
+		sb.append(CR);
+		sb.append("@XmlEnum");
+		sb.append(CR);
+		sb.append("public enum ").append(enumName).append(" { ").append(enumBody).append(" }");
+		
+		return this.javaProject.createCompilationUnit(PACKAGE_NAME, enumName + ".java", sb.toString());
+	}
+	
 	/**
 	 * writes source for package-info java files
 	 */
@@ -308,6 +344,41 @@ public abstract class AnnotationTestCase extends TestCase {
 		sb.append(CR);		
 		sb.append("}").append(CR);
 		annotationWriter.appendTopLevelTypesTo(sb);
+		sb.append(CR);
+	}
+
+	
+	/**
+	 * writes source for typical java enum files
+	 */
+	protected void appendEnumSourceTo(
+			StringBuilder sb, EnumAnnotationWriter annotationWriter, 
+			String packageName, String enumName) {
+		
+		sb.append("package ").append(packageName).append(";").append(CR);
+		sb.append(CR);
+		for (Iterator<String> stream = annotationWriter.imports(); stream.hasNext(); ) {
+			sb.append("import ");
+			sb.append(stream.next());
+			sb.append(";");
+			sb.append(CR);
+		}
+		sb.append(CR);
+		annotationWriter.appendEnumAnnotationTo(sb);
+		sb.append(CR);
+		sb.append("public enum ").append(enumName).append(" {").append(CR);
+		sb.append(CR);
+		sb.append("    ");
+		annotationWriter.appendSundayEnumConstantAnnotationTo(sb);
+		sb.append(CR);
+		sb.append("    SUNDAY, ").append(CR);
+		sb.append(CR);
+		sb.append("    ");
+		annotationWriter.appendMondayEnumConstantAnnotationTo(sb);
+		sb.append(CR);
+		sb.append("    MONDAY").append(CR);
+		sb.append(CR);
+		sb.append("}").append(CR);
 		sb.append(CR);
 	}
 
@@ -445,6 +516,14 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 
 	/**
+	 * minimize the scope of the suppressed warnings
+	 */
+	@SuppressWarnings("unchecked")
+	protected List<EnumConstantDeclaration> enumConstants(EnumDeclaration ed) {
+		return ed.enumConstants();
+	}
+
+	/**
 	 * check for null member value pair
 	 */
 	protected Expression value_(MemberValuePair pair) {
@@ -535,6 +614,11 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.newMemberValuePair(ast, name, this.newNumberLiteral(ast, value));
 	}
 
+	protected EnumConstantDeclaration newEnumConstantDeclaration(AST ast, String enumConstantName) {
+		EnumConstantDeclaration enumConstantDeclaration = ast.newEnumConstantDeclaration();
+		enumConstantDeclaration.setName(ast.newSimpleName(enumConstantName));
+		return enumConstantDeclaration;
+	}
 	/**
 	 * Add the specified member value pair to the specified annotation.
 	 * Return the resulting annotation.
@@ -606,6 +690,35 @@ public abstract class AnnotationTestCase extends TestCase {
 	protected void addMemberValuePair(MarkerAnnotation annotation, String elementName, Expression value) {
 		MemberValuePair memberValuePair = this.newMemberValuePair(annotation.getAST(), elementName, value);
 		this.addMemberValuePair(annotation, memberValuePair);
+	}
+	
+	protected void addEnumConstant(EnumDeclaration enumDeclaration, String enumConstantName) {
+		EnumConstantDeclaration enumConstantDeclaration = this.newEnumConstantDeclaration(enumDeclaration.getAST(), enumConstantName);
+		this.enumConstants(enumDeclaration).add(enumConstantDeclaration);
+	}
+	
+	protected void removeEnumConstant(EnumDeclaration enumDeclaration, String enumConstantName) {
+		List<EnumConstantDeclaration> enumConstantsList = this.enumConstants(enumDeclaration);
+		for (EnumConstantDeclaration constant : enumConstantsList) {
+			if (constant.getName().getFullyQualifiedName().equals(enumConstantName)) {
+				enumConstantsList.remove(constant);
+				break;
+			}
+		}
+	}
+	
+	protected void changeEnumConstantName(EnumDeclaration enumDeclaration, String oldEnumConstantName, String newEnumConstantName) {
+		List<EnumConstantDeclaration> enumConstantsList = this.enumConstants(enumDeclaration);
+		for (EnumConstantDeclaration constant : enumConstantsList) {
+			if (constant.getName().getFullyQualifiedName().equals(oldEnumConstantName)) {
+				this.changeEnumConstantName(constant, newEnumConstantName);
+				break;
+			}
+		}
+	}
+	
+	protected void changeEnumConstantName(EnumConstantDeclaration enumConstantDeclaration, String newEnumConstantName) {
+		enumConstantDeclaration.setName(enumConstantDeclaration.getAST().newSimpleName(newEnumConstantName));
 	}
 
 	/**
@@ -861,6 +974,49 @@ public abstract class AnnotationTestCase extends TestCase {
 			else {
 				AnnotationTestCase.this.appendSourceTo(sb, this.annotationWriter, packageName);
 			}
+		}
+	}
+
+	public interface EnumAnnotationWriter {
+		Iterator<String> imports();
+		void appendPackageAnnotationTo(StringBuilder sb);
+		void appendEnumAnnotationTo(StringBuilder sb);
+		void appendSundayEnumConstantAnnotationTo(StringBuilder sb);
+		void appendMondayEnumConstantAnnotationTo(StringBuilder sb);
+	}
+
+	public static class DefaultEnumAnnotationWriter implements EnumAnnotationWriter {
+		public Iterator<String> imports() {return EmptyIterator.instance();}
+		public void appendPackageAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendEnumAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendSundayEnumConstantAnnotationTo(StringBuilder sb) {/* do nothing */}
+		public void appendMondayEnumConstantAnnotationTo(StringBuilder sb) {/* do nothing */}
+	}
+
+	public class EnumAnnotatedSourceWriter
+			implements SourceWriter {
+		
+		private EnumAnnotationWriter annotationWriter;
+		private String packageName;
+		private String enumName;
+		
+		public EnumAnnotatedSourceWriter(EnumAnnotationWriter annotationWriter) {
+			this(annotationWriter, TYPE_NAME);
+		}
+		
+		public EnumAnnotatedSourceWriter(EnumAnnotationWriter annotationWriter, String enumName) {
+			this(annotationWriter, PACKAGE_NAME, enumName);
+		}
+		
+		public EnumAnnotatedSourceWriter(EnumAnnotationWriter annotationWriter, String packageName, String enumName) {
+			super();
+			this.annotationWriter = annotationWriter;
+			this.packageName = packageName;
+			this.enumName = enumName;
+		}
+		
+		public void appendSourceTo(StringBuilder sb) {
+			AnnotationTestCase.this.appendEnumSourceTo(sb, this.annotationWriter, this.packageName, this.enumName);
 		}
 	}
 
