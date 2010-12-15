@@ -91,6 +91,7 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_CACHE: return (EObject)createXmlCache();
 			case EclipseLinkOrmPackage.XML_CHANGE_TRACKING: return (EObject)createXmlChangeTracking();
 			case EclipseLinkOrmPackage.XML_CLONE_COPY_POLICY: return (EObject)createXmlCloneCopyPolicy();
+			case EclipseLinkOrmPackage.XML_COLLECTION_TABLE: return (EObject)createXmlCollectionTable();
 			case EclipseLinkOrmPackage.XML_CONVERSION_VALUE: return (EObject)createXmlConversionValue();
 			case EclipseLinkOrmPackage.XML_CONVERTER: return (EObject)createXmlConverter();
 			case EclipseLinkOrmPackage.XML_COPY_POLICY: return (EObject)createXmlCopyPolicy();
@@ -103,9 +104,11 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS: return (EObject)createXmlEntityMappings();
 			case EclipseLinkOrmPackage.XML_FETCH_ATTRIBUTE: return (EObject)createXmlFetchAttribute();
 			case EclipseLinkOrmPackage.XML_FETCH_GROUP: return (EObject)createXmlFetchGroup();
+			case EclipseLinkOrmPackage.XML_HASH_PARTITIONING: return (EObject)createXmlHashPartitioning();
 			case EclipseLinkOrmPackage.XML_ID: return (EObject)createXmlId();
 			case EclipseLinkOrmPackage.XML_INDEX: return (EObject)createXmlIndex();
 			case EclipseLinkOrmPackage.XML_INSTANTIATION_COPY_POLICY: return (EObject)createXmlInstantiationCopyPolicy();
+			case EclipseLinkOrmPackage.XML_JOIN_TABLE: return (EObject)createXmlJoinTable();
 			case EclipseLinkOrmPackage.XML_MANY_TO_MANY: return (EObject)createXmlManyToMany();
 			case EclipseLinkOrmPackage.XML_MANY_TO_ONE: return (EObject)createXmlManyToOne();
 			case EclipseLinkOrmPackage.XML_MAPPED_SUPERCLASS: return (EObject)createXmlMappedSuperclass();
@@ -116,18 +119,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 			case EclipseLinkOrmPackage.XML_ONE_TO_ONE: return (EObject)createXmlOneToOne();
 			case EclipseLinkOrmPackage.XML_OPTIMISTIC_LOCKING: return (EObject)createXmlOptimisticLocking();
 			case EclipseLinkOrmPackage.XML_ORDER_COLUMN: return (EObject)createXmlOrderColumn();
+			case EclipseLinkOrmPackage.XML_PARTITIONING: return (EObject)createXmlPartitioning();
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_DEFAULTS: return (EObject)createXmlPersistenceUnitDefaults();
 			case EclipseLinkOrmPackage.XML_PERSISTENCE_UNIT_METADATA: return (EObject)createXmlPersistenceUnitMetadata();
+			case EclipseLinkOrmPackage.XML_PINNED_PARTITIONING: return (EObject)createXmlPinnedPartitioning();
 			case EclipseLinkOrmPackage.XML_PRIMARY_KEY: return (EObject)createXmlPrimaryKey();
 			case EclipseLinkOrmPackage.XML_PROPERTY: return (EObject)createXmlProperty();
 			case EclipseLinkOrmPackage.XML_QUERY_REDIRECTORS: return (EObject)createXmlQueryRedirectors();
+			case EclipseLinkOrmPackage.XML_RANGE_PARTITIONING: return (EObject)createXmlRangePartitioning();
+			case EclipseLinkOrmPackage.XML_REPLICATION_PARTITIONING: return (EObject)createXmlReplicationPartitioning();
 			case EclipseLinkOrmPackage.XML_RETURN_INSERT: return (EObject)createXmlReturnInsert();
+			case EclipseLinkOrmPackage.XML_ROUND_ROBIN_PARTITIONING: return (EObject)createXmlRoundRobinPartitioning();
+			case EclipseLinkOrmPackage.XML_SECONDARY_TABLE: return (EObject)createXmlSecondaryTable();
 			case EclipseLinkOrmPackage.XML_STORED_PROCEDURE_PARAMETER: return (EObject)createXmlStoredProcedureParameter();
 			case EclipseLinkOrmPackage.XML_STRUCT_CONVERTER: return (EObject)createXmlStructConverter();
+			case EclipseLinkOrmPackage.XML_TABLE: return (EObject)createXmlTable();
+			case EclipseLinkOrmPackage.XML_TABLE_GENERATOR: return (EObject)createXmlTableGenerator();
 			case EclipseLinkOrmPackage.XML_TIME_OF_DAY: return (EObject)createXmlTimeOfDay();
 			case EclipseLinkOrmPackage.XML_TRANSFORMATION: return (EObject)createXmlTransformation();
 			case EclipseLinkOrmPackage.XML_TRANSIENT: return (EObject)createXmlTransient();
 			case EclipseLinkOrmPackage.XML_TYPE_CONVERTER: return (EObject)createXmlTypeConverter();
+			case EclipseLinkOrmPackage.XML_UNION_PARTITIONING: return (EObject)createXmlUnionPartitioning();
+			case EclipseLinkOrmPackage.XML_VALUE_PARTITIONING: return (EObject)createXmlValuePartitioning();
 			case EclipseLinkOrmPackage.XML_VARIABLE_ONE_TO_ONE: return (EObject)createXmlVariableOneToOne();
 			case EclipseLinkOrmPackage.XML_VERSION: return (EObject)createXmlVersion();
 			default:
@@ -308,6 +321,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlCollectionTable createXmlCollectionTable()
+	{
+		XmlCollectionTable xmlCollectionTable = new XmlCollectionTable();
+		return xmlCollectionTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlConversionValue createXmlConversionValue()
 	{
 		XmlConversionValue xmlConversionValue = new XmlConversionValue();
@@ -466,6 +490,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlInstantiationCopyPolicy xmlInstantiationCopyPolicy = new XmlInstantiationCopyPolicy();
 		return xmlInstantiationCopyPolicy;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlJoinTable createXmlJoinTable()
+	{
+		XmlJoinTable xmlJoinTable = new XmlJoinTable();
+		return xmlJoinTable;
 	}
 
 	/**
@@ -649,6 +684,17 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public XmlSecondaryTable createXmlSecondaryTable()
+	{
+		XmlSecondaryTable xmlSecondaryTable = new XmlSecondaryTable();
+		return xmlSecondaryTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public XmlStoredProcedureParameter createXmlStoredProcedureParameter()
 	{
 		XmlStoredProcedureParameter xmlStoredProcedureParameter = new XmlStoredProcedureParameter();
@@ -664,6 +710,28 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlStructConverter xmlStructConverter = new XmlStructConverter();
 		return xmlStructConverter;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTable createXmlTable()
+	{
+		XmlTable xmlTable = new XmlTable();
+		return xmlTable;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlTableGenerator createXmlTableGenerator()
+	{
+		XmlTableGenerator xmlTableGenerator = new XmlTableGenerator();
+		return xmlTableGenerator;
 	}
 
 	/**
@@ -730,6 +798,94 @@ public class EclipseLinkOrmFactory extends EFactoryImpl
 	{
 		XmlVersion xmlVersion = new XmlVersion();
 		return xmlVersion;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlHashPartitioning createXmlHashPartitioning()
+	{
+		XmlHashPartitioning xmlHashPartitioning = new XmlHashPartitioning();
+		return xmlHashPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPartitioning createXmlPartitioning()
+	{
+		XmlPartitioning xmlPartitioning = new XmlPartitioning();
+		return xmlPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlPinnedPartitioning createXmlPinnedPartitioning()
+	{
+		XmlPinnedPartitioning xmlPinnedPartitioning = new XmlPinnedPartitioning();
+		return xmlPinnedPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlRangePartitioning createXmlRangePartitioning()
+	{
+		XmlRangePartitioning xmlRangePartitioning = new XmlRangePartitioning();
+		return xmlRangePartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlReplicationPartitioning createXmlReplicationPartitioning()
+	{
+		XmlReplicationPartitioning xmlReplicationPartitioning = new XmlReplicationPartitioning();
+		return xmlReplicationPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlRoundRobinPartitioning createXmlRoundRobinPartitioning()
+	{
+		XmlRoundRobinPartitioning xmlRoundRobinPartitioning = new XmlRoundRobinPartitioning();
+		return xmlRoundRobinPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlUnionPartitioning createXmlUnionPartitioning()
+	{
+		XmlUnionPartitioning xmlUnionPartitioning = new XmlUnionPartitioning();
+		return xmlUnionPartitioning;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public XmlValuePartitioning createXmlValuePartitioning()
+	{
+		XmlValuePartitioning xmlValuePartitioning = new XmlValuePartitioning();
+		return xmlValuePartitioning;
 	}
 
 	/**

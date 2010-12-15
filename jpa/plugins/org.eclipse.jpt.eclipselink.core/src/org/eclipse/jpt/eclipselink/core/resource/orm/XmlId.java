@@ -1140,5 +1140,10 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	
 	protected static Translator buildEnumeratedTranslator() {
 		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
-	}	
+	}
+	
+	protected static Translator buildTableGeneratorTranslator() {
+		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+	}
+
 }

@@ -11,14 +11,27 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
+import org.eclipse.emf.common.notify.Notification;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlEntityMappings_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
@@ -26,7 +39,6 @@ import org.eclipse.jpt.core.resource.orm.SqlResultSetMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
-import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
@@ -55,8 +67,98 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEntityMappings implements XmlConvertersHolder, XmlQueryContainer
+public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEntityMappings implements XmlEntityMappings_2_1, XmlEntityMappings_2_2, XmlConvertersHolder, XmlQueryContainer
 {
+	/**
+	 * The cached value of the '{@link #getAccessMethods() <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getAccessMethods()
+	 * @generated
+	 * @ordered
+	 */
+	protected XmlAccessMethods accessMethods;
+
+	/**
+	 * The cached value of the '{@link #getPartitioning() <em>Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPartitioning_2_2> partitioning;
+
+	/**
+	 * The cached value of the '{@link #getReplicationPartitioning() <em>Replication Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getReplicationPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlReplicationPartitioning_2_2> replicationPartitioning;
+
+	/**
+	 * The cached value of the '{@link #getRoundRobinPartitioning() <em>Round Robin Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRoundRobinPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlRoundRobinPartitioning_2_2> roundRobinPartitioning;
+
+	/**
+	 * The cached value of the '{@link #getPinnedPartitioning() <em>Pinned Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPinnedPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPinnedPartitioning_2_2> pinnedPartitioning;
+
+	/**
+	 * The cached value of the '{@link #getRangePartitioning() <em>Range Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getRangePartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlRangePartitioning_2_2> rangePartitioning;
+
+	/**
+	 * The cached value of the '{@link #getValuePartitioning() <em>Value Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getValuePartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlValuePartitioning_2_2> valuePartitioning;
+
+	/**
+	 * The cached value of the '{@link #getHashPartitioning() <em>Hash Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getHashPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlHashPartitioning_2_2> hashPartitioning;
+
+	/**
+	 * The cached value of the '{@link #getUnionPartitioning() <em>Union Partitioning</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getUnionPartitioning()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlUnionPartitioning_2_2> unionPartitioning;
+
 	/**
 	 * The cached value of the '{@link #getConverters() <em>Converters</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
@@ -126,6 +228,250 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	protected EClass eStaticClass()
 	{
 		return EclipseLinkOrmPackage.Literals.XML_ENTITY_MAPPINGS;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Access Methods</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Access Methods</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Access Methods</em>' containment reference.
+	 * @see #setAccessMethods(XmlAccessMethods)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlAccessMethodsHolder_AccessMethods()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public XmlAccessMethods getAccessMethods()
+	{
+		return accessMethods;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetAccessMethods(XmlAccessMethods newAccessMethods, NotificationChain msgs)
+	{
+		XmlAccessMethods oldAccessMethods = accessMethods;
+		accessMethods = newAccessMethods;
+		if (eNotificationRequired())
+		{
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, oldAccessMethods, newAccessMethods);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings#getAccessMethods <em>Access Methods</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Access Methods</em>' containment reference.
+	 * @see #getAccessMethods()
+	 * @generated
+	 */
+	public void setAccessMethods(XmlAccessMethods newAccessMethods)
+	{
+		if (newAccessMethods != accessMethods)
+		{
+			NotificationChain msgs = null;
+			if (accessMethods != null)
+				msgs = ((InternalEObject)accessMethods).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, null, msgs);
+			if (newAccessMethods != null)
+				msgs = ((InternalEObject)newAccessMethods).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, null, msgs);
+			msgs = basicSetAccessMethods(newAccessMethods, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS, newAccessMethods, newAccessMethods));
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_Partitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPartitioning_2_2> getPartitioning()
+	{
+		if (partitioning == null)
+		{
+			partitioning = new EObjectContainmentEList<XmlPartitioning_2_2>(XmlPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING);
+		}
+		return partitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Replication Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Replication Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Replication Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_ReplicationPartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlReplicationPartitioning_2_2> getReplicationPartitioning()
+	{
+		if (replicationPartitioning == null)
+		{
+			replicationPartitioning = new EObjectContainmentEList<XmlReplicationPartitioning_2_2>(XmlReplicationPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING);
+		}
+		return replicationPartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Round Robin Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Round Robin Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Round Robin Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_RoundRobinPartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlRoundRobinPartitioning_2_2> getRoundRobinPartitioning()
+	{
+		if (roundRobinPartitioning == null)
+		{
+			roundRobinPartitioning = new EObjectContainmentEList<XmlRoundRobinPartitioning_2_2>(XmlRoundRobinPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING);
+		}
+		return roundRobinPartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Pinned Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Pinned Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Pinned Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_PinnedPartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlPinnedPartitioning_2_2> getPinnedPartitioning()
+	{
+		if (pinnedPartitioning == null)
+		{
+			pinnedPartitioning = new EObjectContainmentEList<XmlPinnedPartitioning_2_2>(XmlPinnedPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING);
+		}
+		return pinnedPartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Range Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Range Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Range Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_RangePartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlRangePartitioning_2_2> getRangePartitioning()
+	{
+		if (rangePartitioning == null)
+		{
+			rangePartitioning = new EObjectContainmentEList<XmlRangePartitioning_2_2>(XmlRangePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING);
+		}
+		return rangePartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Value Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Value Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Value Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_ValuePartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlValuePartitioning_2_2> getValuePartitioning()
+	{
+		if (valuePartitioning == null)
+		{
+			valuePartitioning = new EObjectContainmentEList<XmlValuePartitioning_2_2>(XmlValuePartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING);
+		}
+		return valuePartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Hash Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Hash Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Hash Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_HashPartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlHashPartitioning_2_2> getHashPartitioning()
+	{
+		if (hashPartitioning == null)
+		{
+			hashPartitioning = new EObjectContainmentEList<XmlHashPartitioning_2_2>(XmlHashPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING);
+		}
+		return hashPartitioning;
+	}
+
+	/**
+	 * Returns the value of the '<em><b>Union Partitioning</b></em>' containment reference list.
+	 * The list contents are of type {@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2}.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Union Partitioning</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Union Partitioning</em>' containment reference list.
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage#getXmlEntityMappings_2_2_UnionPartitioning()
+	 * @model containment="true"
+	 * @generated
+	 */
+	public EList<XmlUnionPartitioning_2_2> getUnionPartitioning()
+	{
+		if (unionPartitioning == null)
+		{
+			unionPartitioning = new EObjectContainmentEList<XmlUnionPartitioning_2_2>(XmlUnionPartitioning_2_2.class, this, EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING);
+		}
+		return unionPartitioning;
 	}
 
 	/**
@@ -253,6 +599,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
+				return basicSetAccessMethods(null, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
+				return ((InternalEList<?>)getPartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
+				return ((InternalEList<?>)getReplicationPartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
+				return ((InternalEList<?>)getRoundRobinPartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
+				return ((InternalEList<?>)getPinnedPartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
+				return ((InternalEList<?>)getRangePartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
+				return ((InternalEList<?>)getValuePartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
+				return ((InternalEList<?>)getHashPartitioning()).basicRemove(otherEnd, msgs);
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
+				return ((InternalEList<?>)getUnionPartitioning()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return ((InternalEList<?>)getConverters()).basicRemove(otherEnd, msgs);
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -277,6 +641,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
+				return getAccessMethods();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
+				return getPartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
+				return getReplicationPartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
+				return getRoundRobinPartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
+				return getPinnedPartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
+				return getRangePartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
+				return getValuePartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
+				return getHashPartitioning();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
+				return getUnionPartitioning();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return getConverters();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -302,6 +684,41 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
+				getPartitioning().clear();
+				getPartitioning().addAll((Collection<? extends XmlPartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
+				getReplicationPartitioning().clear();
+				getReplicationPartitioning().addAll((Collection<? extends XmlReplicationPartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
+				getRoundRobinPartitioning().clear();
+				getRoundRobinPartitioning().addAll((Collection<? extends XmlRoundRobinPartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
+				getPinnedPartitioning().clear();
+				getPinnedPartitioning().addAll((Collection<? extends XmlPinnedPartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
+				getRangePartitioning().clear();
+				getRangePartitioning().addAll((Collection<? extends XmlRangePartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
+				getValuePartitioning().clear();
+				getValuePartitioning().addAll((Collection<? extends XmlValuePartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
+				getHashPartitioning().clear();
+				getHashPartitioning().addAll((Collection<? extends XmlHashPartitioning_2_2>)newValue);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
+				getUnionPartitioning().clear();
+				getUnionPartitioning().addAll((Collection<? extends XmlUnionPartitioning_2_2>)newValue);
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				getConverters().clear();
 				getConverters().addAll((Collection<? extends XmlConverter>)newValue);
@@ -336,6 +753,33 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
+				setAccessMethods((XmlAccessMethods)null);
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
+				getPartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
+				getReplicationPartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
+				getRoundRobinPartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
+				getPinnedPartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
+				getRangePartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
+				getValuePartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
+				getHashPartitioning().clear();
+				return;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
+				getUnionPartitioning().clear();
+				return;
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				getConverters().clear();
 				return;
@@ -365,6 +809,24 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	{
 		switch (featureID)
 		{
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS:
+				return accessMethods != null;
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING:
+				return partitioning != null && !partitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING:
+				return replicationPartitioning != null && !replicationPartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING:
+				return roundRobinPartitioning != null && !roundRobinPartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING:
+				return pinnedPartitioning != null && !pinnedPartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING:
+				return rangePartitioning != null && !rangePartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING:
+				return valuePartitioning != null && !valuePartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING:
+				return hashPartitioning != null && !hashPartitioning.isEmpty();
+			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING:
+				return unionPartitioning != null && !unionPartitioning.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__CONVERTERS:
 				return converters != null && !converters.isEmpty();
 			case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__TYPE_CONVERTERS:
@@ -387,6 +849,36 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_1.class)
+		{
+			switch (derivedFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_2.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__REPLICATION_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__ROUND_ROBIN_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PINNED_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__RANGE_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__VALUE_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__HASH_PARTITIONING;
+				case EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING: return EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__UNION_PARTITIONING;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConvertersHolder.class)
 		{
 			switch (derivedFeatureID)
@@ -417,6 +909,36 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
+		if (baseClass == XmlAccessMethodsHolder.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmPackage.XML_ACCESS_METHODS_HOLDER__ACCESS_METHODS: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ACCESS_METHODS;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_1.class)
+		{
+			switch (baseFeatureID)
+			{
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlEntityMappings_2_2.class)
+		{
+			switch (baseFeatureID)
+			{
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__REPLICATION_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__REPLICATION_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__ROUND_ROBIN_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__ROUND_ROBIN_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__PINNED_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__PINNED_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__RANGE_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__RANGE_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__VALUE_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__VALUE_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__HASH_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__HASH_PARTITIONING;
+				case EclipseLinkOrmV2_2Package.XML_ENTITY_MAPPINGS_22__UNION_PARTITIONING: return EclipseLinkOrmPackage.XML_ENTITY_MAPPINGS__UNION_PARTITIONING;
+				default: return -1;
+			}
+		}
 		if (baseClass == XmlConvertersHolder.class)
 		{
 			switch (baseFeatureID)
@@ -502,6 +1024,14 @@ public class XmlEntityMappings extends org.eclipse.jpt.core.resource.orm.XmlEnti
 			XmlStructConverter.buildTranslator(EclipseLink.STRUCT_CONVERTER, EclipseLinkOrmPackage.eINSTANCE.getXmlConvertersHolder_StructConverters()),
 			XmlSequenceGenerator.buildTranslator(JPA.SEQUENCE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_SequenceGenerators()),
 			XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlEntityMappings_TableGenerators()),
+			XmlPartitioning.buildTranslator(EclipseLink2_2.PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_Partitioning()),
+			XmlReplicationPartitioning.buildTranslator(EclipseLink2_2.REPLICATION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_ReplicationPartitioning()),
+			XmlRoundRobinPartitioning.buildTranslator(EclipseLink2_2.ROUND_ROBIN_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_RoundRobinPartitioning()),
+			XmlPinnedPartitioning.buildTranslator(EclipseLink2_2.PINNED_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_PinnedPartitioning()),
+			XmlRangePartitioning.buildTranslator(EclipseLink2_2.RANGE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_RangePartitioning()),
+			XmlValuePartitioning.buildTranslator(EclipseLink2_2.VALUE_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_ValuePartitioning()),
+			XmlHashPartitioning.buildTranslator(EclipseLink2_2.HASH_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_HashPartitioning()),
+			XmlUnionPartitioning.buildTranslator(EclipseLink2_2.UNION_PARTITIONING, EclipseLinkOrmV2_2Package.eINSTANCE.getXmlEntityMappings_2_2_UnionPartitioning()),
 			XmlNamedQuery.buildTranslator(JPA.NAMED_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedQueries()),
 			XmlNamedNativeQuery.buildTranslator(JPA.NAMED_NATIVE_QUERY, OrmPackage.eINSTANCE.getXmlQueryContainer_NamedNativeQueries()),
 			XmlNamedStoredProcedureQuery.buildTranslator(EclipseLink.NAMED_STORED_PROCEDURE_QUERY, EclipseLinkOrmPackage.eINSTANCE.getXmlQueryContainer_NamedStoredProcedureQueries()),

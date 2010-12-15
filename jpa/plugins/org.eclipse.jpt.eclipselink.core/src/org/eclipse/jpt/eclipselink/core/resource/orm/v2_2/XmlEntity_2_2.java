@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_2;
 
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,10 +32,9 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  *
  * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlEntity_2_2()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlEntity_2_2 extends JpaEObject
+public interface XmlEntity_2_2 extends XmlPartitioningGroup_2_2
 {
 	/**
 	 * Returns the value of the '<em><b>Cascade On Delete</b></em>' attribute.

@@ -24,7 +24,9 @@ public interface EclipseLink2_2
 	// EclipseLink 2.2 specific nodes
 	String ADDITIONAL_CRITERIA = "additional-criteria";
 	String CASCADE_ON_DELETE = "cascade-on-delete";
-	String CRITERIA = "criteria";	
+	String CRITERIA = "criteria";
+	String CREATION_SUFFIX = "creation-suffix";
+	String HASH_PARTITIONING = "hash-partitioning";
 	String INDEX = "index";
 		String INDEX__COLUMN_NAME = "column-name";
 		String INDEX__NAME = "name";
@@ -33,4 +35,12 @@ public interface EclipseLink2_2
 		String INDEX__TABLE = "table";
 		String INDEX__UNIQUE = "unique";
 	String PARENT_CLASS = "parent-class";
+	String PARTITIONING = "partitioning";
+	String PARTITIONING_GROUP__PARTITIONED = "partitioned";
+	String PINNED_PARTITIONING = "pinned-partitioning";
+	String RANGE_PARTITIONING = "range-partitioning";
+	String REPLICATION_PARTITIONING = "replication-partitioning";
+	String ROUND_ROBIN_PARTITIONING = "round-robin-partitioning";
+	String UNION_PARTITIONING = "union-partitioning";
+	String VALUE_PARTITIONING = "value-partitioning";
 }

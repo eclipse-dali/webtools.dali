@@ -1458,7 +1458,7 @@ public class XmlBasic extends org.eclipse.jpt.core.resource.orm.XmlBasic impleme
 	}
 		
 	protected static Translator buildTableGeneratorTranslator() {
-		return XmlTableGenerator.buildTranslator(EclipseLink1_1.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
+		return org.eclipse.jpt.eclipselink.core.resource.orm.XmlTableGenerator.buildTranslator(EclipseLink1_1.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
 	}
 	
 	protected static Translator buildSequenceGeneratorTranslator() {

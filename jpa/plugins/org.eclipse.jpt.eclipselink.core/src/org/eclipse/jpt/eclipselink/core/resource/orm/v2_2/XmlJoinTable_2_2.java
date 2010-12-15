@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.resource.orm.v2_2;
 
+import org.eclipse.jpt.core.resource.xml.JpaEObject;
 
 /**
  * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Xml Mapped Superclass 22</b></em>'.
+ * A representation of the model object '<em><b>Xml Join Table 22</b></em>'.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,40 +25,41 @@ package org.eclipse.jpt.eclipselink.core.resource.orm.v2_2;
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlMappedSuperclass_2_2#getAdditionalCriteria <em>Additional Criteria</em>}</li>
+ *   <li>{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlJoinTable_2_2#getCreationSuffix <em>Creation Suffix</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlMappedSuperclass_2_2()
+ * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlJoinTable_2_2()
  * @model kind="class" interface="true" abstract="true"
+ * @extends JpaEObject
  * @generated
  */
-public interface XmlMappedSuperclass_2_2 extends XmlPartitioningGroup_2_2
+public interface XmlJoinTable_2_2 extends JpaEObject
 {
 	/**
-	 * Returns the value of the '<em><b>Additional Criteria</b></em>' containment reference.
+	 * Returns the value of the '<em><b>Creation Suffix</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Additional Criteria</em>' containment reference isn't clear,
+	 * If the meaning of the '<em>Creation Suffix</em>' attribute isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Additional Criteria</em>' containment reference.
-	 * @see #setAdditionalCriteria(XmlAdditionalCriteria_2_2)
-	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlMappedSuperclass_2_2_AdditionalCriteria()
-	 * @model containment="true"
+	 * @return the value of the '<em>Creation Suffix</em>' attribute.
+	 * @see #setCreationSuffix(String)
+	 * @see org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package#getXmlJoinTable_2_2_CreationSuffix()
+	 * @model dataType="org.eclipse.emf.ecore.xml.type.String"
 	 * @generated
 	 */
-	XmlAdditionalCriteria_2_2 getAdditionalCriteria();
+	String getCreationSuffix();
 
 	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlMappedSuperclass_2_2#getAdditionalCriteria <em>Additional Criteria</em>}' containment reference.
+	 * Sets the value of the '{@link org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlJoinTable_2_2#getCreationSuffix <em>Creation Suffix</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Additional Criteria</em>' containment reference.
-	 * @see #getAdditionalCriteria()
+	 * @param value the new value of the '<em>Creation Suffix</em>' attribute.
+	 * @see #getCreationSuffix()
 	 * @generated
 	 */
-	void setAdditionalCriteria(XmlAdditionalCriteria_2_2 value);
+	void setCreationSuffix(String value);
 
-} // XmlMappedSuperclass_2_2
+} // XmlJoinTable_2_2
