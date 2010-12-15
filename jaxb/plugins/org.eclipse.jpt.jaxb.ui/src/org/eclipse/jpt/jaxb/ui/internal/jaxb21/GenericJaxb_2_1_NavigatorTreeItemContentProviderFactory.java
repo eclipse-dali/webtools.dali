@@ -11,6 +11,8 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
@@ -48,6 +50,12 @@ public class GenericJaxb_2_1_NavigatorTreeItemContentProviderFactory
 		}
 		else if (item instanceof JaxbPackage) {
 			return new JaxbPackageItemContentProvider((JaxbPackage) item, treeContentAndLabelProvider);	
+		}
+		else if (item instanceof JaxbPersistentEnum) {
+			return new JaxbPersistentEnumItemContentProvider((JaxbPersistentEnum) item, treeContentAndLabelProvider);	
+		}
+		else if (item instanceof JaxbRegistry) {
+			return new JaxbRegistryItemContentProvider((JaxbRegistry) item, treeContentAndLabelProvider);	
 		}
 		return null;
 	}
