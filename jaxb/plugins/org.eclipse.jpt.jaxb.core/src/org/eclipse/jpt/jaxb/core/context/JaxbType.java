@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 
 /**
  * Represents a java class (or enum or interface) with JAXB metadata (specified or implied).
@@ -34,7 +34,7 @@ public interface JaxbType
 	/**
 	 * Return the associated java resource type
 	 */
-	JavaResourceType getJavaResourceType();
+	AbstractJavaResourceType getJavaResourceType();
 	
 	/**
 	 * Returns the fully qualified name of this type, including qualification for any 

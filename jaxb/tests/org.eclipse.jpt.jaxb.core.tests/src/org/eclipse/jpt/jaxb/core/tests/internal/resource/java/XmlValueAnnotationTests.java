@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -40,7 +40,7 @@ public class XmlValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testGetXmlValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlValueAnnotation xmlValueAnnotation = (XmlValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_VALUE);
 		assertTrue(xmlValueAnnotation != null);

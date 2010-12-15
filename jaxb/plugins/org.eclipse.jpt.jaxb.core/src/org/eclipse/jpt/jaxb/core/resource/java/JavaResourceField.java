@@ -9,11 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * Java source code or binary attribute (field or method)
+ * Java source code or binary field
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,39 +23,13 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @version 3.0
  * @since 3.0
  */
-public interface JavaResourceAttribute
+public interface JavaResourceField
 	extends JavaResourceMember
 {
 	/**
-	 * The Java resource attribute's name does not change.
+	 * The Java resource field's name does not change.
 	 */
 	String getName();
-	
-	/**
-	 * Return a null annotation for the specified annotation name.
-	 * Return null if the specified annotation name is null.
-	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
-	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourceMember,
-	 * org.eclipse.jpt.core.utility.jdt.Member)}
-	 */
-	Annotation buildNullAnnotation(String annotationName);
-	
-	/**
-	 * Whether the Java resource persistent attribute is a field does not change.
-	 */
-	boolean isField();
-
-	/**
-	 * Whether the Java resource persistent attribute is a property does not change.
-	 */
-	boolean isProperty();
-
-	/**
-	 * Return the access type explicitly specified by the javax.persistence.Access annotation.
-	 * Return null if the Access annotation is not present. 
-	 * For JPA 1.0 this is always going to return null; Access annotation is not supported in 1.0.
-	 */
-	XmlAccessType getSpecifiedAccess();
 
 	/**
 	 * Return whether the attribute's type implements or extends the specified
@@ -69,12 +42,6 @@ public interface JavaResourceAttribute
 	 * (i.e. any primitive type except 'void').
 	 */
 	boolean typeIsVariablePrimitive();
-
-	/**
-	 * Return whether the Java resource persistent attribute is for the specified
-	 * method.
-	 */
-	boolean isFor(MethodSignature methodSignature, int occurrence);
 
 	/**
 	 * @see java.lang.reflect.Modifier

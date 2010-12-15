@@ -18,29 +18,18 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTMethodAttribute;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
-import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
-import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 /**
- * Java source persistent attribute (field or property)
+ * Java source attribute (field or method)
  */
-final class SourceAttribute
-	extends SourceMember<Attribute>
-	implements JavaResourceAttribute
+abstract class SourceAttribute<A extends Attribute>
+	extends SourceMember<A>
 {
 	private int modifiers;
 
@@ -57,51 +46,7 @@ final class SourceAttribute
 	private final Vector<String> typeTypeArgumentNames = new Vector<String>();
 
 
-	/**
-	 * construct field attribute
-	 */
-	static JavaResourceAttribute newInstance(
-			JavaResourceType parent,
-			Type declaringType,
-			String name,
-			int occurrence,
-			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			CompilationUnit astRoot) {
-		Attribute attribute = new JDTFieldAttribute(
-				declaringType,
-				name,
-				occurrence,
-				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceAttribute jrpa = new SourceAttribute(parent, attribute);
-		jrpa.initialize(astRoot);
-		return jrpa;
-	}
-
-	/**
-	 * construct property attribute
-	 */
-	static JavaResourceAttribute newInstance(
-			JavaResourceType parent,
-			Type declaringType,
-			MethodSignature signature,
-			int occurrence,
-			JavaResourceCompilationUnit javaResourceCompilationUnit,
-			CompilationUnit astRoot) {
-		Attribute attribute = JDTMethodAttribute.newInstance(
-				declaringType,
-				signature,
-				occurrence,
-				javaResourceCompilationUnit.getCompilationUnit(),
-				javaResourceCompilationUnit.getModifySharedDocumentCommandExecutor(),
-				javaResourceCompilationUnit.getAnnotationEditFormatter());
-		JavaResourceAttribute jrpa = new SourceAttribute(parent, attribute);
-		jrpa.initialize(astRoot);
-		return jrpa;
-	}
-
-	private SourceAttribute(JavaResourceType parent, Attribute attribute){
+	protected SourceAttribute(JavaResourceType parent, A attribute){
 		super(parent, attribute);
 	}
 
@@ -149,40 +94,11 @@ final class SourceAttribute
 		sb.append(this.getName());
 	}
 
-
-	// ******** AbstractJavaResourcePersistentMember implementation ********
-	
-	public boolean isFor(MethodSignature signature, int occurrence) {
-		return ((MethodAttribute) this.annotatedElement).matches(signature, occurrence);
-	}
-	
 	
 	// ******** JavaResourcePersistentAttribute implementation ********
 	
 	public String getName() {
 		return this.annotatedElement.getAttributeName();
-	}
-	
-	@Override
-	public Annotation buildNullAnnotation(String annotationName) {
-		return (annotationName == null) ? null : super.buildNullAnnotation(annotationName);
-	}
-	
-	public boolean isField() {
-		return this.annotatedElement.isField();
-	}
-
-	public boolean isProperty() {
-		return ! this.isField();
-	}
-
-	public XmlAccessType getSpecifiedAccess() {
-		XmlAccessorTypeAnnotation accessAnnotation = this.getAccessAnnotation();
-		return (accessAnnotation == null) ? null : accessAnnotation.getValue();
-	}
-
-	private XmlAccessorTypeAnnotation getAccessAnnotation() {
-		return (XmlAccessorTypeAnnotation) this.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
 	}
 
 	public boolean typeIsSubTypeOf(String tn) {
@@ -211,8 +127,10 @@ final class SourceAttribute
 	private void syncModifiers(int astModifiers) {
 		int old = this.modifiers;
 		this.modifiers = astModifiers;
-		this.firePropertyChanged(MODIFIERS_PROPERTY, old, astModifiers);
+		this.firePropertyChanged(getModifiersProperty(), old, astModifiers);
 	}
+
+	protected abstract String getModifiersProperty();
 
 	/**
 	 * zero seems like a reasonable default...
@@ -230,8 +148,10 @@ final class SourceAttribute
 	private void syncTypeName(String astTypeName) {
 		String old = this.typeName;
 		this.typeName = astTypeName;
-		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, astTypeName);
+		this.firePropertyChanged(getTypeNameProperty(), old, astTypeName);
 	}
+
+	protected abstract String getTypeNameProperty();
 
 	/**
 	 * this can be an array (e.g. "java.lang.String[]");
@@ -260,8 +180,10 @@ final class SourceAttribute
 	private void syncTypeIsInterface(boolean astTypeIsInterface) {
 		boolean old = this.typeIsInterface;
 		this.typeIsInterface = astTypeIsInterface;
-		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, astTypeIsInterface);
+		this.firePropertyChanged(getTypeIsInterfaceProperty(), old, astTypeIsInterface);
 	}
+
+	protected abstract String getTypeIsInterfaceProperty();
 
 	private boolean buildTypeIsInterface(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isInterface();
@@ -275,8 +197,10 @@ final class SourceAttribute
 	private void syncTypeIsEnum(boolean astTypeIsEnum) {
 		boolean old = this.typeIsEnum;
 		this.typeIsEnum = astTypeIsEnum;
-		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, astTypeIsEnum);
+		this.firePropertyChanged(getTypeIsEnumProperty(), old, astTypeIsEnum);
 	}
+
+	protected abstract String getTypeIsEnumProperty();
 
 	private boolean buildTypeIsEnum(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isEnum();
@@ -288,8 +212,10 @@ final class SourceAttribute
 	}
 
 	private void syncTypeSuperclassNames(List<String> astTypeSuperclassNames) {
-		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
+		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, getTypeSuperclassNamesProperty());
 	}
+
+	protected abstract String getTypeSuperclassNamesProperty();
 
 	private List<String> buildTypeSuperclassNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
@@ -314,8 +240,10 @@ final class SourceAttribute
 //	}
 //
 	private void syncTypeInterfaceNames(Collection<String> astTypeInterfaceNames) {
-		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
+		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, getTypeInterfaceNamesProperty());
 	}
+
+	protected abstract String getTypeInterfaceNamesProperty();
 
 	private Collection<String> buildTypeInterfaceNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
@@ -350,8 +278,10 @@ final class SourceAttribute
 	}
 
 	private void syncTypeTypeArgumentNames(List<String> astTypeTypeArgumentNames) {
-		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
+		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, this.getTypeTypeArgumentNamesProperty());
 	}
+
+	protected abstract String getTypeTypeArgumentNamesProperty();
 
 	/**
 	 * these types can be arrays (e.g. "java.lang.String[]");

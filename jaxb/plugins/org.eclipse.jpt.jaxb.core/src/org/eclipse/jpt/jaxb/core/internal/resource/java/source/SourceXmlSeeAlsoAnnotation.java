@@ -16,13 +16,13 @@ import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationEleme
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotationStringArrayExpressionConverter;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
  * javax.xml.bind.annotation.XmlSeeAlso
  */
 public final class SourceXmlSeeAlsoAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation<AbstractType>
 	implements XmlSeeAlsoAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -41,7 +41,7 @@ public final class SourceXmlSeeAlsoAnnotation
 	private final AnnotationElementAdapter<String[]> valueAdapter;
 	private final Vector<String> classes = new Vector<String>();
 
-	public SourceXmlSeeAlsoAnnotation(JavaResourceType parent, Type type) {
+	public SourceXmlSeeAlsoAnnotation(AbstractJavaResourceType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueDeclarationAdapter = buildArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SEE_ALSO__VALUE);
 		this.valueAdapter = this.buildArrayAnnotationElementAdapter(this.valueDeclarationAdapter);

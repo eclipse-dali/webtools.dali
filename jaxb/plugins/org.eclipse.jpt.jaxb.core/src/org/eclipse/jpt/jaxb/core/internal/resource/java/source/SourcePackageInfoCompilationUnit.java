@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -58,6 +59,9 @@ public final class SourcePackageInfoCompilationUnit
 		return EmptyIterable.instance();
 	}
 
+	public Iterable<JavaResourceEnum> getEnums() {
+		return EmptyIterable.instance();
+	}
 
 	// ********** JpaResourceModel implementation **********
 

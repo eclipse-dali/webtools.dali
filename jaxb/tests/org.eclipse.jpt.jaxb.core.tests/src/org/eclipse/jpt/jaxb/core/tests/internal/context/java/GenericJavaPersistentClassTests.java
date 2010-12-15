@@ -25,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
@@ -112,7 +112,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getFactoryClass());
 		
@@ -141,7 +141,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getFactoryClass());
 		
@@ -169,7 +169,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getFactoryMethod());
 		
@@ -198,7 +198,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getFactoryMethod());
 		
@@ -226,7 +226,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getSchemaTypeName());
 		
@@ -255,7 +255,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getSchemaTypeName());
 		
@@ -283,7 +283,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getNamespace());
 		
@@ -312,7 +312,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getNamespace());
 		
@@ -340,7 +340,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createXmlTypeWithAccessorType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertEquals(XmlAccessType.PROPERTY, persistentClass.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PROPERTY, persistentClass.getAccessType());
@@ -371,7 +371,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createXmlTypeWithAccessorType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertEquals(XmlAccessType.PROPERTY, persistentClass.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PROPERTY, persistentClass.getAccessType());
@@ -465,7 +465,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testModifyAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
@@ -487,7 +487,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testUpdateAccessOrder() throws Exception {
 		createXmlTypeWithAccessorOrder();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.ALPHABETICAL, persistentClass.getAccessOrder());
@@ -515,7 +515,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testGetPropOrder() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		ListIterator<String> props = persistentClass.getPropOrder().iterator();
 		assertFalse(props.hasNext());
@@ -542,7 +542,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testGetPropOrderSize() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertEquals(0, persistentClass.getPropOrderSize());
 
@@ -560,7 +560,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testAddProp() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		persistentClass.addProp(0, "bar");
 		persistentClass.addProp(0, "foo");
@@ -578,7 +578,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testAddProp2() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		persistentClass.addProp(0, "bar");
 		persistentClass.addProp(1, "foo");
@@ -596,7 +596,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testRemoveProp() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		persistentClass.addProp(0, "bar");
 		persistentClass.addProp(1, "foo");
@@ -624,7 +624,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testMoveProp() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		persistentClass.addProp(0, "bar");
 		persistentClass.addProp(1, "foo");
@@ -663,7 +663,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	public void testSyncXmlNsPrefixes() throws Exception {
 		this.createTypeWithXmlType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		ListIterator<String> props = persistentClass.getPropOrder().iterator();
 		assertFalse(props.hasNext());
@@ -776,7 +776,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertNull(persistentClass.getRootElement());
 		assertFalse(persistentClass.isRootElement());
@@ -798,7 +798,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		createTypeWithXmlType();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(persistentClass.getRootElement());
 		assertFalse(persistentClass.isRootElement());

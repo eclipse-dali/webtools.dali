@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jdt.core.IPackageFragment;
-
 /**
  * Java source code or binary type.
  * <p>
@@ -24,25 +22,8 @@ import org.eclipse.jdt.core.IPackageFragment;
  * @since 2.0
  */
 public interface JavaResourceType
-	extends JavaResourceMember
+	extends AbstractJavaResourceType
 {
-	/**
-	 * Return the unqualified (short) type name.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Return the fully qualified type name.
-	 */
-	String getQualifiedName();
-		String QUALIFIED_NAME_PROPERTY = "qualifiedName"; //$NON-NLS-1$
-
-	/**
-	 * Return the package name.
-	 */
-	String getPackageName();
-		String PACKAGE_NAME_PROPERTY = "packageName"; //$NON-NLS-1$
 
 	/**
 	 * Return the fully qualified name of the type's superclass.
@@ -51,23 +32,11 @@ public interface JavaResourceType
 		String SUPERCLASS_QUALIFIED_NAME_PROPERTY = "superclassQualifiedName"; //$NON-NLS-1$
 
 	/**
-	 * Return the name of the type's "declaring type".
-	 * Return <code>null</code> if the type is a top-level type.
-	 */
-	String getDeclaringTypeName();
-		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
-	
-	/**
 	 * Return whether the type is abstract.
 	 */
 	boolean isAbstract();
 		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
 
-	/**
-	 * Return whether the type is a member type.
-	 */
-	boolean isMemberType();
-		String MEMBER_TYPE_PROPERTY = "memberType"; //$NON-NLS-1$
 
 	/**
 	 * Return whether the type is static.
@@ -81,40 +50,8 @@ public interface JavaResourceType
 	boolean hasNoArgConstructor();
 		String NO_ARG_CONSTRUCTOR_PROPERTY = "noArgConstructor"; //$NON-NLS-1$
 
-	/**
-	 * Return whether the type has a private no-arg constructor
-	 */
-	boolean hasPrivateNoArgConstructor();
-		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
-	
-	/**
-	 * Return whether the type is annotated with any annotations that determine whether and 
-	 * how the type is persisted
-	 */
-	boolean isMapped();
-	
-	/**
-	 * Return whether the type has any attributes that have JAXB annotations
-	 * on them (which can be used to infer the type's access type).
-	 */
-	boolean hasAnyAnnotatedAttributes();
-
-	boolean isIn(IPackageFragment packageFragment);
-
 
 	// ********** types **********
-
-	/**
-	 * Return the immediately nested types (children).
-	 */
-	Iterable<JavaResourceType> getTypes();
-		String TYPES_COLLECTION = "types"; //$NON-NLS-1$
-
-	/**
-	 * Return all the types; the type itself, its children, its grandchildren,
-	 * etc.
-	 */
-	Iterable<JavaResourceType> getAllTypes();
 
 	/**
 	 * Return the immediately nested persistable types.
@@ -127,13 +64,13 @@ public interface JavaResourceType
 	/**
 	 * Return the type's fields.
 	 */
-	Iterable<JavaResourceAttribute> getFields();
+	Iterable<JavaResourceField> getFields();
 		String FIELDS_COLLECTION = "fields"; //$NON-NLS-1$
 
 	/**
 	 * Return the type's persistable fields.
 	 */
-	Iterable<JavaResourceAttribute> getPersistableFields();
+	Iterable<JavaResourceField> getPersistableFields();
 
 
 	// ********** methods **********
@@ -141,28 +78,28 @@ public interface JavaResourceType
 	/**
 	 * Return the type's methods. This returns *all* methods from the JDT Type
 	 */
-	Iterable<JavaResourceAttribute> getMethods();
+	Iterable<JavaResourceMethod> getMethods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
-
-	/**
-	 * Return the type's persistable properties.  This returns only the getter methods
-	 * that match the JavaBeans criteria for JPA, hence the name properties instead of methods
-	 */
-	Iterable<JavaResourceAttribute> getPersistableProperties();
-
-
-	// ********** attributes **********
-
-	/**
-	 * Return the type's persistable fields and properties.
-	 * {@link JavaResourceMember#isPersistable()}
-	 */
-	Iterable<JavaResourceAttribute> getPersistableAttributes();
-	
-	/**
-	 * Return the persistable properties and/or fields given the non-null specified access type
-	 * {@link JavaResourceMember#isPersistable()}
-	 */
-	Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess);
+//
+//	/**
+//	 * Return the type's persistable properties.  This returns only the getter methods
+//	 * that match the JavaBeans criteria for JPA, hence the name properties instead of methods
+//	 */
+//	Iterable<JavaResourceMethod> getPersistableProperties();
+//
+//
+//	// ********** attributes **********
+//
+//	/**
+//	 * Return the type's persistable fields and properties.
+//	 * {@link JavaResourceMember#isPersistable()}
+//	 */
+//	Iterable<JavaResourceAttribute> getPersistableAttributes();
+//	
+//	/**
+//	 * Return the persistable properties and/or fields given the non-null specified access type
+//	 * {@link JavaResourceMember#isPersistable()}
+//	 */
+//	Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess);
 	
 }

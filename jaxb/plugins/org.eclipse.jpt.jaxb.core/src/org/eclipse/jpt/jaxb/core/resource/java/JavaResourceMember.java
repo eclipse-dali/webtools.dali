@@ -47,13 +47,13 @@ public interface JavaResourceMember
 		String PERSISTABLE_PROPERTY = "persistable"; //$NON-NLS-1$
 
 	/**
-	 * Return whether the type is final.
+	 * Return whether the member is final.
 	 */
 	boolean isFinal();
 		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
 	
 	/**
-	 * Return whether the Java resource persistent member is for the specified
+	 * Return whether the Java resource member is for the specified
 	 * member.
 	 */
 	boolean isFor(String memberName, int occurrence);

@@ -14,11 +14,14 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -38,7 +41,7 @@ public final class SourceTypeCompilationUnit
 	 * the constructor in a package class (which is what all top-level,
 	 * non-primary classes must be).
 	 */
-	private JavaResourceType type;	
+	private AbstractJavaResourceType type;	
 
 
 	// ********** construction **********
@@ -48,11 +51,11 @@ public final class SourceTypeCompilationUnit
 			AnnotationProvider annotationProvider, 
 			AnnotationEditFormatter annotationEditFormatter,
 			CommandExecutor modifySharedDocumentCommandExecutor) {
-		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandExecutor);  // the JPA compilation unit is the root of its sub-tree
+		super(compilationUnit, annotationProvider, annotationEditFormatter, modifySharedDocumentCommandExecutor);  // the compilation unit is the root of its sub-tree
 		this.type = this.buildType();
 	}
 
-	private JavaResourceType buildType() {
+	private AbstractJavaResourceType buildType() {
 		this.openCompilationUnit();
 		CompilationUnit astRoot = this.buildASTRoot();
 		this.closeCompilationUnit();
@@ -70,12 +73,21 @@ public final class SourceTypeCompilationUnit
 	// ********** JavaResourceNode.Root implementation **********
 
 	/**
-	 * NB: return *all* the persistent types since we build them all
+	 * NB: return *all* the types since we build them all
 	 */
 	public Iterable<JavaResourceType> getTypes() {
 		return (this.type == null) ?
 				EmptyIterable.<JavaResourceType>instance() :
 				this.type.getAllTypes();
+	}
+
+	/**
+	 * NB: return *all* the enums since we build them all
+	 */
+	public Iterable<JavaResourceEnum> getEnums() {
+		return (this.type == null) ?
+				EmptyIterable.<JavaResourceEnum>instance() :
+				this.type.getAllEnums();
 	}
 
 
@@ -97,14 +109,14 @@ public final class SourceTypeCompilationUnit
 
 	// ********** persistent type **********
 
-	private JavaResourceType buildPersistentType(CompilationUnit astRoot) {
-		TypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
+	private AbstractJavaResourceType buildPersistentType(CompilationUnit astRoot) {
+		AbstractTypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
 		return (td == null) ? null : this.buildType(astRoot, td);
 	}
 
 
 	private void syncType(CompilationUnit astRoot) {
-		TypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
+		AbstractTypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
 		if (td == null) {
 			this.syncType_(null);
 		} else {
@@ -116,8 +128,8 @@ public final class SourceTypeCompilationUnit
 		}
 	}
 
-	private void syncType_(JavaResourceType astType) {
-		JavaResourceType old = this.type;
+	private void syncType_(AbstractJavaResourceType astType) {
+		AbstractJavaResourceType old = this.type;
 		this.type = astType;
 		this.firePropertyChanged(TYPES_COLLECTION, old, astType);
 	}
@@ -125,8 +137,14 @@ public final class SourceTypeCompilationUnit
 
 	// ********** internal **********
 
-	private JavaResourceType buildType(CompilationUnit astRoot, TypeDeclaration typeDeclaration) {
-		return SourceType.newInstance(this, typeDeclaration, astRoot);
+	private AbstractJavaResourceType buildType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
+		if (typeDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION) {
+			return SourceType.newInstance(this, (TypeDeclaration) typeDeclaration, astRoot);
+		}
+		else if (typeDeclaration.getNodeType() == ASTNode.ENUM_DECLARATION) {
+			return SourceEnum.newInstance(this, (EnumDeclaration) typeDeclaration, astRoot);
+		}
+		throw new IllegalArgumentException();
 	}
 
 	/**
@@ -139,19 +157,19 @@ public final class SourceTypeCompilationUnit
 	 * Return null if the parser did not resolve the type declaration's binding.
 	 * This can occur if the project JRE is removed (bug 225332).
 	 */
-	private TypeDeclaration getPrimaryTypeDeclaration(CompilationUnit astRoot) {
+	private AbstractTypeDeclaration getPrimaryTypeDeclaration(CompilationUnit astRoot) {
 		String primaryTypeName = this.getPrimaryTypeName();
 		for (AbstractTypeDeclaration atd : this.types(astRoot)) {
 			if (this.nodeIsPrimaryTypeDeclaration(atd, primaryTypeName)) {
-				return (atd.resolveBinding() == null) ? null : (TypeDeclaration) atd;
+				return (atd.resolveBinding() == null) ? null : atd;
 			}
 		}
 		return null;
 	}
 
 	private boolean nodeIsPrimaryTypeDeclaration(AbstractTypeDeclaration atd, String primaryTypeName) {
-		return (atd.getNodeType() == ASTNode.TYPE_DECLARATION) &&
-					atd.getName().getFullyQualifiedName().equals(primaryTypeName);
+		return (atd.getNodeType() == ASTNode.TYPE_DECLARATION || atd.getNodeType() == ASTNode.ENUM_DECLARATION) && 
+				(atd.getName().getFullyQualifiedName().equals(primaryTypeName));
 	}
 
 	private String getPrimaryTypeName() {

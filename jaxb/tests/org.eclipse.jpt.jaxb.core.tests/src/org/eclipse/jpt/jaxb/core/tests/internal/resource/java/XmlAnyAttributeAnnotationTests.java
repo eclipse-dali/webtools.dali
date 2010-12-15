@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -40,7 +40,7 @@ public class XmlAnyAttributeAnnotationTests extends JaxbJavaResourceModelTestCas
 	public void testGetXmlAnyAttribute() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAnyAttribute();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlAnyAttributeAnnotation xmlAnyAttributeAnnotation = (XmlAnyAttributeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ANY_ATTRIBUTE);
 		assertTrue(xmlAnyAttributeAnnotation != null);

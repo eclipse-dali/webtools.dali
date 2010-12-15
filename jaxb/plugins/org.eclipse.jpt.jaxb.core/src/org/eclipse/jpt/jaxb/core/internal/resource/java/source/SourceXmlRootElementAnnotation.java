@@ -14,19 +14,19 @@ import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationEleme
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlRootElement
  */
 public final class SourceXmlRootElementAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation<AbstractType>
 	implements XmlRootElementAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -39,7 +39,7 @@ public final class SourceXmlRootElementAnnotation
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 
-	public SourceXmlRootElementAnnotation(JavaResourceType parent, Type type) {
+	public SourceXmlRootElementAnnotation(AbstractJavaResourceType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);
 		this.namespaceAdapter = this.buildAnnotationElementAdapter(NAMESPACE_ADAPTER);

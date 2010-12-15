@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 
 /**
@@ -55,7 +55,7 @@ public final class SourceXmlElementRefAnnotation
 	private String type;
 
 	// ********** constructors **********
-	public static SourceXmlElementRefAnnotation buildSourceXmlElementRefAnnotation(JavaResourceAttribute parent, Attribute attribute, int index) {
+	public static SourceXmlElementRefAnnotation buildSourceXmlElementRefAnnotation(JavaResourceField parent, Attribute attribute, int index) {
 		IndexedDeclarationAnnotationAdapter idaa = buildXmlElementRefDeclarationAnnotationAdapter(index);
 		IndexedAnnotationAdapter iaa = buildXmlElementRefAnnotationAdapter(attribute, idaa);
 		return new SourceXmlElementRefAnnotation(
@@ -66,7 +66,7 @@ public final class SourceXmlElementRefAnnotation
 	}
 	
 	private SourceXmlElementRefAnnotation(
-			JavaResourceAttribute parent,
+			JavaResourceField parent,
 			Attribute attribute, 
 			IndexedDeclarationAnnotationAdapter daa,
 			IndexedAnnotationAdapter annotationAdapter) {

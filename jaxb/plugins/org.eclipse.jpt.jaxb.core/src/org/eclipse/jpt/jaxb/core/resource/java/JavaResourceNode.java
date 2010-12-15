@@ -75,7 +75,13 @@ public interface JavaResourceNode
 		 * Return the root's Java resource types.
 		 */
 		Iterable<JavaResourceType> getTypes();
-			String TYPES_COLLECTION = "type"; //$NON-NLS-1$
+			String TYPES_COLLECTION = "types"; //$NON-NLS-1$
+
+		/**
+		 * Return the root's Java resource enums.
+		 */
+		Iterable<JavaResourceEnum> getEnums();
+			String ENUMS_COLLECTION = "enums"; //$NON-NLS-1$
 
 		/**
 		 * Called (via a hook in change notification) whenever anything in the

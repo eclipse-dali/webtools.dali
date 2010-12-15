@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMixedAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -40,7 +40,7 @@ public class XmlMixedAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testGetXmlMixed() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMixed();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlMixedAnnotation xmlMixedAnnotation = (XmlMixedAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIXED);
 		assertTrue(xmlMixedAnnotation != null);

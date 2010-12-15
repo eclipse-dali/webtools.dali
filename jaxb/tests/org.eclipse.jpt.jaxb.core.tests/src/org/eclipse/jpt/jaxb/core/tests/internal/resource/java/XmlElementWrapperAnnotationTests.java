@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -77,7 +77,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapperWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertTrue(xmlElementWrapperAnnotation != null);
@@ -87,7 +87,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapper();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertTrue(xmlElementWrapperAnnotation != null);
@@ -100,7 +100,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapper();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertNull(xmlElementWrapperAnnotation.getName());
@@ -119,7 +119,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testGetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapperWithNamespace();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertTrue(xmlElementWrapperAnnotation != null);
@@ -129,7 +129,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testSetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapper();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 		assertNull(xmlElementWrapperAnnotation.getNamespace());
@@ -148,7 +148,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testGetNillable() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapperWithBooleanElement("nillable");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 
 		assertEquals(Boolean.TRUE, xmlElementWrapperAnnotation.getNillable());
@@ -157,7 +157,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testSetNillable() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapper();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 
 		assertNotNull(xmlElementWrapperAnnotation);
@@ -176,7 +176,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testGetRequired() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapperWithBooleanElement("required");
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 
 		assertEquals(Boolean.TRUE, xmlElementWrapperAnnotation.getRequired());
@@ -185,7 +185,7 @@ public class XmlElementWrapperAnnotationTests extends JaxbJavaResourceModelTestC
 	public void testSetRequired() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementWrapper();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ELEMENT_WRAPPER);
 
 		assertNotNull(xmlElementWrapperAnnotation);

@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -53,7 +53,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(contextRootElement.getNamespace());
 		
@@ -72,7 +72,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertNull(contextRootElement.getNamespace());
 		
@@ -98,7 +98,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 	
 		assertNull(contextRootElement.getName());
 		
@@ -117,7 +117,7 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		createTypeWithXmlTypeWithXmlRootElement();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
-		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
 
 		assertNull(contextRootElement.getName());
 		

@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 /**
- * Java source persistent member (annotations, "persistable")
+ * Java source member (annotations, "persistable")
  */
 abstract class SourceMember<M extends Member>
 	extends SourceAnnotatedElement<M>

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.utility.jdt;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
-import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 
 /**
- * Type: just some covariant overrides.
+ * Type: nestedTypes, nestedEnums, fields, and methods.
  * 
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,12 +26,7 @@ import org.eclipse.jdt.core.dom.TypeDeclaration;
  * 
  * This interface is not intended to be implemented by clients.
  */
-public interface Type extends Member {
-
-	/**
-	 * Covariant override.
-	 */
-	ITypeBinding getBinding(CompilationUnit astRoot);
+public interface Type extends AbstractType {
 
 	/**
 	 * Covariant override.
@@ -42,6 +37,11 @@ public interface Type extends Member {
 	 * Return the type's nested types (does not include annotations or enums).
 	 */
 	TypeDeclaration[] getTypes(CompilationUnit astRoot);
+
+	/**
+	 * Return the type's nested enums.
+	 */
+	EnumDeclaration[] getEnums(CompilationUnit astRoot);
 
 	/**
 	 * Return the type's fields.

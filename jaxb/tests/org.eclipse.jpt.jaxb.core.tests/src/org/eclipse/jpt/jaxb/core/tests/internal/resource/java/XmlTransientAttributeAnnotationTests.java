@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -40,12 +40,12 @@ public class XmlTransientAttributeAnnotationTests extends JaxbJavaResourceModelT
 	public void testGetXmlTransient() throws Exception {
 		ICompilationUnit cu = this.createTestXmlTransient();
 		JavaResourceType resourceType = this.buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = this.getMethod(resourceType, 0);
+		JavaResourceMethod resourceMethod = this.getMethod(resourceType, 0);
 
-		XmlTransientAnnotation xmlTransientAnnotation = (XmlTransientAnnotation) resourceAttribute.getAnnotation(JAXB.XML_TRANSIENT);
+		XmlTransientAnnotation xmlTransientAnnotation = (XmlTransientAnnotation) resourceMethod.getAnnotation(JAXB.XML_TRANSIENT);
 		assertTrue(xmlTransientAnnotation != null);
 
-		resourceAttribute.removeAnnotation(JAXB.XML_TRANSIENT);
+		resourceMethod.removeAnnotation(JAXB.XML_TRANSIENT);
 		assertSourceDoesNotContain("@XmlTransient", cu);
 	}
 }

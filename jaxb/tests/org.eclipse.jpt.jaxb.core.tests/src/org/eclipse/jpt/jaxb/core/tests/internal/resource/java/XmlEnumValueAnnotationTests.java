@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -27,13 +27,13 @@ public class XmlEnumValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestXmlEnumValue() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
+		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
 				return new ArrayIterator<String>(JAXB.XML_ENUM_VALUE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+			public void appendSundayEnumConstantAnnotationTo(StringBuilder sb) {
 				sb.append("@XmlEnumValue");
 			}
 		});
@@ -44,13 +44,13 @@ public class XmlEnumValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 	}
 
 	private ICompilationUnit createTestXmlEnumValueWithStringElement(final String element, final String value) throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
+		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
 				return new ArrayIterator<String>(JAXB.XML_ENUM_VALUE);
 			}
 			@Override
-			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+			public void appendSundayEnumConstantAnnotationTo(StringBuilder sb) {
 				sb.append("@XmlEnumValue(" + element + " = \"" + value + "\")");
 			}
 		});
@@ -58,43 +58,43 @@ public class XmlEnumValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 	public void testGetXmlEnumValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceEnum resourceEnum = buildJavaResourceEnum(cu); 
+		JavaResourceEnumConstant enumConstant = getEnumConstant(resourceEnum, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) enumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 
-		resourceAttribute.removeAnnotation(JAXB.XML_ENUM_VALUE);
+		enumConstant.removeAnnotation(JAXB.XML_ENUM_VALUE);
 		assertSourceDoesNotContain("@XmlEnumValue", cu);
 	}
 
 
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValueWithValue();
-		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceEnum resourceEnum = buildJavaResourceEnum(cu); 
+		JavaResourceEnumConstant enumConstant = getEnumConstant(resourceEnum, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) enumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 		assertEquals(XML_ENUM_VALUE_VALUE, xmlEnumValueAnnotation.getValue());
 	}
 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceEnum resourceEnum = buildJavaResourceEnum(cu); 
+		JavaResourceEnumConstant enumConstant = getEnumConstant(resourceEnum, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) enumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertTrue(xmlEnumValueAnnotation != null);
 		assertNull(xmlEnumValueAnnotation.getValue());
 	}
 
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlEnumValue();
-		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceEnum resourceEnum = buildJavaResourceEnum(cu); 
+		JavaResourceEnumConstant enumConstant = getEnumConstant(resourceEnum, 0);
 
-		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) resourceAttribute.getAnnotation(JAXB.XML_ENUM_VALUE);
+		XmlEnumValueAnnotation xmlEnumValueAnnotation = (XmlEnumValueAnnotation) enumConstant.getAnnotation(JAXB.XML_ENUM_VALUE);
 		assertNull(xmlEnumValueAnnotation.getValue());
 		xmlEnumValueAnnotation.setValue(XML_ENUM_VALUE_VALUE);
 		assertEquals(XML_ENUM_VALUE_VALUE, xmlEnumValueAnnotation.getValue());

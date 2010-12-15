@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -81,7 +81,7 @@ public class XmlSchemaTypeAttributeAnnotationTests
 	public void testName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAttributeWithSchemaTypeAndName();
 		JavaResourceType resourceType = this.buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = this.getField(resourceType, 0);
+		JavaResourceField resourceAttribute = this.getField(resourceType, 0);
 
 		XmlSchemaTypeAnnotation annotation = 
 				(XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
@@ -105,7 +105,7 @@ public class XmlSchemaTypeAttributeAnnotationTests
 	public void testNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAttributeWithSchemaTypeAndNamespace();
 		JavaResourceType resourceType = this.buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = this.getField(resourceType, 0);
+		JavaResourceField resourceAttribute = this.getField(resourceType, 0);
 
 		XmlSchemaTypeAnnotation annotation = 
 				(XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);
@@ -129,7 +129,7 @@ public class XmlSchemaTypeAttributeAnnotationTests
 	public void testType() throws Exception {
 		ICompilationUnit cu = this.createTestXmlAttributeWithSchemaTypeAndType();
 		JavaResourceType resourceType = this.buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = this.getField(resourceType, 0);
+		JavaResourceField resourceAttribute = this.getField(resourceType, 0);
 
 		XmlSchemaTypeAnnotation annotation = 
 				(XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_SCHEMA_TYPE);

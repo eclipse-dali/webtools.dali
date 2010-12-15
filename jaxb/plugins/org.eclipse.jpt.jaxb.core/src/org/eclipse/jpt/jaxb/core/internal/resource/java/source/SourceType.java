@@ -10,13 +10,12 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -27,15 +26,12 @@ import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessType;
 import org.eclipse.jpt.utility.MethodSignature;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.IntReference;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TreeIterable;
 
@@ -43,34 +39,25 @@ import org.eclipse.jpt.utility.internal.iterables.TreeIterable;
  * Java source type
  */
 final class SourceType
-	extends SourceMember<Type>
+	extends SourceAbstractType<Type>
 	implements JavaResourceType
 {
-	private String name;
-
-	private String qualifiedName;
-
-	private String packageName;
 
 	private String superclassQualifiedName;
-
-	private String declaringTypeName;
 
 	private boolean abstract_;  // 'abstract' is a reserved word
 
 	private boolean static_;  // 'static' is a reserved word
 
-	private boolean memberType;
-
-	private boolean hasPrivateNoArgConstructor;
-
 	private boolean hasNoArgConstructor;
 
 	private final Vector<JavaResourceType> types;
 
-	private final Vector<JavaResourceAttribute> fields;
+	private final Vector<JavaResourceEnum> enums;
 
-	private final Vector<JavaResourceAttribute> methods;
+	private final Vector<JavaResourceField> fields;
+
+	private final Vector<JavaResourceMethod> methods;
 
 
 	// ********** construction/initialization **********
@@ -116,25 +103,21 @@ final class SourceType
 	private SourceType(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
 		super(javaResourceCompilationUnit, type);
 		this.types = new Vector<JavaResourceType>();
-		this.fields = new Vector<JavaResourceAttribute>();
-		this.methods = new Vector<JavaResourceAttribute>();
+		this.enums = new Vector<JavaResourceEnum>();
+		this.fields = new Vector<JavaResourceField>();
+		this.methods = new Vector<JavaResourceMethod>();
 	}
 
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.name = this.buildName(binding);
-		this.qualifiedName = this.buildQualifiedName(binding);
-		this.packageName = this.buildPackageName(binding);
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(binding);
-		this.declaringTypeName = this.buildDeclaringTypeName(binding);
 		this.abstract_ = this.buildAbstract(binding);
 		this.static_ = this.buildStatic(binding);
-		this.memberType = this.buildMemberType(binding);
 		this.hasNoArgConstructor = this.buildHasNoArgConstructor(binding);
-		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor(binding);
 		this.initializeTypes(astRoot);
+		this.initializeEnums(astRoot);
 		this.initializeFields(astRoot);
 		this.initializeMethods(astRoot);
 	}
@@ -146,17 +129,12 @@ final class SourceType
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.syncName(this.buildName(binding));
-		this.syncQualifiedName(this.buildQualifiedName(binding));
-		this.syncPackageName(this.buildPackageName(binding));
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
-		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));		
 		this.syncAbstract(this.buildAbstract(binding));
 		this.syncStatic(this.buildStatic(binding));
-		this.syncMemberType(this.buildMemberType(binding));
 		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor(binding));
-		this.syncHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor(binding));
 		this.syncTypes(astRoot);
+		this.syncEnums(astRoot);
 		this.syncFields(astRoot);
 		this.syncMethods(astRoot);
 	}
@@ -170,7 +148,7 @@ final class SourceType
 
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(this.annotatedElement.getBinding(astRoot)));
 
-		for (JavaResourceAttribute field : this.getFields()) {
+		for (JavaResourceField field : this.getFields()) {
 			field.resolveTypes(astRoot);
 		}
 
@@ -180,66 +158,19 @@ final class SourceType
 		// and, vice-versa, a removed type can "unresolve" a parameter type
 		this.syncMethods(astRoot);
 
-		for (JavaResourceAttribute method : this.getMethods()) {
+		for (JavaResourceMethod method : this.getMethods()) {
 			method.resolveTypes(astRoot);
 		}
 		for (JavaResourceType type : this.getTypes()) {
 			type.resolveTypes(astRoot);
 		}
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
+		for (JavaResourceEnum enum_ : this.getEnums()) {
+			enum_.resolveTypes(astRoot);
+		}
 	}
 
 
 	// ******** JavaResourceType implementation ********
-
-	// ***** name
-	public String getName() {
-		return this.name;
-	}
-
-	private void syncName(String astName) {
-		String old = this.name;
-		this.name = astName;
-		this.firePropertyChanged(NAME_PROPERTY, old, astName);
-	}
-
-	private String buildName(ITypeBinding binding) {
-		return (binding == null) ? null : binding.getName();
-	}
-
-	// ***** qualified name
-	public String getQualifiedName() {
-		return this.qualifiedName;
-	}
-
-	private void syncQualifiedName(String astQualifiedName) {
-		String old = this.qualifiedName;
-		this.qualifiedName = astQualifiedName;
-		this.firePropertyChanged(QUALIFIED_NAME_PROPERTY, old, astQualifiedName);
-	}
-
-	private String buildQualifiedName(ITypeBinding binding) {
-		return (binding == null) ? null : binding.getQualifiedName();
-	}
-
-	// ***** package name
-	public String getPackageName() {
-		return this.packageName;
-	}
-
-	private void syncPackageName(String astPackageName) {
-		String old = this.packageName;
-		this.packageName = astPackageName;
-		this.firePropertyChanged(PACKAGE_NAME_PROPERTY, old, astPackageName);
-	}
-
-	private String buildPackageName(ITypeBinding binding) {
-		return (binding == null) ? null : binding.getPackage().getName();
-	}
 
 	// ***** superclass qualified name
 	public String getSuperclassQualifiedName() {
@@ -258,30 +189,6 @@ final class SourceType
 		}
 		ITypeBinding superclass = binding.getSuperclass();
 		return (superclass == null) ? null : superclass.getTypeDeclaration().getQualifiedName();
-	}
-
-	// ***** package
-	public boolean isIn(IPackageFragment packageFragment) {
-		return StringTools.stringsAreEqual(packageFragment.getElementName(), this.packageName);
-	}
-
-	// ***** declaring type name
-	public String getDeclaringTypeName() {
-		return this.declaringTypeName;
-	}
-
-	private void syncDeclaringTypeName(String astDeclaringTypeName) {
-		String old = this.declaringTypeName;
-		this.declaringTypeName = astDeclaringTypeName;
-		this.firePropertyChanged(DECLARING_TYPE_NAME_PROPERTY, old, astDeclaringTypeName);
-	}
-
-	private String buildDeclaringTypeName(ITypeBinding binding) {
-		if (binding == null) {
-			return null;
-		}
-		ITypeBinding declaringClass = binding.getDeclaringClass();
-		return (declaringClass == null) ? null : declaringClass.getTypeDeclaration().getQualifiedName();
 	}
 
 	// ***** abstract
@@ -314,21 +221,6 @@ final class SourceType
 		return (binding == null) ? false : Modifier.isStatic(binding.getModifiers());
 	}
 
-	// ***** member type
-	public boolean isMemberType() {
-		return this.memberType;
-	}
-
-	private void syncMemberType(boolean memberType) {
-		boolean old = this.memberType;
-		this.memberType = memberType;
-		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
-	}
-
-	private boolean buildMemberType(ITypeBinding binding) {
-		return (binding == null) ? false : binding.isMember();
-	}
-
 	// ***** no-arg constructor
 	public boolean hasNoArgConstructor() {
 		return this.hasNoArgConstructor;
@@ -358,43 +250,6 @@ final class SourceType
 		}
 		return null;
 	}
-
-	// ***** private no-arg constructor
-	public boolean hasPrivateNoArgConstructor() {
-		return this.hasPrivateNoArgConstructor;
-	}
-
-	private void syncHasPrivateNoArgConstructor(boolean hasPrivateNoArgConstructor) {
-		boolean old = this.hasPrivateNoArgConstructor;
-		this.hasPrivateNoArgConstructor = hasPrivateNoArgConstructor;
-		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
-	}
-
-	private boolean buildHasPrivateNoArgConstructor(ITypeBinding binding) {
-		return (binding == null) ? false : typeHasPrivateNoArgConstructor(binding);
-	}
-
-	protected static boolean typeHasPrivateNoArgConstructor(ITypeBinding binding) {
-		IMethodBinding method = findNoArgConstructor(binding);
-		return method != null && Modifier.isPrivate(method.getModifiers());
-	}
-
-	public boolean isMapped() {
-		return ! CollectionTools.isEmpty(getAnnotations());
-	}
-	
-	/**
-	 * check only persistable attributes
-	 */
-	public boolean hasAnyAnnotatedAttributes() {
-		for (JavaResourceAttribute attribute: this.getPersistableAttributes()) {
-			if (attribute.isAnnotated()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 
 	// ********** types **********
 
@@ -466,22 +321,83 @@ final class SourceType
 	}
 
 
-	// ********** fields **********
+	// ********** enums **********
 
-	public Iterable<JavaResourceAttribute> getFields() {
-		return new LiveCloneIterable<JavaResourceAttribute>(this.fields);
+	public Iterable<JavaResourceEnum> getEnums() {
+		return new LiveCloneIterable<JavaResourceEnum>(this.enums);  // read-only
 	}
 
-	public Iterable<JavaResourceAttribute> getPersistableFields() {
+	public Iterable<JavaResourceEnum> getAllEnums() {
+		return this.getEnums();
+	}
+
+	private JavaResourceEnum getEnum(String enumName, int occurrence) {
+		for (JavaResourceEnum enum_ : this.getEnums()) {
+			if (enum_.isFor(enumName, occurrence)) {
+				return enum_;
+			}
+		}
+		return null;
+	}
+
+	private void addEnum(JavaResourceEnum enum_) {
+		this.addItemToCollection(enum_, this.enums, ENUMS_COLLECTION);
+	}
+
+	private void removeEnums(Collection<JavaResourceEnum> remove) {
+		this.removeItemsFromCollection(remove, this.enums, ENUMS_COLLECTION);
+	}
+
+	private void initializeEnums(CompilationUnit astRoot) {
+		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(astRoot);
+		CounterMap counters = new CounterMap(enumDeclarations.length);
+		for (EnumDeclaration ed : enumDeclarations) {
+			String tdName = ed.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+			this.enums.add(this.buildEnum(ed, occurrence, astRoot));
+		}
+	}
+
+	private void syncEnums(CompilationUnit astRoot) {
+		EnumDeclaration[] enumDeclarations = this.annotatedElement.getEnums(astRoot);
+		CounterMap counters = new CounterMap(enumDeclarations.length);
+		HashSet<JavaResourceEnum> enumsToRemove = new HashSet<JavaResourceEnum>(this.enums);
+		for (EnumDeclaration enumDeclaration : enumDeclarations) {
+			String tdName = enumDeclaration.getName().getFullyQualifiedName();
+			int occurrence = counters.increment(tdName);
+
+			JavaResourceEnum enum_ = this.getEnum(tdName, occurrence);
+			if (enum_ == null) {
+				this.addEnum(this.buildEnum(enumDeclaration, occurrence, astRoot));
+			} else {
+				enumsToRemove.remove(enum_);
+				enum_.synchronizeWith(astRoot);
+			}
+		}
+		this.removeEnums(enumsToRemove);
+	}
+
+	private JavaResourceEnum buildEnum(EnumDeclaration nestedEnumDeclaration, int occurrence, CompilationUnit astRoot) {
+		return SourceEnum.newInstance(this.getJavaResourceCompilationUnit(), this.annotatedElement, nestedEnumDeclaration, occurrence, astRoot);
+	}
+
+
+	// ********** fields **********
+
+	public Iterable<JavaResourceField> getFields() {
+		return new LiveCloneIterable<JavaResourceField>(this.fields);
+	}
+
+	public Iterable<JavaResourceField> getPersistableFields() {
 		return this.getPersistableMembers(this.getFields());
 	}
 
-	private void addField(JavaResourceAttribute field) {
+	private void addField(JavaResourceField field) {
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
 
-	private JavaResourceAttribute getField(String fieldName, int occurrence) {
-		for (JavaResourceAttribute field : this.getFields()) {
+	private JavaResourceField getField(String fieldName, int occurrence) {
+		for (JavaResourceField field : this.getFields()) {
 			if (field.isFor(fieldName, occurrence)) {
 				return field;
 			}
@@ -489,7 +405,7 @@ final class SourceType
 		return null;
 	}
 
-	private void removeFields(Collection<JavaResourceAttribute> remove) {
+	private void removeFields(Collection<JavaResourceField> remove) {
 		this.removeItemsFromCollection(remove, this.fields, FIELDS_COLLECTION);
 	}
 
@@ -508,13 +424,13 @@ final class SourceType
 	private void syncFields(CompilationUnit astRoot) {
 		FieldDeclaration[] fieldDeclarations = this.annotatedElement.getFields(astRoot);
 		CounterMap counters = new CounterMap(fieldDeclarations.length);
-		HashSet<JavaResourceAttribute> fieldsToRemove = new HashSet<JavaResourceAttribute>(this.fields);
+		HashSet<JavaResourceField> fieldsToRemove = new HashSet<JavaResourceField>(this.fields);
 		for (FieldDeclaration fieldDeclaration : fieldDeclarations) {
 			for (VariableDeclarationFragment fragment : fragments(fieldDeclaration)) {
 				String fieldName = fragment.getName().getFullyQualifiedName();
 				int occurrence = counters.increment(fieldName);
 
-				JavaResourceAttribute field = this.getField(fieldName, occurrence);
+				JavaResourceField field = this.getField(fieldName, occurrence);
 				if (field == null) {
 					this.addField(this.buildField(fieldName, occurrence, astRoot));
 				} else {
@@ -526,8 +442,8 @@ final class SourceType
 		this.removeFields(fieldsToRemove);
 	}
 
-	private JavaResourceAttribute buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
-		return SourceAttribute.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private JavaResourceField buildField(String fieldName, int occurrence, CompilationUnit astRoot) {
+		return SourceField.newInstance(this, this.annotatedElement, fieldName, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 	// minimize scope of suppressed warnings
@@ -539,16 +455,16 @@ final class SourceType
 
 	// ********** methods **********
 
-	public Iterable<JavaResourceAttribute> getMethods() {
-		return new LiveCloneIterable<JavaResourceAttribute>(this.methods);
+	public Iterable<JavaResourceMethod> getMethods() {
+		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
 	}
 
-	public Iterable<JavaResourceAttribute> getPersistableProperties() {
+	public Iterable<JavaResourceMethod> getPersistableProperties() {
 		return this.getPersistableMembers(this.getMethods());
 	}
 
-	private JavaResourceAttribute getMethod(MethodSignature signature, int occurrence) {
-		for (JavaResourceAttribute method : this.getMethods()) {
+	private JavaResourceMethod getMethod(MethodSignature signature, int occurrence) {
+		for (JavaResourceMethod method : this.getMethods()) {
 			if (method.isFor(signature, occurrence)) {
 				return method;
 			}
@@ -556,11 +472,11 @@ final class SourceType
 		return null;
 	}
 
-	private void addMethod(JavaResourceAttribute method) {
+	private void addMethod(JavaResourceMethod method) {
 		this.addItemToCollection(method, this.methods, METHODS_COLLECTION);
 	}
 
-	private void removeMethods(Collection<JavaResourceAttribute> remove) {
+	private void removeMethods(Collection<JavaResourceMethod> remove) {
 		this.removeItemsFromCollection(remove, this.methods, METHODS_COLLECTION);
 	}
 
@@ -577,12 +493,12 @@ final class SourceType
 	private void syncMethods(CompilationUnit astRoot) {
 		MethodDeclaration[] methodDeclarations = this.annotatedElement.getMethods(astRoot);
 		CounterMap counters = new CounterMap(methodDeclarations.length);
-		HashSet<JavaResourceAttribute> methodsToRemove = new HashSet<JavaResourceAttribute>(this.methods);
+		HashSet<JavaResourceMethod> methodsToRemove = new HashSet<JavaResourceMethod>(this.methods);
 		for (MethodDeclaration methodDeclaration : methodDeclarations) {
 			MethodSignature signature = ASTTools.buildMethodSignature(methodDeclaration);
 			int occurrence = counters.increment(signature);
 
-			JavaResourceAttribute method = this.getMethod(signature, occurrence);
+			JavaResourceMethod method = this.getMethod(signature, occurrence);
 			if (method == null) {
 				this.addMethod(this.buildMethod(signature, occurrence, astRoot));
 			} else {
@@ -593,62 +509,36 @@ final class SourceType
 		this.removeMethods(methodsToRemove);
 	}
 
-	private JavaResourceAttribute buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
-		return SourceAttribute.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
+	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
+		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
 
 
 	// ********** attributes **********
 
-	@SuppressWarnings("unchecked")
-	public Iterable<JavaResourceAttribute> getPersistableAttributes() {
-		return new CompositeIterable<JavaResourceAttribute>(
-				this.getPersistableFields(),
-				this.getPersistableProperties()
-			);
-	}
-
-	//TODO XmlAccessType.PUBLIC_MEMBER and XmlAccessType.NONE
-	public Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess) {
-		if (specifiedAccess == null) {
-			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
-		}
-		return (specifiedAccess == XmlAccessType.FIELD) ?
-					this.getPersistableAttributesForFieldAccessType() :
-					this.getPersistableAttributesForPropertyAccessType();
-	}
-
-	private Iterable<JavaResourceAttribute> getPersistableAttributesForFieldAccessType() {
-		return this.getPersistableFields();
-	}
-
-	private Iterable<JavaResourceAttribute> getPersistableAttributesForPropertyAccessType() {
-		return this.getPersistableProperties();
-	}
-
-
-	// ********** CounterMap **********
-
-	private static class CounterMap {
-		private final HashMap<Object, IntReference> counters;
-
-		protected CounterMap(int initialCapacity) {
-			super();
-			this.counters = new HashMap<Object, IntReference>(initialCapacity);
-		}
-
-		/**
-		 * Return the incremented count for the specified object.
-		 */
-		int increment(Object o) {
-			IntReference counter = this.counters.get(o);
-			if (counter == null) {
-				counter = new IntReference();
-				this.counters.put(o, counter);
-			}
-			counter.increment();
-			return counter.getValue();
-		}
-	}
-
+//	@SuppressWarnings("unchecked")
+//	public Iterable<JavaResourceAttribute> getPersistableAttributes() {
+//		return new CompositeIterable<JavaResourceAttribute>(
+//				this.getPersistableFields(),
+//				this.getPersistableProperties()
+//			);
+//	}
+//
+//	//TODO XmlAccessType.PUBLIC_MEMBER and XmlAccessType.NONE
+//	public Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess) {
+//		if (specifiedAccess == null) {
+//			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
+//		}
+//		return (specifiedAccess == XmlAccessType.FIELD) ?
+//					this.getPersistableAttributesForFieldAccessType() :
+//					this.getPersistableAttributesForPropertyAccessType();
+//	}
+//
+//	private Iterable<JavaResourceAttribute> getPersistableAttributesForFieldAccessType() {
+//		return this.getPersistableFields();
+//	}
+//
+//	private Iterable<JavaResourceMethod> getPersistableAttributesForPropertyAccessType() {
+//		return this.getPersistableProperties();
+//	}
 }

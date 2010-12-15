@@ -10,9 +10,12 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.Member;
-import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.utility.CommandExecutor;
 
 /**
@@ -23,7 +26,7 @@ public abstract class JDTMember extends JDTAnnotatedElement
 {
 
 	/** this will be null for the primary type */
-	private final Type declaringType;
+	private final AbstractType declaringType;
 
 	/**
 	 * members can occur more than once in non-compiling source;
@@ -35,7 +38,7 @@ public abstract class JDTMember extends JDTAnnotatedElement
 	// ********** constructors **********
 	
 	protected JDTMember(
-			Type declaringType,
+			AbstractType declaringType,
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
@@ -44,7 +47,7 @@ public abstract class JDTMember extends JDTAnnotatedElement
 	}
 
 	protected JDTMember(
-			Type declaringType,
+			AbstractType declaringType,
 			String name,
 			int occurrence,
 			ICompilationUnit compilationUnit,
@@ -55,8 +58,16 @@ public abstract class JDTMember extends JDTAnnotatedElement
 		this.occurrence = occurrence;
 	}
 
+	//covariant override
+	public abstract BodyDeclaration getBodyDeclaration(CompilationUnit astRoot);
 
+	
 	// ********** Member implementation **********
+
+	@Override
+	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
+		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
+	}
 
 	public boolean matches(String memberName, int occur) {
 		return memberName.equals(this.getName_()) && (occur == this.occurrence);
@@ -72,7 +83,7 @@ public abstract class JDTMember extends JDTAnnotatedElement
 	/**
 	 * this will return null for a top-level type
 	 */
-	protected Type getDeclaringType() {
+	protected AbstractType getDeclaringType() {
 		return this.declaringType;
 	}
 

@@ -17,10 +17,10 @@ import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
-import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.JavaType;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
  *     }
  */
 public class JDTMethodAttribute
-	extends JDTAttribute
+	extends JDTMember
 	implements MethodAttribute
 {
 	/** we need the parameter types to build the method signature */
@@ -67,16 +67,7 @@ public class JDTMethodAttribute
 		return new JDTMethodAttribute(declaringType, signature, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, annotationEditFormatter);
 	}
 
-	public JDTMethodAttribute(
-			Type declaringType,
-			MethodSignature methodSignature,
-			int occurrence,
-			ICompilationUnit compilationUnit,
-			CommandExecutor modifySharedDocumentCommandExecutor) {
-		this(declaringType, methodSignature, occurrence, compilationUnit, modifySharedDocumentCommandExecutor, DefaultAnnotationEditFormatter.instance());
-	}
-
-	public JDTMethodAttribute(
+	private JDTMethodAttribute(
 			Type declaringType,
 			MethodSignature methodSignature,
 			int occurrence,
@@ -96,15 +87,21 @@ public class JDTMethodAttribute
 
 
 	// ********** Member/Attribute/MethodAttribute implementation **********
+
 	@Override
-	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
-		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
+	protected Type getDeclaringType() {
+		return (Type) super.getDeclaringType();
+	}
+
+	public boolean isField() {
+		return false;
 	}
 	
 	public IMethodBinding getBinding(CompilationUnit astRoot) {
 		return this.getBodyDeclaration(astRoot).resolveBinding();
 	}
 
+	@Override
 	public MethodDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		int count = 0;
 		for (MethodDeclaration methodDeclaration : this.getDeclaringTypeMethodDeclarations(astRoot)) {
@@ -169,6 +166,12 @@ public class JDTMethodAttribute
 
 
 	// ********** internal **********
+
+	protected TypeDeclaration getDeclaringTypeDeclaration(CompilationUnit astRoot) {
+		// assume the declaring type is not an enum or annotation
+		// since they do not have field or method declarations
+		return this.getDeclaringType().getBodyDeclaration(astRoot);
+	}
 
 	protected MethodDeclaration[] getDeclaringTypeMethodDeclarations(CompilationUnit astRoot) {
 		return this.getDeclaringTypeDeclaration(astRoot).getMethods();

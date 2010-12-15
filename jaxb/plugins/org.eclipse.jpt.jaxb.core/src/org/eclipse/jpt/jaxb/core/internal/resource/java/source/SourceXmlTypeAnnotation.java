@@ -19,13 +19,13 @@ import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotation
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -35,7 +35,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
  * javax.xml.bind.annotation.XmlType
  */
 public final class SourceXmlTypeAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation<AbstractType>
 	implements XmlTypeAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -62,7 +62,7 @@ public final class SourceXmlTypeAnnotation
 	private final AnnotationElementAdapter<String[]> propOrderAdapter;
 	private final Vector<String> propOrder = new Vector<String>();
 
-	public SourceXmlTypeAnnotation(JavaResourceType parent, Type type) {
+	public SourceXmlTypeAnnotation(AbstractJavaResourceType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.factoryClassAdapter = this.buildAnnotationElementAdapter(FACTORY_CLASS_ADAPTER);
 		this.factoryMethodAdapter = this.buildAnnotationElementAdapter(FACTORY_METHOD_ADAPTER);

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -59,7 +59,7 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testGetXmlMimeType() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
@@ -71,7 +71,7 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testGetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeTypeWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
@@ -81,7 +81,7 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertTrue(xmlMimeTypeAnnotation != null);
@@ -91,7 +91,7 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 	public void testSetValue() throws Exception {
 		ICompilationUnit cu = this.createTestXmlMimeType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlMimeTypeAnnotation xmlMimeTypeAnnotation = (XmlMimeTypeAnnotation) resourceAttribute.getAnnotation(JAXB.XML_MIME_TYPE);
 		assertNull(xmlMimeTypeAnnotation.getValue());

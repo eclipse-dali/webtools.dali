@@ -21,9 +21,13 @@ import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceTypeCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -143,21 +147,33 @@ public abstract class JavaResourceModelTestCase
 	}
 
 	protected JavaResourceType buildJavaResourceType(ICompilationUnit cu) {
+		return (JavaResourceType) this.buildJavaResourceType_(cu);
+	}
+
+	protected JavaResourceEnum buildJavaResourceEnum(ICompilationUnit cu) {
+		return (JavaResourceEnum) this.buildJavaResourceType_(cu);
+	}
+
+	private AbstractJavaResourceType buildJavaResourceType_(ICompilationUnit cu) {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
 		this.javaResourceCompilationUnit.resolveTypes();
 		return this.hackJavaResourceType();
 	}
 
-	protected JavaResourceAttribute getField(JavaResourceType type, int index) {
+	protected JavaResourceField getField(JavaResourceType type, int index) {
 		return CollectionTools.get(type.getFields(), index);
 	}
 
-	protected JavaResourceAttribute getMethod(JavaResourceType type, int index) {
+	protected JavaResourceMethod getMethod(JavaResourceType type, int index) {
 		return CollectionTools.get(type.getMethods(), index);
 	}
 
-	protected JavaResourceType hackJavaResourceType() {
-		return (JavaResourceType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "type");
+	protected JavaResourceEnumConstant getEnumConstant(JavaResourceEnum resourceEnum, int index) {
+		return CollectionTools.get(resourceEnum.getEnumConstants(), index);
+	}
+
+	protected AbstractJavaResourceType hackJavaResourceType() {
+		return (AbstractJavaResourceType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "type");
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {

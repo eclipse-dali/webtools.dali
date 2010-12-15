@@ -11,21 +11,21 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlRegistry
  */
 public final class SourceXmlRegistryAnnotation
-	extends SourceAnnotation<Type>
+	extends SourceAnnotation<AbstractType>
 	implements XmlRegistryAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	public SourceXmlRegistryAnnotation(JavaResourceType parent, Type type) {
+	public SourceXmlRegistryAnnotation(AbstractJavaResourceType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 	}
 

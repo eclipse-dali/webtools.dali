@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 /**
@@ -63,7 +63,7 @@ public final class SourceXmlElementDeclAnnotation
 
 	// ********** constructors **********
 
-	public SourceXmlElementDeclAnnotation(JavaResourceAttribute parent, MethodAttribute method) {
+	public SourceXmlElementDeclAnnotation(JavaResourceMethod parent, MethodAttribute method) {
 		super(parent, method, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(method, DECLARATION_ANNOTATION_ADAPTER));
 		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);
 		this.namespaceAdapter = this.buildAnnotationElementAdapter(NAMESPACE_ADAPTER);

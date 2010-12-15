@@ -16,11 +16,11 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.FieldDeclaration;
 import org.eclipse.jdt.core.dom.ITypeBinding;
 import org.eclipse.jdt.core.dom.IVariableBinding;
+import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jdt.core.dom.VariableDeclarationFragment;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
-import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.CommandExecutor;
 
@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.CommandExecutor;
  *     private int foo;
  */
 public class JDTFieldAttribute
-	extends JDTAttribute
+	extends JDTMember
 	implements FieldAttribute
 {
 
@@ -64,15 +64,17 @@ public class JDTFieldAttribute
 
 
 	// ********** Member/Attribute/FieldAttribute implementation **********
+
 	@Override
-	public ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot) {
-		return new JDTModifiedDeclaration(this.getBodyDeclaration(astRoot));
+	protected Type getDeclaringType() {
+		return (Type) super.getDeclaringType();
 	}
 
 	public IVariableBinding getBinding(CompilationUnit astRoot) {
 		return this.getFragment(astRoot).resolveBinding();
 	}
 
+	@Override
 	public FieldDeclaration getBodyDeclaration(CompilationUnit astRoot) {
 		return this.getSelectedDeclaration(astRoot, FIELD_DECLARATION_SELECTOR);
 	}
@@ -89,7 +91,6 @@ public class JDTFieldAttribute
 		return this.getBodyDeclaration(astRoot).getType().resolveBinding();
 	}
 
-	@Override
 	public boolean isField() {
 		return true;
 	}
@@ -101,6 +102,12 @@ public class JDTFieldAttribute
 
 
 	// ********** internal **********
+
+	protected TypeDeclaration getDeclaringTypeDeclaration(CompilationUnit astRoot) {
+		// assume the declaring type is not an enum or annotation
+		// since they do not have field or method declarations
+		return this.getDeclaringType().getBodyDeclaration(astRoot);
+	}
 
 	protected VariableDeclarationFragment getFragment(CompilationUnit astRoot) {
 		return this.getSelectedDeclaration(astRoot, VARIABLE_DECLARATION_FRAGMENT_SELECTOR);

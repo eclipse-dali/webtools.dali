@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.tests.internal.resource.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementRefAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -78,7 +78,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testGetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRefWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertTrue(xmlElementRefAnnotation != null);
@@ -88,7 +88,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testGetNull() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRef();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertTrue(xmlElementRefAnnotation != null);
@@ -100,7 +100,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testSetName() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRef();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertNull(xmlElementRefAnnotation.getName());
@@ -119,7 +119,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testGetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRefWithNamespace();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertTrue(xmlElementRefAnnotation != null);
@@ -129,7 +129,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testSetNamespace() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRef();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertNull(xmlElementRefAnnotation.getNamespace());
@@ -148,7 +148,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testGetType() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRefWithType();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertTrue(xmlElementRefAnnotation != null);
@@ -159,7 +159,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testSetType() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRef();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertNull(xmlElementRefAnnotation.getType());
@@ -178,7 +178,7 @@ public class XmlElementRefAnnotationTests extends JaxbJavaResourceModelTestCase 
 	public void testAddXmlElementRefAnnotation() throws Exception {
 		ICompilationUnit cu = this.createTestXmlElementRefWithName();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
-		JavaResourceAttribute resourceAttribute = getField(resourceType, 0);
+		JavaResourceField resourceAttribute = getField(resourceType, 0);
 
 		XmlElementRefAnnotation xmlElementRefAnnotation = (XmlElementRefAnnotation) resourceAttribute.getAnnotation(0, JAXB.XML_ELEMENT_REF);
 		assertTrue(xmlElementRefAnnotation != null);
