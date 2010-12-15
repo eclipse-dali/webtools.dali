@@ -38,7 +38,7 @@ public class JaxbNavigatorLabelProvider
 	}
 	
 	
-	public JaxbNavigatorContentAndLabelProvider delegate() {
+	public JaxbNavigatorContentAndLabelProvider getDelegate() {
 		return delegate;
 	}
 	
@@ -127,8 +127,8 @@ public class JaxbNavigatorLabelProvider
 	public void init(ICommonContentExtensionSite config) {
 		if (delegate == null) {
 			JaxbNavigatorContentProvider contentProvider = (JaxbNavigatorContentProvider) config.getExtension().getContentProvider();
-			if (contentProvider != null && contentProvider.delegate() != null) {
-				delegate = contentProvider.delegate();
+			if (contentProvider != null && contentProvider.getDelegate() != null) {
+				delegate = contentProvider.getDelegate();
 			}
 			else {
 				delegate = new JaxbNavigatorContentAndLabelProvider();

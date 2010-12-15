@@ -18,19 +18,20 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
+import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.navigator.ICommonContentExtensionSite;
 import org.eclipse.ui.navigator.ICommonContentProvider;
-import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
-import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
-import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
-import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
 
 /**
  * This extension of navigator content provider delegates to the platform UI
@@ -47,39 +48,38 @@ public class JaxbNavigatorContentProvider
 	
 	private JaxbNavigatorContentAndLabelProvider delegate;
 	
-	private IFacetedProjectListener facetListener;
+	private final CollectionChangeListener jaxbProjectListener;
 	
 	private StructuredViewer viewer;
 	
 	
 	public JaxbNavigatorContentProvider() {
 		super();
-		facetListener = new FacetListener();
-		FacetedProjectFramework.addListener(
-				facetListener, 
-				IFacetedProjectEvent.Type.POST_INSTALL,
-				IFacetedProjectEvent.Type.POST_UNINSTALL,
-				IFacetedProjectEvent.Type.PROJECT_MODIFIED);
+		this.jaxbProjectListener = this.buildJaxbProjectListener();
+		JptJaxbCorePlugin.getProjectManager().addCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
 	}
 	
-	
-	public JaxbNavigatorContentAndLabelProvider delegate() {
-		return delegate;
+	protected CollectionChangeListener buildJaxbProjectListener() {
+		return new JaxbProjectListener();
+	}
+
+	public JaxbNavigatorContentAndLabelProvider getDelegate() {
+		return this.delegate;
 	}
 	
 	
 	// **************** IContentProvider implementation ************************
 	
 	public void dispose() {
-		FacetedProjectFramework.removeListener(facetListener);
-		if (delegate != null) {
-			delegate.dispose();
+		JptJaxbCorePlugin.getProjectManager().removeCollectionChangeListener(JaxbProjectManager.JAXB_PROJECTS_COLLECTION, this.jaxbProjectListener);
+		if (this.delegate != null) {
+			this.delegate.dispose();
 		}
 	}
 	
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (delegate != null) {
-			delegate.inputChanged(viewer, oldInput, newInput);
+		if (this.delegate != null) {
+			this.delegate.inputChanged(viewer, oldInput, newInput);
 		}
 		this.viewer = (StructuredViewer) viewer;
 	}
@@ -95,8 +95,8 @@ public class JaxbNavigatorContentProvider
 	// **************** ITreeContentProvider implementation ********************
 	
 	public Object getParent(Object element) {
-		if (delegate != null) {
-			return delegate.getParent(element);
+		if (this.delegate != null) {
+			return this.delegate.getParent(element);
 		}
 		
 		return null;
@@ -118,8 +118,8 @@ public class JaxbNavigatorContentProvider
 			}
 		}
 		
-		if (delegate != null) {
-			return delegate.hasChildren(element);
+		if (this.delegate != null) {
+			return this.delegate.hasChildren(element);
 		}
 		
 		return false;
@@ -143,8 +143,8 @@ public class JaxbNavigatorContentProvider
 			}
 		}
 		
-		if (delegate != null) {
-			return delegate.getChildren(parentElement);
+		if (this.delegate != null) {
+			return this.delegate.getChildren(parentElement);
 		}
 			
 		return new Object[0];
@@ -165,13 +165,13 @@ public class JaxbNavigatorContentProvider
 	// **************** ICommonContentProvider implementation ******************
 	
 	public void init(ICommonContentExtensionSite config) {
-		if (delegate == null) {
+		if (this.delegate == null) {
 			JaxbNavigatorLabelProvider labelProvider = (JaxbNavigatorLabelProvider) config.getExtension().getLabelProvider();
-			if (labelProvider != null && labelProvider.delegate() != null) {
-				delegate = labelProvider.delegate();
+			if (labelProvider != null && labelProvider.getDelegate() != null) {
+				this.delegate = labelProvider.getDelegate();
 			}
 			else {
-				delegate = new JaxbNavigatorContentAndLabelProvider();
+				this.delegate = new JaxbNavigatorContentAndLabelProvider();
 			}
 		}
 	}
@@ -179,19 +179,23 @@ public class JaxbNavigatorContentProvider
 	
 	// **************** member classes *****************************************
 	
-	private class FacetListener
-		implements IFacetedProjectListener
+	private class JaxbProjectListener
+		implements CollectionChangeListener
 	{
-		public void handleEvent(IFacetedProjectEvent event) {
-			if (event.getType() == IFacetedProjectEvent.Type.PROJECT_MODIFIED) {
-				refreshViewer(event.getProject().getProject());
+		public void collectionChanged(CollectionChangeEvent event) {
+			this.refreshViewer(null);
+		}
+		public void collectionCleared(CollectionClearEvent event) {
+			this.refreshViewer(null);
+		}
+		public void itemsAdded(CollectionAddEvent event) {
+			for (Object item : event.getItems()) {
+				this.refreshViewer(((JaxbProject) item).getProject());
 			}
-			else if (event.getType() == IFacetedProjectEvent.Type.POST_INSTALL
-					|| event.getType() == IFacetedProjectEvent.Type.POST_UNINSTALL) {
-				IProjectFacetActionEvent ipaEvent = (IProjectFacetActionEvent) event;
-				if (ipaEvent.getProjectFacet().equals(JaxbFacet.FACET)) {
-					refreshViewer(ipaEvent.getProject().getProject());
-				}
+		}
+		public void itemsRemoved(CollectionRemoveEvent event) {
+			for (Object item : event.getItems()) {
+				this.refreshViewer(((JaxbProject) item).getProject());
 			}
 		}
 		
@@ -207,13 +211,20 @@ public class JaxbNavigatorContentProvider
 						// Using runnable here so that refresh will go on correct thread
 						viewer.getControl().getDisplay().asyncExec(new Runnable() {
 							public void run() {
-								viewer.refresh(project);
+								if (project != null) {
+									viewer.refresh(project);
+								}
+								else {
+									viewer.refresh();
+								}
 							}
 						});
 						return Status.OK_STATUS;
 					}
 				};
-				refreshJob.setRule(project);
+				if (project != null) {
+					refreshJob.setRule(project);
+				}
 				refreshJob.schedule();
 			}
 		}
