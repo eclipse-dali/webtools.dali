@@ -18,9 +18,13 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
+import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -29,14 +33,20 @@ import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaElementFactoryMethod;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaEnumConstant;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentClass;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentEnum;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
@@ -88,8 +98,12 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaRegistry(parent, resourceType);
 	}
 	
-	public JaxbPersistentClass buildPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
+	public JaxbPersistentClass buildJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		return new GenericJavaPersistentClass(parent, resourceType);
+	}
+	
+	public JaxbPersistentEnum buildJavaPersistentEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum) {
+		return new GenericJavaPersistentEnum(parent, resourceEnum);
 	}
 	
 	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
@@ -104,11 +118,19 @@ public abstract class AbstractJaxbFactory
 		return new GenericJavaXmlJavaTypeAdapter(parent, resourceXmlJavaTypeAdapter);
 	}
 	
+	public JaxbEnumConstant buildJavaEnumConstant(JaxbPersistentEnum parent, JavaResourceEnumConstant resourceEnumConstant) {
+		return new GenericJavaEnumConstant(parent, resourceEnumConstant);
+	}
+	
 	public XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation) {
 		return new GenericJavaXmlNs(parent, xmlNsAnnotation);
 	}
 
-	public XmlRootElement buildJavaXmlRootElement(JaxbPersistentClass parent, XmlRootElementAnnotation xmlRootElementAnnotation) {
+	public XmlRootElement buildJavaXmlRootElement(JaxbPersistentType parent, XmlRootElementAnnotation xmlRootElementAnnotation) {
 		return new GenericJavaXmlRootElement(parent, xmlRootElementAnnotation);
+	}
+
+	public JaxbElementFactoryMethod buildJavaElementFactoryMethod(JaxbRegistry parent, JavaResourceMethod resourceMethod) {
+		return new GenericJavaElementFactoryMethod(parent, resourceMethod);
 	}
 }
