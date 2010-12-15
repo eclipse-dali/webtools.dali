@@ -10,18 +10,31 @@
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 
 public class GenericJavaRegistry
 		extends AbstractJavaType
 		implements JaxbRegistry {
-	
+
+	protected final ElementFactoryMethodContainer elementFactoryMethodContainer;
+
+	private static final String ELEMENT_FACTORY_METHOD_CREATE_PREFIX = "create"; //$NON-NLS-1$
+
 	public GenericJavaRegistry(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
+		this.elementFactoryMethodContainer = new ElementFactoryMethodContainer();
 	}
-	
+
+	@Override
+	public JavaResourceType getJavaResourceType() {
+		return (JavaResourceType) super.getJavaResourceType();
+	}
 	
 	// ********** JaxbType impl **********
 	
@@ -29,14 +42,81 @@ public class GenericJavaRegistry
 		return Kind.REGISTRY;
 	}
 	
+	// ********** synchronize/update **********
 	
 	public void synchronizeWithResourceModel() {
-		// TODO Auto-generated method stub
-		
+		this.elementFactoryMethodContainer.synchronizeWithResourceModel();
 	}
 	
 	public void update() {
-		// TODO Auto-generated method stub
-		
+		this.elementFactoryMethodContainer.update();
 	}
+
+	public Iterable<JaxbElementFactoryMethod> getElementFactoryMethods() {
+		return this.elementFactoryMethodContainer.getContextElements();
+	}
+
+	public int getElementFactoryMethodsSize() {
+		return this.elementFactoryMethodContainer.getContextElementsSize();
+	}
+
+	private JaxbElementFactoryMethod buildElementFactoryMethod(JavaResourceMethod resourceMethod) {
+		return getFactory().buildJavaElementFactoryMethod(this, resourceMethod);
+	}
+
+	private Iterable<JavaResourceMethod> getResourceElementFactoryMethods() {
+		return new FilteringIterable<JavaResourceMethod>(getJavaResourceType().getMethods()) {
+			@Override
+			protected boolean accept(JavaResourceMethod method) {
+				return methodIsElementFactoryMethod(method);
+			}
+		};
+	}
+
+	//For now we will just check that the method has an @XmlElementDecl annotation.
+	//In the future we could look for methods that are unannotated, but appear
+	//to be element factory methods : begin with create, return type is JAXB element,
+	//1 parameter, etc.
+	protected static boolean methodIsElementFactoryMethod(JavaResourceMethod method) {
+		return methodHasXmlElementDeclAnnotation(method);
+	}
+
+	protected static boolean methodHasXmlElementDeclAnnotation(JavaResourceMethod method) {
+		return method.getAnnotation(XmlElementDeclAnnotation.ANNOTATION_NAME) != null;
+	}
+	
+	protected static boolean methodStartsWithCreate(JavaResourceMethod method) {
+		return method.getName().startsWith(ELEMENT_FACTORY_METHOD_CREATE_PREFIX);
+	}
+
+	protected static boolean methodReturnTypeIsJAXBElement(JavaResourceMethod method) {
+		return method.returnTypeIsSubTypeOf(JAXB_ELEMENT_TYPE_NAME);
+	}
+
+	protected static final String JAXB_ELEMENT_TYPE_NAME = "javax.xml.bind.JAXBElement"; //$NON-NLS-1$
+
+	/**
+	 * element factory method container adapter
+	 */
+	protected class ElementFactoryMethodContainer
+		extends ContextCollectionContainer<JaxbElementFactoryMethod, JavaResourceMethod>
+	{
+		@Override
+		protected String getContextElementsPropertyName() {
+			return ELEMENT_FACTORY_METHODS_COLLECTION;
+		}
+		@Override
+		protected JaxbElementFactoryMethod buildContextElement(JavaResourceMethod resourceElement) {
+			return GenericJavaRegistry.this.buildElementFactoryMethod(resourceElement);
+		}
+		@Override
+		protected Iterable<JavaResourceMethod> getResourceElements() {
+			return GenericJavaRegistry.this.getResourceElementFactoryMethods();
+		}
+		@Override
+		protected JavaResourceMethod getResourceElement(JaxbElementFactoryMethod contextElement) {
+			return contextElement.getResourceMethod();
+		}
+	}
+
 }

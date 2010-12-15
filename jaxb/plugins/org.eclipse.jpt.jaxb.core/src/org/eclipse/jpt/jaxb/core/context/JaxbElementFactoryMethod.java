@@ -9,11 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 
 /**
- * Represents a JAXB registry
- * (A class with an explicit @XmlRegistry annotation)
+ * Represents a JAXB element factory method  
+ * (A method inside an object factory (@XmlRegistry) with an explicit @XmlElementDecl annotation)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,18 +24,31 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbRegistry extends JaxbType {
+public interface JaxbElementFactoryMethod
+		extends JaxbContextNode {
+
+	JavaResourceMethod getResourceMethod();
+
+	String getName();
 
 	/**
-	 * covariant override
+	 * Corresponds to the XmlElementDecl annotation 'name' element
 	 */
-	JavaResourceType getJavaResourceType();
+	String getElementName();
+	void setElementName(String elementName);
+		String ELEMENT_NAME_PROPERTY = "elementName"; //$NON-NLS-1$
 
 
-	/********** element factory methods **********/
-
-	Iterable<JaxbElementFactoryMethod> getElementFactoryMethods();
-	int getElementFactoryMethodsSize();
-		String ELEMENT_FACTORY_METHODS_COLLECTION = "elementFactoryMethods"; //$NON-NLS-1$
+	//String 	defaultValue
+	//String 	namespace
+	//Class 	scope
+	//String 	substitutionHeadName
+	//String 	substitutionHeadNamespace
+		
+//	String getValue();
+//	String getDefaultValue();
+//	String getSpecifiedValue();
+//	void setSpecifiedValue(String value);
+//		String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
 
 }
