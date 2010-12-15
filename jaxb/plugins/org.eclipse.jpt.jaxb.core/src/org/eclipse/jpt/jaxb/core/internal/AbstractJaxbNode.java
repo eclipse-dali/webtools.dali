@@ -224,8 +224,8 @@ public abstract class AbstractJaxbNode
 		protected abstract String getContextElementsPropertyName();
 
 		protected void initializeContextElements() {
-			for (R resourcePackage : this.getResourceElements()) {
-				this.contextElements.add(this.buildContextElement(resourcePackage));
+			for (R resourceElement : this.getResourceElements()) {
+				this.contextElements.add(this.buildContextElement(resourceElement));
 			}
 		}
 
