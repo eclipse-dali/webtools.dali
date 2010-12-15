@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 
 /**
@@ -21,7 +21,7 @@ public final class BinaryXmlAttachmentRefAnnotation
 	implements XmlAttachmentRefAnnotation
 {
 
-	public BinaryXmlAttachmentRefAnnotation(JavaResourceAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlAttachmentRefAnnotation(JavaResourceField parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

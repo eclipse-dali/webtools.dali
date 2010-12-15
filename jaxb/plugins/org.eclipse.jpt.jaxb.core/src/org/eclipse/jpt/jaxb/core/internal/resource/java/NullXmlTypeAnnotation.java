@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -23,7 +23,7 @@ public final class NullXmlTypeAnnotation
 	extends NullAnnotation
 	implements XmlTypeAnnotation
 {
-	protected NullXmlTypeAnnotation(JavaResourceType parent) {
+	protected NullXmlTypeAnnotation(AbstractJavaResourceType parent) {
 		super(parent);
 	}
 

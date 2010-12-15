@@ -12,17 +12,17 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 
 
 public abstract class AbstractJavaType
 		extends AbstractJaxbContextNode
 		implements JaxbType {
 	
-	protected final JavaResourceType resourceType;
+	protected final AbstractJavaResourceType resourceType;
 
 	
-	protected AbstractJavaType(JaxbContextRoot parent, JavaResourceType resourceType) {
+	protected AbstractJavaType(JaxbContextRoot parent, AbstractJavaResourceType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		
@@ -31,7 +31,7 @@ public abstract class AbstractJavaType
 	
 	// *********** JaxbType impl ***********
 	
-	public JavaResourceType getJavaResourceType() {
+	public AbstractJavaResourceType getJavaResourceType() {
 		return this.resourceType;
 	}
 	

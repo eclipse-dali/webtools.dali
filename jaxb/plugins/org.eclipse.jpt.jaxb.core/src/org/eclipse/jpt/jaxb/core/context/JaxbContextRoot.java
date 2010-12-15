@@ -64,7 +64,22 @@ public interface JaxbContextRoot
 	 * Return the persistent class with the given fully qualified name
 	 */
 	JaxbPersistentClass getPersistentClass(String fullyQualifiedTypeName);
-	
+
+	/**
+	 * The set of persistent enums.  These may be explicitly or implicitly included.
+	 */
+	Iterable<JaxbPersistentEnum> getPersistentEnums();
+
+	/**
+	 * Return the set of persistent enums that are in the given package
+	 */
+	Iterable<JaxbPersistentEnum> getPersistentEnums(JaxbPackage jaxbPackage);
+
+	/**
+	 * Return the persistent enum with the given fully qualified name
+	 */
+	JaxbPersistentEnum getPersistentEnum(String fullyQualifiedTypeName);
+
 	/**
 	 * The set of registries.
 	 */

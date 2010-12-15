@@ -12,31 +12,19 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 import java.util.Collection;
 import java.util.HashSet;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
-import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
-import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaPersistentClass
-		extends AbstractJavaType
+		extends AbstractJavaPersistentType
 		implements JaxbPersistentClass {
-
-	protected String factoryClass;
-	protected String factoryMethod;
-	protected String schemaTypeName;
-	protected String namespace;
-
-	protected final PropOrderContainer propOrderContainer;
 
 	protected JaxbPersistentClass superPersistentClass;
 
@@ -46,46 +34,30 @@ public class GenericJavaPersistentClass
 	protected XmlAccessOrder defaultAccessOrder;
 	protected XmlAccessOrder specifiedAccessOrder;
 
-	protected XmlRootElement rootElement;
-
 	public GenericJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
-		this.factoryClass = this.getResourceFactoryClass();
-		this.factoryMethod = this.getResourceFactoryMethod();
-		this.schemaTypeName = this.getResourceSchemaTypeName();
-		this.namespace = this.getResourceNamespace();
-		this.propOrderContainer = new PropOrderContainer();
 		this.superPersistentClass = this.buildSuperPersistentClass();
 		this.specifiedAccessType = this.getResourceAccessType();
 		this.specifiedAccessOrder = this.getResourceAccessOrder();
 		this.defaultAccessType = this.buildDefaultAccessType();
 		this.defaultAccessOrder = this.buildDefaultAccessOrder();
-		this.rootElement = this.buildRootElement();
 	}
 
 	@Override
-	public JaxbContextRoot getParent() {
-		return (JaxbContextRoot) super.getParent();
-	}
-
-	protected JaxbPackageInfo getPackageInfo() {
-		JaxbPackage jaxbPackage = getParent().getPackage(this.getPackageName());
-		return jaxbPackage == null ? null : jaxbPackage.getPackageInfo();
+	public JavaResourceType getJavaResourceType() {
+		return (JavaResourceType) super.getJavaResourceType();
 	}
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
-		this.setFactoryClass_(this.getResourceFactoryClass());
-		this.setFactoryMethod_(this.getResourceFactoryMethod());
-		this.setSchemaTypeName_(this.getResourceSchemaTypeName());
-		this.setNamespace_(this.getResourceNamespace());
+		super.synchronizeWithResourceModel();
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
-		this.syncPropOrder();
-		this.syncRootElement();
 	}
 
+	@Override
 	public void update() {
 		this.setSuperPersistentClass(this.buildSuperPersistentClass());
 		this.setDefaultAccessType(this.buildDefaultAccessType());
@@ -94,140 +66,11 @@ public class GenericJavaPersistentClass
 
 
 	// ********** JaxbType impl **********
-	
+
 	public Kind getKind() {
 		return Kind.PERSISTENT_CLASS;
 	}
 	
-	
-	// ********** xml type annotation **********
-
-	protected XmlTypeAnnotation getXmlTypeAnnotation() {
-		return (XmlTypeAnnotation) this.getJavaResourceType().getNonNullAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
-	}
-
-
-	// ********** factory class **********
-
-	public String getFactoryClass() {
-		return this.factoryClass;
-	}
-
-	public void setFactoryClass(String factoryClass) {
-		this.getXmlTypeAnnotation().setFactoryClass(factoryClass);
-		this.setFactoryClass_(factoryClass);	
-	}
-
-	protected void setFactoryClass_(String factoryClass) {
-		String old = this.factoryClass;
-		this.factoryClass = factoryClass;
-		this.firePropertyChanged(FACTORY_CLASS_PROPERTY, old, factoryClass);
-	}
-
-	protected String getResourceFactoryClass() {
-		return this.getXmlTypeAnnotation().getFactoryClass();
-	}
-
-	// ********** factory method **********
-
-	public String getFactoryMethod() {
-		return this.factoryMethod;
-	}
-
-	public void setFactoryMethod(String factoryMethod) {
-		this.getXmlTypeAnnotation().setFactoryMethod(factoryMethod);
-		this.setFactoryMethod_(factoryMethod);	
-	}
-
-	protected void setFactoryMethod_(String factoryMethod) {
-		String old = this.factoryMethod;
-		this.factoryMethod = factoryMethod;
-		this.firePropertyChanged(FACTORY_METHOD_PROPERTY, old, factoryMethod);
-	}
-
-	protected String getResourceFactoryMethod() {
-		return this.getXmlTypeAnnotation().getFactoryMethod();
-	}
-
-	// ********** name **********
-
-	public String getSchemaTypeName() {
-		return this.schemaTypeName;
-	}
-
-	public void setSchemaTypeName(String schemaTypeName) {
-		this.getXmlTypeAnnotation().setName(schemaTypeName);
-		this.setSchemaTypeName_(schemaTypeName);	
-	}
-
-	protected void setSchemaTypeName_(String schemaTypeName) {
-		String old = this.schemaTypeName;
-		this.schemaTypeName = schemaTypeName;
-		this.firePropertyChanged(SCHEMA_TYPE_NAME_PROPERTY, old, schemaTypeName);
-	}
-
-	protected String getResourceSchemaTypeName() {
-		return this.getXmlTypeAnnotation().getName();
-	}
-
-	// ********** namespace **********
-
-	public String getNamespace() {
-		return this.namespace;
-	}
-
-	public void setNamespace(String namespace) {
-		this.getXmlTypeAnnotation().setNamespace(namespace);
-		this.setNamespace_(namespace);	
-	}
-
-	protected void setNamespace_(String namespace) {
-		String old = this.namespace;
-		this.namespace = namespace;
-		this.firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
-	}
-
-	protected String getResourceNamespace() {
-		return this.getXmlTypeAnnotation().getNamespace();
-	}
-	
-	// ********** prop order **********
-	
-
-	public ListIterable<String> getPropOrder() {
-		return this.propOrderContainer.getContextElements();
-	}
-
-	public int getPropOrderSize() {
-		return this.propOrderContainer.getContextElementsSize();
-	}
-
-	public void addProp(int index, String prop) {
-		getXmlTypeAnnotation().addProp(index, prop);
-		this.propOrderContainer.addContextElement(index, prop);
-	}
-
-	public void removeProp(String prop) {
-		this.removeProp(this.propOrderContainer.indexOfContextElement(prop));
-	}
-
-	public void removeProp(int index) {
-		this.getXmlTypeAnnotation().removeProp(index);
-		this.propOrderContainer.removeContextElement(index);
-	}
-
-	public void moveProp(int targetIndex, int sourceIndex) {
-		this.getXmlTypeAnnotation().moveProp(targetIndex, sourceIndex);
-		this.propOrderContainer.moveContextElement(targetIndex, sourceIndex);
-	}
-
-	protected void syncPropOrder() {
-		this.propOrderContainer.synchronizeWithResourceModel();
-	}
-
-	protected ListIterable<String> getResourcePropOrder() {
-		return this.getXmlTypeAnnotation().getPropOrder();
-	}
 
 	// ********** super persistent class **********
 
@@ -243,8 +86,8 @@ public class GenericJavaPersistentClass
 
 	protected JaxbPersistentClass buildSuperPersistentClass() {
 		HashSet<JavaResourceType> visited = new HashSet<JavaResourceType>();
-		visited.add(this.resourceType);
-		JaxbPersistentClass spc = this.getSuperPersistentClass(this.resourceType.getSuperclassQualifiedName(), visited);
+		visited.add(this.getJavaResourceType());
+		JaxbPersistentClass spc = this.getSuperPersistentClass(this.getJavaResourceType().getSuperclassQualifiedName(), visited);
 		if (spc == null) {
 			return null;
 		}
@@ -311,7 +154,7 @@ public class GenericJavaPersistentClass
 	public XmlAccessType getSpecifiedAccessType() {
 		return this.specifiedAccessType;
 	}
-	
+
 	public void setSpecifiedAccessType(XmlAccessType access) {
 		this.getAccessorTypeAnnotation().setValue(XmlAccessType.toJavaResourceModel(access));
 		this.setSpecifiedAccessType_(access);
@@ -332,7 +175,7 @@ public class GenericJavaPersistentClass
 		this.defaultAccessType = access;
 		this.firePropertyChanged(DEFAULT_ACCESS_TYPE_PROPERTY, old, access);
 	}
-	
+
 	protected XmlAccessType getResourceAccessType() {
 		return XmlAccessType.fromJavaResourceModel(this.getAccessorTypeAnnotation().getValue());
 	}
@@ -378,7 +221,7 @@ public class GenericJavaPersistentClass
 	public XmlAccessOrder getSpecifiedAccessOrder() {
 		return this.specifiedAccessOrder;
 	}
-	
+
 	public void setSpecifiedAccessOrder(XmlAccessOrder accessOrder) {
 		this.getAccessorOrderAnnotation().setValue(XmlAccessOrder.toJavaResourceModel(accessOrder));
 		this.setSpecifiedAccessOrder_(accessOrder);
@@ -399,7 +242,7 @@ public class GenericJavaPersistentClass
 		this.defaultAccessOrder = accessOrder;
 		this.firePropertyChanged(DEFAULT_ACCESS_ORDER_PROPERTY, old, accessOrder);
 	}
-	
+
 	protected XmlAccessOrder getResourceAccessOrder() {
 		return XmlAccessOrder.fromJavaResourceModel(this.getAccessorOrderAnnotation().getValue());
 	}
@@ -436,91 +279,4 @@ public class GenericJavaPersistentClass
 		return packageInfo == null ? null : packageInfo.getAccessOrder();
 	}
 
-
-	// *************** root element *********************
-
-	public XmlRootElement getRootElement() {
-		return this.rootElement;
-	}
-
-	public boolean isRootElement() {
-		return this.rootElement != null;
-	}
-
-	public XmlRootElement setRootElement(String name) {
-		if (name == null) {
-			this.getJavaResourceType().removeAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
-			this.setRootElement_(null);
-			return null;
-		}
-		XmlRootElementAnnotation resourceRootElement = (XmlRootElementAnnotation) getJavaResourceType().addAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
-		resourceRootElement.setName(name);
-		XmlRootElement contextRootElement = this.buildRootElement(resourceRootElement);
-		this.setRootElement_(contextRootElement);
-		return contextRootElement;
-	}
-
-	protected void setRootElement_(XmlRootElement rootElement) {
-		XmlRootElement old = this.rootElement;
-		this.rootElement = rootElement;
-		this.firePropertyChanged(ROOT_ELEMENT, old, rootElement);
-	}
-
-	protected XmlRootElement buildRootElement() {
-		XmlRootElementAnnotation resourceRootElement = this.getRootElementAnnotation();
-		return resourceRootElement == null ? null : this.buildRootElement(resourceRootElement);
-	}
-
-	protected XmlRootElement buildRootElement(XmlRootElementAnnotation resourceRootElement) {
-		return getFactory().buildJavaXmlRootElement(this, resourceRootElement);
-	}
-
-	protected void syncRootElement() {
-		XmlRootElementAnnotation resourceRootElement = this.getRootElementAnnotation();
-		if (resourceRootElement != null) {
-			if (this.rootElement != null) {
-				this.rootElement.synchronizeWithResourceModel();
-			}
-			else {
-				this.setRootElement_(this.buildRootElement(resourceRootElement));
-			}
-		}
-		else if (this.rootElement != null) {
-			this.setRootElement_(null);
-		}
-	}
-
-	protected XmlRootElementAnnotation getRootElementAnnotation() {
-		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.getFullyQualifiedName());
-	}
-
-	/**
-	 * xml java type adapter container
-	 */
-	protected class PropOrderContainer
-		extends ListContainer<String, String>
-	{
-		@Override
-		protected String getContextElementsPropertyName() {
-			return PROP_ORDER_LIST;
-		}
-		@Override
-		protected String buildContextElement(String resourceElement) {
-			return resourceElement;
-		}
-		@Override
-		protected ListIterable<String> getResourceElements() {
-			return GenericJavaPersistentClass.this.getResourcePropOrder();
-		}
-		@Override
-		protected String getResourceElement(String contextElement) {
-			return contextElement;
-		}
-	}
 }

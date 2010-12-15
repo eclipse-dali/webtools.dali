@@ -9,11 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
-import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
 public class GenericJavaXmlRootElement
@@ -27,7 +25,7 @@ public class GenericJavaXmlRootElement
 
 	protected String namespace;
 
-	public GenericJavaXmlRootElement(JaxbPersistentClass parent, XmlRootElementAnnotation resourceXmlRootElementAnnotation) {
+	public GenericJavaXmlRootElement(JaxbPersistentType parent, XmlRootElementAnnotation resourceXmlRootElementAnnotation) {
 		super(parent);
 		this.resourceXmlRootElementAnnotation = resourceXmlRootElementAnnotation;
 		this.name = this.getResourceName();
@@ -48,12 +46,8 @@ public class GenericJavaXmlRootElement
 
 
 	@Override
-	public JaxbPackageInfo getParent() {
-		return (JaxbPackageInfo) super.getParent();
-	}
-
-	protected JavaResourcePackage getResourcePackage() {
-		return getParent().getResourcePackage();
+	public JaxbPersistentType getParent() {
+		return (JaxbPersistentType) super.getParent();
 	}
 
 

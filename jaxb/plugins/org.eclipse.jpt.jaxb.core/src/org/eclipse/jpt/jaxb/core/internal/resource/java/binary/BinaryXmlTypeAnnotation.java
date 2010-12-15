@@ -14,7 +14,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
@@ -33,7 +33,7 @@ public final class BinaryXmlTypeAnnotation
 	private final Vector<String> propOrder;
 
 
-	public BinaryXmlTypeAnnotation(JavaResourceType parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlTypeAnnotation(AbstractJavaResourceType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.factoryClass = this.buildFactoryClass();
 		this.factoryMethod = this.buildFactoryMethod();

@@ -18,10 +18,12 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -73,6 +75,23 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 	
 	private ICompilationUnit createUnannotatedTestTypeNamed(String typeName) throws Exception {
 		return this.createTestType(PACKAGE_NAME, typeName + ".java", typeName, new DefaultAnnotationWriter());
+	}
+
+	private ICompilationUnit createTestXmlEnum() throws Exception {
+		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_ENUM);
+			}
+			@Override
+			public void appendEnumAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlEnum");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestXmlEnumNoAnnotation(String enumName) throws Exception {
+		return this.createTestEnum(PACKAGE_NAME, enumName + ".java", enumName, new DefaultEnumAnnotationWriter());
 	}
 
 	public void testGetPackages() throws Exception {
@@ -145,7 +164,7 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		assertFalse(registries.hasNext());
 		
 		//annotate the class with @XmlRegistry and test it's added to the root context node
-		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
@@ -195,7 +214,7 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		assertFalse(persistentClasses.hasNext());
 
 		//annotate the class with @XmlType and test it's added to the context root
-		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
@@ -229,11 +248,61 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 	}
+
+	public void testGetPersistentEnums() throws Exception {
+		this.createTestXmlEnum();
+		Iterator<JaxbPersistentEnum> persistentEnums = this.getContextRoot().getPersistentEnums().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
+		assertFalse(persistentEnums.hasNext());
+		
+		//add an unannotated class and make sure it's not added to the context root
+		createTestXmlEnumNoAnnotation("Foo");
+		persistentEnums = this.getContextRoot().getPersistentEnums().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
+		assertFalse(persistentEnums.hasNext());
+
+		//annotate the class with @XmlEnum and test it's added to the context root
+		JavaResourceEnum fooResourceType = getJaxbProject().getJavaResourceEnum("test.Foo");
+		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ENUM);
+					}
+				});
+		
+		Iterable<String> persistentEnumNames = 
+				new TransformationIterable<JaxbPersistentEnum, String>(
+						getContextRoot().getPersistentEnums()) {
+					@Override
+					protected String transform(JaxbPersistentEnum o) {
+						return o.getFullyQualifiedName();
+					}
+				};
+		assertEquals(2, CollectionTools.size(getContextRoot().getPersistentEnums()));
+		assertTrue(CollectionTools.contains(persistentEnumNames, "test.Foo"));
+		assertTrue(CollectionTools.contains(persistentEnumNames, FULLY_QUALIFIED_TYPE_NAME));
+
+		//remove the annotation from the class and test it's removed from the root context node
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_ENUM);
+					}
+				});
+		
+		persistentEnums = getContextRoot().getPersistentEnums().iterator();
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
+		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
+		assertFalse(persistentEnums.hasNext());
+	}
 	
 	public void testChangeTypeKind() throws Exception {
 		createTypeWithXmlRegistry();
 		createUnannotatedTestTypeNamed("Foo");
-		JavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {

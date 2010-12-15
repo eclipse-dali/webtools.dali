@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.CommandExecutor;
@@ -187,11 +188,21 @@ public interface JaxbProject
 //	Iterable<String> getAnnotatedJavaSourceClassNames();
 	
 	/**
-	 * Return the Java resource persistent type for the specified type.
+	 * Return the Java resource type with the specified type name.
 	 * Return null if invalid or absent.
 	 */
 	JavaResourceType getJavaResourceType(String typeName);
 	
+	/**
+	 * Return all {@link JavaResourceEnum}s that are represented by java source within this project
+	 */
+	Iterable<JavaResourceEnum> getJavaSourceResourceEnums();
+
+	/**
+	 * Return the Java resource enum with the specified enum name.
+	 * Return null if invalid or absent.
+	 */
+	JavaResourceEnum getJavaResourceEnum(String enumName);
 	
 	// ********** model synchronization **********
 

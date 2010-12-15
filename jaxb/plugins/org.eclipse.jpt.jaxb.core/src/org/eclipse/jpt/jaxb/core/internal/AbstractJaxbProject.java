@@ -42,6 +42,7 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
@@ -620,6 +621,25 @@ public abstract class AbstractJaxbProject
 	}
 
 	/**
+	 * Return all {@link JavaResourceType}s that are represented by java source within this project
+	 */
+	public Iterable<JavaResourceEnum> getJavaSourceResourceEnums() {
+		return new CompositeIterable<JavaResourceEnum>(this.getInternalJavaSourceResourceEnumSets());
+	}
+
+	/*
+	 * Return the sets of {@link JavaResourceType}s that are represented by java source within this project
+	 */
+	protected Iterable<Iterable<JavaResourceEnum>> getInternalJavaSourceResourceEnumSets() {
+		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceEnum>>(this.getInternalJavaResourceCompilationUnits()) {
+			@Override
+			protected Iterable<JavaResourceEnum> transform(JavaResourceCompilationUnit compilationUnit) {
+				return compilationUnit.getEnums();
+			}
+		};
+	}
+
+	/**
 	 * return JAXB files with Java source "content"
 	 */
 	protected Iterable<JaxbFile> getJavaSourceJaxbFiles() {
@@ -680,9 +700,20 @@ public abstract class AbstractJaxbProject
 	
 	
 	public JavaResourceType getJavaResourceType(String typeName) {
-		for (JavaResourceType jrpType : this.getPersistableJavaResourceTypes()) {
-			if (jrpType.getQualifiedName().equals(typeName)) {
-				return jrpType;
+		for (JavaResourceType type : this.getPersistableJavaResourceTypes()) {
+			if (type.getQualifiedName().equals(typeName)) {
+				return type;
+			}
+		}
+		return null;
+//		// if we don't have a type already, try to build new one from the project classpath
+//		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
+	}
+
+	public JavaResourceEnum getJavaResourceEnum(String enumName) {
+		for (JavaResourceEnum enum_ : this.getJavaSourceResourceEnums()) {
+			if (enum_.getQualifiedName().equals(enumName)) {
+				return enum_;
 			}
 		}
 		return null;
@@ -698,8 +729,8 @@ public abstract class AbstractJaxbProject
 	protected Iterable<JavaResourceType> getPersistableJavaResourceTypes() {
 		return new FilteringIterable<JavaResourceType>(this.getJavaResourceTypes()) {
 			@Override
-			protected boolean accept(JavaResourceType jrpType) {
-				return jrpType.isPersistable();
+			protected boolean accept(JavaResourceType type) {
+				return type.isPersistable();
 			}
 		};
 	}

@@ -7,28 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
+package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
-import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumValueAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlEnumValue
  */
-public final class BinaryXmlEnumValueAnnotation
-	extends BinaryAnnotation
+public final class NullXmlEnumValueAnnotation
+	extends NullAnnotation
 	implements XmlEnumValueAnnotation
 {
-
-	private String value;
-
-	public BinaryXmlEnumValueAnnotation(JavaResourceEnumConstant parent, IAnnotation jdtAnnotation) {
-		super(parent, jdtAnnotation);
-		this.value = this.buildValue();
+	protected NullXmlEnumValueAnnotation(JavaResourceEnumConstant parent) {
+		super(parent);
 	}
 
 	public String getAnnotationName() {
@@ -36,34 +30,25 @@ public final class BinaryXmlEnumValueAnnotation
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		this.setValue_(this.buildValue());
+	protected XmlEnumValueAnnotation addAnnotation() {
+		return (XmlEnumValueAnnotation) super.addAnnotation();
 	}
 
 
 	// ********** XmlEnumValueAnnotation implementation **********
+
 	// ***** value
 	public String getValue() {
-		return this.value;
+		return null;
 	}
 
 	public void setValue(String value) {
-		throw new UnsupportedOperationException();
-	}
-
-	private void setValue_(String value) {
-		String old = this.value;
-		this.value = value;
-		this.firePropertyChanged(VALUE_PROPERTY, old, value);
-	}
-
-	private String buildValue() {
-		return (String) this.getJdtMemberValue(JAXB.XML_ENUM_VALUE__VALUE);
+		if (value != null) {
+			this.addAnnotation().setValue(value);
+		}
 	}
 
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+		return null;
 	}
-
 }

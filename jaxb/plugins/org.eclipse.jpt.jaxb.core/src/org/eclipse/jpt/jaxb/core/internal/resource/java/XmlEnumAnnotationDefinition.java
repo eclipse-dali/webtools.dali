@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlEnumAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlEnumAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
 /**
@@ -44,15 +44,15 @@ public final class XmlEnumAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlEnumAnnotation((JavaResourceType) parent, (Type) annotatedElement);
+		return new SourceXmlEnumAnnotation((AbstractJavaResourceType) parent, (AbstractType) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+		return new NullXmlEnumAnnotation((AbstractJavaResourceType) parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlEnumAnnotation((JavaResourceType) parent, jdtAnnotation);
+		return new BinaryXmlEnumAnnotation((AbstractJavaResourceType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

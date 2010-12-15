@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 
 /**
@@ -21,7 +21,7 @@ public final class BinaryXmlIDAnnotation
 	implements XmlIDAnnotation
 {
 
-	public BinaryXmlIDAnnotation(JavaResourceAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlIDAnnotation(JavaResourceField parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

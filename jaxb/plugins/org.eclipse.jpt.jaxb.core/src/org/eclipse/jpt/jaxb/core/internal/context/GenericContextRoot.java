@@ -19,10 +19,13 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbType.Kind;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -80,8 +83,11 @@ public class GenericContextRoot
 		// (persistent classes that can be determined purely by resource model)
 		final Set<JavaResourceType> initialPersistentClasses = calculateInitialPersistentClasses();
 		
-		final Set<JavaResourceType> initialTypes = new HashSet<JavaResourceType>(registries);
+		final Set<JavaResourceEnum> initialPersistentEnums = calculateInitialPersistentEnums();
+		
+		final Set<AbstractJavaResourceType> initialTypes = new HashSet<AbstractJavaResourceType>(registries);
 		initialTypes.addAll(initialPersistentClasses);
+		initialTypes.addAll(initialPersistentEnums);
 		
 		// determine initial set of packages
 		final Set<String> initialPackages = calculateInitialPackageNames(initialTypes);
@@ -97,13 +103,17 @@ public class GenericContextRoot
 		for (JavaResourceType resourceType : initialPersistentClasses) {
 			this.types.put(resourceType.getName(), buildPersistentClass(resourceType));
 		}
+		
+		for (JavaResourceEnum resourceType : initialPersistentEnums) {
+			this.types.put(resourceType.getName(), buildPersistentEnum(resourceType));
+		}
 	}
 	
 	public void synchronizeWithResourceModel() {
 		for (JaxbPackage each : getPackages()) {
 			each.synchronizeWithResourceModel();
 		}
-		for (JaxbType each : getPersistentClasses()) {
+		for (JaxbType each : getTypes()) {
 			each.synchronizeWithResourceModel();
 		}
 	}
@@ -116,9 +126,11 @@ public class GenericContextRoot
 		// determine initial set of persistent classes
 		// (persistent classes that can be determined purely by resource model)
 		final Set<JavaResourceType> initialPersistentClasses = calculateInitialPersistentClasses();
+		final Set<JavaResourceEnum> initialPersistentEnums = calculateInitialPersistentEnums();
 		
-		final Set<JavaResourceType> initialTypes = new HashSet<JavaResourceType>(registries);
+		final Set<AbstractJavaResourceType> initialTypes = new HashSet<AbstractJavaResourceType>(registries);
 		initialTypes.addAll(initialPersistentClasses);
+		initialTypes.addAll(initialPersistentEnums);
 		
 		// determine initial set of packages
 		final Set<String> initialPackages = calculateInitialPackageNames(initialTypes);
@@ -172,6 +184,23 @@ public class GenericContextRoot
 			}
 		}
 		
+		for (JavaResourceEnum resourceEnum : initialPersistentEnums) {
+			String className = resourceEnum.getQualifiedName();
+			typesToRemove.remove(className);
+			if (this.types.containsKey(className)) {
+				if (this.types.get(className).getKind() == Kind.PERSISTENT_ENUM) {
+					typesToUpdate.add(className);
+				}
+				else {
+					this.removeType(className); // this will remove a type of another kind
+					this.addType(buildPersistentEnum(resourceEnum));
+				}
+			}
+			else {
+				this.addType(buildPersistentEnum(resourceEnum));
+			}
+		}
+		
 		for (String packageToUpdate : packagesToUpdate) {
 			this.packages.get(packageToUpdate).update();
 		}
@@ -196,7 +225,7 @@ public class GenericContextRoot
 	 *  - any annotated package 
 	 *  - any package containing an included class
 	 */
-	protected Set<String> calculateInitialPackageNames(final Set<JavaResourceType> initialClasses) {
+	protected Set<String> calculateInitialPackageNames(final Set<AbstractJavaResourceType> initialClasses) {
 		final Set<String> packages = CollectionTools.set(
 				new TransformationIterable<JavaResourcePackage, String>(
 						getJaxbProject().getAnnotatedJavaResourcePackages()) {
@@ -205,7 +234,7 @@ public class GenericContextRoot
 						return o.getName();
 					}
 				});
-		for (JavaResourceType clazz : initialClasses) {
+		for (AbstractJavaResourceType clazz : initialClasses) {
 			packages.add(clazz.getPackageName());
 		}
 		return packages;
@@ -222,7 +251,23 @@ public class GenericContextRoot
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceType o) {
-						return o.getAnnotation(JAXB.XML_TYPE) != null && o.getAnnotation(JAXB.XML_REGISTRY) == null;
+						return o.getAnnotation(JAXB.XML_TYPE) != null && o.getAnnotation(JAXB.XML_REGISTRY) == null && o.getAnnotation(JAXB.XML_ENUM) == null;
+					}
+				});
+	}
+	
+	/*
+	 * Calculate set of persistent enums that can be determined purely by resource model
+	 * (so far, this should be all resource types with the @XmlEnum annotation)
+	 * If both @XmlEnum and @XmlRegistry exist on a class, we will let @XmlRegistry take precedence
+	 */
+	protected Set<JavaResourceEnum> calculateInitialPersistentEnums() {
+		return CollectionTools.set(
+				new FilteringIterable<JavaResourceEnum>(
+						getJaxbProject().getJavaSourceResourceEnums()) {
+					@Override
+					protected boolean accept(JavaResourceEnum o) {
+						return ((o.getAnnotation(JAXB.XML_ENUM) != null) || (o.getAnnotation(JAXB.XML_TYPE) != null)) && o.getAnnotation(JAXB.XML_REGISTRY) == null;
 					}
 				});
 	}
@@ -388,7 +433,7 @@ public class GenericContextRoot
 	}
 	
 	protected JaxbPersistentClass buildPersistentClass(JavaResourceType resourceType) {
-		return this.getFactory().buildPersistentClass(this, resourceType);
+		return this.getFactory().buildJavaPersistentClass(this, resourceType);
 	}
 	
 	public Iterable<JaxbPersistentClass> getPersistentClasses(final JaxbPackage jaxbPackage) {
@@ -404,6 +449,40 @@ public class GenericContextRoot
 		for (JaxbPersistentClass jaxbClass : this.getPersistentClasses()) {
 			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
 				return jaxbClass;
+			}
+		}
+		return null;
+	}
+	
+	// ********** persistent enums **********
+	
+	public Iterable<JaxbPersistentEnum> getPersistentEnums() {
+		return new SubIterableWrapper<JaxbType, JaxbPersistentEnum>(
+				new FilteringIterable<JaxbType>(getTypes()) {
+					@Override
+					protected boolean accept(JaxbType o) {
+						return o.getKind() == Kind.PERSISTENT_ENUM;
+					}
+				});
+	}
+	
+	protected JaxbPersistentEnum buildPersistentEnum(JavaResourceEnum resourceEnum) {
+		return this.getFactory().buildJavaPersistentEnum(this, resourceEnum);
+	}
+	
+	public Iterable<JaxbPersistentEnum> getPersistentEnums(final JaxbPackage jaxbPackage) {
+		return new FilteringIterable<JaxbPersistentEnum>(getPersistentEnums()) {
+			@Override
+			protected boolean accept(JaxbPersistentEnum o) {
+				return o.getPackageName().equals(jaxbPackage.getName());
+			}
+		};
+	}
+
+	public JaxbPersistentEnum getPersistentEnum(String enumName) {
+		for (JaxbPersistentEnum jaxbEnum : this.getPersistentEnums()) {
+			if (StringTools.stringsAreEqual(jaxbEnum.getFullyQualifiedName(), enumName)) {
+				return jaxbEnum;
 			}
 		}
 		return null;

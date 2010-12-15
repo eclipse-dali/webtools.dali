@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 
 /**
@@ -26,7 +26,7 @@ public final class BinaryXmlMimeTypeAnnotation
 
 	private String value;
 
-	public BinaryXmlMimeTypeAnnotation(JavaResourceAttribute parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlMimeTypeAnnotation(JavaResourceField parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.value = this.buildValue();
 	}

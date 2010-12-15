@@ -12,8 +12,8 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
 /**
@@ -27,7 +27,7 @@ public final class BinaryXmlRootElementAnnotation
 	private String namespace;
 
 
-	public BinaryXmlRootElementAnnotation(JavaResourceType parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlRootElementAnnotation(AbstractJavaResourceType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.namespace = this.buildNamespace();

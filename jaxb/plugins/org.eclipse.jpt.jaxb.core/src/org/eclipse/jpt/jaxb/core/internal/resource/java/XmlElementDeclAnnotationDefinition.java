@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementD
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
 
 /**
@@ -44,15 +44,15 @@ public final class XmlElementDeclAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlElementDeclAnnotation((JavaResourceAttribute) parent, (MethodAttribute) annotatedElement);
+		return new SourceXmlElementDeclAnnotation((JavaResourceMethod) parent, (MethodAttribute) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		throw new UnsupportedOperationException();
+		return new NullXmlElementDeclAnnotation((JavaResourceMethod) parent);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlElementDeclAnnotation((JavaResourceAttribute) parent, jdtAnnotation);
+		return new BinaryXmlElementDeclAnnotation((JavaResourceMethod) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

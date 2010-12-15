@@ -10,7 +10,6 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Represents a JAXB persistent class.  
@@ -26,8 +25,13 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JaxbPersistentClass
-		extends JaxbType, XmlAccessTypeHolder, XmlAccessOrderHolder {
-	
+		extends JaxbPersistentType, XmlAccessTypeHolder, XmlAccessOrderHolder {
+
+	/**
+	 * covariant override
+	 */
+	JavaResourceType getJavaResourceType();
+
 	JaxbPersistentClass getSuperPersistentClass();
 		String SUPER_PERSISTENT_CLASS_PROPERTY = "superPersistentClass"; //$NON-NLS-1$
 
@@ -46,78 +50,5 @@ public interface JaxbPersistentClass
 	 * has a loop.
 	 */
 	Iterable<JaxbPersistentClass> getAncestors();
-
-
-	/**************** factory class *****************/
-
-	/**
-	 * factory class corresponds to the XmlType annotation factoryClass element
-	 */
-	String getFactoryClass();
-	void setFactoryClass(String factoryClass);
-		String FACTORY_CLASS_PROPERTY = "factoryClass"; //$NON-NLS-1$
-
-
-	/**************** factory method *****************/
-
-	/**
-	 * factory method corresponds to the XmlType annotation factoryMethod element
-	 */
-	String getFactoryMethod();
-	void setFactoryMethod(String factoryMethod);
-		String FACTORY_METHOD_PROPERTY = "factoryMethod"; //$NON-NLS-1$
-
-
-	/**************** name *****************/
-
-	/**
-	 * Schema type name corresponds to the XmlType annotation name element
-	 */
-	String getSchemaTypeName();
-	void setSchemaTypeName(String schemaTypeName);
-		String SCHEMA_TYPE_NAME_PROPERTY = "schemaTypeName"; //$NON-NLS-1$
-
-
-	/**************** namespace *****************/
-
-	/**
-	 * namespace corresponds to the XmlType annotation namespace element
-	 */
-	String getNamespace();
-	void setNamespace(String namespace);
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-
-	// ********** propOrder **********
-
-	ListIterable<String> getPropOrder();
-	int getPropOrderSize();
-	void addProp(int index, String prop);
-	void removeProp(int index);
-	void removeProp(String prop);
-	void moveProp(int targetIndex, int sourceIndex);
-		String PROP_ORDER_LIST = "propOrder"; //$NON-NLS-1$
-
-
-	// ********** root element ************
-	/**
-	 * Return whether this class is a root element (has the XmlRootElement annotation)
-	 */
-	boolean isRootElement();
-
-	/**
-	 * Return the root element or null if it is not a root element.
-	 */
-	XmlRootElement getRootElement();
-
-	/**
-	 * Set the root element name, this will add the XmlRootElement annotation
-	 * and set its name to the specified name.
-	 * To remove the XmlRootElement annotation, pass in null.
-	 * To set the name when the class is already a root element,
-	 * set it directly on the XmlRootElement.
-	 */
-	XmlRootElement setRootElement(String name);
-		String ROOT_ELEMENT = "rootElement"; //$NON-NLS-1$
 
 }
