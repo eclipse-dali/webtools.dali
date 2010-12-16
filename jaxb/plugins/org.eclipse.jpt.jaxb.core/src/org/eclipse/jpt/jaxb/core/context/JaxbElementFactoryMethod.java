@@ -38,17 +38,44 @@ public interface JaxbElementFactoryMethod
 	void setElementName(String elementName);
 		String ELEMENT_NAME_PROPERTY = "elementName"; //$NON-NLS-1$
 
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'defaultValue' element
+	 */
+	String getDefaultValue();
+	void setDefaultValue(String defaultValue);
+		String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
+		String DEFAULT_DEFAULT_VALUE = "\u0000"; //$NON-NLS-1$
 
-	//String 	defaultValue
-	//String 	namespace
-	//Class 	scope
-	//String 	substitutionHeadName
-	//String 	substitutionHeadNamespace
-		
-//	String getValue();
-//	String getDefaultValue();
-//	String getSpecifiedValue();
-//	void setSpecifiedValue(String value);
-//		String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'namespace' element
+	 */
+	String getNamespace();
+	void setNamespace(String namespace);
+		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+		String DEFAULT_NAMESPACE = "##default"; //$NON-NLS-1$
 
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'substitutionHeadName' element
+	 */
+	String getSubstitutionHeadName();
+	void setSubstitutionHeadName(String substitutionHeadName);
+		String SUBSTIUTION_HEAD_NAME_PROPERTY = "substitutionHeadName"; //$NON-NLS-1$
+		String DEFAULT_SUBSTIUTION_HEAD_NAME = ""; //$NON-NLS-1$
+
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'substitutionHeadNamespace' element
+	 */
+	String getSubstitutionHeadNamespace();
+	void setSubstitutionHeadNamespace(String substitutionHeadNamespace);
+		String SUBSTIUTION_HEAD_NAMESPACE_PROPERTY = "substitutionHeadNamespace"; //$NON-NLS-1$
+		String DEFAULT_SUBSTIUTION_HEAD_NAMESPACE = "##default"; //$NON-NLS-1$
+
+
+	/**
+	 * Corresponds to the XmlElementDecl annotation 'scope' element
+	 */
+	String getScope();
+	void setScope(String scope);
+		String SCOPE_PROPERTY = "scope"; //$NON-NLS-1$
+		String DEFAULT_SCOPE_CLASS_NAME = "javax.xml.bind.annotation.XmlElementDecl.GLOBAL"; //$NON-NLS-1$
 }
