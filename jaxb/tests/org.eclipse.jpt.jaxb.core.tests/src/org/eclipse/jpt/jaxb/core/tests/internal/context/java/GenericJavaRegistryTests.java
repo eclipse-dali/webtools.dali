@@ -53,10 +53,10 @@ public class GenericJavaRegistryTests extends JaxbContextModelTestCase
 			
 			@Override
 			public void appendGetNameMethodAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlElementDecl(name=\"foo\"").append(CR);
+				sb.append("@XmlElementDecl(name=\"foo\")").append(CR);
 				sb.append("    JAXBElement<AnnotationTestType> createFoo(AnnotationTestType value) {return null}").append(CR);
 				sb.append(CR);
-				sb.append("    @XmlElementDecl(name=\"bar\"").append(CR);
+				sb.append("    @XmlElementDecl(name=\"bar\")").append(CR);
 				sb.append("    JAXBElement createBar(Object value) {return null}").append(CR);
 				sb.append(CR);
 			}
