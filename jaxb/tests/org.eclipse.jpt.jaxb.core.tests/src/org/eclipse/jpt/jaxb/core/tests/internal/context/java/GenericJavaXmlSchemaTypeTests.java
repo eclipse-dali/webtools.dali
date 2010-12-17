@@ -91,24 +91,18 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getDefaultNamespace());
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getNamespace());
-		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
+		assertNull(contextXmlSchemaType.getNamespace());
 		
-		contextXmlSchemaType.setSpecifiedNamespace("foo");
+		contextXmlSchemaType.setNamespace("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaTypeAnnotation.getNamespace());
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getDefaultNamespace());
 		assertEquals("foo", contextXmlSchemaType.getNamespace());
-		assertEquals("foo", contextXmlSchemaType.getSpecifiedNamespace());
 		
 		 //verify the xml schema type annotation is not removed when the namespace is set to null
-		contextXmlSchemaType.setSpecifiedNamespace(null);
+		contextXmlSchemaType.setNamespace(null);
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(schemaTypeAnnotation.getNamespace());
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getDefaultNamespace());
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getNamespace());
-		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
+		assertNull(contextXmlSchemaType.getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -117,9 +111,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getDefaultNamespace());
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getNamespace());
-		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
+		assertNull(contextXmlSchemaType.getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -128,9 +120,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 				GenericJavaXmlSchemaTypeTests.this.addXmlSchemaTypeMemberValuePair(declaration, JAXB.XML_SCHEMA_TYPE__NAMESPACE, "foo");
 			}
 		});
-		assertEquals(XmlSchemaType.DEFAULT_NAMESPACE, contextXmlSchemaType.getDefaultNamespace());
 		assertEquals("foo", contextXmlSchemaType.getNamespace());
-		assertEquals("foo", contextXmlSchemaType.getSpecifiedNamespace());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -146,24 +136,18 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getDefaultType());
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getType());
-		assertNull(contextXmlSchemaType.getSpecifiedType());
+		assertNull(contextXmlSchemaType.getType());
 		
-		contextXmlSchemaType.setSpecifiedType("foo");
+		contextXmlSchemaType.setType("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaTypeAnnotation.getType());
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getDefaultType());
 		assertEquals("foo", contextXmlSchemaType.getType());
-		assertEquals("foo", contextXmlSchemaType.getSpecifiedType());
 		
 		 //verify the xml schema type annotation is not removed when the type is set to null
-		contextXmlSchemaType.setSpecifiedType(null);
+		contextXmlSchemaType.setType(null);
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(schemaTypeAnnotation.getType());
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getDefaultType());
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getType());
-		assertNull(contextXmlSchemaType.getSpecifiedType());
+		assertNull(contextXmlSchemaType.getType());
 	}
 	
 	public void testUpdateType() throws Exception {
@@ -172,9 +156,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getDefaultType());
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getType());
-		assertNull(contextXmlSchemaType.getSpecifiedType());
+		assertNull(contextXmlSchemaType.getType());
 		
 		//add a type member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -183,9 +165,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 				GenericJavaXmlSchemaTypeTests.this.addXmlSchemaTypeTypeMemberValuePair(declaration, JAXB.XML_SCHEMA_TYPE__TYPE, "String");
 			}
 		});
-		assertEquals(XmlSchemaType.DEFAULT_TYPE, contextXmlSchemaType.getDefaultType());
 		assertEquals("String", contextXmlSchemaType.getType());
-		assertEquals("String", contextXmlSchemaType.getSpecifiedType());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

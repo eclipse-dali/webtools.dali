@@ -69,11 +69,11 @@ public class GenericJavaPersistentEnum
 
 	// ********** enum type **********
 
-	public String getSpecifiedEnumType() {
+	public String getEnumType() {
 		return this.enumType;
 	}
 
-	public void setSpecifiedEnumType(String enumType) {
+	public void setEnumType(String enumType) {
 		this.getXmlEnumAnnotation().setValue(enumType);
 		this.setEnumType_(enumType);	
 	}
@@ -81,15 +81,7 @@ public class GenericJavaPersistentEnum
 	protected void setEnumType_(String enumType) {
 		String old = this.enumType;
 		this.enumType = enumType;
-		this.firePropertyChanged(SPECIFIED_ENUM_TYPE_PROPERTY, old, enumType);
-	}
-
-	public String getDefaultEnumType() {
-		return DEFAULT_ENUM_TYPE;
-	}
-	
-	public String getEnumType() {
-		return this.getSpecifiedEnumType() != null ? this.getSpecifiedEnumType() : getDefaultEnumType();
+		this.firePropertyChanged(ENUM_TYPE_PROPERTY, old, enumType);
 	}
 
 	protected String getResourceEnumType() {

@@ -20,8 +20,6 @@ public class GenericJavaEnumConstant
 		implements JaxbEnumConstant {
 
 	final protected JavaResourceEnumConstant resourceEnumConstant;
-
-	protected String name;
 	
 	protected String specifiedValue;
 

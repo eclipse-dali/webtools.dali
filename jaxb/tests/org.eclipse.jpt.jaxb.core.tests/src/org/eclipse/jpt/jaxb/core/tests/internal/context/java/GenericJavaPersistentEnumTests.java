@@ -601,30 +601,22 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 	
-		assertNull(contextEnum.getSpecifiedEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getDefaultEnumType());
+		assertNull(contextEnum.getEnumType());
 		
-		contextEnum.setSpecifiedEnumType("Integer");
+		contextEnum.setEnumType("Integer");
 		XmlEnumAnnotation xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
 		assertEquals("Integer", xmlEnumAnnotation.getValue());
-		assertEquals("Integer", contextEnum.getSpecifiedEnumType());
 		assertEquals("Integer", contextEnum.getEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getDefaultEnumType());
 		
-		contextEnum.setSpecifiedEnumType(null);
+		contextEnum.setEnumType(null);
 		xmlEnumAnnotation = (XmlEnumAnnotation) resourceEnum.getAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
 		assertNull(xmlEnumAnnotation.getValue());
-		assertNull(contextEnum.getSpecifiedEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getDefaultEnumType());
+		assertNull(contextEnum.getEnumType());
 	
 		resourceEnum.addAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		resourceEnum.removeAnnotation(XmlEnumAnnotation.ANNOTATION_NAME);
 		contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
-		assertNull(contextEnum.getSpecifiedEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getEnumType());
-		assertEquals(JaxbPersistentEnum.DEFAULT_ENUM_TYPE, contextEnum.getDefaultEnumType());
+		assertNull(contextEnum.getEnumType());
 	}
 	
 	public void testUpdateEnumType() throws Exception {
@@ -633,7 +625,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 	
-		assertNull(contextEnum.getSpecifiedEnumType());
+		assertNull(contextEnum.getEnumType());
 		
 		
 		//add a factoryClass member value pair
@@ -643,7 +635,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.addXmlEnumTypeMemberValuePair(declaration, JAXB.XML_ENUM__VALUE, "String");
 			}
 		});
-		assertEquals("String", contextEnum.getSpecifiedEnumType());
+		assertEquals("String", contextEnum.getEnumType());
 
 		//remove the factoryClass member value pair
 		annotatedElement.edit(new Member.Editor() {
@@ -652,7 +644,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 				GenericJavaPersistentEnumTests.this.values(xmlEnumAnnotation).remove(0);
 			}
 		});
-		assertNull(contextEnum.getSpecifiedEnumType());
+		assertNull(contextEnum.getEnumType());
 	}
 
 	public void testUpdateEnumConstants() throws Exception {

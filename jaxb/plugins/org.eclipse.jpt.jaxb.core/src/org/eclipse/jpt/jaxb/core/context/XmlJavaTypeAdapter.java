@@ -40,12 +40,7 @@ public interface XmlJavaTypeAdapter
 	/**************** type *****************/
 
 	String getType();
-
-	String getSpecifiedType();
-	void setSpecifiedType(String type);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-
-	String getDefaultType();
-		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
+	void setType(String type);
+		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
 		String DEFAULT_TYPE = "javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter.DEFAULT"; //$NON-NLS-1$
 }

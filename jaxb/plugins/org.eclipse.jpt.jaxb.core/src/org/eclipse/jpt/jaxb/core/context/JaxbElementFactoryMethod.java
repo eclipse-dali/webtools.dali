@@ -29,6 +29,9 @@ public interface JaxbElementFactoryMethod
 
 	JavaResourceMethod getResourceMethod();
 
+	/**
+	 * Return the method name
+	 */
 	String getName();
 
 	/**

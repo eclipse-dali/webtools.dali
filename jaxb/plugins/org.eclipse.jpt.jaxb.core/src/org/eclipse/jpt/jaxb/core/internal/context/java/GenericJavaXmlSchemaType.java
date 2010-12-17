@@ -23,16 +23,16 @@ public class GenericJavaXmlSchemaType
 
 	protected String name;
 
-	protected String specifiedNamespace;
+	protected String namespace;
 
-	protected String specifiedType;
+	protected String type;
 
 	public GenericJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
 		super(parent);
 		this.xmlSchemaTypeAnnotation = xmlSchemaTypeAnnotation;
 		this.name = this.getResourceName();
-		this.specifiedNamespace = this.getResourceNamespace();
-		this.specifiedType = this.getResourceTypeString();
+		this.namespace = this.getResourceNamespace();
+		this.type = this.getResourceTypeString();
 	}
 
 
@@ -40,8 +40,8 @@ public class GenericJavaXmlSchemaType
 
 	public void synchronizeWithResourceModel() {
 		this.setName_(this.getResourceName());
-		this.setSpecifiedNamespace_(this.getResourceNamespace());
-		this.setSpecifiedType_(this.getResourceTypeString());
+		this.setNamespace_(this.getResourceNamespace());
+		this.setType_(this.getResourceTypeString());
 	}
 
 	public void update() {
@@ -79,26 +79,18 @@ public class GenericJavaXmlSchemaType
 	// ********** namespace **********
 
 	public String getNamespace() {
-		return (this.specifiedNamespace != null) ? this.specifiedNamespace : this.getDefaultNamespace();
+		return this.namespace;
 	}
 
-	public String getSpecifiedNamespace() {
-		return this.specifiedNamespace;
-	}
-
-	public void setSpecifiedNamespace(String location) {
+	public void setNamespace(String location) {
 		this.xmlSchemaTypeAnnotation.setNamespace(location);
-		this.setSpecifiedNamespace_(location);	
+		this.setNamespace_(location);	
 	}
 
-	protected void setSpecifiedNamespace_(String namespace) {
-		String old = this.specifiedNamespace;
-		this.specifiedNamespace = namespace;
-		this.firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, old, namespace);
-	}
-
-	public String getDefaultNamespace() {
-		return DEFAULT_NAMESPACE;
+	protected void setNamespace_(String namespace) {
+		String old = this.namespace;
+		this.namespace = namespace;
+		this.firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
 	}
 
 	protected String getResourceNamespace() {
@@ -108,26 +100,18 @@ public class GenericJavaXmlSchemaType
 	// ********** type **********
 
 	public String getType() {
-		return (this.specifiedType != null) ? this.specifiedType : this.getDefaultType();
+		return this.type;
 	}
 
-	public String getSpecifiedType() {
-		return this.specifiedType;
-	}
-
-	public void setSpecifiedType(String location) {
+	public void setType(String location) {
 		this.xmlSchemaTypeAnnotation.setType(location);
-		this.setSpecifiedType_(location);	
+		this.setType_(location);	
 	}
 
-	protected void setSpecifiedType_(String type) {
-		String old = this.specifiedType;
-		this.specifiedType = type;
-		this.firePropertyChanged(SPECIFIED_TYPE_PROPERTY, old, type);
-	}
-
-	public String getDefaultType() {
-		return DEFAULT_TYPE;
+	protected void setType_(String type) {
+		String old = this.type;
+		this.type = type;
+		this.firePropertyChanged(TYPE_PROPERTY, old, type);
 	}
 
 	protected String getResourceTypeString() {

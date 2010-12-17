@@ -29,10 +29,28 @@ public interface JaxbEnumConstant
 
 	JavaResourceEnumConstant getResourceEnumConstant();
 
+	/**
+	 * Return the name of the enum constant. This will not change, a
+	 * new JaxbEnumConstant will be built if the name changes.
+	 */
 	String getName();
 
+
+	/**
+	 * Return the enum constant's value, whether specified or default.
+	 */
 	String getValue();
+
+	/**
+	 * The default value will be the name of the enum constant.
+	 * It will be used if the XmlEnumValue annotation is null.
+	 * @see getName()
+	 */
 	String getDefaultValue();
+	
+	/**
+	 * Corresponds to the XmlEnumValue annotation 'value' element
+	 */
 	String getSpecifiedValue();
 	void setSpecifiedValue(String value);
 		String SPECIFIED_VALUE_PROPERTY = "specifiedValue"; //$NON-NLS-1$

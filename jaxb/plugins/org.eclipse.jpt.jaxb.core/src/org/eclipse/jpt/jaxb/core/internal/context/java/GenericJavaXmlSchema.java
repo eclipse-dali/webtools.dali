@@ -26,20 +26,20 @@ public class GenericJavaXmlSchema
 
 	protected String namespace;
 
-	protected String specifiedLocation;
+	protected String location;
 
-	protected XmlNsForm specifiedAttributeFormDefault;
+	protected XmlNsForm attributeFormDefault;
 
-	protected XmlNsForm specifiedElementFormDefault;
+	protected XmlNsForm elementFormDefault;
 
 	protected final XmlNsPrefixContainer xmlNsPrefixContainer;
 
 	public GenericJavaXmlSchema(JaxbPackageInfo parent) {
 		super(parent);
 		this.namespace = this.getResourceNamespace();
-		this.specifiedLocation = this.getResourceLocation();
-		this.specifiedAttributeFormDefault = this.getResourceAttributeFormDefault();
-		this.specifiedElementFormDefault = this.getResourceElementFormDefault();
+		this.location = this.getResourceLocation();
+		this.attributeFormDefault = this.getResourceAttributeFormDefault();
+		this.elementFormDefault = this.getResourceElementFormDefault();
 		this.xmlNsPrefixContainer = new XmlNsPrefixContainer();
 	}
 
@@ -48,9 +48,9 @@ public class GenericJavaXmlSchema
 
 	public void synchronizeWithResourceModel() {
 		this.setNamespace_(this.getResourceNamespace());
-		this.setSpecifiedLocation_(this.getResourceLocation());
-		this.setSpecifiedAttributeFormDefault_(this.getResourceAttributeFormDefault());
-		this.setSpecifiedElementFormDefault_(this.getResourceElementFormDefault());
+		this.setLocation_(this.getResourceLocation());
+		this.setAttributeFormDefault_(this.getResourceAttributeFormDefault());
+		this.setElementFormDefault_(this.getResourceElementFormDefault());
 		this.syncXmlNsPrefixes();
 	}
 
@@ -99,26 +99,18 @@ public class GenericJavaXmlSchema
 	// ********** location **********
 
 	public String getLocation() {
-		return (this.specifiedLocation != null) ? this.specifiedLocation : this.getDefaultLocation();
+		return this.location;
 	}
 
-	public String getSpecifiedLocation() {
-		return this.specifiedLocation;
-	}
-
-	public void setSpecifiedLocation(String location) {
+	public void setLocation(String location) {
 		this.getXmlSchemaAnnotation().setLocation(location);
-		this.setSpecifiedLocation_(location);	
+		this.setLocation_(location);	
 	}
 
-	protected void setSpecifiedLocation_(String location) {
-		String old = this.specifiedLocation;
-		this.specifiedLocation = location;
-		this.firePropertyChanged(SPECIFIED_LOCATION_PROPERTY, old, location);
-	}
-
-	public String getDefaultLocation() {
-		return DEFAULT_LOCATION;
+	protected void setLocation_(String location) {
+		String old = this.location;
+		this.location = location;
+		this.firePropertyChanged(LOCATION_PROPERTY, old, location);
 	}
 
 	protected String getResourceLocation() {
@@ -128,26 +120,18 @@ public class GenericJavaXmlSchema
 	// ********** attribute form default **********
 
 	public XmlNsForm getAttributeFormDefault() {
-		return (this.specifiedAttributeFormDefault != null) ? this.specifiedAttributeFormDefault : this.getDefaultAttributeFormDefault();
+		return this.attributeFormDefault;
 	}
 
-	public XmlNsForm getSpecifiedAttributeFormDefault() {
-		return this.specifiedAttributeFormDefault;
-	}
-
-	public void setSpecifiedAttributeFormDefault(XmlNsForm xmlNsForm) {
+	public void setAttributeFormDefault(XmlNsForm xmlNsForm) {
 		this.getXmlSchemaAnnotation().setAttributeFormDefault(XmlNsForm.toJavaResourceModel(xmlNsForm));
-		this.setSpecifiedAttributeFormDefault_(xmlNsForm);
+		this.setAttributeFormDefault_(xmlNsForm);
 	}
 
-	protected void setSpecifiedAttributeFormDefault_(XmlNsForm xmlNsForm) {
-		XmlNsForm old = this.specifiedAttributeFormDefault;
-		this.specifiedAttributeFormDefault = xmlNsForm;
-		this.firePropertyChanged(SPECIFIED_ATTRIBUTE_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
-	}
-
-	public XmlNsForm getDefaultAttributeFormDefault() {
-		return XmlNsForm.UNSET;
+	protected void setAttributeFormDefault_(XmlNsForm xmlNsForm) {
+		XmlNsForm old = this.attributeFormDefault;
+		this.attributeFormDefault = xmlNsForm;
+		this.firePropertyChanged(ATTRIBUTE_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
 	}
 
 	protected XmlNsForm getResourceAttributeFormDefault() {
@@ -157,26 +141,18 @@ public class GenericJavaXmlSchema
 	// ********** element form default **********
 
 	public XmlNsForm getElementFormDefault() {
-		return (this.specifiedElementFormDefault != null) ? this.specifiedElementFormDefault : this.getDefaultElementFormDefault();
+		return this.elementFormDefault;
 	}
 
-	public XmlNsForm getSpecifiedElementFormDefault() {
-		return this.specifiedElementFormDefault;
-	}
-
-	public void setSpecifiedElementFormDefault(XmlNsForm xmlNsForm) {
+	public void setElementFormDefault(XmlNsForm xmlNsForm) {
 		this.getXmlSchemaAnnotation().setElementFormDefault(XmlNsForm.toJavaResourceModel(xmlNsForm));
-		this.setSpecifiedElementFormDefault_(xmlNsForm);
+		this.setElementFormDefault_(xmlNsForm);
 	}
 
-	protected void setSpecifiedElementFormDefault_(XmlNsForm xmlNsForm) {
-		XmlNsForm old = this.specifiedElementFormDefault;
-		this.specifiedElementFormDefault = xmlNsForm;
-		this.firePropertyChanged(SPECIFIED_ELEMENT_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
-	}
-
-	public XmlNsForm getDefaultElementFormDefault() {
-		return XmlNsForm.UNSET;
+	protected void setElementFormDefault_(XmlNsForm xmlNsForm) {
+		XmlNsForm old = this.elementFormDefault;
+		this.elementFormDefault = xmlNsForm;
+		this.firePropertyChanged(ELEMENT_FROM_DEFAULT_PROPERTY, old, xmlNsForm);
 	}
 
 	protected XmlNsForm getResourceElementFormDefault() {

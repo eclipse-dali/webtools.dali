@@ -36,95 +36,30 @@ public interface XmlSchema
 		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 
 	/**
-	 * Return the location, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
+	 * Corresponds to the XmlSchema annotation location element
 	 */
 	String getLocation();
-
-	/**
-	 * Return the default location
-	 */
-	String getDefaultLocation();
-
-		/**
-		 * String constant associated with changes to the location
-		 */
-		String DEFAULT_LOCATION_PROPERTY = "defaultLocation"; //$NON-NLS-1$
-
+	void setLocation(String location);
+		String LOCATION_PROPERTY = "location"; //$NON-NLS-1$
 		String DEFAULT_LOCATION = "##generate"; //$NON-NLS-1$
 
-	String getSpecifiedLocation();
-
-	void setSpecifiedLocation(String location);
-
-		/**
-		 * String constant associated with changes to the location
-		 */
-		String SPECIFIED_LOCATION_PROPERTY = "specifiedLocation"; //$NON-NLS-1$
-
 
 	/**
-	 * Return the attribute form default, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
+	 * Corresponds to the XmlSchema annotation 'attributeFormDefault' element
 	 */
 	XmlNsForm getAttributeFormDefault();
-
-	/**
-	 * Return the default attribute form default, never null
-	 */
-	XmlNsForm getDefaultAttributeFormDefault();
-
-		/**
-		 * String constant associated with changes to the default attribute form default
-		 */
-		String DEFAULT_ATTRIBUTE_FORM_DEFAULT_PROPERTY = "defaultAttributeFormDefault"; //$NON-NLS-1$
-
-	/**
-	 * Return the specified attribute form default;
-	 */
-	XmlNsForm getSpecifiedAttributeFormDefault();
-
-	/**
-	 * Set the specified attribute form default.
-	 */
-	void setSpecifiedAttributeFormDefault(XmlNsForm newSpecifiedAttributeFormDefault);
-
-		/**
-		 * String constant associated with changes to the specified attribute form default
-		 */
-		String SPECIFIED_ATTRIBUTE_FROM_DEFAULT_PROPERTY = "specifiedAttributeFormDefault"; //$NON-NLS-1$
+	void setAttributeFormDefault(XmlNsForm newAttributeFormDefault);
+		String ATTRIBUTE_FROM_DEFAULT_PROPERTY = "atributeFormDefault"; //$NON-NLS-1$
+		XmlNsForm DEFAULT_ATTRIBUTE_FORM_DEFAULT = XmlNsForm.UNSET;
 
 
 	/**
-	 * Return the element form default, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
+	 * Corresponds to the XmlSchema annotation 'elementFormDefault' element
 	 */
 	XmlNsForm getElementFormDefault();
-
-	/**
-	 * Return the default element form default, never null
-	 */
-	XmlNsForm getDefaultElementFormDefault();
-
-		/**
-		 * String constant associated with changes to the default element form default
-		 */
-		String DEFAULT_ELEMENT_FORM_DEFAULT_PROPERTY = "defaultElementFormDefault"; //$NON-NLS-1$
-
-	/**
-	 * Return the specified element form default;
-	 */
-	XmlNsForm getSpecifiedElementFormDefault();
-
-	/**
-	 * Set the specified element form default.
-	 */
-	void setSpecifiedElementFormDefault(XmlNsForm newSpecifiedElementFormDefault);
-
-		/**
-		 * String constant associated with changes to the specified element form default
-		 */
-		String SPECIFIED_ELEMENT_FROM_DEFAULT_PROPERTY = "specifiedElementFormDefault"; //$NON-NLS-1$
+	void setElementFormDefault(XmlNsForm newElementFormDefault);
+		String ELEMENT_FROM_DEFAULT_PROPERTY = "elementFormDefault"; //$NON-NLS-1$
+		XmlNsForm DEFAULT_ELEMENT_FORM_DEFAULT = XmlNsForm.UNSET;
 
 
 	// ********** xml namespace prefixes **********

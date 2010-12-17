@@ -92,24 +92,18 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getType());
-		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getType());
 
-		contextXmlJavaTypeAdapter.setSpecifiedType("foo");
+		contextXmlJavaTypeAdapter.setType("foo");
 		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", javaTypeAdapterAnnotation.getType());
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getType());
-		assertEquals("foo", contextXmlJavaTypeAdapter.getSpecifiedType());
 
 		 //verify the xml schema type annotation is not removed when the type is set to null
-		contextXmlJavaTypeAdapter.setSpecifiedType(null);
+		contextXmlJavaTypeAdapter.setType(null);
 		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(javaTypeAdapterAnnotation.getType());
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getType());
-		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getType());
 	}
 
 	public void testUpdateType() throws Exception {
@@ -118,9 +112,7 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		XmlJavaTypeAdapter contextXmlJavaTypeAdapter = contextPackageInfo.getXmlJavaTypeAdapters().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getType());
-		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getType());
 
 		//add a type member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -129,9 +121,7 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 				GenericJavaXmlJavaTypeAdapterTests.this.addXmlJavaTypeAdapterTypeMemberValuePair(declaration, JAXB.XML_JAVA_TYPE_ADAPTER__TYPE, "String");
 			}
 		});
-		assertEquals(XmlJavaTypeAdapter.DEFAULT_TYPE, contextXmlJavaTypeAdapter.getDefaultType());
 		assertEquals("String", contextXmlJavaTypeAdapter.getType());
-		assertEquals("String", contextXmlJavaTypeAdapter.getSpecifiedType());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

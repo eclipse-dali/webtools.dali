@@ -36,21 +36,12 @@ public interface JaxbPersistentEnum
 	/**************** enum type *****************/
 
 	/**
-	 * Return the enum type, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
-	 */
-	String getEnumType();
-	/**
-	 * Return the default enum type which is always java.lang.String
-	 */
-	String getDefaultEnumType();
-		String DEFAULT_ENUM_TYPE = "java.lang.String"; //$NON-NLS-1$
-	/**
 	 * enum type corresponds to the XmlEnum annotation value element
 	 */
-	String getSpecifiedEnumType();
-	void setSpecifiedEnumType(String specifiedEnumType);
-		String SPECIFIED_ENUM_TYPE_PROPERTY = "specifiedEnumType"; //$NON-NLS-1$
+	String getEnumType();
+	void setEnumType(String enumType);
+	String ENUM_TYPE_PROPERTY = "enumType"; //$NON-NLS-1$
+		String DEFAULT_ENUM_TYPE = "java.lang.String"; //$NON-NLS-1$
 
 
 	/********** enum constants **********/

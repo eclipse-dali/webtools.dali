@@ -41,29 +41,21 @@ public interface XmlSchemaType
 	/**************** namespace *****************/
 
 	/**
-	 * Return the namespace, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
+	 * Corresponds to the XmlSchemaType annotation 'namespace' element
 	 */
 	String getNamespace();
-
-	String getSpecifiedNamespace();
-	void setSpecifiedNamespace(String specifiedNamespace);
-		String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
-
-	String getDefaultNamespace();
-		String DEFAULT_NAMEPSACE_PROPERTY = "defaultNamespace"; //$NON-NLS-1$
+	void setNamespace(String namespace);
+		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 		String DEFAULT_NAMESPACE = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 
 
 	/**************** type *****************/
 
+	/**
+	 * Corresponds to the XmlSchemaType annotation 'type' element
+	 */
 	String getType();
-
-	String getSpecifiedType();
-	void setSpecifiedType(String type);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-
-	String getDefaultType();
-		String DEFAULT_TYPE_PROPERTY = "defaultType"; //$NON-NLS-1$
+	void setType(String type);
+		String TYPE_PROPERTY = "type"; //$NON-NLS-1$
 		String DEFAULT_TYPE = "javax.xml.bind.annotation.XmlSchemaType.DEFAULT"; //$NON-NLS-1$
 }

@@ -23,13 +23,13 @@ public class GenericJavaXmlJavaTypeAdapter
 
 	protected String value;
 
-	protected String specifiedType;
+	protected String type;
 
 	public GenericJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resource) {
 		super(parent);
 		this.resourceXmlJavaTypeAdapter = resource;
 		this.value = this.getResourceValue();
-		this.specifiedType = this.getResourceTypeString();
+		this.type = this.getResourceTypeString();
 	}
 
 
@@ -37,7 +37,7 @@ public class GenericJavaXmlJavaTypeAdapter
 
 	public void synchronizeWithResourceModel() {
 		this.setValue_(this.getResourceValue());
-		this.setSpecifiedType_(this.getResourceTypeString());
+		this.setType_(this.getResourceTypeString());
 	}
 
 	public void update() {
@@ -76,26 +76,18 @@ public class GenericJavaXmlJavaTypeAdapter
 	// ********** type **********
 
 	public String getType() {
-		return (this.specifiedType != null) ? this.specifiedType : this.getDefaultType();
+		return this.type;
 	}
 
-	public String getSpecifiedType() {
-		return this.specifiedType;
-	}
-
-	public void setSpecifiedType(String location) {
+	public void setType(String location) {
 		this.resourceXmlJavaTypeAdapter.setType(location);
-		this.setSpecifiedType_(location);	
+		this.setType_(location);	
 	}
 
-	protected void setSpecifiedType_(String type) {
-		String old = this.specifiedType;
-		this.specifiedType = type;
-		this.firePropertyChanged(SPECIFIED_TYPE_PROPERTY, old, type);
-	}
-
-	public String getDefaultType() {
-		return DEFAULT_TYPE;
+	protected void setType_(String type) {
+		String old = this.type;
+		this.type = type;
+		this.firePropertyChanged(TYPE_PROPERTY, old, type);
 	}
 
 	protected String getResourceTypeString() {
