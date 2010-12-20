@@ -226,6 +226,21 @@
 			</enabledWhen>
 		</page>
 		
+		<page
+			id="org.eclipse.jpt.jaxb.ui.jaxbSchemasProperties"
+			name="%jaxbSchemas"
+			category="org.eclipse.jpt.jaxb.ui.jaxbProjectProperties"
+			class="org.eclipse.jpt.jaxb.ui.internal.properties.JaxbSchemasPropertiesPage">
+			<enabledWhen>
+				<adapt type="org.eclipse.core.resources.IProject">
+					<test 
+						forcePluginActivation="true"
+						property="org.eclipse.wst.common.project.facet.core.projectFacet"
+						value="jpt.jaxb"/>
+				</adapt>
+			</enabledWhen>
+		</page>
+		
 		<!--
 		<page
 			id="org.eclipse.jpt.ui.jaxbProblemSeveritiesProperties"
