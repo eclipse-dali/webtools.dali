@@ -31,8 +31,7 @@ import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.SimpleJaxbProjectConfig;
-import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
@@ -114,9 +113,9 @@ import org.osgi.framework.BundleContext;
  */
 //TODO Still need to look at faceted project listener for facet uninstall
 class GenericJaxbProjectManager
-	extends AbstractModel
-	implements JaxbProjectManager
-{
+		extends AbstractModel
+		implements JaxbProjectManager {
+	
 	/**
 	 * All the JAXB projects in the workspace.
 	 */
@@ -370,37 +369,38 @@ class GenericJaxbProjectManager
 	 * return null if we have any problems...
 	 */
 	private JaxbProject buildJaxbProject(JaxbProject.Config config) {
-		JaxbPlatform jaxbPlatform = config.getJaxbPlatform();
-		if (jaxbPlatform == null) {
+		JaxbPlatformDefinition platformDefinition = config.getPlatformDefinition();
+		if (platformDefinition == null) {
 			return null;
 		}
-		JaxbProject jaxbProject = this.buildJaxbProject(jaxbPlatform, config);
+		JaxbProject jaxbProject = this.buildJaxbProject(platformDefinition, config);
 		if (jaxbProject == null) {
 			return null;
 		}
 //		jaxbProject.setUpdateSynchronizer(new CallbackAsynchronousSynchronizer());
 		return jaxbProject;
 	}
-
+	
 	/**
 	 * return null if we have any problems...
 	 */
-	private JaxbProject buildJaxbProject(JaxbPlatform jaxbPlatform, JaxbProject.Config config) {
+	private JaxbProject buildJaxbProject(JaxbPlatformDefinition platformDefinition, JaxbProject.Config config) {
 		try {
-			return jaxbPlatform.getFactory().buildJaxbProject(config);
-		} catch (RuntimeException ex) {
+			return platformDefinition.getFactory().buildJaxbProject(config);
+		}
+		catch (RuntimeException ex) {
 			JptJaxbCorePlugin.log(ex);
 			return null;
 		}
 	}
-
+	
 	private JaxbProject.Config buildJaxbProjectConfig(IProject project) {
 		SimpleJaxbProjectConfig config = new SimpleJaxbProjectConfig();
 		config.setProject(project);
-		config.setJaxbPlatform(new JaxbPlatformImpl(JptJaxbCorePlugin.getJaxbPlatformManager().buildJaxbPlatformDefinition(project)));
+		config.setPlatformDefinition(JptJaxbCorePlugin.getJaxbPlatformManager().buildJaxbPlatformDefinition(project));
 		return config;
 	}
-
+	
 	/* private */ void removeJaxbProject(JaxbProject jaxbProject) {
 		// figure out exactly when JAXB projects are removed
 		dumpStackTrace("remove: ", jaxbProject); //$NON-NLS-1$

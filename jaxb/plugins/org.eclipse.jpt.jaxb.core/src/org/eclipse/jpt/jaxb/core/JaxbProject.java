@@ -18,6 +18,7 @@ import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -72,7 +73,12 @@ public interface JaxbProject
 	 * and its contents.
 	 */
 	JaxbPlatform getJaxbPlatform();
-
+	
+	/**
+	 * Return the schema library used for validating and user assist
+	 */
+	SchemaLibrary getSchemaLibrary();
+	
 	/**
 	 * Return the root of the JAXB project's context model.
 	 */
@@ -346,17 +352,15 @@ public interface JaxbProject
 	 * The settings used to construct a JAXB project.
 	 */
 	interface Config {
-
+		
 		/**
 		 * Return the Eclipse project to be associated with the new JAXB project.
 		 */
 		IProject getProject();
-
+		
 		/**
-		 * Return the JAXB platform to be associated with the new JAXB project.
+		 * Return the JAXB platform definition to be associated with the new JAXB project.
 		 */
-		JaxbPlatform getJaxbPlatform();
-
+		JaxbPlatformDefinition getPlatformDefinition();
 	}
-
 }

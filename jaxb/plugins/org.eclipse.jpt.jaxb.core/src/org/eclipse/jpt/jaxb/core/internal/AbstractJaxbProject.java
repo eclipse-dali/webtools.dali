@@ -39,7 +39,9 @@ import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
@@ -90,6 +92,11 @@ public abstract class AbstractJaxbProject
 	 * and all its contents.
 	 */
 	protected final JaxbPlatform jaxbPlatform;
+	
+	/**
+	 * The library of schemas associated with this project
+	 */
+	protected final SchemaLibraryImpl schemaLibrary;
 	
 	/**
 	 * The JAXB files associated with the JAXB project:
@@ -162,11 +169,13 @@ public abstract class AbstractJaxbProject
 
 	protected AbstractJaxbProject(JaxbProject.Config config) {
 		super(null);  // JPA project is the root of the containment tree
-		if ((config.getProject() == null) || (config.getJaxbPlatform() == null)) {
+		if ((config.getProject() == null) || (config.getPlatformDefinition() == null)) {
 			throw new NullPointerException();
 		}
 		this.project = config.getProject();
-		this.jaxbPlatform = config.getJaxbPlatform();
+		this.jaxbPlatform = new JaxbPlatformImpl(config.getPlatformDefinition());
+		
+		this.schemaLibrary = new SchemaLibraryImpl(this);
 		
 		this.modifySharedDocumentCommandExecutor = this.buildModifySharedDocumentCommandExecutor();
 
@@ -291,6 +300,10 @@ public abstract class AbstractJaxbProject
 	@Override
 	public JaxbPlatform getJaxbPlatform() {
 		return this.jaxbPlatform;
+	}
+	
+	public SchemaLibrary getSchemaLibrary() {
+		return this.schemaLibrary;
 	}
 
 	@SuppressWarnings("unchecked")

@@ -11,39 +11,43 @@ package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
-import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JAXB project config.
  */
-public class SimpleJaxbProjectConfig implements JaxbProject.Config {
-	protected IProject project;
-	protected JaxbPlatform jaxbPlatform;
-
+public class SimpleJaxbProjectConfig
+		implements JaxbProject.Config {
+	
+	private IProject project;
+	
+	private JaxbPlatformDefinition platformDefinition;
+	
+	
 	public SimpleJaxbProjectConfig() {
 		super();
 	}
-
+	
+	
 	public IProject getProject() {
 		return this.project;
 	}
-
+	
 	public void setProject(IProject project) {
 		this.project = project;
 	}
-
-	public JaxbPlatform getJaxbPlatform() {
-		return this.jaxbPlatform;
+	
+	public JaxbPlatformDefinition getPlatformDefinition() {
+		return this.platformDefinition;
 	}
-
-	public void setJaxbPlatform(JaxbPlatform jaxbPlatform) {
-		this.jaxbPlatform = jaxbPlatform;
+	
+	public void setPlatformDefinition(JaxbPlatformDefinition platformDefinition) {
+		this.platformDefinition = platformDefinition;
 	}
-
+	
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.project.getName());
 	}
-
 }

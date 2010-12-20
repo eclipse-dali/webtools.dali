@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -58,6 +60,27 @@ public class JptJaxbCorePlugin
 	 * The key for storing the platform id
 	 */
 	public static final String PLATFORM_ID_PREF_KEY = "platform-id";  //$NON-NLS-1$
+	
+	/**
+	 * The node for storing a JAXB project's schemas in the project's preferences.
+	 */
+	public static final String SCHEMAS_PREF_NODE = "schemas";  //$NON-NLS-1$
+	
+	/**
+	 * The node prefix for storing a particular JAXB project schema in the project's preferences.
+	 * Specific schema nodes are followed by integers ("schema-1", "schema-2", etc.)
+	 */
+	public static final String SCHEMA_PREF_NODE_PREFIX = "schema-";  //$NON-NLS-1$
+	
+	/**
+	 * The key for storing a schema namespace in the project's preferences
+	 */
+	public static final String SCHEMA_NAMESPACE_PREF_KEY = "namespace";  //$NON-NLS-1$
+	
+	/**
+	 * The key for storing a schema location (such as a uri or catalog key) in the project's preferences
+	 */
+	public static final String SCHEMA_LOCATION_PREF_KEY = "location";  //$NON-NLS-1$
 	
 	/**
 	 * The key for storing the default JAXB platform ID for JAXB 2.1 in the workspace preferences.
@@ -232,6 +255,64 @@ public class JptJaxbCorePlugin
 		}
 		catch (BackingStoreException bse) {
 			log(bse);
+		}
+	}
+	
+	public static Map<String, String> getSchemaLocationMap(IProject project) {
+		Map<String, String> schemaLocationMap = new HashMap<String, String>();
+		Preferences prefs = getProjectPreferences(project);
+		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
+		try {
+			boolean checkAnotherNode = true;
+			for (int i = 1; checkAnotherNode; i++ ) {
+				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
+				if (schemasPrefs.nodeExists(nodeName)) {
+					Preferences schemaPrefs = schemasPrefs.node(nodeName);
+					String namespace = schemaPrefs.get(SCHEMA_NAMESPACE_PREF_KEY, null);
+					String location = schemaPrefs.get(SCHEMA_LOCATION_PREF_KEY, null);
+					if (namespace != null) {
+						schemaLocationMap.put(namespace, location);
+					}
+				}
+				else {
+					checkAnotherNode = false;
+				}
+			}
+		}
+		catch (BackingStoreException bse) {
+			// this means that the prefs are corrupted, in which case reading anything is unlikely
+			JptJaxbCorePlugin.log(bse);
+		}
+		return schemaLocationMap;
+	}
+	
+	public static void setSchemaLocationMap(IProject project, Map<String, String> schemaLocationMap) {
+		Preferences prefs = getProjectPreferences(project);
+		Preferences schemasPrefs = prefs.node(SCHEMAS_PREF_NODE);
+		try {
+			int i = 1;
+			for (String namespace : schemaLocationMap.keySet()) {
+				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
+				Preferences schemaPref = schemasPrefs.node(nodeName);
+				schemaPref.put(SCHEMA_NAMESPACE_PREF_KEY, namespace);
+				schemaPref.put(SCHEMA_LOCATION_PREF_KEY, schemaLocationMap.get(namespace));
+				i ++;
+			}
+			boolean checkAnotherNode = true;
+			for ( ; checkAnotherNode; i++ ) {
+				String nodeName = SCHEMA_PREF_NODE_PREFIX + String.valueOf(i);
+				if (schemasPrefs.nodeExists(nodeName)) {
+					schemasPrefs.node(nodeName).removeNode();
+				}
+				else {
+					checkAnotherNode = false;
+				}
+			}
+			schemasPrefs.flush();
+		}
+		catch (BackingStoreException bse) {
+			// this means that the prefs are corrupted, in which case reading anything is unlikely
+			JptJaxbCorePlugin.log(bse);
 		}
 	}
 	
