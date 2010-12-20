@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,11 +16,11 @@ import java.util.EventListener;
 import java.util.EventObject;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jpt.ui.internal.listeners.SWTCollectionChangeListenerWrapper;
 import org.eclipse.jpt.ui.internal.listeners.SWTListChangeListenerWrapper;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
@@ -39,6 +39,7 @@ import org.eclipse.jpt.utility.model.listener.ListChangeListener;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
@@ -130,9 +131,9 @@ public class TableModelAdapter<E> {
 
 
 	// ********** static methods **********
-
+	
 	/**
-	 * Adapt the specified model list and selection to the specified table.
+	 * Adapt the specified list model and selection to the specified table.
 	 * Use the specified string converter to convert the model items to strings
 	 * to be displayed in the table.
 	 */
@@ -141,18 +142,51 @@ public class TableModelAdapter<E> {
 			PropertyValueModel<T> selectedItemHolder,
 			Table table,
 			ColumnAdapter<T> columnAdapter,
-			ITableLabelProvider labelProvider)
-	{
+			ITableLabelProvider labelProvider) {
+		
 		return new TableModelAdapter<T>(
 			listHolder,
 			new PropertyCollectionValueModelAdapter<T>(selectedItemHolder),
 			table,
 			columnAdapter,
-			labelProvider
-		);
+			labelProvider);
 	}
-
-
+	
+	/**
+	 * Adapt the specified list model and selection to the specified table.
+	 * The specified selection model will be kept in sync with the table.
+	 * Use the specified string converter to convert the model items to strings
+	 * to be displayed in the table.
+	 */
+	public static <T> TableModelAdapter<T> adapt(
+			ListValueModel<T> listHolder,
+			WritableCollectionValueModel<T> selectionModel,
+			Table table,
+			ColumnAdapter<T> columnAdapter,
+			ITableLabelProvider labelProvider) {
+		
+		TableModelAdapter adapter = 
+				new TableModelAdapter<T>(
+					listHolder,
+					selectionModel,
+					table,
+					columnAdapter,
+					labelProvider);
+		adapter.addSelectionChangeListener(buildSyncListener(selectionModel));
+		return adapter;
+	}
+	
+	private static <T> SelectionChangeListener buildSyncListener(
+				final WritableCollectionValueModel<T> selectionModel) {
+		
+		return new SelectionChangeListener() {
+			public void selectionChanged(SelectionChangeEvent event) {
+				selectionModel.setValues(CollectionTools.iterable(event.selection()));
+			}
+		};
+	}
+	
+	
 	// ********** constructors **********
 
 	/**
