@@ -59,25 +59,29 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
-	
-		assertNull(contextXmlSchema.getNamespace());
 		
-		contextXmlSchema.setNamespace("foo");
+		assertEquals("", contextXmlSchema.getNamespace());
+		assertNull(contextXmlSchema.getSpecifiedNamespace());
+		
+		contextXmlSchema.setSpecifiedNamespace("foo");
 		XmlSchemaAnnotation schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaAnnotation.getNamespace());
 		assertEquals("foo", contextXmlSchema.getNamespace());
+		assertEquals("foo", contextXmlSchema.getSpecifiedNamespace());
 		
 		 //set another annotation so the context model is not blown away by removing the XmlSchema annotation
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
-		contextXmlSchema.setNamespace(null);
+		contextXmlSchema.setSpecifiedNamespace(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertNull(schemaAnnotation);
-		assertNull(contextXmlSchema.getNamespace());
+		assertEquals("", contextXmlSchema.getNamespace());
+		assertNull(contextXmlSchema.getSpecifiedNamespace());
 		
 		//set namespace again, this time starting with no XmlSchema annotation
-		contextXmlSchema.setNamespace("foo");
+		contextXmlSchema.setSpecifiedNamespace("foo");
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaAnnotation.getNamespace());
+		assertEquals("foo", contextXmlSchema.getSpecifiedNamespace());
 		assertEquals("foo", contextXmlSchema.getNamespace());
 	}
 	
@@ -86,8 +90,9 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		JaxbPackageInfo contextPackageInfo = CollectionTools.get(getContextRoot().getPackages(), 0).getPackageInfo();
 		XmlSchema contextXmlSchema = contextPackageInfo.getXmlSchema();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
-
-		assertNull(contextXmlSchema.getNamespace());
+		
+		assertEquals("", contextXmlSchema.getNamespace());
+		assertNull(contextXmlSchema.getSpecifiedNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -97,14 +102,16 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 			}
 		});
 		assertEquals("foo", contextXmlSchema.getNamespace());
-
+		assertEquals("foo", contextXmlSchema.getSpecifiedNamespace());
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlSchemaTests.this.removeXmlSchemaAnnotation(declaration);
 			}
 		});
 		contextXmlSchema = contextPackageInfo.getXmlSchema();
-		assertNull(contextXmlSchema.getNamespace());
+		assertEquals("", contextXmlSchema.getNamespace());
+		assertNull(contextXmlSchema.getSpecifiedNamespace());
 	}
 	
 	public void testModifyLocation() throws Exception {

@@ -24,17 +24,29 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlSchema
-	extends 
-		JaxbContextNode
-{
+		extends JaxbContextNode {
+	
+	/**
+	 * Return the specified namespace or "" (default value)
+	 */
 	String getNamespace();
-
-	void setNamespace(String namespace);
-		/**
-		 * String constant associated with changes to the namespace
-		 */
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
+	
+	/**
+	 * Return the specified namespace, null if it is not specified
+	 */
+	String getSpecifiedNamespace();
+	
+	/**
+	 * Set the namespace, null to unspecify
+	 */
+	void setSpecifiedNamespace(String namespace);
+	
+	/**
+	 * String constant associated with changes to the specified namespace
+	 */
+	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
+	
+	
 	/**
 	 * Corresponds to the XmlSchema annotation location element
 	 */
