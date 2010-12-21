@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import java.util.List;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+
 /**
  * 
  * <p>
@@ -44,4 +48,12 @@ public interface JaxbPackage
 	 *  - object factory
 	 */
 	boolean isEmpty();
+	
+	
+	// **************** validation ********************************************
+	
+	/**
+	 * Add validation messages to the specified list.
+	 */
+	public void validate(List<IMessage> messages, IReporter reporter);
 }

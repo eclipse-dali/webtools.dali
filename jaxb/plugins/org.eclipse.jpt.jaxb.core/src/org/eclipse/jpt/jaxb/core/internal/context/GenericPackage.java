@@ -9,10 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
+import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericPackage
 		extends AbstractJaxbContextNode
@@ -83,5 +88,26 @@ public class GenericPackage
 	
 	public boolean isEmpty() {
 		return getPackageInfo() == null;
+	}
+	
+	
+	// **************** misc **************************************************
+	
+	public String getNamespace() {
+		return (getPackageInfo() == null) ? "" : getPackageInfo().getXmlSchema().getNamespace();
+	}
+	
+	
+	// **************** validation ********************************************
+	
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (! getJaxbProject().getSchemaLibrary().getSchemaLocations().containsKey(getNamespace())) {
+			messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.NORMAL_SEVERITY,
+						JaxbValidationMessages.PACKAGE_NO_SCHEMA_FOR_NAMESPACE,
+						new String[] {getNamespace(), this.name},
+						this));
+		}
 	}
 }

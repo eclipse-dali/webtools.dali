@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.eclipse.core.resources.IProject;
@@ -34,6 +35,8 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * the context model root
@@ -494,4 +497,13 @@ public class GenericContextRoot
 		// forward to JAXB project
 		this.jaxbProject.stateChanged();
     }
+	
+	
+	// **************** validation ********************************************
+	
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		for (JaxbPackage pkg : this.packages.values()) {
+			pkg.validate(messages, reporter);
+		}
+	}
 }

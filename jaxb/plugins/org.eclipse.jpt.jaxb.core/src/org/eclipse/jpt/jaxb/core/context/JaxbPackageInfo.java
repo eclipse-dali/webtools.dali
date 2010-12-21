@@ -25,12 +25,8 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JaxbPackageInfo
-	extends 
-		JaxbContextNode,
-		XmlAccessTypeHolder,
-		XmlAccessOrderHolder
-{
-
+		extends JaxbContextNode, XmlAccessTypeHolder, XmlAccessOrderHolder {
+	
 	JavaResourcePackage getResourcePackage();
 
 

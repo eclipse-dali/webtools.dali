@@ -11,8 +11,13 @@ package org.eclipse.jpt.jaxb.core.internal.validation;
 
 @SuppressWarnings("nls")
 public interface JaxbValidationMessages {
-
+	
+	// bundle name
 	public static final String BUNDLE_NAME = "jaxb_validation";
 	
-	public static final String NO_JAXB_PROJECT = "NO_JAXB_PROJECT";
+	// validation on project
+	public static final String NO_JAXB_PROJECT = "NO_JAXB_PROJECT"; 
+	
+	// validation on package
+	public static final String PACKAGE_NO_SCHEMA_FOR_NAMESPACE = "PACKAGE_NO_SCHEMA_FOR_NAMESPACE";
 }

@@ -9,6 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import java.util.List;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+
 /**
  * Root of the JAXB context model.
  * <p>
@@ -92,11 +96,10 @@ public interface JaxbContextRoot
 	Iterable<JaxbRegistry> getRegistries(JaxbPackage jaxbPackage);
 	
 	
-//	// ********** validation **********
-//
-//	/**
-//	 * Add validation messages to the specified list.
-//	 */
-//	public void validate(List<IMessage> messages, IReporter reporter);
-
+	// **************** validation ********************************************
+	
+	/**
+	 * Add validation messages to the specified list.
+	 */
+	public void validate(List<IMessage> messages, IReporter reporter);
 }

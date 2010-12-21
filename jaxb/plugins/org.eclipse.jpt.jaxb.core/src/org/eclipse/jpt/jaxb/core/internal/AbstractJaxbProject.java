@@ -1085,7 +1085,7 @@ public abstract class AbstractJaxbProject
 			throw new ValidationCancelledException();
 		}
 		//validateLibraryProvider(messages);
-		//this.rootContextNode.validate(messages, reporter);
+		this.contextRoot.validate(messages, reporter);
 	}
 	
 //	protected void validateLibraryProvider(List<IMessage> messages) {
