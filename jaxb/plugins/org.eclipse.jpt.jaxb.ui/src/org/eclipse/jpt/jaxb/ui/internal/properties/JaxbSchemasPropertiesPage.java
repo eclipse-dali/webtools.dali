@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.dialogs.TrayDialog;
@@ -672,6 +673,8 @@ public class JaxbSchemasPropertiesPage
 		
 		private Schema currentSchema;
 		
+		private String defaultMessage;
+		
 		private String namespace;
 		
 		private final WritablePropertyValueModel<String> location;
@@ -689,10 +692,12 @@ public class JaxbSchemasPropertiesPage
 			
 			this.mode = (this.currentSchema == null) ? Mode.ADD : Mode.EDIT;
 			if (this.mode == Mode.ADD) {
+				this.defaultMessage = JptJaxbUiMessages.SchemasPage_addSchemaMessage;
 				this.namespace = "";
 				this.location.setValue("");
 			}
 			else {
+				this.defaultMessage = JptJaxbUiMessages.SchemasPage_editSchemaMessage;
 				this.namespace = currentSchema.getNamespace();
 				this.location.setValue(currentSchema.getLocation());
 			}
@@ -714,12 +719,11 @@ public class JaxbSchemasPropertiesPage
 		protected Control createDialogArea(Composite parent) {
 			Composite dialogArea = (Composite) super.createDialogArea(parent);
 			
+			setMessage(this.defaultMessage);
 			if (this.mode == Mode.ADD) {
-				setMessage(JptJaxbUiMessages.SchemasPage_addSchemaMessage);
 				setTitle(JptJaxbUiMessages.SchemasPage_addSchemaTitle);
 			}
 			else {
-				setMessage(JptJaxbUiMessages.SchemasPage_editSchemaMessage);
 				setTitle(JptJaxbUiMessages.SchemasPage_editSchemaTitle);
 			}
 			
@@ -808,7 +812,7 @@ public class JaxbSchemasPropertiesPage
 		
 		private void validate() {
 			if (StringTools.stringIsEmpty(this.namespace)) {
-				setErrorMessage(JptJaxbUiMessages.SchemasPage_noNamespaceMessage);
+				setMessage(JptJaxbUiMessages.SchemasPage_noNamespaceMessage, IMessageProvider.INFORMATION);
 			}
 			else if (isDuplicateNamespace()) {
 				setErrorMessage(JptJaxbUiMessages.SchemasPage_duplicateNamespaceMessage);
@@ -818,6 +822,7 @@ public class JaxbSchemasPropertiesPage
 			}
 			else {
 				setErrorMessage(null);
+				setMessage(this.defaultMessage);
 			}
 			getButton(IDialogConstants.OK_ID).setEnabled(getErrorMessage() == null);
 		}
