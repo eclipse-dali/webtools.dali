@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 
 /**
@@ -47,11 +47,11 @@ public final class SourceXmlAttributeAnnotation
 
 
 	// ********** constructors **********
-	public SourceXmlAttributeAnnotation(JavaResourceField parent, Attribute attribute) {
+	public SourceXmlAttributeAnnotation(JavaResourceMember parent, Attribute attribute) {
 		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(attribute, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	public SourceXmlAttributeAnnotation(JavaResourceField parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public SourceXmlAttributeAnnotation(JavaResourceMember parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, attribute, daa, annotationAdapter);
 		this.nameDeclarationAdapter = this.buildNameAdapter(daa);
 		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);

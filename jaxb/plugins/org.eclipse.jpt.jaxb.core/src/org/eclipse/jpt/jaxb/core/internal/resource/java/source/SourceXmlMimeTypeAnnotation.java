@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlMimeTypeAnnotation;
 
 /**
@@ -35,7 +35,7 @@ public final class SourceXmlMimeTypeAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
-	public SourceXmlMimeTypeAnnotation(JavaResourceField parent, Attribute attribute) {
+	public SourceXmlMimeTypeAnnotation(JavaResourceMember parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 	}

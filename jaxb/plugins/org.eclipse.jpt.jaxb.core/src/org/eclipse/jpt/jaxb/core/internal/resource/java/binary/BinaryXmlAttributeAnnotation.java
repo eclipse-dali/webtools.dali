@@ -13,7 +13,7 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 
 /**
@@ -28,7 +28,7 @@ public final class BinaryXmlAttributeAnnotation
 	private Boolean required;
 
 
-	public BinaryXmlAttributeAnnotation(JavaResourceField parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlAttributeAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.name = this.buildName();
 		this.namespace = this.buildNamespace();

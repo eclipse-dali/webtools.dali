@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlAnyAttri
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlAnyAttributeAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlAnyAttributeAnnotation((JavaResourceField) parent, (Attribute) annotatedElement);
+		return new SourceXmlAnyAttributeAnnotation((JavaResourceMember) parent, (Attribute) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlAnyAttributeAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlAnyAttributeAnnotation((JavaResourceField) parent, jdtAnnotation);
+		return new BinaryXmlAnyAttributeAnnotation((JavaResourceMember) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
 
 /**
@@ -21,7 +21,7 @@ public final class BinaryXmlValueAnnotation
 	implements XmlValueAnnotation
 {
 
-	public BinaryXmlValueAnnotation(JavaResourceField parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlValueAnnotation(JavaResourceMember parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 

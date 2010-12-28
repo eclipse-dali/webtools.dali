@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyElementAnnotation;
 
 /**
@@ -47,11 +47,11 @@ public final class SourceXmlAnyElementAnnotation
 
 
 	// ********** constructors **********
-	public SourceXmlAnyElementAnnotation(JavaResourceField parent, Attribute attribute) {
+	public SourceXmlAnyElementAnnotation(JavaResourceMember parent, Attribute attribute) {
 		this(parent, attribute, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(attribute, DECLARATION_ANNOTATION_ADAPTER));
 	}
 
-	public SourceXmlAnyElementAnnotation(JavaResourceField parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
+	public SourceXmlAnyElementAnnotation(JavaResourceMember parent, Attribute attribute, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, attribute, daa, annotationAdapter);
 		this.laxDeclarationAdapter = this.buildLaxAdapter(daa);
 		this.laxAdapter = this.buildShortCircuitBooleanElementAdapter(this.laxDeclarationAdapter);

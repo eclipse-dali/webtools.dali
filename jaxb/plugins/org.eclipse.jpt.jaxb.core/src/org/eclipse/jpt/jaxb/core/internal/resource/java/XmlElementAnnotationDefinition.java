@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlElementA
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
@@ -46,7 +46,7 @@ public final class XmlElementAnnotationDefinition
 	}
 
 	public NestableAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement, int index) {
-		return SourceXmlElementAnnotation.buildSourceXmlElementAnnotation((JavaResourceField) parent, (Attribute) annotatedElement, index);
+		return SourceXmlElementAnnotation.buildSourceXmlElementAnnotation((JavaResourceMember) parent, (Attribute) annotatedElement, index);
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

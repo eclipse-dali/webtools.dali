@@ -17,7 +17,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlIDREFAnn
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 
 /**
@@ -44,7 +44,7 @@ public final class XmlIDREFAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlIDREFAnnotation((JavaResourceField) parent, (Attribute) annotatedElement);
+		return new SourceXmlIDREFAnnotation((JavaResourceMember) parent, (Attribute) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlIDREFAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlIDREFAnnotation((JavaResourceField) parent, jdtAnnotation);
+		return new BinaryXmlIDREFAnnotation((JavaResourceMember) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {
