@@ -55,7 +55,7 @@ public class GenericJavaXmlSchema
 	}
 	
 	public void update() {
-		this.updateNodes(getXmlNsPrefixes());
+		this.updateXmlNsPrefixes();
 	}
 	
 	@Override
@@ -203,6 +203,10 @@ public class GenericJavaXmlSchema
 		this.xmlNsPrefixContainer.synchronizeWithResourceModel();
 	}
 	
+	protected void updateXmlNsPrefixes() {
+		this.xmlNsPrefixContainer.update();
+	}
+
 	protected ListIterable<XmlNsAnnotation> getXmlNsAnnotations() {
 		return getXmlSchemaAnnotation().getXmlns();
 	}
