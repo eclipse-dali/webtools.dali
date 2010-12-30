@@ -77,10 +77,6 @@ public class JDTEnumConstant
 		return new ASTNodeTextRange(this.getBodyDeclaration(astRoot).getName());
 	}
 
-	public String getName() {
-		return this.getName_();
-	}
-
 	//As far as I can tell, enum constants are always "persistable", 
 	//there are no modifiers you can add to an enum constant
 	public boolean isPersistable(CompilationUnit astRoot) {
@@ -91,7 +87,7 @@ public class JDTEnumConstant
 	// ********** internal **********
 
 	protected EnumConstantDeclaration getSelectedDeclaration(CompilationUnit astRoot) {
-		String name = this.getName_();
+		String name = this.getName();
 		int occurrence = this.getOccurrence();
 		int count = 0;
 		for (EnumConstantDeclaration enumConstantDeclaration : this.getDeclaringTypeEnumConstantDeclarations(astRoot)) {

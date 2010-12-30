@@ -516,7 +516,7 @@ final class BinaryPersistentAttribute
 		}
 
 		public String getAttributeName() {
-			return NameTools.convertGetterMethodNameToPropertyName(this.method.getElementName());
+			return NameTools.convertGetterSetterMethodNameToPropertyName(this.method.getElementName());
 		}
 
 		public boolean isField() {

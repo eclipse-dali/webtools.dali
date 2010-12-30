@@ -30,7 +30,6 @@ public interface Attribute extends Member {
 	 * Return the attribute's name, as opposed to the member's name
 	 * (e.g. "getFoo()" returns "foo").
 	 */
-	// TODO rename to getName()?
 	String getAttributeName();
 
 	/**

@@ -28,6 +28,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public interface AnnotatedElement {
 
+	String getName();
+
 	/**
 	 * Return the annotated element's body declaration from the specified AST.
 	 * This can be null if the annotated element is no longer present in the AST

@@ -76,7 +76,11 @@ public abstract class JDTAnnotatedElement
 	}
 
 
-	// ********** Member implementation **********
+	// ********** AnnotatedElement implementation **********
+
+	public String getName() {
+		return this.name;
+	}
 
 	public abstract ModifiedDeclaration getModifiedDeclaration(CompilationUnit astRoot);
 	
@@ -87,13 +91,6 @@ public abstract class JDTAnnotatedElement
 	@Override
 	public String toString() {
 		return StringTools.buildToStringFor(this, this.name);
-	}
-
-
-	// ********** internal **********
-
-	protected String getName_() {
-		return this.name;
 	}
 
 

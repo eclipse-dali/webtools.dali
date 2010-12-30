@@ -70,7 +70,7 @@ public abstract class JDTMember extends JDTAnnotatedElement
 	}
 
 	public boolean matches(String memberName, int occur) {
-		return memberName.equals(this.getName_()) && (occur == this.occurrence);
+		return memberName.equals(this.getName()) && (occur == this.occurrence);
 	}
 
 

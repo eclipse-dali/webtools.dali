@@ -124,7 +124,7 @@ public class JDTMethodAttribute
 	}
 
 	protected boolean matches(MethodSignature signature) {
-		return signature.getName().equals(this.getName_())
+		return signature.getName().equals(this.getName())
 					&& Arrays.equals(this.parameterTypes, signature.getParameterTypes());
 	}
 
@@ -148,10 +148,10 @@ public class JDTMethodAttribute
 	}
 
 	/**
-	 * return "foo" for a method named "getFoo" or "isFoo"
+	 * return "foo" for a method named "getFoo", "isFoo", "setFoo"
 	 */
 	public String getAttributeName() {
-		return NameTools.convertGetterMethodNameToPropertyName(this.getName_());
+		return NameTools.convertGetterSetterMethodNameToPropertyName(this.getName());
 	}
 
 	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {

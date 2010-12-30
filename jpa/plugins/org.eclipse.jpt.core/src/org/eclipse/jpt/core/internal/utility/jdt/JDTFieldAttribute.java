@@ -84,7 +84,7 @@ public class JDTFieldAttribute
 	}
 
 	public String getAttributeName() {
-		return this.getName_();
+		return this.getName();
 	}
 
 	public ITypeBinding getTypeBinding(CompilationUnit astRoot) {
@@ -121,7 +121,7 @@ public class JDTFieldAttribute
 	 *     private int foo, bar;
 	 */
 	protected <T extends ASTNode> T getSelectedDeclaration(CompilationUnit astRoot, Selector<T> selector) {
-		String name = this.getName_();
+		String name = this.getName();
 		int occurrence = this.getOccurrence();
 		int count = 0;
 		for (FieldDeclaration fieldDeclaration : this.getDeclaringTypeFieldDeclarations(astRoot)) {

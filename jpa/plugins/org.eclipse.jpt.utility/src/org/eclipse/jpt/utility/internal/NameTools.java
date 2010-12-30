@@ -348,9 +348,11 @@ public final class NameTools {
 	/**
 	 * Convert the specified method name to a property name.
 	 */
-	public static String convertGetterMethodNameToPropertyName(String methodName) {
+	public static String convertGetterSetterMethodNameToPropertyName(String methodName) {
 		int beginIndex = 0;
 		if (methodName.startsWith("get")) { //$NON-NLS-1$
+			beginIndex = 3;
+		} else if (methodName.startsWith("set")) { //$NON-NLS-1$
 			beginIndex = 3;
 		} else if (methodName.startsWith("is")) { //$NON-NLS-1$
 			beginIndex = 2;

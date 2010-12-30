@@ -141,7 +141,7 @@ public abstract class AbstractJDTType
 	 * Only return type or enum declarations
 	 */
 	protected AbstractTypeDeclaration getTypeDeclaration(AbstractTypeDeclaration[] typeDeclarations) {
-		String name = this.getName_();
+		String name = this.getName();
 		int occurrence = this.getOccurrence();
 		int count = 0;
 		for (AbstractTypeDeclaration typeDeclaration : typeDeclarations) {
