@@ -28,14 +28,5 @@ public interface JavaResourceEnumConstant
 	 * The Java resource enum constant's name does not change.
 	 */
 	String getName();
-	
-	/**
-	 * Return a null annotation for the specified annotation name.
-	 * Return null if the specified annotation name is null.
-	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
-	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourceMember,
-	 * org.eclipse.jpt.core.utility.jdt.Member)}
-	 */
-	Annotation buildNullAnnotation(String annotationName);
 
 }

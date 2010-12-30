@@ -13,7 +13,6 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTEnumConstant;
 import org.eclipse.jpt.core.utility.jdt.EnumConstant;
 import org.eclipse.jpt.core.utility.jdt.Enum;
-import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
@@ -81,10 +80,4 @@ final class SourceEnumConstant
 	public String getName() {
 		return this.annotatedElement.getName();
 	}
-	
-	@Override
-	public Annotation buildNullAnnotation(String annotationName) {
-		return (annotationName == null) ? null : super.buildNullAnnotation(annotationName);
-	}
-
 }
