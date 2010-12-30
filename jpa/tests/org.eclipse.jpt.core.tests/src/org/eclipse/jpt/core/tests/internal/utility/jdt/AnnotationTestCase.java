@@ -666,12 +666,21 @@ public abstract class AnnotationTestCase extends TestCase {
 	}
 
 	protected void setEnumMemberValuePair(ModifiedDeclaration declaration, String annotationName, String enumValue) {
-		this.setEnumMemberValuePair((NormalAnnotation) declaration.getAnnotationNamed(annotationName), "value", enumValue);
+		NormalAnnotation annotation = (NormalAnnotation) declaration.getAnnotationNamed(annotationName);
+		if (annotation == null) {
+			annotation = addNormalAnnotation(declaration.getDeclaration(), annotationName);
+		}
+		this.setEnumMemberValuePair(annotation, "value", enumValue);
 	}
 
 	protected void setEnumMemberValuePair(NormalAnnotation annotation, String elementName, String enumValue) {
 		MemberValuePair memberValuePair = this.memberValuePair(annotation, elementName);
-		memberValuePair.setValue(annotation.getAST().newName(enumValue));
+		if (memberValuePair == null) {
+			this.addEnumMemberValuePair(annotation, elementName, enumValue);
+		}
+		else {
+			memberValuePair.setValue(annotation.getAST().newName(enumValue));
+		}
 	}
 
 	protected void addEnumMemberValuePair(MarkerAnnotation markerAnnotation, String elementName, String value) {
