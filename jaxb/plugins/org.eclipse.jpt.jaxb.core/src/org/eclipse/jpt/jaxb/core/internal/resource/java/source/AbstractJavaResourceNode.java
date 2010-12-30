@@ -34,6 +34,9 @@ public abstract class AbstractJavaResourceNode
 		this.parent = parent;
 	}
 
+	protected JavaResourceNode getParent() {
+		return this.parent;
+	}
 
 	// ********** parent **********
 
