@@ -18,7 +18,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 /**
  * Java source member (annotations, "persistable")
@@ -28,9 +27,13 @@ abstract class SourceMember<M extends Member>
 	implements JavaResourceMember
 {
 
-	boolean persistable;
-
 	boolean final_;  // 'final' is a reserved word
+
+	boolean transient_;  // 'transient' is a reserved word
+
+	boolean public_;  // 'public' is a reserved word
+
+	boolean static_;  // 'static' is a reserved word
 
 
 	// ********** construction/initialization **********
@@ -42,17 +45,21 @@ abstract class SourceMember<M extends Member>
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
-		this.persistable = this.buildPersistable(astRoot);
 		IBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.final_ = this.buildFinal(binding);
+		this.transient_ = this.buildTransient(binding);
+		this.public_ = this.buildPublic(binding);
+		this.static_ = this.buildStatic(binding);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
-		this.syncPersistable(this.buildPersistable(astRoot));
 		IBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.syncFinal(this.buildFinal(binding));
+		this.syncTransient(this.buildTransient(binding));
+		this.syncPublic(this.buildPublic(binding));
+		this.syncStatic(this.buildStatic(binding));
 	}
 
 
@@ -82,22 +89,6 @@ abstract class SourceMember<M extends Member>
 	}
 
 
-	// ********** persistable **********
-
-	public boolean isPersistable() {
-		return this.persistable;
-	}
-
-	private void syncPersistable(boolean astPersistable) {
-		boolean old = this.persistable;
-		this.persistable = astPersistable;
-		this.firePropertyChanged(PERSISTABLE_PROPERTY, old, astPersistable);
-	}
-
-	private boolean buildPersistable(CompilationUnit astRoot) {
-		return this.annotatedElement.isPersistable(astRoot);
-	}
-
 	// ***** final
 	public boolean isFinal() {
 		return this.final_;
@@ -113,6 +104,51 @@ abstract class SourceMember<M extends Member>
 		return (binding == null) ? false : Modifier.isFinal(binding.getModifiers());
 	}
 
+	// ***** transient
+	public boolean isTransient() {
+		return this.transient_;
+	}
+
+	private void syncTransient(boolean astTransient) {
+		boolean old = this.transient_;
+		this.transient_ = astTransient;
+		this.firePropertyChanged(TRANSIENT_PROPERTY, old, astTransient);
+	}
+
+	private boolean buildTransient(IBinding binding) {
+		return (binding == null) ? false : Modifier.isTransient(binding.getModifiers());
+	}
+
+	// ***** public
+	public boolean isPublic() {
+		return this.public_;
+	}
+
+	private void syncPublic(boolean astPublic) {
+		boolean old = this.public_;
+		this.public_ = astPublic;
+		this.firePropertyChanged(PUBLIC_PROPERTY, old, astPublic);
+	}
+
+	private boolean buildPublic(IBinding binding) {
+		return (binding == null) ? false : Modifier.isPublic(binding.getModifiers());
+	}
+
+	// ***** static
+	public boolean isStatic() {
+		return this.static_;
+	}
+
+	private void syncStatic(boolean astStatic) {
+		boolean old = this.static_;
+		this.static_ = astStatic;
+		this.firePropertyChanged(STATIC_PROPERTY, old, astStatic);
+	}
+
+	private boolean buildStatic(IBinding binding) {
+		return (binding == null) ? false : Modifier.isStatic(binding.getModifiers());
+	}
+
 
 	// ********** miscellaneous **********
 
@@ -121,18 +157,6 @@ abstract class SourceMember<M extends Member>
 	}
 
 	public void resolveTypes(CompilationUnit astRoot) {
-		this.syncPersistable(this.buildPersistable(astRoot));
 	}
 
-	/**
-	 * convenience method
-	 */
-	<T extends JavaResourceMember> Iterable<T> getPersistableMembers(Iterable<T> members) {
-		return new FilteringIterable<T>(members) {
-			@Override
-			protected boolean accept(T m) {
-				return m.isPersistable();
-			}
-		};
-	}
 }

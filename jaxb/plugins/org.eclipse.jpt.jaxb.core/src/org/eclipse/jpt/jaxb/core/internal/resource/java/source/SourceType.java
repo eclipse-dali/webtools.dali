@@ -47,8 +47,6 @@ final class SourceType
 
 	private boolean abstract_;  // 'abstract' is a reserved word
 
-	private boolean static_;  // 'static' is a reserved word
-
 	private boolean hasNoArgConstructor;
 
 	private final Vector<JavaResourceType> types;
@@ -114,7 +112,6 @@ final class SourceType
 		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.superclassQualifiedName = this.buildSuperclassQualifiedName(binding);
 		this.abstract_ = this.buildAbstract(binding);
-		this.static_ = this.buildStatic(binding);
 		this.hasNoArgConstructor = this.buildHasNoArgConstructor(binding);
 		this.initializeTypes(astRoot);
 		this.initializeEnums(astRoot);
@@ -131,7 +128,6 @@ final class SourceType
 		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
 		this.syncAbstract(this.buildAbstract(binding));
-		this.syncStatic(this.buildStatic(binding));
 		this.syncHasNoArgConstructor(this.buildHasNoArgConstructor(binding));
 		this.syncTypes(astRoot);
 		this.syncEnums(astRoot);
@@ -206,21 +202,6 @@ final class SourceType
 		return (binding == null) ? false : Modifier.isAbstract(binding.getModifiers());
 	}
 
-	// ***** static
-	public boolean isStatic() {
-		return this.static_;
-	}
-
-	private void syncStatic(boolean static_) {
-		boolean old = this.static_;
-		this.static_ = static_;
-		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
-	}
-
-	private boolean buildStatic(ITypeBinding binding) {
-		return (binding == null) ? false : Modifier.isStatic(binding.getModifiers());
-	}
-
 	// ***** no-arg constructor
 	public boolean hasNoArgConstructor() {
 		return this.hasNoArgConstructor;
@@ -264,10 +245,6 @@ final class SourceType
 				return type.getTypes().iterator();
 			}
 		};
-	}
-
-	public Iterable<JavaResourceType> getPersistableTypes() {
-		return this.getPersistableMembers(this.getTypes());
 	}
 
 	private JavaResourceType getType(String typeName, int occurrence) {
@@ -388,10 +365,6 @@ final class SourceType
 		return new LiveCloneIterable<JavaResourceField>(this.fields);
 	}
 
-	public Iterable<JavaResourceField> getPersistableFields() {
-		return this.getPersistableMembers(this.getFields());
-	}
-
 	private void addField(JavaResourceField field) {
 		this.addItemToCollection(field, this.fields, FIELDS_COLLECTION);
 	}
@@ -459,10 +432,6 @@ final class SourceType
 		return new LiveCloneIterable<JavaResourceMethod>(this.methods);
 	}
 
-	public Iterable<JavaResourceMethod> getPersistableProperties() {
-		return this.getPersistableMembers(this.getMethods());
-	}
-
 	private JavaResourceMethod getMethod(MethodSignature signature, int occurrence) {
 		for (JavaResourceMethod method : this.getMethods()) {
 			if (method.isFor(signature, occurrence)) {
@@ -512,33 +481,4 @@ final class SourceType
 	private JavaResourceMethod buildMethod(MethodSignature signature, int occurrence, CompilationUnit astRoot) {
 		return SourceMethod.newInstance(this, this.annotatedElement, signature, occurrence, this.getJavaResourceCompilationUnit(), astRoot);
 	}
-
-
-	// ********** attributes **********
-
-//	@SuppressWarnings("unchecked")
-//	public Iterable<JavaResourceAttribute> getPersistableAttributes() {
-//		return new CompositeIterable<JavaResourceAttribute>(
-//				this.getPersistableFields(),
-//				this.getPersistableProperties()
-//			);
-//	}
-//
-//	//TODO XmlAccessType.PUBLIC_MEMBER and XmlAccessType.NONE
-//	public Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess) {
-//		if (specifiedAccess == null) {
-//			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
-//		}
-//		return (specifiedAccess == XmlAccessType.FIELD) ?
-//					this.getPersistableAttributesForFieldAccessType() :
-//					this.getPersistableAttributesForPropertyAccessType();
-//	}
-//
-//	private Iterable<JavaResourceAttribute> getPersistableAttributesForFieldAccessType() {
-//		return this.getPersistableFields();
-//	}
-//
-//	private Iterable<JavaResourceMethod> getPersistableAttributesForPropertyAccessType() {
-//		return this.getPersistableProperties();
-//	}
 }

@@ -33,6 +33,7 @@ final class SourceMethod
 	extends SourceAttribute<MethodAttribute>
 	implements JavaResourceMethod
 {
+	boolean constructor;
 
 	private final Vector<String> parameterTypeNames = new Vector<String>();
 
@@ -66,11 +67,17 @@ final class SourceMethod
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		IMethodBinding binding = this.annotatedElement.getBinding(astRoot);
+		this.constructor = this.buildConstructor(binding);
 		this.parameterTypeNames.addAll(this.buildParameterTypeNames(binding));
 	}
 
 
 	// ******** overrides ********
+
+	@Override
+	protected JavaResourceType getParent() {
+		return (JavaResourceType) super.getParent();
+	}
 
 	@Override
 	public void resolveTypes(CompilationUnit astRoot) {
@@ -81,17 +88,36 @@ final class SourceMethod
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		IMethodBinding binding = this.annotatedElement.getBinding(astRoot);
-
+		this.syncConstructor(this.buildConstructor(binding));
 		this.syncParameterTypeNames(this.buildParameterTypeNames(binding));
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
+		sb.append(this.getMethodName());
 	}
 
 
 	// ******** JavaResourceMethod implementation ********
+
+	public String getMethodName() {
+		return this.annotatedElement.getName();
+	}
+
+	// ***** constructor
+	public boolean isConstructor() {
+		return this.constructor;
+	}
+
+	private void syncConstructor(boolean astConstructor) {
+		boolean old = this.constructor;
+		this.constructor = astConstructor;
+		this.firePropertyChanged(CONSTRUCTOR_PROPERTY, old, astConstructor);
+	}
+
+	private boolean buildConstructor(IMethodBinding methodBinding) {
+		return methodBinding == null ? false : methodBinding.isConstructor();
+	}
 	
 	public boolean isFor(MethodSignature signature, int occurrence) {
 		return this.annotatedElement.matches(signature, occurrence);
@@ -195,7 +221,12 @@ final class SourceMethod
 		}
 		ArrayList<String> names = new ArrayList<String>();
 		for (ITypeBinding parameterType : methodBinding.getParameterTypes()) {
-			names.add(parameterType.getQualifiedName());
+			if (parameterType.isTypeVariable()) {
+				// e.g. "E extends Number" has an erasure of "Number"
+				parameterType = parameterType.getErasure();
+			}
+			String ptName = parameterType.getTypeDeclaration().getQualifiedName();
+			names.add(ptName);
 		}
 		return names;
 	}

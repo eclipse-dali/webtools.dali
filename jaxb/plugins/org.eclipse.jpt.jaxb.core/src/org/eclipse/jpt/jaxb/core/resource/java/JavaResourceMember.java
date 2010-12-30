@@ -37,21 +37,27 @@ public interface JavaResourceMember
 	Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames);
 
 
-	// ********** queries **********
-	
-	/**
-	 * Return whether the underlying JDT member is persistable according to
-	 * the JPA spec.
-	 */
-	boolean isPersistable();
-		String PERSISTABLE_PROPERTY = "persistable"; //$NON-NLS-1$
+
+	// ********** modifiers **********
 
 	/**
 	 * Return whether the member is final.
 	 */
 	boolean isFinal();
 		String FINAL_PROPERTY = "final"; //$NON-NLS-1$
-	
+
+	boolean isTransient();
+		String TRANSIENT_PROPERTY = "transient"; //$NON-NLS-1$
+
+	boolean isPublic();
+		String PUBLIC_PROPERTY = "public"; //$NON-NLS-1$
+
+	boolean isStatic();
+		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
+
+
+	// ********** queries **********
+
 	/**
 	 * Return whether the Java resource member is for the specified
 	 * member.

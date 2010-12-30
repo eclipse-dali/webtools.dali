@@ -28,9 +28,15 @@ public interface JavaResourceMethod
 	extends JavaResourceMember
 {
 	/**
-	 * The Java resource method's name does not change.
+	 * Return the methods's name, as opposed to the member's name
+	 * (e.g. "getFoo()" returns "foo"). This does not change.
 	 */
 	String getName();
+
+	/**
+	 * The Java resource method's name does not change.
+	 */
+	String getMethodName();
 
 	/**
 	 * Return whether the Java resource persistent attribute is for the specified
@@ -110,4 +116,8 @@ public interface JavaResourceMethod
 		String PARAMETER_TYPE_NAMES_LIST = "parameterTypeNames"; //$NON-NLS-1$
 
 	int getParametersSize();
+
+	boolean isConstructor();
+		String CONSTRUCTOR_PROPERTY = "constructor"; //$NON-NLS-1$
+	
 }

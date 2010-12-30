@@ -37,26 +37,11 @@ public interface JavaResourceType
 	boolean isAbstract();
 		String ABSTRACT_PROPERTY = "abstract"; //$NON-NLS-1$
 
-
-	/**
-	 * Return whether the type is static.
-	 */
-	boolean isStatic();
-		String STATIC_PROPERTY = "static"; //$NON-NLS-1$
-
 	/**
 	 * Return whether the type has a no-arg constructor (private, protected, or public)
 	 */
 	boolean hasNoArgConstructor();
 		String NO_ARG_CONSTRUCTOR_PROPERTY = "noArgConstructor"; //$NON-NLS-1$
-
-
-	// ********** types **********
-
-	/**
-	 * Return the immediately nested persistable types.
-	 */
-	Iterable<JavaResourceType> getPersistableTypes();
 
 
 	// ********** fields **********
@@ -67,11 +52,6 @@ public interface JavaResourceType
 	Iterable<JavaResourceField> getFields();
 		String FIELDS_COLLECTION = "fields"; //$NON-NLS-1$
 
-	/**
-	 * Return the type's persistable fields.
-	 */
-	Iterable<JavaResourceField> getPersistableFields();
-
 
 	// ********** methods **********
 
@@ -80,26 +60,5 @@ public interface JavaResourceType
 	 */
 	Iterable<JavaResourceMethod> getMethods();
 		String METHODS_COLLECTION = "methods"; //$NON-NLS-1$
-//
-//	/**
-//	 * Return the type's persistable properties.  This returns only the getter methods
-//	 * that match the JavaBeans criteria for JPA, hence the name properties instead of methods
-//	 */
-//	Iterable<JavaResourceMethod> getPersistableProperties();
-//
-//
-//	// ********** attributes **********
-//
-//	/**
-//	 * Return the type's persistable fields and properties.
-//	 * {@link JavaResourceMember#isPersistable()}
-//	 */
-//	Iterable<JavaResourceAttribute> getPersistableAttributes();
-//	
-//	/**
-//	 * Return the persistable properties and/or fields given the non-null specified access type
-//	 * {@link JavaResourceMember#isPersistable()}
-//	 */
-//	Iterable<JavaResourceAttribute> getPersistableAttributes(XmlAccessType specifiedAccess);
-	
+
 }
