@@ -24,6 +24,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
@@ -38,6 +40,8 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaEnumConstant;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPackageInfo;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentClass;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentEnum;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentField;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentProperty;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
@@ -46,6 +50,7 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -132,5 +137,13 @@ public abstract class AbstractJaxbFactory
 
 	public JaxbElementFactoryMethod buildJavaElementFactoryMethod(JaxbRegistry parent, JavaResourceMethod resourceMethod) {
 		return new GenericJavaElementFactoryMethod(parent, resourceMethod);
+	}
+
+	public JaxbPersistentField buildJavaPersistentField(JaxbPersistentClass parent, JavaResourceField resourceField) {
+		return new GenericJavaPersistentField(parent, resourceField);
+	}
+
+	public JaxbPersistentProperty buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter) {
+		return new GenericJavaPersistentProperty(parent, resourceGetter, resourceSetter);
 	}
 }

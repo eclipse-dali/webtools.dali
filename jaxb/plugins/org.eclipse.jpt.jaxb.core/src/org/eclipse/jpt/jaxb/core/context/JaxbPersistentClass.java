@@ -51,4 +51,11 @@ public interface JaxbPersistentClass
 	 */
 	Iterable<JaxbPersistentClass> getAncestors();
 
+
+	/********** attributes **********/
+
+	Iterable<JaxbPersistentAttribute> getAttributes();
+	int getAttributesSize();
+		String ATTRIBUTES_COLLECTION = "attributes"; //$NON-NLS-1$
+
 }

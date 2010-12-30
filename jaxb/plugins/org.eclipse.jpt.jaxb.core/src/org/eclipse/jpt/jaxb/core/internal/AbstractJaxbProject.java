@@ -592,13 +592,13 @@ public abstract class AbstractJaxbProject
 	
 	/**
 	 * Return all {@link JavaResourceType}s that are represented by java source within this project,
-	 * that are also annotated (and persistable) with a recognized annotation
+	 * that are also annotated with a recognized annotation
 	 */
 	public Iterable<JavaResourceType> getAnnotatedJavaSourceResourceTypes() {
 		return new FilteringIterable<JavaResourceType>(getJavaSourceResourceTypes()) {
 			@Override
 			protected boolean accept(JavaResourceType type) {
-				return type.isPersistable() && type.isAnnotated();  // i.e. the type is valid and has a valid type annotation
+				return type.isAnnotated();
 			}
 		};
 	}
@@ -713,7 +713,7 @@ public abstract class AbstractJaxbProject
 	
 	
 	public JavaResourceType getJavaResourceType(String typeName) {
-		for (JavaResourceType type : this.getPersistableJavaResourceTypes()) {
+		for (JavaResourceType type : this.getJavaResourceTypes()) {
 			if (type.getQualifiedName().equals(typeName)) {
 				return type;
 			}
@@ -732,20 +732,6 @@ public abstract class AbstractJaxbProject
 		return null;
 //		// if we don't have a type already, try to build new one from the project classpath
 //		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
-	}
-
-	/**
-	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
-	 */
-	protected Iterable<JavaResourceType> getPersistableJavaResourceTypes() {
-		return new FilteringIterable<JavaResourceType>(this.getJavaResourceTypes()) {
-			@Override
-			protected boolean accept(JavaResourceType type) {
-				return type.isPersistable();
-			}
-		};
 	}
 
 	/**
