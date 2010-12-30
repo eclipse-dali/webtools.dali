@@ -13,6 +13,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.ItemLabelProvider;
@@ -53,6 +55,12 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		}
 		else if (item instanceof JaxbType) {
 			return new JaxbTypeItemLabelProvider((JaxbType) item, contentAndLabelProvider);
+		}
+		else if (item instanceof JaxbPersistentField) {
+			return new JaxbPersistentFieldItemLabelProvider((JaxbPersistentField) item, contentAndLabelProvider);
+		}
+		else if (item instanceof JaxbPersistentProperty) {
+			return new JaxbPersistentPropertyItemLabelProvider((JaxbPersistentProperty) item, contentAndLabelProvider);
 		}
 		else if (item instanceof JaxbEnumConstant) {
 			return new JaxbEnumConstantItemLabelProvider((JaxbEnumConstant) item, contentAndLabelProvider);

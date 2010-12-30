@@ -18,6 +18,8 @@ public class JptJaxbUiIcons
 	public static final String PACKAGE = "full/obj16/package";
 	public static final String PERSISTENT_CLASS = "full/obj16/persistent_class";
 	public static final String PERSISTENT_ENUM = "full/obj16/persistent_enum";
+	public static final String PERSISTENT_FIELD = "full/obj16/persistent_field";
+	public static final String PERSISTENT_PROPERTY = "full/obj16/persistent_property";
 	public static final String ENUM_CONSTANT = "full/obj16/enum_constant";
 	
 	public static final String SCHEMA_GEN = "full/wizban/NewXSD";
