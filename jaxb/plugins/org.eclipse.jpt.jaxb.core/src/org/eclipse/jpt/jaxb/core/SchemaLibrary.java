@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import java.util.Map;
+import org.eclipse.xsd.XSDSchema;
 
 /**
  * Entry point for accessing project schema resources
@@ -25,7 +26,17 @@ import java.util.Map;
  */
 public interface SchemaLibrary {
 	
+	public XSDSchema getSchema(String namespace);
+	
+	/**
+	 * Return the project settings that indicate how schema keys are mapped to actual
+	 * resolvable schemas
+	 */
 	public Map<String, String> getSchemaLocations();
 	
+	/**
+	 * Set the project settings that indicate how schema keys are mapped to actual
+	 * resolvable schemas.
+	 */
 	public void setSchemaLocations(Map<String, String> schemaLocations);
 }

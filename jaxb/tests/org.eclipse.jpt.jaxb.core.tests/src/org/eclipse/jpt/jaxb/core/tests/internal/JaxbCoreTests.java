@@ -18,6 +18,7 @@ public class JaxbCoreTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreTests.class.getPackage().getName());
+		suite.addTestSuite(SchemaLibraryTests.class);
 		suite.addTest(JaxbCoreResourceModelTests.suite());
 		suite.addTest(JaxbCoreContextModelTests.suite());
 		return suite;
