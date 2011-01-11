@@ -261,6 +261,9 @@ public abstract class AbstractJpaDeleteTypeParticipant
 
 	private PersistenceUnit getPersistenceUnit(JpaProject jpaProject) {
 		PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+		if (persistenceXml == null) {
+			return null;
+		}
 		Persistence persistence = persistenceXml.getPersistence();
 		if (persistence == null) {
 			return null;
