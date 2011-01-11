@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
+import java.beans.Introspector;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -390,28 +391,34 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getSchemaTypeName());
+		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
-		persistentClass.setSchemaTypeName("foo");
+		assertNull(persistentClass.getSpecifiedXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getDefaultXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getXmlTypeName());
+		
+		persistentClass.setSpecifiedXmlTypeName("foo");
 		XmlTypeAnnotation xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", persistentClass.getSchemaTypeName());
+		assertEquals("foo", persistentClass.getSpecifiedXmlTypeName());
+		assertEquals("foo", persistentClass.getXmlTypeName());
 		
-		persistentClass.setSchemaTypeName(null);
+		persistentClass.setSpecifiedXmlTypeName(null);
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertNull(xmlTypeAnnotation.getName());
-		assertNull(persistentClass.getSchemaTypeName());
-	
+		assertNull(persistentClass.getSpecifiedXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getXmlTypeName());	
+		
 		//add another annotation so that the context model does not get blown away
 		persistentClass.setSpecifiedAccessType(XmlAccessType.FIELD);
 		resourceType.removeAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		
 		//set name again, this time starting with no XmlType annotation
-		persistentClass.setSchemaTypeName("foo");
+		persistentClass.setSpecifiedXmlTypeName("foo");
 		xmlTypeAnnotation = (XmlTypeAnnotation) resourceType.getAnnotation(XmlTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", xmlTypeAnnotation.getName());
-		assertEquals("foo", persistentClass.getSchemaTypeName());
+		assertEquals("foo", persistentClass.getSpecifiedXmlTypeName());
+		assertEquals("foo", persistentClass.getXmlTypeName());
 	}
 	
 	public void testUpdateSchemaTypeName() throws Exception {
@@ -419,9 +426,11 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(persistentClass.getSchemaTypeName());
+		String defaultXmlTypeName = Introspector.decapitalize(TYPE_NAME);
 		
+		assertNull(persistentClass.getSpecifiedXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getDefaultXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getXmlTypeName());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -430,8 +439,9 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 				GenericJavaPersistentClassTests.this.addXmlTypeMemberValuePair(declaration, JAXB.XML_TYPE__NAME, "foo");
 			}
 		});
-		assertEquals("foo", persistentClass.getSchemaTypeName());
-
+		assertEquals("foo", persistentClass.getSpecifiedXmlTypeName());
+		assertEquals("foo", persistentClass.getXmlTypeName());
+		
 		//remove the namespace member value pair
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
@@ -439,7 +449,8 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 				GenericJavaPersistentClassTests.this.values(xmlTypeAnnotation).remove(0);
 			}
 		});
-		assertNull(persistentClass.getSchemaTypeName());
+		assertNull(persistentClass.getSpecifiedXmlTypeName());
+		assertEquals(defaultXmlTypeName, persistentClass.getXmlTypeName());
 	}
 
 	public void testModifyNamespace() throws Exception {
