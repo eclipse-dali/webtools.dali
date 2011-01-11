@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2007, 2010 Oracle. 
+ *  Copyright (c) 2007, 2011 Oracle. 
  *  All rights reserved.  This program and the accompanying materials 
  *  are made available under the terms of the Eclipse Public License v1.0 
  *  which accompanies this distribution, and is available at 
@@ -109,7 +109,7 @@ public class JaxbNavigatorContentProvider
 			if (project != null) {
 				JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
 				if (jaxbProject != null) {
-					JaxbPlatformDescription desc = jaxbProject.getJaxbPlatform().getDescription();
+					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
 					JaxbPlatformUi platformUi = 
 							JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(desc);
 					
@@ -132,7 +132,7 @@ public class JaxbNavigatorContentProvider
 			if (project != null) {
 				JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
 				if (jaxbProject != null) {
-					JaxbPlatformDescription desc = jaxbProject.getJaxbPlatform().getDescription();
+					JaxbPlatformDescription desc = jaxbProject.getPlatform().getDescription();
 					JaxbPlatformUi platformUi = 
 							JptJaxbUiPlugin.getJaxbPlatformUiManager().getJaxbPlatformUi(desc);
 					

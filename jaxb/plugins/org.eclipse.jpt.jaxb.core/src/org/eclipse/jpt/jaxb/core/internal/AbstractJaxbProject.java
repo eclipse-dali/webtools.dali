@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -298,7 +298,7 @@ public abstract class AbstractJaxbProject
 	}
 
 	@Override
-	public JaxbPlatform getJaxbPlatform() {
+	public JaxbPlatform getPlatform() {
 		return this.jaxbPlatform;
 	}
 	
@@ -376,7 +376,7 @@ public abstract class AbstractJaxbProject
 
 		JaxbFile jaxbFile = null;
 		try {
-			jaxbFile = this.getJaxbPlatform().buildJaxbFile(this, file);
+			jaxbFile = this.getPlatform().buildJaxbFile(this, file);
 		}
 		catch (Exception e) {
 			//log any developer exceptions and don't build a JaxbFile rather

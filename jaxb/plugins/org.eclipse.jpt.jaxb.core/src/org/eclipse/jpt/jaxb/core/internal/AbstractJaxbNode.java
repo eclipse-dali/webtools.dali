@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -114,8 +114,8 @@ public abstract class AbstractJaxbNode
 
 	// ********** convenience methods **********
 
-	protected JaxbPlatform getJaxbPlatform() {
-		return this.getJaxbProject().getJaxbPlatform();
+	protected JaxbPlatform getPlatform() {
+		return this.getJaxbProject().getPlatform();
 	}
 
 //	protected JaxbPlatform.Version getJaxbPlatformVersion() {
@@ -123,7 +123,7 @@ public abstract class AbstractJaxbNode
 //	}
 
 	protected JaxbFactory getFactory() {
-		return this.getJaxbPlatform().getFactory();
+		return this.getPlatform().getFactory();
 	}
 
 	protected JaxbFile getJaxbFile(IFile file) {
