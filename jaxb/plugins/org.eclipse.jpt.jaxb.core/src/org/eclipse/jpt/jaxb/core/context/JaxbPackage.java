@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -41,6 +42,11 @@ public interface JaxbPackage
 	public final static String PACKAGE_INFO_PROPERTY = "package-info"; //$NON-NLS-1$
 	
 	/**
+	 * Return the namespace associated with this package, default or specified
+	 */
+	String getNamespace();
+	
+	/**
 	 * Return whether this package has no useful information.
 	 * Useful information includes:
 	 * 	- annotated package-info.java
@@ -48,6 +54,11 @@ public interface JaxbPackage
 	 *  - object factory
 	 */
 	boolean isEmpty();
+	
+	/**
+	 * Return the {@link XsdSchema} associated with this package, if there is one, null otherwise
+	 */
+	XsdSchema getXsdSchema();
 	
 	
 	// **************** validation ********************************************

@@ -9,7 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import java.util.List;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * Represents a java class (or enum or interface) with JAXB metadata (specified or implied).
@@ -43,11 +46,6 @@ public interface JaxbType
 	String getFullyQualifiedName();
 	
 	/**
-	 * Return the name of the type's package.  Empty string if none.
-	 */
-	String getPackageName();
-	
-	/**
 	 * Returns the type-qualified name of this type, including qualification for any 
 	 * enclosing types, but not including package qualification.
 	 */
@@ -57,6 +55,24 @@ public interface JaxbType
 	 * Return the name of the type without any package or type qualifiers
 	 */
 	String getSimpleName();
+	
+	/**
+	 * Return the name of the type's package.  Empty string if none.
+	 */
+	String getPackageName();
+	
+	/**
+	 * Return the {@link JaxbPackage} associated with this type
+	 */
+	JaxbPackage getJaxbPackage();
+	
+	
+	// **************** validation ********************************************
+	
+	/**
+	 * Add to the list of current validation messages
+	 */
+	void validate(List<IMessage> messages, IReporter reporter);
 	
 	
 	/**

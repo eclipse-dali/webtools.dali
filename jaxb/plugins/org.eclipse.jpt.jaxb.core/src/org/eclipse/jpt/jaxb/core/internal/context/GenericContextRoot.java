@@ -24,8 +24,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbType.Kind;
-import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
@@ -504,6 +504,9 @@ public class GenericContextRoot
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		for (JaxbPackage pkg : this.packages.values()) {
 			pkg.validate(messages, reporter);
+		}
+		for (JaxbType type : this.types.values()) {
+			type.validate(messages, reporter);
 		}
 	}
 }

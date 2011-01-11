@@ -20,4 +20,8 @@ public interface JaxbValidationMessages {
 	
 	// validation on package
 	public static final String PACKAGE_NO_SCHEMA_FOR_NAMESPACE = "PACKAGE_NO_SCHEMA_FOR_NAMESPACE";
+	
+	// validation on type
+	public static final String XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE = "XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE";
+	public static final String XML_TYPE_UNRESOLVED_SCHEMA_TYPE = "XML_TYPE_UNRESOLVED_SCHEMA_TYPE";
 }

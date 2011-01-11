@@ -16,8 +16,11 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.XSDSchema;
 
 public class GenericPackage
 		extends AbstractJaxbContextNode
@@ -95,6 +98,11 @@ public class GenericPackage
 	
 	public String getNamespace() {
 		return (getPackageInfo() == null) ? "" : getPackageInfo().getXmlSchema().getNamespace();
+	}
+	
+	public XsdSchema getXsdSchema() {
+		XSDSchema emfSchema = getJaxbProject().getSchemaLibrary().getSchema(getNamespace());
+		return (emfSchema == null) ? null : (XsdSchema) XsdUtil.getAdapter(emfSchema);
 	}
 	
 	

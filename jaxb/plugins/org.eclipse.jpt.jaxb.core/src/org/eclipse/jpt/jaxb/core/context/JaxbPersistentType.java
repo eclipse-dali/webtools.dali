@@ -50,13 +50,31 @@ public interface JaxbPersistentType
 	/**************** name *****************/
 
 	/**
-	 * Schema type name corresponds to the XmlType annotation name element
+	 * Return the specified xml type name or the default type name if it is not specified
 	 */
-	String getSchemaTypeName();
-	void setSchemaTypeName(String schemaTypeName);
-		String SCHEMA_TYPE_NAME_PROPERTY = "schemaTypeName"; //$NON-NLS-1$
-
-
+	String getXmlTypeName();
+	
+	/**
+	 * Return the specified xml type name or null if it is not specified
+	 */
+	String getSpecifiedXmlTypeName();
+	
+	/**
+	 * Set the xml type name, null to unspecify (use the default)
+	 */
+	void setSpecifiedXmlTypeName(String xmlTypeName);
+	
+	/**
+	 * String constant associated with changes to the specified xml type name
+	 */
+	String SPECIFIED_XML_TYPE_NAME_PROPERTY = "specifiedXmlTypeName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default xml type name
+	 */
+	String getDefaultXmlTypeName();
+	
+	
 	/**************** namespace *****************/
 
 	/**

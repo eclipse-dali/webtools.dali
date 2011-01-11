@@ -9,15 +9,26 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.beans.Introspector;
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class AbstractJavaPersistentType
 		extends AbstractJavaType
@@ -25,7 +36,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected String factoryClass;
 	protected String factoryMethod;
-	protected String schemaTypeName;
+	protected String specifiedXmlTypeName;
 	protected String namespace;
 	protected final PropOrderContainer propOrderContainer;
 
@@ -35,7 +46,7 @@ public abstract class AbstractJavaPersistentType
 		super(parent, resourceType);
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();
-		this.schemaTypeName = this.getResourceSchemaTypeName();
+		this.specifiedXmlTypeName = this.getResourceXmlTypeName();
 		this.namespace = this.getResourceNamespace();
 		this.propOrderContainer = new PropOrderContainer();
 		this.rootElement = this.buildRootElement();
@@ -54,10 +65,10 @@ public abstract class AbstractJavaPersistentType
 	// ********** synchronize/update **********
 
 	public void synchronizeWithResourceModel() {
-		this.setFactoryClass_(this.getResourceFactoryClass());
-		this.setFactoryMethod_(this.getResourceFactoryMethod());
-		this.setSchemaTypeName_(this.getResourceSchemaTypeName());
-		this.setNamespace_(this.getResourceNamespace());
+		this.setFactoryClass_(getResourceFactoryClass());
+		this.setFactoryMethod_(getResourceFactoryMethod());
+		this.setSpecifiedXmlTypeName_(getResourceXmlTypeName());
+		this.setNamespace_(getResourceNamespace());
 		this.syncPropOrder();
 		this.syncRootElement();
 	}
@@ -116,26 +127,35 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	// ********** name **********
-
-	public String getSchemaTypeName() {
-		return this.schemaTypeName;
+	
+	public String getXmlTypeName() {
+		return (this.specifiedXmlTypeName != null) ? this.specifiedXmlTypeName : getDefaultXmlTypeName();
 	}
-
-	public void setSchemaTypeName(String schemaTypeName) {
-		this.getXmlTypeAnnotation().setName(schemaTypeName);
-		this.setSchemaTypeName_(schemaTypeName);	
+	
+	public String getSpecifiedXmlTypeName() {
+		return this.specifiedXmlTypeName;
 	}
-
-	protected void setSchemaTypeName_(String schemaTypeName) {
-		String old = this.schemaTypeName;
-		this.schemaTypeName = schemaTypeName;
-		this.firePropertyChanged(SCHEMA_TYPE_NAME_PROPERTY, old, schemaTypeName);
+	
+	public void setSpecifiedXmlTypeName(String xmlTypeName) {
+		this.getXmlTypeAnnotation().setName(xmlTypeName);
+		this.setSpecifiedXmlTypeName_(xmlTypeName);	
 	}
-
-	protected String getResourceSchemaTypeName() {
+	
+	protected void setSpecifiedXmlTypeName_(String xmlTypeName) {
+		String old = this.specifiedXmlTypeName;
+		this.specifiedXmlTypeName = xmlTypeName;
+		this.firePropertyChanged(SPECIFIED_XML_TYPE_NAME_PROPERTY, old, xmlTypeName);
+	}
+	
+	public String getDefaultXmlTypeName() {
+		return Introspector.decapitalize(getSimpleName());
+	}
+	
+	protected String getResourceXmlTypeName() {
 		return this.getXmlTypeAnnotation().getName();
 	}
-
+	
+	
 	// ********** namespace **********
 
 	public String getNamespace() {
@@ -251,7 +271,58 @@ public abstract class AbstractJavaPersistentType
 	protected XmlRootElementAnnotation getRootElementAnnotation() {
 		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 	}
-
+	
+	
+	// **************** validation ********************************************
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = getXmlTypeAnnotation().getTextRange(astRoot);
+		return (textRange != null) ? textRange : super.getValidationTextRange(astRoot);
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		
+		// 1. if name is absent (""), namespace cannot be different from package namespace
+		// 2. if name is not absent (""), type must be from schema associated with this package
+		
+		String name = getXmlTypeName();
+		String namespace = getNamespaceForValidation();
+		if ("".equals(name)) {
+			if (! StringTools.stringsAreEqual(namespace, getJaxbPackage().getNamespace())) {
+				messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE,
+						this,
+						getXmlTypeAnnotation().getNamespaceTextRange(astRoot)));
+			}
+		}
+		else {
+			XsdSchema schema = getJaxbPackage().getXsdSchema();
+			
+			if (schema != null) {
+				XsdTypeDefinition schemaType = schema.getTypeDefinition(namespace, name);
+				if (schemaType == null) {
+					messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.XML_TYPE_UNRESOLVED_SCHEMA_TYPE,
+						new String[] {name, namespace},
+						this,
+						getXmlTypeAnnotation().getTextRange(astRoot)));
+				}
+			}
+		}
+	}
+	
+	protected String getNamespaceForValidation() {
+		return (this.namespace != null) ? this.namespace : getJaxbPackage().getNamespace();
+	}
+	
+	
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
