@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,6 +13,8 @@ import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -51,19 +53,14 @@ public interface JaxbPlatformDefinition {
 //	 * Return the resource definitions supported by this platform.
 //	 */
 //	ListIterator<ResourceDefinition> resourceDefinitions();
-//
-//	/**
-//	 * Return the java type mapping definitions that apply to this platform.
-//	 */
-//	ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions();
-//	
-//	/**
-//	 * Return the mapping definitions to use for default java attribute mappings for this platform.
-//	 */
-//	ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions();
-//
-//	/**
-//	 * Return the mapping definitions to use for specified java attribute mappings for this platform.
-//	 */
-//	ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions();
+
+	/**
+	 * Return the mapping definitions to use for default java attribute mappings for this platform.
+	 */
+	Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions();
+
+	/**
+	 * Return the mapping definitions to use for specified java attribute mappings for this platform.
+	 */
+	Iterable<JavaAttributeMappingDefinition> getSpecifiedJavaAttributeMappingDefinitions();
 }

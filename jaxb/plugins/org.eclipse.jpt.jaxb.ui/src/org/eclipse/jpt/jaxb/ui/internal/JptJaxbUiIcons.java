@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -29,4 +29,11 @@ public class JptJaxbUiIcons
 	public static final String SCHEMA_GEN_WIZ_BANNER = "full/wizban/NewXSD";
 	public static final String CLASSES_GEN_WIZ_BANNER = "full/wizban/newclass_wiz";
 	public static final String JAXB_WIZ_BANNER = "full/wizban/new_jaxb_prj_wiz";
+
+
+	public static final String XML_ATTRIBUTE = "full/obj16/xml-attribute";
+	public static final String XML_ELEMENT = "full/obj16/xml-element";
+	public static final String XML_TRANSIENT = "full/obj16/xml-transient";
+	public static final String NULL_ATTRIBUTE_MAPPING = "full/obj16/null-attribute-mapping";
+
 }

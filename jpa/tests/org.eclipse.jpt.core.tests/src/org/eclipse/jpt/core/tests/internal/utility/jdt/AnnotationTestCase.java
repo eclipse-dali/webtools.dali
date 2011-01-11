@@ -24,6 +24,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.BodyDeclaration;
+import org.eclipse.jdt.core.dom.BooleanLiteral;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumConstantDeclaration;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
@@ -564,12 +565,18 @@ public abstract class AnnotationTestCase extends TestCase {
 		}
 		return null;
 	}
-
 	/**
 	 * Build a number literal and set its initial value to the specified literal.
 	 */
 	protected NumberLiteral newNumberLiteral(AST ast, int value) {
 		return ast.newNumberLiteral(Integer.toString(value));
+	}
+
+	/**
+	 * Build a number literal and set its initial value to the specified literal.
+	 */
+	protected BooleanLiteral newBooleanLiteral(AST ast, boolean value) {
+		return ast.newBooleanLiteral(value);
 	}
 
 	/**
@@ -614,6 +621,10 @@ public abstract class AnnotationTestCase extends TestCase {
 		return this.newMemberValuePair(ast, name, this.newNumberLiteral(ast, value));
 	}
 
+	protected MemberValuePair newMemberValuePair(AST ast, String name, boolean value) {
+		return this.newMemberValuePair(ast, name, this.newBooleanLiteral(ast, value));
+	}
+
 	protected EnumConstantDeclaration newEnumConstantDeclaration(AST ast, String enumConstantName) {
 		EnumConstantDeclaration enumConstantDeclaration = ast.newEnumConstantDeclaration();
 		enumConstantDeclaration.setName(ast.newSimpleName(enumConstantName));
@@ -650,6 +661,12 @@ public abstract class AnnotationTestCase extends TestCase {
 	 * Return the resulting normal annotation.
 	 */
 	protected NormalAnnotation addMemberValuePair(MarkerAnnotation annotation, String name, String value) {
+		NormalAnnotation normalAnnotation = this.replaceMarkerAnnotation(annotation);
+		this.addMemberValuePair(normalAnnotation, this.newMemberValuePair(annotation.getAST(), name, value));
+		return normalAnnotation;
+	}
+
+	protected NormalAnnotation addMemberValuePair(MarkerAnnotation annotation, String name, boolean value) {
 		NormalAnnotation normalAnnotation = this.replaceMarkerAnnotation(annotation);
 		this.addMemberValuePair(normalAnnotation, this.newMemberValuePair(annotation.getAST(), name, value));
 		return normalAnnotation;

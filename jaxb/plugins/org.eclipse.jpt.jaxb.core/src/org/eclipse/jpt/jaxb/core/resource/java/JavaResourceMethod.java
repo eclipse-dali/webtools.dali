@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,13 +25,8 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface JavaResourceMethod
-	extends JavaResourceMember
+	extends JavaResourceAttribute
 {
-	/**
-	 * Return the methods's name, as opposed to the member's name
-	 * (e.g. "getFoo()" returns "foo"). This does not change.
-	 */
-	String getName();
 
 	/**
 	 * The Java resource method's name does not change.

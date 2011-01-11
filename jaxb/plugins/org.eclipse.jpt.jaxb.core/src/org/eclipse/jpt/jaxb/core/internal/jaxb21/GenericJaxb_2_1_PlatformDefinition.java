@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,15 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.jaxb21;
 
+import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.internal.JavaPackageInfoResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.JavaResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlElementMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlTransientMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAnyAttributeAnnotationDefinition;
@@ -28,6 +34,7 @@ import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementAnnotationDefi
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementDeclAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementRefAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementWrapperAnnotationDefinition;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlElementsAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlEnumValueAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlIDAnnotationDefinition;
@@ -85,7 +92,9 @@ public class GenericJaxb_2_1_PlatformDefinition
 				XmlAnyElementAnnotationDefinition.instance(),
 				XmlAttachmentRefAnnotationDefinition.instance(),
 				XmlAttributeAnnotationDefinition.instance(),
+				XmlElementAnnotationDefinition.instance(),
 				XmlElementDeclAnnotationDefinition.instance(),
+				XmlElementsAnnotationDefinition.instance(),
 				XmlElementWrapperAnnotationDefinition.instance(),
 				XmlEnumAnnotationDefinition.instance(),
 				XmlEnumValueAnnotationDefinition.instance(),
@@ -107,7 +116,6 @@ public class GenericJaxb_2_1_PlatformDefinition
 	@Override
 	protected NestableAnnotationDefinition[] buildNestableAnnotationDefinitions() {
 		return new NestableAnnotationDefinition[] {
-			XmlElementAnnotationDefinition.instance(),
 			XmlElementRefAnnotationDefinition.instance(),
 			XmlJavaTypeAdapterAnnotationDefinition.instance(),
 			XmlSchemaTypeAnnotationDefinition.instance()
@@ -142,47 +150,21 @@ public class GenericJaxb_2_1_PlatformDefinition
 			JavaResourceModelProvider.instance(),
 			JavaPackageInfoResourceModelProvider.instance()};
 	}
+
+	// ********** Java attribute mappings **********
 	
-//	
-//	// ********** Java type mappings **********
-//	
-//	@Override
-//	protected JavaTypeMappingDefinition[] buildNonNullJavaTypeMappingDefinitions() {
-//		// order determined by analyzing order that reference implementation (toplink) uses
-//		return new JavaTypeMappingDefinition[] {
-//			JavaEntityDefinition.instance(),
-//			JavaEmbeddableDefinition.instance(),
-//			JavaMappedSuperclassDefinition.instance()};
-//	}
-//	
-//	
-//	// ********** Java attribute mappings **********
-//	
-//	@Override
-//	protected JavaAttributeMappingDefinition[] buildNonNullDefaultJavaAttributeMappingDefinitions() {
-//		// order determined by analyzing order that reference implementation (toplink) uses
-//		return new JavaAttributeMappingDefinition[] {
-//			JavaEmbeddedMappingDefinition.instance(),
-//			JavaBasicMappingDefinition.instance()};
-//	}
-//	
-//	@Override
-//	protected JavaAttributeMappingDefinition[] buildNonNullSpecifiedJavaAttributeMappingDefinitions() {
-//		// order determined by analyzing order that reference implementation (eclipselink) uses
-//		return new JavaAttributeMappingDefinition[] {
-//			JavaTransientMappingDefinition.instance(),
-//			JavaIdMappingDefinition.instance(),
-//			JavaVersionMappingDefinition.instance(),
-//			JavaBasicMappingDefinition.instance(),
-//			JavaEmbeddedMappingDefinition.instance(),
-//			JavaEmbeddedIdMappingDefinition.instance(),
-//			JavaManyToManyMappingDefinition.instance(),
-//			JavaManyToOneMappingDefinition.instance(),
-//			JavaOneToManyMappingDefinition.instance(),
-//			JavaOneToOneMappingDefinition.instance()};
-//	}
-//	
-//	
+	@Override
+	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(ArrayList<JavaAttributeMappingDefinition> definitions) {
+		definitions.add(JavaXmlAttributeMappingDefinition.instance());
+		definitions.add(JavaXmlElementMappingDefinition.instance());
+		definitions.add(JavaXmlTransientMappingDefinition.instance());
+	}
+
+	@Override
+	protected void addDefaultJavaAttributeMappingDefinitionsTo(ArrayList<DefaultJavaAttributeMappingDefinition> definitions) {
+		definitions.add(JavaXmlElementMappingDefinition.instance());
+	}
+	
 //	// ********** Mapping Files **********
 //	
 //	@Override

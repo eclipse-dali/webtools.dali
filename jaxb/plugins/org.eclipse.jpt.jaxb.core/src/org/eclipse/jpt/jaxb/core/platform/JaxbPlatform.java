@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,6 +15,9 @@ import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 
 /**
  * Provisional API: This class is part of an interim API that is still
@@ -62,5 +65,30 @@ public interface JaxbPlatform {
 	 * code.
 	 */
 	AnnotationEditFormatter getAnnotationEditFormatter();
+
+
+	// ********** Java attribute mappings **********
+
+	Iterable<JavaAttributeMappingDefinition> getSpecifiedJavaAttributeMappingDefinitions();
+
+	Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions();
+
+	/**
+	 * Return a {@link JavaAttributeMappingDefinition} that describes the interpretation of the attribute
+	 * as it exists, complete with annotations.  It is assumed that the attribute's default mapping
+	 * has already been determined.
+	 * This may not be null (@see {@link NullSpecifiedJavaAttributeMappingDefinition},) else
+	 * an {@link IllegalStateException} is thrown.
+	 * 
+	 * @param attribute The persistent attribute to analyze
+	 * @return The mapping definition describing the annotated state of the attribute
+	 */
+	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(JaxbPersistentAttribute attribute);
+
+	/**
+	 * Return a {@link JavaAttributeMappingDefinition} for the given mapping key.
+	 * Throw an {@link IllegalArgumentException} if the key is not supported by the platform.
+	 */
+	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey);
 
 }
