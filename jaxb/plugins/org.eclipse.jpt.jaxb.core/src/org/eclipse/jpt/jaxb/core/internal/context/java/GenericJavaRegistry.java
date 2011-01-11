@@ -9,12 +9,15 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementDeclAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlRegistryAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 
@@ -35,6 +38,11 @@ public class GenericJavaRegistry
 	public JavaResourceType getJavaResourceType() {
 		return (JavaResourceType) super.getJavaResourceType();
 	}
+	
+	protected XmlRegistryAnnotation getAnnotation() {
+		return (XmlRegistryAnnotation) getJavaResourceType().getNonNullAnnotation(XmlRegistryAnnotation.ANNOTATION_NAME);
+	}
+	
 	
 	// ********** JaxbType impl **********
 	
@@ -94,7 +102,17 @@ public class GenericJavaRegistry
 	}
 
 	protected static final String JAXB_ELEMENT_TYPE_NAME = "javax.xml.bind.JAXBElement"; //$NON-NLS-1$
-
+	
+	
+	// **************** validation ********************************************
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = getAnnotation().getTextRange(astRoot);
+		return (textRange != null) ? textRange : super.getValidationTextRange(astRoot);
+	}
+	
+	
 	/**
 	 * element factory method container adapter
 	 */
