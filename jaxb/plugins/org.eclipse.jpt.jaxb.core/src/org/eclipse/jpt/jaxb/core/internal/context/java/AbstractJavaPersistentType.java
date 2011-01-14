@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,8 +25,13 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
 import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -270,6 +275,49 @@ public abstract class AbstractJavaPersistentType
 
 	protected XmlRootElementAnnotation getRootElementAnnotation() {
 		return (XmlRootElementAnnotation) this.getJavaResourceType().getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
+	}
+	
+	
+	// **************** content assist ****************************************
+	
+	@Override
+	public Iterable<String> javaCompletionProposals(
+			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (nameTouches(pos, astRoot)) {
+			return nameCandidates(filter);
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return getXmlTypeAnnotation().nameTouches(pos, astRoot);
+	}
+	
+	protected Iterable<String> nameCandidates(Filter<String> filter) {
+		String namespace = getNamespaceForContentAssist();
+		XsdSchema schema = getJaxbPackage().getXsdSchema();
+		if (schema == null) {
+			return EmptyIterable.instance();
+		}
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(
+					new TransformationIterable<XsdTypeDefinition, String>(schema.getTypeDefinitions(namespace)) {
+						@Override
+						protected String transform(XsdTypeDefinition o) {
+							return o.getName();
+						}
+					},
+					filter));
+	}
+	
+	protected String getNamespaceForContentAssist() {
+		return (this.namespace != null) ? this.namespace : getJaxbPackage().getNamespace();
 	}
 	
 	
