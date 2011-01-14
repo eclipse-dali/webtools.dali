@@ -27,6 +27,7 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="[3.6.100,4.0.0)",
  org.eclipse.xsd;bundle-version="[2.6.0,3.0.0)"
 Export-Package: org.eclipse.jpt.jaxb.core,
  org.eclipse.jpt.jaxb.core.context,
+ org.eclipse.jpt.jaxb.core.context.java,
  org.eclipse.jpt.jaxb.core.internal;x-internal:=true,
  org.eclipse.jpt.jaxb.core.internal.context;x-internal:=true,
  org.eclipse.jpt.jaxb.core.internal.context.java;x-internal:=true,
@@ -42,4 +43,5 @@ Export-Package: org.eclipse.jpt.jaxb.core,
  org.eclipse.jpt.jaxb.core.internal.resource.java.source;x-internal:=true,
  org.eclipse.jpt.jaxb.core.internal.validation,
  org.eclipse.jpt.jaxb.core.platform,
- org.eclipse.jpt.jaxb.core.resource.java
+ org.eclipse.jpt.jaxb.core.resource.java,
+ org.eclipse.jpt.jaxb.core.xsd
