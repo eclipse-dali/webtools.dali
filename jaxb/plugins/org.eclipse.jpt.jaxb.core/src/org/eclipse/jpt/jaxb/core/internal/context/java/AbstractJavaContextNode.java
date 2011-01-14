@@ -13,25 +13,39 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 
-public abstract class AbstractJavaJaxbContextNode
-		extends AbstractJaxbContextNode {
+public abstract class AbstractJavaContextNode
+		extends AbstractJaxbContextNode
+		implements JavaContextNode {
 	
 	// **************** constructor *******************************************
 	
-	protected AbstractJavaJaxbContextNode(JaxbNode parent) {
+	protected AbstractJavaContextNode(JaxbNode parent) {
 		super(parent);
 	}
 	
 	
+	// **************** content assist ****************************************
+	
+	public Iterable<String> javaCompletionProposals(
+			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		return EmptyIterable.instance();
+	}
+	
+	
+	// **************** validation ********************************************
+	
+	public abstract TextRange getValidationTextRange(CompilationUnit astRoot);
+	
 	/**
-	 * Adds to the list of current validation messages.
-	 * 
 	 * All subclass implementations {@link #validate(List, CompilationUnit))} 
 	 * should be preceded by a "super" call to this method
 	 */
@@ -40,7 +54,4 @@ public abstract class AbstractJavaJaxbContextNode
 			throw new ValidationCancelledException();
 		}
 	}
-	
-	
-	public abstract TextRange getValidationTextRange(CompilationUnit astRoot);
 }
