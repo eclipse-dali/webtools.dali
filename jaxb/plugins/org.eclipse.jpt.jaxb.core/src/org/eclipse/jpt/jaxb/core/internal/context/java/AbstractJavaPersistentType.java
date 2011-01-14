@@ -288,18 +288,35 @@ public abstract class AbstractJavaPersistentType
 			return result;
 		}
 		
+		if (namespaceTouches(pos, astRoot)) {
+			return namespaceProposals(filter);
+		}
+		
 		if (nameTouches(pos, astRoot)) {
-			return nameCandidates(filter);
+			return nameProposals(filter);
 		}
 		
 		return EmptyIterable.instance();
+	}
+	
+	protected boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return getXmlTypeAnnotation().namespaceTouches(pos, astRoot);
+	}
+	
+	protected Iterable<String> namespaceProposals(Filter<String> filter) {
+		XsdSchema schema = getJaxbPackage().getXsdSchema();
+		if (schema == null) {
+			return EmptyIterable.instance();
+		}
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(schema.getNamespaces(), filter));
 	}
 	
 	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return getXmlTypeAnnotation().nameTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> nameCandidates(Filter<String> filter) {
+	protected Iterable<String> nameProposals(Filter<String> filter) {
 		String namespace = getNamespaceForContentAssist();
 		XsdSchema schema = getJaxbPackage().getXsdSchema();
 		if (schema == null) {
