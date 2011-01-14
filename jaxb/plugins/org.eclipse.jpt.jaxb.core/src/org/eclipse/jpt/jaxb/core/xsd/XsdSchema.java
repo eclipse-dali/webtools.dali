@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -28,6 +29,21 @@ public class XsdSchema
 	
 	public Iterable<XsdTypeDefinition> getTypeDefinitions() {
 		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(this.xsdSchema.getTypeDefinitions()) {
+			@Override
+			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
+				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
+			}
+		};
+	}
+	
+	public Iterable<XsdTypeDefinition> getTypeDefinitions(final String namespace) {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(
+				new FilteringIterable<XSDTypeDefinition>(this.xsdSchema.getTypeDefinitions()) {
+					@Override
+					protected boolean accept(XSDTypeDefinition o) {
+						return o.getTargetNamespace().equals(namespace);
+					}
+				}) {
 			@Override
 			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(o);

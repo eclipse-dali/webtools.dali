@@ -22,4 +22,9 @@ public abstract class XsdTypeDefinition
 	protected XsdTypeDefinition(XSDTypeDefinition xsdTypeDefinition) {
 		this.xsdTypeDefinition = xsdTypeDefinition;
 	}
+	
+	
+	public String getName() {
+		return this.xsdTypeDefinition.getName();
+	}
 }
