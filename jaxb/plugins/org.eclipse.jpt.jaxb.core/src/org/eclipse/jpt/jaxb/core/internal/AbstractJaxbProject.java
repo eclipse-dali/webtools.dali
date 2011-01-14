@@ -30,7 +30,10 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.IPackageDeclaration;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -41,6 +44,10 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
+import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
@@ -52,8 +59,11 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.BitTools;
+import org.eclipse.jpt.utility.internal.NotNullFilter;
 import org.eclipse.jpt.utility.internal.ThreadLocalCommandExecutor;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
@@ -550,8 +560,67 @@ public abstract class AbstractJaxbProject
 	public JaxbContextRoot getContextRoot() {
 		return this.contextRoot;
 	}
+	
+	public Iterable<? extends JavaContextNode> getPrimaryJavaNodes(ICompilationUnit cu) {
+		IFile file = getCorrespondingResource(cu);
+		if (file == null) {	
+			return EmptyIterable.instance();
+		}
+		
+		IContentType contentType = PlatformTools.getContentType(file);
+		if (contentType == null) {
+			return EmptyIterable.instance();
+		}
+		
+		if (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+			try {
+				return new FilteringIterable<JaxbPackageInfo>(
+						new TransformationIterable<IPackageDeclaration, JaxbPackageInfo>(
+								new ArrayIterable<IPackageDeclaration>(cu.getPackageDeclarations())) {
+							@Override
+							protected JaxbPackageInfo transform(IPackageDeclaration o) {
+								JaxbPackage jaxbPackage = getContextRoot().getPackage(o.getElementName());
+								return (jaxbPackage != null) ? jaxbPackage.getPackageInfo() : null;
+							}
+						},
+						NotNullFilter.<JaxbPackageInfo>instance());
+			}
+			catch (JavaModelException jme) {
+				return EmptyIterable.instance();
+			}
+		}
+		else if (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			try {
+				return new FilteringIterable<JaxbType>(
+						new TransformationIterable<IType, JaxbType>(
+								new ArrayIterable<IType>(cu.getAllTypes())) {
+							@Override
+							protected JaxbType transform(IType o) {
+								JaxbType jaxbType = getContextRoot().getType(o.getFullyQualifiedName('.'));
+								return jaxbType;
+							}
+						},
+						NotNullFilter.<JaxbType>instance());
+			}
+			catch (JavaModelException jme) {
+				return EmptyIterable.instance();
+			}
+		}
 
-
+		return EmptyIterable.instance();
+	}
+	
+	private IFile getCorrespondingResource(ICompilationUnit cu) {
+		try {
+			return (IFile) cu.getCorrespondingResource();
+		}
+		catch (JavaModelException ex) {
+			JptJaxbCorePlugin.log(ex);
+			return null;
+		}
+	}
+	
+	
 //	// ********** utility **********
 //
 //	public IFile getPlatformFile(IPath runtimePath) {

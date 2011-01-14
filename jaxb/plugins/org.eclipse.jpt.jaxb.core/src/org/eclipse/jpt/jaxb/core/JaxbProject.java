@@ -15,8 +15,10 @@ import org.eclipse.core.resources.IResourceDelta;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
+import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
@@ -79,11 +81,6 @@ public interface JaxbProject
 	 */
 	SchemaLibrary getSchemaLibrary();
 	
-	/**
-	 * Return the root of the JAXB project's context model.
-	 */
-	JaxbContextRoot getContextRoot();
-
 	/**
 	 * The JAXB project has been removed from the JJAXBPA model. Clean up any
 	 * hooks to external resources etc.
@@ -210,8 +207,23 @@ public interface JaxbProject
 	 */
 	JavaResourceEnum getJavaResourceEnum(String enumName);
 	
-	// ********** model synchronization **********
+	
+	// **************** context model *****************************************
+	
+	/**
+	 * Return the root of the JAXB project's context model.
+	 */
+	JaxbContextRoot getContextRoot();
 
+	/**
+	 * Return all types/package infos that are primary context objects for the 
+	 * given compilation unit
+	 */
+	Iterable<? extends JavaContextNode> getPrimaryJavaNodes(ICompilationUnit cu);
+	
+	
+	// ********** model synchronization **********
+	
 	/**
 	 * Synchronize the JPA project with the specified project resource
 	 * delta, watching for added and removed files in particular.
