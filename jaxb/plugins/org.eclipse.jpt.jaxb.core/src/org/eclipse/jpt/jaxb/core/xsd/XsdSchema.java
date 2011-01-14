@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
@@ -27,8 +28,12 @@ public class XsdSchema
 	}
 	
 	
+	public Iterable<String> getNamespaces() {
+		return new SnapshotCloneIterable(this.xsdSchema.getQNamePrefixToNamespaceMap().values());
+	}
+	
 	public Iterable<XsdTypeDefinition> getTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(this.xsdSchema.getTypeDefinitions()) {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getXSDTypeDefinitions()) {
 			@Override
 			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
@@ -38,7 +43,7 @@ public class XsdSchema
 	
 	public Iterable<XsdTypeDefinition> getTypeDefinitions(final String namespace) {
 		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(
-				new FilteringIterable<XSDTypeDefinition>(this.xsdSchema.getTypeDefinitions()) {
+				new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions()) {
 					@Override
 					protected boolean accept(XSDTypeDefinition o) {
 						return o.getTargetNamespace().equals(namespace);
@@ -52,11 +57,15 @@ public class XsdSchema
 	}
 	
 	public XsdTypeDefinition getTypeDefinition(String namespace, String name) {
-		for (XSDTypeDefinition typeDefinition : this.xsdSchema.getTypeDefinitions()) {
+		for (XSDTypeDefinition typeDefinition : getXSDTypeDefinitions()) {
 			if (typeDefinition.getTargetNamespace().equals(namespace) && typeDefinition.getName().equals(name)) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(typeDefinition);
 			}
 		}
 		return null;
+	}
+	
+	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions() {
+		return new SnapshotCloneIterable(this.xsdSchema.getTypeDefinitions());
 	}
 }
