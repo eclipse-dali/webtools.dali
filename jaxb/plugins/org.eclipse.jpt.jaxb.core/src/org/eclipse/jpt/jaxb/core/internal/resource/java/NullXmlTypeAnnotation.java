@@ -107,8 +107,12 @@ public final class NullXmlTypeAnnotation
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
-
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return false;
+	}
+	
+	
 	public ListIterable<String> getPropOrder() {
 		return EmptyListIterable.instance();
 	}

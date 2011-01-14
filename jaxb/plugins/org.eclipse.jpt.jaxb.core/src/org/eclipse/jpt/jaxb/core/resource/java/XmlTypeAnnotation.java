@@ -27,8 +27,8 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlTypeAnnotation
-	extends Annotation
-{
+		extends Annotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_TYPE;
 
 	/**
@@ -128,7 +128,13 @@ public interface XmlTypeAnnotation
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
 	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * Return whether the specified position touches the 'namespace' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean namespaceTouches(int pos, CompilationUnit astRoot);
+	
 	/**
 	 * Corresponds to the 'propOrder' element of the XmlType annotation.
 	 * Return an empty iterator if the element does not exist in Java.

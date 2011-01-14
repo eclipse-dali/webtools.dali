@@ -241,7 +241,12 @@ public final class SourceXmlTypeAnnotation
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(NAMESPACE_ADAPTER, astRoot);
 	}
-
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(NAMESPACE_ADAPTER, pos, astRoot);
+	}
+	
+	
 	// ***** prop order
 	public ListIterable<String> getPropOrder() {
 		return new LiveCloneListIterable<String>(this.propOrder);
