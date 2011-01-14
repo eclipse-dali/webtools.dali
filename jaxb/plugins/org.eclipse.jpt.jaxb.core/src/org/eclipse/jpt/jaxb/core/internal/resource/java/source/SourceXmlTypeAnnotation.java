@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,8 +24,8 @@ import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
-import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
@@ -206,11 +206,16 @@ public final class SourceXmlTypeAnnotation
 	private String buildName(CompilationUnit astRoot) {
 		return this.nameAdapter.getValue(astRoot);
 	}
-
+	
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(NAME_ADAPTER, astRoot);
+		return getElementTextRange(NAME_ADAPTER, astRoot);
 	}
-
+	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(NAME_ADAPTER, pos, astRoot);
+	}
+	
+	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;

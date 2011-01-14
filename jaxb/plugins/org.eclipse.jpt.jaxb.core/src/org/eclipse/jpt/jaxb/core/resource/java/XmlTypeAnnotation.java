@@ -103,7 +103,13 @@ public interface XmlTypeAnnotation
 	 * does not exist return the {@link TextRange} for the XmlType annotation.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * Return whether the specified position touches the 'name' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
+	
 	/**
 	 * Corresponds to the 'namespace' element of the XmlType annotation.
 	 * Return null if the element does not exist in Java.
