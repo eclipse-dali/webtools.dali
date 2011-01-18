@@ -42,7 +42,7 @@ public abstract class AbstractJavaPersistentType
 	protected String factoryClass;
 	protected String factoryMethod;
 	protected String specifiedXmlTypeName;
-	protected String namespace;
+	protected String specifiedNamespace;
 	protected final PropOrderContainer propOrderContainer;
 
 	protected XmlRootElement rootElement;
@@ -52,7 +52,7 @@ public abstract class AbstractJavaPersistentType
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();
 		this.specifiedXmlTypeName = this.getResourceXmlTypeName();
-		this.namespace = this.getResourceNamespace();
+		this.specifiedNamespace = this.getResourceNamespace();
 		this.propOrderContainer = new PropOrderContainer();
 		this.rootElement = this.buildRootElement();
 	}
@@ -73,7 +73,7 @@ public abstract class AbstractJavaPersistentType
 		this.setFactoryClass_(getResourceFactoryClass());
 		this.setFactoryMethod_(getResourceFactoryMethod());
 		this.setSpecifiedXmlTypeName_(getResourceXmlTypeName());
-		this.setNamespace_(getResourceNamespace());
+		this.setSpecifiedNamespace_(getResourceNamespace());
 		this.syncPropOrder();
 		this.syncRootElement();
 	}
@@ -164,20 +164,28 @@ public abstract class AbstractJavaPersistentType
 	// ********** namespace **********
 
 	public String getNamespace() {
-		return this.namespace;
+		return (this.specifiedNamespace != null) ? this.specifiedNamespace : getDefaultNamespace();
 	}
-
-	public void setNamespace(String namespace) {
+	
+	public String getSpecifiedNamespace() {
+		return this.specifiedNamespace;
+	}
+	
+	public void setSpecifiedNamespace(String namespace) {
 		this.getXmlTypeAnnotation().setNamespace(namespace);
-		this.setNamespace_(namespace);	
+		this.setSpecifiedNamespace_(namespace);	
 	}
-
-	protected void setNamespace_(String namespace) {
-		String old = this.namespace;
-		this.namespace = namespace;
-		this.firePropertyChanged(NAMESPACE_PROPERTY, old, namespace);
+	
+	protected void setSpecifiedNamespace_(String namespace) {
+		String old = this.specifiedNamespace;
+		this.specifiedNamespace = namespace;
+		this.firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, old, namespace);
 	}
-
+	
+	public String getDefaultNamespace() {
+		return getJaxbPackage().getNamespace();
+	}
+	
 	protected String getResourceNamespace() {
 		return this.getXmlTypeAnnotation().getNamespace();
 	}
@@ -296,6 +304,13 @@ public abstract class AbstractJavaPersistentType
 			return nameProposals(filter);
 		}
 		
+		if (this.rootElement != null) {
+			result = this.rootElement.javaCompletionProposals(pos, filter, astRoot);
+			if (! CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		
 		return EmptyIterable.instance();
 	}
 	
@@ -317,7 +332,7 @@ public abstract class AbstractJavaPersistentType
 	}
 	
 	protected Iterable<String> nameProposals(Filter<String> filter) {
-		String namespace = getNamespaceForContentAssist();
+		String namespace = getNamespace();
 		XsdSchema schema = getJaxbPackage().getXsdSchema();
 		if (schema == null) {
 			return EmptyIterable.instance();
@@ -333,10 +348,6 @@ public abstract class AbstractJavaPersistentType
 					filter));
 	}
 	
-	protected String getNamespaceForContentAssist() {
-		return (this.namespace != null) ? this.namespace : getJaxbPackage().getNamespace();
-	}
-	
 	
 	// **************** validation ********************************************
 	
@@ -350,11 +361,19 @@ public abstract class AbstractJavaPersistentType
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		
+		validateXmlType(messages, reporter, astRoot);
+		
+		if (this.rootElement != null) {
+			this.rootElement.validate(messages, reporter, astRoot);
+		}
+	}
+	
+	protected void validateXmlType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		// 1. if name is absent (""), namespace cannot be different from package namespace
 		// 2. if name is not absent (""), type must be from schema associated with this package
 		
 		String name = getXmlTypeName();
-		String namespace = getNamespaceForValidation();
+		String namespace = getNamespace();
 		if ("".equals(name)) {
 			if (! StringTools.stringsAreEqual(namespace, getJaxbPackage().getNamespace())) {
 				messages.add(
@@ -383,10 +402,13 @@ public abstract class AbstractJavaPersistentType
 		}
 	}
 	
-	protected String getNamespaceForValidation() {
-		return (this.namespace != null) ? this.namespace : getJaxbPackage().getNamespace();
-	}
 	
+	// **************** misc **************************************************
+	
+	public XsdTypeDefinition getXsdTypeDefinition() {
+		XsdSchema xsdSchema = getJaxbPackage().getXsdSchema();
+		return (xsdSchema == null) ? null : xsdSchema.getTypeDefinition(getNamespace(), getXmlTypeName());
+	}
 	
 	@Override
 	public void toString(StringBuilder sb) {

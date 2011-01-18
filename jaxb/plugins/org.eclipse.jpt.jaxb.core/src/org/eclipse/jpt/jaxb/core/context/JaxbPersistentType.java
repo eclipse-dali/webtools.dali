@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.xsd.XsdTypeDefinition;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
@@ -78,14 +79,31 @@ public interface JaxbPersistentType
 	/**************** namespace *****************/
 
 	/**
-	 * namespace corresponds to the XmlType annotation namespace element
+	 * Return the specified xml type namespace or the default namespace if it is not specified
 	 */
 	String getNamespace();
-	void setNamespace(String namespace);
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-
-
+	
+	/**
+	 * Return the specified xml type namespace or null if it is not specified
+	 */
+	String getSpecifiedNamespace();
+	
+	/**
+	 * Set the xml type namespace, null to unspecify (use the default)
+	 */
+	void setSpecifiedNamespace(String namespace);
+	
+	/**
+	 * String constant associated with changes to the specified xml type namespace
+	 */
+	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default namespace
+	 */
+	String getDefaultNamespace();
+	
+	
 	/********** propOrder **********/
 
 	/**
@@ -119,5 +137,10 @@ public interface JaxbPersistentType
 	 */
 	XmlRootElement setRootElement(String name);
 		String ROOT_ELEMENT = "rootElement"; //$NON-NLS-1$
-
+	
+	
+	// **************** misc **************************************************
+	
+	XsdTypeDefinition getXsdTypeDefinition();
+	
 }
