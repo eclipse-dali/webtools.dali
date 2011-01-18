@@ -9,22 +9,28 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 
-public abstract class XsdTypeDefinition
+public class XsdElementDeclaration
 		extends XsdAdapter {
 	
-	protected final XSDTypeDefinition xsdTypeDefinition;
+	protected final XSDElementDeclaration xsdElementDeclaration;
 	
 	
-	protected XsdTypeDefinition(XSDTypeDefinition xsdTypeDefinition) {
+	XsdElementDeclaration(XSDElementDeclaration xsdElementDeclaration) {
 		super();
-		this.xsdTypeDefinition = xsdTypeDefinition;
+		this.xsdElementDeclaration = xsdElementDeclaration;
 	}
 	
 	
 	public String getName() {
-		return this.xsdTypeDefinition.getName();
+		return this.xsdElementDeclaration.getName();
+	}
+	
+	public XsdTypeDefinition getType() {
+		XSDTypeDefinition xsdType = this.xsdElementDeclaration.getTypeDefinition();
+		return (xsdType == null) ? null : (XsdTypeDefinition) XsdUtil.getAdapter(xsdType);
 	}
 }

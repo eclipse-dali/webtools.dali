@@ -9,21 +9,22 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.emf.common.notify.impl.AdapterImpl;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDTypeDefinition;
 
 public class XsdSchema
-		extends AdapterImpl {
+		extends XsdAdapter {
 	
 	protected final XSDSchema xsdSchema;
 	
 	
 	
 	XsdSchema(XSDSchema xsdSchema) {
+		super();
 		this.xsdSchema = xsdSchema;
 	}
 	
@@ -67,5 +68,42 @@ public class XsdSchema
 	
 	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions() {
 		return new SnapshotCloneIterable(this.xsdSchema.getTypeDefinitions());
+	}
+	
+	public Iterable<XsdElementDeclaration> getElementDeclarations() {
+		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(getXSDElementDeclarations()) {
+			@Override
+			protected XsdElementDeclaration transform(XSDElementDeclaration o) {
+				return (XsdElementDeclaration) XsdUtil.getAdapter(o);
+			}
+		};
+	}
+	
+	public Iterable<XsdElementDeclaration> getElementDeclarations(final String namespace) {
+		return new TransformationIterable<XSDElementDeclaration, XsdElementDeclaration>(
+				new FilteringIterable<XSDElementDeclaration>(getXSDElementDeclarations()) {
+					@Override
+					protected boolean accept(XSDElementDeclaration o) {
+						return o.getTargetNamespace().equals(namespace);
+					}
+				}) {
+			@Override
+			protected XsdElementDeclaration transform(XSDElementDeclaration o) {
+				return (XsdElementDeclaration) XsdUtil.getAdapter(o);
+			}
+		};
+	}
+	
+	public XsdElementDeclaration getElementDeclaration(String namespace, String name) {
+		for (XSDElementDeclaration elementDeclaration : getXSDElementDeclarations()) {
+			if (elementDeclaration.getTargetNamespace().equals(namespace) && elementDeclaration.getName().equals(name)) {
+				return (XsdElementDeclaration) XsdUtil.getAdapter(elementDeclaration);
+			}
+		}
+		return null;
+	}
+	
+	protected Iterable<XSDElementDeclaration> getXSDElementDeclarations() {
+		return new SnapshotCloneIterable(this.xsdSchema.getElementDeclarations());
 	}
 }

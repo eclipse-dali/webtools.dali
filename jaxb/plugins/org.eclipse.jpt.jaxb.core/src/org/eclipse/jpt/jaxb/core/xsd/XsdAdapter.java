@@ -9,22 +9,19 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
-import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.emf.common.notify.impl.AdapterImpl;
 
 
-public abstract class XsdTypeDefinition
-		extends XsdAdapter {
+public class XsdAdapter
+		extends AdapterImpl {
 	
-	protected final XSDTypeDefinition xsdTypeDefinition;
-	
-	
-	protected XsdTypeDefinition(XSDTypeDefinition xsdTypeDefinition) {
+	protected XsdAdapter() {
 		super();
-		this.xsdTypeDefinition = xsdTypeDefinition;
 	}
 	
 	
-	public String getName() {
-		return this.xsdTypeDefinition.getName();
+	@Override
+	public boolean isAdapterForType(Object type) {
+		return type == XsdUtil.adapterFactory;
 	}
 }

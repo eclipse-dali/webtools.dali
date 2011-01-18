@@ -23,6 +23,7 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
 import org.eclipse.wst.xsd.contentmodel.internal.util.XSDSchemaLocatorAdapterFactory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
+import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
@@ -35,7 +36,7 @@ import org.eclipse.xsd.util.XSDSwitch;
  */
 public class XsdUtil {
 	
-	protected static final XsdAdapterFactoryImpl adapterFactory = new XsdAdapterFactoryImpl();
+	static final XsdAdapterFactoryImpl adapterFactory = new XsdAdapterFactoryImpl();
 	
 	/**
 	 * Given uri for an XML Schema document, parse the document and build
@@ -98,6 +99,11 @@ public class XsdUtil {
 				@Override
 				public Object caseXSDComplexTypeDefinition(XSDComplexTypeDefinition object) {
 					return new XsdComplexTypeDefinition(object);
+				}
+				
+				@Override
+				public Object caseXSDElementDeclaration(XSDElementDeclaration object) {
+					return new XsdElementDeclaration(object);
 				}
 			};
 			
