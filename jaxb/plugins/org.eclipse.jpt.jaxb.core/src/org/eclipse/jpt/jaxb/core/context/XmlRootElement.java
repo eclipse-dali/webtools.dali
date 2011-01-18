@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+
 /**
  * Represents a JAXB xml root element.  
  * (A class with either an explicit @XmlRootElement annotation)
@@ -23,26 +25,60 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlRootElement
-	extends 
-		JaxbContextNode
-{
-
+		extends JavaContextNode {
+	
 	/**************** name *****************/
 
 	/**
-	 * Name corresponds to the XmRootElement annotation name element
+	 * Return the specified name or the default type name if it is not specified
 	 */
 	String getName();
-	void setName(String name);
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	
+	/**
+	 * Return the specified name or null if it is not specified
+	 */
+	String getSpecifiedName();
+	
+	/**
+	 * Set the name, null to unspecify (use the default)
+	 */
+	void setSpecifiedName(String name);
+	
+	/**
+	 * String constant associated with changes to the specified name
+	 */
+	String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default name
+	 */
+	String getDefaultName();
 
 
 	/**************** namespace *****************/
 
 	/**
-	 * namespace corresponds to the XmRootElement annotation namespace element
+	 * Return the specified namespace or the default namespace if it is not specified
 	 */
 	String getNamespace();
-	void setNamespace(String namespace);
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+	
+	/**
+	 * Return the specified namespace or null if it is not specified
+	 */
+	String getSpecifiedNamespace();
+	
+	/**
+	 * Set the namespace, null to unspecify (use the default)
+	 */
+	void setSpecifiedNamespace(String namespace);
+	
+	/**
+	 * String constant associated with changes to the specified namespace
+	 */
+	String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
+	
+	/**
+	 * Return the default namespace
+	 */
+	String getDefaultNamespace();
 }

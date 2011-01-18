@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context.java;
 
+import java.beans.Introspector;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
@@ -18,8 +19,8 @@ import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
-import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -54,18 +55,22 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(contextRootElement.getNamespace());
 		
-		contextRootElement.setNamespace("foo");
+		assertNull(contextRootElement.getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getDefaultNamespace());
+		assertEquals("", contextRootElement.getNamespace());
+		
+		contextRootElement.setSpecifiedNamespace("foo");
 		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", rootElementAnnotation.getNamespace());
+		assertEquals("foo", contextRootElement.getSpecifiedNamespace());
 		assertEquals("foo", contextRootElement.getNamespace());
 		
-		contextRootElement.setNamespace(null);
+		contextRootElement.setSpecifiedNamespace(null);
 		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertNull(rootElementAnnotation.getNamespace());
-		assertNull(contextRootElement.getNamespace());
+		assertNull(contextRootElement.getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -73,8 +78,10 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-
-		assertNull(contextRootElement.getNamespace());
+		
+		assertNull(contextRootElement.getSpecifiedNamespace());
+		assertEquals("", contextRootElement.getDefaultNamespace());
+		assertEquals("", contextRootElement.getNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -83,8 +90,9 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 				GenericJavaXmlRootElementTests.this.addXmlRootElementMemberValuePair(declaration, JAXB.XML_ROOT_ELEMENT__NAMESPACE, "foo");
 			}
 		});
+		assertEquals("foo", contextRootElement.getSpecifiedNamespace());
 		assertEquals("foo", contextRootElement.getNamespace());
-
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, XmlRootElementAnnotation.ANNOTATION_NAME);
@@ -99,18 +107,23 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-	
-		assertNull(contextRootElement.getName());
+		String defaultName = Introspector.decapitalize(TYPE_NAME);
 		
-		contextRootElement.setName("foo");
+		assertNull(contextRootElement.getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getDefaultName());
+		assertEquals(defaultName, contextRootElement.getName());
+		
+		contextRootElement.setSpecifiedName("foo");
 		XmlRootElementAnnotation rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", rootElementAnnotation.getName());
+		assertEquals("foo", contextRootElement.getSpecifiedName());
 		assertEquals("foo", contextRootElement.getName());
 		
-		contextRootElement.setName(null);
+		contextRootElement.setSpecifiedName(null);
 		rootElementAnnotation = (XmlRootElementAnnotation) resourceType.getAnnotation(XmlRootElementAnnotation.ANNOTATION_NAME);
 		assertNull(rootElementAnnotation.getName());
-		assertNull(contextRootElement.getName());
+		assertNull(contextRootElement.getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getName());
 	}
 	
 	public void testUpdateName() throws Exception {
@@ -118,8 +131,11 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		XmlRootElement contextRootElement = persistentClass.getRootElement();
 		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
-
-		assertNull(contextRootElement.getName());
+		String defaultName = Introspector.decapitalize(TYPE_NAME);
+		
+		assertNull(contextRootElement.getSpecifiedName());
+		assertEquals(defaultName, contextRootElement.getDefaultName());
+		assertEquals(defaultName, contextRootElement.getName());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
@@ -128,8 +144,9 @@ public class GenericJavaXmlRootElementTests extends JaxbContextModelTestCase
 				GenericJavaXmlRootElementTests.this.addXmlRootElementMemberValuePair(declaration, JAXB.XML_ROOT_ELEMENT__NAME, "foo");
 			}
 		});
+		assertEquals("foo", contextRootElement.getSpecifiedName());
 		assertEquals("foo", contextRootElement.getName());
-
+		
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
 				GenericJavaXmlRootElementTests.this.removeAnnotation(declaration, XmlRootElementAnnotation.ANNOTATION_NAME);
