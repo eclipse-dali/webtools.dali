@@ -3,19 +3,19 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> named query
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,12 +27,9 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
  */
 public interface OrmNamedQuery
 	extends OrmQuery, NamedQuery
-{	
-	ListIterator<OrmQueryHint> hints();
-	
-	/**
-	 * Update the OrmNamedQuery context model object to match the XmlNamedQuery 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlNamedQuery queryResource);
+{
+	XmlNamedQuery getXmlQuery();
+
+	// required to resolve ambiguity
+	ListIterable<OrmQueryHint> getHints();
 }

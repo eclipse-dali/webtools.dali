@@ -10,9 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 
 /**
+ * <code>orm.xml</code> relationship (1:1, 1:m, m:1, m:m) mapping.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,9 +25,11 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
  * @since 2.0
  */
 public interface OrmRelationshipMapping
-	extends OrmAttributeMapping, RelationshipMapping
+	extends RelationshipMapping, OrmAttributeMapping
 {
-	OrmRelationshipReference getRelationshipReference();
+	AbstractXmlRelationshipMapping getXmlAttributeMapping();
 	
-	OrmCascade2_0 getCascade();
+	OrmCascade getCascade();
+
+	OrmMappingRelationshipReference getRelationshipReference();
 }

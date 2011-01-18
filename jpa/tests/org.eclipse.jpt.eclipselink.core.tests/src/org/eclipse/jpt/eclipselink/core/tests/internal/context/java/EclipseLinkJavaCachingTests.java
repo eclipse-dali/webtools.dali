@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
@@ -96,11 +96,11 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		
 		//existence checking is the only thing that isn't unset when shared is set to false
-		assertTrue(caching.hasExistenceChecking());
+		assertTrue(caching.isExistenceChecking());
 		assertEquals(EclipseLinkExistenceType.CHECK_CACHE, caching.getSpecifiedExistenceType());
 		
 		caching.setSpecifiedShared(null);
-		EclipseLinkExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
+		EclipseLinkTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
 		timeOfDayExpiry.setHour(Integer.valueOf(5));
 		
 		caching.setSpecifiedShared(Boolean.FALSE);
@@ -365,16 +365,16 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		JavaEclipseLinkEntity entity = (JavaEclipseLinkEntity) getJavaPersistentType().getMapping();
 		JavaEclipseLinkCaching caching = entity.getCaching();
 		
-		assertEquals(false, caching.hasExistenceChecking());
+		assertEquals(false, caching.isExistenceChecking());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		typeResource.addAnnotation(EclipseLink.EXISTENCE_CHECKING);	
 		getJpaProject().synchronizeContextModel();
-		assertEquals(true, caching.hasExistenceChecking());
+		assertEquals(true, caching.isExistenceChecking());
 	
 		typeResource.removeAnnotation(EclipseLink.EXISTENCE_CHECKING);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(false, caching.hasExistenceChecking());
+		assertEquals(false, caching.isExistenceChecking());
 	}
 	
 	public void testSetExistenceChecking() throws Exception {
@@ -385,12 +385,12 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		JavaEclipseLinkCaching caching = entity.getCaching();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		
-		assertEquals(false, caching.hasExistenceChecking());
+		assertEquals(false, caching.isExistenceChecking());
 		assertNull(typeResource.getAnnotation(EclipseLink.EXISTENCE_CHECKING));
 		
 		caching.setExistenceChecking(true);
 		
-		assertEquals(true, caching.hasExistenceChecking());
+		assertEquals(true, caching.isExistenceChecking());
 		assertNotNull(typeResource.getAnnotation(EclipseLink.EXISTENCE_CHECKING));
 	}
 	
@@ -497,7 +497,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		caching.setExpiry(null);
 		cacheAnnotation = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
-		assertNull(cacheAnnotation);
+		assertNull(cacheAnnotation.getExpiry());
 	}
 	
 	public void testSetExpiryUnsetsExpiryTimeOfDay() throws Exception {
@@ -551,7 +551,7 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 
-		EclipseLinkExpiryTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
+		EclipseLinkTimeOfDay timeOfDayExpiry = caching.addExpiryTimeOfDay();
 		
 		EclipseLinkCacheAnnotation cacheAnnotation = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
 		assertNotNull(cacheAnnotation.getExpiryTimeOfDay());
@@ -578,7 +578,6 @@ public class EclipseLinkJavaCachingTests extends EclipseLinkContextModelTestCase
 		caching.removeExpiryTimeOfDay();
 		getJpaProject().synchronizeContextModel();
 		assertNull(caching.getExpiryTimeOfDay());
-		assertNull(typeResource.getAnnotation(EclipseLink.CACHE));
 	}
 	
 	public void testAddTimeOfDayExpiryUnsetsExpiry() throws Exception {

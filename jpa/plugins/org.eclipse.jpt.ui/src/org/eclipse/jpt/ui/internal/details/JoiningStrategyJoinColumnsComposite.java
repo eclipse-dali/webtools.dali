@@ -10,12 +10,15 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ReadOnlyWritablePropertyValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ValueListAdapter;
@@ -43,14 +46,14 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class JoiningStrategyJoinColumnsComposite 
-	extends Pane<JoinColumnJoiningStrategy>
+	extends Pane<ReadOnlyJoinColumnJoiningStrategy>
 {
 	
-	private JoinColumnsComposite<JoinColumnJoiningStrategy> joinColumnsComposite;
+	private JoinColumnsComposite<ReadOnlyJoinColumnJoiningStrategy> joinColumnsComposite;
 	
 	public JoiningStrategyJoinColumnsComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<JoinColumnJoiningStrategy> subjectHolder,
+			PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
@@ -58,54 +61,54 @@ public class JoiningStrategyJoinColumnsComposite
 
 	@Override
 	protected void initializeLayout(Composite container) {		
-		this.joinColumnsComposite = new JoinColumnsComposite<JoinColumnJoiningStrategy>(this, container, buildJoinColumnsProvider());
+		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinColumnJoiningStrategy>(this, container, buildJoinColumnsProvider());
 		this.joinColumnsComposite.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 	
-	private JoinColumnsEditor<JoinColumnJoiningStrategy> buildJoinColumnsProvider() {
-		return new JoinColumnsEditor<JoinColumnJoiningStrategy>() {
+	private JoinColumnsEditor<ReadOnlyJoinColumnJoiningStrategy> buildJoinColumnsProvider() {
+		return new JoinColumnsEditor<ReadOnlyJoinColumnJoiningStrategy>() {
 
-			public void addJoinColumn(JoinColumnJoiningStrategy subject) {
+			public void addJoinColumn(ReadOnlyJoinColumnJoiningStrategy subject) {
 				JoiningStrategyJoinColumnsComposite.this.addJoinColumn(subject);
 			}
 
-			public boolean hasSpecifiedJoinColumns(JoinColumnJoiningStrategy subject) {
+			public boolean hasSpecifiedJoinColumns(ReadOnlyJoinColumnJoiningStrategy subject) {
 				return subject.hasSpecifiedJoinColumns();
 			}
 
-			public void editJoinColumn(JoinColumnJoiningStrategy subject, JoinColumn joinColumn) {
+			public void editJoinColumn(ReadOnlyJoinColumnJoiningStrategy subject, ReadOnlyJoinColumn joinColumn) {
 				JoiningStrategyJoinColumnsComposite.this.editJoinColumn(subject, joinColumn);
 			}
 
-			public JoinColumn getDefaultJoinColumn(JoinColumnJoiningStrategy subject) {
+			public ReadOnlyJoinColumn getDefaultJoinColumn(ReadOnlyJoinColumnJoiningStrategy subject) {
 				return subject.getDefaultJoinColumn();
 			}
 
 			public String getDefaultPropertyName() {
-				return JoinColumnJoiningStrategy.DEFAULT_JOIN_COLUMN_PROPERTY;
+				return ReadOnlyJoinColumnJoiningStrategy.DEFAULT_JOIN_COLUMN_PROPERTY;
 			}
 
 			public String getSpecifiedJoinColumnsListPropertyName() {
-				return JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST;
+				return ReadOnlyJoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST;
 			}
 
-			public void removeJoinColumns(JoinColumnJoiningStrategy subject, int[] selectedIndices) {
+			public void removeJoinColumns(ReadOnlyJoinColumnJoiningStrategy subject, int[] selectedIndices) {
 				for (int index = selectedIndices.length; --index >= 0; ) {
-					subject.removeSpecifiedJoinColumn(selectedIndices[index]);
+					((JoinColumnJoiningStrategy) subject).removeSpecifiedJoinColumn(selectedIndices[index]);
 				}				
 			}
 
-			public ListIterator<JoinColumn> specifiedJoinColumns(JoinColumnJoiningStrategy subject) {
-				return subject.specifiedJoinColumns();
+			public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinColumnJoiningStrategy subject) {
+				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedJoinColumns());
 			}
 
-			public int specifiedJoinColumnsSize(JoinColumnJoiningStrategy subject) {
+			public int specifiedJoinColumnsSize(ReadOnlyJoinColumnJoiningStrategy subject) {
 				return subject.specifiedJoinColumnsSize();
 			}
 		};
 	}
 	
-	private void addJoinColumn(JoinColumnJoiningStrategy joiningStrategy) {
+	void addJoinColumn(ReadOnlyJoinColumnJoiningStrategy joiningStrategy) {
 		JoinColumnInJoiningStrategyDialog dialog =
 			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, null);
 		dialog.openDialog(buildAddJoinColumnPostExecution());
@@ -121,11 +124,9 @@ public class JoiningStrategyJoinColumnsComposite
 		};
 	}
 	
-	private void addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
-		JoinColumnJoiningStrategy subject = getSubject();
-		int index = subject.specifiedJoinColumnsSize();
-		
-		JoinColumn joinColumn = subject.addSpecifiedJoinColumn(index);
+	void addJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
+		JoinColumnJoiningStrategy subject = (JoinColumnJoiningStrategy) getSubject();
+		JoinColumn joinColumn = subject.addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		this.setSelectedJoinColumn(joinColumn);
 	}
@@ -134,7 +135,7 @@ public class JoiningStrategyJoinColumnsComposite
 		this.joinColumnsComposite.setSelectedJoinColumn(joinColumn);
 	}
 	
-	private void editJoinColumn(JoinColumnJoiningStrategy joiningStrategy, JoinColumn joinColumn) {
+	void editJoinColumn(ReadOnlyJoinColumnJoiningStrategy joiningStrategy, ReadOnlyJoinColumn joinColumn) {
 		JoinColumnInJoiningStrategyDialog dialog =
 			new JoinColumnInJoiningStrategyDialog(getShell(), joiningStrategy, joinColumn);
 		dialog.openDialog(buildEditJoinColumnPostExecution());
@@ -150,18 +151,18 @@ public class JoiningStrategyJoinColumnsComposite
 		};
 	}
 	
-	private void updateJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
+	void updateJoinColumn(JoinColumnInJoiningStrategyStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 	
-	protected CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean> buildJoinColumnsPaneEnabledHolder() {
-		return new CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>(
-			new ValueListAdapter<JoinColumnJoiningStrategy>(
-				new ReadOnlyWritablePropertyValueModelWrapper<JoinColumnJoiningStrategy>(getSubjectHolder()), 
-				JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST)) {
+	protected CachingTransformationPropertyValueModel<ReadOnlyJoinColumnJoiningStrategy, Boolean> buildJoinColumnsPaneEnabledHolder() {
+		return new CachingTransformationPropertyValueModel<ReadOnlyJoinColumnJoiningStrategy, Boolean>(
+			new ValueListAdapter<ReadOnlyJoinColumnJoiningStrategy>(
+				new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinColumnJoiningStrategy>(getSubjectHolder()), 
+				ReadOnlyJoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST)) {
 			
 			@Override
-			protected Boolean transform(JoinColumnJoiningStrategy value) {
+			protected Boolean transform(ReadOnlyJoinColumnJoiningStrategy value) {
 				if (value == null) {
 					return Boolean.FALSE;
 				}
@@ -169,8 +170,8 @@ public class JoiningStrategyJoinColumnsComposite
 			}
 			
 			@Override
-			protected Boolean transform_(JoinColumnJoiningStrategy value) {
-				boolean virtual = value.getRelationshipReference().getRelationshipMapping().getPersistentAttribute().isVirtual();
+			protected Boolean transform_(ReadOnlyJoinColumnJoiningStrategy value) {
+				boolean virtual = value.getRelationshipReference().getMapping().getPersistentAttribute().isVirtual();
 				return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 			}
 		};
@@ -179,16 +180,16 @@ public class JoiningStrategyJoinColumnsComposite
 	
 	
 	private class JoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<JoinColumnJoiningStrategy, Boolean>
+		extends CachingTransformationPropertyValueModel<ReadOnlyJoinColumnJoiningStrategy, Boolean>
 	{
 		private StateChangeListener stateChangeListener;
 		
 		
 		public JoinColumnPaneEnablerHolder() {
 			super(
-				new ValueListAdapter<JoinColumnJoiningStrategy>(
-					new ReadOnlyWritablePropertyValueModelWrapper<JoinColumnJoiningStrategy>(getSubjectHolder()), 
-					JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST));
+				new ValueListAdapter<ReadOnlyJoinColumnJoiningStrategy>(
+					new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinColumnJoiningStrategy>(getSubjectHolder()), 
+					ReadOnlyJoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST));
 			this.stateChangeListener = buildStateChangeListener();
 		}
 		
@@ -196,19 +197,19 @@ public class JoiningStrategyJoinColumnsComposite
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged(event);
+					valueStateChanged();
 				}
 			};
 		}
 		
-		private void valueStateChanged(StateChangeEvent event) {
+		void valueStateChanged() {
 			Object oldValue = this.cachedValue;
 			Object newValue = transformNew(this.valueHolder.getValue());
 			firePropertyChanged(VALUE, oldValue, newValue);
 		}
 		
 		@Override
-		protected Boolean transform(JoinColumnJoiningStrategy value) {
+		protected Boolean transform(ReadOnlyJoinColumnJoiningStrategy value) {
 			if (value == null) {
 				return Boolean.FALSE;
 			}
@@ -216,8 +217,8 @@ public class JoiningStrategyJoinColumnsComposite
 		}
 		
 		@Override
-		protected Boolean transform_(JoinColumnJoiningStrategy value) {
-			boolean virtual = value.getRelationshipReference().isParentVirtual();
+		protected Boolean transform_(ReadOnlyJoinColumnJoiningStrategy value) {
+			boolean virtual = value.getRelationshipReference().isVirtual();
 			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 		}
 		

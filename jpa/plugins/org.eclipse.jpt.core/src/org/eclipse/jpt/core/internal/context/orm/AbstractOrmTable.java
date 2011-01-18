@@ -3,21 +3,23 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.Table;
+import java.util.Vector;
+import org.eclipse.jpt.core.context.ReadOnlyTable;
+import org.eclipse.jpt.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.orm.OrmBaseTable;
+import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlTable;
@@ -29,70 +31,120 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.NameTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * 
+ * <code>orm.xml</code> table, secondary table, join table, or collection table
+ * <p>
+ * <strong>NB:</strong> any subclass that directly holds its XML table must:<ul>
+ * <li>call the "super" constructor that takes an XML table
+ *     {@link #AbstractOrmTable(XmlContextNode, Owner, AbstractXmlTable)}
+ * <li>override {@link #setXmlTable(AbstractXmlTable)} to set the XML table
+ *     so it is in place before the table's state (e.g. {@link #specifiedName})
+ *     is initialized
+ * </ul>
  */
-public abstract class AbstractOrmTable
+public abstract class AbstractOrmTable<X extends AbstractXmlTable>
 	extends AbstractOrmXmlContextNode
-	implements OrmBaseTable, UniqueConstraint.Owner
+	implements OrmTable, UniqueConstraint.Owner
 {
+	protected final Owner owner;
+
 	protected String specifiedName;
 	protected String defaultName;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
-	
+
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
-	protected final List<OrmUniqueConstraint> uniqueConstraints;
+	protected final Vector<OrmUniqueConstraint> uniqueConstraints = new Vector<OrmUniqueConstraint>();
+	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
 
-	protected final Owner owner;
 
-
-	// ********** constructor **********
+	// ********** constructor/initialization **********
 
 	protected AbstractOrmTable(XmlContextNode parent, Owner owner) {
+		this(parent, owner, null);
+	}
+
+	protected AbstractOrmTable(XmlContextNode parent, Owner owner, X xmlTable) {
 		super(parent);
-		this.uniqueConstraints = new ArrayList<OrmUniqueConstraint>();
 		this.owner = owner;
+		this.setXmlTable(xmlTable);
+		this.specifiedName = this.buildSpecifiedName();
+		this.specifiedSchema = this.buildSpecifiedSchema();
+		this.specifiedCatalog = this.buildSpecifiedCatalog();
+		this.initializeUniqueContraints();
 	}
 
-	protected Owner getOwner() {
-		return this.owner;
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedName_(this.buildSpecifiedName());
+		this.setSpecifiedSchema_(this.buildSpecifiedSchema());
+		this.setSpecifiedCatalog_(this.buildSpecifiedCatalog());
+		this.syncUniqueConstraints();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultName(this.buildDefaultName());
+		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.updateNodes(this.getUniqueConstraints());
 	}
 
 
-	// ********** abstract methods **********
+	// ********** XML table **********
 
 	/**
-	 * Return null if no resource table exists.
+	 * Return null if XML table does not exists.
 	 */
-	protected abstract AbstractXmlTable getResourceTable();
+	protected abstract X getXmlTable();
 
 	/**
-	 * Return the added resource table.
+	 * see class comment...
 	 */
-	protected abstract AbstractXmlTable addResourceTable();
-
-	protected abstract void removeResourceTable();
-
-	protected abstract String buildDefaultName();
-	
-	protected abstract String buildDefaultSchema();
-	
-	protected abstract String buildDefaultCatalog();
-	
-
-	public boolean isResourceSpecified() {
-		return this.getResourceTable() != null;
+	protected void setXmlTable(X xmlTable) {
+		if (xmlTable != null) {
+			throw new IllegalArgumentException("this method must be overridden if the XML table is not null: " + xmlTable); //$NON-NLS-1$
+		}
 	}
+
+	/**
+	 * Build the XML table if it does not exist.
+	 */
+	protected X getXmlTableForUpdate() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable != null) ? xmlTable : this.buildXmlTable();
+	}
+
+	protected abstract X buildXmlTable();
+
+	protected void removeXmlTableIfUnset() {
+		if (this.getXmlTable().isUnset()) {
+			this.removeXmlTable();
+		}
+	}
+
+	protected abstract void removeXmlTable();
+
+	public boolean isSpecifiedInResource() {
+		return this.getXmlTable() != null;
+	}
+
 
 	// ********** name **********
 
@@ -103,27 +155,25 @@ public abstract class AbstractOrmTable
 	public String getSpecifiedName() {
 		return this.specifiedName;
 	}
-	
+
 	public void setSpecifiedName(String name) {
-		String old = this.specifiedName;
-		this.specifiedName = name;
-		if (this.attributeValueHasChanged(old, name)) {
-			AbstractXmlTable resourceTable = this.getResourceTable();
-			if (resourceTable == null) {
-				resourceTable = this.addResourceTable();
-			}
-			resourceTable.setName(name);
-			if (resourceTable.isUnset()) {
-				this.removeResourceTable();
-			}
-			this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+		if (this.valuesAreDifferent(this.specifiedName, name)) {
+			X xmlTable = this.getXmlTableForUpdate();
+			this.setSpecifiedName_(name);
+			xmlTable.setName(name);
+			this.removeXmlTableIfUnset();
 		}
 	}
-	
+
 	protected void setSpecifiedName_(String name) {
 		String old = this.specifiedName;
 		this.specifiedName = name;
 		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildSpecifiedName() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getName();
 	}
 
 	public String getDefaultName() {
@@ -135,6 +185,8 @@ public abstract class AbstractOrmTable
 		this.defaultName = name;
 		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
 	}
+
+	protected abstract String buildDefaultName();
 
 
 	// ********** schema **********
@@ -148,36 +200,36 @@ public abstract class AbstractOrmTable
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		if (this.attributeValueHasChanged(old, schema)) {
-			AbstractXmlTable resourceTable = this.getResourceTable();
-			if (resourceTable == null) {
-				resourceTable = this.addResourceTable();
-			}
-			resourceTable.setSchema(schema);
-			if (resourceTable.isUnset()) {
-				this.removeResourceTable();
-			}
-			this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		if (this.valuesAreDifferent(this.specifiedSchema, schema)) {
+			X xmlTable = this.getXmlTableForUpdate();
+			this.setSpecifiedSchema_(schema);
+			xmlTable.setSchema(schema);
+			this.removeXmlTableIfUnset();
 		}
 	}
-	
+
 	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
+	protected String buildSpecifiedSchema() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getSchema();
+	}
+
 	public String getDefaultSchema() {
 		return this.defaultSchema;
 	}
-	
+
 	protected void setDefaultSchema(String schema) {
 		String old = this.defaultSchema;
 		this.defaultSchema = schema;
 		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
+
+	protected abstract String buildDefaultSchema();
 
 
 	// ********** catalog **********
@@ -191,206 +243,151 @@ public abstract class AbstractOrmTable
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		if (this.attributeValueHasChanged(old, catalog)) {
-			AbstractXmlTable resourceTable = this.getResourceTable();
-			if (resourceTable == null) {
-				resourceTable = this.addResourceTable();
-			}
-			resourceTable.setCatalog(catalog);
-			if (resourceTable.isUnset()) {
-				this.removeResourceTable();
-			}
-			this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		if (this.valuesAreDifferent(this.specifiedCatalog, catalog)) {
+			X xmlTable = this.getXmlTableForUpdate();
+			this.setSpecifiedCatalog_(catalog);
+			xmlTable.setCatalog(catalog);
+			this.removeXmlTableIfUnset();
 		}
 	}
 
-	protected void setSpecifiedCatalog_(String newSpecifiedCatalog) {
-		String oldSpecifiedCatalog = this.specifiedCatalog;
-		this.specifiedCatalog = newSpecifiedCatalog;
-		firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, oldSpecifiedCatalog, newSpecifiedCatalog);
+	protected void setSpecifiedCatalog_(String catalog) {
+		String old = this.specifiedCatalog;
+		this.specifiedCatalog = catalog;
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+	}
+
+	protected String buildSpecifiedCatalog() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getCatalog();
 	}
 
 	public String getDefaultCatalog() {
 		return this.defaultCatalog;
 	}
 
-	protected void setDefaultCatalog(String newDefaultCatalog) {
-		String oldDefaultCatalog = this.defaultCatalog;
-		this.defaultCatalog = newDefaultCatalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, oldDefaultCatalog, newDefaultCatalog);
+	protected void setDefaultCatalog(String catalog) {
+		String old = this.defaultCatalog;
+		this.defaultCatalog = catalog;
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
+
+	protected abstract String buildDefaultCatalog();
 
 
 	// ********** unique constraints **********
-	
-	public @SuppressWarnings("unchecked") ListIterator<OrmUniqueConstraint> uniqueConstraints() {
-		return new CloneListIterator<OrmUniqueConstraint>(this.uniqueConstraints);
+
+	public ListIterator<OrmUniqueConstraint> uniqueConstraints() {
+		return this.getUniqueConstraints().iterator();
+	}
+
+	protected ListIterable<OrmUniqueConstraint> getUniqueConstraints() {
+		return new LiveCloneListIterable<OrmUniqueConstraint>(this.uniqueConstraints);
 	}
 
 	public int uniqueConstraintsSize() {
 		return this.uniqueConstraints.size();
 	}
-	
+
+	public OrmUniqueConstraint getUniqueConstraint(int index) {
+		return this.uniqueConstraints.get(index);
+	}
+
+	public OrmUniqueConstraint addUniqueConstraint() {
+		return this.addUniqueConstraint(this.uniqueConstraints.size());
+	}
+
 	public OrmUniqueConstraint addUniqueConstraint(int index) {
-		XmlUniqueConstraint resourceConstraint = OrmFactory.eINSTANCE.createXmlUniqueConstraint();
-		OrmUniqueConstraint contextConstraint =  this.buildUniqueConstraint(resourceConstraint);
-		this.uniqueConstraints.add(index, contextConstraint);
-		
-		AbstractXmlTable resourceTable = this.getResourceTable();
-		if (resourceTable == null) {
-			resourceTable = this.addResourceTable();
-		}
-		resourceTable.getUniqueConstraints().add(index, resourceConstraint);
-
-		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, contextConstraint);
-		return contextConstraint;
+		X xmlTable = this.getXmlTableForUpdate();
+		XmlUniqueConstraint xmlConstraint = this.buildXmlUniqueConstraint();
+		OrmUniqueConstraint constraint = this.addUniqueConstraint_(index, xmlConstraint);
+		xmlTable.getUniqueConstraints().add(index, xmlConstraint);
+		return constraint;
 	}
 
-	protected void addUniqueConstraint(int index, OrmUniqueConstraint uniqueConstraint) {
-		this.addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	protected XmlUniqueConstraint buildXmlUniqueConstraint() {
+		return OrmFactory.eINSTANCE.createXmlUniqueConstraint();
 	}
-	
-	protected void addUniqueConstraint(OrmUniqueConstraint uniqueConstraint) {
-		this.addUniqueConstraint(this.uniqueConstraints.size(), uniqueConstraint);
+
+	public void removeUniqueConstraint(UniqueConstraint constraint) {
+		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(constraint));
 	}
-	
-	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
-		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
-	}
-	
+
 	public void removeUniqueConstraint(int index) {
-		OrmUniqueConstraint removedUniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getResourceTable().getUniqueConstraints().remove(index);
-		this.fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, removedUniqueConstraint);
+		this.removeUniqueConstraint_(index);
+		this.getXmlTable().getUniqueConstraints().remove(index);
+		this.removeXmlTableIfUnset();
 	}
-	
-	protected void removeUniqueConstraint_(OrmUniqueConstraint uniqueConstraint) {
-		this.removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+
+	protected void removeUniqueConstraint_(int index) {
+		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getResourceTable().getUniqueConstraints().move(targetIndex, sourceIndex);
-		this.fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
-	}
-	
-
-	// ********** convenience methods **********
-
-	protected TextRange getTextRange(TextRange textRange) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.getXmlTable().getUniqueConstraints().move(targetIndex, sourceIndex);
 	}
 
-	public TextRange getNameTextRange() {
-		return this.getTextRange(this.getResourceTableNameTextRange());
-	}
-
-	protected TextRange getResourceTableNameTextRange() {
-		AbstractXmlTable resourceTable = this.getResourceTable();
-		return (resourceTable == null) ? null : resourceTable.getNameTextRange();
-	}
-
-	public TextRange getSchemaTextRange() {
-		return this.getTextRange(this.getResourceTableSchemaTextRange());
-	}
-
-	protected TextRange getResourceTableSchemaTextRange() {
-		AbstractXmlTable resourceTable = this.getResourceTable();
-		return (resourceTable == null) ? null : resourceTable.getSchemaTextRange();
-	}
-
-	public TextRange getCatalogTextRange() {
-		return this.getTextRange(this.getResourceTableCatalogTextRange());
-	}
-
-	protected TextRange getResourceTableCatalogTextRange() {
-		AbstractXmlTable resourceTable = this.getResourceTable();
-		return (resourceTable == null) ? null : resourceTable.getCatalogTextRange();
-	}
-
-	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint resourceUniqueConstraint) {
-		return this.getXmlContextNodeFactory().buildOrmUniqueConstraint(this, this, resourceUniqueConstraint);
-	}
-
-
-	// ********** resource => context **********
-
-	protected void initialize(AbstractXmlTable xmlTable) {
-		this.defaultName = this.buildDefaultName();
-		this.specifiedName = this.getResourceTableName(xmlTable);
-
-		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = this.getResourceTableSchema(xmlTable);
-
-		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = this.getResourceTableCatalog(xmlTable);
-
-		this.initializeUniqueContraints(xmlTable);
-	}
-	
-	protected void initializeUniqueContraints(AbstractXmlTable xmlTable) {
-		if (xmlTable == null) {
-			return;
-		}
-		for (XmlUniqueConstraint uniqueConstraint : xmlTable.getUniqueConstraints()) {
-			this.uniqueConstraints.add(this.buildUniqueConstraint(uniqueConstraint));
+	protected void initializeUniqueContraints() {
+		for (XmlUniqueConstraint xmlConstraint : this.getXmlUniqueConstraints()) {
+			this.uniqueConstraints.add(this.buildUniqueConstraint(xmlConstraint));
 		}
 	}
 
-	protected void update(AbstractXmlTable xmlTable) {
-		this.setDefaultName(this.buildDefaultName());
-		this.setSpecifiedName_(this.getResourceTableName(xmlTable));
-
-		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(this.getResourceTableSchema(xmlTable));
-
-		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(this.getResourceTableCatalog(xmlTable));
-
-		this.updateUniqueConstraints(xmlTable);
+	protected OrmUniqueConstraint buildUniqueConstraint(XmlUniqueConstraint xmlConstraint) {
+		return this.getContextNodeFactory().buildOrmUniqueConstraint(this, this, xmlConstraint);
 	}
 
-	protected String getResourceTableName(AbstractXmlTable xmlTable) {
-		return (xmlTable == null) ? null : xmlTable.getName();
+	protected void syncUniqueConstraints() {
+		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
 	}
 
-	protected String getResourceTableSchema(AbstractXmlTable xmlTable) {
-		return (xmlTable == null) ? null : xmlTable.getSchema();
+	protected Iterable<XmlUniqueConstraint> getXmlUniqueConstraints() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ?
+				EmptyIterable.<XmlUniqueConstraint>instance() :
+				// clone to reduce chance of concurrency problems
+				new LiveCloneIterable<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
 	}
 
-	protected String getResourceTableCatalog(AbstractXmlTable xmlTable) {
-		return (xmlTable == null) ? null : xmlTable.getCatalog();
+	protected void moveUniqueConstraint_(int index, OrmUniqueConstraint constraint) {
+		this.moveItemInList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-	protected void updateUniqueConstraints(AbstractXmlTable xmlTable) {
-		Iterator<XmlUniqueConstraint> xmlConstraints = this.xmlUniqueConstraints(xmlTable);
+	protected OrmUniqueConstraint addUniqueConstraint_(int index, XmlUniqueConstraint xmlConstraint) {
+		OrmUniqueConstraint constraint = this.buildUniqueConstraint(xmlConstraint);
+		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		return constraint;
+	}
 
-		for (Iterator<OrmUniqueConstraint> contextConstraints = this.uniqueConstraints(); contextConstraints.hasNext(); ) {
-			OrmUniqueConstraint contextConstraint = contextConstraints.next();
-			if (xmlConstraints.hasNext()) {
-				contextConstraint.update(xmlConstraints.next());
-			} else {
-				this.removeUniqueConstraint_(contextConstraint);
-			}
+	protected void removeUniqueConstraint_(OrmUniqueConstraint constraint) {
+		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(constraint));
+	}
+
+	/**
+	 * unique constraint container adapter
+	 */
+	protected class UniqueConstraintContainerAdapter
+		implements ContextContainerTools.Adapter<OrmUniqueConstraint, XmlUniqueConstraint>
+	{
+		public Iterable<OrmUniqueConstraint> getContextElements() {
+			return AbstractOrmTable.this.getUniqueConstraints();
 		}
-		
-		while (xmlConstraints.hasNext()) {
-			this.addUniqueConstraint(this.buildUniqueConstraint(xmlConstraints.next()));
+		public Iterable<XmlUniqueConstraint> getResourceElements() {
+			return AbstractOrmTable.this.getXmlUniqueConstraints();
 		}
-	}
-
-	protected Iterator<XmlUniqueConstraint> xmlUniqueConstraints(AbstractXmlTable xmlTable) {
-		// make a copy of the XML constraints (to prevent ConcurrentModificationException)
-		return (xmlTable == null) ? EmptyIterator.<XmlUniqueConstraint>instance()
-				: new CloneIterator<XmlUniqueConstraint>(xmlTable.getUniqueConstraints());
-	}
-
-	public void initializeFrom(Table oldTable) {
-		this.setSpecifiedName(oldTable.getSpecifiedName());
-		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
-		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
+		public XmlUniqueConstraint getResourceElement(OrmUniqueConstraint contextElement) {
+			return contextElement.getXmlUniqueConstraint();
+		}
+		public void moveContextElement(int index, OrmUniqueConstraint element) {
+			AbstractOrmTable.this.moveUniqueConstraint_(index, element);
+		}
+		public void addContextElement(int index, XmlUniqueConstraint resourceElement) {
+			AbstractOrmTable.this.addUniqueConstraint_(index, resourceElement);
+		}
+		public void removeContextElement(OrmUniqueConstraint element) {
+			AbstractOrmTable.this.removeUniqueConstraint_(element);
+		}
 	}
 
 
@@ -413,7 +410,7 @@ public abstract class AbstractOrmTable
 	 */
 	public SchemaContainer getDbSchemaContainer() {
 		String catalog = this.getCatalog();
-		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
 	}
 
 	/**
@@ -422,14 +419,14 @@ public abstract class AbstractOrmTable
 	 */
 	public Catalog getDbCatalog() {
 		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.getDbCatalog(catalog);
+		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
 	}
 
 	public boolean isResolved() {
 		return this.getDbTable() != null;
 	}
 
-	public boolean hasResolvedSchema() {
+	public boolean schemaIsResolved() {
 		return this.getDbSchema() != null;
 	}
 
@@ -437,9 +434,9 @@ public abstract class AbstractOrmTable
 	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
 	 * catalog), then the database probably does not support catalogs.
 	 */
-	public boolean hasResolvedCatalog() {
+	public boolean catalogIsResolved() {
 		String catalog = this.getCatalog();
-		return (catalog == null) || (this.getDbCatalog(catalog) != null);
+		return (catalog == null) || (this.resolveDbCatalog(catalog) != null);
 	}
 
 
@@ -453,10 +450,6 @@ public abstract class AbstractOrmTable
 
 	// ********** validation **********
 
-	public TextRange getValidationTextRange() {
-		return this.getTextRange(this.getResourceTableValidationTextRange());
-	}
-
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -464,16 +457,51 @@ public abstract class AbstractOrmTable
 	}
 
 	protected JptValidator buildTableValidator() {
-		return this.getOwner().buildTableValidator(this, buildTextRangeResolver());
+		return this.owner.buildTableValidator(this, this.buildTextRangeResolver());
 	}
 
 	protected TableTextRangeResolver buildTextRangeResolver() {
 		return new OrmTableTextRangeResolver(this);
 	}
 
-	protected TextRange getResourceTableValidationTextRange() {
-		AbstractXmlTable resourceTable = this.getResourceTable();
-		return (resourceTable == null) ? null : resourceTable.getValidationTextRange();
+	public TextRange getValidationTextRange() {
+		return this.getTextRange(this.getXmlTableValidationTextRange());
+	}
+
+	protected TextRange getXmlTableValidationTextRange() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getValidationTextRange();
+	}
+
+	public TextRange getNameTextRange() {
+		return this.getTextRange(this.getXmlTableNameTextRange());
+	}
+
+	protected TextRange getXmlTableNameTextRange() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getNameTextRange();
+	}
+
+	public TextRange getSchemaTextRange() {
+		return this.getTextRange(this.getXmlTableSchemaTextRange());
+	}
+
+	protected TextRange getXmlTableSchemaTextRange() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getSchemaTextRange();
+	}
+
+	public TextRange getCatalogTextRange() {
+		return this.getTextRange(this.getXmlTableCatalogTextRange());
+	}
+
+	protected TextRange getXmlTableCatalogTextRange() {
+		X xmlTable = this.getXmlTable();
+		return (xmlTable == null) ? null : xmlTable.getCatalogTextRange();
+	}
+
+	protected TextRange getTextRange(TextRange textRange) {
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
 	}
 
 
@@ -487,13 +515,26 @@ public abstract class AbstractOrmTable
 		return (XmlContextNode) super.getParent();
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.getQualifiedName());
+	protected void initializeFrom(ReadOnlyTable oldTable) {
+		this.setSpecifiedName(oldTable.getSpecifiedName());
+		this.setSpecifiedCatalog(oldTable.getSpecifiedCatalog());
+		this.setSpecifiedSchema(oldTable.getSpecifiedSchema());
+		for (ReadOnlyUniqueConstraint constraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
+			this.addUniqueConstraint().initializeFrom(constraint);
+		}
 	}
 
-	protected String getQualifiedName() {
+	protected void initializeFromVirtual(ReadOnlyTable virtualTable) {
+		this.setSpecifiedName(virtualTable.getName());
+		// ignore other settings?
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.buildQualifiedName());
+	}
+
+	protected String buildQualifiedName() {
 		return NameTools.buildQualifiedDatabaseObjectName(this.getCatalog(), this.getSchema(), this.getName());
 	}
 

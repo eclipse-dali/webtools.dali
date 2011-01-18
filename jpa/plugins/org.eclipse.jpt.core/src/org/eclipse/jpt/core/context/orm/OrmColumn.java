@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,27 +27,22 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 public interface OrmColumn
 	extends Column, OrmBaseColumn
 {
-	
-	void initializeFrom(Column oldColumn);
-	void initialize(XmlColumn column);
-	
-	/**
-	 * Update the OrmColumn context model object to match the XmlColumn 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlColumn column);
+	XmlColumn getXmlColumn();
+
+
+	// ********** owner **********
 
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends OrmBaseColumn.Owner
+	interface Owner
+		extends OrmBaseColumn.Owner
 	{
-		XmlColumn getResourceColumn();
+		XmlColumn getXmlColumn();
 		
-		void addResourceColumn();
+		XmlColumn buildXmlColumn();
 		
-		void removeResourceColumn();
+		void removeXmlColumn();
 	}
-
 }

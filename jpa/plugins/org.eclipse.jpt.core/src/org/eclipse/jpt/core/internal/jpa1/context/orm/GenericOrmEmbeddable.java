@@ -14,9 +14,11 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
-
+/**
+ * <code>orm.xml</code> embeddable type mapping
+ */
 public class GenericOrmEmbeddable
-	extends AbstractOrmEmbeddable
+	extends AbstractOrmEmbeddable<XmlEmbeddable>
 {
 	public GenericOrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
 		super(parent, resourceMapping);
@@ -26,5 +28,4 @@ public class GenericOrmEmbeddable
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return ArrayTools.contains(GenericJavaEmbeddable.ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
 	}
-
 }

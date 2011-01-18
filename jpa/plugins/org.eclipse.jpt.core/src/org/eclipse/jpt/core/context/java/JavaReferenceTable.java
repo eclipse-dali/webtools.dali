@@ -11,33 +11,34 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.ReferenceTable;
+import org.eclipse.jpt.core.resource.java.ReferenceTableAnnotation;
 
 /**
  * Java reference table
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.3
  */
 public interface JavaReferenceTable
-	extends ReferenceTable, JavaBaseTable
+	extends ReferenceTable, JavaTable
 {
+	ReferenceTableAnnotation getTableAnnotation();
 
-	// ********** covariant overrides **********
 
-	@SuppressWarnings("unchecked")
+	// ********** join columns **********
+
 	ListIterator<JavaJoinColumn> joinColumns();
 
-	JavaJoinColumn getDefaultJoinColumn();
-
-	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> specifiedJoinColumns();
-
+	JavaJoinColumn getSpecifiedJoinColumn(int index);
+	JavaJoinColumn addSpecifiedJoinColumn();
 	JavaJoinColumn addSpecifiedJoinColumn(int index);
 
+	JavaJoinColumn getDefaultJoinColumn();
 }

@@ -1,186 +1,188 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmBaseColumn;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
-public class GenericOrmColumn extends AbstractOrmBaseColumn<XmlColumn> implements OrmColumn
+/**
+ * <code>orm.xml</code> column
+ */
+public class GenericOrmColumn
+	extends AbstractOrmBaseColumn<XmlColumn, OrmColumn.Owner>
+	implements OrmColumn
 {
+	// TODO defaults from java for all of these settings
 	protected Integer specifiedLength;
 
 	protected Integer specifiedPrecision;
 
 	protected Integer specifiedScale;
 
+
 	public GenericOrmColumn(XmlContextNode parent, OrmColumn.Owner owner) {
 		super(parent, owner);
+		this.specifiedLength = this.buildSpecifiedLength();
+		this.specifiedPrecision = this.buildSpecifiedPrecision();
+		this.specifiedScale = this.buildSpecifiedScale();
 	}
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public OrmColumn.Owner getOwner() {
-		return (OrmColumn.Owner) super.getOwner();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedLength_(this.buildSpecifiedLength());
+		this.setSpecifiedPrecision_(this.buildSpecifiedPrecision());
+		this.setSpecifiedScale_(this.buildSpecifiedScale());
 	}
-	
-	public void initializeFrom(Column oldColumn) {
-		super.initializeFrom(oldColumn);
-		setSpecifiedLength(oldColumn.getSpecifiedLength());
-		setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
-		setSpecifiedScale(oldColumn.getSpecifiedScale());
+
+
+	// ********** XML column **********
+
+	@Override
+	public XmlColumn getXmlColumn() {
+		return this.owner.getXmlColumn();
 	}
+
+	@Override
+	protected XmlColumn buildXmlColumn() {
+		return this.owner.buildXmlColumn();
+	}
+
+	@Override
+	protected void removeXmlColumn() {
+		this.owner.removeXmlColumn();
+	}
+
+
+	// ********** length **********
 
 	public int getLength() {
-		return (this.getSpecifiedLength() == null) ? getDefaultLength() : this.getSpecifiedLength().intValue();
-	}
-
-	public int getDefaultLength() {
-		return Column.DEFAULT_LENGTH;
+		return (this.specifiedLength != null) ? this.specifiedLength.intValue() : this.getDefaultLength();
 	}
 
 	public Integer getSpecifiedLength() {
 		return this.specifiedLength;
 	}
 
-	public void setSpecifiedLength(Integer newSpecifiedLength) {
-		Integer oldSpecifiedLength = this.specifiedLength;
-		this.specifiedLength = newSpecifiedLength;
-		if (this.valuesAreDifferent(oldSpecifiedLength, newSpecifiedLength)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setLength(newSpecifiedLength);
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedLength != null) {
-				addResourceColumn();
-				getResourceColumn().setLength(newSpecifiedLength);
-			}
+	public void setSpecifiedLength(Integer length) {
+		if (this.valuesAreDifferent(this.specifiedLength, length)) {
+			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedLength_(length);
+			xmlColumn.setLength(length);
+			this.removeXmlColumnIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
 	}
-	
-	protected void setSpecifiedLength_(Integer newSpecifiedLength) {
-		Integer oldSpecifiedLength = this.specifiedLength;
-		this.specifiedLength = newSpecifiedLength;
-		firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
+
+	protected void setSpecifiedLength_(Integer length) {
+		Integer old = this.specifiedLength;
+		this.specifiedLength = length;
+		this.firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, old, length);
 	}
+
+	protected Integer buildSpecifiedLength() {
+		XmlColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getLength();
+	}
+
+	public int getDefaultLength() {
+		return DEFAULT_LENGTH;
+	}
+
+
+	// ********** precision **********
 
 	public int getPrecision() {
-		return (this.getSpecifiedPrecision() == null) ? getDefaultPrecision() : this.getSpecifiedPrecision().intValue();
+		return (this.specifiedPrecision != null) ? this.specifiedPrecision.intValue() : this.getDefaultPrecision();
 	}
 
-	public int getDefaultPrecision() {
-		return Column.DEFAULT_PRECISION;
-	}
-	
 	public Integer getSpecifiedPrecision() {
 		return this.specifiedPrecision;
 	}
 
-	public void setSpecifiedPrecision(Integer newSpecifiedPrecision) {
-		Integer oldSpecifiedPrecision = this.specifiedPrecision;
-		this.specifiedPrecision = newSpecifiedPrecision;
-		if (this.valuesAreDifferent(oldSpecifiedPrecision, newSpecifiedPrecision)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setPrecision(newSpecifiedPrecision);
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedPrecision != null) {
-				addResourceColumn();
-				getResourceColumn().setPrecision(newSpecifiedPrecision);
-			}
+	public void setSpecifiedPrecision(Integer precision) {
+		if (this.valuesAreDifferent(this.specifiedPrecision, precision)) {
+			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedPrecision_(precision);
+			xmlColumn.setPrecision(precision);
+			this.removeXmlColumnIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
 	}
-	
-	protected void setSpecifiedPrecision_(Integer newSpecifiedPrecision) {
-		Integer oldSpecifiedPrecision = this.specifiedPrecision;
-		this.specifiedPrecision = newSpecifiedPrecision;
-		firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, oldSpecifiedPrecision, newSpecifiedPrecision);
+
+	protected void setSpecifiedPrecision_(Integer precision) {
+		Integer old = this.specifiedPrecision;
+		this.specifiedPrecision = precision;
+		this.firePropertyChanged(SPECIFIED_PRECISION_PROPERTY, old, precision);
 	}
+
+	protected Integer buildSpecifiedPrecision() {
+		XmlColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getPrecision();
+	}
+
+	public int getDefaultPrecision() {
+		return DEFAULT_PRECISION;
+	}
+
+
+	// ********** scale **********
 
 	public int getScale() {
-		return (this.getSpecifiedScale() == null) ? getDefaultScale() : this.getSpecifiedScale().intValue();
+		return (this.specifiedScale != null) ? this.specifiedScale.intValue() : this.getDefaultScale();
 	}
 
-	public int getDefaultScale() {
-		return Column.DEFAULT_SCALE;
-	}
-	
 	public Integer getSpecifiedScale() {
 		return this.specifiedScale;
 	}
 
-	public void setSpecifiedScale(Integer newSpecifiedScale) {
-		Integer oldSpecifiedScale = this.specifiedScale;
-		this.specifiedScale = newSpecifiedScale;
-		if (this.valuesAreDifferent(oldSpecifiedScale, newSpecifiedScale)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setScale(newSpecifiedScale);
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedScale != null) {
-				addResourceColumn();
-				getResourceColumn().setScale(newSpecifiedScale);
-			}
+	public void setSpecifiedScale(Integer scale) {
+		if (this.valuesAreDifferent(this.specifiedScale, scale)) {
+			XmlColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedScale_(scale);
+			xmlColumn.setScale(scale);
+			this.removeXmlColumnIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
 	}
 
-	protected void setSpecifiedScale_(Integer newSpecifiedScale) {
-		Integer oldSpecifiedScale = this.specifiedScale;
-		this.specifiedScale = newSpecifiedScale;
-		firePropertyChanged(SPECIFIED_SCALE_PROPERTY, oldSpecifiedScale, newSpecifiedScale);
+	protected void setSpecifiedScale_(Integer scale) {
+		Integer old = this.specifiedScale;
+		this.specifiedScale = scale;
+		this.firePropertyChanged(SPECIFIED_SCALE_PROPERTY, old, scale);
 	}
 
-	@Override
-	protected XmlColumn getResourceColumn() {
-		return getOwner().getResourceColumn();
-	}
-	
-	@Override
-	protected void addResourceColumn() {
-		getOwner().addResourceColumn();
-	}
-	
-	@Override
-	protected void removeResourceColumn() {
-		getOwner().removeResourceColumn();
-	}
-	
-	@Override
-	public void initialize(XmlColumn column) {
-		super.initialize(column);
-		this.specifiedLength = this.getResourceLength(column);
-		this.specifiedPrecision = this.getResourcePrecision(column);
-		this.specifiedScale = this.getResourceScale(column);
-	}
-	
-	@Override
-	public void update(XmlColumn column) {
-		super.update(column);
-		this.setSpecifiedLength_(this.getResourceLength(column));
-		this.setSpecifiedPrecision_(this.getResourcePrecision(column));
-		this.setSpecifiedScale_(this.getResourceScale(column));
+	protected Integer buildSpecifiedScale() {
+		XmlColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getScale();
 	}
 
-	protected Integer getResourceLength(XmlColumn column) {
-		return column == null ? null : column.getLength();
+	public int getDefaultScale() {
+		return DEFAULT_SCALE;
 	}
 
-	protected Integer getResourcePrecision(XmlColumn column) {
-		return column == null ? null : column.getPrecision();
+
+	// ********** misc **********
+
+	public void initializeFrom(ReadOnlyColumn oldColumn) {
+		super.initializeFrom(oldColumn);
+		this.setSpecifiedLength(oldColumn.getSpecifiedLength());
+		this.setSpecifiedPrecision(oldColumn.getSpecifiedPrecision());
+		this.setSpecifiedScale(oldColumn.getSpecifiedScale());
 	}
-	
-	protected Integer getResourceScale(XmlColumn column) {
-		return column == null ? null : column.getScale();
+
+	public void initializeFromVirtual(ReadOnlyColumn virtualColumn) {
+		super.initializeFromVirtual(virtualColumn);
+		// ignore other settings?
 	}
 }

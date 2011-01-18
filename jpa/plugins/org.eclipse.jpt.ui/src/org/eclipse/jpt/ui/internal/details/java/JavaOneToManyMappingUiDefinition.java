@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -20,7 +20,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaOneToManyMappingUiDefinition
-	extends AbstractOneToManyMappingUiDefinition<PersistentAttribute, JavaOneToManyMapping>
+	extends AbstractOneToManyMappingUiDefinition<ReadOnlyPersistentAttribute, JavaOneToManyMapping>
 	implements JavaAttributeMappingUiDefinition<JavaOneToManyMapping>
 {
 	// singleton

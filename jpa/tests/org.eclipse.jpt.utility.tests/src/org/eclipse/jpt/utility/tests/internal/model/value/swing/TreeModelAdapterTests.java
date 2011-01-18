@@ -38,7 +38,7 @@ import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelWrapper;
 import org.eclipse.jpt.utility.internal.model.value.StaticPropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.TreeModelAdapter;
 import org.eclipse.jpt.utility.internal.swing.Displayable;
 import org.eclipse.jpt.utility.model.event.PropertyChangeEvent;
@@ -445,7 +445,7 @@ public class TreeModelAdapterTests extends TestCase {
 		 * transform the test model children into nodes
 		 */
 		protected ListValueModel<TreeNodeValueModel<Object>> buildNodeAdapter(TestModel model) {
-			return new TransformationListValueModelAdapter<TestModel, TreeNodeValueModel<Object>>(this.buildChildrenAdapter(model)) {
+			return new TransformationListValueModel<TestModel, TreeNodeValueModel<Object>>(this.buildChildrenAdapter(model)) {
 				@Override
 				protected TestNode transformItem(TestModel item) {
 					return TestNode.this.buildChildNode(item);

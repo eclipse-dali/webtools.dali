@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.orm.UnsupportedOrmMappingUiDefinition;
@@ -27,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * @see OrmPersistentAttributeMapAsComposite
  */
 public class PersistentAttributeMapAsComposite 
-	extends MapAsComposite<PersistentAttribute>
+	extends MapAsComposite<ReadOnlyPersistentAttribute>
 {
 	/**
 	 * Creates a new <code>PersistentAttributeMapAsComposite</code>.
@@ -36,7 +37,7 @@ public class PersistentAttributeMapAsComposite
 	 * @param parent The parent container
 	 */
 	public PersistentAttributeMapAsComposite(
-			Pane<? extends PersistentAttribute> parentPane,
+			Pane<? extends ReadOnlyPersistentAttribute> parentPane,
             Composite parent) {
 		
 		super(parentPane, parent);
@@ -72,28 +73,26 @@ public class PersistentAttributeMapAsComposite
 					return JptUiDetailsMessages.MapAsComposite_changeMappingType;
 				}
 
-				if (getSubject().getSpecifiedMapping() == null) {
-					return getDefaultDefinition(getSubject().getDefaultMappingKey()).getLinkLabel();
-				}
-
-				return getMappingUiDefinition(mappingKey).getLinkLabel();
+				return getSubject().getMapping().isDefault() ?
+						getDefaultDefinition(getSubject().getDefaultMappingKey()).getLinkLabel() :
+						getMappingUiDefinition(mappingKey).getLinkLabel();
 			}
 			
 			public void morphMapping(MappingUiDefinition definition) {
-				getSubject().setSpecifiedMappingKey(definition.getKey());
+				((PersistentAttribute) getSubject()).setMappingKey(definition.getKey());
 			}
 			
 			public String getName() {
 				return getSubject().getName();
 			}
 			
-			public Iterator<? extends MappingUiDefinition<? extends PersistentAttribute, ?>> mappingUiDefinitions() {
+			public Iterator<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> mappingUiDefinitions() {
 				return attributeMappingUiDefinitions();
 			}
 		};
 	}
 	
-	protected Iterator<? extends MappingUiDefinition<? extends PersistentAttribute, ?>> attributeMappingUiDefinitions() {
+	protected Iterator<? extends MappingUiDefinition<? extends ReadOnlyPersistentAttribute, ?>> attributeMappingUiDefinitions() {
 		return getJpaPlatformUi().attributeMappingUiDefinitions(getSubject().getResourceType());
 	}
 	
@@ -104,33 +103,30 @@ public class PersistentAttributeMapAsComposite
 	
 	@Override
 	protected DefaultMappingUiDefinition getDefaultDefinition(String mappingKey) {
-		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getResourceType(), mappingKey);
+		return getJpaPlatformUi().getDefaultAttributeMappingUiDefinition(getSubject().getMapping().getResourceType(), mappingKey);
 	}
 
 	@Override
 	protected MappingUiDefinition getMappingUiDefinition(String mappingKey) {
 		MappingUiDefinition definition = super.getMappingUiDefinition(mappingKey);
-		if (definition != null) {
-			return definition;
-		}
-		return UnsupportedOrmMappingUiDefinition.instance();
+		return (definition != null) ? definition : UnsupportedOrmMappingUiDefinition.instance();
 	}
 	
 	@Override
 	protected void addPropertyNames(Collection<String> propertyNames) {
 		super.addPropertyNames(propertyNames);
-		propertyNames.add(PersistentAttribute.DEFAULT_MAPPING_PROPERTY);
-		propertyNames.add(PersistentAttribute.SPECIFIED_MAPPING_PROPERTY);
-		propertyNames.add(PersistentAttribute.NAME_PROPERTY);
+		propertyNames.add(ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY);
+		propertyNames.add(ReadOnlyPersistentAttribute.MAPPING_PROPERTY);
+		propertyNames.add(ReadOnlyPersistentAttribute.NAME_PROPERTY);
 	}
 
 	@Override
 	protected void propertyChanged(String propertyName) {
 		super.propertyChanged(propertyName);
 
-		if (propertyName == PersistentAttribute.SPECIFIED_MAPPING_PROPERTY ||
-		    propertyName == PersistentAttribute.DEFAULT_MAPPING_PROPERTY   ||
-		    propertyName == PersistentAttribute.NAME_PROPERTY) {
+		if (propertyName == ReadOnlyPersistentAttribute.MAPPING_PROPERTY ||
+		    propertyName == ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY   ||
+		    propertyName == ReadOnlyPersistentAttribute.NAME_PROPERTY) {
 
 			updateDescription();
 		}

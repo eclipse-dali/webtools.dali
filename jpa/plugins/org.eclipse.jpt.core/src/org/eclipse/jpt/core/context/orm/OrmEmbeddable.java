@@ -11,10 +11,11 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
+import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> embeddable type mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,10 +28,9 @@ import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 public interface OrmEmbeddable
 	extends Embeddable, OrmTypeMapping
 {
-	/**
-	 * Return the Java Embeddable this ORM Embeddable corresponds to.  
-	 * Return null if there is no java persistent type or it is not an embeddable.
-	 */
-	JavaEmbeddable getJavaEmbeddable();
+	XmlEmbeddable getXmlTypeMapping();
 
+	JavaEmbeddable getJavaTypeMapping();
+
+	JavaEmbeddable getJavaTypeMappingForDefaults();
 }

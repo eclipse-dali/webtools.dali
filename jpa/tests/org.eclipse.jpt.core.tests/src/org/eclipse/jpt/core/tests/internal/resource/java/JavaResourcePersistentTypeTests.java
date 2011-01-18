@@ -479,9 +479,7 @@ public class JavaResourcePersistentTypeTests extends JpaJavaResourceModelTestCas
 		assertSourceContains("@Table(name = \"FOO\")", cu);
 
 		tableAnnotation.setName(null);
-		assertSourceDoesNotContain("@Table", cu);
-		
-		assertNull(jrpt.getAnnotation(JPA.TABLE));
+		assertSourceDoesNotContain("(name", cu);
 	}
 	
 	public void testMultipleTypeMappings() throws Exception {
@@ -860,7 +858,7 @@ public class JavaResourcePersistentTypeTests extends JpaJavaResourceModelTestCas
 		ICompilationUnit cu = createTestEntityNoPersistableFields();
 		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
 		
-		assertEquals(AccessType.PROPERTY, persistentType.getAccess());
+		assertNull(persistentType.getAccess());
 	}
 	
 	//TODO more tests here with superclasses other than Object.

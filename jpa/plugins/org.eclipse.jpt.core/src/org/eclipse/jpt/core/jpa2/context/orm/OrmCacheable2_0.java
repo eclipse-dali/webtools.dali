@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> cacheable
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,10 +25,7 @@ import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
  * @since 2.3
  */
 public interface OrmCacheable2_0
-	extends XmlContextNode, Cacheable2_0
+	extends Cacheable2_0, XmlContextNode
 {	
-	/**
-	 * Update model, throwing events as necessary
-	 */
-	void update();
+	// combine two interfaces
 }

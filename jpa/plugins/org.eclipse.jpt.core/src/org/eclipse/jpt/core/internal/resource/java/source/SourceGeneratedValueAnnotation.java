@@ -64,6 +64,13 @@ public final class SourceGeneratedValueAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.strategy == null) &&
+				(this.generator == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.strategy);
 	}
@@ -131,11 +138,11 @@ public final class SourceGeneratedValueAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildStrategyAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__STRATEGY, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__STRATEGY);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildGeneratorAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.GENERATED_VALUE__GENERATOR);
 	}
 
 }

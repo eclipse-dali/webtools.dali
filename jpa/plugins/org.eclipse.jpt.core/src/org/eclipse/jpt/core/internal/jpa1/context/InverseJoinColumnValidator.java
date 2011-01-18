@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import org.eclipse.jpt.core.context.JoinColumn;
@@ -16,7 +15,8 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 
-public class InverseJoinColumnValidator extends BaseJoinColumnValidator
+public class InverseJoinColumnValidator
+	extends BaseJoinColumnValidator<JoinColumn, JoinColumnTextRangeResolver>
 {
 	public InverseJoinColumnValidator(
 				JoinColumn column,
@@ -36,18 +36,8 @@ public class InverseJoinColumnValidator extends BaseJoinColumnValidator
 	}
 
 	@Override
-	public JoinColumn getColumn() {
-		return (JoinColumn) super.getColumn();
-	}
-
-	@Override
-	public JoinColumnTextRangeResolver getTextRangeResolver() {
-		return (JoinColumnTextRangeResolver) super.getTextRangeResolver();
-	}
-
-	@Override
 	protected TableValidator buildTableValidator() {
-		return new InverseJoinColumnTableValidator(this.persistentAttribute, this.getColumn(), this.getTextRangeResolver(), this.tableDescriptionProvider);
+		return new InverseJoinColumnTableValidator(this.persistentAttribute, this.column, this.textRangeResolver, this.tableDescriptionProvider);
 	}
 
 	@Override
@@ -90,18 +80,22 @@ public class InverseJoinColumnValidator extends BaseJoinColumnValidator
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS;
 	}
 
-	public static class InverseJoinColumnTableValidator extends BaseColumnTableValidator
+	public static class InverseJoinColumnTableValidator
+		extends BaseColumnTableValidator
 	{
 		public InverseJoinColumnTableValidator(
-			PersistentAttribute persistentAttribute, JoinColumn column, JoinColumnTextRangeResolver textRangeResolver, TableDescriptionProvider provider) {
+				PersistentAttribute persistentAttribute,
+				JoinColumn column,
+				JoinColumnTextRangeResolver textRangeResolver,
+				TableDescriptionProvider provider) {
 			super(persistentAttribute, column, textRangeResolver, provider);
 		}
-		
+
 		@Override
 		protected String getColumnTableNotValidMessage() {
 			return JpaValidationMessages.INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;
 		}
-		
+
 		@Override
 		protected String getVirtualAttributeColumnTableNotValidMessage() {
 			return JpaValidationMessages.VIRTUAL_ATTRIBUTE_INVERSE_JOIN_COLUMN_TABLE_NOT_VALID;

@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
@@ -21,13 +20,15 @@ import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaPlatformVariation;
+import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -41,7 +42,7 @@ public abstract class AbstractJpaNode
 	extends AbstractModel
 	implements JpaNode
 {
-	private final JpaNode parent;
+	protected final JpaNode parent;
 
 
 	// ********** constructor/initialization **********
@@ -68,17 +69,17 @@ public abstract class AbstractJpaNode
 		return true;
 	}
 
-	protected boolean forbidsParent() {
+	protected final boolean forbidsParent() {
 		return ! this.requiresParent();  // assume 'parent' is not optional
 	}
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+		return new AspectChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
-		return new CallbackChangeSupport.Listener() {
+	protected AspectChangeSupport.Listener buildChangeSupportListener() {
+		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractJpaNode.this.aspectChanged(aspectName);
 			}
@@ -123,6 +124,13 @@ public abstract class AbstractJpaNode
 		return JptCorePlugin.nodeIsJpa2_0Compatible(this);
 	}
 
+	/**
+	 * Call {@link #isJpa2_0Compatible()} before calling this method.
+	 */
+	protected JpaFactory2_0 getJpaFactory2_0() {
+		return (JpaFactory2_0) this.getJpaFactory();
+	}
+
 	protected JpaFactory getJpaFactory() {
 		return this.getJpaPlatform().getJpaFactory();
 	}
@@ -151,48 +159,65 @@ public abstract class AbstractJpaNode
 	 * Pre-condition: specified catalog <em>identifier</em> is not null.
 	 * NB: Do not use the catalog <em>name</em>.
 	 */
-	protected Catalog getDbCatalog(String catalog) {
+	protected Catalog resolveDbCatalog(String catalog) {
 		Database database = this.getDatabase();
 		return (database == null) ? null : database.getCatalogForIdentifier(catalog);
 	}
 
 
-	// ********** CallbackChangeSupport.Listener support **********
+	// ********** AspectChangeSupport.Listener support **********
 
 	protected void aspectChanged(String aspectName) {
 		if (this.aspectTriggersUpdate(aspectName)) {
 //			String msg = Thread.currentThread() + " aspect change: " + this + ": " + aspectName;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
-			this.getJpaProject().update();
+			this.stateChanged();
 		}
 	}
 
-	private boolean aspectTriggersUpdate(String aspectName) {
+	protected boolean aspectTriggersUpdate(String aspectName) {
 		return ! this.aspectDoesNotTriggerUpdate(aspectName);
 	}
 
-	private boolean aspectDoesNotTriggerUpdate(String aspectName) {
-		return this.nonUpdateAspectNames().contains(aspectName);
+	protected boolean aspectDoesNotTriggerUpdate(String aspectName) {
+		// ignore state changes so we don't get a stack overflow :-)
+		// (and we don't use state changes except here)
+		return (aspectName == null) ||
+				this.nonUpdateAspectNames().contains(aspectName);
 	}
 
 	protected final Set<String> nonUpdateAspectNames() {
-		synchronized (nonUpdateAspectNameSets) {
-			HashSet<String> nonUpdateAspectNames = nonUpdateAspectNameSets.get(this.getClass());
+		synchronized (NON_UPDATE_ASPECT_NAME_SETS) {
+			HashSet<String> nonUpdateAspectNames = NON_UPDATE_ASPECT_NAME_SETS.get(this.getClass());
 			if (nonUpdateAspectNames == null) {
 				nonUpdateAspectNames = new HashSet<String>();
 				this.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-				nonUpdateAspectNameSets.put(this.getClass(), nonUpdateAspectNames);
+				NON_UPDATE_ASPECT_NAME_SETS.put(this.getClass(), nonUpdateAspectNames);
 			}
 			return nonUpdateAspectNames;
 		}
 	}
 
-	private static final HashMap<Class<? extends AbstractJpaNode>, HashSet<String>> nonUpdateAspectNameSets = new HashMap<Class<? extends AbstractJpaNode>, HashSet<String>>();
+	private static final HashMap<Class<? extends AbstractJpaNode>, HashSet<String>> NON_UPDATE_ASPECT_NAME_SETS = new HashMap<Class<? extends AbstractJpaNode>, HashSet<String>>();
 
 	protected void addNonUpdateAspectNamesTo(@SuppressWarnings("unused") Set<String> nonUpdateAspectNames) {
 	// when you override this method, don't forget to include:
 	//	super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
 	}
 
+	public void stateChanged() {
+		this.fireStateChanged();
+		if (this.parent != null) {
+			this.parent.stateChanged();
+		}
+	}
+
+
+	// ********** convenience stuff **********
+
+	/**
+	 * Useful for building validation messages.
+	 */
+	public static final String[] EMPTY_STRING_ARRAY = StringTools.EMPTY_STRING_ARRAY;
 }

@@ -11,8 +11,12 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.VirtualOverride;
 
 /**
+ * Java association override container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,20 +29,21 @@ import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 public interface JavaAssociationOverrideContainer
 	extends AssociationOverrideContainer, JavaOverrideContainer
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> associationOverrides();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> specifiedAssociationOverrides();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAssociationOverride> virtualAssociationOverrides();
-	
-	JavaAssociationOverride getAssociationOverrideNamed(String name);
+	ListIterator<JavaReadOnlyAssociationOverride> overrides();
+	JavaReadOnlyAssociationOverride getOverrideNamed(String name);
+	ListIterator<JavaAssociationOverride> specifiedOverrides();
+	JavaAssociationOverride getSpecifiedOverride(int index);
+	JavaAssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<JavaVirtualAssociationOverride> virtualOverrides();
+	JavaVirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	JavaAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
-	interface Owner extends AssociationOverrideContainer.Owner, JavaOverrideContainer.Owner
-	{
-		//nothing yet
+
+	// ********** owner **********
+
+	interface Owner
+		extends AssociationOverrideContainer.Owner, JavaOverrideContainer.Owner
+	{		
+		// combine two interfaces
 	}
-
 }

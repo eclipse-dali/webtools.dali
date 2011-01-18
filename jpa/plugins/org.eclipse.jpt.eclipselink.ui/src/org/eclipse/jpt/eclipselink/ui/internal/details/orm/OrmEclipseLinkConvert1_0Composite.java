@@ -11,24 +11,26 @@ package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -67,12 +69,6 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?"; //$NON-NLS-1$
 	
 	
-	/**
-	 * Creates a new <code>EnumTypeComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
-	 */
 	public OrmEclipseLinkConvert1_0Composite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
@@ -118,7 +114,7 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
 		list.add(buildDefaultNameListHolder());
 		list.add(buildReservedConverterNameListHolder());
-		list.add(buildConverterNameListHolder());
+		list.add(buildSortedConverterNamesModel());
 		return new CompositeListValueModel<ListValueModel<String>, String>(list);
 	}
 	
@@ -188,14 +184,18 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 		return new StaticListValueModel<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
-	protected ListValueModel<String> buildConverterNameListHolder() {
-		return new ListAspectAdapter<EclipseLinkPersistenceUnit, String>(
+	protected ListValueModel<String> buildSortedConverterNamesModel() {
+		return new SortedListValueModelAdapter<String>(this.buildConverterNamesModel());
+	}
+	
+	protected CollectionValueModel<String> buildConverterNamesModel() {
+		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, String>(
 			buildPersistenceUnitHolder(),
-			EclipseLinkPersistenceUnit.CONVERTERS_LIST)//TODO need EclipseLinkPersistenceUnit interface
+			EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION)//TODO need EclipseLinkPersistenceUnit interface
 		{
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return CollectionTools.listIterator(ArrayTools.sort(this.subject.uniqueConverterNames()));
+			protected Iterable<String> getIterable() {
+				return this.subject.getUniqueConverterNames();
 			}
 		};
 	}

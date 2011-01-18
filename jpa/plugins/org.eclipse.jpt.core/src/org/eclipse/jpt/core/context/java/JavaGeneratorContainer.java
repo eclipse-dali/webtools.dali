@@ -13,32 +13,35 @@ import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
+ * Java generator container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.3
  */
 public interface JavaGeneratorContainer
 	extends GeneratorContainer, JavaJpaContextNode
 {
+	// ********** sequence generator **********
+
 	JavaSequenceGenerator getSequenceGenerator();
 
 	JavaSequenceGenerator addSequenceGenerator();
 
+
+	// ********** table generator **********
+	
 	JavaTableGenerator getTableGenerator();
 
 	JavaTableGenerator addTableGenerator();
-	
-	void initialize(JavaResourceAnnotatedElement jrae);
-	
-	/**
-	 * Update the JavaGeneratorContainer context model object to match the JavaResourceAnnotatedElement 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourceAnnotatedElement jrae);
 
+	interface Owner
+	{
+		JavaResourceAnnotatedElement getResourceAnnotatedElement();
+	}
 }

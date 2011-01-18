@@ -176,7 +176,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setName(null);
 		assertNull(tableGenerator.getName());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetTable() throws Exception {
@@ -204,7 +204,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setTable(null);
 		assertNull(tableGenerator.getTable());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetCatalog() throws Exception {
@@ -232,7 +232,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setCatalog(null);
 		assertNull(tableGenerator.getCatalog());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetSchema() throws Exception {
@@ -260,7 +260,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setSchema(null);
 		assertNull(tableGenerator.getSchema());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetPkColumnName() throws Exception {
@@ -288,7 +288,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setPkColumnName(null);
 		assertNull(tableGenerator.getPkColumnName());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 	
 	public void testGetValueColumnName() throws Exception {
@@ -316,7 +316,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setValueColumnName(null);
 		assertNull(tableGenerator.getValueColumnName());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetPkColumnValue() throws Exception {
@@ -344,7 +344,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		tableGenerator.setPkColumnValue(null);
 		assertNull(tableGenerator.getPkColumnValue());
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 
 	public void testGetAllocationSize() throws Exception {
@@ -371,7 +371,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		
 		tableGenerator.setAllocationSize(null);
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 
 		tableGenerator.setAllocationSize(Integer.valueOf(0));
 		assertSourceContains("@TableGenerator(allocationSize = 0)", cu);
@@ -401,7 +401,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		
 		tableGenerator.setInitialValue(null);
 		
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 
 		tableGenerator.setInitialValue(Integer.valueOf(0));
 		assertSourceContains("@TableGenerator(initialValue = 0)", cu);
@@ -473,7 +473,7 @@ public class TableGeneratorTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@TableGenerator(uniqueConstraints = @UniqueConstraint(columnNames = {\"BAZ\"}))", cu);
 		
 		tableGenerator.removeUniqueConstraint(0);
-		assertSourceDoesNotContain("@TableGenerator", cu);
+		assertSourceDoesNotContain("@TableGenerator(", cu);
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {

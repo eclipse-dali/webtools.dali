@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * Java persistent attribute (field or property)
+ * Context Java persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -31,37 +31,19 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 public interface JavaPersistentAttribute
 	extends PersistentAttribute, JavaJpaContextNode
 {
-	/**
-	 * covariant override
-	 */
+	// ********** mapping **********
+
 	JavaAttributeMapping getMapping();
 
-	/**
-	 * covariant override
-	 */
-	JavaAttributeMapping getSpecifiedMapping();
+	JavaAttributeMapping setMappingKey(String key);
 
-	/**
-	 * Return the attribute's default mapping.
-	 */
-	JavaAttributeMapping getDefaultMapping();
 
-	/**
-	 * Update the context persistent attribute to match its
-	 * resource persistent attribute (passed in to the constructor).
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update();
+	// ********** misc **********
 
 	/**
 	 * Return the "resource" persistent attribute.
 	 */
 	JavaResourcePersistentAttribute getResourcePersistentAttribute();
-
-	/**
-	 * Return whether the specified mapping is the attribute's default mapping.
-	 */
-	boolean mappingIsDefault(JavaAttributeMapping mapping);
 
 	/**
 	 * Return whether the attribute contains the given offset into the text file.
@@ -70,7 +52,7 @@ public interface JavaPersistentAttribute
 
 	/**
 	 * Return the embeddable (type mapping) corresponding to the persistent
-	 * attribute's type. Return null if it is not found.
+	 * attribute's type. Return <code>null</code> if it is not found.
 	 */
 	Embeddable getEmbeddable();
 
@@ -94,8 +76,11 @@ public interface JavaPersistentAttribute
 	 */
 	boolean isFinal();
 
+
+	// ********** type **********
+
 	/**
-	 * Return whether the attribute's type is valid for a default Basic mapping.
+	 * Return whether the attribute's type is valid for a default basic mapping.
 	 */
 	boolean typeIsBasic();
 
@@ -127,12 +112,15 @@ public interface JavaPersistentAttribute
 	 * Return the JpaContainer that corresponds to this attribute's type.
 	 * Return a null implementation if the type is not a container (map or collection)
 	 */
-	JpaContainer getJpaContainer();
+	JpaContainerDefinition getJpaContainerDefinition();
+
+
+	// ********** JPA container **********
 
 	/**
-	 * JPA container interface (and null implementation)
+	 * JPA container definition interface (and null implementation)
 	 */
-	interface JpaContainer {
+	interface JpaContainerDefinition {
 		String getTypeName();
 		boolean isContainer();
 		boolean isMap();
@@ -141,9 +129,9 @@ public interface JavaPersistentAttribute
 		String getMetamodelContainerFieldTypeName();
 		String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping);
 
-		final class Null implements JpaContainer {
-			public static final JpaContainer INSTANCE = new Null();
-			public static JpaContainer instance() {
+		final class Null implements JpaContainerDefinition {
+			public static final JpaContainerDefinition INSTANCE = new Null();
+			public static JpaContainerDefinition instance() {
 				return INSTANCE;
 			}
 			// ensure single instance
@@ -173,7 +161,7 @@ public interface JavaPersistentAttribute
 			}
 			@Override
 			public String toString() {
-				return "JpaContainer.Null";  //$NON-NLS-1$
+				return JpaContainerDefinition.class.getSimpleName() + ".Null";  //$NON-NLS-1$
 			}
 		}
 	}

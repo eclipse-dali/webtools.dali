@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
@@ -15,85 +14,98 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlDerivedId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmIdDerivedIdentityStrategy2_0 
+public class GenericOrmIdDerivedIdentityStrategy2_0
 	extends AbstractOrmXmlContextNode
 	implements OrmIdDerivedIdentityStrategy2_0
 {
-	protected XmlDerivedId_2_0 resource;
-	
 	protected boolean value;
-	
-	
-	public GenericOrmIdDerivedIdentityStrategy2_0(
-			OrmDerivedIdentity2_0 parent, XmlDerivedId_2_0 resource) {
+
+
+	public GenericOrmIdDerivedIdentityStrategy2_0(OrmDerivedIdentity2_0 parent) {
 		super(parent);
-		this.resource = resource;
-		this.value = getResourceToContextValue();
+		this.value = this.buildValue();
 	}
-	
-	
-	public OrmDerivedIdentity2_0 getDerivedIdentity() {
-		return (OrmDerivedIdentity2_0) getParent();
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setValue_(this.buildValue());
 	}
-	
-	public OrmSingleRelationshipMapping2_0 getMapping() {
-		return getDerivedIdentity().getMapping();
-	}
-	
+
+
+	// ********** value **********
+
 	public boolean getValue() {
 		return this.value;
 	}
-	
-	public void setValue(boolean newValue) {
-		boolean oldValue = this.value;
-		this.value = newValue;
-		this.resource.setId(getContextToResourceValue());
-		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
+
+	public void setValue(boolean value) {
+		this.setValue_(value);
+		this.getXmlMapping().setId(value ? Boolean.TRUE : null);
 	}
-	
-	protected void setValue_(boolean newValue) {
-		boolean oldValue = this.value;
-		this.value = newValue;
-		firePropertyChanged(VALUE_PROPERTY, oldValue, newValue);
+
+	protected void setValue_(boolean value) {
+		boolean old = this.value;
+		this.value = value;
+		this.firePropertyChanged(VALUE_PROPERTY, old, value);
 	}
-	
-	public void update() {
-		setValue_(getResourceToContextValue());
+
+	protected boolean buildValue() {
+		Boolean xmlValue = this.getXmlMapping().getId();
+		return (xmlValue != null) && xmlValue.booleanValue();
 	}
-	
-	protected boolean getResourceToContextValue() {
-		return (resource.getId() == null) ? false : resource.getId().booleanValue();
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmDerivedIdentity2_0 getParent() {
+		return (OrmDerivedIdentity2_0) super.getParent();
 	}
-	
-	protected Boolean getContextToResourceValue() {
-		return (this.value) ? Boolean.TRUE : null;
+
+	protected OrmDerivedIdentity2_0 getDerivedIdentity() {
+		return this.getParent();
 	}
-	
+
+	protected OrmSingleRelationshipMapping2_0 getMapping() {
+		return this.getDerivedIdentity().getMapping();
+	}
+
+	protected XmlSingleRelationshipMapping_2_0 getXmlMapping() {
+		return this.getMapping().getXmlAttributeMapping();
+	}
+
 	public boolean isSpecified() {
-		return Boolean.TRUE.equals(this.resource.getId());
+		return this.value;
 	}
-	
+
 	public void addStrategy() {
-		this.resource.setId(true);
+		this.setValue(true);
 	}
-	
+
 	public void removeStrategy() {
-		this.resource.setId(null);
+		this.setValue(false);
 	}
-	
+
 	public void initializeFrom(OrmIdDerivedIdentityStrategy2_0 oldStrategy) {
-		setValue(oldStrategy.getValue());
+		this.setValue(oldStrategy.getValue());
 	}
-	
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		return this.resource.getIdTextRange();
+		return this.getXmlMapping().getIdTextRange();
 	}
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);

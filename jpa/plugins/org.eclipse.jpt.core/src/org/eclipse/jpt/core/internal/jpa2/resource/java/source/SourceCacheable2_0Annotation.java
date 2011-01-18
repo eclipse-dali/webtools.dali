@@ -57,6 +57,12 @@ public final class SourceCacheable2_0Annotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
@@ -94,6 +100,6 @@ public final class SourceCacheable2_0Annotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.CACHEABLE__VALUE, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.CACHEABLE__VALUE, BooleanExpressionConverter.instance());
 	}
 }

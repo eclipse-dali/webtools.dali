@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> join column or primary key join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,20 +24,25 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @version 2.3
  * @since 2.0
  */
-public interface OrmBaseJoinColumn extends BaseJoinColumn, OrmNamedColumn
+public interface OrmBaseJoinColumn
+	extends BaseJoinColumn, OrmNamedColumn
 {
-
 	/**
-	 * Return the (best guess) text location of the referenced column name
+	 * Return the (best guess) text location of the column's
+	 * referenced column name.
 	 */
 	TextRange getReferencedColumnNameTextRange();
+
+
+	// ********** owner **********
 
 	/**
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
-	interface Owner extends BaseJoinColumn.Owner, OrmNamedColumn.Owner
+	interface Owner
+		extends BaseJoinColumn.Owner, OrmNamedColumn.Owner
 	{
-
+		// combine two interfaces
 	}
 }

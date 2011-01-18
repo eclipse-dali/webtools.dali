@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 
@@ -30,12 +31,16 @@ public class ImpliedMappingFileRef
 
 	// ********** construction/initialization **********
 
-	public ImpliedMappingFileRef(PersistenceUnit parent, String resourceFileName) {
-		super(parent, resourceFileName);
+	public ImpliedMappingFileRef(PersistenceUnit parent, String fileName) {
+		super(parent, fileName);
 	}
 
 
 	// ********** MappingFileRef implementation **********
+
+	public XmlMappingFileRef getXmlMappingFileRef() {
+		throw new UnsupportedOperationException();
+	}
 
 	public boolean isImplied() {
 		return true;
@@ -47,13 +52,6 @@ public class ImpliedMappingFileRef
 
 	public boolean containsOffset(int textOffset) {
 		return false;
-	}
-
-	public void update(XmlMappingFileRef mappingFileRef) {
-		if (mappingFileRef != null) {
-			throw new IllegalArgumentException("an implied mapping file ref's xml mapping file ref must be null: " + mappingFileRef); //$NON-NLS-1$
-		}
-		this.update();
 	}
 
 
@@ -74,35 +72,34 @@ public class ImpliedMappingFileRef
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
-		throw new IllegalStateException("Cannot delete this reference since it is implied"); //$NON-NLS-1$
+		throw new IllegalStateException("This reference cannot be deleted - it is implied"); //$NON-NLS-1$
 	}
 
 	public Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName) {
-		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
+		throw new IllegalStateException("This reference cannot be moved - it is implied"); //$NON-NLS-1$
 	}
 
 	@Override
 	protected ReplaceEdit createRenameEdit(IFile originalFile, String newName) {
-		StringBuffer buffer = new StringBuffer();
-		String location = getFileName().substring(0, getFileName().lastIndexOf('/'));
-		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
-		buffer.append(location).append('/').append(newName);
-		buffer.append("</mapping-file>"); //$NON-NLS-1$
-		int offset = getPersistenceUnit().findInsertLocationForMappingFileRef();
-		return new ReplaceEdit(offset, 0, buffer.toString());
+		return this.createReplaceEdit(this.fileName.substring(0, this.fileName.lastIndexOf('/') + 1) + newName);
 	}
 
 	@Override
-	protected ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination) {
-		StringBuffer buffer = new StringBuffer();
-		buffer.append("\n\t\t<mapping-file>"); //$NON-NLS-1$
-		buffer.append(runtineDestination.append(originalFile.getName())).toString();
-		buffer.append("</mapping-file>"); //$NON-NLS-1$
-		int offset = getPersistenceUnit().findInsertLocationForMappingFileRef();
-		return new ReplaceEdit(offset, 0, buffer.toString());
+	protected ReplaceEdit createMoveEdit(IFile originalFile, IPath runtimeDestination) {
+		return this.createReplaceEdit(runtimeDestination.append(originalFile.getName()).toString());
+	}
+
+	protected ReplaceEdit createReplaceEdit(String newMappingFileName) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(StringTools.CR);
+		sb.append("\t\t<mapping-file>"); //$NON-NLS-1$
+		sb.append(newMappingFileName);
+		sb.append("</mapping-file>"); //$NON-NLS-1$
+		int offset = this.getPersistenceUnit().findInsertLocationForMappingFileRef();
+		return new ReplaceEdit(offset, 0, sb.toString());
 	}
 
 	public Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination) {
-		throw new IllegalStateException("Cannot replace this reference since it is implied"); //$NON-NLS-1$
+		throw new IllegalStateException("This reference cannot be moved - it is implied"); //$NON-NLS-1$
 	}
 }

@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * 
- * 
+ * Java named query
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,15 +28,8 @@ import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 public interface JavaNamedQuery
 	extends NamedQuery, JavaQuery
 {
+	NamedQueryAnnotation getQueryAnnotation();
 
-	ListIterator<JavaQueryHint> hints();
-
-	void initialize(NamedQueryAnnotation resourceNamedQuery);
-
-	/**
-	 * Update the JavaNamedQuery context model object to match the NamedQueryAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(NamedQueryAnnotation resourceNamedQuery);
-
+	// required to resolve ambiguity
+	ListIterable<JavaQueryHint> getHints();
 }

@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JPA 2.0 annotation
- * javax.persistence.NamedQuery
- * 
+ * <code>javax.persistence.NamedQuery</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,7 +29,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface NamedQuery2_0Annotation
 	extends NamedQueryAnnotation
 {
-	// ********** lockMode **********
+	// ********** lock mode **********
+
 	/**
 	 * Corresponds to the 'lockMode' element of the NamedQuery annotation.
 	 * Return null if the element does not exist in Java.
@@ -39,8 +40,7 @@ public interface NamedQuery2_0Annotation
 
 	/**
 	 * Corresponds to the 'lockMode' element of the NamedQuery annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the NamedQuery annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setLockMode(LockModeType_2_0 lockMode);
 
@@ -55,5 +55,4 @@ public interface NamedQuery2_0Annotation
 	 * Return false if the element does not exist.
 	 */
 	boolean lockModeTouches(int pos, CompilationUnit astRoot);
-
 }

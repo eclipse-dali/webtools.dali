@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_0;
+import org.eclipse.jpt.core.context.ManyToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.ManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -25,10 +25,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmManyToOneMapping2_0Composite
-	extends AbstractManyToOneMapping2_0Composite<OrmManyToOneMapping, OrmManyToOneRelationshipReference2_0>
+	extends AbstractManyToOneMapping2_0Composite<ManyToOneMapping, ManyToOneRelationshipReference2_0>
 {
 	public OrmManyToOneMapping2_0Composite(
-			PropertyValueModel<? extends OrmManyToOneMapping> subjectHolder,
+			PropertyValueModel<? extends ManyToOneMapping> subjectHolder,
 			Composite parent,
 	        WidgetFactory widgetFactory) {
 		
@@ -47,7 +47,7 @@ public class OrmManyToOneMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmManyToOneMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<ManyToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

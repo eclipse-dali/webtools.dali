@@ -21,28 +21,27 @@ public class OrmEclipseLinkTransformationMapping
 	extends AbstractOrmAttributeMapping<XmlTransformation> 
 	implements EclipseLinkTransformationMapping
 {
-	public OrmEclipseLinkTransformationMapping(OrmPersistentAttribute parent, XmlTransformation resourceMapping) {
-		super(parent, resourceMapping);
+	public OrmEclipseLinkTransformationMapping(OrmPersistentAttribute parent, XmlTransformation xmlMapping) {
+		super(parent, xmlMapping);
+	}
+	
+	public String getKey() {
+		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	public int getXmlSequence() {
+		return 85;
 	}
 	
 	public void initializeOn(OrmAttributeMapping newMapping) {
 		newMapping.initializeFromOrmAttributeMapping(this);
 	}
 	
-	public String getKey() {
-		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
+	public void addXmlAttributeMappingTo(org.eclipse.jpt.core.resource.orm.Attributes xmlAttributes) {
+		((Attributes) xmlAttributes).getTransformations().add(this.xmlAttributeMapping);
 	}
 	
-	public void addToResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
-		((Attributes) resourceAttributes).getTransformations().add(this.resourceAttributeMapping);
-	}
-	
-	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
-		((Attributes) resourceAttributes).getTransformations().remove(this.resourceAttributeMapping);
-	}
-
-	
-	public int getXmlSequence() {
-		return 85;
+	public void removeXmlAttributeMappingFrom(org.eclipse.jpt.core.resource.orm.Attributes xmlAttributes) {
+		((Attributes) xmlAttributes).getTransformations().remove(this.xmlAttributeMapping);
 	}
 }

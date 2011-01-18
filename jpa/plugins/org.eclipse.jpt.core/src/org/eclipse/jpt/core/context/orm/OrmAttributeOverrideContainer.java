@@ -12,11 +12,13 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.VirtualOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
-import org.eclipse.jpt.core.resource.orm.XmlColumn;
 
 /**
+ * <code>orm.xml</code> attribute override container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,29 +31,24 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 public interface OrmAttributeOverrideContainer
 	extends AttributeOverrideContainer, OrmOverrideContainer
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> attributeOverrides();
+	ListIterator<OrmReadOnlyAttributeOverride> overrides();
+	OrmReadOnlyAttributeOverride getOverrideNamed(String name);
+	ListIterator<OrmAttributeOverride> specifiedOverrides();
+	OrmAttributeOverride getSpecifiedOverride(int index);
+	OrmAttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<OrmVirtualAttributeOverride> virtualOverrides();
+	OrmVirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	OrmAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> specifiedAttributeOverrides();
+	void initializeFrom(OrmAttributeOverrideContainer oldContainer);
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAttributeOverride> virtualAttributeOverrides();
-		
-	OrmAttributeOverride getAttributeOverrideNamed(String name);
-	
-	void update();
-	
-	void initializeFromAttributeOverrideContainer(OrmAttributeOverrideContainer oldContainer);
-	
-	interface Owner extends AttributeOverrideContainer.Owner, OrmOverrideContainer.Owner
+
+	// ********** owner **********
+
+	interface Owner
+		extends AttributeOverrideContainer.Owner, OrmOverrideContainer.Owner
 	{		
-		
-		/**
-		 * Build a virtual xml column based on the overridable column.
-		 */
-		XmlColumn buildVirtualXmlColumn(Column overridableColumn, String attributeName, boolean isMetadataComplete);
-		
-		EList<XmlAttributeOverride> getResourceAttributeOverrides();
+		@SuppressWarnings("unchecked")
+		EList<XmlAttributeOverride> getXmlOverrides();
 	}
 }

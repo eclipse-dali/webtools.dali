@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 
 /**
- * The orm.xml representation of a {@link OneToManyMapping}
- * 
+ * <code>orm.xml</code> 1:m mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 public interface OrmOneToManyMapping
 	extends OneToManyMapping, OrmMultiRelationshipMapping
 {
-	XmlOneToMany getResourceAttributeMapping();
+	XmlOneToMany getXmlAttributeMapping();
 	
 	OrmOneToManyRelationshipReference getRelationshipReference();
 }

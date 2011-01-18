@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.OneToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -29,10 +29,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmOneToOneMapping2_0Composite
-	extends AbstractOneToOneMapping2_0Composite<OrmOneToOneMapping, OrmOneToOneRelationshipReference2_0>
+	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping, OneToOneRelationshipReference2_0>
 {
 	public OrmOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -57,7 +57,7 @@ public class OrmOneToOneMapping2_0Composite
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -66,7 +66,7 @@ public class OrmOneToOneMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, OrphanRemovable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, OrphanRemovable2_0>(getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

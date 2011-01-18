@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 
 /**
- * 
- * 
+ * Java association override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,26 +25,11 @@ import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
  * @since 2.0
  */
 public interface JavaAssociationOverride
-	extends AssociationOverride, JavaOverride
+	extends JavaReadOnlyAssociationOverride, AssociationOverride, JavaOverride
 {
-	JavaAssociationOverrideRelationshipReference getRelationshipReference();
+	JavaVirtualAssociationOverride convertToVirtual();
 
-	JavaAssociationOverride setVirtual(boolean virtual);
-	
 	AssociationOverrideAnnotation getOverrideAnnotation();
-	
-	void initialize(AssociationOverrideAnnotation associationOverride);
-	
-	/**
-	 * Update the JavaAssociationOverride context model object to match the AssociationOverrideAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(AssociationOverrideAnnotation associationOverride);
 
-	JavaAssociationOverride.Owner getOwner();
-
-	interface Owner extends AssociationOverride.Owner, JavaOverride.Owner
-	{
-		//nothing yet
-	}
+	JavaAssociationOverrideRelationshipReference getRelationshipReference();
 }

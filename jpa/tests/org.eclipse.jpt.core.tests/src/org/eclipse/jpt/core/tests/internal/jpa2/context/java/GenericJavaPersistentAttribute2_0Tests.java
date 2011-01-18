@@ -134,6 +134,7 @@ public class GenericJavaPersistentAttribute2_0Tests extends Generic2_0ContextMod
 		assertEquals(id.getMappingKey(), MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		
 		id.getResourcePersistentAttribute().addAnnotation(JPA.ID);
+		getJpaProject().synchronizeContextModel();
 		assertEquals(id.getMappingKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		
 		id.getResourcePersistentAttribute().addAnnotation(JPA.ONE_TO_ONE);

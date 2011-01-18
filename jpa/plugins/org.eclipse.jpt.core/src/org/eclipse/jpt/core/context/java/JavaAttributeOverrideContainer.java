@@ -11,8 +11,12 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.VirtualOverride;
 
 /**
+ * Java attribute override container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,20 +29,21 @@ import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 public interface JavaAttributeOverrideContainer
 	extends AttributeOverrideContainer, JavaOverrideContainer
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> attributeOverrides();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> specifiedAttributeOverrides();
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<JavaAttributeOverride> virtualAttributeOverrides();
-	
-	JavaAttributeOverride getAttributeOverrideNamed(String name);
-	
-	interface Owner extends AttributeOverrideContainer.Owner, JavaOverrideContainer.Owner
-	{		
-		//nothing yet
-	}
+	ListIterator<JavaReadOnlyAttributeOverride> overrides();
+	JavaReadOnlyAttributeOverride getOverrideNamed(String name);
+	ListIterator<JavaAttributeOverride> specifiedOverrides();
+	JavaAttributeOverride getSpecifiedOverride(int index);
+	JavaAttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<JavaVirtualAttributeOverride> virtualOverrides();
+	JavaVirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	JavaAttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
+
+	// ********** Java owner **********
+
+	interface Owner
+		extends AttributeOverrideContainer.Owner, JavaOverrideContainer.Owner
+	{		
+		// combine two interfaces
+	}
 }

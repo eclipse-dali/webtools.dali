@@ -50,13 +50,13 @@ public class SourceXmlNsAnnotation
 	protected DeclarationAnnotationElementAdapter<String> buildNamespaceURIDeclarationAdapter(
 			DeclarationAnnotationAdapter daa) {
 		
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_NS__NAMESPACE_URI, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_NS__NAMESPACE_URI);
 	}
 	
 	protected DeclarationAnnotationElementAdapter<String> buildPrefixDeclarationAdapter(
 			DeclarationAnnotationAdapter daa) {
 		
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_NS__PREFIX, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_NS__PREFIX);
 	}
 	
 	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {

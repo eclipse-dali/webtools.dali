@@ -14,6 +14,7 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
@@ -48,16 +49,14 @@ public class EclipseLinkOrmTransientMappingTests
 		OrmPersistentType ormPersistentType = 
 			getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		
-		OrmPersistentAttribute persistentAttribute = ormPersistentType.getAttributeNamed("id");
+		OrmReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.getAttributeNamed("id");
 		assertTrue(persistentAttribute.isVirtual());
 		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
 		
-		ormPersistentType.addSpecifiedAttribute(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, "id");
-
-		persistentAttribute = ormPersistentType.getAttributeNamed("id");
-		assertFalse(persistentAttribute.isVirtual());
-		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getMappingKey());
-		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getSpecifiedMapping().getKey());
+		OrmPersistentAttribute persistentAttribute2 = persistentAttribute.convertToSpecified(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		assertFalse(persistentAttribute2.isVirtual());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute2.getMappingKey());
+		assertEquals(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY, persistentAttribute2.getMapping().getKey());
 	}
 
 }

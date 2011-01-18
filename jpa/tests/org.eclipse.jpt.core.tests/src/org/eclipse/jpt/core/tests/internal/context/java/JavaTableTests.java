@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
@@ -164,11 +165,11 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = ormEntity.getJavaEntity();
+		JavaEntity javaEntity = ormEntity.getJavaTypeMapping();
 		
 		assertNull(javaEntity.getTable().getDefaultSchema());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultSchema());
 		
 		getEntityMappings().setSpecifiedSchema("BAR");
@@ -284,11 +285,11 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
-		JavaEntity javaEntity = ormEntity.getJavaEntity();
+		JavaEntity javaEntity = ormEntity.getJavaTypeMapping();
 		
 		assertNull(javaEntity.getTable().getDefaultCatalog());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", javaEntity.getTable().getDefaultCatalog());
 		
 		getEntityMappings().setSpecifiedCatalog("BAR");
@@ -382,8 +383,8 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		uniqueConstraints = getJavaEntity().getTable().uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("bar", uniqueConstraints.next().columnNames().next());
-		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -444,7 +445,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = getJavaEntity().getTable();
+		JavaTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -461,9 +462,9 @@ public class JavaTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		Iterator<JavaUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
@@ -473,7 +474,7 @@ public class JavaTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
@@ -488,7 +489,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntity();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		Table table = getJavaEntity().getTable();
+		JavaTable table = getJavaEntity().getTable();
 		table.addUniqueConstraint(0).addColumnName(0, "FOO");
 		table.addUniqueConstraint(1).addColumnName(0, "BAR");
 		table.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -500,10 +501,10 @@ public class JavaTableTests extends ContextModelTestCase
 		
 		
 		table.moveUniqueConstraint(2, 0);
-		ListIterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = tableAnnotation.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
@@ -513,9 +514,9 @@ public class JavaTableTests extends ContextModelTestCase
 
 		table.moveUniqueConstraint(0, 1);
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		uniqueConstraintAnnotations = tableAnnotation.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
@@ -527,7 +528,7 @@ public class JavaTableTests extends ContextModelTestCase
 		createTestEntityWithTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
-		Table table = getJavaEntity().getTable();
+		JavaTable table = getJavaEntity().getTable();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		TableAnnotation tableAnnotation = (TableAnnotation) typeResource.getAnnotation(JPA.TABLE);
 	
@@ -536,39 +537,39 @@ public class JavaTableTests extends ContextModelTestCase
 		tableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
 		getJpaProject().synchronizeContextModel();
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = table.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = table.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableAnnotation.moveUniqueConstraint(2, 0);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.moveUniqueConstraint(0, 1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		tableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = table.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		tableAnnotation.removeUniqueConstraint(0);

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 
 /**
- * 
- * 
+ * orm.xml order column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,12 +28,5 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 public interface JavaOrderColumn2_0
 	extends OrderColumn2_0, JavaNamedColumn
 {
-	void initialize(JavaResourcePersistentAttribute resource);
-	
-	/**
-	 * Update the JavaColumn context model object to match the ColumnAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentAttribute resource);
-
+	OrderColumn2_0Annotation getColumnAnnotation();
 }

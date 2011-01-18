@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -15,80 +15,80 @@ import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.ReplaceEdit;
 
-public class GenericOrmTemporalConverter extends AbstractOrmXmlContextNode
-	implements TemporalConverter, OrmConverter
+public class GenericOrmTemporalConverter
+	extends AbstractOrmConverter
+	implements OrmTemporalConverter
 {
 	protected TemporalType temporalType;
-	
-	protected XmlConvertibleMapping resourceConvertibleMapping;
-	
-	public GenericOrmTemporalConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceConvertableMapping) {
+
+
+	public GenericOrmTemporalConverter(OrmAttributeMapping parent) {
 		super(parent);
-		this.initialize(resourceConvertableMapping);
+		this.temporalType = this.buildTemporalType();
 	}
+
+
+	// ********** synchronize/update **********
 
 	@Override
-	public OrmAttributeMapping getParent() {
-		return (OrmAttributeMapping) super.getParent();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setTemporalType_(this.buildTemporalType());
 	}
 
-	public String getType() {
-		return Converter.TEMPORAL_CONVERTER;
-	}
-	
+
+	// ********** temporal type **********
+
 	public TemporalType getTemporalType() {
 		return this.temporalType;
 	}
 
-	public void setTemporalType(TemporalType newTemporalType) {
-		TemporalType oldTemporalType = this.temporalType;
-		this.temporalType = newTemporalType;
-		this.resourceConvertibleMapping.setTemporal(TemporalType.toOrmResourceModel(newTemporalType));
-		firePropertyChanged(TEMPORAL_TYPE_PROPERTY, oldTemporalType, newTemporalType);
-	}
-	
-	protected void setTemporalType_(TemporalType newTemporalType) {
-		TemporalType oldTemporalType = this.temporalType;
-		this.temporalType = newTemporalType;
-		firePropertyChanged(TEMPORAL_TYPE_PROPERTY, oldTemporalType, newTemporalType);
+	public void setTemporalType(TemporalType temporalType) {
+		this.setTemporalType_(temporalType);
+		this.setXmlTemporal(temporalType);
 	}
 
-	
-	protected void initialize(XmlConvertibleMapping resourceConvertibleMapping) {
-		this.resourceConvertibleMapping = resourceConvertibleMapping;
-		this.temporalType = this.temporalType();
-	}
-	
-	public void update() {		
-		this.setTemporalType_(this.temporalType());
-	}
-	
-	protected TemporalType temporalType() {
-		return TemporalType.fromOrmResourceModel(this.resourceConvertibleMapping.getTemporal());
+	protected void setTemporalType_(TemporalType temporalType) {
+		TemporalType old = this.temporalType;
+		this.temporalType = temporalType;
+		this.firePropertyChanged(TEMPORAL_TYPE_PROPERTY, old, temporalType);
 	}
 
-	
+	protected void setXmlTemporal(TemporalType temporalType) {
+		this.getXmlConvertibleMapping().setTemporal(TemporalType.toOrmResourceModel(temporalType));
+	}
+
+	protected TemporalType buildTemporalType() {
+		return TemporalType.fromOrmResourceModel(this.getXmlConvertibleMapping().getTemporal());
+	}
+
+
+	// ********** misc **********
+
+	public Class<? extends Converter> getType() {
+		return TemporalConverter.class;
+	}
+
+	public void initialize() {
+		// start with DATE(?)
+		this.temporalType = TemporalType.DATE;
+		this.setXmlTemporal(this.temporalType);
+	}
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		return this.resourceConvertibleMapping.getTemporalTextRange();
-	}
-	
-	public void addToResourceModel() {
-		this.resourceConvertibleMapping.setTemporal(org.eclipse.jpt.core.resource.orm.TemporalType.DATE);
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourceConvertibleMapping.setTemporal(null);
+		return this.getXmlConvertibleMapping().getTemporalTextRange();
 	}
 
 
-	//************************* refactoring ************************
+	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return EmptyIterable.instance();

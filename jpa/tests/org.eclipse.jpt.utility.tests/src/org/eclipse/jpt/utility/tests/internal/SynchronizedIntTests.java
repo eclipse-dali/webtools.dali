@@ -47,10 +47,10 @@ public class SynchronizedIntTests
 		assertTrue(this.si.equals(7));
 	}
 
-	public void testNotEqualsInt() throws Exception {
-		assertTrue(this.si.notEquals(7));
+	public void testNotEqualInt() throws Exception {
+		assertTrue(this.si.notEqual(7));
 		this.si.setValue(this.value);
-		assertTrue(this.si.notEquals(0));
+		assertTrue(this.si.notEqual(0));
 	}
 
 	public void testIsZero() throws Exception {
@@ -157,7 +157,6 @@ public class SynchronizedIntTests
 		assertEquals(this.value, this.si.getValue());
 		this.si.setValue(-this.value);
 		assertEquals(this.value, this.si.abs());
-		assertEquals(this.value, this.si.getValue());
 	}
 
 	public void testNeg() throws Exception {
@@ -165,10 +164,8 @@ public class SynchronizedIntTests
 		assertEquals(0, this.si.getValue());
 		this.si.setValue(this.value);
 		assertEquals(-this.value, this.si.neg());
-		assertEquals(-this.value, this.si.getValue());
 		this.si.setValue(-this.value);
 		assertEquals(this.value, this.si.neg());
-		assertEquals(this.value, this.si.getValue());
 	}
 
 	public void testSetZero() throws Exception {
@@ -180,26 +177,6 @@ public class SynchronizedIntTests
 
 	public void testGetMutexThis() throws Exception {
 		assertSame(this.si, this.si.getMutex());
-	}
-
-	public void testEquals() throws Exception {
-		this.si.setValue(0);
-		SynchronizedInt so2 = new SynchronizedInt(0);
-		assertEquals(this.si, so2);
-
-		this.si.setValue(this.value);
-		assertFalse(this.si.equals(so2));
-
-		so2.setValue(this.value);
-		assertEquals(this.si, so2);
-	}
-
-	public void testHashCode() {
-		this.si.setValue(this.value);
-		assertEquals(this.value, this.si.hashCode());
-
-		this.si.setValue(0);
-		assertEquals(0, this.si.hashCode());
 	}
 
 	/**

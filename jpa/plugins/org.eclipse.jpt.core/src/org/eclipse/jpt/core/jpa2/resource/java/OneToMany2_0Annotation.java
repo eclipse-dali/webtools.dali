@@ -12,6 +12,9 @@ package org.eclipse.jpt.core.jpa2.resource.java;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 
 /**
+ * Corresponds to the JPA 2.0 annotation
+ * <code>javax.persistence.OneToMany</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,5 +25,7 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
  * @since 2.3
  */
 public interface OneToMany2_0Annotation
-	extends OneToManyAnnotation, OrphanRemovable2_0Annotation, RelationshipMapping2_0Annotation
-{}
+	extends OneToManyAnnotation, OwningRelationshipMapping2_0Annotation, RelationshipMapping2_0Annotation
+{
+	// combine various interfaces
+}

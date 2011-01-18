@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,18 +11,20 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
+import org.eclipse.jpt.core.context.OverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaBaseEmbeddedMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -31,10 +33,11 @@ import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideColumnValidat
 import org.eclipse.jpt.core.internal.jpa1.context.AttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
@@ -45,259 +48,271 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractJavaBaseEmbeddedMapping<T extends Annotation>
-	extends AbstractJavaAttributeMapping<T>
+/**
+ * <code>orm.xml</code> embedded or embedded ID mapping
+ */
+public abstract class AbstractJavaBaseEmbeddedMapping<A extends Annotation>
+	extends AbstractJavaAttributeMapping<A>
 	implements JavaBaseEmbeddedMapping
 {
 	protected final JavaAttributeOverrideContainer attributeOverrideContainer;
-	
-	private Embeddable targetEmbeddable;
-	
-	
+
+	protected Embeddable targetEmbeddable;
+
+
 	protected AbstractJavaBaseEmbeddedMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.attributeOverrideContainer = 
-				this.getJpaFactory().buildJavaAttributeOverrideContainer(
-					this, 
-					buildAttributeOverrideContainerOwner());
+		this.attributeOverrideContainer = this.buildAttributeOverrideContainer();
 	}
-	
-	
-	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
-		return new AttributeOverrideContainerOwner();
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.attributeOverrideContainer.synchronizeWithResourceModel();
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+		this.attributeOverrideContainer.update();
+		this.setTargetEmbeddable(this.buildTargetEmbeddable());
+	}
+
+
+	// ********** attribute override container **********
+
 	public JavaAttributeOverrideContainer getAttributeOverrideContainer() {
 		return this.attributeOverrideContainer;
 	}
 
-	public TypeMapping getOverridableTypeMapping() {
-		return this.targetEmbeddable;
+	protected JavaAttributeOverrideContainer buildAttributeOverrideContainer() {
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildAttributeOverrideContainerOwner());
 	}
-	
-	
-	//****************** JavaAttributeMapping implementation *******************
 
-	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(JPA.ATTRIBUTE_OVERRIDE);
-		names.add(JPA.ATTRIBUTE_OVERRIDES);
+	protected JavaAttributeOverrideContainer.Owner buildAttributeOverrideContainerOwner() {
+		return new AttributeOverrideContainerOwner();
 	}
+
+
+	// ********** target embeddable **********
 
 	public Embeddable getTargetEmbeddable() {
 		return this.targetEmbeddable;
 	}
-	
-	protected void setTargetEmbeddable_(Embeddable newTargetEmbeddable) {
-		Embeddable oldTargetEmbeddable = this.targetEmbeddable;
-		this.targetEmbeddable = newTargetEmbeddable;
-		firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, oldTargetEmbeddable, newTargetEmbeddable);
-	}
-	
-	@Override
-	protected void initialize() {
-		super.initialize();
-		this.attributeOverrideContainer.initialize(this.getResourcePersistentAttribute());
-		this.targetEmbeddable = this.getPersistentAttribute().getEmbeddable();
-	}
-	
-	@Override
-	protected void update() {
-		super.update();
-		setTargetEmbeddable_(this.getPersistentAttribute().getEmbeddable());
-		this.attributeOverrideContainer.update(this.getResourcePersistentAttribute());
+
+	protected void setTargetEmbeddable(Embeddable embeddable) {
+		Embeddable old = this.targetEmbeddable;
+		this.targetEmbeddable = embeddable;
+		this.firePropertyChanged(TARGET_EMBEDDABLE_PROPERTY, old, embeddable);
 	}
 
+	protected Embeddable buildTargetEmbeddable() {
+		return this.getPersistentAttribute().getEmbeddable();
+	}
+
+
+	// ********** embedded mappings **********
+
+	@Override
+	public Iterator<String> allOverridableAttributeMappingNames() {
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverridableAttributeMappingNames() :
+				super.allOverridableAttributeMappingNames();
+	}
+
+	protected Iterator<String> embeddableOverridableAttributeMappingNames() {
+		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
+	}
+
+	@Override
+	public Iterator<String> allOverridableAssociationMappingNames() {
+		return this.isJpa2_0Compatible() ?
+				this.embeddableOverridableAssociationMappingNames() :
+				super.allOverridableAssociationMappingNames();
+	}
+
+	protected Iterator<String> embeddableOverridableAssociationMappingNames() {
+		return this.qualifiedEmbeddableOverridableMappingNames(AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
+	}
+
+	protected Iterator<String> qualifiedEmbeddableOverridableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
+		return new TransformationIterator<String, String>(this.embeddableAttributeMappingNames(transformer), this.buildQualifierTransformer());
+	}
+
+	protected Iterator<String> embeddableAttributeMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
+		return new CompositeIterator<String>(this.embeddableAttributeMappingNamesLists(transformer));
+	}
+
+	/**
+	 * Return a list of lists; each nested list holds the names for one of the
+	 * embedded mapping's target embeddable type mapping's attribute mappings
+	 * (attribute or association mappings, depending on the specified transformer).
+	 */
+	protected Iterator<Iterator<String>> embeddableAttributeMappingNamesLists(Transformer<AttributeMapping, Iterator<String>> transformer) {
+		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer);
+	}
+
+	/**
+	 * Return the target embeddable's attribute mappings.
+	 */
 	protected Iterator<AttributeMapping> embeddableAttributeMappings() {
-		Embeddable targetEmbeddable = getTargetEmbeddable();
-		if (targetEmbeddable != null && targetEmbeddable != getPersistentAttribute().getOwningTypeMapping()) {
-			return targetEmbeddable.attributeMappings();
-		}
-		return EmptyIterator.instance();
+		return ((this.targetEmbeddable != null) && (this.targetEmbeddable != this.getTypeMapping())) ?
+				this.targetEmbeddable.attributeMappings() :
+				EmptyIterator.<AttributeMapping>instance();
 	}
-	
-	@Override
-	public Iterator<String> allOverrideableAttributeMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAttributeMappingNames() :
-				super.allOverrideableAttributeMappingNames();
-	}
-	
-	protected Iterator<String> embeddableOverrideableAttributeMappingNames() {
-		return this.embeddableOverrideableMappingNames(
-			new Transformer<AttributeMapping, Iterator<String>>() {
-				public Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allOverrideableAttributeMappingNames();
-				}
-			}
-		);
-	}
-	
-	@Override
-	public Iterator<String> allOverrideableAssociationMappingNames() {
-		return this.isJpa2_0Compatible() ?
-				this.embeddableOverrideableAssociationMappingNames() :
-				super.allOverrideableAssociationMappingNames();
-	}
-	
-	protected Iterator<String> embeddableOverrideableAssociationMappingNames() {
-		return this.embeddableOverrideableMappingNames(
-			new Transformer<AttributeMapping, Iterator<String>>() {
-				public Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allOverrideableAssociationMappingNames();
-				}
-			}
-		);
-	}
-	
-	protected Iterator<String> embeddableOverrideableMappingNames(Transformer<AttributeMapping, Iterator<String>> transformer) {
-		return new TransformationIterator<String, String>(
-			new CompositeIterator<String>(
-				new TransformationIterator<AttributeMapping, Iterator<String>>(this.embeddableAttributeMappings(), transformer))) 
-		{
-			@Override
-			protected String transform(String next) {
-				return getName() + '.' + next;
-			}
-		};
-	}
+
+
+	// ********** misc **********
 
 	@Override
 	public Column resolveOverriddenColumn(String attributeName) {
-		if (this.isJpa2_0Compatible()) {
-			int dotIndex = attributeName.indexOf('.');
-			if (dotIndex != -1) {
-				if (getName().equals(attributeName.substring(0, dotIndex))) {
-					attributeName = attributeName.substring(dotIndex + 1);
-					AttributeOverride override = getAttributeOverrideContainer().getAttributeOverrideNamed(attributeName);
-					if (override != null && !override.isVirtual()) {
-						return override.getColumn();
-					}
-					if (this.getTargetEmbeddable() == null) {
-						return null;
-					}
-					return this.getTargetEmbeddable().resolveOverriddenColumn(attributeName);
-				}
-			}
-		}
-		return null;
+		return this.isJpa2_0Compatible() ? this.resolveOverriddenColumn_(attributeName) : null;
 	}
-	
+
+	protected Column resolveOverriddenColumn_(String attributeName) {
+		attributeName = this.unqualify(attributeName);
+		if (attributeName == null) {
+			return null;
+		}
+		AttributeOverride override = this.attributeOverrideContainer.getSpecifiedOverrideNamed(attributeName);
+		// recurse into the target embeddable if necessary
+		return (override != null) ? override.getColumn() : this.resolveOverriddenColumnInTargetEmbeddable(attributeName);
+	}
+
+	protected Column resolveOverriddenColumnInTargetEmbeddable(String attributeName) {
+		return (this.targetEmbeddable == null) ? null : this.targetEmbeddable.resolveOverriddenColumn(attributeName);
+	}
+
+
+	// ********** Java completion proposals **********
+
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		
-		result = getAttributeOverrideContainer().javaCompletionProposals(pos, filter, astRoot);
+
+		result = this.attributeOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		return null;
 	}
 
-	//******** Validation ******************
-	
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (validateTargetEmbeddable(messages, reporter, astRoot)) {
-			validateOverrides(messages, reporter, astRoot);
+
+		if (this.validateTargetEmbeddable(messages, astRoot)) {
+			this.validateOverrides(messages, reporter, astRoot);
 		}
 	}
 
-	protected boolean validateTargetEmbeddable(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (getTargetEmbeddable() == null) {
-			String targetEmbeddableTypeName = getPersistentAttribute().getTypeName();
-			// if the type isn't resolveable, there'll already be a java error
-			if (targetEmbeddableTypeName != null) {
-				messages.add(
-						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
-							new String[] {targetEmbeddableTypeName}, 
-							this, 
-							this.getValidationTextRange(astRoot)));
-			}
-			return false;
+	protected boolean validateTargetEmbeddable(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.targetEmbeddable != null) {
+			return true;
 		}
-		return true;
+		String targetEmbeddableTypeName = this.getPersistentAttribute().getTypeName();
+		// if the type isn't resolvable, there will already be a java compile error
+		if (targetEmbeddableTypeName != null) {
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JpaValidationMessages.TARGET_NOT_AN_EMBEDDABLE,
+					new String[] {targetEmbeddableTypeName},
+					this,
+					this.getValidationTextRange(astRoot)
+				)
+			);
+		}
+		return false;
 	}
 
 	protected void validateOverrides(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		getAttributeOverrideContainer().validate(messages, reporter, astRoot);
+		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
 	}
 
-	//********** AttributeOverrideContainer.Owner implementation *********	
-	
+
+	// ********** attribute override container owner *********
+
 	protected class AttributeOverrideContainerOwner
 		implements JavaAttributeOverrideContainer.Owner
 	{
+		public JavaResourcePersistentMember getResourcePersistentMember() {
+			return AbstractJavaBaseEmbeddedMapping.this.getResourcePersistentAttribute();
+		}
+
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaBaseEmbeddedMapping.this.getTypeMapping();
 		}
-		
+
 		public TypeMapping getOverridableTypeMapping() {
-			return AbstractJavaBaseEmbeddedMapping.this.getOverridableTypeMapping();
+			return AbstractJavaBaseEmbeddedMapping.this.getTargetEmbeddable();
 		}
-		
+
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = getOverridableTypeMapping();
-			return (typeMapping == null) ?
-				EmptyIterator.<String>instance()
-				: allOverridableAttributeNames_(typeMapping);
+			TypeMapping typeMapping = this.getOverridableTypeMapping();
+			return (typeMapping != null) ? this.allOverridableAttributeNames_(typeMapping) : EmptyIterator.<String>instance();
 		}
-		
-		/* assumes the type mapping is not null */
+
+		/**
+		 * pre-condition: type mapping is not <code>null</code>
+		 * <p>
+		 * NB: Overridden in {@link GenericOrmEmbeddedIdMapping.AttributeOverrideContainerOwner}
+		 */
 		protected Iterator<String> allOverridableAttributeNames_(TypeMapping typeMapping) {
 			return typeMapping.allOverridableAttributeNames();
 		}
-		
-		public Column resolveOverriddenColumn(String attributeOverrideName) {
-			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+
+		public Column resolveOverriddenColumn(String attributeName) {
+			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
-		
+
 		public boolean tableNameIsInvalid(String tableName) {
-			return getTypeMapping().tableNameIsInvalid(tableName);
+			return this.getTypeMapping().tableNameIsInvalid(tableName);
 		}
-		
+
 		public Iterator<String> candidateTableNames() {
-			return getTypeMapping().associatedTableNamesIncludingInherited();
+			return this.getTypeMapping().allAssociatedTableNames();
 		}
-		
-		public Table getDbTable(String tableName) {
-			return getTypeMapping().getDbTable(tableName);
+
+		public Table resolveDbTable(String tableName) {
+			return this.getTypeMapping().resolveDbTable(tableName);
 		}
-		
+
 		public String getDefaultTableName() {
-			return getTypeMapping().getPrimaryTableName();
+			return this.getTypeMapping().getPrimaryTableName();
 		}
-		
+
 		public String getPossiblePrefix() {
 			return null;
 		}
-		
+
 		public String getWritePrefix() {
 			return null;
 		}
-		
+
+		// no maps, so all overrides are relevant
 		public boolean isRelevant(String overrideName) {
-			//no prefix, so always true
 			return true;
 		}
-		
+
 		public TextRange getValidationTextRange(CompilationUnit astRoot) {
 			return AbstractJavaBaseEmbeddedMapping.this.getValidationTextRange(astRoot);
 		}
 
-		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
-			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new AttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
 			return new AttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new EntityTableDescriptionProvider());
 		}
 	}

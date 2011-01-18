@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context.orm;
 import org.eclipse.jpt.core.context.ColumnMapping;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> column mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,8 +24,7 @@ import org.eclipse.jpt.core.context.ColumnMapping;
  * @since 2.0
  */
 public interface OrmColumnMapping
-	extends ColumnMapping, OrmColumn.Owner
+	extends ColumnMapping, OrmAttributeMapping, OrmColumn.Owner
 {
-
 	OrmColumn getColumn();
 }

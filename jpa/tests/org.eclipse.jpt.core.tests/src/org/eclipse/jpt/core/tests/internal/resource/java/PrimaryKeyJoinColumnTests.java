@@ -125,7 +125,7 @@ public class PrimaryKeyJoinColumnTests extends JpaJavaResourceModelTestCase {
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@PrimaryKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@PrimaryKeyJoinColumn(", cu);
 	}
 
 
@@ -154,7 +154,7 @@ public class PrimaryKeyJoinColumnTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setReferencedColumnName(null);
-		assertSourceDoesNotContain("@PrimaryKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@PrimaryKeyJoinColumn(", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -181,7 +181,7 @@ public class PrimaryKeyJoinColumnTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@PrimaryKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@PrimaryKeyJoinColumn(", cu);
 	}
 
 }

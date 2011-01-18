@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 /**
  * Common behavior for all "container" annotations.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,5 +24,24 @@ package org.eclipse.jpt.core.resource.java;
 public interface ContainerAnnotation<T extends NestableAnnotation>
 	extends Annotation, AnnotationContainer<T>
 {
-	// combine two interfaces
+	/**
+	 * Convert the specified stand-alone annotation to an annotation nested
+	 * within the container without firing change notification.
+	 */
+	void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation);
+
+	/**
+	 * In preparation for a just-nested annotation being written to the source
+	 * file, add the just-nested annotation to the container annotation at the
+	 * specified index without firing change notification.
+	 * 
+	 * @see #nestStandAloneAnnotation(NestableAnnotation)
+	 */
+	void addNestedAnnotation(int index, NestableAnnotation annotation);
+
+	/**
+	 * Convert the container's last nested annotation to a stand-alone
+	 * annotation without firing change notification.
+	 */
+	void convertLastNestedAnnotationToStandAlone();
 }

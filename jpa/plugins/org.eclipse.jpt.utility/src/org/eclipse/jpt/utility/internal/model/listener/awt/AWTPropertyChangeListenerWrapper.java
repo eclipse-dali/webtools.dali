@@ -48,6 +48,10 @@ public final class AWTPropertyChangeListenerWrapper
 			public void run() {
 				AWTPropertyChangeListenerWrapper.this.propertyChanged_(event);
 			}
+			@Override
+			public String toString() {
+				return "property changed runnable"; //$NON-NLS-1$
+			}
 		};
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,10 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.internal.AbstractJpaFactory;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
@@ -49,6 +52,7 @@ public class EclipseLinkJpaFactory
 		super();
 	}
 
+
 	// ********** Core Model **********
 	
 	@Override
@@ -56,9 +60,8 @@ public class EclipseLinkJpaFactory
 		return new EclipseLinkJpaProjectImpl(config);
 	}
 	
-	
-	
-	// ********** Java Context Model **********
+
+	// ********** Java Context Model overrides **********
 
 	@Override
 	public JavaPersistentAttribute buildJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
@@ -71,13 +74,13 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
-		return new JavaEclipseLinkEmbeddableImpl(parent);
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
+		return new JavaEclipseLinkEmbeddableImpl(parent, embeddableAnnotation);
 	}
 	
 	@Override
-	public JavaEclipseLinkEntity buildJavaEntity(JavaPersistentType parent) {
-		return new JavaEclipseLinkEntityImpl(parent);
+	public JavaEclipseLinkEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation) {
+		return new JavaEclipseLinkEntityImpl(parent, entityAnnotation);
 	}
 	
 	@Override
@@ -86,8 +89,8 @@ public class EclipseLinkJpaFactory
 	}
 	
 	@Override
-	public JavaEclipseLinkMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent) {
-		return new JavaEclipseLinkMappedSuperclassImpl(parent);
+	public JavaEclipseLinkMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappedSuperclassAnnotation) {
+		return new JavaEclipseLinkMappedSuperclassImpl(parent, mappedSuperclassAnnotation);
 	}
 	
 	@Override
@@ -114,6 +117,9 @@ public class EclipseLinkJpaFactory
 	public JavaManyToOneMapping buildJavaManyToOneMapping(JavaPersistentAttribute parent) {
 		return new JavaEclipseLinkManyToOneMapping(parent);
 	}
+
+
+	// ********** EclipseLink-specific Java Context Model **********
 
 	public JavaEclipseLinkBasicCollectionMapping buildJavaEclipseLinkBasicCollectionMapping(JavaPersistentAttribute parent) {
 		return new JavaEclipseLinkBasicCollectionMapping(parent);

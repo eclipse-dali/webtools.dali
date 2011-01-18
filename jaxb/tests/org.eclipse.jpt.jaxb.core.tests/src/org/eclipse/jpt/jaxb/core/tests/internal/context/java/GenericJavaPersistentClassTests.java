@@ -535,7 +535,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		
 		persistentClass.setSpecifiedAccessType(null);
 		accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourceType.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
-		assertNull(accessorTypeAnnotation);
+		assertNull(accessorTypeAnnotation.getValue());
 		assertNull(persistentClass.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, persistentClass.getDefaultAccessType());
@@ -652,7 +652,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 
 		persistentClass.setSpecifiedAccessOrder(null);
 		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourceType.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		assertNull(accessorOrderAnnotation);
+		assertNull(accessorOrderAnnotation.getValue());
 		assertNull(persistentClass.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, persistentClass.getDefaultAccessOrder());

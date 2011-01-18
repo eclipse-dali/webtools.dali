@@ -49,11 +49,11 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 		
 		assertNull(ormAssociationOverride.getName());
 		assertNull(xmlAssociationOverride.getName());
-		assertTrue(overrideContainer.associationOverrides().hasNext());
+		assertTrue(overrideContainer.overrides().hasNext());
 		assertFalse(entityResource.getAssociationOverrides().isEmpty());
 		
 		//set name in the resource model, verify context model updated
@@ -71,7 +71,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", xmlAssociationOverride.getName());
 
 		entityResource.getAssociationOverrides().remove(0);
-		assertFalse(overrideContainer.associationOverrides().hasNext());
+		assertFalse(overrideContainer.overrides().hasNext());
 		assertTrue(entityResource.getAssociationOverrides().isEmpty());
 	}
 	
@@ -83,7 +83,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 
 		assertNull(ormAssociationOverride.getName());
 		assertNull(xmlAssociationOverride.getName());
@@ -107,7 +107,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -147,7 +147,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -177,7 +177,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -217,7 +217,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
-		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedAssociationOverrides().next();
+		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
 		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);

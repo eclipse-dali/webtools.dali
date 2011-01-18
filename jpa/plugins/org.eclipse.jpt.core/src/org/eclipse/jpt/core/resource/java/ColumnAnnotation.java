@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.Column
- * 
+ * <code>javax.persistence.Column</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,67 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.0
  */
 public interface ColumnAnnotation
-	extends BaseColumnAnnotation
+	extends CompleteColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA.COLUMN;
-
-	/**
-	 * Corresponds to the 'length' element of the Column annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	Integer getLength();
-		String LENGTH_PROPERTY = "length"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'length' element of the Column annotation.
-	 * Set to null to remove the element.
-	 */
-	void setLength(Integer length);
-
-	/**
-	 * Return the {@link TextRange} for the 'length' element. If element
-	 * does not exist return the {@link TextRange} for the Column annotation.
-	 */
-	TextRange getLengthTextRange(CompilationUnit astRoot);
-
-
-	/**
-	 * Corresponds to the 'precision' element of the Column annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	Integer getPrecision();
-		String PRECISION_PROPERTY = "precision"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'precision' element of the Column annotation.
-	 * Set to null to remove the element.
-	 */
-	void setPrecision(Integer precision);
-
-	/**
-	 * Return the {@link TextRange} for the 'precision' element. If element
-	 * does not exist return the {@link TextRange} for the Column annotation.
-	 */
-	TextRange getPrecisionTextRange(CompilationUnit astRoot);
-
-
-	/**
-	 * Corresponds to the 'scale' element of the Column annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	Integer getScale();
-		String SCALE_PROPERTY = "scale"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'scale' element of the Column annotation.
-	 * Set to null to remove the element.
-	 */
-	void setScale(Integer scale);
-
-	/**
-	 * Return the {@link TextRange} for the 'scale' element. If element
-	 * does not exist return the {@link TextRange} for the Column annotation.
-	 */
-	TextRange getScaleTextRange(CompilationUnit astRoot);
-
 }

@@ -157,7 +157,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		table.setName(null);
 		assertNull(table.getName());
 		
-		assertSourceDoesNotContain("@CollectionTable", cu);
+		assertSourceDoesNotContain("@CollectionTable(", cu);
 	}
 
 	public void testGetCatalog() throws Exception {
@@ -196,7 +196,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		table.setCatalog(null);
 		assertNull(table.getCatalog());
 		
-		assertSourceDoesNotContain("@CollectionTable", cu);
+		assertSourceDoesNotContain("@CollectionTable(", cu);
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -235,7 +235,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		table.setSchema(null);
 		assertNull(table.getSchema());
 		
-		assertSourceDoesNotContain("@CollectionTable", cu);
+		assertSourceDoesNotContain("@CollectionTable(", cu);
 	}
 	
 	public void testUniqueConstraints() throws Exception {
@@ -314,7 +314,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		
 		table.removeUniqueConstraint(0);
 		assertEquals(0, table.uniqueConstraintsSize());		
-		assertSourceDoesNotContain("@CollectionTable", cu);
+		assertSourceDoesNotContain("@CollectionTable(", cu);
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
@@ -419,7 +419,7 @@ public class CollectionTable2_0AnnotationTests extends JavaResourceModel2_0TestC
 		
 		table.removeJoinColumn(0);
 		assertEquals(0, table.joinColumnsSize());
-		assertSourceDoesNotContain("@CollectionTable", cu);
+		assertSourceDoesNotContain("@CollectionTable(", cu);
 	}
 	
 	public void testMoveJoinColumn() throws Exception {

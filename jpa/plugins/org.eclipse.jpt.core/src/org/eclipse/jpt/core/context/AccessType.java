@@ -10,8 +10,14 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Access Type
- * 
+ * Context model corresponding to:<ul>
+ * <li>the XML resource model
+ * {@link org.eclipse.jpt.core.resource.orm.AccessType},
+ * which corresponds to the <code>access</code> element in the
+ * <code>orm.xml</code> file.
+ * <li>the Java resource model {@link org.eclipse.jpt.core.resource.java.AccessType}
+ * which corresponds to the <code>javax.persistence.Access</code> annotation.
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from

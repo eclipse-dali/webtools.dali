@@ -37,11 +37,13 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 
 	private final ElementAnnotationAdapter columnAdapter;
 	private ColumnAnnotation column;
+	private final ColumnAnnotation nullColumn;
 
 
 	public SourceEclipseLinkWriteTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
 		this.columnAdapter = new ElementAnnotationAdapter(this.annotatedElement, buildColumnAnnotationAdapter(this.daa));
+		this.nullColumn = this.buildNullColumn();
 	}
 
 	public String getAnnotationName() {
@@ -61,6 +63,12 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncColumn(astRoot);
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.column == null);
 	}
 
 
@@ -85,7 +93,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	}
 
 	public ColumnAnnotation getNonNullColumn() {
-		return (this.column != null) ? this.column : new NullEclipseLinkWriteTransformerColumnAnnotation(this);
+		return (this.column != null) ? this.column : this.nullColumn;
 	}
 
 	public ColumnAnnotation addColumn() {
@@ -101,8 +109,9 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 		if (this.column == null) {
 			throw new IllegalStateException("'column' element does not exist"); //$NON-NLS-1$
 		}
-		this.column.removeAnnotation();
+		ColumnAnnotation old = this.column;
 		this.column = null;
+		old.removeAnnotation();
 	}
 
 	private void syncColumn(CompilationUnit astRoot) {
@@ -125,6 +134,10 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 		this.firePropertyChanged(COLUMN_PROPERTY, old, astColumn);
 	}
 
+	private ColumnAnnotation buildNullColumn() {
+		return new NullEclipseLinkWriteTransformerColumnAnnotation(this);
+	}
+
 	public TextRange getColumnTextRange(CompilationUnit astRoot) {
 		if (this.column != null) {
 			return this.column.getTextRange(astRoot);
@@ -136,7 +149,7 @@ public final class SourceEclipseLinkWriteTransformerAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationAdapter buildColumnAnnotationAdapter(DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {
-		return new NestedDeclarationAnnotationAdapter(writeTransformerAnnotationAdapter, EclipseLink.WRITE_TRANSFORMER__COLUMN, JPA.COLUMN, false);
+		return new NestedDeclarationAnnotationAdapter(writeTransformerAnnotationAdapter, EclipseLink.WRITE_TRANSFORMER__COLUMN, JPA.COLUMN);
 	}
 
 	private static ColumnAnnotation createColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter writeTransformerAnnotationAdapter) {

@@ -12,13 +12,10 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 
-
 public class GenericOrmElementCollectionMapping2_0
 	extends AbstractOrmElementCollectionMapping2_0<XmlElementCollection>
 {
-
 	public GenericOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, XmlElementCollection resourceMapping) {
 		super(parent, resourceMapping);
 	}
-
 }

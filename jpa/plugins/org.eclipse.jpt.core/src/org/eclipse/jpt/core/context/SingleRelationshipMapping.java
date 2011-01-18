@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
+ * JPA single (m:1, 1:2) mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -20,9 +22,7 @@ package org.eclipse.jpt.core.context;
  * @since 2.0
  */
 public interface SingleRelationshipMapping
-	extends RelationshipMapping, Nullable
+	extends RelationshipMapping, OptionalMapping
 {
-	// **************** fetch type **************************************
-	
 	FetchType DEFAULT_FETCH_TYPE = FetchType.EAGER;
 }

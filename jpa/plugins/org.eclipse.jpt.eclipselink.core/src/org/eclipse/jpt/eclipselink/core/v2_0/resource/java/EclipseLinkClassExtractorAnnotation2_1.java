@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the EclipseLink annotation
- * org.eclipse.persistence.annotations.Cache
- * 
+ * <code>org.eclipse.persistence.annotations.ClassExtractor</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -46,7 +46,6 @@ public interface EclipseLinkClassExtractorAnnotation2_1
 	/**
 	 * Corresponds to the 'value' element of the ClassExtractor annotation.
 	 * Set to null to remove the element.
-	 * This will also remove the ClassExtractor annotation itself.
 	 */
 	void setValue(String value);
 
@@ -57,13 +56,13 @@ public interface EclipseLinkClassExtractorAnnotation2_1
 	TextRange getValueTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified ClassExtractor name as resolved by the AST's bindings.
+	 * Return the fully-qualified class name as resolved by the
+	 * AST's bindings.
 	 * <pre>
 	 *     &#64;ClassExtractor(MyExtractor.class)
 	 * </pre>
-	 * will return "model.MyExtractor" if there is an import for model.MyExtractor.
+	 * will return <code>"model.MyExtractor"</code> if there is an import for
+	 * <code>model.MyExtractor</code>.
 	 */
 	String getFullyQualifiedClassName();
-		String FULLY_QUALIFIED_CLASS_NAME_PROPERTY = "fullyQualifiedClassName"; //$NON-NLS-1$
-
 }

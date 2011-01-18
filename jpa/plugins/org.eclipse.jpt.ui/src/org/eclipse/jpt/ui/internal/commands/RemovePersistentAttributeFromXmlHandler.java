@@ -16,7 +16,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
@@ -31,28 +31,25 @@ public class RemovePersistentAttributeFromXmlHandler extends AbstractHandler
 		final IWorkbenchWindow window = 
 			HandlerUtil.getActiveWorkbenchWindowChecked(executionEvent);
 		
-		final List<OrmPersistentAttribute> newAttributes = new ArrayList<OrmPersistentAttribute>();
+		final List<OrmReadOnlyPersistentAttribute> virtualAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
 		
 		IStructuredSelection selection = 
 			(IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(executionEvent);
 		
 		// only applies for multiply selected OrmPersistentAttribute objects in a tree
 		for (OrmPersistentAttribute attribute : (Iterable<OrmPersistentAttribute>) CollectionTools.iterable(selection.iterator())) {
-			OrmPersistentType type = attribute.getOwningPersistentType();
-			String attributeName = attribute.getName();
-			attribute.makeVirtual();
-			OrmPersistentAttribute newAttribute = type.getAttributeNamed(attributeName);
+			OrmReadOnlyPersistentAttribute newAttribute = attribute.convertToVirtual();
 			if (newAttribute != null) {
-				newAttributes.add(newAttribute);
+				virtualAttributes.add(newAttribute);
 			}
 		}
 		
-		if (newAttributes.size() == 1) {
+		if (virtualAttributes.size() == 1) {
 			window.getShell().getDisplay().asyncExec(
 				new Runnable() {
 					public void run() {
 						JpaSelectionManager selectionManager = SelectionManagerFactory.getSelectionManager(window);
-						selectionManager.select(new DefaultJpaSelection(newAttributes.get(0)), null);
+						selectionManager.select(new DefaultJpaSelection(virtualAttributes.get(0)), null);
 					}
 				});
 		}

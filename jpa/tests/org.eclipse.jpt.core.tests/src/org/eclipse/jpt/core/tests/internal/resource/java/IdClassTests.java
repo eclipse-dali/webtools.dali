@@ -82,10 +82,7 @@ public class IdClassTests extends JpaJavaResourceModelTestCase {
 		
 		idClass.setValue(null);
 		
-		assertSourceDoesNotContain("@IdClass", cu);
-				
-		idClass = (IdClassAnnotation) typeResource.getAnnotation(JPA.ID_CLASS);
-		assertNull(idClass);
+		assertSourceDoesNotContain("@IdClass(", cu);
 	}
 	
 	public void testGetFullyQualifiedClass() throws Exception {

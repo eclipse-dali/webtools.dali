@@ -26,10 +26,12 @@ public final class BinaryAssociationOverride2_0Annotation
 	implements AssociationOverride2_0Annotation
 {
 	private JoinTableAnnotation joinTable;
+	private final JoinTableAnnotation nullJoinTable;
 
 	public BinaryAssociationOverride2_0Annotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.joinTable = this.buildJoinTable();
+		this.nullJoinTable = this.buildNullJoinTable();
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public final class BinaryAssociationOverride2_0Annotation
 	}
 
 	public JoinTableAnnotation getNonNullJoinTable() {
-		return (this.joinTable != null) ? this.joinTable : new NullJoinTableAnnotation(this);
+		return (this.joinTable != null) ? this.joinTable : this.nullJoinTable;
 	}
 
 	public JoinTableAnnotation addJoinTable() {
@@ -61,6 +63,10 @@ public final class BinaryAssociationOverride2_0Annotation
 	private JoinTableAnnotation buildJoinTable() {
 		IAnnotation jdtJoinTable = this.getJdtJoinTable();
 		return (jdtJoinTable == null) ? null : this.buildJoinTable(jdtJoinTable);
+	}
+
+	private JoinTableAnnotation buildNullJoinTable() {
+		return new NullJoinTableAnnotation(this);
 	}
 
 	private JoinTableAnnotation buildJoinTable(IAnnotation jdtJoinTable) {

@@ -3,139 +3,87 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
-public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
+public class GenericJavaUniqueConstraint
+	extends AbstractJavaReadOnlyUniqueConstraint
 	implements JavaUniqueConstraint
 {
-
-	protected final List<String> columnNames;
-
-	protected UniqueConstraintAnnotation resourceUniqueConstraint;
-	
 	protected Owner owner;
-	public GenericJavaUniqueConstraint(JavaJpaContextNode parent, Owner owner) {
+	protected final UniqueConstraintAnnotation uniqueConstraintAnnotation;
+
+
+	public GenericJavaUniqueConstraint(JavaJpaContextNode parent, Owner owner, UniqueConstraintAnnotation uniqueConstraintAnnotation) {
 		super(parent);
 		this.owner = owner;
-		this.columnNames = new ArrayList<String>();
+		this.uniqueConstraintAnnotation = uniqueConstraintAnnotation;
+		this.initializeColumnNames();
 	}
 
-	public Owner getOwner() {
-		return this.owner;
-	}
-	
-	public ListIterator<String> columnNames() {
-		return new CloneListIterator<String>(this.columnNames);
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.syncColumnNames();
 	}
 
-	public int columnNamesSize() {
-		return this.columnNames.size();
+
+	// ********** column names **********
+
+	public void addColumnName(String columnName) {
+		this.addColumnName(this.columnNames.size(), columnName);
 	}
 
 	public void addColumnName(int index, String columnName) {
-		this.columnNames.add(index, columnName);
-		this.resourceUniqueConstraint.addColumnName(index, columnName);
-		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
-	}	
-	
-	protected void addColumnName_(int index, String columnName) {
-		this.columnNames.add(index, columnName);
-		fireItemAdded(UniqueConstraint.COLUMN_NAMES_LIST, index, columnName);		
-	}	
+		this.uniqueConstraintAnnotation.addColumnName(index, columnName);
+		this.addItemToList(index, columnName, this.columnNames, COLUMN_NAMES_LIST);
+	}
 
 	public void removeColumnName(String columnName) {
 		this.removeColumnName(this.columnNames.indexOf(columnName));
 	}
 
 	public void removeColumnName(int index) {
-		String removedColumnName = this.columnNames.remove(index);
-		this.resourceUniqueConstraint.removeColumnName(index);
-		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
-	}
-	
-	protected void removeColumnName_(int index) {
-		String removedColumnName = this.columnNames.remove(index);
-		fireItemRemoved(UniqueConstraint.COLUMN_NAMES_LIST, index, removedColumnName);
+		this.uniqueConstraintAnnotation.removeColumnName(index);
+		this.removeItemFromList(index, this.columnNames, COLUMN_NAMES_LIST);
 	}
 
 	public void moveColumnName(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.columnNames, targetIndex, sourceIndex);
-		this.resourceUniqueConstraint.moveColumnName(targetIndex, sourceIndex);
-		fireItemMoved(UniqueConstraint.COLUMN_NAMES_LIST, targetIndex, sourceIndex);		
+		this.uniqueConstraintAnnotation.moveColumnName(targetIndex, sourceIndex);
+		this.moveItemInList(targetIndex, sourceIndex, this.columnNames, COLUMN_NAMES_LIST);
 	}
 
-	public void initialize(UniqueConstraintAnnotation uca) {
-		this.resourceUniqueConstraint = uca;
-		this.initializeColumnNames(uca);
-	}
-	
-	protected void initializeColumnNames(UniqueConstraintAnnotation uca) {
-		ListIterator<String> annotationColumnNames = uca.columnNames();
-		
-		for (String resourceColumnName : CollectionTools.iterable(annotationColumnNames)) {
-			this.columnNames.add(resourceColumnName);
+	protected void initializeColumnNames() {
+		for (Iterator<String> stream = this.uniqueConstraintAnnotation.columnNames(); stream.hasNext(); ) {
+			this.columnNames.add(stream.next());
 		}
-	}
-
-	public void update(UniqueConstraintAnnotation uca) {
-		this.resourceUniqueConstraint = uca;
-		this.updateColumnNames(uca);
-	}
-
-	protected void updateColumnNames(UniqueConstraintAnnotation uca) {
-		ListIterator<String> annotationColumnNames = uca.columnNames();
-		
-		int index = 0;
-		for (String resourceColumnName : CollectionTools.iterable(annotationColumnNames)) {
-			if (columnNamesSize() > index) {
-				if (this.columnNames.get(index) != resourceColumnName) {
-					addColumnName_(index, resourceColumnName);
-				}
-			}
-			else {
-				addColumnName_(index, resourceColumnName);			
-			}
-			index++;
-		}
-		
-		for ( ; index < columnNamesSize(); ) {
-			removeColumnName_(index);
-		}
-	}
-
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceUniqueConstraint.getTextRange(astRoot);
 	}
 
 	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.columnNames);
+	protected Iterable<String> getResourceColumnNames() {
+		return CollectionTools.iterable(this.uniqueConstraintAnnotation.columnNames());
 	}
 
-
-	// ********** code-assist **********
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -149,20 +97,39 @@ public class GenericJavaUniqueConstraint extends AbstractJavaJpaContextNode
 		return null;
 	}
 
-	private boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
-		return this.resourceUniqueConstraint.columnNamesTouches(pos, astRoot);
+	protected boolean columnNamesTouches(int pos, CompilationUnit astRoot) {
+		return this.uniqueConstraintAnnotation.columnNamesTouches(pos, astRoot);
 	}
 
-	private Iterator<String> javaCandidateColumnNames(Filter<String> filter) {
+	protected Iterator<String> javaCandidateColumnNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.candidateColumnNames(filter));
 	}
 
-	private Iterator<String> candidateColumnNames(Filter<String> filter) {
+	protected Iterator<String> candidateColumnNames(Filter<String> filter) {
 		return new FilteringIterator<String>(this.candidateColumnNames(), filter);
 	}
 
-	private Iterator<String> candidateColumnNames() {
-		return this.getOwner().candidateUniqueConstraintColumnNames();
+	protected Iterator<String> candidateColumnNames() {
+		return this.owner.candidateUniqueConstraintColumnNames();
 	}
 
+
+	// ********** validation **********
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.uniqueConstraintAnnotation.getTextRange(astRoot);
+	}
+
+
+	// ********** misc **********
+
+	public UniqueConstraintAnnotation getUniqueConstraintAnnotation() {
+		return this.uniqueConstraintAnnotation;
+	}
+
+	public void initializeFrom(ReadOnlyUniqueConstraint oldUniqueConstraint) {
+		for (String columnName : oldUniqueConstraint.getColumnNames()) {
+			this.addColumnName(columnName);
+		}
+	}
 }

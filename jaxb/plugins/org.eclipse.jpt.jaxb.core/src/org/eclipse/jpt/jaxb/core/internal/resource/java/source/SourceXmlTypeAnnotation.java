@@ -81,7 +81,7 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String[]> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, converter);
 	}
 
 	private AnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String[]> daea) {
@@ -304,19 +304,19 @@ public final class SourceXmlTypeAnnotation
 	}
 
 	static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFactoryMethodAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__FACTORY_METHOD, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__FACTORY_METHOD);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__NAME);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_TYPE__NAMESPACE);
 	}
 
 }

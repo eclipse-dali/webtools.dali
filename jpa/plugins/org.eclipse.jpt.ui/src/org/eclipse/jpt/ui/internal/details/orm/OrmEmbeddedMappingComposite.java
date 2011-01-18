@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
+import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
@@ -35,8 +34,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.2
  */
-public class OrmEmbeddedMappingComposite extends AbstractEmbeddedMappingComposite<OrmEmbeddedMapping>
-                                      implements JpaComposite
+public class OrmEmbeddedMappingComposite
+	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
 {
 	/**
 	 * Creates a new <code>EmbeddedMappingComposite</code>.
@@ -45,7 +44,7 @@ public class OrmEmbeddedMappingComposite extends AbstractEmbeddedMappingComposit
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEmbeddedMappingComposite(PropertyValueModel<? extends OrmEmbeddedMapping> subjectHolder,
+	public OrmEmbeddedMappingComposite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 

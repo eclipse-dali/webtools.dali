@@ -18,17 +18,25 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
-import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.OverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.core.context.ReadOnlyOverride;
+import org.eclipse.jpt.core.context.VirtualAssociationOverride;
+import org.eclipse.jpt.core.context.VirtualAttributeOverride;
+import org.eclipse.jpt.core.context.VirtualOverride;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Transformer;
+import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationWritablePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -50,10 +58,10 @@ import org.eclipse.ui.part.PageBook;
 public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	extends Pane<T>
 {
-	private Pane<AttributeOverride> attributeOverridePane;
-	private Pane<AssociationOverride> associationOverridePane;
+	private Pane<ReadOnlyAttributeOverride> attributeOverridePane;
+	private Pane<ReadOnlyAssociationOverride> associationOverridePane;
 	
-	private WritablePropertyValueModel<BaseOverride> selectedOverrideHolder;
+	private WritablePropertyValueModel<ReadOnlyOverride> selectedOverrideHolder;
 	private WritablePropertyValueModel<Boolean> overrideVirtualOverrideHolder;
 	
 	
@@ -71,8 +79,8 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		this.selectedOverrideHolder = buildSelectedOverrideHolder();
 	}
 	
-	private WritablePropertyValueModel<BaseOverride> buildSelectedOverrideHolder() {
-		return new SimplePropertyValueModel<BaseOverride>();
+	private WritablePropertyValueModel<ReadOnlyOverride> buildSelectedOverrideHolder() {
+		return new SimplePropertyValueModel<ReadOnlyOverride>();
 	}
 	
 	protected abstract boolean supportsAssociationOverrides();
@@ -111,9 +119,9 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private PropertyValueModel<Boolean> buildSelectedOverrideBooleanHolder() {
-		return new TransformationPropertyValueModel<BaseOverride, Boolean>(this.selectedOverrideHolder) {
+		return new TransformationPropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
-			protected Boolean transform(BaseOverride value) {
+			protected Boolean transform(ReadOnlyOverride value) {
 				return Boolean.valueOf(value != null);
 			}
 		};
@@ -130,7 +138,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 				JpaHelpContextIds.ENTITY_ATTRIBUTE_OVERRIDES) {
 			
 			@Override
-			protected void initializeButtonPane(Composite container, String helpId) {
+			protected void initializeButtonPane(Composite c, String helpId) {
 				//no buttons: no way to add/remove/edit overrides, they are all defaulted in
 			}
 			
@@ -142,48 +150,48 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	protected void initializeAttributeOverridePane(PageBook pageBook) {
-		PropertyValueModel<AttributeOverride>  attributeOverrideHolder = buildAttributeOverrideHolder();
+		PropertyValueModel<ReadOnlyAttributeOverride>  attributeOverrideHolder = buildAttributeOverrideHolder();
 		this.attributeOverridePane = buildAttributeOverridePane(pageBook, attributeOverrideHolder);
 		installAttributeOverridePaneEnabler(this.attributeOverridePane, attributeOverrideHolder);
 	}
 	
-	protected Pane<AttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<AttributeOverride> attributeOverrideHolder) {
+	protected Pane<ReadOnlyAttributeOverride> buildAttributeOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAttributeOverride> attributeOverrideHolder) {
 		return new AttributeOverrideComposite(this, attributeOverrideHolder, pageBook);
 	}
 	
-	private void installAttributeOverridePaneEnabler(Pane<AttributeOverride> pane, PropertyValueModel<AttributeOverride> overrideHolder) {
+	private void installAttributeOverridePaneEnabler(Pane<ReadOnlyAttributeOverride> pane, PropertyValueModel<ReadOnlyAttributeOverride> overrideHolder) {
 		new PaneEnabler(
 				buildOverrideBooleanHolder(overrideHolder),
 				pane);
 	}
 	
-	private PropertyValueModel<Boolean> buildOverrideBooleanHolder(PropertyValueModel<? extends BaseOverride> overrideHolder) {
-		return new CachingTransformationPropertyValueModel<BaseOverride, Boolean>(overrideHolder) {
+	private PropertyValueModel<Boolean> buildOverrideBooleanHolder(PropertyValueModel<? extends ReadOnlyOverride> overrideHolder) {
+		return new CachingTransformationPropertyValueModel<ReadOnlyOverride, Boolean>(overrideHolder) {
 			@Override
-			protected Boolean transform_(BaseOverride value) {
+			protected Boolean transform_(ReadOnlyOverride value) {
 				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
 	}
 	
 	protected void initializeAssociationOverridePane(PageBook pageBook) {
-		PropertyValueModel<AssociationOverride>  associationOverrideHolder = buildAssociationOverrideHolder();
+		PropertyValueModel<ReadOnlyAssociationOverride>  associationOverrideHolder = buildAssociationOverrideHolder();
 		this.associationOverridePane = buildAssociationOverridePane(pageBook, associationOverrideHolder);
 		installAssociationOverridePaneEnabler(this.associationOverridePane, associationOverrideHolder);
 	}
 	
-	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
+	protected Pane<ReadOnlyAssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAssociationOverride> associationOverrideHolder) {
 		return new AssociationOverrideComposite(this, associationOverrideHolder, pageBook);		
 	}
 	
-	private void installAssociationOverridePaneEnabler(Pane<AssociationOverride> pane, PropertyValueModel<AssociationOverride> overrideHolder) {
+	private void installAssociationOverridePaneEnabler(Pane<ReadOnlyAssociationOverride> pane, PropertyValueModel<ReadOnlyAssociationOverride> overrideHolder) {
 		new PaneEnabler(
 				buildOverrideBooleanHolder(overrideHolder),
 				pane);
 	}
 	
 	private void installOverrideControlSwitcher(
-			PropertyValueModel<BaseOverride> overrideHolder,
+			PropertyValueModel<ReadOnlyOverride> overrideHolder,
 			PageBook pageBook) {
 		
 		new ControlSwitcher(
@@ -192,48 +200,48 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 				pageBook);
 	}
 	
-	private WritablePropertyValueModel<AssociationOverride> buildAssociationOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<BaseOverride, AssociationOverride>(this.selectedOverrideHolder) {
+	private WritablePropertyValueModel<ReadOnlyAssociationOverride> buildAssociationOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAssociationOverride>(this.selectedOverrideHolder) {
 			@Override
-			protected AssociationOverride transform_(BaseOverride value) {
-				return (value instanceof AssociationOverride) ? (AssociationOverride) value : null;
+			protected ReadOnlyAssociationOverride transform_(ReadOnlyOverride value) {
+				return (value instanceof ReadOnlyAssociationOverride) ? (ReadOnlyAssociationOverride) value : null;
 			}
 		};
 	}
 	
-	private WritablePropertyValueModel<AttributeOverride> buildAttributeOverrideHolder() {
-		return new TransformationWritablePropertyValueModel<BaseOverride, AttributeOverride>(this.selectedOverrideHolder) {
+	private WritablePropertyValueModel<ReadOnlyAttributeOverride> buildAttributeOverrideHolder() {
+		return new TransformationWritablePropertyValueModel<ReadOnlyOverride, ReadOnlyAttributeOverride>(this.selectedOverrideHolder) {
 			@Override
-			protected AttributeOverride transform_(BaseOverride value) {
-				return (value instanceof AttributeOverride) ? (AttributeOverride) value : null;
+			protected ReadOnlyAttributeOverride transform_(ReadOnlyOverride value) {
+				return (value instanceof ReadOnlyAttributeOverride) ? (ReadOnlyAttributeOverride) value : null;
 			}
 		};
 	}
 	
-	private ListValueModel<AssociationOverride> buildDefaultAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, AssociationOverrideContainer.VIRTUAL_ASSOCIATION_OVERRIDES_LIST) {
+	private ListValueModel<VirtualAssociationOverride> buildDefaultAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AssociationOverrideContainer, VirtualAssociationOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<AssociationOverride> listIterator_() {
-				return this.subject.virtualAssociationOverrides();
+			protected ListIterator<VirtualAssociationOverride> listIterator_() {
+				return new SuperListIteratorWrapper<VirtualAssociationOverride>(this.subject.virtualOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.virtualAssociationOverridesSize();
+				return this.subject.virtualOverridesSize();
 			}
 		};
 	}
 	
-	private ListValueModel<AttributeOverride> buildDefaultAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, AttributeOverrideContainer.VIRTUAL_ATTRIBUTE_OVERRIDES_LIST) {
+	private ListValueModel<VirtualAttributeOverride> buildDefaultAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
+		return new ListAspectAdapter<AttributeOverrideContainer, VirtualAttributeOverride>(containerHolder, OverrideContainer.VIRTUAL_OVERRIDES_LIST) {
 			@Override
-			protected ListIterator<AttributeOverride> listIterator_() {
-				return this.subject.virtualAttributeOverrides();
+			protected ListIterator<VirtualAttributeOverride> listIterator_() {
+				return new SuperListIteratorWrapper<VirtualAttributeOverride>(this.subject.virtualOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.virtualAttributeOverridesSize();
+				return this.subject.virtualOverridesSize();
 			}
 		};
 	}
@@ -246,24 +254,24 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private WritablePropertyValueModel<Boolean> buildOverrideVirtualOverrideHolder() {
-		return new CachingTransformationWritablePropertyValueModel<BaseOverride, Boolean>(this.selectedOverrideHolder) {
+		return new CachingTransformationWritablePropertyValueModel<ReadOnlyOverride, Boolean>(this.selectedOverrideHolder) {
 			@Override
 			public void setValue(Boolean value) {
 				updateOverride(value.booleanValue());
 			}
 			
 			@Override
-			protected Boolean transform_(BaseOverride value) {
+			protected Boolean transform_(ReadOnlyOverride value) {
 				return Boolean.valueOf(!value.isVirtual());
 			}
 		};
 	}
 	
-	private String buildOverrideDisplayString(BaseOverride override) {
+	String buildOverrideDisplayString(ReadOnlyOverride override) {
 		String overrideType;
 		
 		// Retrieve the type
-		if (override instanceof AssociationOverride) {
+		if (override instanceof ReadOnlyAssociationOverride) {
 			overrideType = JptUiDetailsMessages.OverridesComposite_association;
 		}
 		else {
@@ -290,7 +298,7 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return buildOverrideDisplayString((BaseOverride) element);
+				return buildOverrideDisplayString((ReadOnlyOverride) element);
 			}
 		};
 	}
@@ -307,9 +315,9 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		};
 	}
 	
-	protected ListValueModel<BaseOverride> buildOverridesListHolder() {
+	protected ListValueModel<ReadOnlyOverride> buildOverridesListHolder() {
 		PropertyValueModel<AttributeOverrideContainer> attributeOverrideContainerHolder = buildAttributeOverrideContainerHolder();
-		List<ListValueModel<? extends BaseOverride>> list = new ArrayList<ListValueModel<? extends BaseOverride>>();
+		List<ListValueModel<? extends ReadOnlyOverride>> list = new ArrayList<ListValueModel<? extends ReadOnlyOverride>>();
 		
 		list.add(buildSpecifiedAttributeOverridesListHolder(attributeOverrideContainerHolder));
 		list.add(buildDefaultAttributeOverridesListHolder(attributeOverrideContainerHolder));
@@ -320,22 +328,22 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 			list.add(buildDefaultAssociationOverridesListHolder(associationOverrideContainerHolder));
 		}
 		
-		return new CompositeListValueModel<ListValueModel<? extends BaseOverride>, BaseOverride>(list);
+		return new CompositeListValueModel<ListValueModel<? extends ReadOnlyOverride>, ReadOnlyOverride>(list);
 	}
 	
 	protected abstract PropertyValueModel<AttributeOverrideContainer> buildAttributeOverrideContainerHolder();
 	
 	protected abstract PropertyValueModel<AssociationOverrideContainer> buildAssociationOverrideContainerHolder();
 	
-	private ListValueModel<BaseOverride> buildOverridesListModel() {
-		return new ItemPropertyListValueModelAdapter<BaseOverride>(
+	private ListValueModel<ReadOnlyOverride> buildOverridesListModel() {
+		return new ItemPropertyListValueModelAdapter<ReadOnlyOverride>(
 				buildOverridesListHolder(),
-				BaseOverride.NAME_PROPERTY);
+				ReadOnlyOverride.NAME_PROPERTY);
 	}
 	
-	private Transformer<BaseOverride, Control> buildPaneTransformer() {
-		return new Transformer<BaseOverride, Control>() {
-			public Control transform(BaseOverride override) {
+	private Transformer<ReadOnlyOverride, Control> buildPaneTransformer() {
+		return new Transformer<ReadOnlyOverride, Control>() {
+			public Control transform(ReadOnlyOverride override) {
 				return AbstractOverridesComposite.this.transformSelectedOverride(override);
 			}
 		};
@@ -344,12 +352,12 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	/**
 	 * Given the selected override, return the control that will be displayed
 	 */
-	protected Control transformSelectedOverride(BaseOverride selectedOverride) {
-		if (selectedOverride instanceof AttributeOverride) {
+	protected Control transformSelectedOverride(ReadOnlyOverride selectedOverride) {
+		if (selectedOverride instanceof ReadOnlyAttributeOverride) {
 			return AbstractOverridesComposite.this.attributeOverridePane.getControl();
 		}
 		
-		if (selectedOverride instanceof AssociationOverride) {
+		if (selectedOverride instanceof ReadOnlyAssociationOverride) {
 			return AbstractOverridesComposite.this.associationOverridePane.getControl();
 		}
 		
@@ -357,34 +365,34 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 	}
 	
 	private ListValueModel<AssociationOverride> buildSpecifiedAssociationOverridesListHolder(PropertyValueModel<AssociationOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, AssociationOverrideContainer.SPECIFIED_ASSOCIATION_OVERRIDES_LIST) {
+		return new ListAspectAdapter<AssociationOverrideContainer, AssociationOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AssociationOverride> listIterator_() {
-				return this.subject.specifiedAssociationOverrides();
+				return new SuperListIteratorWrapper<AssociationOverride>(this.subject.specifiedOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.specifiedAssociationOverridesSize();
+				return this.subject.specifiedOverridesSize();
 			}
 		};
 	}
 	
 	private ListValueModel<AttributeOverride> buildSpecifiedAttributeOverridesListHolder(PropertyValueModel<AttributeOverrideContainer> containerHolder) {
-		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, AttributeOverrideContainer.SPECIFIED_ATTRIBUTE_OVERRIDES_LIST) {
+		return new ListAspectAdapter<AttributeOverrideContainer, AttributeOverride>(containerHolder, OverrideContainer.SPECIFIED_OVERRIDES_LIST) {
 			@Override
 			protected ListIterator<AttributeOverride> listIterator_() {
-				return this.subject.specifiedAttributeOverrides();
+				return new SuperListIteratorWrapper<AttributeOverride>(this.subject.specifiedOverrides());
 			}
 			
 			@Override
 			protected int size_() {
-				return this.subject.specifiedAttributeOverridesSize();
+				return this.subject.specifiedOverridesSize();
 			}
 		};
 	}
 	
-	private void updateOverride(boolean selected) {
+	void updateOverride(boolean convertToSpecified) {
 		if (isPopulating()) {
 			return;
 		}
@@ -392,9 +400,11 @@ public abstract class AbstractOverridesComposite<T extends JpaContextNode>
 		setPopulating(true);
 		
 		try {
-			BaseOverride override = this.selectedOverrideHolder.getValue();
+			ReadOnlyOverride override = this.selectedOverrideHolder.getValue();
 			
-			BaseOverride newOverride = override.setVirtual(!selected);
+			ReadOnlyOverride newOverride = convertToSpecified ?
+					((VirtualOverride) override).convertToSpecified() :
+					((Override_) override).convertToVirtual();
 			this.selectedOverrideHolder.setValue(newOverride);
 		}
 		finally {

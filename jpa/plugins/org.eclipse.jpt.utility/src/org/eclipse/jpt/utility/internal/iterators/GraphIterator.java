@@ -40,7 +40,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * To use, supply:<ul>
  * <li> either the initial node of the graph or an {@link Iterator}
  * over an initial collection of graph nodes
- * <li> a {@link MisterRogers] that tells who the neighbors are
+ * <li> a {@link MisterRogers} that tells who the neighbors are
  * of each node
  * (alternatively, subclass <code>GraphIterator</code>
  * and override the {@link #neighbors(Object)} method)
@@ -152,7 +152,7 @@ public class GraphIterator<E>
 	/**
 	 * Load next neighbor with the next entry from the current iterator.
 	 * If the current iterator has none, load the next iterator.
-	 * If there are no more, the {@link done} flag is set.
+	 * If there are no more, the {@link #done} flag is set.
 	 */
 	private void loadNextNeighbor() {
 		if (this.currentIterator == EmptyIterator.instance()) {

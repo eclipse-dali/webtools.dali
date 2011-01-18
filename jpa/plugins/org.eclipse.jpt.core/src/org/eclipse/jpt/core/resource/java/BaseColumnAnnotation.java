@@ -13,10 +13,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Common protocol among
- *     javax.persistence.Column
- *     javax.persistence.JoinColumn
- * 
+ * Corresponds to the JPA annotations:<ul>
+ * <li><code>javax.persistence.Column<code>
+ * <li><code>javax.persistence.MapKeyColumn<code>
+ * <li><code>javax.persistence.JoinColumn<code>
+ * <li><code>javax.persistence.MapKeyJoinColumn<code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,6 +31,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface BaseColumnAnnotation
 	extends NamedColumnAnnotation
 {
+	// ********** unique **********
+
 	/**
 	 * Corresponds to the 'unique' element of the *Column annotation.
 	 * Return null if the element does not exist in Java.
@@ -48,6 +52,8 @@ public interface BaseColumnAnnotation
 	 */
 	TextRange getUniqueTextRange(CompilationUnit astRoot);
 
+
+	// ********** nullable **********
 
 	/**
 	 * Corresponds to the 'nullable' element of the *Column annotation.
@@ -69,6 +75,8 @@ public interface BaseColumnAnnotation
 	TextRange getNullableTextRange(CompilationUnit astRoot);
 
 
+	// ********** insertable **********
+
 	/**
 	 * Corresponds to the 'insertable' element of the *Column annotation.
 	 * Return null if the element does not exist in Java.
@@ -89,6 +97,8 @@ public interface BaseColumnAnnotation
 	TextRange getInsertableTextRange(CompilationUnit astRoot);
 
 
+	// ********** updatable **********
+
 	/**
 	 * Corresponds to the 'updatable' element of the *Column annotation.
 	 * Return null if the element does not exist in Java.
@@ -108,6 +118,8 @@ public interface BaseColumnAnnotation
 	 */
 	TextRange getUpdatableTextRange(CompilationUnit astRoot);
 
+
+	// ********** table **********
 
 	/**
 	 * Corresponds to the 'table' element of the *Column annotation.

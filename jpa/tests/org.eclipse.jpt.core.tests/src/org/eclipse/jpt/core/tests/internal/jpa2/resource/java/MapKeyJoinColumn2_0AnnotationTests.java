@@ -158,7 +158,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 	
 	public void testGetTable() throws Exception {
@@ -185,7 +185,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 		
 		column.setTable(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 	
 	public void testGetReferencedColumnName() throws Exception {
@@ -212,7 +212,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 		
 		column.setReferencedColumnName(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -239,7 +239,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 
 	public void testGetUnique() throws Exception {
@@ -266,7 +266,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		assertSourceContains("@MapKeyJoinColumn(unique = false)", cu);
 		
 		column.setUnique(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
@@ -293,7 +293,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		assertSourceContains("@MapKeyJoinColumn(nullable = false)", cu);
 		
 		column.setNullable(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
@@ -320,7 +320,7 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		assertSourceContains("@MapKeyJoinColumn(insertable = false)", cu);
 		
 		column.setInsertable(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
@@ -347,6 +347,6 @@ public class MapKeyJoinColumn2_0AnnotationTests extends JavaResourceModel2_0Test
 		assertSourceContains("@MapKeyJoinColumn(updatable = false)", cu);
 		
 		column.setUpdatable(null);
-		assertSourceDoesNotContain("@MapKeyJoinColumn", cu);
+		assertSourceDoesNotContain("@MapKeyJoinColumn(", cu);
 	}
 }

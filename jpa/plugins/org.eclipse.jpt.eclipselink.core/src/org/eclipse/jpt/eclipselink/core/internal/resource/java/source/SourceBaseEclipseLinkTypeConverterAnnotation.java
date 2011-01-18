@@ -33,12 +33,25 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	final DeclarationAnnotationElementAdapter<String> dataTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> dataTypeAdapter;
 	String dataType;
+
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
 	String fullyQualifiedDataType;
+	// we need a flag since the f-q name can be null
+	boolean fqDataTypeStale = true;
 
 	final DeclarationAnnotationElementAdapter<String> objectTypeDeclarationAdapter;
 	final AnnotationElementAdapter<String> objectTypeAdapter;
 	String objectType;
+
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
 	String fullyQualifiedObjectType;
+	// we need a flag since the f-q name can be null
+	boolean fqObjectTypeStale = true;
+
 
 	SourceBaseEclipseLinkTypeConverterAnnotation(JavaResourcePersistentMember parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
@@ -51,25 +64,28 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 
 	private DeclarationAnnotationElementAdapter<String> buildTypeAdapter(String elementName) {
 		 // false = do not remove annotation when empty
-		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, elementName, false, TypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, elementName, TypeStringExpressionConverter.instance());
 	}
 
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.dataType = this.buildDataType(astRoot);
-		this.fullyQualifiedDataType = this.buildFullyQualifiedDataType(astRoot);
 		this.objectType = this.buildObjectType(astRoot);
-		this.fullyQualifiedObjectType = this.buildFullyQualifiedObjectType(astRoot);
 	}
 
 	@Override
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncDataType(this.buildDataType(astRoot));
-		this.syncFullyQualifiedDataType(this.buildFullyQualifiedDataType(astRoot));
 		this.syncObjectType(this.buildObjectType(astRoot));
-		this.syncFullyQualifiedObjectType(this.buildFullyQualifiedObjectType(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.dataType == null) &&
+				(this.objectType == null);
 	}
 
 
@@ -83,13 +99,21 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	public void setDataType(String dataType) {
 		if (this.attributeValueHasChanged(this.dataType, dataType)) {
 			this.dataType = dataType;
+			this.fqDataTypeStale = true;
 			this.dataTypeAdapter.setValue(dataType);
 		}
 	}
 
 	private void syncDataType(String astDataType) {
+		if (this.attributeValueHasChanged(this.dataType, astDataType)) {
+			this.syncDataType_(astDataType);
+		}
+	}
+
+	private void syncDataType_(String astDataType) {
 		String old = this.dataType;
 		this.dataType = astDataType;
+		this.fqDataTypeStale = true;
 		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, astDataType);
 	}
 
@@ -105,17 +129,19 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 
 	// ***** fully-qualified data type
 	public String getFullyQualifiedDataType() {
+		if (this.fqDataTypeStale) {
+			this.fullyQualifiedDataType = this.buildFullyQualifiedDataType();
+			this.fqDataTypeStale = false;
+		}
 		return this.fullyQualifiedDataType;
 	}
 
-	private void syncFullyQualifiedDataType(String name) {
-		String old = this.fullyQualifiedDataType;
-		this.fullyQualifiedDataType = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, name);
+	private String buildFullyQualifiedDataType() {
+		return (this.dataType == null) ? null : this.buildFullyQualifiedDataType_();
 	}
 
-	private String buildFullyQualifiedDataType(CompilationUnit astRoot) {
-		return (this.dataType == null) ? null : ASTTools.resolveFullyQualifiedName(this.dataTypeAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedDataType_() {
+		return ASTTools.resolveFullyQualifiedName(this.dataTypeAdapter.getExpression(this.buildASTRoot()));
 	}
 
 	// ***** object type
@@ -126,13 +152,21 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 	public void setObjectType(String objectType) {
 		if (this.attributeValueHasChanged(this.objectType, objectType)) {
 			this.objectType = objectType;
+			this.fqObjectTypeStale = true;
 			this.objectTypeAdapter.setValue(objectType);
 		}
 	}
 
 	private void syncObjectType(String astObjectType) {
+		if (this.attributeValueHasChanged(this.objectType, astObjectType)) {
+			this.syncObjectType_(astObjectType);
+		}
+	}
+
+	private void syncObjectType_(String astObjectType) {
 		String old = this.objectType;
 		this.objectType = astObjectType;
+		this.fqObjectTypeStale = true;
 		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, astObjectType);
 	}
 
@@ -148,17 +182,18 @@ abstract class SourceBaseEclipseLinkTypeConverterAnnotation
 
 	// ***** fully-qualified object type
 	public String getFullyQualifiedObjectType() {
+		if (this.fqObjectTypeStale) {
+			this.fullyQualifiedObjectType = this.buildFullyQualifiedObjectType();
+			this.fqObjectTypeStale = false;
+		}
 		return this.fullyQualifiedObjectType;
 	}
 
-	private void syncFullyQualifiedObjectType(String name) {
-		String old = this.fullyQualifiedObjectType;
-		this.fullyQualifiedObjectType = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, name);
+	private String buildFullyQualifiedObjectType() {
+		return (this.objectType == null) ? null : this.buildFullyQualifiedObjectType_();
 	}
 
-	private String buildFullyQualifiedObjectType(CompilationUnit astRoot) {
-		return (this.objectType == null) ? null : ASTTools.resolveFullyQualifiedName(this.objectTypeAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedObjectType_() {
+		return ASTTools.resolveFullyQualifiedName(this.objectTypeAdapter.getExpression(this.buildASTRoot()));
 	}
-
 }

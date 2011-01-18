@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
 /**
- * 
- * 
+ * Java relationship (1:1, 1:m, m:1, m:m) mapping.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,17 +25,21 @@ import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
  * @since 2.0
  */
 public interface JavaRelationshipMapping
-	extends JavaAttributeMapping, RelationshipMapping
+	extends RelationshipMapping, JavaAttributeMapping
 {
 	RelationshipMappingAnnotation getMappingAnnotation();
-	
+
+	RelationshipMappingAnnotation getAnnotationForUpdate();
+
 	JavaCascade getCascade();
 
+	JavaMappingRelationshipReference getRelationshipReference();
+
 	/**
-	 * If the target entity is specified, this will return it fully qualified. If not
-	 * specified, it returns the default target entity, which is always fully qualified
+	 * If the target entity is specified, this will return it fully qualified.
+	 * If not specified, it returns the default target entity, which is always
+	 * fully qualified
 	 */
 	String getFullyQualifiedTargetEntity();
 		String FULLY_QUALIFIED_TARGET_ENTITY_PROPERTY = "fullyQualifiedTargetEntity"; //$NON-NLS-1$
-
 }

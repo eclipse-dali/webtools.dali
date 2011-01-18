@@ -10,13 +10,12 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 
 /**
- * Part of mechanism to extend the types of ORM attribute mappings.
- * 
+ * Part of mechanism to extend the types of <code>orm.xml</code> attribute
+ * mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,26 +28,17 @@ import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 public interface OrmAttributeMappingDefinition
 {
 	/**
-	 * Return the mapping key associated with this provider
-	 * @see {@link MappingKeys}
+	 * Return the definition's mapping key.
 	 */
 	String getKey();
 	
 	/**
-	 * Build a resource mapping
+	 * Build a resource mapping.
 	 */
 	XmlAttributeMapping buildResourceMapping(EFactory factory);
 	
 	/**
-	 * Build a virtual resource mapping
-	 */
-	XmlAttributeMapping buildVirtualResourceMapping(
-			OrmTypeMapping ormTypeMapping, 
-			JavaAttributeMapping javaAttributeMapping, 
-			OrmXmlContextNodeFactory factory);
-	
-	/**
-	 * Build a context mapping
+	 * Build a context mapping.
 	 */
 	OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 

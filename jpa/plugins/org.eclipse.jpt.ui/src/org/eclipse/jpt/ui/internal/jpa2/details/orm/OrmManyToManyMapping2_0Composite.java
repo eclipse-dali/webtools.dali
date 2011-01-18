@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationshipReference;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmManyToManyMapping2_0Composite
-	extends AbstractManyToManyMappingComposite<OrmManyToManyMapping, OrmManyToManyRelationshipReference>
+	extends AbstractManyToManyMappingComposite<ManyToManyMapping, ManyToManyRelationshipReference>
 {
 	/**
 	 * Creates a new <code>ManyToManyMappingComposite</code>.
@@ -33,7 +33,7 @@ public class OrmManyToManyMapping2_0Composite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public OrmManyToManyMapping2_0Composite(
-			PropertyValueModel<? extends OrmManyToManyMapping> subjectHolder,
+			PropertyValueModel<? extends ManyToManyMapping> subjectHolder,
 	        Composite parent,
 	        WidgetFactory widgetFactory) {
 		

@@ -140,7 +140,7 @@ public class SequenceGeneratorTests extends JpaJavaResourceModelTestCase {
 		sequenceGenerator.setName(null);
 		assertNull(sequenceGenerator.getName());
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 	}
 
 	public void testGetSequenceName() throws Exception {
@@ -168,7 +168,7 @@ public class SequenceGeneratorTests extends JpaJavaResourceModelTestCase {
 		sequenceGenerator.setSequenceName(null);
 		assertNull(sequenceGenerator.getSequenceName());
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 	}
 
 	public void testGetAllocationSize() throws Exception {
@@ -195,7 +195,7 @@ public class SequenceGeneratorTests extends JpaJavaResourceModelTestCase {
 		
 		sequenceGenerator.setAllocationSize(null);
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 
 		sequenceGenerator.setAllocationSize(Integer.valueOf(0));
 		assertSourceContains("@SequenceGenerator(allocationSize = 0)", cu);
@@ -225,7 +225,7 @@ public class SequenceGeneratorTests extends JpaJavaResourceModelTestCase {
 		
 		sequenceGenerator.setInitialValue(null);
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 
 		sequenceGenerator.setInitialValue(Integer.valueOf(0));
 		assertSourceContains("@SequenceGenerator(initialValue = 0)", cu);

@@ -41,10 +41,10 @@ abstract class SourceEclipseLinkTransformerAnnotation
 
 	SourceEclipseLinkTransformerAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
-		this.transformerClassDeclarationAdapter = new ConversionDeclarationAnnotationElementAdapter<String>(daa, this.getTransformerClassElementName(), false, SimpleTypeStringExpressionConverter.instance());
+		this.transformerClassDeclarationAdapter = new ConversionDeclarationAnnotationElementAdapter<String>(daa, this.getTransformerClassElementName(), SimpleTypeStringExpressionConverter.instance());
 		this.transformerClassAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.transformerClassDeclarationAdapter);
 
-		this.methodDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getMethodElementName(), false);
+		this.methodDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getMethodElementName());
 		this.methodAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.methodDeclarationAdapter);
 	}
 
@@ -56,6 +56,13 @@ abstract class SourceEclipseLinkTransformerAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncTransformerClass(this.buildTransformerClass(astRoot));
 		this.syncMethod(this.buildMethod(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.transformerClass == null) &&
+				(this.method == null);
 	}
 
 	@Override

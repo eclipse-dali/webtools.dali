@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.core.jpa2.context.EmbeddedMapping2_0;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -48,7 +48,7 @@ public class EmbeddedMapping2_0OverridesComposite
 	}
 	
 	@Override
-	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
+	protected Pane<ReadOnlyAssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAssociationOverride> associationOverrideHolder) {
 		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
 	}
 	

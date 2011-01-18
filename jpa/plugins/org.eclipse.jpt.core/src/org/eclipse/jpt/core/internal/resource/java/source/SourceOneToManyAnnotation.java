@@ -71,6 +71,13 @@ public final class SourceOneToManyAnnotation
 		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.mappedBy == null) &&
+				(this.orphanRemoval == null);
+	}
+
 
 	// ********** SourceRelationshipMappingAnnotation implementation **********
 
@@ -156,7 +163,7 @@ public final class SourceOneToManyAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_MANY__MAPPED_BY);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
@@ -172,7 +179,7 @@ public final class SourceOneToManyAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOrphanRemovalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 
 }

@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
+
 /**
- * Interface for dealing with annotations that can be "nested" within other
- * annotations, typically within arrays.
- * 
+ * Interface for dealing with annotations that can be "nested" within arrays.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,15 +26,35 @@ package org.eclipse.jpt.core.resource.java;
 public interface NestableAnnotation
 	extends Annotation
 {
-	// currently using this when the NestableAnnotation is moved from
-	// stand-alone to nested or from nested to stand-alone;
-	// not the greatest, since you have to make sure to call all setter methods
-	void initializeFrom(NestableAnnotation oldAnnotation);
-
 	/**
-	 * Move the annotation to the specified index within its container annotation.
-	 * This should only be called when the annotation is actually nested.
+	 * Move the annotation to the specified index within its container array.
+	 * This should only be called when the annotation is actually nested
+	 * (as opposed to stand-alone).
 	 */
 	void moveAnnotation(int index);
 
+	/**
+	 * Convert the annotation from "stand-alone" to "nested" within the "container"
+	 * annotation adapted by the specified adapter at the specified index.
+	 * The index may have a value of only <code>0</code> or <code>1</code>.
+	 * <p>
+	 * This is used to convert an annotation that is part of the "combination"
+	 * pattern where a list containing elements of the annotation
+	 * (e.g. {@link JoinColumnAnnotation}) can be represented by either the
+	 * annotation itself (when there is only a single element in the collection)
+	 * or a "container" annotation (e.g. {@link JoinColumnsAnnotation}) that
+	 * holds only a single <code>value</code> element that is the array of
+	 * "nested" annnotations.
+	 * 
+	 * @see #convertToStandAlone()
+	 */
+	void convertToNested(ContainerAnnotation<? extends NestableAnnotation> containerAnnotation, DeclarationAnnotationAdapter containerAnnotationAdapter, int index);
+
+	/**
+	 * Convert the annotation from "nested" within the "container" annotation
+	 * to "stand-alone".
+	 * 
+	 * @see #convertToNested(ContainerAnnotation, DeclarationAnnotationAdapter, int)
+	 */
+	void convertToStandAlone();
 }

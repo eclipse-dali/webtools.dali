@@ -24,4 +24,5 @@ package org.eclipse.jpt.core.context;
 public interface MultiRelationshipMapping
 	extends RelationshipMapping, CollectionMapping
 {
+	// combine various interfaces
 }

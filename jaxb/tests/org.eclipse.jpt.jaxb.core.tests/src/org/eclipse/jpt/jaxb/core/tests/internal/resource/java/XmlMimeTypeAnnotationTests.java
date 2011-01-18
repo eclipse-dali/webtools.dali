@@ -103,6 +103,6 @@ public class XmlMimeTypeAnnotationTests extends JaxbJavaResourceModelTestCase {
 		xmlMimeTypeAnnotation.setValue(null);
 		assertNull(xmlMimeTypeAnnotation.getValue());
 
-		assertSourceDoesNotContain("@XmlMimeType", cu);
+		assertSourceDoesNotContain("@XmlMimeType(", cu);
 	}
 }

@@ -56,6 +56,14 @@ public final class SourceSequenceGenerator2_0Annotation
 		this.syncSchema(this.buildSchema(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.catalog == null) &&
+				(this.schema == null);
+	}
+
+
 	// ********** catalog **********
 	public String getCatalog() {
 		return this.catalog;

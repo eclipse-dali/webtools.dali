@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
+import java.util.ListIterator;
+
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 
@@ -27,5 +30,6 @@ import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 public interface JavaPersistentType2_0
 	extends JavaPersistentType, PersistentType2_0
 {
-	// nothing yet...
+	@SuppressWarnings("unchecked")
+	ListIterator<JavaPersistentAttribute> attributes();
 }

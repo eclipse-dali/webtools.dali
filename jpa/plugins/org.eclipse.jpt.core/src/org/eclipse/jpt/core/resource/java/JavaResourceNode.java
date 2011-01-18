@@ -33,6 +33,10 @@ import org.eclipse.jpt.utility.model.Model;
 public interface JavaResourceNode
 	extends Model
 {
+	/**
+	 * Return the node's parent node.
+	 */
+	JavaResourceNode getParent();
 
 	/**
 	 * Return the Eclipse file that contains the Java resource node

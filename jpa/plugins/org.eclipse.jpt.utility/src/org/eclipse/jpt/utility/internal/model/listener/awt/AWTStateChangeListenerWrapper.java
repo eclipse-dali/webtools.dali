@@ -47,6 +47,10 @@ public final class AWTStateChangeListenerWrapper
 			public void run() {
 				AWTStateChangeListenerWrapper.this.stateChanged_(event);
 			}
+			@Override
+			public String toString() {
+				return "state changed runnable"; //$NON-NLS-1$
+			}
 		};
 	}
 

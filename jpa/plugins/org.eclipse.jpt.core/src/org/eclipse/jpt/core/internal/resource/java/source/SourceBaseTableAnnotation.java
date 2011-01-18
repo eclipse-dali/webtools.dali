@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
@@ -21,7 +23,6 @@ import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableUniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -37,25 +38,27 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
- * javax.persistence.Table
- * javax.persistence.JoinTable
- * javax.persistence.SecondaryTable
- * javax.persistence.CollectionTable
+ * <ul>
+ * <li><code>javax.persistence.Table</code>
+ * <li><code>javax.persistence.JoinTable</code>
+ * <li><code>javax.persistence.SecondaryTable</code>
+ * <li><code>javax.persistence.CollectionTable</code>
+ * </ul>
  */
 public abstract class SourceBaseTableAnnotation
 	extends SourceAnnotation<Member>
 	implements BaseTableAnnotation
 {
-	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	final AnnotationElementAdapter<String> nameAdapter;
+	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	AnnotationElementAdapter<String> nameAdapter;
 	String name;
 
-	final DeclarationAnnotationElementAdapter<String> schemaDeclarationAdapter;
-	final AnnotationElementAdapter<String> schemaAdapter;
+	DeclarationAnnotationElementAdapter<String> schemaDeclarationAdapter;
+	AnnotationElementAdapter<String> schemaAdapter;
 	String schema;
 
-	final DeclarationAnnotationElementAdapter<String> catalogDeclarationAdapter;
-	final AnnotationElementAdapter<String> catalogAdapter;
+	DeclarationAnnotationElementAdapter<String> catalogDeclarationAdapter;
+	AnnotationElementAdapter<String> catalogAdapter;
 	String catalog;
 
 	final Vector<NestableUniqueConstraintAnnotation> uniqueConstraints = new Vector<NestableUniqueConstraintAnnotation>();
@@ -68,16 +71,12 @@ public abstract class SourceBaseTableAnnotation
 
 	protected SourceBaseTableAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = this.getNameAdapter(daa);
-		this.schemaDeclarationAdapter = this.getSchemaAdapter(daa);
-		this.catalogDeclarationAdapter = this.getCatalogAdapter(daa);
-		this.nameAdapter = this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
-		this.schemaAdapter = this.buildAnnotationElementAdapter(this.schemaDeclarationAdapter);
-		this.catalogAdapter = this.buildAnnotationElementAdapter(this.catalogDeclarationAdapter);
-	}
-
-	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.schemaDeclarationAdapter = this.buildSchemaDeclarationAdapter();
+		this.schemaAdapter = this.buildSchemaAdapter();
+		this.catalogDeclarationAdapter = this.buildCatalogDeclarationAdapter();
+		this.catalogAdapter = this.buildCatalogAdapter();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -98,11 +97,6 @@ public abstract class SourceBaseTableAnnotation
 	 * Return the uniqueConstraints element name
 	 */
 	protected abstract String getUniqueConstraintsElementName();
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
-	}
 
 
 	// ********** BaseTableAnnotation implementation **********
@@ -142,9 +136,13 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	/**
-	 * Build and return a declaration element adapter for the table's 'name' element
+	 * Build a declaration element adapter for the table's 'name' element.
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter();
+
+	private AnnotationElementAdapter<String> buildNameAdapter() {
+		return this.buildAnnotationElementAdapter(this.nameDeclarationAdapter);
+	}
 
 	// ***** schema
 	public String getSchema() {
@@ -177,9 +175,13 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	/**
-	 * Build and return a declaration element adapter for the table's 'schema' element
+	 * Build a declaration element adapter for the table's 'schema' element.
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> buildSchemaDeclarationAdapter();
+
+	private AnnotationElementAdapter<String> buildSchemaAdapter() {
+		return this.buildAnnotationElementAdapter(this.schemaDeclarationAdapter);
+	}
 
 	// ***** catalog
 	public String getCatalog() {
@@ -212,9 +214,13 @@ public abstract class SourceBaseTableAnnotation
 	}
 
 	/**
-	 * Build and return a declaration element adapter for the table's 'catalog' element
+	 * Build a declaration element adapter for the table's 'catalog' element
 	 */
-	protected abstract DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter);
+	protected abstract DeclarationAnnotationElementAdapter<String> buildCatalogDeclarationAdapter();
+
+	private AnnotationElementAdapter<String> buildCatalogAdapter() {
+		return this.buildAnnotationElementAdapter(this.catalogDeclarationAdapter);
+	}
 
 	// ***** unique constraints
 	public ListIterator<UniqueConstraintAnnotation> uniqueConstraints() {
@@ -237,6 +243,10 @@ public abstract class SourceBaseTableAnnotation
 		return this.uniqueConstraints.indexOf(uniqueConstraint);
 	}
 
+	private NestableUniqueConstraintAnnotation addUniqueConstraint() {
+		return this.addUniqueConstraint(this.uniqueConstraints.size());
+	}
+
 	public NestableUniqueConstraintAnnotation addUniqueConstraint(int index) {
 		return (NestableUniqueConstraintAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.uniqueConstraintsContainer);
 	}
@@ -247,7 +257,7 @@ public abstract class SourceBaseTableAnnotation
 
 	private NestableUniqueConstraintAnnotation addUniqueConstraint_(int index) {
 		NestableUniqueConstraintAnnotation uniqueConstraint = this.buildUniqueConstraint(index);
-		this.uniqueConstraints.add(uniqueConstraint);
+		this.uniqueConstraints.add(index, uniqueConstraint);
 		return uniqueConstraint;
 	}
 
@@ -290,20 +300,7 @@ public abstract class SourceBaseTableAnnotation
 		this.removeItemsFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-	
-	// ********** NestableAnnotation implementation **********
 
-	protected void initializeFrom(NestableAnnotation oldAnnotation) {
-		BaseTableAnnotation oldTable = (BaseTableAnnotation) oldAnnotation;
-		this.setName(oldTable.getName());
-		this.setSchema(oldTable.getSchema());
-		this.setCatalog(oldTable.getCatalog());
-		for (UniqueConstraintAnnotation oldUniqueConstraint : CollectionTools.iterable(oldTable.uniqueConstraints())) {
-			NestableUniqueConstraintAnnotation newUniqueConstraint = this.addUniqueConstraint(oldTable.indexOfUniqueConstraint(oldUniqueConstraint));
-			newUniqueConstraint.initializeFrom((NestableAnnotation) oldUniqueConstraint);
-		}
-	}
-	
 	// ********** unique constraint container **********
 
 	/**
@@ -359,4 +356,71 @@ public abstract class SourceBaseTableAnnotation
 
 	}
 
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null) &&
+				(this.schema == null) &&
+				(this.catalog == null) &&
+				this.uniqueConstraints.isEmpty();
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.schemaDeclarationAdapter = this.buildSchemaDeclarationAdapter();
+		this.schemaAdapter = this.buildSchemaAdapter();
+		this.catalogDeclarationAdapter = this.buildCatalogDeclarationAdapter();
+		this.catalogAdapter = this.buildCatalogAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(SCHEMA_PROPERTY, this.schema);
+		this.schema = null;
+		map.put(CATALOG_PROPERTY, this.catalog);
+		this.catalog = null;
+
+		List<Map<String, Object>> constraintsState = this.buildStateList(this.uniqueConstraints.size());
+		for (NestableUniqueConstraintAnnotation constraint : this.getNestableUniqueConstraints()) {
+			Map<String, Object> constraintState = new HashMap<String, Object>();
+			constraint.storeOn(constraintState);
+			constraintsState.add(constraintState);
+		}
+		map.put(UNIQUE_CONSTRAINTS_LIST, constraintsState);
+		this.uniqueConstraints.clear();
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setSchema((String) map.get(SCHEMA_PROPERTY));
+		this.setCatalog((String) map.get(CATALOG_PROPERTY));
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> constraintsState = (List<Map<String, Object>>) map.get(UNIQUE_CONSTRAINTS_LIST);
+		for (Map<String, Object> constraintState : constraintsState) {
+			this.addUniqueConstraint().restoreFrom(constraintState);
+		}
+	}
+
+	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
 }

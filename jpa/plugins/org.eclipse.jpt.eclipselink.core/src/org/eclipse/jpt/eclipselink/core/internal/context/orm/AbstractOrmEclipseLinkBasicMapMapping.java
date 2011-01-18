@@ -25,8 +25,8 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 	extends AbstractOrmAttributeMapping<XmlBasicMap> 
 	implements EclipseLinkBasicMapMapping
 {
-	protected AbstractOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
-		super(parent, resourceMapping);
+	protected AbstractOrmEclipseLinkBasicMapMapping(OrmPersistentAttribute parent, XmlBasicMap xmlMapping) {
+		super(parent, xmlMapping);
 	}
 	
 	public void initializeOn(OrmAttributeMapping newMapping) {
@@ -37,12 +37,12 @@ public abstract class AbstractOrmEclipseLinkBasicMapMapping
 		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public void addToResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
-		((Attributes) resourceAttributes).getBasicMaps().add(this.resourceAttributeMapping);
+	public void addXmlAttributeMappingTo(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getBasicMaps().add(this.xmlAttributeMapping);
 	}
 	
-	public void removeFromResourceModel(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
-		((Attributes) resourceAttributes).getBasicMaps().remove(this.resourceAttributeMapping);
+	public void removeXmlAttributeMappingFrom(org.eclipse.jpt.core.resource.orm.Attributes resourceAttributes) {
+		((Attributes) resourceAttributes).getBasicMaps().remove(this.xmlAttributeMapping);
 	}
 
 	

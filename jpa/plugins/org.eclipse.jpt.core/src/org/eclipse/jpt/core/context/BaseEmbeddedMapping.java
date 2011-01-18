@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
+ * Behavior common to embedded and embedded ID mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,13 +27,13 @@ public interface BaseEmbeddedMapping
 	AttributeOverrideContainer getAttributeOverrideContainer();
 	
 	/**
-	 * Return the Embeddable that matches the type of this mapping.
-	 * If none, return null.
+	 * Return the embeddable the embedded mapping references.
+	 * Return <code>null</code> if there is none.
 	 */
 	Embeddable getTargetEmbeddable();
 	
 	/**
 	 * String associated with property change events for the target embeddable
 	 */
-	public final static String TARGET_EMBEDDABLE_PROPERTY = "targetEmbeddable";  //$NON-NLS-1$
+	String TARGET_EMBEDDABLE_PROPERTY = "targetEmbeddable";  //$NON-NLS-1$
 }

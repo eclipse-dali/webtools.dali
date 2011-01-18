@@ -125,7 +125,7 @@ public class PackageGenerator {
 		}
 		
 		//update persistence.xml
-		if (this.customizer.shouldUpdatePersistenceXml()) {
+		if (this.customizer.updatePersistenceXml()) {
 			updatePersistenceXml(genClasses);
 		}
 		sm.worked(2);

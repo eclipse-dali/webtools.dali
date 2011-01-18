@@ -14,19 +14,27 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.db.Schema;
 
 /**
+ * type mapping:<ul>
+ * <li>entity
+ * <li>mapped superclass
+ * <li>embeddable
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still under
  * development and expected to change significantly before reaching stability.
  * It is available at this early stage to solicit feedback from pioneering
  * adopters on the understanding that any code that uses this API will almost
  * certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  */
 public interface TypeMapping
-	extends JpaContextNode {
+	extends JpaContextNode
+{
+	PersistentType getPersistentType();
+
 	/**
-	 * Return a unique key for the ITypeMapping. If this is defined in an
+	 * Return a unique key for the type mapping. If this is defined in an
 	 * extension they should be equal.
 	 */
 	String getKey();
@@ -36,8 +44,6 @@ public interface TypeMapping
 	 */
 	String getName();
 
-	PersistentType getPersistentType();
-
 	boolean isMapped();
 	
 	/**
@@ -45,18 +51,8 @@ public interface TypeMapping
 	 */
 	JavaPersistentType getIdClass();
 	
-	/**
-	 * Return the type mapping's primary table name, null if a primary table
-	 * does not apply.
-	 */
-	String getPrimaryTableName();
 
-	/**
-	 * Return the type mapping's primary database table.
-	 */
-	org.eclipse.jpt.db.Table getPrimaryDbTable();
-
-	Schema getDbSchema();
+	// ********** inheritance **********
 
 	/**
 	 * Return the type mapping of this type mapping's super type.
@@ -72,30 +68,47 @@ public interface TypeMapping
 	 */
 	Iterator<TypeMapping> inheritanceHierarchy();
 	
+
+	// ********** tables **********
+
+	/**
+	 * Return the type mapping's primary table name.
+	 * Return null if a primary table is not applicable.
+	 */
+	String getPrimaryTableName();
+
+	/**
+	 * Return the type mapping's primary database table.
+	 * Return null if a primary table is not applicable.
+	 */
+	org.eclipse.jpt.db.Table getPrimaryDbTable();
+
+	Schema getDbSchema();
+
 	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables.
 	 */
-	Iterator<Table> associatedTables();
+	Iterator<ReadOnlyTable> associatedTables();
 
 	/**
 	 * Return the type mapping's "associated" tables, which includes the primary
 	 * table and the collection of secondary tables, as well as all inherited
 	 * "associated" tables.
 	 */
-	Iterator<Table> associatedTablesIncludingInherited();
+	Iterator<ReadOnlyTable> allAssociatedTables();
 
 	/**
-	 * Return the identifiers of the type mapping's "associated" tables, which
+	 * Return the names of the type mapping's "associated" tables, which
 	 * includes the primary table and the collection of secondary tables, as
 	 * well as all the inherited "associated" tables.
 	 */
-	Iterator<String> associatedTableNamesIncludingInherited();
+	Iterator<String> allAssociatedTableNames();
 
 	/**
-	 * return the resolved associated db table with the passed in name
+	 * Return the resolved associated db table with the specified name.
 	 */
-	org.eclipse.jpt.db.Table getDbTable(String tableName);
+	org.eclipse.jpt.db.Table resolveDbTable(String tableName);
 
 	/**
 	 * Return whether the specified table is invalid for any annotations
@@ -103,6 +116,9 @@ public interface TypeMapping
 	 */
 	boolean tableNameIsInvalid(String tableName);
 	
+
+	// ********** mappings **********
+
 	/**
 	 * A convenience method for getting the attribute mappings from PersistentType.attributes()
 	 */
@@ -118,13 +134,23 @@ public interface TypeMapping
 	 * inheritance hierarchy.
 	 */
 	Iterator<AttributeMapping> allAttributeMappings();
-	
+
 	/**
 	 * Return attribute mappings of a particular mapping type that are declared anywhere on this 
 	 * type mapping's hierarchy
 	 */
 	<T extends AttributeMapping> Iterable<T> getAllAttributeMappings(String mappingKey);
 	
+	/**
+	 * Return whether the given attribute mapping key is valid for this
+	 * particular type mapping (for example, id's are not valid for an
+	 * embeddable type mapping)
+	 */
+	boolean attributeMappingKeyAllowed(String attributeMappingKey);
+
+
+	// ********** attribute overrides **********
+
 	/**
 	 * Return an Iterator of attribute names that can be overridden by a 
 	 * sub type mapping.
@@ -138,13 +164,16 @@ public interface TypeMapping
 	Iterator<String> allOverridableAttributeNames();
 	
 	/**
-	 * Returns the Column of the overridable attribute mapping with the given 
-	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
+	 * Return the column of the overridable attribute mapping (or attribute
+	 * override) with the specified attribute name.
+	 * <p>
+	 * In JPA 2.0 this name can use dot-notation to designate nested attributes
+	 * in embedded attribute mapping's embeddable type mapping.
 	 */
 	Column resolveOverriddenColumn(String attributeName);
 
 
-	RelationshipReference resolveRelationshipReference(String associationOverrideName);
+	// ********** association overrides **********
 
 	/**
 	 * Return an Iterator of associations names that can be overridden in this
@@ -158,16 +187,14 @@ public interface TypeMapping
 	 */
 	Iterator<String> allOverridableAssociationNames();
 
-	/**
-	 * Return whether the given attribute mapping key is valid for this
-	 * particular type mapping (for example, id's are not valid for an
-	 * embeddable type mapping)
-	 */
-	boolean attributeMappingKeyAllowed(String attributeMappingKey);
-	
+	RelationshipReference resolveOverriddenRelationship(String attributeName);
+
+
+	// ********** validation **********
+
 	/**
 	 * Return whether any database metadata specific validation should occur.
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
-	boolean shouldValidateAgainstDatabase();
+	boolean validatesAgainstDatabase();
 }

@@ -50,25 +50,24 @@ public class JavaQueryHintTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Entity entity = getJavaEntity();
-		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().hints().next();
+		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().getHints().iterator().next();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		QueryHintAnnotation javaQueryHint = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();
+		QueryHintAnnotation queryHintAnnotation = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();
 		
-		assertNull(javaQueryHint.getName());
+		assertNull(queryHintAnnotation.getName());
 		assertNull(queryHint.getName());
 
 		//set name in the resource model, verify context model updated
-		javaQueryHint.setName("foo");
+		queryHintAnnotation.setName("foo");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("foo", javaQueryHint.getName());
+		assertEquals("foo", queryHintAnnotation.getName());
 		assertEquals("foo", queryHint.getName());
 		
 		//set name to null in the resource model
-		javaQueryHint.setName(null);
+		queryHintAnnotation.setName(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(javaQueryHint.getName());
-		assertEquals(0, entity.getQueryContainer().namedQueries().next().hintsSize());
+		assertNull(queryHint.getName());
 	}
 	
 	public void testModifyName() throws Exception {
@@ -76,7 +75,7 @@ public class JavaQueryHintTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Entity entity = getJavaEntity();
-		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().hints().next();
+		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().getHints().iterator().next();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		QueryHintAnnotation javaQueryhint = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();
@@ -100,25 +99,24 @@ public class JavaQueryHintTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Entity entity = getJavaEntity();
-		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().hints().next();
+		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().getHints().iterator().next();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		QueryHintAnnotation javaQueryhint = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();
+		QueryHintAnnotation queryHintAnnotation = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();
 		
-		assertNull(javaQueryhint.getValue());
+		assertNull(queryHintAnnotation.getValue());
 		assertNull(queryHint.getValue());
 
 		//set name in the resource model, verify context model updated
-		javaQueryhint.setValue("foo");
+		queryHintAnnotation.setValue("foo");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("foo", javaQueryhint.getValue());
+		assertEquals("foo", queryHintAnnotation.getValue());
 		assertEquals("foo", queryHint.getValue());
 		
 		//set name to null in the resource model
-		javaQueryhint.setValue(null);
+		queryHintAnnotation.setValue(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(javaQueryhint.getValue());
-		assertEquals(0, entity.getQueryContainer().namedQueries().next().hintsSize());
+		assertNull(queryHint.getValue());
 	}
 	
 	public void testModifyValue() throws Exception {
@@ -126,7 +124,7 @@ public class JavaQueryHintTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Entity entity = getJavaEntity();
-		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().hints().next();
+		QueryHint queryHint = entity.getQueryContainer().namedQueries().next().getHints().iterator().next();
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		QueryHintAnnotation javaQueryhint = ((NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME)).hints().next();

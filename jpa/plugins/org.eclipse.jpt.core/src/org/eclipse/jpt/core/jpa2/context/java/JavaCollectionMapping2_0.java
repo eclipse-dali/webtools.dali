@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.java;
 
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaCollectionMapping;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 
 /**
- * 1:m, m:m, element collection are all collection mappings.
+ * Java collection mapping (e.g. 1:m, m:m, element collection)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,16 +26,15 @@ import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
  * @since 2.3
  */
 public interface JavaCollectionMapping2_0
-	extends CollectionMapping2_0, JavaAttributeMapping
+	extends CollectionMapping2_0, JavaCollectionMapping
 {
-	
 	JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 
 	/**
-	 * If the map key class is specified, this will return it fully qualified. If not
-	 * specified, it returns the default map key class, which is always fully qualified
+	 * If the map key class is specified, this will return it fully qualified.
+	 * If not specified, it returns the default map key class, which is always
+	 * fully qualified.
 	 */
 	String getFullyQualifiedMapKeyClass();
 		String FULLY_QUALIFIED_MAP_KEY_CLASS_PROPERTY = "fullyQualifiedMapKeyClass"; //$NON-NLS-1$
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,13 +15,17 @@ import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Column
- * javax.persistence.JoinColumn
- * javax.persistence.DiscriminatorColumn
- * javax.persistence.PrimaryKeyJoinColumn.
+ * <ul>
+ * <li><code>javax.persistence.Column</code>
+ * <li><code>javax.persistence.JoinColumn</code>
+ * <li><code>javax.persistence.MapKeyColumn</code>
+ * <li><code>javax.persistence.DiscriminatorColumn</code>
+ * <li><code>javax.persistence.OrderColumn</code>
+ * <li><code>javax.persistence.PrimaryKeyJoinColumn</code>
+ * </ul>
  */
-public abstract class NullNamedColumnAnnotation
-	extends NullAnnotation
+public abstract class NullNamedColumnAnnotation<A extends NamedColumnAnnotation>
+	extends NullAnnotation<A>
 	implements NamedColumnAnnotation
 {
 	protected NullNamedColumnAnnotation(JavaResourceNode parent) {
@@ -30,11 +34,6 @@ public abstract class NullNamedColumnAnnotation
 
 	public boolean isSpecified() {
 		return false;
-	}
-	
-	@Override
-	protected NamedColumnAnnotation addAnnotation() {
-		return (NamedColumnAnnotation) super.addAnnotation();
 	}
 	
 	// ***** name
@@ -70,5 +69,4 @@ public abstract class NullNamedColumnAnnotation
 	public TextRange getColumnDefinitionTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

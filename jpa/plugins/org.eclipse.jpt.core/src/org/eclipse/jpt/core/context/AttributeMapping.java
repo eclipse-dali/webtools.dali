@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,108 +19,142 @@ import java.util.Iterator;
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ *
  * @version 2.3
  * @since 2.0
  */
 public interface AttributeMapping
 	extends JpaContextNode
 {
+	/**
+	 * Return the mapping's attribute (typically its parent node in the
+	 * containment hierarchy).
+	 */
 	PersistentAttribute getPersistentAttribute();
-	
+
+	/**
+	 * Return the mapping's name, which corresponds to the name of the
+	 * associated attribute.
+	 */
 	String getName();
 
-	boolean isDefault();
-	
 	/**
-	 * Return a unique key for the attribute mapping.  If this is defined in
+	 * Return whether the mapping is its attribute's <em>default</em> mapping
+	 * (as opposed to its <em>specified</em> mapping).
+	 */
+	boolean isDefault();
+		String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
+
+	/**
+	 * Return a unique key for the attribute mapping. If this is defined in
 	 * an extension they should be equal.
 	 */
 	String getKey();
-	
+
 	/**
 	 * Return whether the "attribute" mapping can be overridden.
-	 * Must be a {@link ColumnMapping}
+	 * The mapping must be a {@link ColumnMapping}.
 	 */
 	boolean isOverridableAttributeMapping();
 
 	/**
 	 * Return whether the "association" mapping can be overridden.
-	 * Must be a {@link RelationshipMapping}
+	 * The mapping must be a {@link RelationshipMapping}.
 	 */
 	boolean isOverridableAssociationMapping();
 
 	/**
-	 * Return the mapping for the attribute mapping's attribute's type.
+	 * Return the mapping for the type that contains the mapping's attribute.
 	 */
 	TypeMapping getTypeMapping();
 
 	/**
 	 * If the mapping is for a primary key column, return the column's name,
-	 * otherwise return null.
+	 * otherwise return <code>null</code>.
 	 */
 	String getPrimaryKeyColumnName();
 
 	/**
-	 * Return whether this mapping is the owning side of the relationship.
+	 * Return whether this mapping is the owning side of a relationship.
 	 * Either this is a unidirectional mapping or it is the owning side of a
 	 * bidirectional relationship. If bidirectional, the owning side is the
-	 * side that does not specify 'mappedBy'. The owning side is the side where
-	 * the join table would be specified. If this returns true then the mapping
-	 * will be a RelationshipMapping
+	 * side that does <em>not</em> specify a "mapped by" attribute name.
+	 * The owning side is the side where the join table is to be specified.
+	 * If this returns <code>true</code> the mapping will be a
+	 * {@link RelationshipMapping}.
 	 */
 	boolean isRelationshipOwner();
 
 	/**
-	 * Return whether the given mapping manages a relationship with this mapping
+	 * Return whether the specified mapping manages a relationship with the
+	 * mapping.
 	 */
 	boolean isOwnedBy(AttributeMapping mapping);
-	
+
 	/**
 	 * Return whether any database metadata specific validation should occur.
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
-	boolean shouldValidateAgainstDatabase();
+	boolean validatesAgainstDatabase();
 
 	/**
-	 * This is used for mappedBy choices in a relationship mapping.
-	 * Typically this will just be a single element iterator with the name of the mapping.
-	 * In a 2.0 project, an embedded mapping should return its own name as well as 
-	 * the name of its target Embeddable's mappings with the embedded mapping name 
-	 * prepended : "embedded", "embedded.foo", "embedded.bar".
+	 * Return the relationship reference for the specified attribute.
+	 */
+	RelationshipReference resolveOverriddenRelationship(String attributeName);
+
+
+	// ********** embedded mappings **********
+
+	/**
+	 * This is used for "mapped by" choices in a relationship mapping.
+	 * Typically this will just be a single element iterator with the mapping's
+	 * name.
+	 * <p>
+	 * In a JPA 2.0 project, an embedded mapping should return its own name as
+	 * well as the name of its target embeddable's mappings with the embedded
+	 * mapping name prepended, e.g.:<ul>
+	 * <li><code>"embedded"</code>
+	 * <li><code>"embedded.foo"</code>
+	 * <li><code>"embedded.bar"</code>
+	 * </ul>
 	 */
 	Iterator<String> allMappingNames();
-	
-	/**
-	 * This is used to determine the virtual attribute overrides for an embedded mapping
-	 * or an entity. Return an Iterator of all attribute names that can be overridden.
-	 * In a 2.0 project this will include nested attributes that are overridable
-	 * @see isOverridableAttributeMapping()
-	 */
-	Iterator<String> allOverrideableAttributeMappingNames();
-	
-	/**
-	 * This is used to determine the virtual association overrides for an embedded mapping
-	 * or an entity. Return an Iterator of all association names that can be overridden.
-	 * In a 2.0 project this will include nested associations that are overridable
-	 * @see isOverridableAssociationMapping()
-	 */
-	Iterator<String> allOverrideableAssociationMappingNames();
 
 	/**
-	 * Returns this attribute mapping if its name matches the name.
-	 * In 2.0 this name could use dot-notation for nested mappings.
-	 * 2.0 Embedded mappings will have to parse this name and return the appropriate 
-	 * nested attribute mapping.
+	 * This is used to determine the virtual attribute overrides for an
+	 * embedded mapping or entity. Return the names of all the attributes
+	 * that can be overridden.
+	 * <p>
+	 * In a JPA 2.0 project this will include overridable nested attributes.
+	 * @see #isOverridableAttributeMapping()
+	 */
+	Iterator<String> allOverridableAttributeMappingNames();
+
+	/**
+	 * This is used to determine the virtual association overrides for an
+	 * embedded mapping or entity. Return the names of all the associations
+	 * that can be overridden.
+	 * <p>
+	 * In a JPA 2.0 project this will include overridable nested associations.
+	 * @see #isOverridableAssociationMapping()
+	 */
+	Iterator<String> allOverridableAssociationMappingNames();
+
+	/**
+	 * Return the mapping itself if its name matches the specified name.
+	 * <p>
+	 * In JPA 2.0 this name could use dot-notation for nested mappings.
+	 * JPA 2.0 embedded mappings will have to parse this name and return the
+	 * appropriate nested mapping.
 	 */
 	AttributeMapping resolveAttributeMapping(String name);
-	
+
 	/**
-	 * Returns the Column of the overridable attribute mapping with the given 
-	 * attribute name. In 2.0 this name could use dot-notation for nested mappings.
+	 * Return the column of the overridable attribute mapping (or attribute
+	 * override) with the specified attribute name.
+	 * <p>
+	 * In JPA 2.0 this name can use dot-notation to designate nested attributes
+	 * in embedded attribute mapping's embeddable type mapping.
 	 */
 	Column resolveOverriddenColumn(String attributeName);
-
-	RelationshipReference resolveRelationshipReference(String attributeName);
-
 }

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -39,72 +39,67 @@ public interface ClassRef
 	extends XmlContextNode, JpaStructureNode, PersistentType.Owner
 {
 	/**
-	 * Return whether the class ref is a reference to the specified type name.
+	 * Return whether the class ref is a reference to the specified type.
 	 */
 	boolean isFor(String typeName);
-	
+
 	/**
-	 * Return true if the mapping file ref is "virtual";
-	 * return false if the mapping file ref is represented by an entry in the
-	 * persistence.xml file.
+	 * Return <code>true</code> if the mapping file ref is <em>virtual</em>;
+	 * return <code>false</code> if the mapping file ref is represented by an
+	 * entry in the <code>persistence.xml</code> file.
 	 */
 	boolean isVirtual();
-	
-	XmlJavaClassRef getResourceClassRef();
-	
-	// **************** class name *********************************************
-	
+
+	/**
+	 * Return the class ref's corresponding resource class ref.
+	 * This is <code>null</code> for <em>implied</em> class refs.
+	 */
+	XmlJavaClassRef getXmlClassRef();
+
+	/**
+	 * Return whether the text representation of this persistence unit contains
+	 * the given text offset
+	 */
+	boolean containsOffset(int textOffset);
+
+
+	// ********** class name **********
+
 	/**
 	 * String constant associated with changes to the class name
 	 */
 	final static String CLASS_NAME_PROPERTY = "className"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the class name of the class ref.
 	 */
 	String getClassName();
-	
+
 	/**
 	 * Set the class name of the class ref.
 	 */
 	void setClassName(String className);
-	
-	
-	// **************** java persistent type ***********************************
-	
+
+
+	// ********** java persistent type **********
+
 	/**
 	 * String constant associated with changes to the java persistent type
 	 */
 	final static String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the JavaPersistentType that corresponds to this IClassRef.
 	 * This can be null.
 	 * This is not settable by users of this API.
 	 */
 	JavaPersistentType getJavaPersistentType();
-	
-	
-	// **************** update **************************************
-	
-	/**
-	 * Update the ClassRef context model object to match the XmlJavaClassRef 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update();
-	
-	/**
-	 * Update the ClassRef context model object to match the className. This is used
-	 * for impliedClassRefs in the PersistenceUnit.
-	 * see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(String className);
 
 
-	// **************** refactoring **************************************
+	// ********** refactoring **********
 
 	/**
-	 * If this {@link ClassRef#isFor(String)} the given IType, create a text 
+	 * If this {@link #isFor(String)} the given IType, create a text 
 	 * DeleteEdit for deleting the class element and any text that precedes it.
 	 * Otherwise return an EmptyIterable.
 	 * Though this will contain 1 or 0 DeleteEdits, using an Iterable
@@ -131,14 +126,4 @@ public interface ClassRef
 	 * If this class is not a part of the original package, then return an empty Iterable.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
-
-
-	// *************************************************************************
-	
-	/**
-	 * Return whether the text representation of this persistence unit contains
-	 * the given text offset
-	 */
-	boolean containsOffset(int textOffset);
-
 }

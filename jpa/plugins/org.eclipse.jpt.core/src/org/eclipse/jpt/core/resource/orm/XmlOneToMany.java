@@ -43,7 +43,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class"
  * @generated
  */
-public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements XmlJoinColumnsMapping, XmlOneToMany_2_0
+public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements XmlJoinColumnContainer, XmlOneToMany_2_0
 {
 
 	/**
@@ -106,7 +106,7 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnContainer_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -256,11 +256,11 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlJoinColumnsMapping.class)
+		if (baseClass == XmlJoinColumnContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
+				case OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMN_CONTAINER__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -290,11 +290,11 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlJoinColumnsMapping.class)
+		if (baseClass == XmlJoinColumnContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_COLUMN_CONTAINER__JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_MANY__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -371,6 +371,6 @@ public class XmlOneToMany extends AbstractXmlMultiRelationshipMapping implements
 	}
 	
 	protected static Translator buildJoinColumnTranslator() {
-		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnContainer_JoinColumns());
 	}
 }

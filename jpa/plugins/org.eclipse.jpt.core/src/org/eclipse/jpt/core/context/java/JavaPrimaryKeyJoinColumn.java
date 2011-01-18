@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 
 /**
- * 
- * 
+ * Java primary key join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,12 +27,5 @@ import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 public interface JavaPrimaryKeyJoinColumn
 	extends PrimaryKeyJoinColumn, JavaBaseJoinColumn
 {
-	void initialize(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
-	
-	/**
-	 * Update the JavaPrimaryKeyJoinColumn context model object to match the PrimaryKeyJoinColumnAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(PrimaryKeyJoinColumnAnnotation primaryKeyJoinColumn);
-
+	PrimaryKeyJoinColumnAnnotation getColumnAnnotation();
 }

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -18,16 +18,18 @@ import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.orm.OrmCascade;
+import org.eclipse.jpt.core.context.orm.OrmMappingRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
+import org.eclipse.jpt.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmCascade;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -41,93 +43,56 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelationshipMapping>
-	extends AbstractOrmAttributeMapping<T>
+/**
+ * <code>orm.xml</code> relationship mapping (1:1, 1:m, m:1, m:m)
+ */
+public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelationshipMapping>
+	extends AbstractOrmAttributeMapping<X>
 	implements OrmRelationshipMapping
 {
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
-	protected PersistentType resolvedTargetType;
-	protected Entity resolvedTargetEntity;
-	
-	protected final OrmRelationshipReference relationshipReference;
-	
-	protected final OrmCascade2_0 cascade;
+
+	protected final OrmMappingRelationshipReference relationshipReference;
+
+	protected final OrmCascade cascade;
 
 	protected FetchType specifiedFetch;
-	
-	
-	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
-		super(parent, resourceMapping);
-		this.relationshipReference = buildRelationshipReference();
-		this.cascade = buildCascade();
-		this.specifiedTargetEntity = getResourceTargetEntity();
-		this.defaultTargetEntity = buildDefaultTargetEntity();
-		this.resolvedTargetType = this.resolveTargetType();
-		this.resolvedTargetEntity = this.resolveTargetEntity();
-		this.specifiedFetch = getResourceFetch();
+	protected FetchType defaultFetch;
+
+
+	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
+		super(parent, xmlMapping);
+		this.specifiedTargetEntity = xmlMapping.getTargetEntity();
+		this.relationshipReference = this.buildRelationshipReference();
+		this.cascade = this.buildCascade();
+		this.specifiedFetch = this.buildSpecifiedFetch();
 	}
-	
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedTargetEntity_(this.xmlAttributeMapping.getTargetEntity());
+		this.relationshipReference.synchronizeWithResourceModel();
+		this.cascade.synchronizeWithResourceModel();
+		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
+	}
+
 	@Override
 	public void update() {
 		super.update();
+		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.relationshipReference.update();
 		this.cascade.update();
-		this.setSpecifiedTargetEntity_(this.getResourceTargetEntity());
-		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
-		this.resolvedTargetType = this.resolveTargetType();
-		this.setResolvedTargetEntity(this.resolveTargetEntity());
-		this.setSpecifiedFetch_(this.getResourceFetch());
-	}
-	
-	protected abstract OrmRelationshipReference buildRelationshipReference();
-	
-	@Override
-	public OrmPersistentAttribute getParent() {
-		return (OrmPersistentAttribute) super.getParent();
-	}
-	
-	@Override
-	public boolean isRelationshipOwner() {
-		return this.relationshipReference.isRelationshipOwner();
-	}
-	
-	@Override
-	public boolean isOwnedBy(AttributeMapping mapping) {
-		if (mapping.isRelationshipOwner()) {
-			return this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
-		}
-		return false;
+		this.setDefaultFetch(this.buildDefaultFetch());
 	}
 
-	public RelationshipMapping getRelationshipOwner() {
-		Entity targetEntity = this.getResolvedTargetEntity();
-		if (targetEntity == null) {
-			return null;
-		}
-		for (PersistentAttribute each : 
-			CollectionTools.iterable(
-				targetEntity.getPersistentType().allAttributes())) {
-			if (this.isOwnedBy(each.getMapping())) {
-				return (RelationshipMapping) each.getMapping();
-			}
-		}
-		return null;
-	}
 
-	@Override
-	public boolean isOverridableAssociationMapping() {
-		return this.relationshipReference.isOverridableAssociation();
-	}	
-	
-	
-	// **************** target entity ******************************************
+	// ********** target entity **********
 
-	public char getTargetEntityEnclosingTypeSeparator() {
-		return '$';
-	}
-	
 	public String getTargetEntity() {
 		return (this.specifiedTargetEntity != null) ? this.specifiedTargetEntity : this.defaultTargetEntity;
 	}
@@ -136,102 +101,91 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		return this.specifiedTargetEntity;
 	}
 
-	public void setSpecifiedTargetEntity(String targetEntity) {
-		String old = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = targetEntity;
-		this.resourceAttributeMapping.setTargetEntity(targetEntity);
-		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
+	public void setSpecifiedTargetEntity(String entity) {
+		this.setSpecifiedTargetEntity_(entity);
+		this.xmlAttributeMapping.setTargetEntity(entity);
 	}
 
-	protected void setSpecifiedTargetEntity_(String targetEntity) {
+	protected void setSpecifiedTargetEntity_(String entity) {
 		String old = this.specifiedTargetEntity;
-		this.specifiedTargetEntity = targetEntity;
-		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, targetEntity);
+		this.specifiedTargetEntity = entity;
+		this.firePropertyChanged(SPECIFIED_TARGET_ENTITY_PROPERTY, old, entity);
 	}
 
 	public String getDefaultTargetEntity() {
 		return this.defaultTargetEntity;
 	}
 
-	protected void setDefaultTargetEntity(String targetEntity) {
+	protected void setDefaultTargetEntity(String entity) {
 		String old = this.defaultTargetEntity;
-		this.defaultTargetEntity = targetEntity;
-		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, targetEntity);
-	}
-
-	public Entity getResolvedTargetEntity() {
-		return this.resolvedTargetEntity;
-	}
-
-	protected void setResolvedTargetEntity(Entity targetEntity) {
-		Entity old = this.resolvedTargetEntity;
-		this.resolvedTargetEntity = targetEntity;
-		this.firePropertyChanged(RESOLVED_TARGET_ENTITY_PROPERTY, old, targetEntity);
-	}
-
-	public PersistentType getResolvedTargetType() {
-		return this.resolvedTargetType;
-	}
-
-	protected PersistentType resolveTargetType() {
-		return this.resolvePersistentType(this.getTargetEntity());
-	}
-
-	protected String getResourceTargetEntity() {
-		return this.resourceAttributeMapping.getTargetEntity();
+		this.defaultTargetEntity = entity;
+		this.firePropertyChanged(DEFAULT_TARGET_ENTITY_PROPERTY, old, entity);
 	}
 
 	protected String buildDefaultTargetEntity() {
-		if (this.getJavaPersistentAttribute() != null) {
-			return getResourceDefaultTargetEntity();
-		}
-		return null;
+		return (this.getJavaPersistentAttribute() == null) ? null : this.getJavaTargetType();
 	}
 
-	protected abstract String getResourceDefaultTargetEntity();
+	/**
+	 * pre-condition: the mapping's Java persistent attribute is not
+	 * <code>null</code>.
+	 */
+	protected abstract String getJavaTargetType();
 
-	protected Entity resolveTargetEntity() {
-		if (this.resolvedTargetType == null) {
-			return null;
-		}
-		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
+	public Entity getResolvedTargetEntity() {
+		TypeMapping typeMapping = this.getResolvedTargetTypeMapping();
 		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
 	}
 
+	protected TypeMapping getResolvedTargetTypeMapping() {
+		PersistentType resolvedTargetType = this.getResolvedTargetType();
+		return (resolvedTargetType == null) ? null : resolvedTargetType.getMapping();
+	}
 
-	// **************** reference **********************************************
-	
-	public OrmRelationshipReference getRelationshipReference() {
+	// sub-classes like this to be public
+	public PersistentType getResolvedTargetType() {
+		return this.resolvePersistentType(this.getTargetEntity());
+	}
+
+	public char getTargetEntityEnclosingTypeSeparator() {
+		return '$';
+	}
+
+
+	// ********** relationship reference **********
+
+	public OrmMappingRelationshipReference getRelationshipReference() {
 		return this.relationshipReference;
 	}
-	
-	
-	// **************** cascade ************************************************
-	
-	protected OrmCascade2_0 buildCascade() {
-		return new GenericOrmCascade(this, this.resourceAttributeMapping);
-	}
-	
-	public OrmCascade2_0 getCascade() {
+
+	protected abstract OrmMappingRelationshipReference buildRelationshipReference();
+
+
+	// ********** cascade **********
+
+	public OrmCascade getCascade() {
 		return this.cascade;
 	}
-	
-	
-	// **************** fetch **************************************************
+
+	protected OrmCascade buildCascade() {
+		// NB: we don't use the platform
+		return new GenericOrmCascade(this);
+	}
+
+
+	// ********** fetch **********
 
 	public FetchType getFetch() {
-		return (this.specifiedFetch != null) ? this.specifiedFetch : this.getDefaultFetch();
+		return (this.specifiedFetch != null) ? this.specifiedFetch : this.defaultFetch;
 	}
 
 	public FetchType getSpecifiedFetch() {
 		return this.specifiedFetch;
 	}
-	
+
 	public void setSpecifiedFetch(FetchType fetch) {
-		FetchType old = this.specifiedFetch;
-		this.specifiedFetch = fetch;
-		this.resourceAttributeMapping.setFetch(FetchType.toOrmResourceModel(fetch));
-		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+		this.setSpecifiedFetch_(fetch);
+		this.xmlAttributeMapping.setFetch(FetchType.toOrmResourceModel(fetch));
 	}
 
 	protected void setSpecifiedFetch_(FetchType fetch) {
@@ -239,37 +193,77 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 		this.specifiedFetch = fetch;
 		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
 	}
-	protected FetchType getResourceFetch() {
-		return FetchType.fromOrmResourceModel(this.resourceAttributeMapping.getFetch());
+
+	protected FetchType buildSpecifiedFetch() {
+		return FetchType.fromOrmResourceModel(this.xmlAttributeMapping.getFetch());
 	}
 
+	public FetchType getDefaultFetch() {
+		return this.defaultFetch;
+	}
 
-	// ********** RelationshipMapping implementation **********
+	protected void setDefaultFetch(FetchType fetch) {
+		FetchType old = this.defaultFetch;
+		this.defaultFetch = fetch;
+		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, fetch);
+	}
+
+	protected abstract FetchType buildDefaultFetch();
+
+
+	// ********** misc **********
 
 	@Override
-	public void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
+	public boolean isRelationshipOwner() {
+		return this.relationshipReference.isOwner();
+	}
+
+	@Override
+	public boolean isOwnedBy(AttributeMapping mapping) {
+		return mapping.isRelationshipOwner() &&
+			this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
+	}
+
+	public RelationshipMapping getRelationshipOwner() {
+		Entity entity = this.getResolvedTargetEntity();
+		if (entity == null) {
+			return null;
+		}
+		for (ReadOnlyPersistentAttribute attribute : CollectionTools.iterable(entity.getPersistentType().allAttributes())) {
+			AttributeMapping mapping = attribute.getMapping();
+			if (this.isOwnedBy(mapping)) {
+				return (RelationshipMapping) mapping;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public boolean isOverridableAssociationMapping() {
+		return this.relationshipReference.isOverridable();
+	}
+
+	@Override
+	protected void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
 		super.initializeFromOrmRelationshipMapping(oldMapping);
-		setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
-		setSpecifiedFetch(oldMapping.getSpecifiedFetch());
+		this.setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
+		this.setSpecifiedFetch(oldMapping.getSpecifiedFetch());
 		oldMapping.getRelationshipReference().initializeOn(this.relationshipReference);
 		this.cascade.initializeFrom(oldMapping.getCascade());
 		//TODO should we set the fetch type from a BasicMapping??
 	}
-	
+
 	public Iterator<String> allTargetEntityAttributeNames() {
-		return new CompositeIterator<String>(
-			new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings()) {
-				@Override
-				protected Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allMappingNames();
-				}
-		});
+		return new CompositeIterator<String>(this.allTargetEntityAttributeNamesLists());
 	}
 
-	public Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
-		return (this.resolvedTargetEntity != null) ?
-				this.resolvedTargetEntity.allAttributeMappings() :
-				EmptyIterator.<AttributeMapping> instance();
+	protected Iterator<Iterator<String>> allTargetEntityAttributeNamesLists() {
+		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.allTargetEntityAttributeMappings(), AttributeMappingTools.ALL_MAPPING_NAMES_TRANSFORMER);
+	}
+
+	protected Iterator<AttributeMapping> allTargetEntityAttributeMappings() {
+		Entity entity = this.getResolvedTargetEntity();
+		return (entity != null) ? entity.allAttributeMappings() : EmptyIterator.<AttributeMapping>instance();
 	}
 
 	protected String getTargetEntityIdAttributeName() {
@@ -278,24 +272,26 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 
 	protected PersistentAttribute getTargetEntityIdAttribute() {
-		return (this.resolvedTargetEntity == null) ? null : this.resolvedTargetEntity.getIdAttribute();
+		Entity entity = this.getResolvedTargetEntity();
+		return (entity == null) ? null : entity.getIdAttribute();
 	}
 
 
 	//************ refactoring ************
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenameTypeEdits(originalType, newName),
-			this.createTargetEntityRenameTypeEdits(originalType, newName));
+				super.createRenameTypeEdits(originalType, newName),
+				this.createTargetEntityRenameTypeEdits(originalType, newName)
+			);
 	}
-	
+
 	protected Iterable<ReplaceEdit> createTargetEntityRenameTypeEdits(IType originalType, String newName) {
 		if (this.specifiedTargetEntity != null) {
-			String originalName = originalType.getFullyQualifiedName('.');
-			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+			PersistentType targetType = this.getResolvedTargetType();
+			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
 				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenameTypeEdit(originalType, newName));
 			}
 		}
@@ -303,38 +299,41 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 
 	protected ReplaceEdit createTargetEntityRenameTypeEdit(IType originalType, String newName) {
-		return this.resourceAttributeMapping.createRenameTargetEntityEdit(originalType, newName);
+		return this.xmlAttributeMapping.createRenameTargetEntityEdit(originalType, newName);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createMoveTypeEdits(originalType, newPackage),
-			this.createTargetEntityMoveTypeEdits(originalType, newPackage));
+				super.createMoveTypeEdits(originalType, newPackage),
+				this.createTargetEntityMoveTypeEdits(originalType, newPackage)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createTargetEntityMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		if (this.specifiedTargetEntity != null) {
-			String originalName = originalType.getFullyQualifiedName('.');
-			if (this.resolvedTargetType != null && this.resolvedTargetType.isFor(originalName)) {
+			PersistentType targetType = this.getResolvedTargetType();
+			if ((targetType != null) && targetType.isFor(originalType.getFullyQualifiedName('.'))) {
 				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newPackage.getElementName()));
 			}
 		}
 		return EmptyIterable.instance();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenamePackageEdits(originalPackage, newName),
-			this.createTargetEntityRenamePackageEdits(originalPackage, newName));
+				super.createRenamePackageEdits(originalPackage, newName),
+				this.createTargetEntityRenamePackageEdits(originalPackage, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createTargetEntityRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		if (this.specifiedTargetEntity != null) {
-			if (this.resolvedTargetType != null && this.resolvedTargetType.isIn(originalPackage)) {
+			PersistentType targetType = this.getResolvedTargetType();
+			if ((targetType != null) && targetType.isIn(originalPackage)) {
 				return new SingleElementIterable<ReplaceEdit>(this.createTargetEntityRenamePackageEdit(newName));
 			}
 		}
@@ -342,87 +341,77 @@ public abstract class AbstractOrmRelationshipMapping<T extends AbstractXmlRelati
 	}
 
 	protected ReplaceEdit createTargetEntityRenamePackageEdit(String newName) {
-		return this.resourceAttributeMapping.createRenameTargetEntityPackageEdit(newName);
+		return this.xmlAttributeMapping.createRenameTargetEntityPackageEdit(newName);
 	}
 
 
-	//*********** validation ***********
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		validateTargetEntity(messages);
+		this.validateTargetEntity(messages);
 		this.relationshipReference.validate(messages, reporter);
 	}
-	
+
 	protected void validateTargetEntity(List<IMessage> messages) {
-		if (getTargetEntity() == null) {
-			if (getPersistentAttribute().isVirtual()) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED,
-						new String[] {this.getName()}, 
-						this, 
-						this.getValidationTextRange()
-					)
-				);
-			}
-			else { 
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED,
-						new String[] {this.getName()}, 
-						this, 
-						this.getValidationTextRange()
-					)
-				);
-			}
+		if (this.getTargetEntity() == null) {
+			String msg = this.isVirtual() ?
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_NOT_DEFINED :
+						JpaValidationMessages.TARGET_ENTITY_NOT_DEFINED;
+			messages.add(
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					msg,
+					new String[] {this.name},
+					this,
+					this.getValidationTextRange()
+				)
+			);
 		}
-		else if (getResolvedTargetEntity() == null) {
-			if (getPersistentAttribute().isVirtual()) {
+		else if (this.getResolvedTargetEntity() == null) {
+			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.VIRTUAL_ATTRIBUTE_TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {this.getName(), getTargetEntity()}, 
-						this, 
+						new String[] {this.name, this.getTargetEntity()},
+						this,
 						this.getValidationTextRange()
 					)
 				);
-			}
-			else {
+			} else {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TARGET_ENTITY_IS_NOT_AN_ENTITY,
-						new String[] {getTargetEntity(), this.getName()}, 
-						this, 
+						new String[] {this.getTargetEntity(), this.name},
+						this,
 						this.getTargetEntityTextRange()
 					)
 				);
 			}
 		}
 	}
-	
+
 	protected TextRange getTextRange(TextRange textRange) {
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange();
+		return (textRange != null) ? textRange : this.getPersistentAttribute().getValidationTextRange();
 	}
 
 	protected TextRange getTargetEntityTextRange() {
-		return this.getTextRange(this.getResourceAttributeMapping().getTargetEntityTextRange());
-	}	
+		return this.getTextRange(this.xmlAttributeMapping.getTargetEntityTextRange());
+	}
 
 
-	// ********** metamodel ********** 
+	// ********** metamodel **********
 
 	@Override
 	public String getMetamodelTypeName() {
-		if (this.resolvedTargetType == null) {
+		PersistentType resolvedTargetType = this.getResolvedTargetType();
+		if (resolvedTargetType == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		String targetTypeName = this.resolvedTargetType.getName();
+		String targetTypeName = resolvedTargetType.getName();
 		return (targetTypeName != null) ? targetTypeName : MetamodelField.DEFAULT_TYPE_NAME;
 	}
 

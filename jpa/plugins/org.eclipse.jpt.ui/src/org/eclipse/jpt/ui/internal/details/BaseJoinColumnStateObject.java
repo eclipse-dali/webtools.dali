@@ -9,8 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
@@ -27,7 +29,8 @@ import org.eclipse.jpt.utility.internal.node.Node;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class BaseJoinColumnStateObject extends AbstractNode
+public abstract class BaseJoinColumnStateObject
+	extends AbstractNode
 {
 	/**
 	 * The SQL fragment that is used when generating the DDL for the column.
@@ -38,7 +41,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * Either the join column is being edited or <code>null</code> the state
 	 * object is being created.
 	 */
-	private BaseJoinColumn joinColumn;
+	private ReadOnlyBaseJoinColumn joinColumn;
 
 	/**
 	 * The join column's name or <code>null</code> if not defined.
@@ -102,7 +105,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public BaseJoinColumnStateObject(Object owner, BaseJoinColumn joinColumn) {
+	public BaseJoinColumnStateObject(Object owner, ReadOnlyBaseJoinColumn joinColumn) {
 		super(null);
 		initialize(owner, joinColumn);
 	}
@@ -147,11 +150,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @return Either the default name defined by the join column or <code>null</code>
 	 */
 	public String getDefaultName() {
-		if (this.joinColumn == null) {
-			return null;
-		}
-
-		return this.joinColumn.getDefaultName();
+		return (this.joinColumn == null) ? null : this.joinColumn.getDefaultName();
 	}
 
 	/**
@@ -182,7 +181,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 *
 	 * @return The edited join column or <code>null</code>
 	 */
-	public BaseJoinColumn getJoinColumn() {
+	public ReadOnlyBaseJoinColumn getJoinColumn() {
 		return this.joinColumn;
 	}
 
@@ -257,7 +256,7 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	protected void initialize(Object o, BaseJoinColumn jc) {
+	protected void initialize(Object o, ReadOnlyBaseJoinColumn jc) {
 
 		this.owner      = o;
 		this.joinColumn = jc;
@@ -340,24 +339,18 @@ public abstract class BaseJoinColumnStateObject extends AbstractNode
 	}
 
 	public void setTable(String table) {
+		ArrayList<String> oldNames = CollectionTools.list(this.names());
+		ArrayList<String> oldRefColNames = CollectionTools.list(this.referenceColumnNames());
 		String oldTable = this.table;
 		this.table = table;
-		firePropertyChanged(TABLE_PROPERTY, oldTable, table);
-		tableChanged();
+		this.firePropertyChanged(TABLE_PROPERTY, oldTable, table);
+		this.synchronizeList(this.names(), oldNames, NAMES_LIST);
+		this.synchronizeList(this.referenceColumnNames(), oldRefColNames, REFERENCE_COLUMN_NAMES_LIST);
 	}
 
 	@Override
 	public final void setValidator(Validator validator) {
 		this.validator = validator;
-	}
-
-	/**
-	 * The table from which the column names are used has changed, notifies the
-	 * listeners the list of names and reference column names should be updated.
-	 */
-	protected void tableChanged() {
-		fireListChanged(NAMES_LIST, CollectionTools.list(this.names()));
-		fireListChanged(REFERENCE_COLUMN_NAMES_LIST, CollectionTools.list(this.referenceColumnNames()));
 	}
 
 	/**

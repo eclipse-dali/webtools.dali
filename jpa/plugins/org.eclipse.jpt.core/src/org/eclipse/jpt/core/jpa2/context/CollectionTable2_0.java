@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.jpa2.context;
 import org.eclipse.jpt.core.context.ReferenceTable;
 
 /**
- * Used by ElementCollection mappings.
- * 
+ * Used by element collection mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,6 +27,4 @@ public interface CollectionTable2_0
 	extends ReferenceTable
 {
 	ElementCollectionMapping2_0 getParent();
-
-
 }

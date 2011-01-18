@@ -13,23 +13,17 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 
 /**
- * javax.persistence.Table
+ * <code>javax.persistence.Table</code>
  */
 public final class NullTableAnnotation
-	extends NullBaseTableAnnotation
+	extends NullBaseTableAnnotation<TableAnnotation>
 	implements TableAnnotation
 {
 	protected NullTableAnnotation(JavaResourcePersistentType parent) {
 		super(parent);
 	}
 
-	@Override
-	protected TableAnnotation addAnnotation() {
-		return (TableAnnotation) super.addAnnotation();
-	}
-	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
 }

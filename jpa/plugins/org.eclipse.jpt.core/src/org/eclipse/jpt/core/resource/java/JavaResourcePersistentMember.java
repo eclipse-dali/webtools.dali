@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.utility.Filter;
 
 /**
  * Java source code or binary persistent member.
@@ -30,9 +31,12 @@ public interface JavaResourcePersistentMember
 	// ********** annotations **********
 	
 	/**
-	 * Sets the specified primary annotation as the first annotation, and removes all known 
-	 * annotations (i.e. does not remove non-persistence annotations) which are not included
-	 * in the supporting annotations.
+	 * Set the specified primary annotation as the first annotation and remove
+	 * all known persistence annotations (i.e. do not remove non-persistence
+	 * annotations) not included in the specified list of supporting annotations.
+	 * The specified primary annotation name can be <code>null</code> and, if
+	 * the list of supporting annotations is empty, <em>all</em> the persistence
+	 * annotations will be removed.
 	 */
 	Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames);
 
@@ -67,4 +71,13 @@ public interface JavaResourcePersistentMember
 	 */
 	void resolveTypes(CompilationUnit astRoot);
 
+
+	// ********** persistable member filter **********
+
+	Filter<JavaResourcePersistentMember> PERSISTABLE_MEMBER_FILTER =
+		new Filter<JavaResourcePersistentMember>() {
+			public boolean accept(JavaResourcePersistentMember member) {
+				return member.isPersistable();
+			}
+		};
 }

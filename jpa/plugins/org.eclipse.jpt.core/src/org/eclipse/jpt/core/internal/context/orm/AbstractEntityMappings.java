@@ -3,19 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
-
+import java.util.Vector;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
@@ -26,7 +24,8 @@ import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.orm.OrmIdClassReference;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmQueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
@@ -35,7 +34,7 @@ import org.eclipse.jpt.core.context.orm.OrmTableGenerator;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXml;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -49,14 +48,14 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -72,27 +71,30 @@ public abstract class AbstractEntityMappings
 	implements EntityMappings
 {
 	protected final XmlEntityMappings xmlEntityMappings;
-	
+
 	protected String description;
 
-	protected String package_;
+	protected String package_;  // "package" is a Java keyword
 
 	protected AccessType specifiedAccess;
 	protected AccessType defaultAccess;
-		
+
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
 
 	protected String specifiedSchema;
 	protected String defaultSchema;
 
-	protected final PersistenceUnitMetadata persistenceUnitMetadata;
+	protected final OrmPersistenceUnitMetadata persistenceUnitMetadata;
 
-	protected final List<OrmPersistentType> persistentTypes;
+	protected final Vector<OrmPersistentType> persistentTypes = new Vector<OrmPersistentType>();
+	protected final PersistentTypeContainerAdapter persistentTypeContainerAdapter = new PersistentTypeContainerAdapter();
 
-	protected final List<OrmSequenceGenerator> sequenceGenerators;
-	
-	protected final List<OrmTableGenerator> tableGenerators;
+	protected final Vector<OrmSequenceGenerator> sequenceGenerators = new Vector<OrmSequenceGenerator>();
+	protected final SequenceGeneratorContainerAdapter sequenceGeneratorContainerAdapter = new SequenceGeneratorContainerAdapter();
+
+	protected final Vector<OrmTableGenerator> tableGenerators = new Vector<OrmTableGenerator>();
+	protected final TableGeneratorContainerAdapter tableGeneratorContainerAdapter = new TableGeneratorContainerAdapter();
 
 	protected final OrmQueryContainer queryContainer;
 
@@ -100,39 +102,66 @@ public abstract class AbstractEntityMappings
 	protected AbstractEntityMappings(OrmXml parent, XmlEntityMappings xmlEntityMappings) {
 		super(parent);
 		this.xmlEntityMappings = xmlEntityMappings;
-		this.persistentTypes = new ArrayList<OrmPersistentType>();
-		this.sequenceGenerators = new ArrayList<OrmSequenceGenerator>();
-		this.tableGenerators = new ArrayList<OrmTableGenerator>();
-		this.queryContainer = this.getXmlContextNodeFactory().buildOrmQueryContainer(this, xmlEntityMappings);
 
-		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
 		this.description = this.xmlEntityMappings.getDescription();
 		this.package_ = this.xmlEntityMappings.getPackage();
 
-		this.defaultAccess = this.getPersistenceUnit().getDefaultAccess();
-		this.specifiedAccess = this.getResourceAccess();
-
-		this.defaultCatalog = this.getPersistenceUnit().getDefaultCatalog();
+		this.specifiedAccess = this.buildSpecifiedAccess();
 		this.specifiedCatalog = this.xmlEntityMappings.getCatalog();
-
-		this.defaultSchema = this.getPersistenceUnit().getDefaultSchema();
 		this.specifiedSchema = this.xmlEntityMappings.getSchema();
 
+		this.persistenceUnitMetadata = this.buildPersistenceUnitMetadata();
+
 		this.initializePersistentTypes();
-		this.initializeTableGenerators();
 		this.initializeSequenceGenerators();
+		this.initializeTableGenerators();
+
+		this.queryContainer = this.buildQueryContainer();
 	}
-	
-	protected PersistenceUnitMetadata buildPersistenceUnitMetadata() {
-		return this.getXmlContextNodeFactory().buildPersistenceUnitMetadata(this);
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+
+		this.setDescription_(this.xmlEntityMappings.getDescription());
+		this.setPackage_(this.xmlEntityMappings.getPackage());
+
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+		this.setSpecifiedCatalog_(this.xmlEntityMappings.getCatalog());
+		this.setSpecifiedSchema_(this.xmlEntityMappings.getSchema());
+
+		this.persistenceUnitMetadata.synchronizeWithResourceModel();
+
+		this.syncPersistentTypes();
+		this.syncSequenceGenerators();
+		this.syncTableGenerators();
+
+		this.queryContainer.synchronizeWithResourceModel();
 	}
-	
-	protected OrmPersistentType buildPersistentType(XmlTypeMapping resourceMapping) {
-		return this.getXmlContextNodeFactory().buildOrmPersistentType(this, resourceMapping);
-	}	
-	
-	// **************** JpaNode impl *******************************************
-	
+
+	@Override
+	public void update() {
+		super.update();
+
+		this.setDefaultAccess(this.buildDefaultAccess());
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setDefaultSchema(this.buildDefaultSchema());
+
+		this.persistenceUnitMetadata.update();
+
+		this.updateNodes(this.getPersistentTypes());
+		this.updateNodes(this.getSequenceGenerators());
+		this.updateNodes(this.getTableGenerators());
+
+		this.queryContainer.update();
+	}
+
+
+	// ********** overrides **********
+
 	@Override
 	public OrmXml getParent() {
 		return (OrmXml) super.getParent();
@@ -141,151 +170,143 @@ public abstract class AbstractEntityMappings
 	protected OrmXml getOrmXml() {
 		return this.getParent();
 	}
-	
-	
-	// **************** JpaContextNode impl ************************************
-	
+
 	@Override
 	public MappingFileRoot getMappingFileRoot() {
 		return this;
 	}
-	
-	
-	// **************** JpaStructureNode impl **********************************
-	
+
+
+	// ********** JpaStructureNode implementation **********
+
 	public String getId() {
 		return OrmStructureNodes.ENTITY_MAPPINGS_ID;
 	}
-	
-	
+
+	public JpaStructureNode getStructureNode(int textOffset) {
+		for (OrmPersistentType persistentType: this.getPersistentTypes()) {
+			if (persistentType.contains(textOffset)) {
+				return persistentType.getStructureNode(textOffset);
+			}
+		}
+		return this;
+	}
+
+	public TextRange getSelectionTextRange() {
+		return this.xmlEntityMappings.getSelectionTextRange();
+	}
+
+	public void dispose() {
+		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
+			ormPersistentType.dispose();
+		}
+	}
+
+
 	// ********** PersistentType.Owner implementation **********
 
 	public AccessType getOverridePersistentTypeAccess() {
-		return this.isXmlMappingMetadataComplete() ? this.getSpecifiedAccess() : null;
+		return this.isXmlMappingMetadataComplete() ? this.specifiedAccess : null;
 	}
 
 	public AccessType getDefaultPersistentTypeAccess() {
-		return getAccess();
+		return this.getAccess();
 	}
-	
+
 	public String getDefaultPersistentTypePackage() {
-		return getPackage();
+		return this.getPackage();
 	}
-	
+
 	protected boolean isXmlMappingMetadataComplete() {
-		return this.persistenceUnitMetadata.isXmlMappingMetadataComplete();
-	}
-	
-	public boolean isDefaultPersistentTypeMetadataComplete() {
-		return this.isXmlMappingMetadataComplete();
-	}
-	
-	
-	// **************** EntityMappings impl ************************************
-	
-	public XmlEntityMappings getXmlEntityMappings() {
-		return this.xmlEntityMappings;
-	}
-	
-	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
-		AccessType savedAccess = ormPersistentType.getSpecifiedAccess();
-		ormPersistentType.dispose();
-		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
-		this.persistentTypes.remove(sourceIndex);
-		oldMapping.removeFromResourceModel(this.xmlEntityMappings);
-		int targetIndex = insertionIndex(ormPersistentType);
-		this.persistentTypes.add(targetIndex, ormPersistentType);
-		newMapping.addToResourceModel(this.xmlEntityMappings);
-		
-		newMapping.initializeFrom(oldMapping);
-		//not sure where else to put this, need to set the access on the resource model
-		ormPersistentType.setSpecifiedAccess(savedAccess);
-		fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
-	}
-	
-	public OrmPersistentType getPersistentType(String fullyQualifiedTypeName) {
-		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
-			if (ormPersistentType.isFor(fullyQualifiedTypeName)) {
-				return ormPersistentType;
-			}
-		}
-		return null;
+		return this.getPersistenceUnit().isXmlMappingMetadataComplete();
 	}
 
-	public boolean containsPersistentType(String fullyQualifiedTypeName) {
-		return getPersistentType(fullyQualifiedTypeName) != null;
-	}
 
-	public PersistentType resolvePersistentType(String className) {
-		if (className == null) {
-			return null;
-		}
+	// ********** persistence unit metadata **********
 
-		//static inner class listed in orm.xml will use '$', replace with '.'
-		className = className.replace('$', '.');
-
-		// first try to resolve using only the locally specified name...
-		PersistentType persistentType = getPersistenceUnit().getPersistentType(className);
-		if (persistentType != null) {
-			return persistentType;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		if (getPackage() == null) {
-			return null;
-		}
-		return getPersistenceUnit().getPersistentType(getPackage() + '.' + className);
-	}
-
-	public JavaResourcePersistentType resolveJavaResourcePersistentType(String className) {
-		if (className == null) {
-			return null;
-		}
-
-		//static inner class listed in orm.xml will use '$', replace with '.'
-		className = className.replace('$', '.');
-
-		// first try to resolve using only the locally specified name...
-		JavaResourcePersistentType jrpt = getJpaProject().getJavaResourcePersistentType(className);
-		if (jrpt != null) {
-			return jrpt;
-		}
-
-		// ...then try to resolve by prepending the global package name
-		if (getPackage() == null) {
-			return null;
-		}
-		return getJpaProject().getJavaResourcePersistentType(getPackage() + '.' +  className);
-	}
-
-	public PersistenceUnitMetadata getPersistenceUnitMetadata() {
+	public OrmPersistenceUnitMetadata getPersistenceUnitMetadata() {
 		return this.persistenceUnitMetadata;
 	}
 
-	public String getPackage() {
-		return this.package_;
+	protected OrmPersistenceUnitMetadata buildPersistenceUnitMetadata() {
+		return this.getContextNodeFactory().buildOrmPersistenceUnitMetadata(this);
 	}
-	
-	public void setPackage(String newPackage) {
-		String oldPackage = this.package_;
-		this.package_ = newPackage;
-		this.xmlEntityMappings.setPackage(newPackage);
-		firePropertyChanged(PACKAGE_PROPERTY, oldPackage, newPackage);
+
+
+	// ********** misc **********
+
+	public XmlEntityMappings getXmlEntityMappings() {
+		return this.xmlEntityMappings;
 	}
 
 	public String getVersion() {
 		return this.xmlEntityMappings.getVersion();
 	}
 
+	public void changeMapping(OrmPersistentType ormPersistentType, OrmTypeMapping oldMapping, OrmTypeMapping newMapping) {
+		AccessType savedAccess = ormPersistentType.getSpecifiedAccess();
+		int sourceIndex = this.persistentTypes.indexOf(ormPersistentType);
+		this.persistentTypes.remove(sourceIndex);
+		oldMapping.removeXmlTypeMappingFrom(this.xmlEntityMappings);
+		int targetIndex = this.calculateInsertionIndex(ormPersistentType);
+		this.persistentTypes.add(targetIndex, ormPersistentType);
+		newMapping.addXmlTypeMappingTo(this.xmlEntityMappings);
+
+		newMapping.initializeFrom(oldMapping);
+		//not sure where else to put this, need to set the access on the resource model
+		ormPersistentType.setSpecifiedAccess(savedAccess);
+		this.fireItemMoved(PERSISTENT_TYPES_LIST, targetIndex, sourceIndex);
+	}
+
+	public TextRange getValidationTextRange() {
+		return null;
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
+	}
+
+
+	// ********** description **********
+
 	public String getDescription() {
 		return this.description;
 	}
 
-	public void setDescription(String newDescription) {
-		String oldDescription = this.description;
-		this.description = newDescription;
-		this.xmlEntityMappings.setDescription(newDescription);
-		firePropertyChanged(DESCRIPTION_PROPERTY, oldDescription, newDescription);
+	public void setDescription(String description) {
+		this.setDescription_(description);
+		this.xmlEntityMappings.setDescription(description);
+	}
+
+	protected void setDescription_(String description) {
+		String old = this.description;
+		this.description = description;
+		this.firePropertyChanged(DESCRIPTION_PROPERTY, old, description);
+	}
+
+
+	// ********** package **********
+
+	public String getPackage() {
+		return this.package_;
+	}
+
+	public void setPackage(String package_) {
+		this.setPackage_(package_);
+		this.xmlEntityMappings.setPackage(package_);
+	}
+
+	/**
+	 * TODO If the package changes, we should probably clear out all resolved
+	 * references to persistent types:<ul>
+	 * <li>{@link OrmIdClassReference#getIdClass()}
+	 * <li>{@link OrmPersistentType#getJavaPersistentType()}
+	 * </ul>
+	 */
+	protected void setPackage_(String package_) {
+		String old = this.package_;
+		this.package_ = package_;
+		this.firePropertyChanged(PACKAGE_PROPERTY, old, package_);
 	}
 
 
@@ -300,10 +321,18 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void setSpecifiedAccess(AccessType access) {
+		this.setSpecifiedAccess_(access);
+		this.xmlEntityMappings.setAccess(AccessType.toOrmResourceModel(access));
+	}
+
+	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
 		this.specifiedAccess = access;
-		this.xmlEntityMappings.setAccess(AccessType.toOrmResourceModel(access));
 		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+	}
+
+	protected AccessType buildSpecifiedAccess() {
+		return AccessType.fromOrmResourceModel(this.xmlEntityMappings.getAccess());
 	}
 
 	public AccessType getDefaultAccess() {
@@ -314,6 +343,55 @@ public abstract class AbstractEntityMappings
 		AccessType old = this.defaultAccess;
 		this.defaultAccess = access;
 		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+	}
+
+	protected AccessType buildDefaultAccess() {
+		return this.getPersistenceUnit().getDefaultAccess();
+	}
+
+
+	// ********** catalog **********
+
+	public String getCatalog() {
+		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
+	}
+
+	public String getSpecifiedCatalog() {
+		return this.specifiedCatalog;
+	}
+
+	public void setSpecifiedCatalog(String catalog) {
+		this.setSpecifiedCatalog_(catalog);
+		this.xmlEntityMappings.setCatalog(catalog);
+	}
+
+	protected void setSpecifiedCatalog_(String catalog) {
+		String old = this.specifiedCatalog;
+		this.specifiedCatalog = catalog;
+		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+	}
+
+	public String getDefaultCatalog() {
+		return this.defaultCatalog;
+	}
+
+	protected void setDefaultCatalog(String catalog) {
+		String old = this.defaultCatalog;
+		this.defaultCatalog = catalog;
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+	}
+
+	protected String buildDefaultCatalog() {
+		return this.getPersistenceUnit().getDefaultCatalog();
+	}
+
+	/**
+	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
+	 * catalog), then the database probably does not support catalogs.
+	 */
+	public Catalog getDbCatalog() {
+		String catalog = this.getCatalog();
+		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
 	}
 
 
@@ -328,9 +406,13 @@ public abstract class AbstractEntityMappings
 	}
 
 	public void setSpecifiedSchema(String schema) {
+		this.setSpecifiedSchema_(schema);
+		this.xmlEntityMappings.setSchema(schema);
+	}
+
+	protected void setSpecifiedSchema_(String schema) {
 		String old = this.specifiedSchema;
 		this.specifiedSchema = schema;
-		this.xmlEntityMappings.setSchema(schema);
 		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
 	}
 
@@ -344,46 +426,13 @@ public abstract class AbstractEntityMappings
 		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
 
+	protected String buildDefaultSchema() {
+		return this.getPersistenceUnit().getDefaultSchema();
+	}
+
 	public Schema getDbSchema() {
 		SchemaContainer dbSchemaContainer = this.getDbSchemaContainer();
 		return (dbSchemaContainer == null) ? null : dbSchemaContainer.getSchemaForIdentifier(this.getSchema());
-	}
-
-
-	// ********** catalog **********
-
-	public String getCatalog() {
-		return (this.specifiedCatalog != null) ? this.specifiedCatalog : this.defaultCatalog;
-	}
-	
-	public String getSpecifiedCatalog() {
-		return this.specifiedCatalog;
-	}
-
-	public void setSpecifiedCatalog(String catalog) {
-		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.xmlEntityMappings.setCatalog(catalog);
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
-	}
-
-	public String getDefaultCatalog() {
-		return this.defaultCatalog;
-	}
-
-	protected void setDefaultCatalog(String catalog) {
-		String old = this.defaultCatalog;
-		this.defaultCatalog = catalog;
-		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
-	}
-
-	/**
-	 * If we don't have a catalog (i.e. we don't even have a <em>default</em>
-	 * catalog), then the database probably does not support catalogs.
-	 */
-	public Catalog getDbCatalog() {
-		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.getDbCatalog(catalog);
 	}
 
 
@@ -396,43 +445,117 @@ public abstract class AbstractEntityMappings
 	 */
 	public SchemaContainer getDbSchemaContainer() {
 		String catalog = this.getCatalog();
-		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
 	}
 
 
-	// ********** ORM persistent types **********
+	// ********** persistent types **********
 
-	public ListIterator<OrmPersistentType> persistentTypes() {
-		return new CloneListIterator<OrmPersistentType>(this.persistentTypes);
-	}
-	
 	public ListIterable<OrmPersistentType> getPersistentTypes() {
 		return new LiveCloneListIterable<OrmPersistentType>(this.persistentTypes);
 	}
-	
+
 	public int getPersistentTypesSize() {
 		return this.persistentTypes.size();
 	}
-	
-	public OrmPersistentType addPersistentType(String mappingKey, String className) {
-		OrmTypeMappingDefinition mappingDefinition = 
-				getMappingFileDefinition().getOrmTypeMappingDefinition(mappingKey);
-		XmlTypeMapping typeMapping = 
-				mappingDefinition.buildResourceMapping(getResourceNodeFactory());
-		OrmPersistentType persistentType = buildPersistentType(typeMapping);
-		int index = insertionIndex(persistentType);
-		this.persistentTypes.add(index, persistentType);
-		if (className.startsWith(getPackage() + '.')) {
-			// adds short name if package name is specified
-			className = className.substring(getPackage().length() + 1);
+
+	public OrmPersistentType getPersistentType(String className) {
+		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
+			if (ormPersistentType.isFor(className)) {
+				return ormPersistentType;
+			}
 		}
-		persistentType.getMapping().addToResourceModel(this.xmlEntityMappings);
-		typeMapping.setClassName(className);
-		fireItemAdded(PERSISTENT_TYPES_LIST, index, persistentType);
+		return null;
+	}
+
+	public boolean containsPersistentType(String className) {
+		return this.getPersistentType(className) != null;
+	}
+
+	public PersistentType resolvePersistentType(String className) {
+		return (PersistentType) this.resolvePersistentType(PERSISTENT_TYPE_LOOKUP_ADAPTER, className);
+	}
+
+	public JavaResourcePersistentType resolveJavaResourcePersistentType(String className) {
+		return (JavaResourcePersistentType) this.resolvePersistentType(RESOURCE_PERSISTENT_TYPE_LOOKUP_ADAPTER, className);
+	}
+
+	protected Object resolvePersistentType(PersistentTypeLookupAdapter adapter, String className) {
+		if (className == null) {
+			return null;
+		}
+
+		// static inner class listed in orm.xml will use '$', replace with '.'
+		className = className.replace('$', '.');
+
+		// first try to resolve using only the locally specified name...
+		Object persistentType = adapter.resolvePersistentType(this, className);
+		if (persistentType != null) {
+			return persistentType;
+		}
+
+		// ...then try to resolve by prepending the global package name
+		if (this.getPackage() == null) {
+			return null;
+		}
+		return adapter.resolvePersistentType(this, this.getPackage() + '.' + className);
+	}
+
+	protected interface PersistentTypeLookupAdapter {
+		Object resolvePersistentType(EntityMappings entityMappings, String className);
+	}
+
+	protected static final PersistentTypeLookupAdapter PERSISTENT_TYPE_LOOKUP_ADAPTER =
+		new PersistentTypeLookupAdapter() {
+			public Object resolvePersistentType(EntityMappings entityMappings, String className) {
+				return entityMappings.getPersistenceUnit().getPersistentType(className);
+			}
+		};
+
+	protected static final PersistentTypeLookupAdapter RESOURCE_PERSISTENT_TYPE_LOOKUP_ADAPTER =
+		new PersistentTypeLookupAdapter() {
+			public Object resolvePersistentType(EntityMappings entityMappings, String className) {
+				return entityMappings.getJpaProject().getJavaResourcePersistentType(className);
+			}
+		};
+
+	/**
+	 * We have to calculate the new persistent type's index.
+	 * We will use the type's short name if the entity mappings's
+	 * package is the same as the type's package.
+	 */
+	public OrmPersistentType addPersistentType(String mappingKey, String className) {
+		OrmTypeMappingDefinition md = this.getMappingFileDefinition().getTypeMappingDefinition(mappingKey);
+		XmlTypeMapping xmlTypeMapping = md.buildResourceMapping(this.getResourceNodeFactory());
+		OrmPersistentType persistentType = this.buildPersistentType(xmlTypeMapping);
+		int index = this.calculateInsertionIndex(persistentType);
+		this.addItemToList(index, persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+
+		persistentType.getMapping().addXmlTypeMappingTo(this.xmlEntityMappings);
+
+		// adds short name if package name is relevant
+		className = this.normalizeClassName(className);
+		persistentType.getMapping().setClass(className);
+
 		return persistentType;
 	}
 
-	protected int insertionIndex(OrmPersistentType ormPersistentType) {
+	/**
+	 * Shorten the specified class name if it is in the entity mappings's package.
+	 */
+	protected String normalizeClassName(String className) {
+		return ((this.package_ != null) &&
+				className.startsWith(this.package_) &&
+				(className.charAt(this.package_.length()) == '.')) ?
+						className.substring(this.package_.length() + 1) :
+						className;
+	}
+
+	protected OrmPersistentType buildPersistentType(XmlTypeMapping xmlTypeMapping) {
+		return this.getContextNodeFactory().buildOrmPersistentType(this, xmlTypeMapping);
+	}
+
+	protected int calculateInsertionIndex(OrmPersistentType ormPersistentType) {
 		return CollectionTools.insertionIndexOf(this.persistentTypes, ormPersistentType, MAPPING_COMPARATOR);
 	}
 
@@ -452,24 +575,74 @@ public abstract class AbstractEntityMappings
 		};
 
 	public void removePersistentType(int index) {
-		OrmPersistentType persistentType = this.persistentTypes.get(index);
-		persistentType.dispose();
-		this.persistentTypes.remove(index);
-		persistentType.getMapping().removeFromResourceModel(this.xmlEntityMappings);
-		fireItemRemoved(PERSISTENT_TYPES_LIST, index, persistentType);		
+		OrmPersistentType persistentType = this.removePersistentType_(index);
+		persistentType.getMapping().removeXmlTypeMappingFrom(this.xmlEntityMappings);
 	}
-	
+
+	/**
+	 * dispose and return the persistent type
+	 */
+	protected OrmPersistentType removePersistentType_(int index) {
+		OrmPersistentType persistentType = this.removeItemFromList(index, this.persistentTypes, PERSISTENT_TYPES_LIST);
+		persistentType.dispose();
+		return persistentType;
+	}
+
 	public void removePersistentType(OrmPersistentType persistentType) {
-		removePersistentType(this.persistentTypes.indexOf(persistentType));	
+		this.removePersistentType(this.persistentTypes.indexOf(persistentType));
 	}
-	
-	protected void removePersistentType_(OrmPersistentType persistentType) {
-		persistentType.dispose();
-		removeItemFromList(persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+
+	protected void initializePersistentTypes() {
+		for (XmlTypeMapping xmlTypeMapping : this.getXmlTypeMappings()) {
+			this.persistentTypes.add(this.buildPersistentType(xmlTypeMapping));
+		}
 	}
-	
+
+	protected void syncPersistentTypes() {
+		ContextContainerTools.synchronizeWithResourceModel(this.persistentTypeContainerAdapter);
+	}
+
+	protected Iterable<XmlTypeMapping> getXmlTypeMappings() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneIterable<XmlTypeMapping>(this.xmlEntityMappings.getTypeMappings());
+	}
+
 	protected void movePersistentType_(int index, OrmPersistentType persistentType) {
-		moveItemInList(index, this.persistentTypes.indexOf(persistentType), this.persistentTypes, PERSISTENT_TYPES_LIST);
+		this.moveItemInList(index, persistentType, this.persistentTypes, PERSISTENT_TYPES_LIST);
+	}
+
+	protected void addPersistentType_(int index, XmlTypeMapping xmlTypeMapping) {
+		this.addItemToList(index, this.buildPersistentType(xmlTypeMapping), this.persistentTypes, PERSISTENT_TYPES_LIST);
+	}
+
+	protected void removePersistentType_(OrmPersistentType persistentType) {
+		this.removePersistentType_(this.persistentTypes.indexOf(persistentType));
+	}
+
+	/**
+	 * persistent type container adapter
+	 */
+	protected class PersistentTypeContainerAdapter
+		implements ContextContainerTools.Adapter<OrmPersistentType, XmlTypeMapping>
+	{
+		public Iterable<OrmPersistentType> getContextElements() {
+			return AbstractEntityMappings.this.getPersistentTypes();
+		}
+		public Iterable<XmlTypeMapping> getResourceElements() {
+			return AbstractEntityMappings.this.getXmlTypeMappings();
+		}
+		public XmlTypeMapping getResourceElement(OrmPersistentType contextElement) {
+			return contextElement.getMapping().getXmlTypeMapping();
+		}
+		public void moveContextElement(int index, OrmPersistentType element) {
+			AbstractEntityMappings.this.movePersistentType_(index, element);
+		}
+		public void addContextElement(int index, XmlTypeMapping resourceElement) {
+			AbstractEntityMappings.this.addPersistentType_(index, resourceElement);
+		}
+		public void removeContextElement(OrmPersistentType element) {
+			AbstractEntityMappings.this.removePersistentType_(element);
+		}
 	}
 
 
@@ -478,51 +651,103 @@ public abstract class AbstractEntityMappings
 	public ListIterable<OrmSequenceGenerator> getSequenceGenerators() {
 		return new LiveCloneListIterable<OrmSequenceGenerator>(this.sequenceGenerators);
 	}
-	
+
 	public int getSequenceGeneratorsSize() {
 		return this.sequenceGenerators.size();
 	}
-	
+
+	public OrmSequenceGenerator addSequenceGenerator() {
+		return this.addSequenceGenerator(this.sequenceGenerators.size());
+	}
+
 	public OrmSequenceGenerator addSequenceGenerator(int index) {
-		XmlSequenceGenerator resourceSequenceGenerator = this.buildResourceSequenceGenerator();
-		OrmSequenceGenerator contextSequenceGenerator =  this.buildSequenceGenerator(resourceSequenceGenerator);
-		this.sequenceGenerators.add(index, contextSequenceGenerator);
-		this.xmlEntityMappings.getSequenceGenerators().add(index, resourceSequenceGenerator);
-		fireItemAdded(SEQUENCE_GENERATORS_LIST, index, contextSequenceGenerator);
-		return contextSequenceGenerator;
+		XmlSequenceGenerator xmlGenerator = this.buildXmlSequenceGenerator();
+		OrmSequenceGenerator sequenceGenerator = this.addSequenceGenerator_(index, xmlGenerator);
+		this.xmlEntityMappings.getSequenceGenerators().add(index, xmlGenerator);
+		return sequenceGenerator;
 	}
 
-	protected void addSequenceGenerator(int index, OrmSequenceGenerator sequenceGenerator) {
-		addItemToList(index, sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
+	protected XmlSequenceGenerator buildXmlSequenceGenerator() {
+		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
 	}
 
-	protected void addSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
-		this.addSequenceGenerator(this.sequenceGenerators.size(), sequenceGenerator);
+	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator xmlSequenceGenerator) {
+		return this.getContextNodeFactory().buildOrmSequenceGenerator(this, xmlSequenceGenerator);
 	}
 
 	public void removeSequenceGenerator(OrmSequenceGenerator sequenceGenerator) {
-		removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
+		this.removeSequenceGenerator(this.sequenceGenerators.indexOf(sequenceGenerator));
 	}
-	
+
 	public void removeSequenceGenerator(int index) {
-		OrmSequenceGenerator removedSequenceGenerator = this.sequenceGenerators.remove(index);
-		fireItemRemoved(SEQUENCE_GENERATORS_LIST, index, removedSequenceGenerator);
+		this.removeSequenceGenerator_(index);
 		this.xmlEntityMappings.getSequenceGenerators().remove(index);
 	}
-	
-	protected void removeSequenceGenerator_(OrmSequenceGenerator sequenceGenerator) {
-		removeItemFromList(sequenceGenerator, this.sequenceGenerators, EntityMappings.SEQUENCE_GENERATORS_LIST);
+
+	protected void removeSequenceGenerator_(int index) {
+		this.removeItemFromList(index, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
 	}
 
 	public void moveSequenceGenerator(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.sequenceGenerators, targetIndex, sourceIndex);
+		this.moveItemInList(targetIndex, sourceIndex, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
 		this.xmlEntityMappings.getSequenceGenerators().move(targetIndex, sourceIndex);
-		fireItemMoved(EntityMappings.SEQUENCE_GENERATORS_LIST, targetIndex, sourceIndex);	
 	}
-	
-	protected XmlSequenceGenerator buildResourceSequenceGenerator() {
-		return OrmFactory.eINSTANCE.createXmlSequenceGenerator();
+
+	protected void initializeSequenceGenerators() {
+		for (XmlSequenceGenerator sequenceGenerator : this.getXmlSequenceGenerators()) {
+			this.sequenceGenerators.add(this.buildSequenceGenerator(sequenceGenerator));
+		}
 	}
+
+	protected void syncSequenceGenerators() {
+		ContextContainerTools.synchronizeWithResourceModel(this.sequenceGeneratorContainerAdapter);
+	}
+
+	protected Iterable<XmlSequenceGenerator> getXmlSequenceGenerators() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneIterable<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());
+	}
+
+	protected void moveSequenceGenerator_(int index, OrmSequenceGenerator sequenceGenerator) {
+		this.moveItemInList(index, sequenceGenerator, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
+	}
+
+	protected OrmSequenceGenerator addSequenceGenerator_(int index, XmlSequenceGenerator xmlSequenceGenerator) {
+		OrmSequenceGenerator sequenceGenerator = this.buildSequenceGenerator(xmlSequenceGenerator);
+		this.addItemToList(index, sequenceGenerator, this.sequenceGenerators, SEQUENCE_GENERATORS_LIST);
+		return sequenceGenerator;
+	}
+
+	protected void removeSequenceGenerator_(OrmSequenceGenerator sequenceGenerator) {
+		this.removeSequenceGenerator_(this.sequenceGenerators.indexOf(sequenceGenerator));
+	}
+
+	/**
+	 * sequence generator container adapter
+	 */
+	protected class SequenceGeneratorContainerAdapter
+		implements ContextContainerTools.Adapter<OrmSequenceGenerator, XmlSequenceGenerator>
+	{
+		public Iterable<OrmSequenceGenerator> getContextElements() {
+			return AbstractEntityMappings.this.getSequenceGenerators();
+		}
+		public Iterable<XmlSequenceGenerator> getResourceElements() {
+			return AbstractEntityMappings.this.getXmlSequenceGenerators();
+		}
+		public XmlSequenceGenerator getResourceElement(OrmSequenceGenerator contextElement) {
+			return contextElement.getXmlGenerator();
+		}
+		public void moveContextElement(int index, OrmSequenceGenerator element) {
+			AbstractEntityMappings.this.moveSequenceGenerator_(index, element);
+		}
+		public void addContextElement(int index, XmlSequenceGenerator resourceElement) {
+			AbstractEntityMappings.this.addSequenceGenerator_(index, resourceElement);
+		}
+		public void removeContextElement(OrmSequenceGenerator element) {
+			AbstractEntityMappings.this.removeSequenceGenerator_(element);
+		}
+	}
+
 
 	// ********** table generators **********
 
@@ -533,226 +758,113 @@ public abstract class AbstractEntityMappings
 	public int getTableGeneratorsSize() {
 		return this.tableGenerators.size();
 	}
-	
+
+	public OrmTableGenerator addTableGenerator() {
+		return this.addTableGenerator(this.tableGenerators.size());
+	}
+
 	public OrmTableGenerator addTableGenerator(int index) {
-		XmlTableGenerator resourceTableGenerator = buildResourceTableGenerator();
-		OrmTableGenerator contextTableGenerator = buildTableGenerator(resourceTableGenerator);
-		this.tableGenerators.add(index, contextTableGenerator);
-		this.xmlEntityMappings.getTableGenerators().add(index, resourceTableGenerator);
-		fireItemAdded(TABLE_GENERATORS_LIST, index, contextTableGenerator);
-		return contextTableGenerator;
-	}
-	
-	protected void addTableGenerator(int index, OrmTableGenerator tableGenerator) {
-		addItemToList(index, tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
+		XmlTableGenerator xmlTableGenerator = this.buildXmlTableGenerator();
+		OrmTableGenerator tableGenerator = this.addTableGenerator_(index, xmlTableGenerator);
+		this.xmlEntityMappings.getTableGenerators().add(index, xmlTableGenerator);
+		return tableGenerator;
 	}
 
-	protected void addTableGenerator(OrmTableGenerator tableGenerator) {
-		this.addTableGenerator(this.tableGenerators.size(), tableGenerator);
-	}
-
-	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
-		removeTableGenerator(this.tableGenerators.indexOf(tableGenerator));
-	}
-
-	public void removeTableGenerator(int index) {
-		OrmTableGenerator removedTableGenerator = this.tableGenerators.remove(index);
-		this.xmlEntityMappings.getTableGenerators().remove(index);
-		fireItemRemoved(TABLE_GENERATORS_LIST, index, removedTableGenerator);
-	}
-	
-	protected void removeTableGenerator_(OrmTableGenerator tableGenerator) {
-		removeItemFromList(tableGenerator, this.tableGenerators, EntityMappings.TABLE_GENERATORS_LIST);
-	}
-
-	public void moveTableGenerator(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.tableGenerators, targetIndex, sourceIndex);
-		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
-		fireItemMoved(EntityMappings.TABLE_GENERATORS_LIST, targetIndex, sourceIndex);	
-	}
-	
-	protected XmlTableGenerator buildResourceTableGenerator() {
+	protected XmlTableGenerator buildXmlTableGenerator() {
 		return OrmFactory.eINSTANCE.createXmlTableGenerator();
 	}
 
+	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator xmlTableGenerator) {
+		return this.getContextNodeFactory().buildOrmTableGenerator(this, xmlTableGenerator);
+	}
 
-	// ********** named queries **********
+	public void removeTableGenerator(OrmTableGenerator tableGenerator) {
+		this.removeTableGenerator(this.tableGenerators.indexOf(tableGenerator));
+	}
+
+	public void removeTableGenerator(int index) {
+		this.removeTableGenerator_(index);
+		this.xmlEntityMappings.getTableGenerators().remove(index);
+	}
+
+	protected void removeTableGenerator_(int index) {
+		this.removeItemFromList(index, this.tableGenerators, TABLE_GENERATORS_LIST);
+	}
+
+	public void moveTableGenerator(int targetIndex, int sourceIndex) {
+		this.moveItemInList(targetIndex, sourceIndex, this.tableGenerators, TABLE_GENERATORS_LIST);
+		this.xmlEntityMappings.getTableGenerators().move(targetIndex, sourceIndex);
+	}
+
+	protected void initializeTableGenerators() {
+		for (XmlTableGenerator tableGenerator : this.getXmlTableGenerators()) {
+			this.tableGenerators.add(this.buildTableGenerator(tableGenerator));
+		}
+	}
+
+	protected void syncTableGenerators() {
+		ContextContainerTools.synchronizeWithResourceModel(this.tableGeneratorContainerAdapter);
+	}
+
+	protected Iterable<XmlTableGenerator> getXmlTableGenerators() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneIterable<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
+	}
+
+	protected void moveTableGenerator_(int index, OrmTableGenerator tableGenerator) {
+		this.moveItemInList(index, tableGenerator, this.tableGenerators, TABLE_GENERATORS_LIST);
+	}
+
+	protected OrmTableGenerator addTableGenerator_(int index, XmlTableGenerator xmlTableGenerator) {
+		OrmTableGenerator tableGenerator = this.buildTableGenerator(xmlTableGenerator);
+		this.addItemToList(index, tableGenerator, this.tableGenerators, TABLE_GENERATORS_LIST);
+		return tableGenerator;
+	}
+
+	protected void removeTableGenerator_(OrmTableGenerator tableGenerator) {
+		this.removeTableGenerator_(this.tableGenerators.indexOf(tableGenerator));
+	}
+
+	/**
+	 * table generator container adapter
+	 */
+	protected class TableGeneratorContainerAdapter
+		implements ContextContainerTools.Adapter<OrmTableGenerator, XmlTableGenerator>
+	{
+		public Iterable<OrmTableGenerator> getContextElements() {
+			return AbstractEntityMappings.this.getTableGenerators();
+		}
+		public Iterable<XmlTableGenerator> getResourceElements() {
+			return AbstractEntityMappings.this.getXmlTableGenerators();
+		}
+		public XmlTableGenerator getResourceElement(OrmTableGenerator contextElement) {
+			return contextElement.getXmlGenerator();
+		}
+		public void moveContextElement(int index, OrmTableGenerator element) {
+			AbstractEntityMappings.this.moveTableGenerator_(index, element);
+		}
+		public void addContextElement(int index, XmlTableGenerator resourceElement) {
+			AbstractEntityMappings.this.addTableGenerator_(index, resourceElement);
+		}
+		public void removeContextElement(OrmTableGenerator element) {
+			AbstractEntityMappings.this.removeTableGenerator_(element);
+		}
+	}
+
+
+	// ********** query container **********
+
 	public OrmQueryContainer getQueryContainer() {
 		return this.queryContainer;
 	}
 
-
-	// ********** misc **********
-
-	public OrmPersistenceUnitDefaults getPersistenceUnitDefaults() {
-		return this.persistenceUnitMetadata.getPersistenceUnitDefaults();
+	protected OrmQueryContainer buildQueryContainer() {
+		return this.getContextNodeFactory().buildOrmQueryContainer(this, this.xmlEntityMappings);
 	}
 
 
-	// ********** initialization **********
-	
-	protected void initializePersistentTypes() {
-		for (XmlTypeMapping typeMapping : this.xmlEntityMappings.getTypeMappings()) {
-			addPersistentType(typeMapping);
-		}	
-	}
-	
-	protected void initializeTableGenerators() {
-		for (XmlTableGenerator tableGenerator : this.xmlEntityMappings.getTableGenerators()) {
-			this.tableGenerators.add(buildTableGenerator(tableGenerator));
-		}
-	}
-	
-	protected void initializeSequenceGenerators() {
-		for (XmlSequenceGenerator sequenceGenerator : this.xmlEntityMappings.getSequenceGenerators()) {
-			this.sequenceGenerators.add(buildSequenceGenerator(sequenceGenerator));
-		}
-	}
-
-	
-	// ********** update **********
-
-	public void update() {
-		this.setDescription(this.xmlEntityMappings.getDescription());
-		this.setPackage(this.xmlEntityMappings.getPackage());
-
-		this.setDefaultAccess(this.getPersistenceUnit().getDefaultAccess());
-		this.setSpecifiedAccess(this.getResourceAccess());
-
-		this.setDefaultCatalog(this.getPersistenceUnit().getDefaultCatalog());
-		this.setSpecifiedCatalog(this.xmlEntityMappings.getCatalog());
-
-		this.setDefaultSchema(this.getPersistenceUnit().getDefaultSchema());
-		this.setSpecifiedSchema(this.xmlEntityMappings.getSchema());
-
-		this.persistenceUnitMetadata.update();
-		this.updatePersistentTypes();
-		this.updateTableGenerators();
-		this.updateSequenceGenerators();
-		getQueryContainer().update();
-	}
-	
-	protected AccessType getResourceAccess() {
-		return AccessType.fromOrmResourceModel(this.xmlEntityMappings.getAccess());
-	}
-
-	protected void updatePersistentTypes() {
-		Collection<OrmPersistentType> contextTypesToRemove = CollectionTools.collection(persistentTypes());
-		Collection<OrmPersistentType> contextTypesToUpdate = new ArrayList<OrmPersistentType>();
-		int resourceIndex = 0;
-		
-		List<XmlTypeMapping> xmlTypeMappings = this.xmlEntityMappings.getTypeMappings();
-		for (XmlTypeMapping xmlTypeMapping : xmlTypeMappings.toArray(new XmlTypeMapping[xmlTypeMappings.size()])) {
-			boolean contextAttributeFound = false;
-			for (OrmPersistentType contextType : contextTypesToRemove) {
-				if (contextType.getMapping().getResourceTypeMapping() == xmlTypeMapping) {
-					movePersistentType_(resourceIndex, contextType);
-					contextTypesToRemove.remove(contextType);
-					contextTypesToUpdate.add(contextType);
-					contextAttributeFound = true;
-					break;
-				}
-			}
-			if (!contextAttributeFound) {
-				OrmPersistentType ormPersistentType = addPersistentType(xmlTypeMapping);
-				fireItemAdded(PERSISTENT_TYPES_LIST, getPersistentTypesSize(), ormPersistentType);
-			}
-			resourceIndex++;
-		}
-		for (OrmPersistentType contextType : contextTypesToRemove) {
-			removePersistentType_(contextType);
-		}
-		//first handle adding/removing of the persistent types, then update the others last, 
-		//this causes less churn in the update process
-		for (OrmPersistentType contextType : contextTypesToUpdate) {
-			contextType.update();
-		}	
-	}
-	
-	//not firing change notification so this can be reused in initialize and update
-	protected OrmPersistentType addPersistentType(XmlTypeMapping resourceMapping) {
-		OrmPersistentType ormPersistentType = buildPersistentType(resourceMapping);
-		this.persistentTypes.add(ormPersistentType);
-		return ormPersistentType;
-	}
-	
-	protected void updateTableGenerators() {
-		// make a copy of the XML generators (to prevent ConcurrentModificationException)
-		Iterator<XmlTableGenerator> xmlGenerators = new CloneIterator<XmlTableGenerator>(this.xmlEntityMappings.getTableGenerators());
-
-		for (OrmTableGenerator contextGenerator : this.getTableGenerators()) {
-			if (xmlGenerators.hasNext()) {
-				contextGenerator.update(xmlGenerators.next());
-			} else {
-				this.removeTableGenerator_(contextGenerator);
-			}
-		}
-		
-		while (xmlGenerators.hasNext()) {
-			addTableGenerator(buildTableGenerator(xmlGenerators.next()));
-		}
-	}
-
-	protected OrmTableGenerator buildTableGenerator(XmlTableGenerator resourceTableGenerator) {
-		return getXmlContextNodeFactory().buildOrmTableGenerator(this, resourceTableGenerator);
-	}
-
-	protected void updateSequenceGenerators() {
-		// make a copy of the XML sequence generators (to prevent ConcurrentModificationException)
-		Iterator<XmlSequenceGenerator> xmlSequenceGenerators = new CloneIterator<XmlSequenceGenerator>(this.xmlEntityMappings.getSequenceGenerators());//prevent ConcurrentModificiationException
-
-		for (OrmSequenceGenerator contextSequenceGenerator : this.getSequenceGenerators()) {
-			if (xmlSequenceGenerators.hasNext()) {
-				contextSequenceGenerator.update(xmlSequenceGenerators.next());
-			}
-			else {
-				removeSequenceGenerator_(contextSequenceGenerator);
-			}
-		}
-		
-		while (xmlSequenceGenerators.hasNext()) {
-			addSequenceGenerator(buildSequenceGenerator(xmlSequenceGenerators.next()));
-		}
-	}
-
-	protected OrmSequenceGenerator buildSequenceGenerator(XmlSequenceGenerator resourceSequenceGenerator) {
-		return getXmlContextNodeFactory().buildOrmSequenceGenerator(this, resourceSequenceGenerator);
-	}
-
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		for (PersistentType persistentType : this.getPersistentTypes()) {
-			persistentType.postUpdate();
-		}
-	}
-
-	// ********** text **********
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		for (OrmPersistentType persistentType: this.getPersistentTypes()) {
-			if (persistentType.contains(textOffset)) {
-				return persistentType.getStructureNode(textOffset);
-			}
-		}
-		return this;
-	}
-	
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlEntityMappings != null) && this.xmlEntityMappings.containsOffset(textOffset);
-	}
-	
-	public TextRange getSelectionTextRange() {
-		return this.xmlEntityMappings.getSelectionTextRange();
-	}
-	
-	public TextRange getValidationTextRange() {
-		return null;
-	}
-	
-	
 	// ********** validation **********
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -763,23 +875,31 @@ public abstract class AbstractEntityMappings
 			this.validatePersistentType(ormPersistentType, messages, reporter);
 		}
 	}
-	
+
 	protected void validateVersion(List<IMessage> messages) {
-		if (! latestDocumentVersion().equals(this.xmlEntityMappings.getVersion())) {
+		if (! this.getLatestDocumentVersion().equals(this.xmlEntityMappings.getVersion())) {
 			messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.LOW_SEVERITY,
-						JpaValidationMessages.XML_VERSION_NOT_LATEST,
-						this,
-						this.xmlEntityMappings.getVersionTextRange()));
+				DefaultJpaValidationMessages.buildMessage(
+					IMessage.LOW_SEVERITY,
+					JpaValidationMessages.XML_VERSION_NOT_LATEST,
+					this,
+					this.xmlEntityMappings.getVersionTextRange()
+				)
+			);
 		}
 	}
-	
+
 	/**
 	 * Return the latest version of the document supported by the platform
 	 */
-	protected abstract String latestDocumentVersion();
-	
+	protected String getLatestDocumentVersion() {
+		return this.getJpaPlatform().getMostRecentSupportedResourceType(this.getContentType()).getVersion();
+	}
+
+	protected IContentType getContentType() {
+		return JptCorePlugin.ORM_XML_CONTENT_TYPE;
+	}
+
 	protected void validateGenerators(List<IMessage> messages) {
 		for (OrmGenerator localGenerator : this.getGenerators()) {
 			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
@@ -797,7 +917,7 @@ public abstract class AbstractEntityMappings
 			}
 		}
 	}
-	
+
 	/**
 	 * Return all the generators, table and sequence.
 	 */
@@ -808,13 +928,13 @@ public abstract class AbstractEntityMappings
 						this.getSequenceGenerators()
 				);
 	}
-	
+
 
 	protected void validatePersistentType(OrmPersistentType persistentType, List<IMessage> messages, IReporter reporter) {
 		try {
 			persistentType.validate(messages, reporter);
 		} catch (Throwable exception) {
-			JptCorePlugin.log(exception);			
+			JptCorePlugin.log(exception);
 		}
 	}
 
@@ -823,7 +943,7 @@ public abstract class AbstractEntityMappings
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
 		return new CompositeIterable<DeleteEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<DeleteEdit>>(getPersistentTypes()) {
+			new TransformationIterable<OrmPersistentType, Iterable<DeleteEdit>>(this.getPersistentTypes()) {
 				@Override
 				protected Iterable<DeleteEdit> transform(OrmPersistentType persistentType) {
 					return persistentType.createDeleteTypeEdits(type);
@@ -834,7 +954,7 @@ public abstract class AbstractEntityMappings
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(final IType originalType, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
 					return persistentType.createRenameTypeEdits(originalType, newName);
@@ -845,7 +965,7 @@ public abstract class AbstractEntityMappings
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
 					return persistentType.createMoveTypeEdits(originalType, newPackage);
@@ -857,13 +977,13 @@ public abstract class AbstractEntityMappings
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			this.createPersistentTypeRenamePackageEdits(originalPackage, newName),
-			this.createRenamePackageEdit(originalPackage, newName));
+				this.createPersistentTypeRenamePackageEdits(originalPackage, newName),
+				this.createRenamePackageEdit(originalPackage, newName));
 	}
 
 	protected Iterable<ReplaceEdit> createPersistentTypeRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(getPersistentTypes()) {
+			new TransformationIterable<OrmPersistentType, Iterable<ReplaceEdit>>(this.getPersistentTypes()) {
 				@Override
 				protected Iterable<ReplaceEdit> transform(OrmPersistentType persistentType) {
 					return persistentType.createRenamePackageEdits(originalPackage, newName);
@@ -873,18 +993,8 @@ public abstract class AbstractEntityMappings
 	}
 
 	protected Iterable<ReplaceEdit> createRenamePackageEdit(final IPackageFragment originalPackage, final String newName) {
-		if (this.package_ != null && originalPackage.getElementName().equals(this.package_)) {
-			return new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
-	}
-
-
-	// ********** dispose **********
-	
-	public void dispose() {
-		for (OrmPersistentType ormPersistentType : this.getPersistentTypes()) {
-			ormPersistentType.dispose();
-		}
+		return Tools.valuesAreEqual(this.package_, originalPackage.getElementName()) ?
+				new SingleElementIterable<ReplaceEdit>(this.xmlEntityMappings.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 }

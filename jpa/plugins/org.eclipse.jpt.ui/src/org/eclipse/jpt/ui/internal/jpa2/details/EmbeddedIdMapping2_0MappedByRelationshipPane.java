@@ -11,6 +11,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.jpa2.context.EmbeddedIdMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.MappedByRelationshipMapping2_0;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -27,7 +28,7 @@ import org.eclipse.ui.part.PageBook;
 public class EmbeddedIdMapping2_0MappedByRelationshipPane<T extends EmbeddedIdMapping2_0>
 	extends Pane<T>
 {
-	private Label mappedByRelationshipLabel;
+	Label mappedByRelationshipLabel;
 
 	public EmbeddedIdMapping2_0MappedByRelationshipPane(
 			Pane<?> parentPane,
@@ -48,7 +49,7 @@ public class EmbeddedIdMapping2_0MappedByRelationshipPane<T extends EmbeddedIdMa
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildIsMappedByRelationshipHolder() {
-		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), EmbeddedIdMapping2_0.MAPPED_BY_RELATIONSHIP_PROPERTY) {
+		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), MappedByRelationshipMapping2_0.MAPPED_BY_RELATIONSHIP_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isMappedByRelationship());

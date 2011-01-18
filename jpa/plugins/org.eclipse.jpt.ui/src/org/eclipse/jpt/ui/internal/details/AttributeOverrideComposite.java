@@ -10,7 +10,8 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.AttributeOverride;
-import org.eclipse.jpt.core.context.Column;
+import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -32,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 1.0
  */
-public class AttributeOverrideComposite extends Pane<AttributeOverride>
+public class AttributeOverrideComposite extends Pane<ReadOnlyAttributeOverride>
 {
 
 	/**
@@ -43,7 +44,7 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AttributeOverrideComposite(Pane<?> parentPane, 
-								PropertyValueModel<? extends AttributeOverride> subjectHolder,
+								PropertyValueModel<? extends ReadOnlyAttributeOverride> subjectHolder,
 								Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -59,10 +60,10 @@ public class AttributeOverrideComposite extends Pane<AttributeOverride>
 		);
 	}
 	
-	private PropertyValueModel<Column> buildColumnHolder() {
-		return new TransformationPropertyValueModel<AttributeOverride, Column>(getSubjectHolder()) {
+	private PropertyValueModel<ReadOnlyColumn> buildColumnHolder() {
+		return new TransformationPropertyValueModel<ReadOnlyAttributeOverride, ReadOnlyColumn>(getSubjectHolder()) {
 			@Override
-			protected Column transform_(AttributeOverride value) {
+			protected ReadOnlyColumn transform_(ReadOnlyAttributeOverride value) {
 				return value.getColumn();
 			}
 		};

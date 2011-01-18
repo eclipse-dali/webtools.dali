@@ -20,6 +20,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
@@ -52,7 +53,7 @@ public class GenericJpaFile
 	 * the root structure (context model) nodes corresponding to the resource
 	 * model
 	 */
-	protected final Hashtable<Object, JpaStructureNode> rootStructureNodes;
+	protected final Hashtable<Object, JpaStructureNode> rootStructureNodes = new Hashtable<Object, JpaStructureNode>();
 
 
 	// ********** construction **********
@@ -62,14 +63,13 @@ public class GenericJpaFile
 		this.file = file;
 		this.contentType = contentType;
 		this.resourceModel = resourceModel;
-		this.rootStructureNodes = new Hashtable<Object, JpaStructureNode>();
 	}
 
 	/**
-	 * Changes to ROOT_STRUCTURE_NODES_COLLECTION do not need to trigger a
+	 * Changes to {@link #ROOT_STRUCTURE_NODES_COLLECTION} do not need to trigger a
 	 * project update. Only the UI cares about the root structure nodes.
 	 * If a project update is allowed to happen, an infinite loop will result
-	 * if any java class is specified in more than one location in the
+	 * if any Java class is specified in more than one location in the
 	 * persistence unit.
 	 */
 	@Override
@@ -122,8 +122,10 @@ public class GenericJpaFile
 		}
 	}
 
-	public void removeRootStructureNode(Object key) {
-		this.fireItemRemoved(ROOT_STRUCTURE_NODES_COLLECTION, this.rootStructureNodes.remove(key));
+	public void removeRootStructureNode(Object key, JpaStructureNode rootStructureNode) {
+		if (Tools.valuesAreEqual(rootStructureNode, this.rootStructureNodes.get(key))) {
+			this.fireItemRemoved(ROOT_STRUCTURE_NODES_COLLECTION, this.rootStructureNodes.remove(key));
+		}
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {

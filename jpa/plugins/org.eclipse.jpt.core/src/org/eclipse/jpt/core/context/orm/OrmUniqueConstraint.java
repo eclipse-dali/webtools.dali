@@ -10,12 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.UniqueConstraint;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> unique constraint
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,11 +25,7 @@ import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
  * @since 2.0
  */
 public interface OrmUniqueConstraint
-	extends UniqueConstraint, XmlContextNode
+	extends UniqueConstraint, OrmReadOnlyUniqueConstraint
 {
-	/**
-	 * Update the OrmUniqueConstraint context model object to match the XmlUniqueConstraint 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlUniqueConstraint uniqueConstraint);
+	XmlUniqueConstraint getXmlUniqueConstraint();
 }

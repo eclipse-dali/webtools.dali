@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * JPA UI functionality.  This is intended to work in conjunction with a core
  * JPA platform ({@link JpaPlatform}) implementation with the same ID.
  * <p>
- * Any implementation should be <i>stateless</i> in nature.
+ * Any implementation should be <em>stateless</em> in nature.
  * <p>
  * The "generic" extension supplies UI for the core platform extension with the same
  * ID.
@@ -107,10 +107,10 @@ public interface JpaPlatformUi
 			PropertyValueModel<AttributeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
 	
-	DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> 
+	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> 
 			getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey);
 	
-	Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>>
+	Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>
 			attributeMappingUiDefinitions(JpaResourceType resourceType);
 	
 	

@@ -11,11 +11,12 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -24,11 +25,9 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
-import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -66,14 +65,38 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaVirtualColumn;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTable;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
+import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.LobAnnotation;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
+import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
+import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 
 /**
@@ -148,11 +171,11 @@ public interface JpaFactory
 	
 	JavaPersistentType buildJavaPersistentType(PersistentType.Owner owner, JavaResourcePersistentType jrpt);
 	
-	JavaEntity buildJavaEntity(JavaPersistentType parent);
+	JavaEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation);
 	
-	JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent);
+	JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappedSuperclassAnnotation);
 	
-	JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent);
+	JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation);
 	
 	JavaTypeMapping buildJavaNullTypeMapping(JavaPersistentType parent);
 	
@@ -164,8 +187,6 @@ public interface JpaFactory
 	
 	JavaEmbeddedMapping buildJavaEmbeddedMapping(JavaPersistentAttribute parent);
 	
-	JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent);
-
 	JavaIdMapping buildJavaIdMapping(JavaPersistentAttribute parent);
 	
 	JavaManyToManyMapping buildJavaManyToManyMapping(JavaPersistentAttribute parent);
@@ -182,56 +203,67 @@ public interface JpaFactory
 	
 	JavaAttributeMapping buildJavaNullAttributeMapping(JavaPersistentAttribute parent);
 	
+	JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent, JavaGeneratorContainer.Owner owner);
+
 	JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner);
 	
 	JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent, Table.Owner owner);
 	
-	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner);
+	JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable);
 	
+	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
+	
+	JavaVirtualColumn buildJavaVirtualColumn(JavaJpaContextNode parent, JavaVirtualColumn.Owner owner);
+
 	JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner);
 	
-	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner);
+	JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation joinColumnAnnotation);
 	
-	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner);
+	JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, JoinColumn joinColumn);
 	
-	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent);
+	JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation);
 	
-	JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent);
+	JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation);
 	
-	JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent);
+	JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent, TableGeneratorAnnotation tableGeneratorAnnotation);
 	
-	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner);
+	JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation);
+	
+	JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation);
 	
 	JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner);
 
-	JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, JavaAttributeOverride.Owner owner);
+	JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation);
+	
+	JavaVirtualAttributeOverride buildJavaVirtualAttributeOverride(JavaAttributeOverrideContainer parent, String name);
 	
 	JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaJpaContextNode parent, JavaAssociationOverrideContainer.Owner owner);
 
-	JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, JavaAssociationOverride.Owner owner);
+	JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation);
+	
+	JavaVirtualAssociationOverride buildJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name);
 	
 	JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent);
 	
-	JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent);
+	JavaVirtualAssociationOverrideRelationshipReference buildJavaVirtualAssociationOverrideRelationshipReference(JavaVirtualAssociationOverride parent);
+	
+	JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent, JavaQueryContainer.Owner owner);
 
-	JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent);
+	JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation namedQueryAnnotation);
 	
-	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent);
+	JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation);
 	
-	JavaQueryHint buildJavaQueryHint(JavaQuery parent);
+	JavaQueryHint buildJavaQueryHint(JavaQuery parent, QueryHintAnnotation queryHintAnnotation);
 	
-	JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner);
+	JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation);
 	
-	JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
+	JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint uniqueConstraint);
 	
-	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
+	JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation);
 	
-	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa);
+	JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation);
+	
+	JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation);
 
-	JavaConverter buildJavaNullConverter(JavaAttributeMapping parent);
-	
-	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner);
-	
-	AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy);
-	
+	JavaOrderable buildJavaOrderable(JavaAttributeMapping parent);
 }

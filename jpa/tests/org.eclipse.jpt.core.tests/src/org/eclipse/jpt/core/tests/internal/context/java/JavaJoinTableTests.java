@@ -17,6 +17,8 @@ import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -179,21 +181,22 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 	
-		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		
 		assertNull(joinTable.getSpecifiedName());
-		assertNull(javaJoinTable);
+		assertNull(joinTableAnnotation);
 	
 		//set name in the context model, verify resource model modified
 		joinTable.setSpecifiedName("foo");
-		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		joinTableAnnotation = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", joinTable.getSpecifiedName());
-		assertEquals("foo", javaJoinTable.getName());
+		assertEquals("foo", joinTableAnnotation.getName());
 		
 		//set name to null in the context model
 		joinTable.setSpecifiedName(null);
 		assertNull(joinTable.getSpecifiedName());
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		joinTableAnnotation = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertNull(joinTableAnnotation.getName());
 	}
 	
 	public void testDefaultName() throws Exception {
@@ -262,7 +265,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
 		
 		//create primary key  in owning entity
-		getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		getJavaPersistentType().getAttributeNamed("id").setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals(TYPE_NAME + "_id", joinColumn.getDefaultName());
 		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
 		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
@@ -327,7 +330,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("proj_id", inverseJoinColumn.getDefaultReferencedColumnName());
 		
 		//create primary key  in owning entity
-		getJavaPersistentType().getAttributeNamed("id").setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		getJavaPersistentType().getAttributeNamed("id").setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertEquals("employees_id", joinColumn.getDefaultName());
 		assertEquals("id", joinColumn.getDefaultReferencedColumnName());
 		assertEquals("projects_proj_id", inverseJoinColumn.getDefaultName());
@@ -415,24 +418,25 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
 	
-		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		
 		assertNull(joinTable.getSpecifiedSchema());
-		assertNull(javaJoinTable);
+		assertNull(joinTableAnnotation);
 	
 		//set schema in the context model, verify resource model modified
 		joinTable.setSpecifiedSchema("foo");
-		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", joinTable.getSpecifiedSchema());
-		assertEquals("foo", javaJoinTable.getSchema());
+		assertEquals("foo", joinTableAnnotation.getSchema());
 		
 		//set schema to null in the context model
 		joinTable.setSpecifiedSchema(null);
 		assertNull(joinTable.getSpecifiedSchema());
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertNull(joinTableAnnotation.getSchema());
 	}
 
 	public void testUpdateSpecifiedCatalog() throws Exception {
@@ -483,24 +487,25 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
 	
-		JoinTableAnnotation javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		
 		assertNull(joinTable.getSpecifiedCatalog());
-		assertNull(javaJoinTable);
+		assertNull(joinTableAnnotation);
 	
 		//set catalog in the context model, verify resource model modified
 		joinTable.setSpecifiedCatalog("foo");
-		javaJoinTable = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", joinTable.getSpecifiedCatalog());
-		assertEquals("foo", javaJoinTable.getCatalog());
+		assertEquals("foo", joinTableAnnotation.getCatalog());
 		
 		//set catalog to null in the context model
 		joinTable.setSpecifiedCatalog(null);
 		assertNull(joinTable.getSpecifiedCatalog());
-		assertNull(attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertNull(joinTableAnnotation.getCatalog());
 	}
 
 	public void testAddSpecifiedJoinColumn() throws Exception {
@@ -508,7 +513,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -534,7 +539,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JoinColumn> joinColumns = joinTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -552,27 +557,27 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
 		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
 
 		joinTable.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joinTable.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
 		joinTable.addSpecifiedJoinColumn(2).setSpecifiedName("BAZ");
 		
-		JoinTableAnnotation joinTableResource = (JoinTableAnnotation) attributeResource.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
-		assertEquals(3, joinTableResource.joinColumnsSize());
+		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) resourceAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
+		assertEquals(3, joinTableAnnotation.joinColumnsSize());
 		
 		joinTable.removeSpecifiedJoinColumn(0);
-		assertEquals(2, joinTableResource.joinColumnsSize());
-		assertEquals("BAR", joinTableResource.joinColumnAt(0).getName());
-		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
+		assertEquals(2, joinTableAnnotation.joinColumnsSize());
+		assertEquals("BAR", joinTableAnnotation.joinColumnAt(0).getName());
+		assertEquals("BAZ", joinTableAnnotation.joinColumnAt(1).getName());
 
 		joinTable.removeSpecifiedJoinColumn(0);
-		assertEquals(1, joinTableResource.joinColumnsSize());
-		assertEquals("BAZ", joinTableResource.joinColumnAt(0).getName());
+		assertEquals(1, joinTableAnnotation.joinColumnsSize());
+		assertEquals("BAZ", joinTableAnnotation.joinColumnAt(0).getName());
 		
 		joinTable.removeSpecifiedJoinColumn(0);
-		assertEquals(0, joinTableResource.joinColumnsSize());
+		assertEquals(0, joinTableAnnotation.joinColumnsSize());
 	}
 	
 	public void testMoveSpecifiedJoinColumn() throws Exception {
@@ -580,7 +585,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -594,7 +599,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		joinTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JoinColumn> joinColumns = joinTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -620,7 +625,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -636,7 +641,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JoinColumn> joinColumns = joinTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = joinTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -710,6 +715,15 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTable.removeSpecifiedJoinColumn(0);
 		joinTable.removeSpecifiedJoinColumn(0);
 		assertEquals(1, joinTable.joinColumnsSize());
+
+		// default columns
+		assertNotNull(manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable());
+		JavaResourcePersistentAttribute resAttribute = this.getJavaPersistentType().attributes().next().getResourcePersistentAttribute();
+		assertNotNull(resAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
+		manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().removeStrategy();
+		// default join table
+		assertNotNull(manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable());
+		assertNull(resAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		
 		//if non-owning side of the relationship then no default join table
 		manyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("foo");
@@ -721,7 +735,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -747,7 +761,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", joinTableResource.inverseJoinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.inverseJoinColumnAt(2).getName());
 		
-		ListIterator<JoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
+		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals(inverseJoinColumn2, inverseJoinColumns.next());
 		assertEquals(inverseJoinColumn3, inverseJoinColumns.next());
 		assertEquals(inverseJoinColumn, inverseJoinColumns.next());
@@ -793,7 +807,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -807,7 +821,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		joinTable.moveSpecifiedInverseJoinColumn(2, 0);
-		ListIterator<JoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
+		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
 		assertEquals("FOO", inverseJoinColumns.next().getName());
@@ -833,7 +847,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -849,7 +863,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableResource.inverseJoinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
+		ListIterator<JavaJoinColumn> inverseJoinColumns = joinTable.specifiedInverseJoinColumns();
 		assertEquals("FOO", inverseJoinColumns.next().getName());
 		assertEquals("BAR", inverseJoinColumns.next().getName());
 		assertEquals("BAZ", inverseJoinColumns.next().getName());
@@ -929,7 +943,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals(1, joinTable.inverseJoinColumnsSize());
 		
 		//if non-owning side of the relationship then no default join table
-		manyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("foo");
+		manyToManyMapping.getRelationshipReference().setMappedByJoiningStrategy();
 		assertNull(manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable());
 	}
 
@@ -938,7 +952,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
@@ -952,8 +966,8 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		uniqueConstraints = joinTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("bar", uniqueConstraints.next().columnNames().next());
-		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -1023,7 +1037,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		joinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -1041,9 +1055,9 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<UniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		Iterator<JavaUniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
@@ -1053,7 +1067,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
@@ -1082,10 +1096,10 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		joinTable.moveUniqueConstraint(2, 0);
-		ListIterator<UniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		ListIterator<? extends UniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
@@ -1095,9 +1109,9 @@ public class JavaJoinTableTests extends ContextModelTestCase
 
 		joinTable.moveUniqueConstraint(0, 1);
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
@@ -1110,7 +1124,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);
@@ -1120,39 +1134,39 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		joinTableAnnotation.addUniqueConstraint(2).addColumnName("BAZ");
 		getJpaProject().synchronizeContextModel();
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.moveUniqueConstraint(2, 0);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.moveUniqueConstraint(0, 1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = joinTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.removeUniqueConstraint(0);

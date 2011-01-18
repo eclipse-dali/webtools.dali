@@ -12,12 +12,13 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
+import org.eclipse.jpt.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractSecondaryTablesComposite;
@@ -92,16 +93,16 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		return new DefineInXmlHolder();
 	}
 
-	private ListValueModel<OrmSecondaryTable> buildSecondaryTablesListHolder() {
-		List<ListValueModel<OrmSecondaryTable>> list = new ArrayList<ListValueModel<OrmSecondaryTable>>();
+	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListHolder() {
+		List<ListValueModel<? extends ReadOnlySecondaryTable>> list = new ArrayList<ListValueModel<? extends ReadOnlySecondaryTable>>();
 		list.add(buildSpecifiedSecondaryTablesListHolder());
 		list.add(buildVirtualSecondaryTablesListHolder());
-		return new CompositeListValueModel<ListValueModel<OrmSecondaryTable>, OrmSecondaryTable>(list);
+		return new CompositeListValueModel<ListValueModel<? extends ReadOnlySecondaryTable>, ReadOnlySecondaryTable>(list);
 	}
 
-	private ListValueModel<OrmSecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<OrmSecondaryTable>(buildSecondaryTablesListHolder(),
-			Table.SPECIFIED_NAME_PROPERTY);
+	private ListValueModel<ReadOnlySecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<ReadOnlySecondaryTable>(buildSecondaryTablesListHolder(),
+			ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
 	}
 
 	private ListValueModel<OrmSecondaryTable> buildSpecifiedSecondaryTablesListHolder() {
@@ -118,11 +119,11 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 		};
 	}
 
-	private ListValueModel<OrmSecondaryTable> buildVirtualSecondaryTablesListHolder() {
-		return new ListAspectAdapter<OrmEntity, OrmSecondaryTable>(getSubjectHolder(), OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST) {
+	ListValueModel<OrmVirtualSecondaryTable> buildVirtualSecondaryTablesListHolder() {
+		return new ListAspectAdapter<OrmEntity, OrmVirtualSecondaryTable>(getSubjectHolder(), OrmEntity.VIRTUAL_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterator<OrmSecondaryTable> listIterator_() {
-				return subject.virtualSecondaryTables();
+			protected ListIterator<OrmVirtualSecondaryTable> listIterator_() {
+				return this.subject.virtualSecondaryTables();
 			}
 
 			@Override
@@ -200,11 +201,11 @@ public class OrmSecondaryTablesComposite extends AbstractSecondaryTablesComposit
 			if (getSubject() == null) {
 				return Boolean.FALSE;
 			}
-			return Boolean.valueOf(getSubject().secondaryTablesDefinedInXml());
+			return Boolean.valueOf(getSubject().secondaryTablesAreDefinedInXml());
 		}
 
 		public void setValue(Boolean value) {
-			getSubject().setSecondaryTablesDefinedInXml(value.booleanValue());
+			getSubject().setSecondaryTablesAreDefinedInXml(value.booleanValue());
 		}
 	}
 }

@@ -10,12 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.SequenceGenerator;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> sequence generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,12 +25,7 @@ import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
  * @since 2.0
  */
 public interface OrmSequenceGenerator
-	extends SequenceGenerator, OrmGenerator, XmlContextNode
+	extends SequenceGenerator, OrmGenerator
 {
-	
-	/**
-	 * Update the OrmSequenceGenerator context model object to match the XmlSequenceGenerator 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlSequenceGenerator sequenceGenerator);
+	XmlSequenceGenerator getXmlGenerator();
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * Wrap a list iterator on elements of any sub-type of <code>E</code>, converting it into a
  * list iterator on elements of type <code>E</code>. This shouldn't be a problem since the
  * resulting list iterator disables the methods that would put invalid elements
- * in the iterator's backing list (i.e. {@link #set(E)} and {@link #add(E)}).
+ * in the iterator's backing list (i.e. {@link #set(Object)} and {@link #add(Object)}).
  * 
  * @param <E> the type of elements returned by the iterator
  * 

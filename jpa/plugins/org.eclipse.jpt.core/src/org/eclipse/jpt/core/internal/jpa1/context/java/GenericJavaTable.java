@@ -3,100 +3,101 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaTable;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
 
+/**
+ * Java table
+ */
 public class GenericJavaTable
-	extends AbstractJavaTable
-	implements JavaTable
+	extends AbstractJavaTable<TableAnnotation>
 {
-	protected JavaResourcePersistentMember resourcePersistentMember;
-
 	public GenericJavaTable(JavaEntity parent, Owner owner) {
 		super(parent, owner);
 	}
-	
-	public void initialize(JavaResourcePersistentMember pr) {
-		this.resourcePersistentMember = pr;
-		initialize(getAnnotation());
+
+
+	// ********** table annotation **********
+
+	@Override
+	public TableAnnotation getTableAnnotation() {
+		// TODO get the NullTableAnnotation from the resource model or build it here in the context model??
+		return (TableAnnotation) this.getResourcePersistentType().getNonNullAnnotation(this.getAnnotationName());
 	}
 
-	//query for the table resource every time on setters.
-	//call one setter and the tableResource could change. 
-	//You could call more than one setter before this object has received any notification
-	//from the java resource model
 	@Override
-	protected TableAnnotation getAnnotation() {
-		//TODO get the NullTable from the resource model or build it here in the context model??
-		return (TableAnnotation) this.resourcePersistentMember.
-				getNonNullAnnotation(getAnnotationName());
+	protected void removeTableAnnotation() {
+		this.getResourcePersistentType().removeAnnotation(this.getAnnotationName());
 	}
 
-	public boolean isResourceSpecified() {
-		return getAnnotation().isSpecified();
-	}
-	
-	@Override
 	protected String getAnnotationName() {
 		return TableAnnotation.ANNOTATION_NAME;
 	}
-	
+
+	protected JavaResourcePersistentType getResourcePersistentType() {
+		return this.getEntity().getPersistentType().getResourcePersistentType();
+	}
+
+
+	// ********** defaults **********
+
+	@Override
+	protected String buildDefaultName() {
+		return this.getEntity().getDefaultTableName();
+	}
+
+	/**
+	 * Just to remember:<ol>
+	 * <li>{@link org.eclipse.jpt.core.context.Entity#getDefaultSchema()}<br>
+	 *     check inheritance; get default schema from root
+	 * <li>{@link org.eclipse.jpt.core.context.orm.EntityMappings#getSchema()}<br>
+	 *     check for specified schema
+	 * <li>{@link org.eclipse.jpt.core.context.persistence.PersistenceUnit#getDefaultSchema()}<br>
+	 *     {@link org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults#getSchema()}
+	 * <li>{@link org.eclipse.jpt.core.JpaProject#getDefaultSchema()}<br>
+	 *     check for user override project setting
+	 * <li>{@link org.eclipse.jpt.db.Catalog#getDefaultSchema()}<br>
+	 *     or {@link org.eclipse.jpt.db.Database#getDefaultSchema()}
+	 * </ol>
+	 */
+	@Override
+	protected String buildDefaultSchema() {
+		return this.getEntity().getDefaultSchema();
+	}
+
+	@Override
+	protected String buildDefaultCatalog() {
+		return this.getEntity().getDefaultCatalog();
+	}
+
+
+	// ********** validation **********
+
+	public boolean validatesAgainstDatabase() {
+		return this.connectionProfileIsActive();
+	}
+
+
+	// ********** misc **********
+
+	/**
+	 * covariant override
+	 */
 	@Override
 	public JavaEntity getParent() {
 		return (JavaEntity) super.getParent();
 	}
-	
-	protected JavaEntity getJavaEntity() {
-		return getParent();
-	}
-	
-	@Override
-	protected String buildDefaultName() {
-		return this.getJavaEntity().getDefaultTableName();
+
+	protected JavaEntity getEntity() {
+		return this.getParent();
 	}
 
-	/**
-	 * Just to remember:
-	 *   Entity.getDefaultSchema()
-	 *     check inheritance - get default schema from root
-	 *   EntityMappings.getSchema()
-	 *     check for specified schema
-	 *   PersistenceUnit.getDefaultSchema()
-	 *     OrmPersistenceUnitDefaults.getSchema()
-	 *   JpaProject.getDefaultSchema()
-	 *     check for user override project setting
-	 *   Catalog.getDefaultSchema()
-	 *     or
-	 *   Database.getDefaultSchema()
-	 */
-	@Override
-	protected String buildDefaultSchema() {
-		return this.getJavaEntity().getDefaultSchema();
-	}
-	
-	@Override
-	protected String buildDefaultCatalog() {
-		return this.getJavaEntity().getDefaultCatalog();
-	}
-
-	public void update(JavaResourcePersistentMember jrpm) {
-		this.resourcePersistentMember = jrpm;
-		this.update(getAnnotation());
-	}
-
-
-	//******************* validation **********************
-
-	public boolean shouldValidateAgainstDatabase() {
-		return this.connectionProfileIsActive();
-	}
 }

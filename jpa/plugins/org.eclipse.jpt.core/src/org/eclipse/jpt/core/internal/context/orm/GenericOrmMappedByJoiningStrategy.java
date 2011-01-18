@@ -1,24 +1,23 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -26,180 +25,199 @@ import org.eclipse.jpt.core.resource.orm.XmlMappedByMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericOrmMappedByJoiningStrategy 
+public class GenericOrmMappedByJoiningStrategy
 	extends AbstractOrmXmlContextNode
 	implements OrmMappedByJoiningStrategy
 {
-	protected XmlMappedByMapping resource;
-	
 	protected String mappedByAttribute;
-	
-	
-	public GenericOrmMappedByJoiningStrategy(
-			OrmOwnableRelationshipReference parent,
-			XmlMappedByMapping resource) {
+
+
+	public GenericOrmMappedByJoiningStrategy(OrmOwnableRelationshipReference parent) {
 		super(parent);
-		this.resource = resource;
-		this.mappedByAttribute = this.resource.getMappedBy();
+		this.mappedByAttribute = this.getXmlMappedByMapping().getMappedBy();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setMappedByAttribute_(this.getXmlMappedByMapping().getMappedBy());
+	}
+
+
+	// ********** mapped by attribute **********
+
+	public String getMappedByAttribute() {
+		return this.mappedByAttribute;
+	}
+
+	public void setMappedByAttribute(String mappedByAttribute) {
+		this.setMappedByAttribute_(mappedByAttribute);
+		this.getXmlMappedByMapping().setMappedBy(mappedByAttribute);
+	}
+
+	protected void setMappedByAttribute_(String mappedByAttribute) {
+		String old = this.mappedByAttribute;
+		this.mappedByAttribute = mappedByAttribute;
+		this.firePropertyChanged(MAPPED_BY_ATTRIBUTE_PROPERTY, old, mappedByAttribute);
+	}
+
+
+	// ********** misc **********
+
 	@Override
 	public OrmOwnableRelationshipReference getParent() {
 		return (OrmOwnableRelationshipReference) super.getParent();
 	}
-	
+
 	public OrmOwnableRelationshipReference getRelationshipReference() {
 		return this.getParent();
 	}
-	
-	public String getTableName() {
-		RelationshipMapping owner = getRelationshipOwner();
-		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+
+	protected XmlMappedByMapping getXmlMappedByMapping() {
+		return this.getRelationshipReference().getXmlContainer();
 	}
 
-	public Table getDbTable(String tableName) {
-		RelationshipMapping owner = getRelationshipOwner();
-		return owner == null ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
+	public void initializeFrom(MappedByJoiningStrategy oldStrategy) {
+		this.setMappedByAttribute(oldStrategy.getMappedByAttribute());
+	}
+
+	public String getTableName() {
+		RelationshipMapping owner = this.getRelationshipOwner();
+		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+	}
+
+	public Table resolveDbTable(String tableName) {
+		RelationshipMapping owner = this.getRelationshipOwner();
+		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().resolveDbTable(tableName);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		RelationshipMapping owner = getRelationshipOwner();
-		return owner == null ? false : owner.getRelationshipReference().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
+		RelationshipMapping owner = this.getRelationshipOwner();
+		return (owner != null) && owner.getRelationshipReference().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
-		//this will not be called if getRelationshipOwner() is null
-		return getRelationshipOwner().getRelationshipReference().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
+		// this will not be called if getRelationshipOwner() returns null
+		return this.getRelationshipOwner().getRelationshipReference().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
 	}
 
 	protected RelationshipMapping getRelationshipOwner() {
-		return getRelationshipMapping().getRelationshipOwner();
+		return this.getRelationshipMapping().getRelationshipOwner();
 	}
 
-	public boolean isOverridableAssociation() {
+	public boolean isOverridable() {
 		return false;
 	}
 
-	public OrmRelationshipMapping getRelationshipMapping() {
-		return getParent().getRelationshipMapping();
+	protected RelationshipMapping getRelationshipMapping() {
+		return this.getRelationshipReference().getMapping();
 	}
-	
+
 	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
-		String thisEntity = 
-			(getRelationshipReference().getEntity()) == null ?
-				null : getRelationshipReference().getEntity().getName();
-		String targetEntity = 
-			(otherMapping.getResolvedTargetEntity() == null) ?
-				null : otherMapping.getResolvedTargetEntity().getName();
-		return StringTools.stringsAreEqual(
-				thisEntity,
-				targetEntity)
-			&& StringTools.stringsAreEqual(
-				getMappedByAttribute(), 
-				otherMapping.getName());
+		String thisEntityName = this.getEntityName();
+		Entity otherEntity = otherMapping.getResolvedTargetEntity();
+		String otherEntityName = (otherEntity == null) ? null : otherEntity.getName();
+		return Tools.valuesAreEqual(thisEntityName, otherEntityName) &&
+				Tools.valuesAreEqual(this.mappedByAttribute, otherMapping.getName());
 	}
-	
-	public String getMappedByAttribute() {
-		return this.mappedByAttribute;
+
+	protected String getEntityName() {
+		Entity entity = this.getRelationshipReference().getEntity();
+		return (entity == null) ? null : entity.getName();
 	}
-	
-	public void setMappedByAttribute(String newMappedByAttribute) {
-		String oldMappedByAttribute = this.mappedByAttribute;
-		this.mappedByAttribute = newMappedByAttribute;
-		this.resource.setMappedBy(newMappedByAttribute);
-		firePropertyChanged(MAPPED_BY_ATTRIBUTE_PROPERTY, oldMappedByAttribute, newMappedByAttribute);
-	}
-	
-	protected void setMappedByAttribute_(String newMappedByAttribute) {
-		String oldMappedByAttribute = this.mappedByAttribute;
-		this.mappedByAttribute = newMappedByAttribute;
-		firePropertyChanged(MAPPED_BY_ATTRIBUTE_PROPERTY, oldMappedByAttribute, newMappedByAttribute);
-	}
-	
+
 	public void addStrategy() {
 		if (this.mappedByAttribute == null) {
-			setMappedByAttribute(""); //$NON-NLS-1$
+			this.setMappedByAttribute(""); //$NON-NLS-1$
 		}
 	}
-	
+
 	public void removeStrategy() {
 		if (this.mappedByAttribute != null) {
-			setMappedByAttribute(null);
+			this.setMappedByAttribute(null);
 		}
 	}
-	
-	public void update() {
-		setMappedByAttribute_(this.resource.getMappedBy());
-	}
-	
+
 	public Iterator<String> candidateMappedByAttributeNames() {
-		return getRelationshipMapping().allTargetEntityAttributeNames();	
+		return this.getRelationshipMapping().allTargetEntityAttributeNames();
 	}
-	
-	
-	// **************** validation *********************************************
-	
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		TextRange mappedByTextRange = this.resource.getMappedByTextRange();
-		return mappedByTextRange != null ? mappedByTextRange : getRelationshipReference().getValidationTextRange();
+		TextRange mappedByTextRange = this.getXmlMappedByMapping().getMappedByTextRange();
+		return (mappedByTextRange != null) ? mappedByTextRange : this.getRelationshipReference().getValidationTextRange();
 	}
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
-		if (getMappedByAttribute() == null) {
+
+		if (this.mappedByAttribute == null) {
 			return;
 		}
-		
+
 		Entity targetEntity = this.getRelationshipMapping().getResolvedTargetEntity();
 		if (targetEntity == null) {
 			return;  // null target entity is validated elsewhere
 		}
-		
+
 		AttributeMapping mappedByMapping = targetEntity.resolveAttributeMapping(this.mappedByAttribute);
-		
+
 		if (mappedByMapping == null) {
 			messages.add(
-				buildMessage(
+				this.buildMessage(
 					JpaValidationMessages.MAPPING_UNRESOLVED_MAPPED_BY,
-					new String[] {this.mappedByAttribute}));
+					new String[] {this.mappedByAttribute}
+				)
+			);
 			return;
 		}
-		
-		if (! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
+
+		if ( ! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
-				buildMessage(
+				this.buildMessage(
 					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,
-					new String[] {this.mappedByAttribute}));
+					new String[] {this.mappedByAttribute}
+				)
+			);
 			return;
 		}
-		
-		// if mappedByMapping is not a relationship owner, then it should have 
+
+		// if mappedByMapping is not a relationship owner, then it should have
 		// been flagged in above rule (mappedByIsValid)
-		if (! ((RelationshipMapping) mappedByMapping).isRelationshipOwner()) {
-			messages.add(buildMessage(
+		if ( ! ((RelationshipMapping) mappedByMapping).isRelationshipOwner()) {
+			messages.add(
+				this.buildMessage(
 					JpaValidationMessages.MAPPING_MAPPED_BY_ON_BOTH_SIDES,
-					new String[] {this.mappedByAttribute}));
+					new String[] {this.mappedByAttribute}
+				)
+			);
 		}
 	}
-	
-	protected IMessage buildMessage(String msgID, String[] params) {
-		String attributeDescString;
-		PersistentAttribute attribute = getRelationshipMapping().getPersistentAttribute();
-		if (attribute.isVirtual()) {
-			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC, attribute.getName());
-		}
-		else {
-			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
-		}
+
+	protected IMessage buildMessage(String msgID, String[] parms) {
+		PersistentAttribute attribute = this.getRelationshipMapping().getPersistentAttribute();
+		String attributeDescription = attribute.isVirtual() ?
+				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
+		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY, msgID, ArrayTools.add(params, 0, attributeDescString), this, getValidationTextRange());
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				parms,
+				this,
+				this.getValidationTextRange()
+			);
 	}
 }

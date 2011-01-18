@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -17,7 +16,8 @@ import org.eclipse.jpt.core.internal.jpa1.context.BaseColumnTableValidator.NullT
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValidator
+public abstract class PrimaryKeyJoinColumnValidator
+	extends BaseJoinColumnValidator<BaseJoinColumn, BaseJoinColumnTextRangeResolver>
 {
 	protected PrimaryKeyJoinColumnValidator(
 				BaseJoinColumn column,
@@ -27,19 +27,18 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 	}
 
 	protected PrimaryKeyJoinColumnValidator(
-			PersistentAttribute persistentAttribute,
+				PersistentAttribute persistentAttribute,
 				BaseJoinColumn column,
 				BaseJoinColumn.Owner owner,
 				BaseJoinColumnTextRangeResolver textRangeResolver) {
 		super(persistentAttribute, column, owner, textRangeResolver, new NullTableDescriptionProvider());
 	}
-	
+
 	@Override
 	public IMessage buildUnresolvedNameMessage() {
-		if (getColumn().isVirtual()) {
-			return this.buildUnresolvedNameMessage(this.getVirtualPKJoinColumnUnresolvedNameMessage());
-		}
-		return super.buildUnresolvedNameMessage();
+		return this.column.isVirtual() ?
+				this.buildUnresolvedNameMessage(this.getVirtualPKJoinColumnUnresolvedNameMessage()) :
+				super.buildUnresolvedNameMessage();
 	}
 
 	protected String getVirtualPKJoinColumnUnresolvedNameMessage() {
@@ -48,10 +47,9 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 
 	@Override
 	protected IMessage buildUnresolvedReferencedColumnNameMessage() {
-		if (getColumn().isVirtual()) {
-			return this.buildUnresolvedReferencedColumnNameMessage(this.getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage());
-		}
-		return super.buildUnresolvedReferencedColumnNameMessage();
+		return this.column.isVirtual() ?
+				this.buildUnresolvedReferencedColumnNameMessage(this.getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage()) :
+				super.buildUnresolvedReferencedColumnNameMessage();
 	}
 
 	protected String getVirtualPKJoinColumnUnresolvedReferencedColumnNameMessage() {
@@ -60,10 +58,9 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 
 	@Override
 	protected IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
-		if (getColumn().isVirtual()) {
-			return this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage());
-		}
-		return super.buildUnspecifiedNameMultipleJoinColumnsMessage();
+		return this.column.isVirtual() ?
+				this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage()) :
+				super.buildUnspecifiedNameMultipleJoinColumnsMessage();
 	}
 
 	protected String getVirtualPKJoinColumnUnspecifiedNameMultipleJoinColumnsMessage() {
@@ -72,10 +69,9 @@ public abstract class PrimaryKeyJoinColumnValidator extends BaseJoinColumnValida
 
 	@Override
 	protected IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		if (getColumn().isVirtual()) {
-			return this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage());
-		}
-		return super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
+		return this.column.isVirtual() ?
+				this.buildUnspecifiedNameMultipleJoinColumnsMessage(this.getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage()) :
+				super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 	}
 
 	protected String getVirtualPKJoinColumnUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {

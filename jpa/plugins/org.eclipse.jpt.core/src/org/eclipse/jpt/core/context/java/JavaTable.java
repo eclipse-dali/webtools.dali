@@ -9,11 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import java.util.ListIterator;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.Table;
+import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
+import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * Java table
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,14 +28,16 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
  * @since 2.0
  */
 public interface JavaTable
-	extends JavaBaseTable
+	extends Table, JavaJpaContextNode
 {
-	void initialize(JavaResourcePersistentMember jrpm);
-	
-	/**
-	 * Update the JavaTable context model object to match the JavaResourcePersistentMember 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourcePersistentMember jrpm);
+	BaseTableAnnotation getTableAnnotation();
 
+	TextRange getNameTextRange(CompilationUnit astRoot);
+	TextRange getSchemaTextRange(CompilationUnit astRoot);
+	TextRange getCatalogTextRange(CompilationUnit astRoot);
+
+	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+	JavaUniqueConstraint getUniqueConstraint(int index);
+	JavaUniqueConstraint addUniqueConstraint();
+	JavaUniqueConstraint addUniqueConstraint(int index);
 }

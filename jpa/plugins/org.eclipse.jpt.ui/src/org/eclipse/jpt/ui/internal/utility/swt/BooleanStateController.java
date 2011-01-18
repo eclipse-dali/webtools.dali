@@ -130,7 +130,7 @@ abstract class BooleanStateController {
 	 * If the new boolean model value is <code>null</code>, use the controller's
 	 * default value (which is typically false).
 	 */
-	/* private */ void booleanChanged(PropertyChangeEvent event) {
+	/* CU private */ void booleanChanged(PropertyChangeEvent event) {
 		this.setControlState((Boolean) event.getNewValue());
 	}
 

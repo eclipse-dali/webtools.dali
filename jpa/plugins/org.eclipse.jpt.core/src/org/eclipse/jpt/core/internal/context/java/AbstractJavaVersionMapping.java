@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,9 +11,8 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
@@ -21,155 +20,233 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaTemporalConverter;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.Association;
+import org.eclipse.jpt.utility.internal.SimpleAssociation;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * Java version mapping
+ */
 public abstract class AbstractJavaVersionMapping
-	extends AbstractJavaAttributeMapping<VersionAnnotation> 
+	extends AbstractJavaAttributeMapping<VersionAnnotation>
 	implements JavaVersionMapping
 {
 	protected final JavaColumn column;
-	
-	protected JavaConverter converter;
-	
-	protected final JavaConverter nullConverter;
+
+	protected JavaConverter converter;  // never null
+
+
+	// the spec does not list Temporal explicitly,
+	// but it is included in the orm.xml schema...
+	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
+		JavaTemporalConverter.Adapter.instance(),
+	};
+	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+
 
 	protected AbstractJavaVersionMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.column = getJpaFactory().buildJavaColumn(this, this);
-		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
-		this.converter = this.nullConverter;
-	}
-	
-	@Override
-	protected void initialize( ) {
-		super.initialize();
-		this.column.initialize(this.getResourceColumn());
-		this.converter = this.buildConverter(this.getResourceConverterType());
-	}
-		
-	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().
-				getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		this.column = this.buildColumn();
+		this.converter = this.buildConverter();
 	}
 
-	//************** JavaAttributeMapping implementation ***************
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.column.synchronizeWithResourceModel();
+		this.syncConverter();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.column.update();
+		this.converter.update();
+	}
+
+
+	// ********** column **********
+
+	public JavaColumn getColumn() {
+		return this.column;
+	}
+
+	protected JavaColumn buildColumn() {
+		return this.getJpaFactory().buildJavaColumn(this, this);
+	}
+
+
+	// ********** converter **********
+
+	public JavaConverter getConverter() {
+		return this.converter;
+	}
+
+	public void setConverter(Class<? extends Converter> converterType) {
+		if (this.converter.getType() != converterType) {
+			this.converter.dispose();
+			JavaConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
+			this.retainConverterAnnotation(converterAdapter);
+			this.setConverter_(this.buildConverter(converterAdapter));
+		}
+	}
+
+	protected JavaConverter buildConverter(JavaConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getJpaFactory()) :
+				this.buildNullConverter();
+	}
+
+	protected void setConverter_(JavaConverter converter) {
+		Converter old = this.converter;
+		this.converter = converter;
+		this.firePropertyChanged(CONVERTER_PROPERTY, old, converter);
+	}
+
+	/**
+	 * Clear all the converter annotations <em>except</em> for the annotation
+	 * corresponding to the specified adapter. If the specified adapter is
+	 * <code>null</code>, remove <em>all</em> the converter annotations.
+	 */
+	protected void retainConverterAnnotation(JavaConverter.Adapter converterAdapter) {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter != converterAdapter) {
+				adapter.removeConverterAnnotation(resourceAttribute);
+			}
+		}
+	}
+
+	protected JavaConverter buildConverter() {
+		JpaFactory jpaFactory = this.getJpaFactory();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			JavaConverter javaConverter = adapter.buildConverter(this, jpaFactory);
+			if (javaConverter != null) {
+				return javaConverter;
+			}
+		}
+		return this.buildNullConverter();
+	}
+
+	protected void syncConverter() {
+		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
+		if (assoc == null) {
+			if (this.converter.getType() != null) {
+				this.setConverter_(this.buildNullConverter());
+			}
+		} else {
+			JavaConverter.Adapter adapter = assoc.getKey();
+			Annotation annotation = assoc.getValue();
+			if ((this.converter.getType() == adapter.getConverterType()) &&
+					(this.converter.getConverterAnnotation() == annotation)) {
+				this.converter.synchronizeWithResourceModel();
+			} else {
+				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
+			}
+		}
+	}
+
+	/**
+	 * Return the first converter annotation we find along with its corresponding
+	 * adapter. Return <code>null</code> if there are no converter annotations.
+	 */
+	protected Association<JavaConverter.Adapter, Annotation> getConverterAnnotation() {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
+			if (annotation != null) {
+				return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+			}
+		}
+		return null;
+	}
+
+	protected JavaConverter buildNullConverter() {
+		return new NullJavaConverter(this);
+	}
+
+
+	// ********** converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected JavaConverter.Adapter getConverterAdapter(Class<? extends Converter> converterType) {
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<JavaConverter.Adapter> getConverterAdapters() {
+		return CONVERTER_ADAPTERS;
+	}
+
+
+	// ********** misc **********
 
 	public String getKey() {
 		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public String getAnnotationName() {
+	@Override
+	protected String getAnnotationName() {
 		return VersionAnnotation.ANNOTATION_NAME;
 	}
-	
-	
-	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(JPA.COLUMN);
-		names.add(JPA.TEMPORAL);
+
+
+	// ********** JavaColumn.Owner implementation **********
+
+	public ColumnAnnotation getColumnAnnotation() {
+		return (ColumnAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	//************** NamedColumn.Owner implementation ***************
+	public void removeColumnAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+	}
 
 	public String getDefaultColumnName() {
-		return getName();
+		return this.getName();
 	}
 
-	//************** BaseColumn.Owner implementation ***************
-	
 	public String getDefaultTableName() {
-		return getTypeMapping().getPrimaryTableName();
+		return this.getTypeMapping().getPrimaryTableName();
 	}
-	
+
 	public boolean tableNameIsInvalid(String tableName) {
-		return getTypeMapping().tableNameIsInvalid(tableName);
+		return this.getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
 	public Iterator<String> candidateTableNames() {
-		return getTypeMapping().associatedTableNamesIncludingInherited();
+		return this.getTypeMapping().allAssociatedTableNames();
 	}
 
-	//************** VersionMapping implementation ***************
-	
-	public JavaColumn getColumn() {
-		return this.column;
-	}
-	
-	public JavaConverter getConverter() {
-		return this.converter;
-	}
-	
-	protected String getConverterType() {
-		return this.converter.getType();
-	}
-	
-	public void setConverter(String converterType) {
-		if (this.valuesAreEqual(getConverterType(), converterType)) {
-			return;
-		}
-		JavaConverter oldConverter = this.converter;
-		JavaConverter newConverter = buildConverter(converterType);
-		this.converter = this.nullConverter;
-		if (oldConverter != null) {
-			oldConverter.removeFromResourceModel();
-		}
-		this.converter = newConverter;
-		if (newConverter != null) {
-			newConverter.addToResourceModel();
-		}
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}
-	
-	protected void setConverter(JavaConverter newConverter) {
-		JavaConverter oldConverter = this.converter;
-		this.converter = newConverter;
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 
-	
-	@Override
-	protected void update() {
-		super.update();
-		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
-			getConverter().update(this.getResourcePersistentAttribute());
-		}
-		else {
-			JavaConverter javaConverter = buildConverter(getResourceConverterType());
-			setConverter(javaConverter);
-		}
-	}
-	
-	protected JavaConverter buildConverter(String converterType) {
-		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return this.nullConverter;			
-		}
-		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
-		}
-		return null;
-	}
-	
-	protected String getResourceConverterType() {
-		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
-			return Converter.TEMPORAL_CONVERTER;
-		}
-		return Converter.NO_CONVERTER;
-	}
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -177,27 +254,23 @@ public abstract class AbstractJavaVersionMapping
 		if (result != null) {
 			return result;
 		}
-		result = this.getColumn().javaCompletionProposals(pos, filter, astRoot);
+		result = this.column.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = getConverter().javaCompletionProposals(pos, filter, astRoot);
+		result = this.converter.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		return null;
 	}
-	
-	//***********  Validation  ******************************
-	
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.getColumn().validate(messages, reporter, astRoot);
-		this.getConverter().validate(messages, reporter, astRoot);
-	}
-
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		this.column.validate(messages, reporter, astRoot);
+		this.converter.validate(messages, reporter, astRoot);
 	}
 }

@@ -13,6 +13,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 
@@ -51,6 +52,28 @@ public class SnapshotCloneIterable<E>
 
 
 	// ********** constructors **********
+
+	/**
+	 * Construct a "snapshot" iterable for the specified iterator.
+	 * The {@link Iterator#remove()} operation will not be supported
+	 * by the iterator returned by {@link #iterator()}
+	 * unless a subclass overrides the iterable's {@link #remove(Object)}
+	 * method.
+	 */
+	public SnapshotCloneIterable(Iterator<? extends E> iterator) {
+		super();
+		this.array = ArrayTools.array(iterator);
+	}
+
+	/**
+	 * Construct a "snapshot" iterable for the specified iterator.
+	 * The specified remover will be used by any generated iterators to
+	 * remove objects from the original collection.
+	 */
+	public SnapshotCloneIterable(Iterator<? extends E> iterator, CloneIterator.Remover<E> remover) {
+		super(remover);
+		this.array = ArrayTools.array(iterator);
+	}
 
 	/**
 	 * Construct a "snapshot" iterable for the specified collection.

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import java.util.List;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
@@ -35,7 +36,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	/**
 	 * The initial converterType or <code>null</code>
 	 */
-	private String converterType;
+	private Class<? extends EclipseLinkConverter> converterType;
 
 	/**
 	 * The <code>Validator</code> used to validate this state object.
@@ -52,14 +53,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	 */
 	static final String CONVERTER_TYPE_PROPERTY = "converterType"; //$NON-NLS-1$
 
-	/**
-	 * Creates a new <code>NewNameStateObject</code>.
-	 *
-	 * @param name The initial input or <code>null</code> if no initial value can
-	 * be specified
-	 * @param names The collection of names that can't be used or an empty
-	 * collection if none are available
-	 */
+
 	EclipseLinkConverterStateObject() {
 		super(null);
 
@@ -72,7 +66,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	}
 
 	private void addConverterTypeProblemsTo(List<Problem> currentProblems) {
-		if (StringTools.stringIsEmpty(this.converterType)) {
+		if (this.converterType == null) {
 			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_typeMustBeSpecified));
 		}
 	}
@@ -85,7 +79,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	}
 
 	@Override
-	protected void checkParent(@SuppressWarnings("unused") Node parentNode) {
+	protected void checkParent(Node parentNode) {
 		//no parent
 	}
 
@@ -97,7 +91,7 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 		return this.name;
 	}
 
-	String getConverterType() {
+	Class<? extends EclipseLinkConverter> getConverterType() {
 		return this.converterType;
 	}
 
@@ -107,8 +101,8 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 		firePropertyChanged(NAME_PROPERTY, oldName, newName);
 	}
 
-	public void setConverterType(String newConverterType) {
-		String oldConverterType = this.converterType;
+	public void setConverterType(Class<? extends EclipseLinkConverter> newConverterType) {
+		Class<? extends EclipseLinkConverter> oldConverterType = this.converterType;
 		this.converterType = newConverterType;
 		firePropertyChanged(CONVERTER_TYPE_PROPERTY, oldConverterType, newConverterType);
 	}

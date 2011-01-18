@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import junit.framework.TestSuite;
 public class JptJavaResourceTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getName());
+		TestSuite suite = new TestSuite(JptJavaResourceTests.class.getPackage().getName());
 		suite.addTestSuite(JavaResourcePersistentTypeTests.class);
 		suite.addTestSuite(JavaResourcePersistentAttributeTests.class);
 		suite.addTestSuite(JPTToolsTests.class);

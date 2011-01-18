@@ -882,9 +882,6 @@ public class XmlTableGenerator extends AbstractJpaEObject implements XmlGenerato
 		return getAttributeTextRange(JPA.NAME);
 	}
 	
-	public boolean isVirtual() {
-		return false;
-	}
 	
 	// ********** translators **********
 

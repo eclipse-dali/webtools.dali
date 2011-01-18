@@ -9,19 +9,17 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.LockModeType_2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -32,48 +30,35 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.NamedQuery
+ * <code>javax.persistence.NamedQuery</code>
  */
 public final class SourceNamedQuery2_0Annotation
 	extends SourceNamedQueryAnnotation
 	implements NamedQuery2_0Annotation
 {
-	private final DeclarationAnnotationElementAdapter<String> lockModeDeclarationAdapter;
-	private final AnnotationElementAdapter<String> lockModeAdapter;
+	private DeclarationAnnotationElementAdapter<String> lockModeDeclarationAdapter;
+	private AnnotationElementAdapter<String> lockModeAdapter;
 	private LockModeType_2_0 lockMode;
 
-	// ********** constructors **********
+
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
-		this.lockModeDeclarationAdapter = this.buildLockModeTypeAdapter(daa);
-		this.lockModeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, this.lockModeDeclarationAdapter);
+		this.lockModeDeclarationAdapter = this.buildLockModeDeclarationAdapter();
+		this.lockModeAdapter = this.buildLockModeAdapter();
 	}
-	
+
 	public SourceNamedQuery2_0Annotation(JavaResourceNode parent, Type type) {
 		this(parent, type, DECLARATION_ANNOTATION_ADAPTER, new ElementAnnotationAdapter(type, DECLARATION_ANNOTATION_ADAPTER));
-	}
-	
-	private DeclarationAnnotationElementAdapter<String> buildLockModeTypeAdapter(DeclarationAnnotationAdapter daAdapter) {
-		return new EnumDeclarationAnnotationElementAdapter(daAdapter, this.getLockModeElementName());
 	}
 
 	private String getLockModeElementName() {
 		return JPA2_0.NAMED_QUERY__LOCK_MODE;
 	}
 
-	// ********** initialize/update **********
 	@Override
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.lockMode = this.buildLockMode(astRoot);
-	}
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		
-		NamedQuery2_0Annotation old = (NamedQuery2_0Annotation) oldAnnotation;
-		this.setLockMode(old.getLockMode());
 	}
 
 	@Override
@@ -82,10 +67,6 @@ public final class SourceNamedQuery2_0Annotation
 		this.syncLockMode(this.buildLockMode(astRoot));
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.lockMode);
-	}
 
 	// ********** NamedQuery2_0Annotation implementation **********
 
@@ -118,18 +99,49 @@ public final class SourceNamedQuery2_0Annotation
 		return this.elementTouches(this.lockModeDeclarationAdapter, pos, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildLockModeDeclarationAdapter() {
+		return new EnumDeclarationAnnotationElementAdapter(this.daa, this.getLockModeElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildLockModeAdapter() {
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.lockModeDeclarationAdapter);
+	}
+	
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.lockMode == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.lockModeDeclarationAdapter = this.buildLockModeDeclarationAdapter();
+		this.lockModeAdapter = this.buildLockModeAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(LOCK_MODE_PROPERTY, this.lockMode);
+		this.lockMode = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setLockMode((LockModeType_2_0) map.get(LOCK_MODE_PROPERTY));
+	}
+
 
 	// ********** static methods **********
 
 	static SourceNamedQuery2_0Annotation createNestedNamedQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
-
 		return new SourceNamedQuery2_0Annotation(parent, type, idaa, annotationAdapter);
 	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter namedQueriesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(namedQueriesAdapter, index, JPA.NAMED_QUERY);
-	}
-
 }

@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -65,11 +65,11 @@ public abstract class AbstractJavaResourceNode
 
 	@Override
 	protected final ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+		return new AspectChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	private CallbackChangeSupport.Listener buildChangeSupportListener() {
-		return new CallbackChangeSupport.Listener() {
+	private AspectChangeSupport.Listener buildChangeSupportListener() {
+		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractJavaResourceNode.this.aspectChanged(aspectName);
 			}

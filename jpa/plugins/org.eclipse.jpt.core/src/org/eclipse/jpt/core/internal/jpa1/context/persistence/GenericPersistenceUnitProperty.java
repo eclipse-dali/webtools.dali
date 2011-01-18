@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -47,7 +48,18 @@ public class GenericPersistenceUnitProperty
 	public XmlProperty getXmlProperty() {
 		return this.xmlProperty;
 	}
-	
+
+
+	// ********** synchronize **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.xmlProperty.getName());
+		this.setValue_(this.xmlProperty.getValue());
+	}
+
+
 	// ********** name **********
 
 	public String getName() {
@@ -55,12 +67,15 @@ public class GenericPersistenceUnitProperty
 	}
 
 	public void setName(String name) {
+		this.setName_(name);
+		this.xmlProperty.setName(name);
+	}
+
+	protected void setName_(String name) {
 		String old = this.name;
 		this.name = name;
-		if (attributeValueHasChanged(old, name)) {
-			this.xmlProperty.setName(name);
-			this.firePropertyChanged(NAME_PROPERTY, old, name);
-			getParent().propertyNameChanged(old, this.name, this.value);
+		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
+			this.getParent().propertyNameChanged(old, name, this.value);
 		}
 	}
 
@@ -72,29 +87,28 @@ public class GenericPersistenceUnitProperty
 	}
 
 	public void setValue(String value) {
+		this.setValue_(value);
+		this.xmlProperty.setValue(value);
+	}
+
+	protected void setValue_(String value) {
 		String old = this.value;
 		this.value = value;
-		if (attributeValueHasChanged(old, value)) {
-			this.xmlProperty.setValue(value);
-			this.firePropertyChanged(VALUE_PROPERTY, old, value);
-			getParent().propertyValueChanged(this.name, value);
+		if (this.firePropertyChanged(VALUE_PROPERTY, old, value)) {
+			this.getParent().propertyValueChanged(this.name, value);
 		}
 	}
 
 	protected String getValuePackageName() {
-		int packageEnd = this.value == null ? -1 : this.value.lastIndexOf('.');
-		if (packageEnd == -1 ) {
-			return null;
-		}
-		return this.value.substring(0, packageEnd);
+		return (this.value == null) ? null : this.getValuePackageName_();
 	}
 
-
-	// ********** updating **********
-
-	public void update() {
-		this.setName(this.xmlProperty.getName());
-		this.setValue(this.xmlProperty.getValue());
+	/**
+	 * pre-condition: {@link #value} is not <code>null</code>
+	 */
+	protected String getValuePackageName_() {
+		int lastPeriod = this.value.lastIndexOf('.');
+		return (lastPeriod == -1) ? null : this.value.substring(0, lastPeriod);
 	}
 
 
@@ -108,10 +122,9 @@ public class GenericPersistenceUnitProperty
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.getValue() != null && this.getValue().equals(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName));
-		}
-		return EmptyIterable.instance();
+		return Tools.valuesAreEqual(this.value, originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
@@ -119,18 +132,15 @@ public class GenericPersistenceUnitProperty
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.getValue() != null && this.getValue().equals(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
-		}
-		return EmptyIterable.instance();
+		return Tools.valuesAreEqual(this.value, originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		String packageName = getValuePackageName();
-		if (packageName != null && packageName.equals(originalPackage.getElementName())) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
+		return Tools.valuesAreEqual(this.getValuePackageName(), originalPackage.getElementName()) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
@@ -146,5 +156,4 @@ public class GenericPersistenceUnitProperty
 		sb.append(" = "); //$NON-NLS-1$
 		sb.append(this.value);
 	}
-
 }

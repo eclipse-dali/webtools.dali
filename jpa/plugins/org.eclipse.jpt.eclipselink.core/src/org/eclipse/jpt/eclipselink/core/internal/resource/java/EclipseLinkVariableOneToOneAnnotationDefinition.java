@@ -48,7 +48,7 @@ public class EclipseLinkVariableOneToOneAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullEclipseLinkVariableOneToOneAnnotation((JavaResourcePersistentAttribute) parent);
+		throw new UnsupportedOperationException();
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

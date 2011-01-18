@@ -29,7 +29,8 @@ public interface AttributeMapping2_0
 {
 	/**
 	 * Return the Canonical Metamodel field corresponding to the mapping.
-	 * Return null if the mapping is not to be part of the Canonical Metamodel.
+	 * Return <code>null</code> if the mapping is not to be part of the
+	 * Canonical Metamodel.
 	 */
 	MetamodelField getMetamodelField();
 
@@ -41,5 +42,4 @@ public interface AttributeMapping2_0
 	@SuppressWarnings("nls")
 	Iterable<String> STANDARD_METAMODEL_FIELD_MODIFIERS =
 		new ArrayIterable<String>(new String[] { "public", "static", "volatile" });
-
 }

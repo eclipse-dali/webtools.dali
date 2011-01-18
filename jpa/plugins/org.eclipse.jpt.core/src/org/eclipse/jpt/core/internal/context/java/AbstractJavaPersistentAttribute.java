@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,15 +19,16 @@ import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.internal.context.PersistentAttributeTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -41,43 +42,343 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * common state/behavior between Generic and EclipseLink persistent attributes
+ * Java persistent attributes
  */
 public abstract class AbstractJavaPersistentAttribute
 	extends AbstractJavaJpaContextNode
 	implements JavaPersistentAttribute2_0
 {
+	protected final JavaResourcePersistentAttribute resourcePersistentAttribute;
+
 	protected String name;
-
-	protected JavaAttributeMapping defaultMapping;
-
-	protected JavaAttributeMapping specifiedMapping;
 
 	protected AccessType defaultAccess;
 
-	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
+	protected JavaAttributeMapping mapping;  // never null
+	protected String defaultMappingKey;
 
 
 	protected AbstractJavaPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute resourcePersistentAttribute) {
 		super(parent);
 		this.resourcePersistentAttribute = resourcePersistentAttribute;
-		this.name = buildName();
-		this.defaultMapping = buildDefaultMapping();
-		this.specifiedMapping = buildSpecifiedMapping();
-		this.defaultAccess = buildDefaultAccess();
+		this.name = resourcePersistentAttribute.getName();
+
+		// this is determined directly from the resource model
+		this.defaultAccess = this.buildDefaultAccess();
+
+		// keep non-null at all times
+		this.mapping = this.buildMapping();
 	}
 
-	public void update() {
-		this.setName(this.buildName());
-		this.updateDefaultMapping();
-		this.updateSpecifiedMapping();
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName(this.resourcePersistentAttribute.getName());
+		// this is determined directly from the resource model
 		this.setDefaultAccess(this.buildDefaultAccess());
+		this.syncMapping();
 	}
 
 	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		getMapping().postUpdate();
+	public void update() {
+		super.update();
+		this.updateMapping();
+	}
+
+
+	// ********** name **********
+
+	public String getName() {
+		return this.name;
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+
+	// ********** access **********
+
+	/**
+	 * Subclasses determine the specified access.
+	 */
+	public AccessType getAccess() {
+		AccessType access = this.getSpecifiedAccess();
+		return (access != null) ? access : this.defaultAccess;
+	}
+
+	public abstract AccessType getSpecifiedAccess();
+
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
+	}
+
+	protected void setDefaultAccess(AccessType access) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = access;
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+	}
+
+	protected AccessType buildDefaultAccess() {
+		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
+	}
+
+
+	// ********** mapping **********
+
+	public JavaAttributeMapping getMapping() {
+		return this.mapping;
+	}
+
+	/**
+	 * Clients do not set the mapping directly.
+	 * @see #setMappingKey(String)
+	 */
+	protected void setMapping(JavaAttributeMapping mapping) {
+		JavaAttributeMapping old = this.mapping;
+		this.mapping = mapping;
+		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
+	}
+
+	public String getMappingKey() {
+		return this.mapping.getKey();
+	}
+
+	/**
+	 * Possible transitions:
+	 * <table border>
+	 * <th>
+	 * <th>null mapping/default<br>
+	 *     <code>key = null</code>
+	 * <th>specified mapping A<br>
+	 *     <code>key = "A"</code>
+	 * <th>specified mapping B<br>
+	 *     <code>key = "B"</code>
+	 * <tr>
+	 * <th>[default] null mapping
+	 *   <td>do nothing
+	 *   <td>add annotation A<br>
+	 *       set new mapping A
+	 *   <td>add annotation B<br>
+	 *       set new mapping B
+	 * <tr>
+	 * <th>default mapping A
+	 *   <td>do nothing
+	 *   <td>add annotation A<br>
+	 *       <em>re-use</em> default mapping A
+	 *   <td>add annotation B<br>
+	 *       set new mapping B
+	 * <tr>
+	 * <th>specified mapping A
+	 *   <td>remove annotation A<br>
+	 *       set new default or null mapping
+	 *   <td>do nothing
+	 *   <td>remove annotation A<br>
+	 *       add annotation B<br>
+	 *       set new mapping B
+	 * </table>
+	 * The "do nothing" transitions are handled in this method.
+	 */
+	public JavaAttributeMapping setMappingKey(String key) {
+		if (this.mapping.isDefault()) {
+			if (key == null) {
+				// leave the default mapping unchanged
+			} else {
+				this.setMappingKey_(key);  // replace the default mapping
+			}
+		} else {
+			if (this.valuesAreEqual(key, this.mapping.getKey())) {
+				// leave the specified mapping unchanged
+			} else {
+				this.setMappingKey_(key);  // replace the specified mapping
+			}
+		}
+		return this.mapping;
+	}
+
+	/**
+	 * We have either:<ul>
+	 * <li>a <em>default</em> mapping and a non-<code>null</code> key
+	 * </ul>or<ul>
+	 * <li>a <em>specified</em> mapping and a different (possibly
+	 *     <code>null</code>) key
+	 * </ul>
+	 */
+	protected void setMappingKey_(String key) {
+		JavaAttributeMappingDefinition definition = this.getSpecifiedMappingDefinition(key);
+		if (definition == null) {
+			// our mapping is "specified" and the key is null;
+			// check for a default definition
+			definition = this.getDefaultMappingDefinition();
+			Iterable<String> supportingAnnotationNames = (definition != null) ? definition.getSupportingAnnotationNames() : EmptyIterable.<String>instance();
+			// clear any mapping annotation(s);
+			// leave the "default" mapping's supporting annotations;
+			// if there is no "default" mapping, clear all supporting annotations too(?)
+			this.setMappingAnnotation(null, supportingAnnotationNames);
+		} else {
+			this.setMappingAnnotation(definition);
+		}
+		// note: 'definition' can still be null (if the key is null and there is no "default" mapping)
+		this.setMapping(this.buildMapping(definition));
+	}
+
+	/**
+	 * pre-condition: definition is not <code>null</code>
+	 */
+	protected void setMappingAnnotation(JavaAttributeMappingDefinition definition) {
+		this.setMappingAnnotation(definition.getAnnotationName(), definition.getSupportingAnnotationNames());
+	}
+
+	protected void setMappingAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
+		this.resourcePersistentAttribute.setPrimaryAnnotation(primaryAnnotationName, supportingAnnotationNames);
+	}
+
+	protected JavaAttributeMapping buildMapping(JavaAttributeMappingDefinition definition) {
+		return (definition == null) ? this.buildNullMapping() : this.buildMapping_(definition);
+	}
+
+	protected JavaAttributeMapping buildNullMapping() {
+		return this.getJpaFactory().buildJavaNullAttributeMapping(this);
+	}
+
+	/**
+	 * pre-condition: definition is not null
+	 * <p>
+	 * If we are converting a <em>default</em> mapping to its <em>specified</em>
+	 * manifestation, we just keep the same mapping and create its annotation.
+	 * We do <em>not</em> do the same thing when converting a <em>specified</em>
+	 * mapping to its <em>default</em> manifestation. We rebuild the
+	 * entire mapping, simplifying the clearing of all its state. We do this
+	 * because we allow clients to modify a <em>default</em> mapping (or any of
+	 * its components) directly,
+	 * modifying its state and triggering a conversion to a <em>specified</em>
+	 * mapping. The only way to convert a <em>specified</em> mapping to a
+	 * <em>default</em> mapping is by {@link #setMappingKey(String) setting the
+	 * mapping key} to <code>null</code>.
+	 */
+	protected JavaAttributeMapping buildMapping_(JavaAttributeMappingDefinition definition) {
+		// 'mapping' is null during construction
+		if ((this.mapping != null) && this.mapping.isDefault() && Tools.valuesAreEqual(this.mapping.getKey(), definition.getKey())) {
+			this.mapping.updateDefault();  // since nothing here changes, we need to update the mapping's flag
+			return this.mapping;
+		}
+		return definition.buildMapping(this, this.getJpaFactory());
+	}
+
+	/**
+	 * We only look for a <em>specified</em> mapping here.
+	 * We look for a default mapping during <em>update</em>.
+	 */
+	protected JavaAttributeMapping buildMapping() {
+		return this.buildMapping(this.getSpecifiedMappingDefinition());
+	}
+
+	/**
+	 * Look for a <em>specified</em> mapping and sync our mapping.
+	 */
+	protected void syncMapping() {
+		JavaAttributeMappingDefinition definition = this.getSpecifiedMappingDefinition();
+		if (definition == null) {
+			if (this.mapping.isDefault()) {
+				// null/default => null/default
+				this.mapping.synchronizeWithResourceModel();
+			} else {
+				// specified => null/default
+				definition = this.getDefaultMappingDefinition();
+				this.setMapping(this.buildMapping(definition));
+			}
+		} else {
+			if (this.mapping.isDefault()) {
+				// null/default => specified
+				this.setMapping(this.buildMapping(definition));
+			} else {
+				// specified => specified
+				if (this.valuesAreEqual(definition.getKey(), this.mapping.getKey())) {
+					this.mapping.synchronizeWithResourceModel();
+				} else {
+					this.setMapping(this.buildMapping(definition));
+				}
+			}
+		}
+	}
+
+	/**
+	 * Return the "specified" mapping definition for the specified key.
+	 */
+	protected JavaAttributeMappingDefinition getSpecifiedMappingDefinition(String key) {
+		if (key == null) {
+			return null;
+		}
+		for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
+			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+				return definition;
+			}
+		}
+		throw new IllegalArgumentException("invalid mapping key: " + key); //$NON-NLS-1$
+	}
+
+	/**
+	 * Return the mapping definition for the mapping currently specified in the
+	 * source code.
+	 */
+	protected JavaAttributeMappingDefinition getSpecifiedMappingDefinition() {
+		for (JavaAttributeMappingDefinition definition : this.getSpecifiedMappingDefinitions()) {
+			if (definition.isSpecified(this)) {
+				return definition;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<JavaAttributeMappingDefinition> getSpecifiedMappingDefinitions() {
+		return this.getJpaPlatform().getSpecifiedJavaAttributeMappingDefinitions();
+	}
+
+
+	// ********** default mapping **********
+
+	public String getDefaultMappingKey() {
+		return this.defaultMappingKey;
+	}
+
+	protected void setDefaultMappingKey(String mappingKey) {
+		String old = this.defaultMappingKey;
+		this.defaultMappingKey = mappingKey;
+		this.firePropertyChanged(DEFAULT_MAPPING_KEY_PROPERTY, old, mappingKey);
+	}
+
+	/**
+	 * If a mapping annotation is specified, we would have already set a
+	 * <em>specified</em> mapping in {@link #syncMapping()}. We need only check
+	 * for changes to the <em>default</em> mapping.
+	 */
+	protected void updateMapping() {
+		JavaAttributeMappingDefinition definition = this.getDefaultMappingDefinition();
+		String newDefaultKey = (definition == null) ? null : definition.getKey();
+		if (this.mapping.isDefault() && Tools.valuesAreDifferent(this.mapping.getKey(), newDefaultKey)) {
+			this.setMapping(this.buildMapping(definition));  // the default mapping has changed
+		} else {
+			this.mapping.update();
+		}
+		this.setDefaultMappingKey(newDefaultKey);
+	}
+
+	protected JavaAttributeMappingDefinition getDefaultMappingDefinition() {
+		for (DefaultJavaAttributeMappingDefinition definition : this.getDefaultMappingDefinitions()) {
+			if (definition.isDefault(this)) {
+				return definition;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<DefaultJavaAttributeMappingDefinition> getDefaultMappingDefinitions() {
+		return this.getJpaPlatform().getDefaultJavaAttributeMappingDefinitions();
 	}
 
 
@@ -104,117 +405,37 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public void dispose() {
-		//nothing to dispose
+		// nothing to dispose
 	}
 
 
-	// ********** AccessHolder implementation **********
+	// ********** type **********
 
-	public AccessType getAccess() {
-		AccessType access = this.getSpecifiedAccess();
-		return (access != null) ? access : this.getDefaultAccess();
-	}
-
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
-	}
-	
-	protected void setDefaultAccess(AccessType defaultAccess) {
-		AccessType old = this.defaultAccess;
-		this.defaultAccess = defaultAccess;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, defaultAccess);
-	}
-
-	protected AccessType buildDefaultAccess() {
-		return this.resourcePersistentAttribute.isField() ? AccessType.FIELD : AccessType.PROPERTY;
-	}
-
-
-	// ********** [Java]PersistentAttribute implementation **********
-
-	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.resourcePersistentAttribute;
-	}
-
-	public PersistentType getOwningPersistentType() {
-		return this.getParent();
-	}
-
-	public TypeMapping getOwningTypeMapping() {
-		return this.getOwningPersistentType().getMapping();
-	}
-
-	public String getPrimaryKeyColumnName() {
-		return this.getMapping().getPrimaryKeyColumnName();
-	}
-	
-	public String getTypeName() {
-		return this.resourcePersistentAttribute.getTypeName();
-	}
-
-	public boolean isVirtual() {
-		return false;
-	}
-
-	public boolean contains(int offset, CompilationUnit astRoot) {
-		TextRange fullTextRange = this.getFullTextRange(astRoot);
-		// 'fullTextRange' will be null if the attribute no longer exists in the java;
-		// the context model can be out of synch with the resource model
-		// when a selection event occurs before the context model has a
-		// chance to synch with the resource model via the update thread
-		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
-	}
-
-	protected TextRange getFullTextRange(CompilationUnit astRoot) {
-		return this.resourcePersistentAttribute.getTextRange(astRoot);
-	}
-
-	public Embeddable getEmbeddable() {
-		return (getTypeName() == null) ? 
-				null : this.getPersistenceUnit().getEmbeddable(getTypeName());
-	}
-
-	public boolean isField() {
-		return this.resourcePersistentAttribute.isField();
-	}
-
-	public boolean isProperty() {
-		return this.resourcePersistentAttribute.isProperty();
-	}
-
-	public boolean isPublic() {
-		return Modifier.isPublic(this.resourcePersistentAttribute.getModifiers());
-	}
-
-	public boolean isFinal() {
-		return Modifier.isFinal(this.resourcePersistentAttribute.getModifiers());
-	}
-
-	// ***** Basic defaults
 	/**
-	 * From the JPA spec, when the basic mapping applies:
+	 * From the JPA spec, when the basic mapping applies:<br>
 	 * If the type of the attribute (field or property) is one of the following
-	 * it must be mapped as @Basic:
-	 *     byte[]
-	 *     java.lang.Byte[]
-	 *     char[]
-	 *     java.lang.Character[]
-	 *     primitive types (except 'void')
-	 *     primitive wrappers (except 'java.lang.Void')
-	 *     java.lang.String
-	 *     java.math.BigInteger
-	 *     java.math.BigDecimal
-	 *     java.util.Date
-	 *     java.util.Calendar
-	 *     java.sql.Date
-	 *     java.sql.Time
-	 *     java.sql.Timestamp
-	 *     enums
-	 *     any other type that implements java.io.Serializable
+	 * it must be mapped as <code>@javax.persistence.Basic</code>:<ul>
+	 * <li><code>byte[]</code>
+	 * <li><code>java.lang.Byte[]</code>
+	 * <li><code>char[]</code>
+	 * <li><code>java.lang.Character[]</code>
+	 * <li>primitive types (except <code>void</code>)
+	 * <li>primitive wrappers (except <code>java.lang.Void</code>)
+	 * <li><code>java.lang.String</code>
+	 * <li><code>java.math.BigInteger</code>
+	 * <li><code>java.math.BigDecimal</code>
+	 * <li><code>java.util.Date</code>
+	 * <li><code>java.util.Calendar</code>
+	 * <li><code>java.sql.Date</code>
+	 * <li><code>java.sql.Time</code>
+	 * <li><code>java.sql.Timestamp</code>
+	 * <li><code>enum</code>s
+	 * <li>any other type that implements <code>java.io.Serializable</code>
+	 * </ul>
 	 */
 	public boolean typeIsBasic() {
 		// 'typeName' may include array brackets but not generic type arguments
-		String typeName = getTypeName();
+		String typeName = this.getTypeName();
 		if (typeName == null) {
 			return false;
 		}
@@ -250,11 +471,12 @@ public abstract class AbstractJavaPersistentAttribute
 
 	/**
 	 * Return whether the specified type is a valid element type for
-	 * a one-dimensional array that can default to a Basic mapping:
-	 *     byte
-	 *     char
-	 *     java.lang.Byte
-	 *     java.lang.Character
+	 * a one-dimensional array that can default to a basic mapping:<ul>
+	 * <li><code>byte</code>
+	 * <li><code>java.lang.Byte</code>
+	 * <li><code>char</code>
+	 * <li><code>java.lang.Character</code>
+	 * </ul>
 	 */
 	protected boolean elementTypeIsValidForBasicArray(String elementTypeName) {
 		return ArrayTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
@@ -269,7 +491,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 	/**
 	 * Return whether the specified type is among the various "other" types
-	 * that can default to a Basic mapping.
+	 * that can default to a basic mapping.
 	 */
 	protected boolean typeIsOtherValidBasicType(String typeName) {
 		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
@@ -288,11 +510,10 @@ public abstract class AbstractJavaPersistentAttribute
 
 	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
-	// ***** reference entities
 	public String getSingleReferenceTargetTypeName() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
-		String typeName = getTypeName();
+		String typeName = this.getTypeName();
 		if (typeName == null) {
 			return null;
 		}
@@ -306,208 +527,96 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	public String getMultiReferenceTargetTypeName() {
-		return this.getJpaContainer().getMultiReferenceTargetTypeName(this.resourcePersistentAttribute);
+		return this.getJpaContainerDefinition().getMultiReferenceTargetTypeName(this.resourcePersistentAttribute);
 	}
 
 	public String getMultiReferenceMapKeyTypeName() {
-		return this.getJpaContainer().getMultiReferenceMapKeyTypeName(this.resourcePersistentAttribute);
+		return this.getJpaContainerDefinition().getMultiReferenceMapKeyTypeName(this.resourcePersistentAttribute);
 	}
-	
+
 	/**
 	 * return whether the specified type is one of the container
 	 * types allowed by the JPA spec
 	 */
 	protected boolean typeIsContainer(String typeName) {
-		return this.getJpaContainer(typeName).isContainer();
-	}
-
-	// ***** name
-	public String getName() {
-		return this.name;
-	}
-
-	protected void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
-	}
-
-	protected String buildName() {
-		return this.resourcePersistentAttribute.getName();
-	}
-
-	// ***** mapping
-	public JavaAttributeMapping getMapping() {
-		return (this.specifiedMapping != null) ? this.specifiedMapping : this.defaultMapping;
-	}
-
-	public String getMappingKey() {
-		return this.getMapping().getKey();
+		return this.getJpaContainerDefinition(typeName).isContainer();
 	}
 
 
-	// ***** default mapping
-	public JavaAttributeMapping getDefaultMapping() {
-		return this.defaultMapping;
-	}
-
-	/**
-	 * clients do not set the "default" mapping
-	 */
-	protected void setDefaultMapping(JavaAttributeMapping defaultMapping) {
-		JavaAttributeMapping old = this.defaultMapping;
-		this.defaultMapping = defaultMapping;
-		this.firePropertyChanged(DEFAULT_MAPPING_PROPERTY, old, defaultMapping);
-	}
-
-	protected JavaAttributeMapping buildDefaultMapping() {
-		JavaAttributeMappingDefinition mappingDefinition = 
-			getJpaPlatform().getDefaultJavaAttributeMappingDefinition(this);
-		return buildDefaultMapping(mappingDefinition);
-	}
-	
-	protected JavaAttributeMapping buildDefaultMapping(JavaAttributeMappingDefinition mappingDefinition) {
-		Annotation annotation = this.resourcePersistentAttribute.
-				buildNullAnnotation(mappingDefinition.getAnnotationName());
-		JavaAttributeMapping mapping = mappingDefinition.buildMapping(this, getJpaFactory());
-		mapping.initialize(annotation);
-		return mapping;
-	}
-	
-	/**
-	 * return null if there is no "default" mapping for the attribute
-	 */
-	public String getDefaultMappingKey() {
-		return this.defaultMapping.getKey();
-	}
-
-	/**
-	 * the mapping might be "default", but it still might be a "null" mapping...
-	 */
-	public boolean mappingIsDefault(JavaAttributeMapping mapping) {
-		return this.defaultMapping == mapping;
-	}
-
-	protected void updateDefaultMapping() {
-		// There will always be a mapping definition, even if it is a "null" mapping definition ...
-		JavaAttributeMappingDefinition mappingDefinition = 
-				getJpaPlatform().getDefaultJavaAttributeMappingDefinition(this);
-		String mappingKey = mappingDefinition.getKey();
-		if (this.valuesAreEqual(this.defaultMapping.getKey(), mappingKey)) {
-			this.defaultMapping.update(this.resourcePersistentAttribute.
-					buildNullAnnotation(mappingDefinition.getAnnotationName()));
-		} 
-		else {
-			setDefaultMapping(buildDefaultMapping(mappingDefinition));
-		}
-	}
-
-	// ***** specified mapping
-	public JavaAttributeMapping getSpecifiedMapping() {
-		return this.specifiedMapping;
-	}
-
-	/**
-	 * clients do not set the "specified" mapping;
-	 * @see #setSpecifiedMappingKey(String)
-	 */
-	protected void setSpecifiedMapping(JavaAttributeMapping specifiedMapping) {
-		JavaAttributeMapping old = this.specifiedMapping;
-		this.specifiedMapping = specifiedMapping;
-		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, old, specifiedMapping);
-	}
-
-	protected JavaAttributeMapping buildSpecifiedMapping() {
-		JavaAttributeMappingDefinition mappingDefinition = 
-				getJpaPlatform().getSpecifiedJavaAttributeMappingDefinition(this);
-		return buildSpecifiedMapping(mappingDefinition);
-	}
-	
-	protected JavaAttributeMapping buildSpecifiedMapping(JavaAttributeMappingDefinition mappingDefinition) {
-		Annotation annotation = this.resourcePersistentAttribute.
-				getAnnotation(mappingDefinition.getAnnotationName());
-		JavaAttributeMapping mapping = mappingDefinition.buildMapping(this, getJpaFactory());
-		// specified mappings may be null
-		if (mapping != null) {
-			mapping.initialize(annotation);
-		}
-		return mapping;
-	}
-	
-	/**
-	 * return the key of the currently specified mapping or null 
-	 * if there is no specified mapping for the attribute
-	 */
-	protected String getSpecifiedMappingKey() {
-		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getKey();
-	}
-
-	// TODO support morphing mappings, i.e. copying common settings over
-	// to the new mapping; this can't be done in the same was as XmlAttributeMapping
-	// since we don't know all the possible mapping types
-	public void setSpecifiedMappingKey(String key) {
-		if (Tools.valuesAreEqual(key, this.getSpecifiedMappingKey())) {
-			return;
-		}
-		JavaAttributeMapping old = this.specifiedMapping;
-		JavaAttributeMapping newMapping = this.buildMappingFromMappingKey(key);
-		
-		this.specifiedMapping = newMapping;
-		
-		String newAnnotation = (newMapping == null) ? null : newMapping.getAnnotationName();
-		JavaAttributeMapping mapping = (newMapping == null) ? this.defaultMapping : newMapping;
-		this.resourcePersistentAttribute.setPrimaryAnnotation(newAnnotation, mapping.getSupportingAnnotationNames());
-		this.firePropertyChanged(SPECIFIED_MAPPING_PROPERTY, old, newMapping);
-	}
-	protected static final String[] EMPTY_STRING_ARRAY = new String[0];
-	
-	/**
-	 * return the annotation name of the currently specified mapping or null 
-	 * if there is no specified mapping for the attribute
-	 */
-	protected String getSpecifiedMappingAnnotationName() {
-		return (this.specifiedMapping == null) ? null : this.specifiedMapping.getAnnotationName();
-	}
-	
-	protected JavaAttributeMapping buildMappingFromMappingKey(String key) {
-		JavaAttributeMappingDefinition mappingDefinition = getJpaPlatform().getSpecifiedJavaAttributeMappingDefinition(key);
-		JavaAttributeMapping mapping = mappingDefinition.buildMapping(this, getJpaFactory());
-		//no mapping.initialize(JavaResourcePersistentAttribute) call here
-		//we do not yet have a mapping annotation so we can't call initialize
-		return mapping;
-	}
-
-	protected Iterable<String> getSupportingAnnotationNames() {
-		JavaAttributeMapping mapping = this.getMapping();
-		return (mapping != null) ? mapping.getSupportingAnnotationNames() : EmptyIterable.<String>instance();
-	}
-
-	protected void updateSpecifiedMapping() {
-		// There will always be a mapping definition, even if it is a "null" mapping provider ...
-		JavaAttributeMappingDefinition mappingDefinition = 
-				getJpaPlatform().getSpecifiedJavaAttributeMappingDefinition(this);
-		String mappingKey = mappingDefinition.getKey();
-		if (this.specifiedMapping != null
-				&& this.specifiedMapping.getKey().equals(mappingKey)) {
-			this.specifiedMapping.update(this.resourcePersistentAttribute.
-					getAnnotation(mappingDefinition.getAnnotationName()));
-		} 
-		else {
-			setSpecifiedMapping(buildSpecifiedMapping(mappingDefinition));
-		}
-	}
-
-
-	// ********** misc overrides **********
+	// ********** misc **********
 
 	@Override
 	public PersistentType getParent() {
 		return (PersistentType) super.getParent();
 	}
 
+	public PersistentType getOwningPersistentType() {
+		return this.getParent();
+	}
+
+	public TypeMapping getOwningTypeMapping() {
+		return this.getOwningPersistentType().getMapping();
+	}
+
+	public JavaPersistentAttribute getJavaPersistentAttribute() {
+		return this;
+	}
+
+	public JavaResourcePersistentAttribute getResourcePersistentAttribute() {
+		return this.resourcePersistentAttribute;
+	}
+
+	public String getPrimaryKeyColumnName() {
+		return this.getMapping().getPrimaryKeyColumnName();
+	}
+
+	public String getTypeName() {
+		return this.resourcePersistentAttribute.getTypeName();
+	}
+
+	/**
+	 * Java attributes always correspond to attributes in the source code.
+	 */
+	public boolean isVirtual() {
+		return false;
+	}
+
+	public boolean contains(int offset, CompilationUnit astRoot) {
+		TextRange fullTextRange = this.getFullTextRange(astRoot);
+		// 'fullTextRange' will be null if the attribute no longer exists in the java;
+		// the context model can be out of synch with the resource model
+		// when a selection event occurs before the context model has a
+		// chance to synch with the resource model via the update thread
+		return (fullTextRange == null) ? false : fullTextRange.includes(offset);
+	}
+
+	protected TextRange getFullTextRange(CompilationUnit astRoot) {
+		return this.resourcePersistentAttribute.getTextRange(astRoot);
+	}
+
+	public Embeddable getEmbeddable() {
+		String typeName = this.getTypeName();
+		return (typeName == null) ? null : this.getPersistenceUnit().getEmbeddable(typeName);
+	}
+
+	public boolean isField() {
+		return this.resourcePersistentAttribute.isField();
+	}
+
+	public boolean isProperty() {
+		return this.resourcePersistentAttribute.isProperty();
+	}
+
+	public boolean isPublic() {
+		return Modifier.isPublic(this.resourcePersistentAttribute.getModifiers());
+	}
+
+	public boolean isFinal() {
+		return Modifier.isFinal(this.resourcePersistentAttribute.getModifiers());
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
-		super.toString(sb);
 		sb.append(this.name);
 	}
 
@@ -524,12 +633,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 		this.validateAttribute(messages, reporter, astRoot);
 
-		if (this.specifiedMapping != null) {
-			this.specifiedMapping.validate(messages, reporter, astRoot);
-		}
-		else if (this.defaultMapping != null) {
-			this.defaultMapping.validate(messages, reporter, astRoot);
-		}
+		this.getMapping().validate(messages, reporter, astRoot);
 	}
 
 	protected void validateAttribute(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -554,18 +658,19 @@ public abstract class AbstractJavaPersistentAttribute
 		return this.getMapping().javaCompletionProposals(pos, filter, astRoot);
 	}
 
+
 	// ********** metamodel **********
 
 	public String getMetamodelContainerFieldTypeName() {
-		return this.getJpaContainer().getMetamodelContainerFieldTypeName();
+		return this.getJpaContainerDefinition().getMetamodelContainerFieldTypeName();
 	}
 
 	public String getMetamodelContainerFieldMapKeyTypeName() {
-		return this.getJpaContainer().getMetamodelContainerFieldMapKeyTypeName((CollectionMapping) this.getMapping());
+		return this.getJpaContainerDefinition().getMetamodelContainerFieldMapKeyTypeName((CollectionMapping) this.getMapping());
 	}
 
 	public String getMetamodelTypeName() {
-		String typeName = getTypeName();
+		String typeName = this.getTypeName();
 		if (typeName == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
@@ -574,50 +679,58 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 		return typeName;
 	}
-	
-	
-	// ********** JPA containers **********
 
-	public JpaContainer getJpaContainer() {
+
+	// ********** JPA container definition **********
+
+	public JpaContainerDefinition getJpaContainerDefinition() {
 		// 'typeName' may include array brackets ("[]")
 		// but not generic type arguments (e.g. "<java.lang.String>")
-		return getJpaContainer(this.resourcePersistentAttribute.getTypeName());
+		return this.getJpaContainerDefinition(this.resourcePersistentAttribute.getTypeName());
 	}
+
 	/**
-	 * Return the JPA container corresponding to the specified type;
-	 * return a "null" JPA container if the specified type is not one of the
+	 * Return the JPA container definition corresponding to the specified type;
+	 * return a "null" definition if the specified type is not one of the
 	 * container types allowed by the JPA spec.
 	 */
-	protected JpaContainer getJpaContainer(String typeName) {
-		for (JpaContainer jpaContainer : JPA_CONTAINERS) {
-			if (jpaContainer.getTypeName().equals(typeName)) {
-				return jpaContainer;
+	protected JpaContainerDefinition getJpaContainerDefinition(String typeName) {
+		for (JpaContainerDefinition definition : this.getJpaContainerDefinitions()) {
+			if (definition.getTypeName().equals(typeName)) {
+				return definition;
 			}
 		}
-		return JpaContainer.Null.instance();
+		return JpaContainerDefinition.Null.instance();
 	}
 
-	protected static final Iterable<JpaContainer> JPA_CONTAINERS =
-		new ArrayIterable<JpaContainer>(new JpaContainer[] {
-			new CollectionJpaContainer(java.util.Collection.class, JPA2_0.COLLECTION_ATTRIBUTE),
-			new CollectionJpaContainer(java.util.Set.class, JPA2_0.SET_ATTRIBUTE),
-			new CollectionJpaContainer(java.util.List.class, JPA2_0.LIST_ATTRIBUTE),
-			new MapJpaContainer(java.util.Map.class, JPA2_0.MAP_ATTRIBUTE)
-		});
+	protected Iterable<JpaContainerDefinition> getJpaContainerDefinitions() {
+		return JPA_CONTAINER_DEFINITIONS;
+	}
+
+	protected static final JpaContainerDefinition[] JPA_CONTAINER_DEFINITION_ARRAY = new JpaContainerDefinition[] {
+		new CollectionJpaContainerDefinition(java.util.Collection.class, JPA2_0.COLLECTION_ATTRIBUTE),
+		new CollectionJpaContainerDefinition(java.util.Set.class, JPA2_0.SET_ATTRIBUTE),
+		new CollectionJpaContainerDefinition(java.util.List.class, JPA2_0.LIST_ATTRIBUTE),
+		new MapJpaContainerDefinition(java.util.Map.class, JPA2_0.MAP_ATTRIBUTE)
+	};
+
+	protected static final Iterable<JpaContainerDefinition> JPA_CONTAINER_DEFINITIONS = new ArrayIterable<JpaContainerDefinition>(JPA_CONTAINER_DEFINITION_ARRAY);
 
 
 	/**
-	 * Abstract JPA container
+	 * Abstract JPA container definition
 	 */
-	protected abstract static class AbstractJpaContainer implements JpaContainer {
+	protected abstract static class AbstractJpaContainerDefinition
+		implements JpaContainerDefinition
+	{
 		protected final String typeName;
 		protected final String metamodelContainerFieldTypeName;
 
-		protected AbstractJpaContainer(Class<?> containerClass, String metamodelContainerFieldTypeName) {
+		protected AbstractJpaContainerDefinition(Class<?> containerClass, String metamodelContainerFieldTypeName) {
 			this(containerClass.getName(), metamodelContainerFieldTypeName);
 		}
 
-		protected AbstractJpaContainer(String typeName, String metamodelContainerFieldTypeName) {
+		protected AbstractJpaContainerDefinition(String typeName, String metamodelContainerFieldTypeName) {
 			super();
 			if ((typeName == null) || (metamodelContainerFieldTypeName == null)) {
 				throw new NullPointerException();
@@ -641,10 +754,12 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	/**
-	 * Collection JPA container
+	 * Collection JPA container definition
 	 */
-	protected static class CollectionJpaContainer extends AbstractJpaContainer {
-		protected CollectionJpaContainer(Class<?> collectionClass, String staticMetamodelTypeDeclarationTypeName) {
+	protected static class CollectionJpaContainerDefinition
+		extends AbstractJpaContainerDefinition
+	{
+		protected CollectionJpaContainerDefinition(Class<?> collectionClass, String staticMetamodelTypeDeclarationTypeName) {
 			super(collectionClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
@@ -668,10 +783,12 @@ public abstract class AbstractJavaPersistentAttribute
 	}
 
 	/**
-	 * Map JPA container
+	 * Map JPA container definition
 	 */
-	protected static class MapJpaContainer extends AbstractJpaContainer {
-		protected MapJpaContainer(Class<?> mapClass, String staticMetamodelTypeDeclarationTypeName) {
+	protected static class MapJpaContainerDefinition
+		extends AbstractJpaContainerDefinition
+	{
+		protected MapJpaContainerDefinition(Class<?> mapClass, String staticMetamodelTypeDeclarationTypeName) {
 			super(mapClass, staticMetamodelTypeDeclarationTypeName);
 		}
 
@@ -683,8 +800,8 @@ public abstract class AbstractJavaPersistentAttribute
 
 		public String getMultiReferenceMapKeyTypeName(JavaResourcePersistentAttribute resourcePersistentAttribute) {
 			return (resourcePersistentAttribute.typeTypeArgumentNamesSize() == 2) ?
-				resourcePersistentAttribute.getTypeTypeArgumentName(0) :
-				null;
+						resourcePersistentAttribute.getTypeTypeArgumentName(0) :
+						null;
 		}
 
 		public String getMetamodelContainerFieldMapKeyTypeName(CollectionMapping mapping) {

@@ -51,7 +51,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableMapping, XmlOrderable, XmlMultiRelationshipMapping_2_0
+public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlMappedByMapping, XmlJoinTableContainer, XmlOrderable, XmlMultiRelationshipMapping_2_0
 {
 	/**
 	 * The default value of the '{@link #getMappedBy() <em>Mapped By</em>}' attribute.
@@ -247,7 +247,7 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableContainer_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -903,11 +903,11 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlJoinTableMapping.class)
+		if (baseClass == XmlJoinTableContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				case OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_CONTAINER__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -966,11 +966,11 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlJoinTableMapping.class)
+		if (baseClass == XmlJoinTableContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_JOIN_TABLE_CONTAINER__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_MULTI_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
@@ -1039,7 +1039,19 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	public TextRange getMappedByTextRange() {
 		return getAttributeTextRange(JPA.MAPPED_BY);
 	}
-	
+
+
+	// ********** refactoring **********
+
+	public ReplaceEdit createRenameMapKeyClassEdit(IType originalType, String newName) {
+		return getMapKeyClass().createRenameEdit(originalType, newName);
+	}
+
+	public ReplaceEdit createRenameMapKeyClassPackageEdit(String newName) {
+		return getMapKeyClass().createRenamePackageEdit(newName);		
+	}
+
+
 	// ********** translators **********
 	
 	protected static Translator buildOrderByTranslator() {
@@ -1079,22 +1091,10 @@ public abstract class AbstractXmlMultiRelationshipMapping extends AbstractXmlRel
 	}
 
 	protected static Translator buildJoinTableTranslator() {
-		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableContainer_JoinTable());
 	}
 
 	protected static Translator buildOrderColumnTranslator() {
 		return XmlOrderColumn.buildTranslator(JPA2_0.ORDER_COLUMN, OrmV2_0Package.eINSTANCE.getXmlOrderable_2_0_OrderColumn());
 	}
-
-
-	// ********** refactoring **********
-
-	public ReplaceEdit createRenameMapKeyClassEdit(IType originalType, String newName) {
-		return getMapKeyClass().createRenameEdit(originalType, newName);
-	}
-
-	public ReplaceEdit createRenameMapKeyClassPackageEdit(String newName) {
-		return getMapKeyClass().createRenamePackageEdit(newName);		
-	}
-
 }

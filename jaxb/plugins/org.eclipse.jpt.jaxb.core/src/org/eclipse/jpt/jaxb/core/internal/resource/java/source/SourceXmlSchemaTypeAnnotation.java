@@ -86,13 +86,11 @@ public class SourceXmlSchemaTypeAnnotation
 	
 	
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(
-				daa, JAXB.XML_SCHEMA_TYPE__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_SCHEMA_TYPE__NAME);
 	}
 	
 	private DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(
-				daa, JAXB.XML_SCHEMA_TYPE__NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_SCHEMA_TYPE__NAMESPACE);
 	}
 	
 	private DeclarationAnnotationElementAdapter<String> buildTypeAdapter(DeclarationAnnotationAdapter daa) {
@@ -105,7 +103,7 @@ public class SourceXmlSchemaTypeAnnotation
 			ExpressionConverter<String> converter) {
 		
 		return new ConversionDeclarationAnnotationElementAdapter<String>(
-				annotationAdapter, elementName, false, converter);
+				annotationAdapter, elementName, converter);
 	}
 	
 	protected AnnotationElementAdapter<String> buildAnnotationElementAdapter(

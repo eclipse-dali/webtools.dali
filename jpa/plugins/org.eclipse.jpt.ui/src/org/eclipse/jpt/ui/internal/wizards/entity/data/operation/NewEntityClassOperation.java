@@ -52,6 +52,7 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
@@ -408,7 +409,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 					entity.getIdClassReference().setSpecifiedIdClassName(model.getIdClassName());
 				}
 				for (String fieldName : model.getPKFields()) {
-					persistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
+					persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 				}
 
 				persistentType.setSpecifiedAccess(getModelAccessType(model));
@@ -453,7 +454,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 				}
 				
 				for (String fieldName : model.getPKFields()) {
-					persistentType.addSpecifiedAttribute(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY, fieldName);
+					persistentType.getAttributeNamed(fieldName).convertToSpecified(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 				}
 
 				persistentType.setSpecifiedAccess(getModelAccessType(model));

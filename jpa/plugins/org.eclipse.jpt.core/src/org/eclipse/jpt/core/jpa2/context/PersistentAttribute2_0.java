@@ -12,7 +12,8 @@ package org.eclipse.jpt.core.jpa2.context;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 
 /**
- * JPA 2.0 persistent attribute (field or property)
+ * JPA 2.0
+ * Context persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,23 +25,7 @@ import org.eclipse.jpt.core.context.PersistentAttribute;
  * @since 2.3
  */
 public interface PersistentAttribute2_0
-	extends PersistentAttribute
+	extends PersistentAttribute, ReadOnlyPersistentAttribute2_0
 {
-	/**
-	 * Return the name of the container type to be used in the metamodel field
-	 * declaration corresponding to the attribute's mapping.
-	 */
-	String getMetamodelContainerFieldTypeName();
-
-	/**
-	 * Return the name of the container map key type to be used in the
-	 * metamodel field declaration corresponding to the attribute's mapping.
-	 * Return null if the attribute's type is not {@link java.util.Map}.
-	 */
-	String getMetamodelContainerFieldMapKeyTypeName();
-
-	/**
-	 * Return the attribute's type name for the metamodel.
-	 */
-	String getMetamodelTypeName();
+	// combine various interfaces
 }

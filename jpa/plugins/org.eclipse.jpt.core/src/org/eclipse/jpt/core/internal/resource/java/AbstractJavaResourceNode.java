@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -36,6 +36,10 @@ public abstract class AbstractJavaResourceNode
 
 
 	// ********** parent **********
+
+	public JavaResourceNode getParent() {
+		return this.parent;
+	}
 
 	protected void checkParent(JavaResourceNode p) {
 		if (p == null) {
@@ -62,11 +66,11 @@ public abstract class AbstractJavaResourceNode
 
 	@Override
 	protected final ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+		return new AspectChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	private CallbackChangeSupport.Listener buildChangeSupportListener() {
-		return new CallbackChangeSupport.Listener() {
+	private AspectChangeSupport.Listener buildChangeSupportListener() {
+		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractJavaResourceNode.this.aspectChanged(aspectName);
 			}
@@ -97,10 +101,9 @@ public abstract class AbstractJavaResourceNode
 	}
 
 
-	// ********** convenience methods **********
+	// ********** misc **********
 
 	protected JpaAnnotationProvider getAnnotationProvider() {
 		return this.getRoot().getAnnotationProvider();
 	}
-
 }

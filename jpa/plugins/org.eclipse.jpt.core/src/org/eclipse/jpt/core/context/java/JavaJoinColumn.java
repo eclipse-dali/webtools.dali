@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 
 /**
  * Java join column
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,21 +27,14 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 public interface JavaJoinColumn
 	extends JoinColumn, JavaBaseJoinColumn, JavaBaseColumn
 {
-	/**
-	 * Initialize the join column from the specified annotation.
-	 */
-	void initialize(JoinColumnAnnotation joinColumnAnnotation);
+	JoinColumnAnnotation getColumnAnnotation();
 
-	/**
-	 * Update the join column from the specified annotation.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(JoinColumnAnnotation joinColumnAnnotation);
-	
+
+	// ********** owner **********
+
 	interface Owner
 		extends JoinColumn.Owner, JavaBaseJoinColumn.Owner, JavaBaseColumn.Owner
 	{
-		// nothing?
+		// combine interfaces
 	}
-
 }

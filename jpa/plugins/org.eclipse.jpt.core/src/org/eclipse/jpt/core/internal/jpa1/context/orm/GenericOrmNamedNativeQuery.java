@@ -1,73 +1,85 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
-import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmNamedNativeQuery;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 
-
-public class GenericOrmNamedNativeQuery extends AbstractOrmQuery<XmlNamedNativeQuery>
+/**
+ * <code>orm.xml</code> named native query
+ */
+public class GenericOrmNamedNativeQuery
+	extends AbstractOrmQuery<XmlNamedNativeQuery>
 	implements OrmNamedNativeQuery
 {
-
 	protected String resultClass;
 
 	protected String resultSetMapping;
 
 
-	public GenericOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery resourceQuery) {
-		super(parent, resourceQuery);
+	public GenericOrmNamedNativeQuery(XmlContextNode parent, XmlNamedNativeQuery xmlNamedNativeQuery) {
+		super(parent, xmlNamedNativeQuery);
+		this.resultClass = xmlNamedNativeQuery.getResultClass();
+		this.resultSetMapping = xmlNamedNativeQuery.getResultSetMapping();
 	}
-	
-	public char getResultClassEnclosingTypeSeparator() {
-		return '$';
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setResultClass_(this.xmlQuery.getResultClass());
+		this.setResultSetMapping_(this.xmlQuery.getResultSetMapping());
 	}
-	
+
+
+	// ********** result class **********
+
 	public String getResultClass() {
 		return this.resultClass;
 	}
 
-	public void setResultClass(String newResultClass) {
-		String oldResultClass = this.resultClass;
-		this.resultClass = newResultClass;
-		getResourceQuery().setResultClass(newResultClass);
-		firePropertyChanged(NamedNativeQuery.RESULT_CLASS_PROPERTY, oldResultClass, newResultClass);
+	public void setResultClass(String resultClass) {
+		this.setResultClass_(resultClass);
+		this.xmlQuery.setResultClass(resultClass);
 	}
+
+	protected void setResultClass_(String resultClass) {
+		String old = this.resultClass;
+		this.resultClass = resultClass;
+		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, resultClass);
+	}
+
+	public char getResultClassEnclosingTypeSeparator() {
+		return '$';
+	}
+
+
+	// ********** result set mapping **********
 
 	public String getResultSetMapping() {
 		return this.resultSetMapping;
 	}
 
-	public void setResultSetMapping(String newResultSetMapping) {
-		String oldResultSetMapping = this.resultSetMapping;
-		this.resultSetMapping = newResultSetMapping;
-		getResourceQuery().setResultSetMapping(newResultSetMapping);
-		firePropertyChanged(NamedNativeQuery.RESULT_SET_MAPPING_PROPERTY, oldResultSetMapping, newResultSetMapping);
+	public void setResultSetMapping(String resultSetMapping) {
+		this.setResultSetMapping_(resultSetMapping);
+		this.xmlQuery.setResultSetMapping(resultSetMapping);
 	}
 
-
-	@Override
-	protected void initialize(XmlNamedNativeQuery resourceQuery) {
-		super.initialize(resourceQuery);
-		this.resultClass = resourceQuery.getResultClass();
-		this.resultSetMapping = resourceQuery.getResultSetMapping();
-	}
-	
-	@Override
-	public void update(XmlNamedNativeQuery resourceQuery) {
-		super.update(resourceQuery);
-		this.setResultClass(resourceQuery.getResultClass());
-		this.setResultSetMapping(resourceQuery.getResultSetMapping());
+	protected void setResultSetMapping_(String resultSetMapping) {
+		String old = this.resultSetMapping;
+		this.resultSetMapping = resultSetMapping;
+		this.firePropertyChanged(RESULT_SET_MAPPING_PROPERTY, old, resultSetMapping);
 	}
 
 }

@@ -3,169 +3,180 @@
  * This program and the accompanying materials are made available under the terms of
  * the Eclipse Public License v1.0, which accompanies this distribution and is available at
  * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
-public class GenericJavaDiscriminatorColumn extends AbstractJavaNamedColumn<DiscriminatorColumnAnnotation>
+/**
+ * Java discriminator column
+ */
+public class GenericJavaDiscriminatorColumn
+	extends AbstractJavaNamedColumn<DiscriminatorColumnAnnotation, JavaDiscriminatorColumn.Owner>
 	implements JavaDiscriminatorColumn
 {
-
 	protected DiscriminatorType specifiedDiscriminatorType;
-
 	protected DiscriminatorType defaultDiscriminatorType;
-	
+
 	protected Integer specifiedLength;
-	
 	protected int defaultLength;
-	
+
+
 	public GenericJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner) {
 		super(parent, owner);
+		this.specifiedDiscriminatorType = this.buildSpecifiedDiscriminatorType();
+		this.specifiedLength = this.buildSpecifiedLength();
 	}
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public void initialize(DiscriminatorColumnAnnotation column) {
-		super.initialize(column);
-		this.defaultDiscriminatorType = this.buildDefaultDiscriminatorType();
-		this.defaultLength = this.buildDefaultLength();
-		this.specifiedDiscriminatorType = this.getResourceDiscriminatorType();
-		this.specifiedLength = this.getResourceLength();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedDiscriminatorType_(this.buildSpecifiedDiscriminatorType());
+		this.setSpecifiedLength_(this.buildSpecifiedLength());
 	}
-	
+
 	@Override
-	public JavaDiscriminatorColumn.Owner getOwner() {
-		return (JavaDiscriminatorColumn.Owner) super.getOwner();
+	public void update() {
+		super.update();
+		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
+		this.setDefaultLength(this.buildDefaultLength());
 	}
-	
-	public boolean isResourceSpecified() {
-		return getResourceColumn().isSpecified();
+
+
+	// ********** column annotation **********
+
+	@Override
+	public DiscriminatorColumnAnnotation getColumnAnnotation() {
+		return (DiscriminatorColumnAnnotation) this.getResourcePersistentType().getNonNullAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
 	}
-	
+
+	@Override
+	protected void removeColumnAnnotation() {
+		this.getResourcePersistentType().removeAnnotation(DiscriminatorColumnAnnotation.ANNOTATION_NAME);
+	}
+
+
+	// ********** discriminator type **********
+
 	public DiscriminatorType getDiscriminatorType() {
-		return (this.getSpecifiedDiscriminatorType() == null) ? this.getDefaultDiscriminatorType() : this.getSpecifiedDiscriminatorType();
+		return (this.specifiedDiscriminatorType != null) ? this.specifiedDiscriminatorType : this.defaultDiscriminatorType;
+	}
+
+	public DiscriminatorType getSpecifiedDiscriminatorType() {
+		return this.specifiedDiscriminatorType;
+	}
+
+	public void setSpecifiedDiscriminatorType(DiscriminatorType discriminatorType) {
+		if (this.valuesAreDifferent(this.specifiedDiscriminatorType, discriminatorType)) {
+			this.getColumnAnnotation().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(discriminatorType));
+			this.removeColumnAnnotationIfUnset();
+			this.setSpecifiedDiscriminatorType_(discriminatorType);
+		}
+	}
+
+	protected void setSpecifiedDiscriminatorType_(DiscriminatorType discriminatorType) {
+		DiscriminatorType old = this.specifiedDiscriminatorType;
+		this.specifiedDiscriminatorType = discriminatorType;
+		this.firePropertyChanged(SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
+	}
+
+	protected DiscriminatorType buildSpecifiedDiscriminatorType() {
+		return DiscriminatorType.fromJavaResourceModel(this.getColumnAnnotation().getDiscriminatorType());
 	}
 
 	public DiscriminatorType getDefaultDiscriminatorType() {
 		return this.defaultDiscriminatorType;
 	}
-	
+
 	protected void setDefaultDiscriminatorType(DiscriminatorType discriminatorType) {
 		DiscriminatorType old = this.defaultDiscriminatorType;
 		this.defaultDiscriminatorType = discriminatorType;
-		firePropertyChanged(DEFAULT_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
+		this.firePropertyChanged(DEFAULT_DISCRIMINATOR_TYPE_PROPERTY, old, discriminatorType);
 	}
-		
-	public DiscriminatorType getSpecifiedDiscriminatorType() {
-		return this.specifiedDiscriminatorType;
+
+	protected DiscriminatorType buildDefaultDiscriminatorType() {
+		return this.owner.getDefaultDiscriminatorType();
 	}
-	
-	public void setSpecifiedDiscriminatorType(DiscriminatorType newSpecifiedDiscriminatorType) {
-		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
-		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
-		getResourceColumn().setDiscriminatorType(DiscriminatorType.toJavaResourceModel(newSpecifiedDiscriminatorType));
-		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setSpecifiedDiscriminatorType_(DiscriminatorType newSpecifiedDiscriminatorType) {
-		DiscriminatorType oldDiscriminatorType = this.specifiedDiscriminatorType;
-		this.specifiedDiscriminatorType = newSpecifiedDiscriminatorType;
-		firePropertyChanged(DiscriminatorColumn.SPECIFIED_DISCRIMINATOR_TYPE_PROPERTY, oldDiscriminatorType, newSpecifiedDiscriminatorType);
-	}
-		
+
+
+	// ********** length **********
+
 	public int getLength() {
-		return (this.getSpecifiedLength() == null) ? this.getDefaultLength() : this.getSpecifiedLength().intValue();
+		return (this.specifiedLength != null) ? this.specifiedLength.intValue() : this.defaultLength;
+	}
+
+	public Integer getSpecifiedLength() {
+		return this.specifiedLength;
+	}
+
+	public void setSpecifiedLength(Integer length) {
+		if (this.valuesAreDifferent(this.specifiedLength, length)) {
+			this.getColumnAnnotation().setLength(length);
+			this.removeColumnAnnotationIfUnset();
+			this.setSpecifiedLength_(length);
+		}
+	}
+
+	protected void setSpecifiedLength_(Integer length) {
+		Integer old = this.specifiedLength;
+		this.specifiedLength = length;
+		this.firePropertyChanged(SPECIFIED_LENGTH_PROPERTY, old, length);
+	}
+
+	protected Integer buildSpecifiedLength() {
+		return this.getColumnAnnotation().getLength();
 	}
 
 	public int getDefaultLength() {
 		return this.defaultLength;
 	}
-	
-	protected void setDefaultLength(int defaultLength) {
+
+	protected void setDefaultLength(int length) {
 		int old = this.defaultLength;
-		this.defaultLength = defaultLength;
-		firePropertyChanged(DEFAULT_LENGTH_PROPERTY, old, defaultLength);
-	}
-	
-	public Integer getSpecifiedLength() {
-		return this.specifiedLength;
+		this.defaultLength = length;
+		this.firePropertyChanged(DEFAULT_LENGTH_PROPERTY, old, length);
 	}
 
-	public void setSpecifiedLength(Integer newSpecifiedLength) {
-		Integer oldSpecifiedLength = this.specifiedLength;
-		this.specifiedLength = newSpecifiedLength;
-		getResourceColumn().setLength(newSpecifiedLength);
-		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
+	protected int buildDefaultLength() {
+		return this.owner.getDefaultLength();
 	}
 
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setSpecifiedLength_(Integer newSpecifiedLength) {
-		Integer oldSpecifiedLength = this.specifiedLength;
-		this.specifiedLength = newSpecifiedLength;
-		firePropertyChanged(DiscriminatorColumn.SPECIFIED_LENGTH_PROPERTY, oldSpecifiedLength, newSpecifiedLength);
-	}
 
-	
-	// ********** java annotations -> persistence model **********
-	
-	@Override
-	public void update(DiscriminatorColumnAnnotation discriminatorColumn) {
-		//don't call super because postUpdate() handles updating the default column name
-		this.resourceColumn = discriminatorColumn;
-		this.setSpecifiedName_(discriminatorColumn.getName());
-		this.setColumnDefinition_(discriminatorColumn.getColumnDefinition());
-		this.setSpecifiedDiscriminatorType_(this.getResourceDiscriminatorType());
-		this.setSpecifiedLength_(this.getResourceLength());
-	}
-	
-	@Override
-	/**
-	 * Using postUpdate since these defaults are dependent on the entity hierarchy
-	 */
-	public void postUpdate() {
-		super.postUpdate();
-		this.setDefaultName(this.buildDefaultName());
-		this.setDefaultDiscriminatorType(this.buildDefaultDiscriminatorType());
-		this.setDefaultLength(this.buildDefaultLength());
-	}
-	
-	protected DiscriminatorType getResourceDiscriminatorType() {
-		return DiscriminatorType.fromJavaResourceModel(getResourceColumn().getDiscriminatorType());
-	}
-	
-	protected Integer getResourceLength() {
-		return getResourceColumn().getLength();
-	}
-	
+	// ********** misc **********
+
 	@Override
 	public JavaEntity getParent() {
 		return (JavaEntity) super.getParent();
 	}
-	
-	protected int buildDefaultLength() {
-		return this.getOwner().getDefaultLength();
+
+	protected JavaEntity getEntity() {
+		return this.getParent();
 	}
-	
-	protected DiscriminatorType buildDefaultDiscriminatorType() {
-		return this.getOwner().getDefaultDiscriminatorType();
+
+	protected JavaPersistentType getPersistentType() {
+		return this.getEntity().getPersistentType();
+	}
+
+	protected JavaResourcePersistentType getResourcePersistentType() {
+		return this.getPersistentType().getResourcePersistentType();
+	}
+
+
+	// ********** validation **********
+
+	public boolean isResourceSpecified() {
+		return this.getColumnAnnotation().isSpecified();
 	}
 }

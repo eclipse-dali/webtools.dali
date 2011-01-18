@@ -114,6 +114,17 @@ public final class SourceTableGeneratorAnnotation
 		AnnotationContainerTools.synchronize(this.uniqueConstraintsContainer, astRoot);
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.table == null) &&
+				(this.schema == null) &&
+				(this.catalog == null) &&
+				(this.pkColumnName == null) &&
+				(this.valueColumnName == null) &&
+				(this.pkColumnValue == null);
+	}
+
 
 	// ********** AbstractGeneratorAnnotation implementation **********
 
@@ -346,7 +357,7 @@ public final class SourceTableGeneratorAnnotation
 
 	private NestableUniqueConstraintAnnotation addUniqueConstraint_(int index) {
 		NestableUniqueConstraintAnnotation uniqueConstraint = this.buildUniqueConstraint(index);
-		this.uniqueConstraints.add(uniqueConstraint);
+		this.uniqueConstraints.add(index, uniqueConstraint);
 		return uniqueConstraint;
 	}
 

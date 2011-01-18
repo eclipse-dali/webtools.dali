@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 
 /**
- * Relationship (1:1, 1:m, m:1, m:m) mapping.
+ * JPA relationship (1:1, 1:m, m:1, m:m) mapping.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,13 +24,13 @@ import java.util.Iterator;
  * @since 2.0
  */
 public interface RelationshipMapping
-	extends AttributeMapping, Fetchable
+	extends FetchableMapping
 {
 	/**
 	 * Return the meta-information used to populate the entities of the 
 	 * relationship
 	 */
-	RelationshipReference getRelationshipReference();
+	MappingRelationshipReference getRelationshipReference();
 
 	/**
 	 * Return the relationship owner or null if this is the owning side
@@ -51,7 +51,6 @@ public interface RelationshipMapping
 		String DEFAULT_TARGET_ENTITY_PROPERTY = "defaultTargetEntity"; //$NON-NLS-1$
 	
 	Entity getResolvedTargetEntity();
-		String RESOLVED_TARGET_ENTITY_PROPERTY = "resolvedTargetEntity"; //$NON-NLS-1$
 	
 	/**
 	 * Return all attribute names on the target entity, provided target entity

@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.jpa2.context.OneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -29,10 +29,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmOneToManyMapping2_0Composite
-	extends AbstractOneToManyMappingComposite<OrmOneToManyMapping, OrmOneToManyRelationshipReference2_0>
+	extends AbstractOneToManyMappingComposite<OneToManyMapping, OneToManyRelationshipReference2_0>
 {
 	public OrmOneToManyMapping2_0Composite(
-			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<? extends OneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -61,7 +61,7 @@ public class OrmOneToManyMapping2_0Composite
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToManyMapping, AccessHolder>(this.getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -70,7 +70,7 @@ public class OrmOneToManyMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<OrmOneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

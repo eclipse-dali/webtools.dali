@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.Iterator;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -22,8 +21,8 @@ import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> type mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -36,40 +35,64 @@ import org.eclipse.text.edits.ReplaceEdit;
 public interface OrmTypeMapping
 	extends TypeMapping, XmlContextNode
 {
-	
-	String getClass_();
-	void setClass(String newClass);
-	String CLASS_PROPERTY = "class"; //$NON-NLS-1$
+	// ********** class **********
 
-	
+	/**
+	 * <strong>NB:</strong> This may be a partial name to be prefixed by the
+	 * entity mappings's package value.
+	 * 
+	 * @see EntityMappings#getPackage()
+	 */
+	String getClass_();
+
+	/**
+	 * @see #getClass_()
+	 */
+	void setClass(String class_);
+		String CLASS_PROPERTY = "class"; //$NON-NLS-1$
+
+
+	// ********** metadata complete **********
+
 	boolean isMetadataComplete();
 	Boolean getSpecifiedMetadataComplete();
-	void setSpecifiedMetadataComplete(Boolean newSpecifiedMetadataComplete);
+	void setSpecifiedMetadataComplete(Boolean metadataComplete);
 		String SPECIFIED_METADATA_COMPLETE_PROPERTY = "specifiedMetadataComplete"; //$NON-NLS-1$
 
-	boolean isDefaultMetadataComplete();
-		String DEFAULT_METADATA_COMPLETE_PROPERTY = "defaultMetadataComplete"; //$NON-NLS-1$
-
-	
 	/**
-	 * type mappings are a sequence in the orm schema. We must keep
+	 * Override metadata complete is true if the type mapping's persistence
+	 * unit is marked "XML mapping metadata complete".
+	 */
+	boolean isOverrideMetadataComplete();
+		String OVERRIDE_METADATA_COMPLETE_PROPERTY = "overrideMetadataComplete"; //$NON-NLS-1$
+
+
+	// ********** XML **********
+
+	/**
+	 * Type mappings are a sequence in the orm schema. We must keep
 	 * the list of type mappings in the appropriate order so the wtp xml 
 	 * translators will write them to the xml in that order and they
-	 * will adhere to the schema.  
-	 * 
-	 * Each concrete subclass of XmlTypeMapping must implement this
-	 * method and return an int that matches it's order in the schema
-	 * @return
+	 * will adhere to the schema.
+	 * <p>
+	 * Each concrete implementation must implement this
+	 * method and return an int that matches its order in the schema.
 	 */
 	int getXmlSequence();
 	
-	void addToResourceModel(XmlEntityMappings entityMappings);
+	/**
+	 * Add the type mapping's XML type mapping to the appropriate list
+	 * in the specified XML entity mappings.
+	 */
+	void addXmlTypeMappingTo(XmlEntityMappings entityMappings);
 
-	void removeFromResourceModel(XmlEntityMappings entityMappings);
+	/**
+	 * Remove the type mapping's XML type mapping from the appropriate list
+	 * in the specified XML entity mappings.
+	 */
+	void removeXmlTypeMappingFrom(XmlEntityMappings entityMappings);
 
-	void initializeFrom(OrmTypeMapping oldMapping);
-
-	XmlTypeMapping getResourceTypeMapping();
+	XmlTypeMapping getXmlTypeMapping();
 
 	TextRange getSelectionTextRange();
 
@@ -79,12 +102,28 @@ public interface OrmTypeMapping
 	
 	boolean containsOffset(int textOffset);
 
-	/**
-	 * Update the OrmTypeMapping context model object to match the 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update();
 
+	// ********** Java type mapping **********
+
+	/**
+	 * Return the Java type mapping corresponding to the <code>orm.xml</code>
+	 * type mapping. Return <code>null</code> if there is no such Java type
+	 * mapping; i.e. it does not exist or it is not the same type of type
+	 * mapping (entity, mapped superclass, embeddable).
+	 * 
+	 * @see #getJavaTypeMappingForDefaults()
+	 */
+	JavaTypeMapping getJavaTypeMapping();
+	
+	/**
+	 * Check "metadata complete" before returning the Java type mapping.
+	 * For <code>orm.xml</code> defaults, if "metadata complete" is
+	 * <code>true</code>, return <code>null</code>.
+	 * 
+	 * @see #getJavaTypeMapping()
+	 */
+	JavaTypeMapping getJavaTypeMappingForDefaults();
+	
 
 	// ********** refactoring **********
 
@@ -112,11 +151,9 @@ public interface OrmTypeMapping
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
-	// ********** covariant overrides **********
+	// ********** misc **********
 
 	OrmPersistentType getPersistentType();
-	
-	@SuppressWarnings("unchecked")
-	Iterator<OrmAttributeMapping> attributeMappings();
 
+	void initializeFrom(OrmTypeMapping oldMapping);
 }

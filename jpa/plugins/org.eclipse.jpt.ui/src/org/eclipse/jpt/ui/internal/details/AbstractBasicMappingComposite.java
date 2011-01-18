@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -130,7 +131,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
+			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -138,7 +139,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		Button lobButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_lob, 
-			buildConverterBooleanHolder(Converter.LOB_CONVERTER), 
+			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -147,7 +148,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
+			buildConverterBooleanHolder(TemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
@@ -156,7 +157,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
-			buildConverterBooleanHolder(Converter.ENUMERATED_CONVERTER), 
+			buildConverterBooleanHolder(EnumeratedConverter.class), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
@@ -183,7 +184,7 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
+				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
 			}
 		};
 	}
@@ -192,12 +193,12 @@ public abstract class AbstractBasicMappingComposite<T extends BasicMapping>
 		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
 			@Override
 			protected EnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == Converter.ENUMERATED_CONVERTER ? (EnumeratedConverter) converter : null;
+				return converter.getType() == EnumeratedConverter.class ? (EnumeratedConverter) converter : null;
 			}
 		};
 	}
 	
-	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
+	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
 		return new PropertyAspectAdapter<BasicMapping, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {

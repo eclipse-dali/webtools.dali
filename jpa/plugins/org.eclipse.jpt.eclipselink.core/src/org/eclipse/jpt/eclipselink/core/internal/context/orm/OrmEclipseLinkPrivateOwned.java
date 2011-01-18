@@ -1,67 +1,88 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlPrivateOwned;
 
-public class OrmEclipseLinkPrivateOwned extends AbstractOrmXmlContextNode
+public class OrmEclipseLinkPrivateOwned
+	extends AbstractOrmXmlContextNode
 	implements EclipseLinkPrivateOwned
 {
-	protected final XmlPrivateOwned resource;
-	
 	protected boolean privateOwned;
-	
-	
-	public OrmEclipseLinkPrivateOwned(OrmAttributeMapping parent, XmlPrivateOwned resource) {
+
+
+	public OrmEclipseLinkPrivateOwned(OrmAttributeMapping parent) {
 		super(parent);
-		this.resource = resource;
-		this.privateOwned = this.getResourcePrivateOwned();
+		this.privateOwned = this.buildPrivateOwned();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setPrivateOwned_(this.buildPrivateOwned());
+	}
+
+
+	// ********** private owned **********
+
 	public boolean isPrivateOwned() {
 		return this.privateOwned;
 	}
-	
-	public void setPrivateOwned(boolean newPrivateOwned) {
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
-		this.resource.setPrivateOwned(newPrivateOwned);
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
+
+	public void setPrivateOwned(boolean privateOwned) {
+		this.setPrivateOwned_(privateOwned);
+		this.getXmlPrivateOwned().setPrivateOwned(privateOwned);
 	}
-	
-	protected void setPrivateOwned_(boolean newPrivateOwned) {
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
+
+	protected void setPrivateOwned_(boolean privateOwned) {
+		boolean old = this.privateOwned;
+		this.privateOwned = privateOwned;
+		this.firePropertyChanged(PRIVATE_OWNED_PROPERTY, old, privateOwned);
 	}
-	
-	
-	// **************** initialize/update **************************************
-	
-	protected void update() {
-		setPrivateOwned_(this.getResourcePrivateOwned());
+
+	protected boolean buildPrivateOwned() {
+		return this.getXmlPrivateOwned().isPrivateOwned();
 	}
-	
-	protected boolean getResourcePrivateOwned() {
-		return this.resource.isPrivateOwned();
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmAttributeMapping getParent() {
+		return (OrmAttributeMapping) super.getParent();
 	}
-	
-	// **************** validation **************************************
-	
+
+	protected OrmAttributeMapping getAttributeMapping() {
+		return this.getParent();
+	}
+
+	protected XmlAttributeMapping getXmlAttributeMapping() {
+		return this.getAttributeMapping().getXmlAttributeMapping();
+	}
+
+	protected XmlPrivateOwned getXmlPrivateOwned() {
+		return (XmlPrivateOwned) this.getXmlAttributeMapping();
+	}
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		return this.resource.getPrivateOwnedTextRange();
+		return this.getXmlPrivateOwned().getPrivateOwnedTextRange();
 	}
 }

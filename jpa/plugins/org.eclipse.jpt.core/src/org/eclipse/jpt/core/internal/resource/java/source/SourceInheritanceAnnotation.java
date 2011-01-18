@@ -55,6 +55,12 @@ public final class SourceInheritanceAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.strategy == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.strategy);
 	}

@@ -50,7 +50,7 @@ public final class StaticMetamodelAnnotationDefinition
 	}
 
 	public StaticMetamodelAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public StaticMetamodelAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

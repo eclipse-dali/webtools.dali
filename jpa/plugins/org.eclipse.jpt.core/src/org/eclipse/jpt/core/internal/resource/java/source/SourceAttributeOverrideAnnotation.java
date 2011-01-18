@@ -9,19 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAttributeOverrideAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
@@ -29,7 +27,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.AttributeOverride
+ * <code>javax.persistence.AttributeOverride</code>
  */
 public final class SourceAttributeOverrideAnnotation
 	extends SourceOverrideAnnotation
@@ -37,15 +35,15 @@ public final class SourceAttributeOverrideAnnotation
 {
 	public static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final ElementAnnotationAdapter columnAdapter;
-	private NestableColumnAnnotation column;
+	private ElementAnnotationAdapter columnAdapter;
+	private ColumnAnnotation column;
+	private final ColumnAnnotation nullColumn;
 
-
-	// ********** construction/initialization **********
 
 	public SourceAttributeOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.columnAdapter = new ElementAnnotationAdapter(this.annotatedElement, SourceColumnAnnotation.buildAttributeOverrideAnnotationAdapter(this.daa));
+		this.columnAdapter = this.buildColumnAdapter();
+		this.nullColumn = this.buildNullColumn();
 	}
 
 	public String getAnnotationName() {
@@ -74,7 +72,7 @@ public final class SourceAttributeOverrideAnnotation
 	protected String getNameElementName() {
 		return JPA.ATTRIBUTE_OVERRIDE__NAME;
 	}
-	
+
 
 	//************ AttributeOverride implementation ****************
 
@@ -84,10 +82,10 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	public ColumnAnnotation getNonNullColumn() {
-		return (this.column != null) ? this.column : new NullAttributeOverrideColumnAnnotation(this);
+		return (this.column != null) ? this.column : this.nullColumn;
 	}
 
-	public NestableColumnAnnotation addColumn() {
+	public ColumnAnnotation addColumn() {
 		if (this.column != null) {
 			throw new IllegalStateException("'column' element already exists: " + this.column); //$NON-NLS-1$
 		}
@@ -100,8 +98,9 @@ public final class SourceAttributeOverrideAnnotation
 		if (this.column == null) {
 			throw new IllegalStateException("'column' element does not exist"); //$NON-NLS-1$
 		}
-		this.column.removeAnnotation();
+		ColumnAnnotation old = this.column;
 		this.column = null;
+		old.removeAnnotation();
 	}
 
 	private void syncColumn(CompilationUnit astRoot) {
@@ -109,7 +108,7 @@ public final class SourceAttributeOverrideAnnotation
 			this.syncColumn_(null);
 		} else {
 			if (this.column == null) {
-				NestableColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
+				ColumnAnnotation col = SourceColumnAnnotation.createAttributeOverrideColumn(this, this.annotatedElement, this.daa);
 				col.initialize(astRoot);
 				this.syncColumn_(col);
 			} else {
@@ -118,23 +117,53 @@ public final class SourceAttributeOverrideAnnotation
 		}
 	}
 
-	private void syncColumn_(NestableColumnAnnotation astColumn) {
+	private void syncColumn_(ColumnAnnotation astColumn) {
 		ColumnAnnotation old = this.column;
 		this.column = astColumn;
 		this.firePropertyChanged(COLUMN_PROPERTY, old, astColumn);
 	}
 
+	private ElementAnnotationAdapter buildColumnAdapter() {
+		return new ElementAnnotationAdapter(this.annotatedElement, SourceColumnAnnotation.buildAttributeOverrideAnnotationAdapter(this.daa));
+	}
 
-	// ********** NestableAnnotation implementation **********
+	private ColumnAnnotation buildNullColumn() {
+		return new NullAttributeOverrideColumnAnnotation(this);
+	}
+
+
+	// ********** misc **********
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		AttributeOverrideAnnotation oldOverride = (AttributeOverrideAnnotation) oldAnnotation;
-		ColumnAnnotation oldColumn = oldOverride.getColumn();
-		if (oldColumn != null) {
-			NestableColumnAnnotation newColumn = this.addColumn();
-			newColumn.initializeFrom((NestableAnnotation) oldColumn);
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.column == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.columnAdapter = this.buildColumnAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		if (this.column != null) {
+			Map<String, Object> columnState = new HashMap<String, Object>();
+			this.column.storeOn(columnState);
+			map.put(COLUMN_PROPERTY, columnState);
+			this.column = null;
+		}
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		@SuppressWarnings("unchecked")
+		Map<String, Object> columnState = (Map<String, Object>) map.get(COLUMN_PROPERTY);
+		if (columnState != null) {
+			this.addColumn().restoreFrom(columnState);
 		}
 	}
 
@@ -146,13 +175,8 @@ public final class SourceAttributeOverrideAnnotation
 	}
 
 	static SourceAttributeOverrideAnnotation buildNestedAttributeOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceAttributeOverrideAnnotation(parent, member, idaa, annotationAdapter);
 	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ATTRIBUTE_OVERRIDE);
-	}
-
 }

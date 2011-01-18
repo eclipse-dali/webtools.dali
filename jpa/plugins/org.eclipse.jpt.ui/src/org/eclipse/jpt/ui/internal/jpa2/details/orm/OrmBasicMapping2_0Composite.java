@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -22,7 +22,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmBasicMapping2_0Composite extends AbstractBasicMappingComposite<OrmBasicMapping>
+public class OrmBasicMapping2_0Composite extends AbstractBasicMappingComposite<BasicMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
@@ -31,7 +31,7 @@ public class OrmBasicMapping2_0Composite extends AbstractBasicMappingComposite<O
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmBasicMapping2_0Composite(PropertyValueModel<? extends OrmBasicMapping> subjectHolder,
+	public OrmBasicMapping2_0Composite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
@@ -48,7 +48,7 @@ public class OrmBasicMapping2_0Composite extends AbstractBasicMappingComposite<O
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmBasicMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<BasicMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

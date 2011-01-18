@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
@@ -16,9 +17,7 @@ import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotat
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -29,7 +28,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.PrimaryKeyJoinColumn
+ * <code>javax.persistence.PrimaryKeyJoinColumn</code>
  */
 public final class SourcePrimaryKeyJoinColumnAnnotation
 	extends SourceNamedColumnAnnotation
@@ -37,15 +36,15 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> referencedColumnNameAdapter;
+	private DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
+	private AnnotationElementAdapter<String> referencedColumnNameAdapter;
 	private String referencedColumnName;
 
 
 	public SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME);
-		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
+		this.referencedColumnNameDeclarationAdapter = this.buildReferencedColumnNameDeclarationAdapter();
+		this.referencedColumnNameAdapter = this.buildReferencedColumnNameAdapter();
 	}
 
 	public SourcePrimaryKeyJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
@@ -118,22 +117,48 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildReferencedColumnNameDeclarationAdapter() {
+		return this.buildStringElementAdapter(JPA.PRIMARY_KEY_JOIN_COLUMN__REFERENCED_COLUMN_NAME);
+	}
+
+	private AnnotationElementAdapter<String> buildReferencedColumnNameAdapter() {
+		return this.buildStringElementAdapter(this.referencedColumnNameDeclarationAdapter);
+	}
+
 
 	 // ********** NestableAnnotation implementation **********
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		PrimaryKeyJoinColumnAnnotation oldJoinColumn = (PrimaryKeyJoinColumnAnnotation) oldAnnotation;
-		this.setReferencedColumnName(oldJoinColumn.getReferencedColumnName());
-	}
 
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.referencedColumnName == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.referencedColumnNameDeclarationAdapter = this.buildReferencedColumnNameDeclarationAdapter();
+		this.referencedColumnNameAdapter = this.buildReferencedColumnNameAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(REFERENCED_COLUMN_NAME_PROPERTY, this.referencedColumnName);
+		this.referencedColumnName = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setReferencedColumnName((String) map.get(REFERENCED_COLUMN_NAME_PROPERTY));
 	}
 
 
@@ -144,13 +169,9 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	}
 
 	static SourcePrimaryKeyJoinColumnAnnotation createNestedPrimaryKeyJoinColumn(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter pkJoinColumnsAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, pkJoinColumnsAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, pkJoinColumnsAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourcePrimaryKeyJoinColumnAnnotation(parent, member, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter pkJoinColumnsAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(pkJoinColumnsAdapter, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
 	}
 
 	static NestablePrimaryKeyJoinColumnAnnotation createSecondaryTablePrimaryKeyJoinColumn(DeclarationAnnotationAdapter secondaryTableAdapter, JavaResourceNode parent, Member member, int index) {
@@ -158,7 +179,7 @@ public final class SourcePrimaryKeyJoinColumnAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildSecondaryTableAnnotationAdapter(DeclarationAnnotationAdapter secondaryTableAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTableAdapter, JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS, index, JPA.PRIMARY_KEY_JOIN_COLUMN);
+		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTableAdapter, JPA.SECONDARY_TABLE__PK_JOIN_COLUMNS, index, ANNOTATION_NAME);
 	}
 
 }

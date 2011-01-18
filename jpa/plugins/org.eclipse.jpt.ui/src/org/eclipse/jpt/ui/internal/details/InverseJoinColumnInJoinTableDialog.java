@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -35,15 +37,12 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 	 * this state object is used to create a new one
 	 */
 	public InverseJoinColumnInJoinTableDialog(Shell parent,
-	                                          JoinTable joinTable,
-	                                          JoinColumn joinColumn) {
+	                                          ReadOnlyJoinTable joinTable,
+	                                          ReadOnlyJoinColumn joinColumn) {
 
 		super(parent, joinTable, joinColumn);
 	}
 
-	/*
-	 * non-Javadoc)
-	 */
 	@Override
 	protected DialogPane<InverseJoinColumnInJoinTableStateObject> buildLayout(Composite container) {
 		return new JoinColumnDialogPane<InverseJoinColumnInJoinTableStateObject>(
@@ -59,9 +58,6 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 		};
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected InverseJoinColumnInJoinTableStateObject buildStateObject() {
 		return new InverseJoinColumnInJoinTableStateObject(
@@ -70,17 +66,11 @@ public class InverseJoinColumnInJoinTableDialog extends BaseJoinColumnDialog<Inv
 		);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public JoinColumn getJoinColumn() {
 		return (JoinColumn) super.getJoinColumn();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected JoinTable getOwner() {
 		return (JoinTable) super.getOwner();

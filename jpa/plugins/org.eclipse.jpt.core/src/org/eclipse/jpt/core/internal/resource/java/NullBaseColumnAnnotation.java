@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,20 +15,18 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Column
- * javax.persistence.JoinColumn
+ * <ul>
+ * <li><code>javax.persistence.Column</code>
+ * <li><code>javax.persistence.JoinColumn</code>
+ * <li><code>javax.persistence.MapKeyColumn</code>
+ * </ul>
  */
-public abstract class NullBaseColumnAnnotation
-	extends NullNamedColumnAnnotation
+public abstract class NullBaseColumnAnnotation<A extends BaseColumnAnnotation>
+	extends NullNamedColumnAnnotation<A>
 	implements BaseColumnAnnotation
 {
 	protected NullBaseColumnAnnotation(JavaResourceNode parent) {
 		super(parent);
-	}
-
-	@Override
-	protected BaseColumnAnnotation addAnnotation() {
-		return (BaseColumnAnnotation) super.addAnnotation();
 	}
 
 	// ***** table
@@ -109,5 +107,4 @@ public abstract class NullBaseColumnAnnotation
 	public TextRange getNullableTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

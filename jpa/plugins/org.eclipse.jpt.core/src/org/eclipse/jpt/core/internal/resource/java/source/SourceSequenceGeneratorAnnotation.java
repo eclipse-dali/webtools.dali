@@ -61,6 +61,12 @@ public abstract class SourceSequenceGeneratorAnnotation
 		this.syncSequenceName(this.buildSequenceName(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.sequenceName == null);
+	}
+
 
 	// ********** AbstractGeneratorAnnotation implementation **********
 

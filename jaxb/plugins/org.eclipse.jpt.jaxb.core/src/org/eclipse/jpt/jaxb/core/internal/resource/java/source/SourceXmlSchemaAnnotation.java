@@ -262,7 +262,7 @@ public class SourceXmlSchemaAnnotation
 	
 	private IndexedDeclarationAnnotationAdapter buildXmlnsIndexedDeclarationAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(
-				this.daa, JAXB.XML_SCHEMA__XMLNS, index, JAXB.XML_NS, false);
+				this.daa, JAXB.XML_SCHEMA__XMLNS, index, JAXB.XML_NS);
 	}
 	
 	public void moveXmlns(int targetIndex, int sourceIndex) {

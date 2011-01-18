@@ -35,7 +35,7 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 
 	/**
 	 * Return the name of the container annotation's element that is used
-	 * to indicate the nested annotations (typically "value").
+	 * to indicate the nested annotations (typically <code>"value"</code>).
 	 * Used when traversing the AST.
 	 */
 	String getElementName();
@@ -63,8 +63,9 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	T addNestedAnnotation();
 
 	/**
-	 * The specified nested annotation was added to the container at the
-	 * specified index; notify interested parties.
+	 * The specified JDT DOM annotation was added to the JDT DOM annotation
+	 * corresponding to the container. Add a corresponding nested annotation
+	 * to the container and notify interested parties.
 	 */
 	void syncAddNestedAnnotation(org.eclipse.jdt.core.dom.Annotation astAnnotation);
 
@@ -82,9 +83,10 @@ public interface AnnotationContainer<T extends NestableAnnotation>
 	T removeNestedAnnotation(int index);
 
 	/**
-	 * Remove the nested annotations starting at the specified index from the
-	 * container; notify interested parties.
+	 * The JDT DOM annotations starting at the specified index were removed
+	 * from the JDT DOM annotations corresponding to the container.
+	 * Remove the corresponding nested annotations from the
+	 * container and notify interested parties.
 	 */
 	void syncRemoveNestedAnnotations(int index);
-
 }

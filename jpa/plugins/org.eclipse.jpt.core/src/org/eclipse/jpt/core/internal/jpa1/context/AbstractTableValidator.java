@@ -62,23 +62,23 @@ public abstract class AbstractTableValidator
 	}
 
 	public boolean validate(List<IMessage> messages, IReporter reporter) {
-		if (this.shouldValidateAgainstDatabase()) {
+		if (this.validatesAgainstDatabase()) {
 			return this.validateAgainstDatabase(messages);
 		}
 		return false;
 	}
 
-	protected boolean shouldValidateAgainstDatabase() {
-		return this.table.shouldValidateAgainstDatabase();
+	protected boolean validatesAgainstDatabase() {
+		return this.table.validatesAgainstDatabase();
 	}
 
 	protected boolean validateAgainstDatabase(List<IMessage> messages) {
-		if ( ! this.table.hasResolvedCatalog()) {
+		if ( ! this.table.catalogIsResolved()) {
 			messages.add(buildUnresolvedCatalogMessage());
 			return false;
 		}
 
-		if ( ! this.table.hasResolvedSchema()) {
+		if ( ! this.table.schemaIsResolved()) {
 			messages.add(buildUnresolvedSchemaMessage());
 			return false;
 		}

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.Tracing;
@@ -38,7 +39,8 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.2
  * @since 1.0
  */
-public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribute> extends AbstractJpaDetailsPage<T>
+public abstract class PersistentAttributeDetailsPage<A extends ReadOnlyPersistentAttribute>
+	extends AbstractJpaDetailsPage<A>
 {
 	private Map<String, JpaComposite> mappingComposites;
 	private PageBook mappingPageBook;
@@ -131,10 +133,10 @@ public abstract class PersistentAttributeDetailsPage<T extends PersistentAttribu
 
 
 	private WritablePropertyValueModel<AttributeMapping> buildMappingHolder() {
-		return new PropertyAspectAdapter<T, AttributeMapping>(
+		return new PropertyAspectAdapter<A, AttributeMapping>(
 			getSubjectHolder(),
-			PersistentAttribute.DEFAULT_MAPPING_PROPERTY,
-			PersistentAttribute.SPECIFIED_MAPPING_PROPERTY)
+			PersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY,
+			PersistentAttribute.MAPPING_PROPERTY)
 		{
 			@Override
 			protected AttributeMapping buildValue_() {

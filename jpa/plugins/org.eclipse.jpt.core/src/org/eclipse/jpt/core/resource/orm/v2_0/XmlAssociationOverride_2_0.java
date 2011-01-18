@@ -1,18 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
-import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
-import org.eclipse.jpt.core.resource.xml.JpaEObject;
+import org.eclipse.jpt.core.resource.orm.XmlJoinTableContainer;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,16 +26,14 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * The following features are supported:
  * <ul>
  *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0#getDescription <em>Description</em>}</li>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0#getJoinTable <em>Join Table</em>}</li>
  * </ul>
  * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlAssociationOverride_2_0()
  * @model kind="class" interface="true" abstract="true"
- * @extends JpaEObject
  * @generated
  */
-public interface XmlAssociationOverride_2_0 extends JpaEObject
+public interface XmlAssociationOverride_2_0 extends XmlJoinTableContainer
 {
 	/**
 	 * Returns the value of the '<em><b>Description</b></em>' attribute.
@@ -65,31 +60,5 @@ public interface XmlAssociationOverride_2_0 extends JpaEObject
 	 * @generated
 	 */
 	void setDescription(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Join Table</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Join Table</em>' containment reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Join Table</em>' containment reference.
-	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.OrmV2_0Package#getXmlAssociationOverride_2_0_JoinTable()
-	 * @model containment="true"
-	 * @generated
-	 */
-	XmlJoinTable getJoinTable();
-
-	/**
-	 * Sets the value of the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0#getJoinTable <em>Join Table</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Join Table</em>' containment reference.
-	 * @see #getJoinTable()
-	 * @generated
-	 */
-	void setJoinTable(XmlJoinTable value);
 
 } // XmlAssociationOverride_2_0

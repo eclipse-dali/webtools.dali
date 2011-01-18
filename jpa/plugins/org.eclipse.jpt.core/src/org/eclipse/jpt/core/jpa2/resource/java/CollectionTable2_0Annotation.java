@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.resource.java.ReferenceTableAnnotation;
 
 /**
  * Corresponds to the JPA 2.0 annotation
- * javax.persistence.CollectionTable
+ * <code>javax.persistence.CollectionTable</code>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,5 +28,4 @@ public interface CollectionTable2_0Annotation
 	extends ReferenceTableAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.COLLECTION_TABLE;
-
 }

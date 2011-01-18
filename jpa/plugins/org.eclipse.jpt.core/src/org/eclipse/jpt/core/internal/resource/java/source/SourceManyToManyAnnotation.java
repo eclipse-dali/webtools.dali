@@ -62,6 +62,12 @@ public final class SourceManyToManyAnnotation
 		this.syncMappedBy(this.buildMappedBy(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.mappedBy == null);
+	}
+
 
 	// ********** SourceRelationshipMappingAnnotation implementation **********
 
@@ -121,7 +127,7 @@ public final class SourceManyToManyAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__MAPPED_BY, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MANY_TO_MANY__MAPPED_BY);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {

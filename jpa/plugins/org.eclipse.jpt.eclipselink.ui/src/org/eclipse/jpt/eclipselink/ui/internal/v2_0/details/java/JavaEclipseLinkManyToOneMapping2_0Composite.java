@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
-import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkManyToOneMapping2_0;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkManyToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -49,7 +49,7 @@ public class JavaEclipseLinkManyToOneMapping2_0Composite
 		return new PropertyAspectAdapter<JavaManyToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
-				return ((JavaEclipseLinkManyToOneMapping2_0) this.subject).getJoinFetch();
+				return ((JavaEclipseLinkManyToOneMapping) this.subject).getJoinFetch();
 			}
 		};
 	}

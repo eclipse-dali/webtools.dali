@@ -3,15 +3,15 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2;
 
-import java.util.List;
+import java.util.ArrayList;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverride2_0AnnotationDefinition;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.AssociationOverrides2_0AnnotationDefinition;
@@ -67,110 +67,125 @@ import org.eclipse.jpt.core.internal.resource.java.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
- * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and 
+ * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and
  * augmented support for annotations changed from 1.0 to 2.0
  */
 public class Generic2_0JpaAnnotationDefinitionProvider
-	extends AbstractJpaAnnotationDefintionProvider
+	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = 
-			new Generic2_0JpaAnnotationDefinitionProvider();
-	
-	
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new Generic2_0JpaAnnotationDefinitionProvider();
+
 	/**
 	 * Return the singleton
 	 */
 	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private Generic2_0JpaAnnotationDefinitionProvider() {
 		super();
 	}
-	
-	
+
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(Access2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
-		definitions.add(AttributeOverrideAnnotationDefinition.instance());
-		definitions.add(AttributeOverridesAnnotationDefinition.instance());
-		definitions.add(Cacheable2_0AnnotationDefinition.instance());
-		definitions.add(DiscriminatorColumnAnnotationDefinition.instance());
-		definitions.add(DiscriminatorValueAnnotationDefinition.instance());
-		definitions.add(EmbeddableAnnotationDefinition.instance());
-		definitions.add(EntityAnnotationDefinition.instance());
-		definitions.add(IdClassAnnotationDefinition.instance());
-		definitions.add(InheritanceAnnotationDefinition.instance());
-		definitions.add(MappedSuperclassAnnotationDefinition.instance());
-		definitions.add(NamedQuery2_0AnnotationDefinition.instance());
-		definitions.add(NamedQueries2_0AnnotationDefinition.instance());
-		definitions.add(NamedNativeQueryAnnotationDefinition.instance());
-		definitions.add(NamedNativeQueriesAnnotationDefinition.instance());
-		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
-		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
-		definitions.add(SecondaryTableAnnotationDefinition.instance());
-		definitions.add(SecondaryTablesAnnotationDefinition.instance());
-		definitions.add(SequenceGenerator2_0AnnotationDefinition.instance());
-		definitions.add(TableAnnotationDefinition.instance());
-		definitions.add(TableGeneratorAnnotationDefinition.instance());		
+	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_ANNOTATION_DEFINITIONS);
 	}
-	
+
+	protected static final AnnotationDefinition[] TYPE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		Access2_0AnnotationDefinition.instance(),
+		AssociationOverride2_0AnnotationDefinition.instance(),
+		AssociationOverrides2_0AnnotationDefinition.instance(),
+		AttributeOverrideAnnotationDefinition.instance(),
+		AttributeOverridesAnnotationDefinition.instance(),
+		Cacheable2_0AnnotationDefinition.instance(),
+		DiscriminatorColumnAnnotationDefinition.instance(),
+		DiscriminatorValueAnnotationDefinition.instance(),
+		EmbeddableAnnotationDefinition.instance(),
+		EntityAnnotationDefinition.instance(),
+		IdClassAnnotationDefinition.instance(),
+		InheritanceAnnotationDefinition.instance(),
+		MappedSuperclassAnnotationDefinition.instance(),
+		NamedQuery2_0AnnotationDefinition.instance(),
+		NamedQueries2_0AnnotationDefinition.instance(),
+		NamedNativeQueryAnnotationDefinition.instance(),
+		NamedNativeQueriesAnnotationDefinition.instance(),
+		PrimaryKeyJoinColumnAnnotationDefinition.instance(),
+		PrimaryKeyJoinColumnsAnnotationDefinition.instance(),
+		SecondaryTableAnnotationDefinition.instance(),
+		SecondaryTablesAnnotationDefinition.instance(),
+		SequenceGenerator2_0AnnotationDefinition.instance(),
+		TableAnnotationDefinition.instance(),
+		TableGeneratorAnnotationDefinition.instance()
+	};
+
 	@Override
-	protected void addTypeMappingAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(EmbeddableAnnotationDefinition.instance());
-		definitions.add(EntityAnnotationDefinition.instance());
-		definitions.add(MappedSuperclassAnnotationDefinition.instance());
+	protected void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_MAPPING_ANNOTATION_DEFINITIONS);
 	}
-	
+
+	protected static final AnnotationDefinition[] TYPE_MAPPING_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		EmbeddableAnnotationDefinition.instance(),
+		EntityAnnotationDefinition.instance(),
+		MappedSuperclassAnnotationDefinition.instance()
+	};
+
 	@Override
-	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(Access2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverride2_0AnnotationDefinition.instance());
-		definitions.add(AssociationOverrides2_0AnnotationDefinition.instance());
-		definitions.add(AttributeOverrideAnnotationDefinition.instance());
-		definitions.add(AttributeOverridesAnnotationDefinition.instance());
-		definitions.add(BasicAnnotationDefinition.instance());
-		definitions.add(CollectionTable2_0AnnotationDefinition.instance());
-		definitions.add(ColumnAnnotationDefinition.instance());
-		definitions.add(ElementCollection2_0AnnotationDefinition.instance());
-		definitions.add(EmbeddedAnnotationDefinition.instance());
-		definitions.add(EmbeddedIdAnnotationDefinition.instance());
-		definitions.add(EnumeratedAnnotationDefinition.instance());
-		definitions.add(GeneratedValueAnnotationDefinition.instance());
-		definitions.add(IdAnnotationDefinition.instance());
-		definitions.add(JoinColumnAnnotationDefinition.instance());
-		definitions.add(JoinColumnsAnnotationDefinition.instance());
-		definitions.add(JoinTableAnnotationDefinition.instance());
-		definitions.add(LobAnnotationDefinition.instance());
-		definitions.add(ManyToManyAnnotationDefinition.instance());
-		definitions.add(ManyToOneAnnotationDefinition.instance());
-		definitions.add(MapsId2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyAnnotationDefinition.instance());
-		definitions.add(MapKeyClass2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyColumn2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyEnumerated2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyJoinColumn2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyJoinColumns2_0AnnotationDefinition.instance());
-		definitions.add(MapKeyTemporal2_0AnnotationDefinition.instance());
-		definitions.add(OneToManyAnnotationDefinition.instance());
-		definitions.add(OneToOneAnnotationDefinition.instance());
-		definitions.add(OrderByAnnotationDefinition.instance());
-		definitions.add(OrderColumn2_0AnnotationDefinition.instance());
-		definitions.add(PrimaryKeyJoinColumnAnnotationDefinition.instance());
-		definitions.add(PrimaryKeyJoinColumnsAnnotationDefinition.instance());
-		definitions.add(SequenceGenerator2_0AnnotationDefinition.instance());
-		definitions.add(TableGeneratorAnnotationDefinition.instance());
-		definitions.add(TemporalAnnotationDefinition.instance());
-		definitions.add(TransientAnnotationDefinition.instance());
-		definitions.add(VersionAnnotationDefinition.instance());
+	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, ATTRIBUTE_ANNOTATION_DEFINITIONS);
+	}
+
+	protected static final AnnotationDefinition[] ATTRIBUTE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		Access2_0AnnotationDefinition.instance(),
+		AssociationOverride2_0AnnotationDefinition.instance(),
+		AssociationOverrides2_0AnnotationDefinition.instance(),
+		AttributeOverrideAnnotationDefinition.instance(),
+		AttributeOverridesAnnotationDefinition.instance(),
+		BasicAnnotationDefinition.instance(),
+		CollectionTable2_0AnnotationDefinition.instance(),
+		ColumnAnnotationDefinition.instance(),
+		ElementCollection2_0AnnotationDefinition.instance(),
+		EmbeddedAnnotationDefinition.instance(),
+		EmbeddedIdAnnotationDefinition.instance(),
+		EnumeratedAnnotationDefinition.instance(),
+		GeneratedValueAnnotationDefinition.instance(),
+		IdAnnotationDefinition.instance(),
+		JoinColumnAnnotationDefinition.instance(),
+		JoinColumnsAnnotationDefinition.instance(),
+		JoinTableAnnotationDefinition.instance(),
+		LobAnnotationDefinition.instance(),
+		ManyToManyAnnotationDefinition.instance(),
+		ManyToOneAnnotationDefinition.instance(),
+		MapsId2_0AnnotationDefinition.instance(),
+		MapKeyAnnotationDefinition.instance(),
+		MapKeyClass2_0AnnotationDefinition.instance(),
+		MapKeyColumn2_0AnnotationDefinition.instance(),
+		MapKeyEnumerated2_0AnnotationDefinition.instance(),
+		MapKeyJoinColumn2_0AnnotationDefinition.instance(),
+		MapKeyJoinColumns2_0AnnotationDefinition.instance(),
+		MapKeyTemporal2_0AnnotationDefinition.instance(),
+		OneToManyAnnotationDefinition.instance(),
+		OneToOneAnnotationDefinition.instance(),
+		OrderByAnnotationDefinition.instance(),
+		OrderColumn2_0AnnotationDefinition.instance(),
+		PrimaryKeyJoinColumnAnnotationDefinition.instance(),
+		PrimaryKeyJoinColumnsAnnotationDefinition.instance(),
+		SequenceGenerator2_0AnnotationDefinition.instance(),
+		TableGeneratorAnnotationDefinition.instance(),
+		TemporalAnnotationDefinition.instance(),
+		TransientAnnotationDefinition.instance(),
+		VersionAnnotationDefinition.instance()
+	};
+
+	@Override
+	protected void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		// no package annotations
 	}
 }

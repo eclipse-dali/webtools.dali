@@ -21,7 +21,8 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkPrivateOwned extends JpaContextNode
+public interface EclipseLinkPrivateOwned
+	extends JpaContextNode
 {
 	boolean isPrivateOwned();
 	void setPrivateOwned(boolean privateOwned);

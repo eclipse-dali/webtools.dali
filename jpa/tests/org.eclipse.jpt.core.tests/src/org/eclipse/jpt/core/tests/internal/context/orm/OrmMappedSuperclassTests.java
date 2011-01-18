@@ -180,18 +180,18 @@ public class OrmMappedSuperclassTests extends ContextModelTestCase
 		XmlMappedSuperclass mappedSuperclassResource = getXmlEntityMappings().getMappedSuperclasses().get(0);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(ormMappedSuperclass.isDefaultMetadataComplete());
+		assertFalse(ormMappedSuperclass.isOverrideMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(ormMappedSuperclass.isDefaultMetadataComplete());
+		assertTrue(ormMappedSuperclass.isOverrideMetadataComplete());
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(ormMappedSuperclass.getSpecifiedMetadataComplete());
-		assertFalse(ormMappedSuperclass.isDefaultMetadataComplete());
+		assertFalse(ormMappedSuperclass.isOverrideMetadataComplete());
 		assertNull(mappedSuperclassResource.getMetadataComplete());
 	}
 	

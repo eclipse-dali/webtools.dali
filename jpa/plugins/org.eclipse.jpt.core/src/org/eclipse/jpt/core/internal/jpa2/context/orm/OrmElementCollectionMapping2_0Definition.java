@@ -10,14 +10,11 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -61,15 +58,8 @@ public class OrmElementCollectionMapping2_0Definition
 	
 	public OrmAttributeMapping buildContextMapping(
 			OrmPersistentAttribute parent, 
-			XmlAttributeMapping resourceMapping, 
+			XmlAttributeMapping xmlMapping, 
 			OrmXmlContextNodeFactory factory) {
-		return ((OrmXml2_0ContextNodeFactory) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) resourceMapping);
-	}
-	
-	public XmlAttributeMapping buildVirtualResourceMapping(
-			OrmTypeMapping ormTypeMapping, 
-			JavaAttributeMapping javaAttributeMapping, 
-			OrmXmlContextNodeFactory factory) {
-		return ((OrmXml2_0ContextNodeFactory) factory).buildVirtualXmlElementCollection2_0(ormTypeMapping, (JavaElementCollectionMapping2_0) javaAttributeMapping);
+		return ((OrmXml2_0ContextNodeFactory) factory).buildOrmElementCollectionMapping2_0(parent, (XmlElementCollection) xmlMapping);
 	}
 }

@@ -12,8 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 
 /**
- * Joining strategy that depends on another mapping (the owning side of the 
- * relationship) to join the two entities.  Uses "mappedBy" meta-data.
+ * "Mapped by" joining strategy
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -21,15 +20,17 @@ import java.util.Iterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
+ * @see RelationshipMapping
+ * @see OwnableRelationshipReference
+ * 
  * @version 2.2
  * @since 2.2
- * 
- * @see {@link RelationshipMapping}
- * @see {@link OwnableRelationshipReference}
  */
 public interface MappedByJoiningStrategy
 	extends JoiningStrategy
 {
+	void initializeFrom(MappedByJoiningStrategy oldStrategy);
+	
 	/**
 	 * String associated with changes to the attribute property of this object
 	 */
@@ -45,10 +46,10 @@ public interface MappedByJoiningStrategy
 	 * Set the attribute of this object.  A null will result in removal of the 
 	 * resource element
 	 */
-	void setMappedByAttribute(String newAttribute);
+	void setMappedByAttribute(String attribute);
 	
 	/**
-	 * Return an iterator of possible attribute names that this object might use
+	 * Return the possible attribute names the strategy might use.
 	 */
 	Iterator<String> candidateMappedByAttributeNames();
 	

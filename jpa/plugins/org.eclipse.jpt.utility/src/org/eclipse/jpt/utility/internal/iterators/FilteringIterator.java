@@ -19,7 +19,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * and uses a {@link Filter} to determine which elements in the
  * nested iterator are to be returned by calls to {@link #next()}.
  * <p>
- * As an alternative to building a {@link Filter</code>, a subclass
+ * As an alternative to building a {@link Filter}, a subclass
  * of <code>FilteringIterator</code> can override the
  * {@link #accept(Object)} method.
  * <p>

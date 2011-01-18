@@ -811,10 +811,10 @@ public abstract class ORMGenCustomizer implements java.io.Serializable
 	      }
 	   } );
 	}
-	public boolean shouldUpdatePersistenceXml() {
+	public boolean updatePersistenceXml() {
 		return mUpdatePersistenceXml;
 	}
-	public void setShouldUpdatePersistenceXml(boolean updatePersistenceXml) {
+	public void setUpdatePersistenceXml(boolean updatePersistenceXml) {
 		this.mUpdatePersistenceXml = updatePersistenceXml;
 	}
 }

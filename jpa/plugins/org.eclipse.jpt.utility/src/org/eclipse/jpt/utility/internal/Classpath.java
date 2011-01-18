@@ -460,9 +460,8 @@ public class Classpath
 	 * Construct a classpath with the specified entries.
 	 */
 	public Classpath(Iterable<String> fileNames) {
-		this(ArrayTools.array(fileNames, EMPTY_STRING_ARRAY));
+		this(ArrayTools.array(fileNames, StringTools.EMPTY_STRING_ARRAY));
 	}
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	/**
 	 * Consolidate the specified classpaths into a single classpath.

@@ -14,7 +14,7 @@ import java.util.Collection;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -63,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.0
  * @since 2.0
  */
-public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetadata>
+public class PersistenceUnitMetadataComposite extends Pane<OrmPersistenceUnitMetadata>
 {
 	/**
 	 * Creates a new <code>PersistenceUnitMetadataComposite</code>.
@@ -73,7 +73,7 @@ public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetada
 	 * @param parent The parent container
 	 */
 	public PersistenceUnitMetadataComposite(Pane<?> parentPane,
-	                                        PropertyValueModel<? extends PersistenceUnitMetadata> subjectHolder,
+	                                        PropertyValueModel<? extends OrmPersistenceUnitMetadata> subjectHolder,
 	                                        Composite parent) {
 
 		super(parentPane, subjectHolder, parent, false);
@@ -163,9 +163,9 @@ public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetada
 	}
 
 	private PropertyValueModel<OrmPersistenceUnitDefaults> buildPersistenceUnitDefaultsHolder() {
-		return new TransformationPropertyValueModel<PersistenceUnitMetadata, OrmPersistenceUnitDefaults>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<OrmPersistenceUnitMetadata, OrmPersistenceUnitDefaults>(getSubjectHolder()) {
 			@Override
-			protected OrmPersistenceUnitDefaults transform_(PersistenceUnitMetadata value) {
+			protected OrmPersistenceUnitDefaults transform_(OrmPersistenceUnitMetadata value) {
 				return value.getPersistenceUnitDefaults();
 			}
 		};
@@ -206,7 +206,7 @@ public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetada
 	}
 
 	private WritablePropertyValueModel<Boolean> buildXmlMappingMetadataCompleteHolder() {
-		return new PropertyAspectAdapter<PersistenceUnitMetadata, Boolean>(getSubjectHolder(), PersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
+		return new PropertyAspectAdapter<OrmPersistenceUnitMetadata, Boolean>(getSubjectHolder(), OrmPersistenceUnitMetadata.XML_MAPPING_METADATA_COMPLETE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return Boolean.valueOf(this.subject.isXmlMappingMetadataComplete());
@@ -297,7 +297,7 @@ public class PersistenceUnitMetadataComposite extends Pane<PersistenceUnitMetada
 			JpaHelpContextIds.ENTITY_ORM_DELIMITED_IDENTIFIERS
 		);
 		
-		SWTTools.controlVisibleState(new Jpa2_0ProjectFlagModel<PersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
+		SWTTools.controlVisibleState(new Jpa2_0ProjectFlagModel<OrmPersistenceUnitMetadata>(this.getSubjectHolder()), diCheckBox);
 
 	}
 }

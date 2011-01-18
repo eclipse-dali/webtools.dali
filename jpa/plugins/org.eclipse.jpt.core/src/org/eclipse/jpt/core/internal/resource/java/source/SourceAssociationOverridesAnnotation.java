@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -18,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
- * javax.persistence.AssociationOverrides
+ * <code>javax.persistence.AssociationOverrides</code>
  */
 public abstract class SourceAssociationOverridesAnnotation
 	extends SourceAnnotation<Member>
@@ -53,6 +53,12 @@ public abstract class SourceAssociationOverridesAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.associationOverrides.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.associationOverrides);
 	}
@@ -76,13 +82,29 @@ public abstract class SourceAssociationOverridesAnnotation
 		return this.associationOverrides.size();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.associationOverrides.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.associationOverrides.add(index, (NestableAssociationOverrideAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.associationOverrides.remove(0).convertToStandAlone();
+	}
+
 	public NestableAssociationOverrideAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.associationOverrides.size());
 	}
 
 	private NestableAssociationOverrideAnnotation addNestedAnnotation(int index) {
 		NestableAssociationOverrideAnnotation associationOverride = this.buildAssociationOverride(index);
-		this.associationOverrides.add(associationOverride);
+		this.associationOverrides.add(index, associationOverride);
 		return associationOverride;
 	}
 
@@ -106,5 +128,4 @@ public abstract class SourceAssociationOverridesAnnotation
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.associationOverrides, ASSOCIATION_OVERRIDES_LIST);
 	}
-
 }

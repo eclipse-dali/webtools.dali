@@ -26,28 +26,28 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  */
 public interface PersistentType
 	extends JpaContextNode, JpaStructureNode, AccessHolder
 {
-
 	// ********** name **********
 
 	/**
 	 * Return the persistent type's [fully-qualified] name.
-	 * The enclosing type separator is '.', as opposed to '$'.
-	 * @see #getShortName()
+	 * The enclosing type separator is <code>'.'</code>,
+	 * as opposed to <code>'$'</code>.
+	 * @see #getSimpleName()
 	 */
 	String getName();
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	/**
-	 * Return the persistent type's short name.
+	 * Return the persistent type's simple name.
 	 * @see #getName()
 	 */
-	String getShortName();
+	String getSimpleName();
 
 
 	// ********** mapping **********
@@ -71,8 +71,7 @@ public interface PersistentType
 	/**
 	 * Return the persistent type's persistent attributes.
 	 */
-	<T extends PersistentAttribute> ListIterator<T> attributes();
-		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
+	<T extends ReadOnlyPersistentAttribute> ListIterator<T> attributes();
 
 	/**
 	 * Return the number of the persistent type's persistent attributes.
@@ -88,7 +87,7 @@ public interface PersistentType
 	 * Return all the persistent attributes in the persistent type's
 	 * inheritance hierarchy.
 	 */
-	Iterator<PersistentAttribute> allAttributes();
+	Iterator<ReadOnlyPersistentAttribute> allAttributes();
 
 	/**
 	 * Return the names of all the persistent attributes in the
@@ -101,13 +100,13 @@ public interface PersistentType
 	 * if it exists locally on the persistent type (as opposed to in its
 	 * inheritance hierarchy).
 	 */
-	PersistentAttribute getAttributeNamed(String attributeName);
+	ReadOnlyPersistentAttribute getAttributeNamed(String attributeName);
 
 	/**
 	 * Resolve and return the persistent attribute with the specified name, if it
 	 * is distinct and exists within the context of the persistent type.
 	 */
-	PersistentAttribute resolveAttribute(String attributeName);
+	ReadOnlyPersistentAttribute resolveAttribute(String attributeName);
 
 
 	// ********** inheritance **********
@@ -208,5 +207,4 @@ public interface PersistentType
 		AccessType getDefaultPersistentTypeAccess();
 
 	}
-
 }

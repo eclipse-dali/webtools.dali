@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -16,13 +16,18 @@ import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
-
-public class GenericOrmNullAttributeMapping 
+/**
+ * <code>orm.xml</code> null attribute mapping
+ */
+public class GenericOrmNullAttributeMapping
 	extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
+	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping xmlMapping) {
+		super(parent, xmlMapping);
+	}
 
-	public GenericOrmNullAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
-		super(parent, resourceMapping);
+	public String getKey() {
+		return null;
 	}
 
 	public int getXmlSequence() {
@@ -33,23 +38,18 @@ public class GenericOrmNullAttributeMapping
 		newMapping.initializeFromOrmAttributeMapping(this);
 	}
 
-	public String getKey() {
-		return null;
-	}
-	
-	public void addToResourceModel(Attributes resourceAttributes) {
+	public void addXmlAttributeMappingTo(Attributes resourceAttributes) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeFromResourceModel(Attributes resourceAttributes) {
+	public void removeXmlAttributeMappingFrom(Attributes resourceAttributes) {
 		throw new UnsupportedOperationException();
 	}
 
-	// ********** metamodel **********  
+	// ********** metamodel **********
 
 	@Override
 	public MetamodelField getMetamodelField() {
 		return null;
 	}
-
 }

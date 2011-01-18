@@ -11,6 +11,9 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Converter;
+import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.LobConverter;
+import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
@@ -115,7 +118,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
+			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -123,7 +126,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		Button lobButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_lob, 
-			buildConverterBooleanHolder(Converter.LOB_CONVERTER), 
+			buildConverterBooleanHolder(LobConverter.class), 
 			null);
 		((GridData) lobButton.getLayoutData()).horizontalSpan = 2;
 		
@@ -132,7 +135,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
+			buildConverterBooleanHolder(TemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 		
@@ -141,7 +144,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_enumerated, 
-			buildConverterBooleanHolder(Converter.ENUMERATED_CONVERTER), 
+			buildConverterBooleanHolder(EnumeratedConverter.class), 
 			null);
 		registerSubPane(new EnumTypeComposite(buildEnumeratedConverterHolder(converterHolder), container, getWidgetFactory()));
 
@@ -149,7 +152,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		Button elConverterButton = addRadioButton(
 			container, 
 			EclipseLinkUiDetailsMessages.TypeSection_converted, 
-			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
+			buildConverterBooleanHolder(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -177,7 +180,7 @@ public class EclipseLinkBasicMappingComposite<T extends BasicMapping> extends Ab
 		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
 			@Override
 			protected EclipseLinkConvert transform_(Converter converter) {
-				return converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER ? (EclipseLinkConvert) converter : null;
+				return converter.getType() == EclipseLinkConvert.class ? (EclipseLinkConvert) converter : null;
 			}
 		};
 	}

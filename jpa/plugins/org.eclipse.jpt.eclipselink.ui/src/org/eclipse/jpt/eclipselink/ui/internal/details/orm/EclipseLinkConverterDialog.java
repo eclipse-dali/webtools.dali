@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
@@ -24,17 +26,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-/**
- * Clients can use this dialog to prompt the user for SecondaryTable settings.
- * Use the following once the dialog is closed:
- *     @see #getSelectedTable()
- *     @see #getSelectedCatalog()
- *     @see #getSelectedSchema()
- * @version 2.1
- * @since 2.1
- */
-public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConverterStateObject> {
-
+public class EclipseLinkConverterDialog
+	extends ValidatingDialog<EclipseLinkConverterStateObject>
+{
 	
 	// ********** constructors **********
 
@@ -101,7 +95,7 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConv
 	/**
 	 * Return the object value set in the text widget.
 	 */
-	public String getConverterType() {
+	public Class<? extends EclipseLinkConverter> getConverterType() {
 		return getSubject().getConverterType();
 	}
 	
@@ -130,32 +124,26 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConv
 				null);
 		}
 
-		protected ListValueModel<String> buildConverterTypeListHolder() {
-			List<String> converterTypes = new ArrayList<String>();
-			converterTypes.add(EclipseLinkConverter.CUSTOM_CONVERTER);
-			converterTypes.add(EclipseLinkConverter.OBJECT_TYPE_CONVERTER);
-			converterTypes.add(EclipseLinkConverter.STRUCT_CONVERTER);
-			converterTypes.add(EclipseLinkConverter.TYPE_CONVERTER);
-			
-			return new StaticListValueModel<String>(converterTypes);
+		protected ListValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeListHolder() {
+			return new StaticListValueModel<Class<? extends EclipseLinkConverter>>(EclipseLinkConverter.TYPES);
 		}
 		
-		private StringConverter<String> buildStringConverter() {
-			return new StringConverter<String>() {
-				public String convertToString(String value) {
-					if (value == EclipseLinkConverter.CUSTOM_CONVERTER) {
+		private StringConverter<Class<? extends EclipseLinkConverter>> buildStringConverter() {
+			return new StringConverter<Class<? extends EclipseLinkConverter>>() {
+				public String convertToString(Class<? extends EclipseLinkConverter> value) {
+					if (value == EclipseLinkCustomConverter.class) {
 						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_customConverter;
 					}
-					if (value == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+					if (value == EclipseLinkObjectTypeConverter.class) {
 						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_objectTypeConverter;
 					}
-					if (value == EclipseLinkConverter.STRUCT_CONVERTER) {
+					if (value == EclipseLinkStructConverter.class) {
 						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_structConverter;
 					}
-					if (value == EclipseLinkConverter.TYPE_CONVERTER) {
+					if (value == EclipseLinkTypeConverter.class) {
 						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_typeConverter;
 					}
-					return value;
+					return value.getSimpleName();
 				}
 			};
 		}
@@ -174,15 +162,15 @@ public class EclipseLinkConverterDialog extends ValidatingDialog<EclipseLinkConv
 			};
 		}
 
-		private WritablePropertyValueModel<String> buildConverterTypeHolder() {
-			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, String>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
+		private WritablePropertyValueModel<Class<? extends EclipseLinkConverter>> buildConverterTypeHolder() {
+			return new PropertyAspectAdapter<EclipseLinkConverterStateObject, Class<? extends EclipseLinkConverter>>(getSubjectHolder(), EclipseLinkConverterStateObject.CONVERTER_TYPE_PROPERTY) {
 				@Override
-				protected String buildValue_() {
+				protected Class<? extends EclipseLinkConverter> buildValue_() {
 					return this.subject.getConverterType();
 				}
 
 				@Override
-				protected void setValue_(String value) {
+				protected void setValue_(Class<? extends EclipseLinkConverter> value) {
 					this.subject.setConverterType(value);
 				}
 			};

@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -48,11 +48,11 @@ public class OrmPersistentAttributeDetailsProvider
 	
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
-			return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID)
+			return Tools.valuesAreEqual(structureNode.getId(), OrmStructureNodes.PERSISTENT_ATTRIBUTE_ID)
 				&& structureNode.getResourceType().getContentType().isKindOf(JptCorePlugin.MAPPING_FILE_CONTENT_TYPE);
 	}
 	
-	public JpaDetailsPage<OrmPersistentAttribute> buildDetailsPage(
+	public JpaDetailsPage<OrmReadOnlyPersistentAttribute> buildDetailsPage(
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		

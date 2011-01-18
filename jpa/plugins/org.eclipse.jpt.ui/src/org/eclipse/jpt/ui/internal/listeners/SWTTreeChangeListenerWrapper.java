@@ -18,10 +18,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another tree change listener and forward events to it on the SWT
- * UI thread, asynchronously if necessary. If the event arrived on the UI
- * thread that is probably because it was initiated by a UI widget; as a
- * result, we want to loop back synchronously so the events can be
- * short-circuited.
+ * UI thread, asynchronously if necessary.
  */
 public class SWTTreeChangeListenerWrapper
 	implements TreeChangeListener
@@ -75,7 +72,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node added"; //$NON-NLS-1$
+				return "node added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -87,7 +84,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node removed"; //$NON-NLS-1$
+				return "node removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -99,7 +96,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree cleared"; //$NON-NLS-1$
+				return "tree cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -111,7 +108,7 @@ public class SWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree changed"; //$NON-NLS-1$
+				return "tree changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

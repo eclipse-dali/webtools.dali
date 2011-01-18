@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
@@ -27,59 +28,60 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToManyMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public abstract class AbstractEclipseLinkOrmXmlDefinition
 	extends AbstractOrmXmlDefinition
 {
-
-	/**
-	 * zero-argument constructor
-	 */
 	protected AbstractEclipseLinkOrmXmlDefinition() {
 		super();
 	}
-	
-	
+
 	public EFactory getResourceNodeFactory() {
 		return EclipseLinkOrmFactory.eINSTANCE;
 	}
-	
-	
-	// ********* ORM type mappings *********
-	
+
 	@Override
-	protected OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions() {
-		// order should not matter here, but we'll use the same order as for java
-		// @see {@link EclipseLinkJpaPlatformProvider}
-		return new OrmTypeMappingDefinition[] {
-			OrmEntityDefinition.instance(),
-			OrmEmbeddableDefinition.instance(),
-			OrmMappedSuperclassDefinition.instance()};
+	protected void addTypeMappingDefinitionsTo(ArrayList<OrmTypeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_MAPPING_DEFINITIONS);
 	}
-	
-	
-	// ********** ORM attribute mappings **********
-	
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see EclipseLinkJpaPlatformProvider
+	 */
+	protected static final OrmTypeMappingDefinition[] TYPE_MAPPING_DEFINITIONS = new OrmTypeMappingDefinition[] {
+		OrmEntityDefinition.instance(),
+		OrmEmbeddableDefinition.instance(),
+		OrmMappedSuperclassDefinition.instance()
+	};
+
 	@Override
-	protected OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions() {
-		// order should not matter here, but we'll use the same order as for java
-		// @see {@link EclipseLinkJpaPlatformProvider}
-		return new OrmAttributeMappingDefinition[] {
-			OrmTransientMappingDefinition.instance(),
-			OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
-			OrmEclipseLinkBasicMapMappingDefinition.instance(),
-			OrmIdMappingDefinition.instance(),
-			OrmVersionMappingDefinition.instance(),
-			OrmBasicMappingDefinition.instance(),
-			OrmEmbeddedMappingDefinition.instance(),
-			OrmEmbeddedIdMappingDefinition.instance(),
-			OrmEclipseLinkTransformationMappingDefinition.instance(),
-			OrmManyToManyMappingDefinition.instance(),
-			OrmManyToOneMappingDefinition.instance(),
-			OrmOneToManyMappingDefinition.instance(),
-			OrmOneToOneMappingDefinition.instance(),
-			OrmEclipseLinkVariableOneToOneMappingDefinition.instance(),
-			NullOrmAttributeMappingDefinition.instance()};
+	protected void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, ATTRIBUTE_MAPPING_DEFINITIONS);
 	}
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see EclipseLinkJpaPlatformProvider
+	 */
+	protected static final OrmAttributeMappingDefinition[] ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
+		OrmTransientMappingDefinition.instance(),
+		OrmEclipseLinkBasicCollectionMappingDefinition.instance(),
+		OrmEclipseLinkBasicMapMappingDefinition.instance(),
+		OrmIdMappingDefinition.instance(),
+		OrmVersionMappingDefinition.instance(),
+		OrmBasicMappingDefinition.instance(),
+		OrmEmbeddedMappingDefinition.instance(),
+		OrmEmbeddedIdMappingDefinition.instance(),
+		OrmEclipseLinkTransformationMappingDefinition.instance(),
+		OrmManyToManyMappingDefinition.instance(),
+		OrmManyToOneMappingDefinition.instance(),
+		OrmOneToManyMappingDefinition.instance(),
+		OrmOneToOneMappingDefinition.instance(),
+		OrmEclipseLinkVariableOneToOneMappingDefinition.instance(),
+		NullOrmAttributeMappingDefinition.instance()
+	};
 }

@@ -71,18 +71,24 @@ public interface JpaFile
 	/**
 	 * Add a root structure node.
 	 * There is the potential for multiple root structure nodes 
-	 * for a particular key. For example, a Java file that is listed
-	 * both as a <class> in the persistence.xml and as an <entity> in
-	 * an orm.xml file. In this case the orm.xml file needs to set
-	 * the root structure node after the Java class reference.
-	 * Last one in during project "update" wins.
+	 * for a particular key. For example, a Java type can be listed
+	 * both as a {@code <class>} in the <code>persistence.xml</code> file
+	 * and as an {@code <entity>} in
+	 * an <code>orm.xml</code> file. In this case, the Jave type in
+	 * the <code>orm.xml</code> file must set
+	 * the root structure node <em>after</em> the Java type in the
+	 * <code>persistence.xml</code> file.
+	 * Last one in during project <em>update</em> wins.
 	 */
 	void addRootStructureNode(Object key, JpaStructureNode rootStructureNode);
 
 	/**
+	 * Remove the root structure node for the specified key if its current value
+	 * is the same as the specified node.
+	 * 
 	 * @see #addRootStructureNode(Object, JpaStructureNode)
 	 */
-	void removeRootStructureNode(Object key);
+	void removeRootStructureNode(Object key, JpaStructureNode rootStructureNode);
 
 	/**
 	 * Return the structure node best corresponding to the location in the file.

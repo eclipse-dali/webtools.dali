@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> named and named native queries
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,13 +30,20 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OrmQuery
 	extends Query, XmlContextNode
 {
+	XmlQuery getXmlQuery();
+
+
+	// ********** hints **********
+
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmQueryHint> hints();
-	
+	ListIterable<OrmQueryHint> getHints();
+
+	OrmQueryHint addHint();
+
 	OrmQueryHint addHint(int index);
-	
-	
-	// **************** validation *********************************************
-	
+
+
+	// ********** validation **********
+
 	TextRange getNameTextRange();
 }

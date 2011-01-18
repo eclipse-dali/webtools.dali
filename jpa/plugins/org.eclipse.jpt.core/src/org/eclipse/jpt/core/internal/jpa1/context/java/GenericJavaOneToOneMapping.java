@@ -11,9 +11,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMapping;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToOneRelationshipReference;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
-
 
 public class GenericJavaOneToOneMapping
 	extends AbstractJavaOneToOneMapping
@@ -21,10 +18,4 @@ public class GenericJavaOneToOneMapping
 	public GenericJavaOneToOneMapping(JavaPersistentAttribute parent) {
 		super(parent);
 	}
-
-	@Override
-	protected JavaOneToOneRelationshipReference2_0 buildRelationshipReference() {
-		return new GenericJavaOneToOneRelationshipReference(this);
-	}
-
 }

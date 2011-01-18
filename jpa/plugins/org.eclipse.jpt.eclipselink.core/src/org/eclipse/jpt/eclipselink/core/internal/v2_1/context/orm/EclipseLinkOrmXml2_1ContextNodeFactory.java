@@ -18,9 +18,9 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlElementCollection;
 
-public class EclipseLinkOrmXml2_1ContextNodeFactory extends EclipseLinkOrmXml2_0ContextNodeFactory
+public class EclipseLinkOrmXml2_1ContextNodeFactory
+	extends EclipseLinkOrmXml2_0ContextNodeFactory
 {
-
 	@Override
 	public OrmElementCollectionMapping2_0 buildOrmElementCollectionMapping2_0(OrmPersistentAttribute parent, org.eclipse.jpt.core.resource.orm.XmlElementCollection resourceMapping) {
 		return new EclipseLinkOrmElementCollectionMapping2_1(parent, (XmlElementCollection) resourceMapping);

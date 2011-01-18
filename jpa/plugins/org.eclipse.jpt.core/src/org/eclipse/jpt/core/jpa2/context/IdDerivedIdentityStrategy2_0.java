@@ -1,17 +1,17 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
-
 /**
+ * ID derived identity strategy
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,7 +27,7 @@ public interface IdDerivedIdentityStrategy2_0
 	/**
 	 * String associated with changes to the value property of this object
 	 */
-	public static final String VALUE_PROPERTY = "value"; //$NON-NLS-1$
+	String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 	
 	/**
 	 * Return whether this object uses a derived id
@@ -37,5 +37,5 @@ public interface IdDerivedIdentityStrategy2_0
 	/**
 	 * Set whether this object uses a derived id
 	 */
-	void setValue(boolean newValue);
+	void setValue(boolean value);
 }

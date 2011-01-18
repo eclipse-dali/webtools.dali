@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
 
@@ -22,13 +22,15 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 1.0
  */
-public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> extends ValidatingDialog<T> {
+public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject>
+	extends ValidatingDialog<T>
+{
 
 	/**
 	 * Either the join column to edit or <code>null</code> if this state object
 	 * is used to create a new one.
 	 */
-	private BaseJoinColumn joinColumn;
+	private ReadOnlyBaseJoinColumn joinColumn;
 
 	/**
 	 * The owner of the join column to create or where it is located.
@@ -45,7 +47,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 */
 	public BaseJoinColumnDialog(Shell parent,
 	                            Object owner,
-	                            BaseJoinColumn joinColumn) {
+	                            ReadOnlyBaseJoinColumn joinColumn) {
 
 		super(parent);
 
@@ -80,7 +82,7 @@ public abstract class BaseJoinColumnDialog<T extends BaseJoinColumnStateObject> 
 	 *
 	 * @return Either the edited join column or <code>null</code>
 	 */
-	public BaseJoinColumn getJoinColumn() {
+	public ReadOnlyBaseJoinColumn getJoinColumn() {
 		return joinColumn;
 	}
 

@@ -3,19 +3,18 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Set;
-import org.eclipse.core.runtime.Path;
+import java.util.Vector;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -42,6 +41,7 @@ import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customizati
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.general.EclipseLinkGeneralProperties;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation.EclipseLinkSchemaGeneration;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.NotNullFilter;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeListIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
@@ -60,6 +60,11 @@ public class EclipseLinkPersistenceUnit
 	extends AbstractPersistenceUnit
 {
 	protected MappingFileRef impliedEclipseLinkMappingFileRef;
+	/**
+	 * String constant associated with changes to the implied eclipselink mapping file ref
+	 */
+	public static final String IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY = "impliedEclipseLinkMappingFileRef"; //$NON-NLS-1$
+
 
 	private/*final*/ GeneralProperties generalProperties;
 	private Customization customization;
@@ -68,170 +73,26 @@ public class EclipseLinkPersistenceUnit
 	private SchemaGeneration schemaGeneration;
 
 	/* global converter definitions, defined elsewhere in model */
-	protected final List<EclipseLinkConverter> converters = new ArrayList<EclipseLinkConverter>();
+	protected final Vector<EclipseLinkConverter> converters = new Vector<EclipseLinkConverter>();
 
 
-	// ********** constructors/initialization **********
 	public EclipseLinkPersistenceUnit(Persistence parent, XmlPersistenceUnit xmlPersistenceUnit) {
 		super(parent, xmlPersistenceUnit);
 	}
 
+
+	// ********** synchronize/update **********
+
+	// TODO bjv calculate converters directly...
 	@Override
-	public EclipseLinkPersistenceXmlContextNodeFactory getContextNodeFactory() {
-		return (EclipseLinkPersistenceXmlContextNodeFactory) super.getContextNodeFactory();
-	}
-
-	@Override
-	protected void initializeProperties() {
-		super.initializeProperties();
-
-		this.generalProperties = this.buildEclipseLinkGeneralProperties();
-		this.customization = this.buildEclipseLinkCustomization();
-		this.caching = this.buildEclipseLinkCaching();
-		this.logging = this.buildEclipseLinkLogging();
-		this.schemaGeneration = this.buildEclipseLinkSchemaGeneration();
-	}
-
-	@Override
-	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
-		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
-		nonUpdateAspectNames.add(CONVERTERS_LIST);
-	}
-	
-	@Override
-	public void propertyValueChanged(String propertyName, String newValue) {
-		super.propertyValueChanged(propertyName, newValue);
-		this.generalProperties.propertyValueChanged(propertyName, newValue);
-		this.customization.propertyValueChanged(propertyName, newValue);
-		this.caching.propertyValueChanged(propertyName, newValue);
-		this.logging.propertyValueChanged(propertyName, newValue);
-		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
-	}
-	
-	@Override
-	public void propertyRemoved(String propertyName) {
-		super.propertyRemoved(propertyName);
-		this.generalProperties.propertyRemoved(propertyName);
-		this.customization.propertyRemoved(propertyName);
-		this.caching.propertyRemoved(propertyName);
-		this.logging.propertyRemoved(propertyName);
-		this.schemaGeneration.propertyRemoved(propertyName);
-	}
-	
-	@Override
-	protected SharedCacheMode buildDefaultSharedCacheMode() {
-		return SharedCacheMode.DISABLE_SELECTIVE;
-	}
-
-	@Override
-	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
-		super.setSpecifiedSharedCacheMode(specifiedSharedCacheMode);
-		
-		if(specifiedSharedCacheMode == SharedCacheMode.NONE) {
-			this.caching.removeDefaultCachingProperties();
-		}
-	}
-	
-	@Override
-	public boolean calculateDefaultCacheable() {
-		switch (getSharedCacheMode()) {
-			case NONE:
-			case ENABLE_SELECTIVE:
-				return false;
-			case ALL:
-			case DISABLE_SELECTIVE:
-			case UNSPECIFIED:
-				return true;
-		}
-		return true;//null
-	}
-
-	// **************** mapping file refs **************************************
-
-	@Override
-	protected ListIterable<MappingFileRef> getMappingFileRefs() {
-		return (this.impliedEclipseLinkMappingFileRef == null) ? super.getMappingFileRefs() : this.getCombinedEclipseLinkMappingFileRefs();
-	}
-
-	protected ListIterable<MappingFileRef> getCombinedEclipseLinkMappingFileRefs() {
-		return new CompositeListIterable<MappingFileRef>(super.getMappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
-	}
-
-	@Override
-	public int mappingFileRefsSize() {
-		return this.impliedEclipseLinkMappingFileRef == null ? super.mappingFileRefsSize() : combinedEclipseLinkMappingFileRefsSize(); 
-	}
-
-	protected int combinedEclipseLinkMappingFileRefsSize() {
-		return super.mappingFileRefsSize() + 1;
-	}
-
-
-	// **************** implied eclipselink mapping file ref *******************
-
-	/**
-	 * String constant associated with changes to the implied eclipselink mapping file ref
-	 */
-	public final static String IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY = "impliedEclipseLinkMappingFileRef"; //$NON-NLS-1$
-
-
-	public MappingFileRef getImpliedEclipseLinkMappingFileRef() {
-		return this.impliedEclipseLinkMappingFileRef;
-	}
-
-	protected MappingFileRef setImpliedEclipseLinkMappingFileRef() {
-		if (this.impliedEclipseLinkMappingFileRef != null) {
-			throw new IllegalStateException("The implied eclipselink mapping file ref is already set."); //$NON-NLS-1$
-		}
-		MappingFileRef mappingFileRef = buildEclipseLinkImpliedMappingFileRef();
-		this.impliedEclipseLinkMappingFileRef = mappingFileRef;
-		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
-		return mappingFileRef;
-	}
-
-	protected void unsetImpliedEclipseLinkMappingFileRef() {
-		if (this.impliedEclipseLinkMappingFileRef == null) {
-			throw new IllegalStateException("The implied eclipselink mapping file ref is already unset."); //$NON-NLS-1$
-		}
-		MappingFileRef mappingFileRef = this.impliedEclipseLinkMappingFileRef;
-		this.impliedEclipseLinkMappingFileRef.dispose();
-		this.impliedEclipseLinkMappingFileRef = null;
-		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
-	}
-
-
-	// **************** factory methods *********************************************
-	
-	protected GeneralProperties buildEclipseLinkGeneralProperties() {
-		return new EclipseLinkGeneralProperties(this);
-	}
-	
-	protected Connection buildEclipseLinkConnection() {
-		return (Connection) this.getContextNodeFactory().buildConnection(this);
-	}
-	
-	protected Customization buildEclipseLinkCustomization() {
-		return new EclipseLinkCustomization(this);
-	}
-
-	protected Caching buildEclipseLinkCaching() {
-		return new EclipseLinkCaching(this);
-	}
-	
-	protected Logging buildEclipseLinkLogging() {
-		return (Logging) this.getContextNodeFactory().buildLogging(this);
-	}
-	
-	protected Options buildEclipseLinkOptions() {
-		return (Options) this.getContextNodeFactory().buildOptions(this);
-	}
-	
-	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {
-		return new EclipseLinkSchemaGeneration(this);
+	public void update() {
+		this.converters.clear();
+		super.update();
+		this.fireCollectionChanged(CONVERTERS_COLLECTION, this.converters);
 	}
 	
 
-	// **************** properties *********************************************
+	// ********** properties **********
 
 	public GeneralProperties getGeneralProperties() {
 		return this.generalProperties;
@@ -263,15 +124,179 @@ public class EclipseLinkPersistenceUnit
 		return this.schemaGeneration;
 	}
 
+	protected GeneralProperties buildEclipseLinkGeneralProperties() {
+		return new EclipseLinkGeneralProperties(this);
+	}
 
-	// **************** converters *********************************************
+	protected Connection buildEclipseLinkConnection() {
+		return (Connection) this.getContextNodeFactory().buildConnection(this);
+	}
+
+	protected Customization buildEclipseLinkCustomization() {
+		return new EclipseLinkCustomization(this);
+	}
+
+	protected Caching buildEclipseLinkCaching() {
+		return new EclipseLinkCaching(this);
+	}
+
+	protected Logging buildEclipseLinkLogging() {
+		return (Logging) this.getContextNodeFactory().buildLogging(this);
+	}
+
+	protected Options buildEclipseLinkOptions() {
+		return (Options) this.getContextNodeFactory().buildOptions(this);
+	}
+
+	protected SchemaGeneration buildEclipseLinkSchemaGeneration() {
+		return new EclipseLinkSchemaGeneration(this);
+	}
+
+	@Override
+	protected void initializeProperties() {
+		super.initializeProperties();
+		this.generalProperties = this.buildEclipseLinkGeneralProperties();
+		this.customization = this.buildEclipseLinkCustomization();
+		this.caching = this.buildEclipseLinkCaching();
+		this.logging = this.buildEclipseLinkLogging();
+		this.schemaGeneration = this.buildEclipseLinkSchemaGeneration();
+	}
+
+	@Override
+	public void propertyValueChanged(String propertyName, String newValue) {
+		super.propertyValueChanged(propertyName, newValue);
+		this.generalProperties.propertyValueChanged(propertyName, newValue);
+		this.customization.propertyValueChanged(propertyName, newValue);
+		this.caching.propertyValueChanged(propertyName, newValue);
+		this.logging.propertyValueChanged(propertyName, newValue);
+		this.schemaGeneration.propertyValueChanged(propertyName, newValue);
+	}
+
+	@Override
+	public void propertyRemoved(String propertyName) {
+		super.propertyRemoved(propertyName);
+		this.generalProperties.propertyRemoved(propertyName);
+		this.customization.propertyRemoved(propertyName);
+		this.caching.propertyRemoved(propertyName);
+		this.logging.propertyRemoved(propertyName);
+		this.schemaGeneration.propertyRemoved(propertyName);
+	}
+
+
+	// ********** mapping file refs **********
+
+	@Override
+	protected ListIterable<MappingFileRef> getMappingFileRefs() {
+		return (this.impliedEclipseLinkMappingFileRef == null) ?
+				super.getMappingFileRefs() :
+				new CompositeListIterable<MappingFileRef>(super.getMappingFileRefs(), this.impliedEclipseLinkMappingFileRef);
+	}
+
+	@Override
+	public int mappingFileRefsSize() {
+		return (this.impliedEclipseLinkMappingFileRef == null) ?
+				super.mappingFileRefsSize() :
+				super.mappingFileRefsSize() + 1;
+	}
+
+
+	// ********** implied eclipselink mapping file ref **********
+
+	public MappingFileRef getImpliedEclipseLinkMappingFileRef() {
+		return this.impliedEclipseLinkMappingFileRef;
+	}
+
+	protected MappingFileRef addImpliedEclipseLinkMappingFileRef() {
+		if (this.impliedEclipseLinkMappingFileRef != null) {
+			throw new IllegalStateException("The implied EclipseLink mapping file ref is already present: " + this.impliedEclipseLinkMappingFileRef); //$NON-NLS-1$
+		}
+		MappingFileRef mappingFileRef = this.buildEclipseLinkImpliedMappingFileRef();
+		this.impliedEclipseLinkMappingFileRef = mappingFileRef;
+		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, null, mappingFileRef);
+		return mappingFileRef;
+	}
+
+	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
+		return new ImpliedMappingFileRef(this, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
+	}
+
+	protected void removeImpliedEclipseLinkMappingFileRef() {
+		if (this.impliedEclipseLinkMappingFileRef == null) {
+			throw new IllegalStateException("The implied EclipseLink mapping file ref is null."); //$NON-NLS-1$
+		}
+		MappingFileRef mappingFileRef = this.impliedEclipseLinkMappingFileRef;
+		this.impliedEclipseLinkMappingFileRef.dispose();
+		this.impliedEclipseLinkMappingFileRef = null;
+		this.firePropertyChanged(IMPLIED_ECLIPSELINK_MAPPING_FILE_REF_PROPERTY, mappingFileRef, null);
+	}
+
+	@Override
+	protected void syncImpliedMappingFileRef() {
+		super.syncImpliedMappingFileRef();
+		if (this.impliedEclipseLinkMappingFileRef != null) {
+			this.impliedEclipseLinkMappingFileRef.synchronizeWithResourceModel();
+		}
+	}
+
+	@Override
+	protected void updateImpliedMappingFileRef() {
+		super.updateImpliedMappingFileRef();
+
+		if (this.buildsImpliedEclipseLinkMappingFile()) {
+			if (this.impliedEclipseLinkMappingFileRef == null) {
+				this.addImpliedEclipseLinkMappingFileRef();
+			} else {
+				this.impliedEclipseLinkMappingFileRef.update();
+			}
+		} else {
+			if (this.impliedEclipseLinkMappingFileRef != null) {
+				this.removeImpliedEclipseLinkMappingFileRef();
+			}
+		}
+	}
+
+	/**
+	 * Build a virtual EclipseLink mapping file if all the following are true:<ul>
+	 * <li>the properties do not explicitly exclude it
+	 * <li>it is not specified explicitly in the persistence unit
+	 * <li>the file actually exists
+	 * </ul>
+	 */
+	private boolean buildsImpliedEclipseLinkMappingFile() {
+		return this.impliedEclipseLinkMappingFileIsNotExcluded() &&
+				this.impliedEclipseLinkMappingFileIsNotSpecified() &&
+				this.impliedEclipseLinkMappingFileExists();
+	}
+
+	protected boolean impliedEclipseLinkMappingFileIsNotExcluded() {
+		return ! this.impliedEclipseLinkMappingFileIsExcluded();
+	}
+
+	protected boolean impliedEclipseLinkMappingFileIsExcluded() {
+		return this.getGeneralProperties().getExcludeEclipselinkOrm() == Boolean.TRUE;
+	}
+
+	protected boolean impliedEclipseLinkMappingFileIsNotSpecified() {
+		return ! this.impliedEclipseLinkMappingFileIsSpecified();
+	}
+
+	protected boolean impliedEclipseLinkMappingFileIsSpecified() {
+		return this.mappingFileIsSpecified(JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
+	}
+
+	protected boolean impliedEclipseLinkMappingFileExists() {
+		return this.getJpaProject().getDefaultEclipseLinkOrmXmlResource() != null;
+	}
+
+
+	// ********** converters **********
 
 	/**
 	 * Identifier for changes to the list of global converter definitions.
 	 * Note that there are no granular changes to this list.  There is only
 	 * notification that the entire list has changed.
 	 */
-	public static final String CONVERTERS_LIST = "converters"; //$NON-NLS-1$
+	public static final String CONVERTERS_COLLECTION = "converters"; //$NON-NLS-1$
 
 	/**
 	 * Add the converter definition (defined elsewhere) to the list of converters
@@ -297,21 +322,15 @@ public class EclipseLinkPersistenceUnit
 	}
 
 	/**
-	 * Return an array of the names of the converters defined in the persistence
+	 * Return the names of the converters defined in the persistence
 	 * unit, with duplicates removed.
 	 */
-	public String[] uniqueConverterNames() {
-		HashSet<String> names = CollectionTools.set(this.allNonNullConverterNames());
-		return names.toArray(new String[names.size()]);
+	public Iterable<String> getUniqueConverterNames() {
+		return CollectionTools.set(this.allNonNullConverterNames(), this.converters.size());
 	}
 
 	protected Iterator<String> allNonNullConverterNames() {
-		return new FilteringIterator<String>(this.allConverterNames()) {
-			@Override
-			protected boolean accept(String converterName) {
-				return converterName != null;
-			}
-		};
+		return new FilteringIterator<String>(this.allConverterNames(), NotNullFilter.<String>instance());
 	}
 
 	protected Iterator<String> allConverterNames() {
@@ -324,96 +343,53 @@ public class EclipseLinkPersistenceUnit
 	}
 
 
-	// **************** updating ***********************************************
-
-	@Override
-	public void update(XmlPersistenceUnit persistenceUnit) {
-		// the 'converters' list is simply cleared out with each
-		// "update" and completely rebuilt as the "update" cascades through
-		// the persistence unit. When the persistence unit's "update" is
-		// complete, the lists have been populated and we fire the change event.
-		// @see #addConverter(EclipseLinkConverter) (and references)
-		// see bug 311093 before attempting to change how this works
-		this.converters.clear();
-
-		super.update(persistenceUnit);
-
-		// see comment at top of method
-		fireListChanged(CONVERTERS_LIST, this.converters);
-	}
-
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.impliedEclipseLinkMappingFileRef != null) {
-			this.impliedEclipseLinkMappingFileRef.postUpdate();
-		}
-	}
-
-	@Override
-	protected void initializeMappingFileRefs() {
-		super.initializeMappingFileRefs();
-
-		// use implied mapping file if 
-		// a) properties does not exclude it
-		// b) it isn't otherwise specified
-		// c) the file actually exists
-		if (! impliedEclipseLinkMappingFileIsExcluded()
-				&& ! impliedEclipseLinkMappingFileIsSpecified()
-				&& impliedEclipseLinkMappingFileExists()) {
-
-			this.impliedEclipseLinkMappingFileRef = buildEclipseLinkImpliedMappingFileRef();
-		}
-	}
-
-	private ImpliedMappingFileRef buildEclipseLinkImpliedMappingFileRef() {
-		return new ImpliedMappingFileRef(this, JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.toString());
-	}
-
-	@Override
-	protected void updateMappingFileRefs() {
-		super.updateMappingFileRefs();
-
-		// use implied mapping file if 
-		// a) properties does not exclude it
-		// b) it isn't otherwise specified
-		// c) the file actually exists
-		if (! impliedEclipseLinkMappingFileIsExcluded()
-				&& ! impliedEclipseLinkMappingFileIsSpecified()
-				&& impliedEclipseLinkMappingFileExists()) {
-
-			if (this.impliedEclipseLinkMappingFileRef == null) {
-				setImpliedEclipseLinkMappingFileRef();
-			}
-			getImpliedEclipseLinkMappingFileRef().update(null);
-		}
-		else if (this.impliedEclipseLinkMappingFileRef != null) {
-			unsetImpliedEclipseLinkMappingFileRef();
-		}
-	}
-
-	protected boolean impliedEclipseLinkMappingFileIsExcluded() {
-		return getGeneralProperties().getExcludeEclipselinkOrm() == Boolean.TRUE;
-	}
-
-	protected boolean impliedEclipseLinkMappingFileIsSpecified() {
-		for (Iterator<MappingFileRef> stream = specifiedMappingFileRefs(); stream.hasNext(); ) {
-			if (JptEclipseLinkCorePlugin.DEFAULT_ECLIPSELINK_ORM_XML_RUNTIME_PATH.equals(new Path(stream.next().getFileName()))) {
-				return true;
-			}
-		}
-		return false;
-	}
+	// ********** misc **********
 
 	@Override
 	public EclipseLinkJpaProject getJpaProject() {
 		return (EclipseLinkJpaProject) super.getJpaProject();
 	}
-	
-	protected boolean impliedEclipseLinkMappingFileExists() {
-		return getJpaProject().getDefaultEclipseLinkOrmXmlResource() != null;
+
+	@Override
+	public EclipseLinkPersistenceXmlContextNodeFactory getContextNodeFactory() {
+		return (EclipseLinkPersistenceXmlContextNodeFactory) super.getContextNodeFactory();
+	}
+
+	@Override
+	protected void addNonUpdateAspectNamesTo(Set<String> nonUpdateAspectNames) {
+		super.addNonUpdateAspectNamesTo(nonUpdateAspectNames);
+		nonUpdateAspectNames.add(CONVERTERS_COLLECTION);
+	}
+
+	@Override
+	public void setSpecifiedSharedCacheMode(SharedCacheMode specifiedSharedCacheMode) {
+		super.setSpecifiedSharedCacheMode(specifiedSharedCacheMode);
+		
+		if(specifiedSharedCacheMode == SharedCacheMode.NONE) {
+			this.caching.removeDefaultCachingProperties();
+		}
 	}
 	
+	@Override
+	protected SharedCacheMode buildDefaultSharedCacheMode() {
+		return SharedCacheMode.DISABLE_SELECTIVE;
+	}
+
+	@Override
+	public boolean calculateDefaultCacheable() {
+		switch (this.getSharedCacheMode()) {
+			case NONE:
+			case ENABLE_SELECTIVE:
+				return false;
+			case ALL:
+			case DISABLE_SELECTIVE:
+			case UNSPECIFIED:
+				return true;
+		}
+		return true;//null
+	}
+
+
 	// ********** validation **********
 
 	@Override
@@ -536,30 +512,33 @@ public class EclipseLinkPersistenceUnit
 
 	// ********** refactoring **********
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName),
-			this.customization.createRenameTypeEdits(originalType, newName),
-			this.logging.createRenameTypeEdits(originalType, newName));
+				super.createPersistenceUnitPropertiesRenameTypeEdits(originalType, newName),
+				this.customization.createRenameTypeEdits(originalType, newName),
+				this.logging.createRenameTypeEdits(originalType, newName)
+			);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage),
-			this.customization.createMoveTypeEdits(originalType, newPackage),
-			this.logging.createMoveTypeEdits(originalType, newPackage));
+				super.createPersistenceUnitPropertiesMoveTypeEdits(originalType, newPackage),
+				this.customization.createMoveTypeEdits(originalType, newPackage),
+				this.logging.createMoveTypeEdits(originalType, newPackage)
+			);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	protected Iterable<ReplaceEdit> createPersistenceUnitPropertiesRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName),
-			this.customization.createRenamePackageEdits(originalPackage, newName),
-			this.logging.createRenamePackageEdits(originalPackage, newName));
+				super.createPersistenceUnitPropertiesRenamePackageEdits(originalPackage, newName),
+				this.customization.createRenamePackageEdits(originalPackage, newName),
+				this.logging.createRenamePackageEdits(originalPackage, newName)
+			);
 	}
 }

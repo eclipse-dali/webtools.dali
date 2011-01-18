@@ -59,10 +59,10 @@ public class OrmXmlItemContentProvider
 	
 	protected PropertyValueModel<EntityMappings> buildEntityMappingsHolder() {
 		return new PropertyAspectAdapter<OrmXml, EntityMappings>(
-				OrmXml.ENTITY_MAPPINGS_PROPERTY, getModel()) {
+				OrmXml.ROOT_PROPERTY, getModel()) {
 			@Override
 			protected EntityMappings buildValue_() {
-				return subject.getEntityMappings();
+				return subject.getRoot();
 			}
 		};
 	}

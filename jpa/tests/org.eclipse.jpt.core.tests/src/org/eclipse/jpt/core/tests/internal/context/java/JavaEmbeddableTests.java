@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -146,7 +146,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
-		assertFalse(embeddable.associatedTablesIncludingInherited().hasNext());
+		assertFalse(embeddable.allAssociatedTables().hasNext());
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -155,7 +155,7 @@ public class JavaEmbeddableTests extends ContextModelTestCase
 
 		Embeddable embeddable = (Embeddable) getJavaPersistentType().getMapping();
 
-		assertFalse(embeddable.associatedTableNamesIncludingInherited().hasNext());
+		assertFalse(embeddable.allAssociatedTableNames().hasNext());
 	}
 	
 	//TODO need to create a subclass mappedSuperclass and test this

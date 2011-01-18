@@ -11,20 +11,20 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -61,7 +61,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	/**
 	 * The editor used to perform the common behaviors defined in the list pane.
 	 */
-	private JoinColumnsEditor<T> joinColumnsEditor;
+	JoinColumnsEditor<T> joinColumnsEditor;
 
 	private AddRemoveListPane<T> listPane;
 	
@@ -70,7 +70,6 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	 *
 	 * @param parentPane The parent controller of this one
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
@@ -89,7 +88,6 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	 * @param parentPane The parent controller of this one
 	 * @param subjectHolder The holder of this pane's subject
 	 * @param parent The parent container
-	 * @param widgetFactory The factory used to create various common widgets
 	 * @param joinColumnsEditor The editor used to perform the common behaviors
 	 * defined in the list pane
 	 */
@@ -143,9 +141,9 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		return new SimplePropertyValueModel<JoinColumn>();
 	}
 
-	private String buildJoinColumnLabel(JoinColumn joinColumn) {
+	String buildJoinColumnLabel(ReadOnlyJoinColumn joinColumn) {
 
-		if (joinColumn.isVirtual()) {
+		if (joinColumn.isDefault()) {
 			return NLS.bind(
 				JptUiDetailsMessages.JoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),
@@ -213,25 +211,25 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		};
 	}
 
-	private ListValueModel<JoinColumn> buildJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<JoinColumn>(buildJoinColumnsListHolder(),
-			NamedColumn.SPECIFIED_NAME_PROPERTY,
-			NamedColumn.DEFAULT_NAME_PROPERTY,
-			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
+	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<ReadOnlyJoinColumn>(buildJoinColumnsListHolder(),
+			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
+			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY,
+			ReadOnlyBaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			ReadOnlyBaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY);
 	}
 
-	private ListValueModel<JoinColumn> buildJoinColumnsListHolder() {
-		java.util.List<ListValueModel<JoinColumn>> list = new ArrayList<ListValueModel<JoinColumn>>();
+	private ListValueModel<ReadOnlyJoinColumn> buildJoinColumnsListHolder() {
+		java.util.List<ListValueModel<ReadOnlyJoinColumn>> list = new ArrayList<ListValueModel<ReadOnlyJoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnListHolder());
-		return new CompositeListValueModel<ListValueModel<JoinColumn>, JoinColumn>(list);
+		return new CompositeListValueModel<ListValueModel<ReadOnlyJoinColumn>, ReadOnlyJoinColumn>(list);
 	}
 
-	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
+	private ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getSpecifiedJoinColumnsListPropertyName()) {
 			@Override
-			protected ListIterator<JoinColumn> listIterator_() {
+			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
 				return JoinColumnsComposite.this.joinColumnsEditor.specifiedJoinColumns(this.subject);
 			}
 
@@ -243,15 +241,15 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 	}
 
 
-	private ListValueModel<JoinColumn> buildDefaultJoinColumnListHolder() {
-		return new PropertyListValueModelAdapter<JoinColumn>(buildDefaultJoinColumnHolder());
+	private ListValueModel<ReadOnlyJoinColumn> buildDefaultJoinColumnListHolder() {
+		return new PropertyListValueModelAdapter<ReadOnlyJoinColumn>(buildDefaultJoinColumnHolder());
 
 	}
 
-	private PropertyValueModel<JoinColumn> buildDefaultJoinColumnHolder() {
-		return new PropertyAspectAdapter<T, JoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
+	private PropertyValueModel<ReadOnlyJoinColumn> buildDefaultJoinColumnHolder() {
+		return new PropertyAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), this.joinColumnsEditor.getDefaultPropertyName()) {
 			@Override
-			protected JoinColumn buildValue_() {
+			protected ReadOnlyJoinColumn buildValue_() {
 				return JoinColumnsComposite.this.joinColumnsEditor.getDefaultJoinColumn(this.subject);
 			}
 		};
@@ -262,7 +260,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				JoinColumn joinColumn = (JoinColumn) element;
+				ReadOnlyJoinColumn joinColumn = (ReadOnlyJoinColumn) element;
 
 				return buildJoinColumnLabel(joinColumn);
 			}
@@ -291,7 +289,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		 * Edit the given join column, the Edit button was pressed
 		 * while this join column was selected.
 		 */
-		void editJoinColumn(T subject, JoinColumn joinColumn);
+		void editJoinColumn(T subject, ReadOnlyJoinColumn joinColumn);
 		
 		/**
 		 * Return whether the subject has specified join columns
@@ -301,7 +299,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		/**
 		 * Return the spcified join columns from the given subject
 		 */
-		ListIterator<JoinColumn> specifiedJoinColumns(T subject);
+		ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject);
 		
 		/**
 		 * Return the number of specified join columns on the given subject
@@ -311,7 +309,7 @@ public class JoinColumnsComposite<T extends JpaNode> extends Pane<T>
 		/**
 		 * Return the default join column from the given subject or null.
 		 */
-		JoinColumn getDefaultJoinColumn(T subject);
+		ReadOnlyJoinColumn getDefaultJoinColumn(T subject);
 		
 		/**
 		 * Return the property name of the specified join columns list

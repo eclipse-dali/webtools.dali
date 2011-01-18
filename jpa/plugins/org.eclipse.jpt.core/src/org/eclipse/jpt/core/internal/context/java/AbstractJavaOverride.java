@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,9 +12,10 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.BaseOverride;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.core.context.java.JavaOverride;
+import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
+import org.eclipse.jpt.core.context.java.JavaVirtualOverride;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
@@ -25,108 +26,139 @@ import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractJavaOverride
+/**
+ * Specified Java override
+ */
+public abstract class AbstractJavaOverride<C extends JavaOverrideContainer, A extends OverrideAnnotation>
 	extends AbstractJavaJpaContextNode
 	implements JavaOverride
 {
+	protected final A overrideAnnotation;
 
 	protected String name;
 
-	protected final Owner owner;
 
-	protected OverrideAnnotation overrideAnnotation;
-	
-	public AbstractJavaOverride(JavaJpaContextNode parent, Owner owner) {
+	protected AbstractJavaOverride(C parent, A overrideAnnotation) {
 		super(parent);
-		this.owner = owner;
-	}
-	
-	protected void initialize(OverrideAnnotation overrideAnnotation) {
 		this.overrideAnnotation = overrideAnnotation;
-		this.initializeName();
+		this.name = this.buildName();
 	}
 
-	protected void update(OverrideAnnotation overrideResource) {
-		this.overrideAnnotation = overrideResource;
-		this.updateName();
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.buildName());
 	}
 
-	public OverrideAnnotation getOverrideAnnotation() {
-		return this.overrideAnnotation;
-	}
-	
-	// ********************* name ****************
+
+	// ********** name **********
+
 	public String getName() {
 		return this.name;
 	}
 
-	public void setName(String newName) {
-		String prefix = getOwner().getPossiblePrefix();
-		String unprefixedName = newName;
-		if (newName != null && prefix != null && newName.startsWith(prefix)) {
-			unprefixedName = newName.substring(newName.indexOf('.') + 1);
-		}
-		String oldName = this.name;
-		this.name = unprefixedName; //set the name without the prefix in the context model
-		this.overrideAnnotation.setName(newName); // set the name with the prefix in the resource model
-		firePropertyChanged(NAME_PROPERTY, oldName, unprefixedName);
-	}
-	
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	/**
+	 * Strip the prefix (if necessary) before storing the name in the context
+	 * model. Pass the unchanged name to the annotation.
+	 */
+	public void setName(String name) {
+		this.overrideAnnotation.setName(name);
+		this.setName_(this.stripPrefix(name));
 	}
 
-	protected void initializeName() {
-		String name = this.getResourceName();
-		String prefix = getOwner().getPossiblePrefix();
-		if (name != null && prefix != null && name.startsWith(prefix)) {
-			name = name.substring(name.indexOf('.') + 1);
-		}
+	protected void setName_(String name) {
+		String old = this.name;
 		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
 
-	protected void updateName() {
-		String name = this.getResourceName();
-		String prefix = getOwner().getPossiblePrefix();
-		if (name != null && prefix != null && name.startsWith(prefix)) {
-			name = name.substring(name.indexOf('.') + 1);
+	/**
+	 * Strip the prefix (if necessary) from the name taken from the annotation
+	 * before storing it in the context model.
+	 */
+	protected String buildName() {
+		return this.stripPrefix(this.overrideAnnotation.getName());
+	}
+
+	protected String stripPrefix(String rawName) {
+		if (rawName == null) {
+			return null;
 		}
-		this.setName_(name);
+		String prefix = this.getPossiblePrefix();
+		if (prefix == null) {
+			return rawName;
+		}
+		int prefixLength = prefix.length();
+		if ((rawName.length() > prefixLength) &&
+				(rawName.charAt(prefixLength) == '.') &&
+				rawName.startsWith(prefix)) {
+			return rawName.substring(prefixLength + 1);
+		}
+		return rawName;
 	}
 
-	protected String getResourceName() {
-		return this.overrideAnnotation.getName();
+	protected String getPossiblePrefix() {
+		return this.getContainer().getPossiblePrefix();
 	}
+
+
+	// ********** specified/virtual **********
 
 	public boolean isVirtual() {
-		return getOwner().isVirtual(this);
+		return false;
 	}
 
-	public BaseOverride setVirtual(boolean virtual) {
-		return getOwner().setVirtual(virtual, this);
+	public JavaVirtualOverride convertToVirtual() {
+		return this.getContainer().convertOverrideToVirtual(this);
 	}
-	
-	public Owner getOwner() {
-		return this.owner;
-	}
-	
+
+
+	// ********** misc **********
+
 	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
+	@SuppressWarnings("unchecked")
+	public C getParent() {
+		return (C) super.getParent();
 	}
 
-	protected abstract Iterator<String> candidateNames();
-
-	private Iterator<String> candidateNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.candidateNames(), filter);
+	public C getContainer() {
+		return this.getParent();
 	}
 
-	private Iterator<String> javaCandidateNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
+	public A getOverrideAnnotation() {
+		return this.overrideAnnotation;
 	}
+
+	protected void initializeFrom(ReadOnlyOverride oldOverride) {
+		this.setName(this.prefix(oldOverride.getName()));
+	}
+
+	protected void initializeFromVirtual(ReadOnlyOverride virtualOverride) {
+		this.setName(this.prefix(virtualOverride.getName()));
+	}
+
+	protected String prefix(String oldName) {
+		if (oldName == null) {
+			return null;
+		}
+		String prefix = this.getWritePrefix();
+		return (prefix == null) ? oldName : (prefix + '.' + oldName);
+	}
+
+	protected String getWritePrefix() {
+		return this.getContainer().getWritePrefix();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -139,26 +171,20 @@ public abstract class AbstractJavaOverride
 		}
 		return null;
 	}
-	
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+
+	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return this.overrideAnnotation.nameTouches(pos, astRoot);
 	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.overrideAnnotation.getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+
+	protected Iterator<String> javaCandidateNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateNames(filter));
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.overrideAnnotation.getNameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getValidationTextRange(astRoot);
+	private Iterator<String> candidateNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.candidateNames(), filter);
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(getName());
-	}
+	protected abstract Iterator<String> candidateNames();
 
 
 	// ********** validation **********
@@ -170,10 +196,20 @@ public abstract class AbstractJavaOverride
 	}
 
 	protected JptValidator buildValidator(CompilationUnit astRoot) {
-		return this.getOwner().buildValidator(this, buildTextRangeResolver(astRoot));
+		return this.getContainer().buildValidator(this, buildTextRangeResolver(astRoot));
 	}
 
 	protected OverrideTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaOverrideTextRangeResolver(this, astRoot);
+	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.overrideAnnotation.getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getParent().getValidationTextRange(astRoot);
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.overrideAnnotation.getNameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.getValidationTextRange(astRoot);
 	}
 }

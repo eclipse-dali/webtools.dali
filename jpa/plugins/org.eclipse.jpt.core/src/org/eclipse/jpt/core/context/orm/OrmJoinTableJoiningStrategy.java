@@ -1,21 +1,20 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
 
 /**
- * The orm.xml representation of a {@link JoinTableJoiningStrategy}
- * 
+ * <code>orm.xml</code> join table joining strategy
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,16 +25,13 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinTable;
  * @since 2.2
  */
 public interface OrmJoinTableJoiningStrategy
-	extends OrmJoiningStrategy, JoinTableJoiningStrategy
+	extends JoinTableJoiningStrategy, OrmJoiningStrategy
 {
 	OrmJoinTable getJoinTable();
 	
-	OrmJoinTable addJoinTable();
+	XmlJoinTable getXmlJoinTable();
 	
-	XmlJoinTable getResourceJoinTable();
-	
-	XmlJoinTable addResourceJoinTable();
+	XmlJoinTable buildXmlJoinTable();
 
-	void removeResourceJoinTable();
-
+	void removeXmlJoinTable();
 }

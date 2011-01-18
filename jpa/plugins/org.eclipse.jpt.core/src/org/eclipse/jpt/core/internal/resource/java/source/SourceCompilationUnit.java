@@ -134,6 +134,7 @@ public abstract class SourceCompilationUnit
 		return this.annotationEditFormatter;
 	}
 	
+	@Override
 	public CompilationUnit buildASTRoot() {
 		return ASTTools.buildASTRoot(this.compilationUnit);
 	}

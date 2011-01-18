@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.NamedQueries
+ * <code>javax.persistence.NamedQueries</code>
  */
 public final class SourceNamedQueries2_0Annotation
 	extends SourceNamedQueriesAnnotation
@@ -26,6 +26,8 @@ public final class SourceNamedQueries2_0Annotation
 
 	@Override
 	protected NestableNamedQueryAnnotation buildNamedQuery(int index) {
-		return SourceNamedQuery2_0Annotation.createNestedNamedQuery(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceNamedQuery2_0Annotation.createNestedNamedQuery(this.parent, this.annotatedElement, index, this.daa);
 	}
 }

@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.Iterator;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 
 /**
- * Provides annotationDefinitions for types and attributes. JpaAnnotationProvider
+ * Provides annotation definitions for types and attributes.
+ * {@link JpaAnnotationProvider}
  * then uses a collection of these to build annotations.
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,22 +30,22 @@ public interface JpaAnnotationDefinitionProvider
 	/**
 	 * Return all annotation definitions which can appear on a type
 	 */
-	Iterator<AnnotationDefinition> typeAnnotationDefinitions();
+	Iterable<AnnotationDefinition> getTypeAnnotationDefinitions();
 	
 	/**
 	 * Return all annotation definitions which can appear on a type and are used to determine
 	 * whether and how the type is persisted (how it is "mapped").
-	 * This should be a subset of {@link #typeAnnotationDefinitions()}.
+	 * This should be a subset of {@link #getTypeAnnotationDefinitions()}.
 	 */
-	Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions();
+	Iterable<AnnotationDefinition> getTypeMappingAnnotationDefinitions();
 	
 	/**
 	 * Return all annotation definitions which can appear on an attribute
 	 */
-	Iterator<AnnotationDefinition> attributeAnnotationDefinitions();
+	Iterable<AnnotationDefinition> getAttributeAnnotationDefinitions();
 
 	/**
 	 * Return all annotation definitions which can appear on a package.
 	 */
-	Iterator<AnnotationDefinition> packageAnnotationDefinitions();
+	Iterable<AnnotationDefinition> getPackageAnnotationDefinitions();
 }

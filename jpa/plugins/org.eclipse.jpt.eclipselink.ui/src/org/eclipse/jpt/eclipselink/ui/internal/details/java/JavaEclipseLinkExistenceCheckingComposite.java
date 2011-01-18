@@ -117,7 +117,7 @@ public class JavaEclipseLinkExistenceCheckingComposite extends Pane<JavaEclipseL
 		return new PropertyAspectAdapter<JavaEclipseLinkCaching, Boolean>(getSubjectHolder(), JavaEclipseLinkCaching.EXISTENCE_CHECKING_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.hasExistenceChecking());
+				return Boolean.valueOf(this.subject.isExistenceChecking());
 			}
 
 			@Override

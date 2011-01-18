@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
 
 /**
  * @see OrmPersistentAttributeDetailsPage - The parent container
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
  * @since 1.0
  */
 public class OrmMappingNameChooser
-	extends Pane<OrmAttributeMapping>
+	extends Pane<AttributeMapping>
 {
 	/**
 	 * Creates a new <code>XmlJavaAttributeChooser</code>.
@@ -34,7 +34,7 @@ public class OrmMappingNameChooser
 	 * @param parent The parent container
 	 */
 	public OrmMappingNameChooser(Pane<?> parentPane,
-	                               PropertyValueModel<? extends OrmAttributeMapping> subjectHolder,
+	                               PropertyValueModel<? extends AttributeMapping> subjectHolder,
 	                               Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -49,7 +49,7 @@ public class OrmMappingNameChooser
 		);
 	}
 	private WritablePropertyValueModel<String> buildNameHolder() {
-		return new PropertyAspectAdapter<OrmAttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
+		return new PropertyAspectAdapter<AttributeMapping, String>(getSubjectHolder(), OrmAttributeMapping.NAME_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getName();
@@ -63,7 +63,8 @@ public class OrmMappingNameChooser
 				if (value.length() == 0) {
 					value = null;
 				}
-				this.subject.setName(value);
+				// we can safely cast to an orm.xml mapping since it is not virtual
+				((OrmAttributeMapping) this.subject).setName(value);
 			}
 		};
 	}

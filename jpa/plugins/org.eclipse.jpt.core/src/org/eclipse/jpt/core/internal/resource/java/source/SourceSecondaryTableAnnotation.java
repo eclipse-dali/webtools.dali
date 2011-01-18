@@ -9,20 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestablePrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableSecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
@@ -39,7 +39,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
- * javax.persistence.SecondaryTable
+ * <code>javax.persistence.SecondaryTable</code>
  */
 public final class SourceSecondaryTableAnnotation
 	extends SourceBaseTableAnnotation
@@ -75,18 +75,18 @@ public final class SourceSecondaryTableAnnotation
 	// ********** SourceBaseTableAnnotation implementation **********
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__NAME);
+	protected DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JPA.SECONDARY_TABLE__NAME);
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__SCHEMA);
+	protected DeclarationAnnotationElementAdapter<String> buildSchemaDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JPA.SECONDARY_TABLE__SCHEMA);
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(declarationAnnotationAdapter, JPA.SECONDARY_TABLE__CATALOG);
+	protected DeclarationAnnotationElementAdapter<String> buildCatalogDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JPA.SECONDARY_TABLE__CATALOG);
 	}
 
 	@Override
@@ -118,6 +118,10 @@ public final class SourceSecondaryTableAnnotation
 		return this.pkJoinColumns.indexOf(joinColumn);
 	}
 
+	private NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumn() {
+		return this.addPkJoinColumn(this.pkJoinColumns.size());
+	}
+
 	public NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumn(int index) {
 		return (NestablePrimaryKeyJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.pkJoinColumnsContainer);
 	}
@@ -128,7 +132,7 @@ public final class SourceSecondaryTableAnnotation
 
 	private NestablePrimaryKeyJoinColumnAnnotation addPkJoinColumn_(int index) {
 		NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn = this.buildPrimaryKeyJoinColumn(index);
-		this.pkJoinColumns.add(pkJoinColumn);
+		this.pkJoinColumns.add(index, pkJoinColumn);
 		return pkJoinColumn;
 	}
 
@@ -174,17 +178,37 @@ public final class SourceSecondaryTableAnnotation
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.pkJoinColumns.isEmpty();
 	}
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		SecondaryTableAnnotation oldTable = (SecondaryTableAnnotation) oldAnnotation;
-		for (PrimaryKeyJoinColumnAnnotation oldPkJoinColumn : CollectionTools.iterable(oldTable.pkJoinColumns())) {
-			NestablePrimaryKeyJoinColumnAnnotation newPkJoinColumn = this.addPkJoinColumn(oldTable.indexOfPkJoinColumn(oldPkJoinColumn));
-			newPkJoinColumn.initializeFrom((NestableAnnotation) oldPkJoinColumn);
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		List<Map<String, Object>> pkJoinColumnsState = this.buildStateList(this.pkJoinColumns.size());
+		for (NestablePrimaryKeyJoinColumnAnnotation pkJoinColumn : this.getNestablePkJoinColumns()) {
+			Map<String, Object> pkJoinColumnState = new HashMap<String, Object>();
+			pkJoinColumn.storeOn(pkJoinColumnState);
+			pkJoinColumnsState.add(pkJoinColumnState);
+		}
+		map.put(PK_JOIN_COLUMNS_LIST, pkJoinColumnsState);
+		this.pkJoinColumns.clear();
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> pkJoinColumnsState = (List<Map<String, Object>>) map.get(PK_JOIN_COLUMNS_LIST);
+		for (Map<String, Object> pkJoinColumnState : pkJoinColumnsState) {
+			this.addPkJoinColumn().restoreFrom(pkJoinColumnState);
 		}
 	}
 
@@ -196,13 +220,9 @@ public final class SourceSecondaryTableAnnotation
 	}
 
 	static SourceSecondaryTableAnnotation createNestedSecondaryTable(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, secondaryTablesAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceSecondaryTableAnnotation(parent, member, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter secondaryTablesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(secondaryTablesAdapter, index, JPA.SECONDARY_TABLE);
 	}
 
 
@@ -259,7 +279,5 @@ public final class SourceSecondaryTableAnnotation
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
-
 	}
-
 }

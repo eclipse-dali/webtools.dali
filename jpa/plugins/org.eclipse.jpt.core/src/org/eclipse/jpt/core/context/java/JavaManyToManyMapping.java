@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 
 /**
- * The java representation of a {@link ManyToManyMapping}
- * 
+ * Java m:m mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,9 +25,11 @@ import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
  * @since 2.0
  */
 public interface JavaManyToManyMapping
-	extends JavaMultiRelationshipMapping, ManyToManyMapping
+	extends ManyToManyMapping, JavaMultiRelationshipMapping
 {
 	ManyToManyAnnotation getMappingAnnotation();
+	
+	ManyToManyAnnotation getAnnotationForUpdate();
 	
 	JavaManyToManyRelationshipReference getRelationshipReference();
 }

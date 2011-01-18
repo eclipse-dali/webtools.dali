@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,155 +12,174 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverter;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class OrmEclipseLinkCustomConverter extends OrmEclipseLinkConverter<XmlConverter>
+public class OrmEclipseLinkCustomConverter
+	extends OrmEclipseLinkConverter<XmlConverter>
 	implements EclipseLinkCustomConverter
-{	
+{
 	private String converterClass;
-	
-	private JavaResourcePersistentType converterPersistentType;
-	
-	public OrmEclipseLinkCustomConverter(XmlContextNode parent) {
-		super(parent);
-	}
-	
-	
-	public String getType() {
-		return EclipseLinkConverter.CUSTOM_CONVERTER;
+
+
+	public OrmEclipseLinkCustomConverter(XmlContextNode parent, XmlConverter xmlConverter) {
+		super(parent, xmlConverter);
+		this.converterClass = xmlConverter.getClassName();
 	}
 
-	
-	// **************** converter class ****************************************
-	
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setConverterClass_(this.xmlConverter.getClassName());
+	}
+
+
+	// ********** converter class **********
+
 	public String getConverterClass() {
 		return this.converterClass;
 	}
-	
-	public void setConverterClass(String newConverterClass) {
-		String oldConverterClass = this.converterClass;
-		this.converterClass = newConverterClass;
-		this.resourceConverter.setClassName(newConverterClass);
-		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
+
+	public void setConverterClass(String converterClass) {
+		this.setConverterClass_(converterClass);
+		this.xmlConverter.setClassName(converterClass);
 	}
-	
-	protected void setConverterClass_(String newConverterClass) {
-		String oldConverterClass = this.converterClass;
-		this.converterClass = newConverterClass;
-		firePropertyChanged(CONVERTER_CLASS_PROPERTY, oldConverterClass, newConverterClass);
+
+	protected void setConverterClass_(String converterClass) {
+		String old = this.converterClass;
+		this.converterClass = converterClass;
+		this.firePropertyChanged(CONVERTER_CLASS_PROPERTY, old, converterClass);
 	}
 
 	protected JavaResourcePersistentType getConverterJavaResourcePersistentType() {
 		return this.getEntityMappings().resolveJavaResourcePersistentType(this.converterClass);
 	}
-	
-	
-	// **************** resource interaction ***********************************
-	
-	@Override
-	protected void initialize(XmlConverter xmlResource) {
-		super.initialize(xmlResource);
-		this.converterClass = getResourceClassName();
-		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
-	}
-	
-	@Override
-	public void update() {
-		super.update();
-		setConverterClass_(getResourceClassName());
-		updateConverterPersistentType();
-	}
-	
-	protected String getResourceClassName() {
-		return this.resourceConverter.getClassName();
-	}
-	
-	protected void updateConverterPersistentType() {
-		this.converterPersistentType = this.getConverterJavaResourcePersistentType();
+
+
+	// ********** misc **********
+
+	public Class<EclipseLinkCustomConverter> getType() {
+		return EclipseLinkCustomConverter.class;
 	}
 
-	
-	// **************** validation *********************************************
-	
+
+	// ********** refactoring **********
+
+	@Override
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
+		return this.xmlConverter.createRenameEdit(originalType, newName);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return xmlConverter.createRenamePackageEdit(newName);
+	}
+
+	@Override
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.isIn(originalPackage) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected boolean isFor(String typeName) {
+		JavaResourcePersistentType converterType = this.getConverterJavaResourcePersistentType();
+		return (converterType != null) && converterType.getQualifiedName().equals(typeName);
+	}
+
+	protected boolean isIn(IPackageFragment packageFragment) {
+		JavaResourcePersistentType converterType = this.getConverterJavaResourcePersistentType();
+		return (converterType != null) && converterType.isIn(packageFragment);
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		validateConverterClass(messages);
+		// TODO validate converter class
+//		this.validateConverterClass(messages);
 	}
-//TODO validate converter class	
-	protected void validateConverterClass(List<IMessage> messages) {
+
+//	protected void validateConverterClass(List<IMessage> messages) {
 //		if (!getResourceConverter().implementsConverter()) {
 //			messages.add(
 //				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 //					IMessage.HIGH_SEVERITY,
 //					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
 //					new String[] {this.converterClass},
-//					this, 
+//					this,
 //					getConverterClassTextRange()
 //				)
 //			);
 //		}
-	}
-	
-//	public TextRange getConverterClassTextRange() {
-//		return getResourceConverter().getClassNameTextRange();
+//	}
+//
+//	protected TextRange getConverterClassTextRange() {
+//		return this.xmlConverter.getClassNameTextRange();
 //	}
 
 
-	//************************* refactoring ************************
+	// ********** adapter **********
 
-	@Override
-	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName));
+	public static class Adapter
+		extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new Adapter();
+		public static Adapter instance() {
+			return INSTANCE;
 		}
-		return EmptyIterable.instance();
-	}
 
-	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
-		return getXmlResource().createRenameEdit(originalType, newName);
-	}
-
-	@Override
-	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
+		private Adapter() {
+			super();
 		}
-		return EmptyIterable.instance();
-	}
 
-	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return getXmlResource().createRenamePackageEdit(newName);
-	}
-
-	@Override
-	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (this.isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
+		public Class<EclipseLinkCustomConverter> getConverterType() {
+			return EclipseLinkCustomConverter.class;
 		}
-		return EmptyIterable.instance();
-	}
 
-	protected boolean isFor(String typeName) {
-		if (this.converterPersistentType != null && this.converterPersistentType.getQualifiedName().equals(typeName)) {
-			return true;
+		public XmlConverter getXmlConverter(XmlConverterHolder xmlConverterContainer) {
+			return xmlConverterContainer.getConverter();
 		}
-		return false;	
-	}
 
-	protected boolean isIn(IPackageFragment packageFragment) {
-		if (this.converterPersistentType != null) {
-			return this.converterPersistentType.isIn(packageFragment);
+		public OrmEclipseLinkCustomConverter buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent) {
+			return new OrmEclipseLinkCustomConverter(parent, (XmlConverter) xmlConverter);
 		}
-		return false;
+
+		@Override
+		protected XmlConverter buildXmlConverter() {
+			return EclipseLinkOrmFactory.eINSTANCE.createXmlConverter();
+		}
+
+		@Override
+		public void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
+			xmlConverterContainer.setConverter((XmlConverter) xmlConverter);
+		}
 	}
 }

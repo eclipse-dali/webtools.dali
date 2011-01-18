@@ -63,6 +63,12 @@ public final class SourceManyToOneAnnotation
 		this.syncOptional(this.buildOptional(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.optional == null);
+	}
+
 
 	// ********** SourceRelationshipMappingAnnotation implementation **********
 
@@ -130,7 +136,7 @@ public final class SourceManyToOneAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 
 }

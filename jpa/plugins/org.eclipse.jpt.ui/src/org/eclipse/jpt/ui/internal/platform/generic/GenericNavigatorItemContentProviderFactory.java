@@ -42,7 +42,7 @@ import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class GenericNavigatorItemContentProviderFactory
@@ -106,7 +106,7 @@ public class GenericNavigatorItemContentProviderFactory
 		protected CollectionValueModel<JpaContextNode> buildSpecifiedOrmXmlCvm() {
 			return new FilteringCollectionValueModel<JpaContextNode>(
 					new ListCollectionValueModelAdapter<MappingFile>(
-						new TransformationListValueModelAdapter<MappingFileRef, MappingFile>(
+						new TransformationListValueModel<MappingFileRef, MappingFile>(
 							new ItemPropertyListValueModelAdapter<MappingFileRef>(
 								new ListAspectAdapter<PersistenceUnit, MappingFileRef>(
 										PersistenceUnit.SPECIFIED_MAPPING_FILE_REFS_LIST,
@@ -160,7 +160,7 @@ public class GenericNavigatorItemContentProviderFactory
 		protected CollectionValueModel<JpaContextNode> buildPersistentTypeCvm() {
 			return new FilteringCollectionValueModel<JpaContextNode>(
 					new ListCollectionValueModelAdapter<PersistentType>(
-						new TransformationListValueModelAdapter<ClassRef, PersistentType>(
+						new TransformationListValueModel<ClassRef, PersistentType>(
 							new ItemPropertyListValueModelAdapter<ClassRef>(buildClassRefCvm(), ClassRef.JAVA_PERSISTENT_TYPE_PROPERTY)) {
 							@Override
 							protected PersistentType transformItem(ClassRef item) {
@@ -218,7 +218,7 @@ public class GenericNavigatorItemContentProviderFactory
 		protected CollectionValueModel<JpaContextNode> buildJarFileCvm() {
 			return new FilteringCollectionValueModel<JpaContextNode>(
 					new ListCollectionValueModelAdapter<JarFile>(
-						new TransformationListValueModelAdapter<JarFileRef, JarFile>(
+						new TransformationListValueModel<JarFileRef, JarFile>(
 							new ItemPropertyListValueModelAdapter<JarFileRef>(buildJarFileRefCvm(), JarFileRef.JAR_FILE_PROPERTY)) {
 							@Override
 							protected JarFile transformItem(JarFileRef item) {

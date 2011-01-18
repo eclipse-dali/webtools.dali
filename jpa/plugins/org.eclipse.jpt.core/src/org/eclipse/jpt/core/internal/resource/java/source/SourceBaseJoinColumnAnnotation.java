@@ -9,38 +9,39 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.BaseJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.JoinColumn
- * javax.persistence.MapKeyJoinColumn
+ * <ul>
+ * <li><code>javax.persistence.JoinColumn</code>
+ * <li><code>javax.persistence.MapKeyJoinColumn</code>
+ * </ul>
  */
 public abstract class SourceBaseJoinColumnAnnotation
 	extends SourceBaseColumnAnnotation
 	implements BaseJoinColumnAnnotation
 {
-	private final DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> referencedColumnNameAdapter;
+	private DeclarationAnnotationElementAdapter<String> referencedColumnNameDeclarationAdapter;
+	private AnnotationElementAdapter<String> referencedColumnNameAdapter;
 	private String referencedColumnName;
 
 
 	protected SourceBaseJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.referencedColumnNameDeclarationAdapter = this.buildStringElementAdapter(this.getReferencedColumnNameElementName());
-		this.referencedColumnNameAdapter = this.buildShortCircuitElementAdapter(this.referencedColumnNameDeclarationAdapter);
+		this.referencedColumnNameDeclarationAdapter = this.buildReferencedColumnNameDeclarationAdapter();
+		this.referencedColumnNameAdapter = this.buildReferencedColumnNameAdapter();
 	}
 
 	protected SourceBaseJoinColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
@@ -62,8 +63,6 @@ public abstract class SourceBaseJoinColumnAnnotation
 		super.synchronizeWith(astRoot);
 		this.syncReferencedColumnName(this.buildReferencedColumnName(astRoot));
 	}
-
-	protected abstract String getReferencedColumnNameElementName();
 
 
 	//************ BaseJoinColumnAnnotation implementation ***************
@@ -98,21 +97,49 @@ public abstract class SourceBaseJoinColumnAnnotation
 		return this.elementTouches(this.referencedColumnNameDeclarationAdapter, pos, astRoot);
 	}
 
-
-	 // ********** NestableAnnotation implementation **********
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		BaseJoinColumnAnnotation oldJoinColumn = (BaseJoinColumnAnnotation) oldAnnotation;
-		this.setReferencedColumnName(oldJoinColumn.getReferencedColumnName());
+	private DeclarationAnnotationElementAdapter<String> buildReferencedColumnNameDeclarationAdapter() {
+		return this.buildStringElementAdapter(this.getReferencedColumnNameElementName());
 	}
+
+	private AnnotationElementAdapter<String> buildReferencedColumnNameAdapter() {
+		return this.buildStringElementAdapter(this.referencedColumnNameDeclarationAdapter);
+	}
+
+	protected abstract String getReferencedColumnNameElementName();
+
+
+	// ********** NestableAnnotation implementation **********
 
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
 	}
 
-	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.referencedColumnName == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.referencedColumnNameDeclarationAdapter = this.buildReferencedColumnNameDeclarationAdapter();
+		this.referencedColumnNameAdapter = this.buildReferencedColumnNameAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(REFERENCED_COLUMN_NAME_PROPERTY, this.referencedColumnName);
+		this.referencedColumnName = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setReferencedColumnName((String) map.get(REFERENCED_COLUMN_NAME_PROPERTY));
 	}
 }

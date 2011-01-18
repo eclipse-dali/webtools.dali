@@ -77,7 +77,7 @@ public class InheritanceTests extends JpaJavaResourceModelTestCase {
 		
 		inheritance.setStrategy(null);
 		
-		assertSourceDoesNotContain("@Inheritance", cu);
+		assertSourceDoesNotContain("strategy", cu);
 	}
 
 }

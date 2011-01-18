@@ -19,8 +19,8 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * 
- * 
+ * Java JPA context node.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -33,21 +33,19 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JavaJpaContextNode
 	extends JpaContextNode
 {
-	
 	/**
 	 * Return the Java code-completion proposals for the specified position
 	 * in the source code.
 	 */
 	Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
-	
 
-	// ******************** validation ***************************8
-	
+
+	// ********** validation **********
+
 	/**
 	 * Adds to the list of current validation messages
 	 */
 	void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot);
 
 	TextRange getValidationTextRange(CompilationUnit astRoot);
-
 }

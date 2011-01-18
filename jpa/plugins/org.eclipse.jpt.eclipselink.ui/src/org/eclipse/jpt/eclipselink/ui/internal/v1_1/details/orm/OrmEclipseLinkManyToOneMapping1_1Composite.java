@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkManyToOneMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -68,7 +67,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.2
  */
 public class OrmEclipseLinkManyToOneMapping1_1Composite
-	extends EclipseLinkManyToOneMappingComposite<OrmManyToOneMapping>
+	extends EclipseLinkManyToOneMappingComposite<ManyToOneMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1ManyToOneMappingComposite</code>.
@@ -77,7 +76,7 @@ public class OrmEclipseLinkManyToOneMapping1_1Composite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkManyToOneMapping1_1Composite(PropertyValueModel<? extends OrmManyToOneMapping> subjectHolder,
+	public OrmEclipseLinkManyToOneMapping1_1Composite(PropertyValueModel<? extends ManyToOneMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 

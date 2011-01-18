@@ -73,7 +73,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setSpecifiedNamespace(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
-		assertNull(schemaAnnotation);
+		assertNull(schemaAnnotation.getNamespace());
 		assertEquals("", contextXmlSchema.getNamespace());
 		assertNull(contextXmlSchema.getSpecifiedNamespace());
 		
@@ -131,7 +131,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setLocation(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
-		assertNull(schemaAnnotation);
+		assertNull(schemaAnnotation.getLocation());
 		assertNull(contextXmlSchema.getLocation());
 
 		//set location again, this time starting with no XmlSchema annotation
@@ -189,7 +189,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setAttributeFormDefault(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
-		assertNull(schemaAnnotation);
+		assertNull(schemaAnnotation.getAttributeFormDefault());
 		assertNull(contextXmlSchema.getAttributeFormDefault());
 
 		//set attribute form default again, this time starting with no XmlSchema annotation
@@ -264,7 +264,7 @@ public class GenericJavaXmlSchemaTests extends JaxbContextModelTestCase
 		contextPackageInfo.setSpecifiedAccessType(XmlAccessType.FIELD);
 		contextXmlSchema.setElementFormDefault(null);
 		schemaAnnotation = (XmlSchemaAnnotation) resourcePackage.getAnnotation(XmlSchemaAnnotation.ANNOTATION_NAME);
-		assertNull(schemaAnnotation);
+		assertNull(schemaAnnotation.getElementFormDefault());
 		assertNull(contextXmlSchema.getElementFormDefault());
 
 		//set element form default again, this time starting with no XmlSchema annotation

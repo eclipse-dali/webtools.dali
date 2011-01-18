@@ -127,11 +127,11 @@ public final class SourceXmlRootElementAnnotation
 	//*********** static methods ****************
 
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ROOT_ELEMENT__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ROOT_ELEMENT__NAME);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ROOT_ELEMENT__NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ROOT_ELEMENT__NAMESPACE);
 	}
 
 }

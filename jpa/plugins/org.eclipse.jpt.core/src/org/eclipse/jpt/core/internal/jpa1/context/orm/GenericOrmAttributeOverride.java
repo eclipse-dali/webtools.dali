@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,229 +11,191 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
+import org.eclipse.jpt.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.jpa2.context.AttributeOverride2_0;
-import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * Specified <code>orm.xml</code> attribute override
+ */
 public class GenericOrmAttributeOverride
-	extends AbstractOrmOverride
-	implements AttributeOverride2_0, OrmAttributeOverride, OrmColumn.Owner
+	extends AbstractOrmOverride<OrmAttributeOverrideContainer, XmlAttributeOverride>
+	implements OrmAttributeOverride, OrmColumn.Owner
 {
 	protected final OrmColumn column;
-	
-	/* 2.0 feature - a relationship may map this attribute override */
-	protected boolean mappedByRelationship;
-	
-	
-	public GenericOrmAttributeOverride(
-			OrmAttributeOverrideContainer parent, 
-			OrmAttributeOverride.Owner owner, 
-			XmlAttributeOverride resourceAttributeOverride) {
-		
-		super(parent, owner, resourceAttributeOverride);
-		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
-		this.column.initialize(resourceAttributeOverride.getColumn());
-	
-		this.mappedByRelationship = //calculateMappedByRelationship();
-				// TODO - move this real calculation to a (currently nonexistent) initialize method
-				false;
+
+
+	public GenericOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride) {
+		super(parent, xmlOverride);
+		this.column = this.buildColumn();
 	}
-	
-	
-	public OrmAttributeOverride setVirtual(boolean virtual) {
-		return (OrmAttributeOverride) getOwner().setVirtual(virtual, this);
-	}
-	
+
+
+	// ********** synchronize/update **********
 
 	@Override
-	public OrmAttributeOverride.Owner getOwner() {
-		return (OrmAttributeOverride.Owner) super.getOwner();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.column.synchronizeWithResourceModel();
 	}
-	
+
 	@Override
-	protected XmlAttributeOverride getResourceOverride() {
-		return (XmlAttributeOverride) super.getResourceOverride();
+	public void update() {
+		super.update();
+		this.column.update();
 	}
-	
-	
-	// ********************* column ****************
-	
+
+
+	// ********** specified/virtual **********
+
+	@Override
+	public OrmVirtualAttributeOverride convertToVirtual() {
+		return (OrmVirtualAttributeOverride) super.convertToVirtual();
+	}
+
+
+	// ********** column **********
+
 	public OrmColumn getColumn() {
 		return this.column;
 	}
-	
-	//************* NamedColumn.Owner implementation **************
-	
+
+	protected OrmColumn buildColumn() {
+		return this.getContextNodeFactory().buildOrmColumn(this, this);
+	}
+
+
+	// ********** misc **********
+
+	public void initializeFrom(ReadOnlyAttributeOverride oldOverride) {
+		super.initializeFrom(oldOverride);
+		this.column.initializeFrom(oldOverride.getColumn());
+	}
+
+	public void initializeFromVirtual(ReadOnlyAttributeOverride oldOverride) {
+		super.initializeFromVirtual(oldOverride);
+		this.column.initializeFromVirtual(oldOverride.getColumn());
+	}
+
+
+	// ********** column owner implementation **********
+
 	public TypeMapping getTypeMapping() {
-		return getOwner().getTypeMapping();
+		return this.getContainer().getTypeMapping();
 	}
-	
-	public Table getDbTable(String tableName) {
-		return this.getOwner().getDbTable(tableName);
-	}
-	
-	public String getDefaultColumnName() {
-		Column column = resolveOverriddenColumn();
-		if (column == null) {
-			return getName();
-		}
-		return column.getName();
-	}
-	
-	
-	//************* BaseColumn.Owner implementation **************
-	
+
 	public String getDefaultTableName() {
-		Column column = resolveOverriddenColumn();
-		if (column != null) {
-			String tableName = column.getSpecifiedTable();
-			if (tableName != null) {
-				return tableName;
-			}
-		}
-		return getOwner().getDefaultTableName();
+		return this.getContainer().getDefaultTableName();
 	}
-	
-	protected Column resolveOverriddenColumn() {
-		return isVirtual() ? getOwner().resolveOverriddenColumn(getName()) : null;
+
+	public Table resolveDbTable(String tableName) {
+		return this.getContainer().resolveDbTable(tableName);
 	}
-	
+
+	public String getDefaultColumnName() {
+		return this.name;
+	}
+
+	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return this.getContainer().buildColumnValidator(this, (BaseColumn) col, this, (BaseColumnTextRangeResolver) textRangeResolver);
+	}
+
 	public boolean tableNameIsInvalid(String tableName) {
-		return getOwner().tableNameIsInvalid(tableName);
+		return this.getContainer().tableNameIsInvalid(tableName);
 	}
-	
+
 	public Iterator<String> candidateTableNames() {
-		return getOwner().candidateTableNames();
+		return this.getContainer().candidateTableNames();
 	}
-	
-	public boolean isVirtual() {
-		return getOwner().isVirtual(this);
+
+	public XmlColumn getXmlColumn() {
+		return this.getXmlOverride().getColumn();
 	}
-	
-	
-	//***************** OrmColumn.Owner implementation ****************
-	
-	public XmlColumn getResourceColumn() {
-		return this.getResourceOverride().getColumn();
+
+	public XmlColumn buildXmlColumn() {
+		XmlColumn xmlColumn = OrmFactory.eINSTANCE.createXmlColumn();
+		this.getXmlOverride().setColumn(xmlColumn);
+		return xmlColumn;
 	}
-	
-	protected boolean isColumnSpecified() {
-		return getResourceColumn() != null;
+
+	public void removeXmlColumn() {
+		this.getXmlOverride().setColumn(null);
 	}
-	
-	public void addResourceColumn() {
-		this.getResourceOverride().setColumn(OrmFactory.eINSTANCE.createXmlColumn());
+
+
+	// ********** mapped by relationship **********
+
+	protected boolean isMappedByRelationship() {
+		return CollectionTools.contains(this.getMappedByRelationshipAttributeNames(), this.buildQualifier());
 	}
-	
-	public void removeResourceColumn() {
-		this.getResourceOverride().setColumn(null);
+
+	protected Iterable<String> getMappedByRelationshipAttributeNames() {
+		return TypeMappingTools.getMappedByRelationshipAttributeNames(this.getTypeMapping());
 	}
-	
-	
-	// **************** AttributeOverride2_0 impl *****************************
-	
-	public boolean isMappedByRelationship() {
-		return this.mappedByRelationship;
-	}
-	
-	protected void setMappedByRelationship(boolean newValue) {
-		boolean oldValue = this.mappedByRelationship;
-		this.mappedByRelationship = newValue;
-		firePropertyChanged(MAPPED_BY_RELATIONSHIP_PROPERTY, oldValue, newValue);
-	}
-	
-	protected boolean calculateMappedByRelationship() {
-		for (SingleRelationshipMapping2_0 each : getMapsIdRelationships()) {
-			if (getName() == null) {
-				return false;
-			}
-			
-			// overrideable names are (usually?) qualified with a container mapping, 
-			// which may also be the one mapped by a relationship
-			String qualifier = 
-					(getName().indexOf('.') > 0) ?
-						getName().substring(0, getName().indexOf('.'))
-						: getName();
-			return qualifier.equals(each.getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getValue());
+
+	/**
+	 * overridable names are (usually?) qualified with a container mapping,
+	 * which may also be the one mapped by a relationship
+	 */
+	protected String buildQualifier() {
+		if (this.name == null) {
+			return null;
 		}
-		return false;
+		int index = this.name.indexOf('.');
+		return (index == -1) ? this.name : this.name.substring(0, index);
 	}
-	
-	protected Iterable<SingleRelationshipMapping2_0> getMapsIdRelationships() {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(
-				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
-					new CompositeIterable<AttributeMapping>(
-						getTypeMapping().getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						getTypeMapping().getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
-			@Override
-			protected boolean accept(SingleRelationshipMapping2_0 o) {
-				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
-			}
-		};
-	}
-	
-	
-	// **************** resource -> context ***********************************
-	
-	public void update(XmlAttributeOverride xmlAttributeOverride) {
-		super.update(xmlAttributeOverride);
-		this.column.update(xmlAttributeOverride.getColumn());
-		setMappedByRelationship(calculateMappedByRelationship());
-	}
-	
-	
-	//****************** validation ********************
-	
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
+
 		// [JPA 2.0] if the column is specified, or if the override is not mapped by a relationship,
 		// then the column is validated.
 		// (In JPA 1.0, the column will always be validated, since the override is never mapped by a
 		//  relationship)
-		if (isColumnSpecified() || ! isMappedByRelationship()) {
-			getColumn().validate(messages, reporter);
+		if (this.xmlColumnIsSpecified() || ! this.isMappedByRelationship()) {
+			this.column.validate(messages, reporter);
 		}
-		
+
 		// [JPA 2.0] if the override is mapped by a relationship, then that actually is in itself
 		// a validation error
 		// (We prevent implied overrides that are mapped by a relationship ... hopefully)
 		// (In JPA 1.0, this will never occur)
-		if (isMappedByRelationship()) {
+		if (this.isMappedByRelationship()) {
 			messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ATTRIBUTE_OVERRIDE_MAPPED_BY_RELATIONSHIP_AND_SPECIFIED,
-						new String[] {},
+						EMPTY_STRING_ARRAY,
 						this,
-						getValidationTextRange()));
+						this.getValidationTextRange()
+					)
+				);
 		}
 	}
-	
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return getOwner().buildColumnValidator(this, (BaseColumn) column, this, (BaseColumnTextRangeResolver) textRangeResolver);
+
+	protected boolean xmlColumnIsSpecified() {
+		return this.getXmlColumn() != null;
 	}
 }

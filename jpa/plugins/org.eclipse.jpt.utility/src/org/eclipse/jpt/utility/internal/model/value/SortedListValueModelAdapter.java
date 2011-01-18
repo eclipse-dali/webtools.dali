@@ -89,14 +89,21 @@ public class SortedListValueModelAdapter<E>
 	}
 
 	/**
-	 * the list will need to be sorted after the item is added
+	 * Sort the list after adding the items.
 	 */
 	@Override
 	protected void itemsAdded(CollectionAddEvent event) {
-		// first add the items and notify our listeners...
-		super.itemsAdded(event);
-		// ...then sort the list
-		this.sortList();
+		@SuppressWarnings("unchecked")
+		ArrayList<E> newList = (ArrayList<E>) this.list.clone();
+		newList.ensureCapacity(newList.size() + event.getItemsSize());
+		CollectionTools.addAll(newList, this.getItems(event));
+		Collections.sort(newList, this.comparator);
+		this.synchronizeList(newList, this.list, LIST_VALUES);
+	}
+
+	@Override
+	protected Iterable<? extends E> buildSyncList() {
+		return CollectionTools.sortedSet(this.collectionHolder, this.comparator, this.collectionHolder.size());
 	}
 
 	/**

@@ -60,7 +60,7 @@ public final class SourceXmlAnyElementAnnotation
 	}
 
 	private DeclarationAnnotationElementAdapter<Boolean> buildLaxAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, JAXB.XML_ANY_ELEMENT__LAX, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, JAXB.XML_ANY_ELEMENT__LAX);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildValueAdapter(DeclarationAnnotationAdapter daa) {
@@ -68,7 +68,7 @@ public final class SourceXmlAnyElementAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {

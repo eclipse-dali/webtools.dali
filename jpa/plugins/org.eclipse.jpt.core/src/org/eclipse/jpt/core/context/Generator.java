@@ -9,11 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import java.util.Arrays;
+
+import org.eclipse.jpt.core.context.java.JavaGenerator;
+import org.eclipse.jpt.core.context.orm.OrmGenerator;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
+ * sequence and table generators
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,20 +30,25 @@ import org.eclipse.jpt.db.SchemaContainer;
  * @since 2.0
  */
 public interface Generator
-	extends JpaContextNode
+	extends JpaNamedContextNode<Generator>
 {
-	String SEQUENCE_GENERATOR = "sequenceGenerator"; //$NON-NLS-1$
-	String TABLE_GENERATOR = "tableGenerator"; //$NON-NLS-1$
-
-	// ********** name **********
-
-	String getName();
-	void setName(String value);
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	/**
+	 * TODO use this precedence until adopters protest...
+	 * then move to JpaPlatform
+	 */
+	@SuppressWarnings("unchecked")
+	Iterable<Class<? extends Generator>> PRECEDENCE_TYPE_LIST = Arrays.asList(
+			OrmGenerator.class,
+			JavaGenerator.class
+		);
 
 
 	// ********** initial value **********
 
+	/**
+	 * Return the specified initial value if present, otherwise return the
+	 * default initial value.
+	 */
 	int getInitialValue();
 	Integer getSpecifiedInitialValue();
 	void setSpecifiedInitialValue(Integer value);
@@ -48,51 +59,36 @@ public interface Generator
 
 	// ********** allocation size **********
 	
+	/**
+	 * Return the specified allocation size if present, otherwise return the
+	 * default allocation size.
+	 */
 	int getAllocationSize();
 	Integer getSpecifiedAllocationSize();
 	void setSpecifiedAllocationSize(Integer value);
 		String SPECIFIED_ALLOCATION_SIZE_PROPERTY = "specifiedAllocationSize"; //$NON-NLS-1$
 	int getDefaultAllocationSize();
-	int DEFAULT_ALLOCATION_SIZE = 50;
 		String DEFAULT_ALLOCATION_SIZE_PROPERTY = "defaultAllocationSize"; //$NON-NLS-1$
-
-
-	// ********** validation **********
-	
-	/**
-	 * Return whether the generator overrides the definition of the given generator
-	 * (e.g. a generator defined in orm.xml overrides one defined in java).
-	 */
-	boolean overrides(Generator generator);
-	
-	/**
-	 * Return whether the generator is a duplicate of the given generator.
-	 * A generator is not a duplicate of another generator if is the same exact generator,
-	 * if it is a nameless generator (which is an error condition), or if it overrides 
-	 * or is overridden by the other generator. 
-	 */
-	boolean duplicates(Generator generator);
-
-	boolean isVirtual();
+	int DEFAULT_ALLOCATION_SIZE = 50;
 
 
 	// ********** database stuff **********
 
 	/**
-	 * Return a db Schema object with the specified/default schema name.
-	 * This can return null if no Schema exists on the database with that name.
+	 * Return the schema container that holds the relevant schemata.
 	 */
-	Schema getDbSchema();
+	SchemaContainer getDbSchemaContainer();
 
 	/**
-	 * Return a db Catalog object with the specified/default catalog name.
-	 * This can return null if no Catalog exists on the database with that name.
+	 * Return the generator's database catalog.
+	 * Return null if the generator's catalog (name) is invalid.
 	 */
 	Catalog getDbCatalog();
 
 	/**
-	 * Return a db container object that hold the relevant schemata.
+	 * Return the generator's database schema.
+	 * Return null if the generator's schema (name) is invalid.
 	 */
-	SchemaContainer getDbSchemaContainer();
+	Schema getDbSchema();
 
 }

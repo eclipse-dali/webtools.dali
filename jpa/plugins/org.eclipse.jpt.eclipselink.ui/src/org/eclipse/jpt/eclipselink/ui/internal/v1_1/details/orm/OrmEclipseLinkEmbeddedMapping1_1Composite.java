@@ -11,9 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
@@ -38,8 +36,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.2
  */
-public class OrmEclipseLinkEmbeddedMapping1_1Composite extends AbstractEmbeddedMappingComposite<OrmEmbeddedMapping>
-                                      implements JpaComposite
+public class OrmEclipseLinkEmbeddedMapping1_1Composite
+	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
 {
 	/**
 	 * Creates a new <code>EmbeddedMappingComposite</code>.
@@ -48,7 +46,7 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite extends AbstractEmbeddedM
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkEmbeddedMapping1_1Composite(PropertyValueModel<? extends OrmEmbeddedMapping> subjectHolder,
+	public OrmEclipseLinkEmbeddedMapping1_1Composite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
@@ -67,7 +65,7 @@ public class OrmEclipseLinkEmbeddedMapping1_1Composite extends AbstractEmbeddedM
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddedMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

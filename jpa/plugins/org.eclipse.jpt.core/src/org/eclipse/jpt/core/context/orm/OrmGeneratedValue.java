@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> generated value
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,15 +29,10 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OrmGeneratedValue
 	extends GeneratedValue, XmlContextNode
 {
+	XmlGeneratedValue getXmlGeneratedValue();
+
 	/**
 	 * Return the (best guess) text location of the generator.
 	 */
 	TextRange getGeneratorTextRange();
-
-	/**
-	 * Update the OrmGeneratedValue context model object to match the XmlGeneratedValue 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlGeneratedValue generatedValue);
-
 }

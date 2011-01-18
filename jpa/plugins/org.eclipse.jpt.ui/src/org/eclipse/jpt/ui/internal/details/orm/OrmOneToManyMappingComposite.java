@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToManyRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
@@ -64,7 +63,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class OrmOneToManyMappingComposite 
-	extends AbstractOneToManyMappingComposite<OrmOneToManyMapping, OneToManyRelationshipReference>
+	extends AbstractOneToManyMappingComposite<OneToManyMapping, OneToManyRelationshipReference>
 {
 	/**
 	 * Creates a new <code>OneToManyMappingComposite</code>.
@@ -73,7 +72,7 @@ public class OrmOneToManyMappingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmOneToManyMappingComposite(PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
+	public OrmOneToManyMappingComposite(PropertyValueModel<? extends OneToManyMapping> subjectHolder,
 	                                 Composite parent,
 	                                 WidgetFactory widgetFactory) {
 

@@ -50,7 +50,7 @@ public final class GeneratedAnnotationDefinition
 	}
 
 	public GeneratedAnnotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	public GeneratedAnnotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

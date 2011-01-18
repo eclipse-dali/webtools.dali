@@ -59,8 +59,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.1
  */
-public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extends AbstractVersionMappingComposite<T>
-                                     implements JpaComposite
+public class EclipseLinkVersionMappingComposite<T extends VersionMapping>
+	extends AbstractVersionMappingComposite<T>
 {
 	/**
 	 * Creates a new <code>VersionMappingComposite</code>.
@@ -91,7 +91,7 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extend
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
+			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
@@ -100,7 +100,7 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extend
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
+			buildConverterBooleanHolder(TemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 
@@ -108,7 +108,7 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extend
 		Button elConverterButton = addRadioButton(
 			container, 
 			EclipseLinkUiDetailsMessages.TypeSection_converted, 
-			buildConverterBooleanHolder(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER), 
+			buildConverterBooleanHolder(EclipseLinkConvert.class), 
 			null);
 		((GridData) elConverterButton.getLayoutData()).horizontalSpan = 2;
 
@@ -128,7 +128,7 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extend
 		return new TransformationPropertyValueModel<Converter, EclipseLinkConvert>(converterHolder) {
 			@Override
 			protected EclipseLinkConvert transform_(Converter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConvert.ECLIPSE_LINK_CONVERTER) ? (EclipseLinkConvert) converter : null;
+				return (converter != null && converter.getType() == EclipseLinkConvert.class) ? (EclipseLinkConvert) converter : null;
 			}
 		};
 	}
@@ -146,7 +146,7 @@ public class EclipseLinkVersionMappingComposite<T extends VersionMapping> extend
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
+				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
 			}
 		};
 	}

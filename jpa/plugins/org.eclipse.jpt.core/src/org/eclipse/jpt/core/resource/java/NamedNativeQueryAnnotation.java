@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.NamedNativeQuery
- * 
+ * <code>javax.persistence.NamedNativeQuery</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,9 +27,12 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.0
  */
 public interface NamedNativeQueryAnnotation
-	extends BaseNamedQueryAnnotation
+	extends QueryAnnotation
 {
 	String ANNOTATION_NAME = JPA.NAMED_NATIVE_QUERY;
+
+
+	// ********** result class **********
 
 	/**
 	 * Corresponds to the 'resultClass' element of the NamedNativeQuery annotation.
@@ -50,9 +53,19 @@ public interface NamedNativeQueryAnnotation
 	 */
 	TextRange getResultClassTextRange(CompilationUnit astRoot);
 
+	/**
+	 * Return the named native query's fully-qualified result class name as
+	 * resolved by the AST's bindings.
+	 * <pre>
+	 *     &#64;NamedNativeQuery(resultClass=Employee.class)
+	 * </pre>
+	 * will return <code>"model.Employee"</code> if there is an import for
+	 * <code>model.Employee</code>.
+	 */
 	String getFullyQualifiedResultClassName();
-		String FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY = "fullyQualifiedResultClassName"; //$NON-NLS-1$
 
+
+	// ********** result set mapping **********
 
 	/**
 	 * Corresponds to the 'resultSetMapping' element of the NamedNativeQuery annotation.

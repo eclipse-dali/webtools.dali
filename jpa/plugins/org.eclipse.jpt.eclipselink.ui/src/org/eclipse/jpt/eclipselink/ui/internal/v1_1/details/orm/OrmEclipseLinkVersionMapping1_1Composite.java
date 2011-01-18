@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.VersionMapping;
-import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVersionMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -22,7 +21,8 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkVersionMapping1_1Composite extends EclipseLinkVersionMappingComposite<OrmVersionMapping>
+public class OrmEclipseLinkVersionMapping1_1Composite
+	extends EclipseLinkVersionMappingComposite<VersionMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLinkOrmVersionMappingComposite</code>.
@@ -31,7 +31,7 @@ public class OrmEclipseLinkVersionMapping1_1Composite extends EclipseLinkVersion
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkVersionMapping1_1Composite(PropertyValueModel<? extends OrmVersionMapping> subjectHolder,
+	public OrmEclipseLinkVersionMapping1_1Composite(PropertyValueModel<? extends VersionMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 

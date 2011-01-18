@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeMapping;
@@ -41,6 +40,7 @@ import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.jpa2.context.SimpleMetamodelField;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -48,10 +48,11 @@ import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
+import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.SingleElementIterator;
@@ -59,53 +60,146 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
+public abstract class AbstractOrmAttributeMapping<X extends XmlAttributeMapping>
 	extends AbstractOrmXmlContextNode
 	implements OrmAttributeMapping, AttributeMapping2_0
 {
+	protected final X xmlAttributeMapping;
+
 	protected String name;
-	
-	protected final T resourceAttributeMapping;
 
-	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent, T resourceAttributeMapping) {
+
+	protected AbstractOrmAttributeMapping(OrmPersistentAttribute parent, X xmlAttributeMapping) {
 		super(parent);
-		this.resourceAttributeMapping = resourceAttributeMapping;
-		this.name = this.getResourceMappingName();
-	}	
-	
-	protected JavaPersistentAttribute getJavaPersistentAttribute() {
-		return this.getPersistentAttribute().getJavaPersistentAttribute();
-	}
-	
-	protected JavaResourcePersistentAttribute getJavaResourcePersistentAttribute() {
-		return this.getJavaPersistentAttribute().getResourcePersistentAttribute();
+		this.xmlAttributeMapping = xmlAttributeMapping;
+		this.name = xmlAttributeMapping.getName();
 	}
 
-	public boolean isVirtual() {
-		return getPersistentAttribute().isVirtual();
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.xmlAttributeMapping.getName());
 	}
+
+
+	// ********** name **********
 
 	public String getName() {
 		return this.name;
 	}
 
 	public void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.resourceAttributeMapping.setName(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
-		this.getPersistentAttribute().nameChanged(old, name);
+		this.setName_(name);
+		this.xmlAttributeMapping.setName(name);
 	}
 
 	protected void setName_(String name) {
 		String old = this.name;
 		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
-		this.getPersistentAttribute().nameChanged(old, name);
+		if (this.firePropertyChanged(NAME_PROPERTY, old, name)) {
+			// tell our attribute its name has, effectively, changed
+			this.getPersistentAttribute().nameChanged(old, name);
+		}
 	}
-	
+
+
+	// ********** morphing mappings **********
+
+	public void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping) {
+		this.setName(oldMapping.getName());
+	}
+
+	protected void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
+		this.initializeFromOrmAttributeMapping(oldMapping);
+	}
+
+	public void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping) {
+		this.initializeFromOrmColumnMapping(oldMapping);
+	}
+
+	public void initializeFromOrmIdMapping(OrmIdMapping oldMapping) {
+		this.initializeFromOrmColumnMapping(oldMapping);
+	}
+
+	public void initializeFromOrmTransientMapping(OrmTransientMapping oldMapping) {
+		this.initializeFromOrmAttributeMapping(oldMapping);
+	}
+
+	protected void initializeFromOrmBaseEmbeddedMapping(OrmBaseEmbeddedMapping oldMapping) {
+		this.initializeFromOrmAttributeMapping(oldMapping);
+	}
+
+	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
+		this.initializeFromOrmBaseEmbeddedMapping(oldMapping);
+	}
+
+	public void initializeFromOrmEmbeddedIdMapping(OrmEmbeddedIdMapping oldMapping) {
+		this.initializeFromOrmBaseEmbeddedMapping(oldMapping);
+	}
+
+	public void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping) {
+		this.initializeFromOrmColumnMapping(oldMapping);
+	}
+
+	protected void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
+		this.initializeFromOrmAttributeMapping(oldMapping);
+	}
+
+	protected void initializeFromOrmMultiRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
+		this.initializeFromOrmRelationshipMapping(oldMapping);
+	}
+
+	protected void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
+		this.initializeFromOrmRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping) {
+		this.initializeFromOrmMultiRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping) {
+		this.initializeFromOrmSingleRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping) {
+		this.initializeFromOrmSingleRelationshipMapping(oldMapping);
+	}
+
+	public void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping) {
+		this.initializeFromOrmMultiRelationshipMapping(oldMapping);
+	}
+
+
+	// ********** misc **********
+
+	public X getXmlAttributeMapping() {
+		return this.xmlAttributeMapping;
+	}
+
+	@Override
+	public OrmPersistentAttribute getParent() {
+		return (OrmPersistentAttribute) super.getParent();
+	}
+
 	public OrmPersistentAttribute getPersistentAttribute() {
-		return (OrmPersistentAttribute) getParent();
+		return this.getParent();
+	}
+
+	public OrmTypeMapping getTypeMapping() {
+		return this.getPersistentAttribute().getOwningTypeMapping();
+	}
+
+	protected JavaPersistentAttribute getJavaPersistentAttribute() {
+		return this.getPersistentAttribute().getJavaPersistentAttribute();
+	}
+
+	// TODO remove this method - it will always return false...
+	// subclass member classes like this method
+	public boolean isVirtual() {
+		return false;
 	}
 
 	protected EntityMappings getEntityMappings() {
@@ -119,79 +213,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	public boolean isDefault() {
 		return false;
 	}
-	
-	public void initializeFromOrmAttributeMapping(OrmAttributeMapping oldMapping) {
-		setName(oldMapping.getName());
-	}
-
-	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
-		initializeFromOrmAttributeMapping((OrmAttributeMapping) oldMapping);
-	}
-
-	public void initializeFromOrmBasicMapping(OrmBasicMapping oldMapping) {
-		initializeFromOrmColumnMapping(oldMapping);
-	}
-
-	public void initializeFromOrmIdMapping(OrmIdMapping oldMapping) {
-		initializeFromOrmColumnMapping(oldMapping);
-	}
-
-	public void initializeFromOrmTransientMapping(OrmTransientMapping oldMapping) {
-		initializeFromOrmAttributeMapping(oldMapping);
-	}
-
-	public void initializeFromOrmBaseEmbeddedMapping(OrmBaseEmbeddedMapping oldMapping) {
-		initializeFromOrmAttributeMapping(oldMapping);
-	}
-
-	public void initializeFromOrmEmbeddedMapping(OrmEmbeddedMapping oldMapping) {
-		initializeFromOrmBaseEmbeddedMapping(oldMapping);
-	}
-
-	public void initializeFromOrmEmbeddedIdMapping(OrmEmbeddedIdMapping oldMapping) {
-		initializeFromOrmBaseEmbeddedMapping(oldMapping);
-	}
-
-	public void initializeFromOrmVersionMapping(OrmVersionMapping oldMapping) {
-		initializeFromOrmColumnMapping(oldMapping);
-	}
-
-	public void initializeFromOrmRelationshipMapping(OrmRelationshipMapping oldMapping) {
-		initializeFromOrmAttributeMapping(oldMapping);
-	}
-
-	public void initializeFromOrmMultiRelationshipMapping(OrmMultiRelationshipMapping oldMapping) {
-		initializeFromOrmRelationshipMapping(oldMapping);
-	}
-
-	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
-		initializeFromOrmRelationshipMapping(oldMapping);
-	}
-
-	public void initializeFromOrmOneToManyMapping(OrmOneToManyMapping oldMapping) {
-		initializeFromOrmMultiRelationshipMapping(oldMapping);
-	}
-
-	public void initializeFromOrmManyToOneMapping(OrmManyToOneMapping oldMapping) {
-		initializeFromOrmSingleRelationshipMapping(oldMapping);
-	}
-
-	public void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping) {
-		initializeFromOrmSingleRelationshipMapping(oldMapping);
-	}
-
-	public void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping) {
-		initializeFromOrmMultiRelationshipMapping(oldMapping);
-	}
 
 	public String getPrimaryKeyColumnName() {
 		return null;
 	}
-
-	public OrmTypeMapping getTypeMapping() {
-		return this.getPersistentAttribute().getOwningTypeMapping();
-	}
-
 
 	public boolean isOverridableAttributeMapping() {
 		return false;
@@ -206,96 +231,87 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	public boolean isOwnedBy(AttributeMapping mapping) {
-		// Default implementation - override where needed
 		return false;
 	}
-	
-	public Iterator<String> allMappingNames() {
-		return getName() == null ? EmptyIterator.<String> instance() : new SingleElementIterator<String>(getName());
-	}
-	
-	public AttributeMapping resolveAttributeMapping(String attributeName) {
-		if (getName() != null && getName().equals(attributeName)) {
-			return this;
-		}
-		return null;
-	}
-	
-	public Iterator<String> allOverrideableAttributeMappingNames() {
-		if (isOverridableAttributeMapping() && getName() != null) {
-			return new SingleElementIterator<String>(getName());
-		}
-		return EmptyIterator.<String> instance();
-	}
-	
-	public Iterator<String> allOverrideableAssociationMappingNames() {
-		if (isOverridableAssociationMapping() && getName() != null) {
-			return new SingleElementIterator<String>(getName());
-		}
-		return EmptyIterator.<String> instance();
-	}
-	
-	public Column resolveOverriddenColumn(String attributeName) {
-		ColumnMapping columnMapping = this.resolveColumnMapping(attributeName);
-		return columnMapping == null ? null : columnMapping.getColumn();
-	}
-	
-	protected ColumnMapping resolveColumnMapping(String attributeName) {
-		AttributeMapping attributeMapping = resolveAttributeMapping(attributeName);
-		if (attributeMapping != null && attributeMapping.isOverridableAttributeMapping()) {
-			return (ColumnMapping) attributeMapping;
-		}
-		return null;
-	}	
 
-	public RelationshipReference resolveRelationshipReference(String attributeName) {
-		RelationshipMapping relationshipMapping = this.resolveRelationshipMapping(attributeName);
-		return relationshipMapping == null ? null : relationshipMapping.getRelationshipReference();
-	}
-	
-	protected RelationshipMapping resolveRelationshipMapping(String attributeName) {
-		AttributeMapping attributeMapping = resolveAttributeMapping(attributeName);
-		if (attributeMapping != null && attributeMapping.isOverridableAssociationMapping()) {
-			return (RelationshipMapping) attributeMapping;
-		}
-		return null;
-	}	
-
-	public T getResourceAttributeMapping() {
-		return this.resourceAttributeMapping;
-	}
-	
-	public void update() {
-		this.setName_(this.getResourceMappingName());
-	}
-	
-	protected String getResourceMappingName() {
-		return this.resourceAttributeMapping.getName();
-	}
-	
-	public boolean shouldValidateAgainstDatabase() {
-		return this.getTypeMapping().shouldValidateAgainstDatabase();
+	public boolean validatesAgainstDatabase() {
+		return this.getTypeMapping().validatesAgainstDatabase();
 	}
 
 	public boolean contains(int textOffset) {
-		return this.resourceAttributeMapping.containsOffset(textOffset);
+		return this.xmlAttributeMapping.containsOffset(textOffset);
 	}
-	
+
 	public TextRange getSelectionTextRange() {
-		return this.resourceAttributeMapping.getSelectionTextRange();
-	}	
-	
-	public TextRange getValidationTextRange() {
-		return (this.getPersistentAttribute().isVirtual()) ? this.getTypeMapping().getAttributesTextRange() : this.resourceAttributeMapping.getValidationTextRange();
+		return this.xmlAttributeMapping.getSelectionTextRange();
 	}
-	
+
+	public TextRange getValidationTextRange() {
+		return this.xmlAttributeMapping.getValidationTextRange();
+	}
+
 	public TextRange getNameTextRange() {
-		return this.resourceAttributeMapping.getNameTextRange();
+		return this.xmlAttributeMapping.getNameTextRange();
 	}
 
 	@Override
 	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
+		sb.append(this.name);
+	}
+
+
+	// ********** embedded mappings **********
+
+	public Iterator<String> allMappingNames() {
+		return (this.name != null) ?
+				new SingleElementIterator<String>(this.name) :
+				EmptyIterator.<String>instance();
+	}
+
+	public Iterator<String> allOverridableAttributeMappingNames() {
+		return ((this.name != null) && this.isOverridableAttributeMapping()) ?
+				new SingleElementIterator<String>(this.name) :
+				EmptyIterator.<String>instance();
+	}
+
+	public Iterator<String> allOverridableAssociationMappingNames() {
+		return ((this.name != null) && this.isOverridableAssociationMapping()) ?
+				new SingleElementIterator<String>(this.name) :
+				EmptyIterator.<String>instance();
+	}
+
+	public Column resolveOverriddenColumn(String attributeName) {
+		ColumnMapping mapping = this.resolveColumnMapping(attributeName);
+		return (mapping == null) ? null : mapping.getColumn();
+	}
+
+	protected ColumnMapping resolveColumnMapping(String attributeName) {
+		AttributeMapping mapping = this.resolveAttributeMapping(attributeName);
+		return ((mapping != null) && mapping.isOverridableAttributeMapping()) ? (ColumnMapping) mapping : null;
+	}
+
+	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		RelationshipMapping mapping = this.resolveRelationshipMapping(attributeName);
+		return (mapping == null) ? null : mapping.getRelationshipReference();
+	}
+
+	protected RelationshipMapping resolveRelationshipMapping(String attributeName) {
+		AttributeMapping mapping = this.resolveAttributeMapping(attributeName);
+		return ((mapping != null) && mapping.isOverridableAssociationMapping()) ?
+			(RelationshipMapping) mapping :
+			null;
+	}
+
+	public AttributeMapping resolveAttributeMapping(String attributeName) {
+		return Tools.valuesAreEqual(attributeName, this.name) ? this : null;
+	}
+
+	protected Transformer<String, String> buildQualifierTransformer() {
+		return new MappingTools.QualifierTransformer(this.name);
+	}
+
+	protected String unqualify(String attributeName) {
+		return MappingTools.unqualify(this.name, attributeName);
 	}
 
 
@@ -345,7 +361,7 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 	}
 
 	protected String getMetamodelFieldName() {
-		return this.getName();
+		return this.name;
 	}
 
 
@@ -372,21 +388,20 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 		this.validateAttribute(messages);
 		this.validateMapping(messages);
 	}
-	
+
 	protected void validateAttribute(List<IMessage> messages) {
 		if (StringTools.stringIsEmpty(this.name)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME,
-					this, 
+					this,
 					this.getValidationTextRange()
 				)
 			);
-			return;
 		}
 	}
-	
+
 	//TODO validation message - i think more info is needed in this message.  include type mapping type?
 	protected void validateMapping(List<IMessage> messages) {
 		if ( ! this.getTypeMapping().attributeMappingKeyAllowed(this.getKey())) {
@@ -395,11 +410,10 @@ public abstract class AbstractOrmAttributeMapping<T extends XmlAttributeMapping>
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_MAPPING,
 					new String[] {this.name},
-					this, 
+					this,
 					this.getValidationTextRange()
 				)
 			);
 		}
 	}
-	
 }

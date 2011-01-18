@@ -151,7 +151,7 @@ public class SecondaryTableTests extends JpaJavaResourceModelTestCase {
 		table.setName(null);
 		assertNull(table.getName());
 		
-		assertSourceDoesNotContain("@SecondaryTable", cu);
+		assertSourceDoesNotContain("@SecondaryTable(", cu);
 	}
 
 	public void testGetCatalog() throws Exception {
@@ -187,7 +187,7 @@ public class SecondaryTableTests extends JpaJavaResourceModelTestCase {
 		table.setCatalog(null);
 		assertNull(table.getCatalog());
 		
-		assertSourceDoesNotContain("@SecondaryTable", cu);
+		assertSourceDoesNotContain("@SecondaryTable(", cu);
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -223,7 +223,7 @@ public class SecondaryTableTests extends JpaJavaResourceModelTestCase {
 		table.setSchema(null);
 		assertNull(table.getSchema());
 		
-		assertSourceDoesNotContain("@SecondaryTable", cu);
+		assertSourceDoesNotContain("@SecondaryTable(", cu);
 	}
 
 
@@ -291,7 +291,7 @@ public class SecondaryTableTests extends JpaJavaResourceModelTestCase {
 		table.removeUniqueConstraint(0);
 		uniqueConstraints = table.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
-		assertSourceDoesNotContain("@SecondaryTable", cu);
+		assertSourceDoesNotContain("@SecondaryTable(", cu);
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
@@ -389,7 +389,7 @@ public class SecondaryTableTests extends JpaJavaResourceModelTestCase {
 
 		
 		table.removePkJoinColumn(0);
-		assertSourceDoesNotContain("@SecondaryTable", cu);
+		assertSourceDoesNotContain("@SecondaryTable(", cu);
 	}
 	
 	public void testMovePkJoinColumn() throws Exception {

@@ -153,8 +153,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 				"annot.JoinColumn", "annot.JoinColumns", 0);
 		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		aa.removeAnnotation();
-		this.assertSourceDoesNotContain("JoinColumns", cu);
-		this.assertSourceDoesNotContain("JoinColumn", cu);
+		this.assertSourceDoesNotContain("ADDRESS_ID", cu);
 	}
 
 	public void testRemoveAnnotation3() throws Exception {
@@ -233,7 +232,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
-		this.assertSourceDoesNotContain("JoinColumn", cu);
+		this.assertSourceDoesNotContain("ADDRESS_ID", cu);
 	}
 
 	public void testRemoveAnnotation14() throws Exception {
@@ -293,7 +292,7 @@ public class CombinationIndexedDeclarationAnnotationAdapterTests extends Annotat
 		assertNotNull(annotation);
 
 		aa.removeAnnotation();
-		this.assertSourceDoesNotContain("JoinColumn", cu);
+		this.assertSourceDoesNotContain("ADDRESS_ID2", cu);
 	}
 
 	public void testNewMarkerAnnotation1() throws Exception {

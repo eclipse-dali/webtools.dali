@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context;
 import java.util.ListIterator;
 
 /**
- * Used by ManyToMany and OneToMany mappings.
- * 
+ * Used by many-to-many and one-to-many mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,24 +24,16 @@ import java.util.ListIterator;
  * @since 2.0
  */
 public interface JoinTable
-	extends ReferenceTable
+	extends ReferenceTable, ReadOnlyJoinTable
 {
-	RelationshipMapping getRelationshipMapping();
-
 	JoinTableJoiningStrategy getParent();
+
+	void initializeFrom(ReadOnlyJoinTable oldJoinTable);
+
+	void initializeFromVirtual(ReadOnlyJoinTable virtualJoinTable);
 
 
 	// ********** inverse join columns **********
-
-	/**
-	 * Return the join table's inverse join columns, whether specified or default.
-	 */
-	<T extends JoinColumn> ListIterator<T> inverseJoinColumns();
-
-	/**
-	 * Return the number of inverse join columns, whether specified or default.
-	 */
-	int inverseJoinColumnsSize();
 
 	/**
 	 * Convert the join table's default inverse join column to a specified
@@ -49,26 +41,20 @@ public interface JoinTable
 	 */
 	void convertDefaultToSpecifiedInverseJoinColumn();
 
-	/**
-	 * Return the specified inverse join columns.
-	 */
-	<T extends JoinColumn> ListIterator<T> specifiedInverseJoinColumns();
-		String SPECIFIED_INVERSE_JOIN_COLUMNS_LIST = "specifiedInverseJoinColumns"; //$NON-NLS-1$
+	ListIterator<? extends JoinColumn> inverseJoinColumns();
+
+	ListIterator<? extends JoinColumn> specifiedInverseJoinColumns();
+
+	JoinColumn getSpecifiedInverseJoinColumn(int index);
 
 	/**
-	 * Return the number of specified inverse join columns.
+	 * Add a specified inverse join column to the join table.
+	 * Return the newly-created join column.
 	 */
-	int specifiedInverseJoinColumnsSize();
+	JoinColumn addSpecifiedInverseJoinColumn();
 
 	/**
-	 * Return the default inverse join column or null. A default inverse join column
-	 * only exists if there are no specified inverse join columns.
-	 */
-	JoinColumn getDefaultInverseJoinColumn();
-		String DEFAULT_INVERSE_JOIN_COLUMN = "defaultInverseJoinColumn"; //$NON-NLS-1$
-
-	/**
-	 * Add a specified join column to the join table.
+	 * Add a specified inverse join column to the join table.
 	 * Return the newly-created join column.
 	 */
 	JoinColumn addSpecifiedInverseJoinColumn(int index);
@@ -90,13 +76,9 @@ public interface JoinTable
 	void moveSpecifiedInverseJoinColumn(int targetIndex, int sourceIndex);
 
 	/**
-	 * Return whether the join table has specified inverse join columns.
-	 */
-	boolean hasSpecifiedInverseJoinColumns();
-
-	/**
 	 * Remove all the join table's inverse join columns.
 	 */
 	void clearSpecifiedInverseJoinColumns();
 
+	JoinColumn getDefaultInverseJoinColumn();
 }

@@ -12,13 +12,14 @@ package org.eclipse.jpt.core.context;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * 
- * 
+ * <ul>
+ * <li>table
+ * <li>secondary table
+ * <li>join table
+ * <li>collection table
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,68 +30,30 @@ import org.eclipse.jpt.db.SchemaContainer;
  * @since 2.0
  */
 public interface Table
-	extends JpaContextNode
+	extends ReadOnlyTable
 {
-
-	// ********** name **********
-
-	/**
-	 * Return the specified name if present, otherwise return the default
-	 * name.
-	 */
-	String getName();
-	String getSpecifiedName();
 	void setSpecifiedName(String value);
-		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
-	String getDefaultName();
-		String DEFAULT_NAME_PROPERTY = "defaultName"; //$NON-NLS-1$
 
-
-	// ********** schema **********
-
-	/**
-	 * Return the specified schema if present, otherwise return the default
-	 * schema.
-	 */
-	String getSchema();
-	String getSpecifiedSchema();
 	void setSpecifiedSchema(String value);
-		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
-	String getDefaultSchema();
-		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 
-
-	// ********** catalog **********
-
-	/**
-	 * Return the specified catalog if present, otherwise return the default
-	 * catalog.
-	 */
-	String getCatalog();
-	String getSpecifiedCatalog();
 	void setSpecifiedCatalog(String value);
-		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
-	String getDefaultCatalog();
-		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 
-
-	// ********** unique constraints **********
-
-	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
-	int uniqueConstraintsSize();
+	ListIterator<? extends UniqueConstraint> uniqueConstraints();
+	UniqueConstraint getUniqueConstraint(int index);
+	UniqueConstraint addUniqueConstraint();
 	UniqueConstraint addUniqueConstraint(int index);
 	void removeUniqueConstraint(int index);
 	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
 	void moveUniqueConstraint(int targetIndex, int sourceIndex);
-		String UNIQUE_CONSTRAINTS_LIST = "uniqueConstraints"; //$NON-NLS-1$
 
 
-	// ********** database stuff **********
+	// ********** misc **********
 
-	org.eclipse.jpt.db.Table getDbTable();
-	Schema getDbSchema();
-	Catalog getDbCatalog();
-	SchemaContainer getDbSchemaContainer();
+	/**
+	 * Return whether the table is specified in the
+	 * (Java or XML) resource.
+	 */
+	boolean isSpecifiedInResource();
 
 	/**
 	 * Return whether the table can be resolved to a table on the database.
@@ -101,23 +64,18 @@ public interface Table
 	 * Return whether the table's schema can be resolved to a schema on the
 	 * database.
 	 */
-	boolean hasResolvedSchema();
+	boolean schemaIsResolved();
 
 	/**
 	 * Return whether the table has a catalog and it can be resolved to a
 	 * catalog on the database.
 	 */
-	boolean hasResolvedCatalog();
+	boolean catalogIsResolved();
 
 	/**
-	 * Return whether the table is specified in the resource.
+	 * Return whether the table is validated against a live database connection.
 	 */
-	boolean isResourceSpecified();
-
-	/**
-	 * Return when this table should be validated in its given context
-	 */
-	boolean shouldValidateAgainstDatabase();
+	boolean validatesAgainstDatabase();
 
 	/**
 	 * interface allowing columns to be used in multiple places

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,10 +18,10 @@ import org.eclipse.jpt.utility.Command;
  * <code>boolean</code> value is set to <code>true</code> or <code>false</code>,
  * with optional time-outs.
  * 
- * @see BooleanReference
+ * @see SimpleBooleanReference
  */
 public class SynchronizedBoolean
-	implements Cloneable, Serializable
+	implements BooleanReference, Cloneable, Serializable
 {
 	/** Backing <code>boolean</code>. */
 	private boolean value;
@@ -76,49 +76,30 @@ public class SynchronizedBoolean
 
 	// ********** accessors **********
 
-	/**
-	 * Return the current <code>boolean</code> value.
-	 */
 	public boolean getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
 	}
 
-	/**
-	 * Return whether the current <code>boolean</code>
-	 * value is the specified value.
-	 */
 	public boolean is(boolean v) {
 		synchronized (this.mutex) {
 			return this.value == v;
 		}
 	}
 
-	/**
-	 * Return whether the current <code>boolean</code>
-	 * value is the specified value.
-	 */
 	public boolean isNot(boolean v) {
 		synchronized (this.mutex) {
 			return this.value != v;
 		}
 	}
 
-	/**
-	 * Return whether the current <code>boolean</code>
-	 * value is <code>true</code>.
-	 */
 	public boolean isTrue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
 	}
 
-	/**
-	 * Return whether the current <code>boolean</code>
-	 * value is <code>false</code>.
-	 */
 	public boolean isFalse() {
 		synchronized (this.mutex) {
 			return ! this.value;
@@ -126,60 +107,58 @@ public class SynchronizedBoolean
 	}
 
 	/**
-	 * Set the <code>boolean</code> value.
 	 * If the value changes, all waiting threads are notified.
 	 */
-	public void setValue(boolean value) {
+	public boolean setValue(boolean value) {
 		synchronized (this.mutex) {
-			this.setValue_(value);
+			return this.setValue_(value);
 		}
 	}
 
 	/**
 	 * Pre-condition: synchronized
 	 */
-	private void setValue_(boolean v) {
-		if (this.value != v) {
-			this.value = v;
-			this.mutex.notifyAll();
-		}
+	private boolean setValue_(boolean v) {
+		return (v == this.value) ? v : this.setChangedValue_(v);
 	}
 
 	/**
-	 * Set the <code>boolean</code> value to the NOT of its current value.
+	 * Pre-condition: synchronized and new value is different
+	 */
+	private boolean setChangedValue_(boolean v) {
+		this.value = v;
+		this.mutex.notifyAll();
+		return ! v;
+	}
+
+	/**
 	 * If the value changes, all waiting threads are notified.
-	 * Return the resulting value.
 	 */
 	public boolean flip() {
 		synchronized (this.mutex) {
-			boolean v = ! this.value;
-			this.setValue_(v);
-			return v;
+			return ! this.setChangedValue_( ! this.value);
 		}
 	}
 
 	/**
-	 * Set the <code>boolean</code> value to <code>true</code>.
 	 * If the value changes, all waiting threads are notified.
 	 */
-	public void setNot(boolean v) {
-		this.setValue( ! v);
+	public boolean setNot(boolean v) {
+		return this.setValue( ! v);
 	}
 
 	/**
-	 * Set the <code>boolean</code> value to <code>true</code>.
 	 * If the value changes, all waiting threads are notified.
 	 */
-	public void setTrue() {
-		this.setValue(true);
+	public boolean setTrue() {
+		return this.setValue(true);
 	}
 
 	/**
-	 * Set the <code>boolean</code> value to <code>false</code>.
 	 * If the value changes, all waiting threads are notified.
 	 */
-	public void setFalse() {
-		this.setValue(false);
+	public boolean setFalse() {
+		return this.setValue(false);
 	}
 
 	/**
@@ -253,7 +232,7 @@ public class SynchronizedBoolean
 	public void waitToSetValue(boolean v) throws InterruptedException {
 		synchronized (this.mutex) {
 			this.waitUntilValueIs_( ! v);
-			this.setValue_(v);
+			this.setChangedValue_(v);
 		}
 	}
 
@@ -375,7 +354,7 @@ public class SynchronizedBoolean
 		synchronized (this.mutex) {
 			boolean success = this.waitUntilValueIs_( ! v, timeout);
 			if (success) {
-				this.setValue_(v);
+				this.setChangedValue_(v);
 			}
 			return success;
 		}
@@ -442,17 +421,6 @@ public class SynchronizedBoolean
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
-	}
-
-	@Override
-	public boolean equals(Object o) {
-		return (o instanceof SynchronizedBoolean) &&
-			(this.getValue() == ((SynchronizedBoolean) o).getValue());
-	}
-
-	@Override
-	public int hashCode() {
-		return this.getValue() ? 1 : 0;
 	}
 
 	@Override

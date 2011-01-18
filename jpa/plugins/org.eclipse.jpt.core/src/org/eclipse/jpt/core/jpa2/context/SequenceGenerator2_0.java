@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.jpa2.context;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 
 /**
+ * JPA 2.0 sequence generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -39,6 +41,7 @@ public interface SequenceGenerator2_0
 
 
 	// ********** schema **********
+
 	/**
 	 * Return the specified schema if present, otherwise return the default
 	 * schema.

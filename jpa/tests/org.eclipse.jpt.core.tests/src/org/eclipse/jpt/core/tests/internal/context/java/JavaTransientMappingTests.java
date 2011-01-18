@@ -72,7 +72,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -90,7 +90,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 		
@@ -107,7 +107,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -124,7 +124,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -141,7 +141,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -158,7 +158,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -175,7 +175,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -192,7 +192,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -209,7 +209,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToOneMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -226,7 +226,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 		assertFalse(transientMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -240,7 +240,7 @@ public class JavaTransientMappingTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getSpecifiedMapping();
+		TransientMapping transientMapping = (TransientMapping) persistentAttribute.getMapping();
 
 		assertNotNull(transientMapping);
 	}

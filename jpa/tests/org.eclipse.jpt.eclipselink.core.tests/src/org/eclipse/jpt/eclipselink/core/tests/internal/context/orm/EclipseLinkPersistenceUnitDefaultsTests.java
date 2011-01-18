@@ -36,7 +36,7 @@ public class EclipseLinkPersistenceUnitDefaultsTests extends EclipseLinkOrmConte
 	}
 	
 	protected OrmPersistenceUnitDefaults persistenceUnitDefaults() {
-		return getEntityMappings().getPersistenceUnitDefaults();
+		return getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults();
 	}
 	
 	public void testIsAllFeaturesUnset() throws Exception {

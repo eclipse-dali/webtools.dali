@@ -13,8 +13,13 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
 /**
+ * Association override container.
+ * Used by entities, embedded mappings, and element collection mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,62 +30,42 @@ import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
  * @since 2.3
  */
 public interface AssociationOverrideContainer
-	extends OverrideContainer 
+	extends OverrideContainer
 {
-
-	// **************** association overrides **************************************
-
-	/**
-	 * Return a list iterator of the association overrides whether specified or default.
-	 * This will not be null.
-	 */
-	<T extends AssociationOverride> ListIterator<T> associationOverrides();
-
-	/**
-	 * Return the number of association overrides, both specified and default.
-	 */
-	int associationOverridesSize();
+	ListIterator<? extends ReadOnlyAssociationOverride> overrides();
+	ReadOnlyAssociationOverride getOverrideNamed(String name);
+	ListIterator<? extends AssociationOverride> specifiedOverrides();
+	AssociationOverride getSpecifiedOverride(int index);
+	AssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<? extends VirtualAssociationOverride> virtualOverrides();
+	VirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	AssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 	/**
-	 * Return a list iterator of the specified association overrides.
-	 * This will not be null.  No add/remove for specified association overrides, the
-	 * virtual association overrides will be populated from superclasses, then use
-	 * {@link AssociationOverride#setVirtual(boolean)} to add/remove the association
-	 * override from the source
+	 * Return the relationship mapping with the given attribute name.
+	 * Return null if it does not exist.  This relationship mapping
+	 * will be found in the mapped superclass, not in the owning entity
 	 */
-	<T extends AssociationOverride> ListIterator<T> specifiedAssociationOverrides();
+	RelationshipMapping getRelationshipMapping(String attributeName);
 
 	/**
-	 * Return the number of specified association overrides.
+	 * Return the relationship with the specified attribute name.
 	 */
-	int specifiedAssociationOverridesSize();
+	RelationshipReference resolveOverriddenRelationship(String attributeName);
 
-	/**
-	 * Return the number of default association overrides.
-	 */
-	<T extends AssociationOverride> ListIterator<T> virtualAssociationOverrides();
+	JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 
-	/**
-	 * Return the number of default association overrides.
-	 */
-	int virtualAssociationOverridesSize();
+	JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 
-	/**
-	 * Move the specified association override from the source index to the target index.
-	 */
-	void moveSpecifiedAssociationOverride(int targetIndex, int sourceIndex);
-		String SPECIFIED_ASSOCIATION_OVERRIDES_LIST = "specifiedAssociationOverrides"; //$NON-NLS-1$
-		String VIRTUAL_ASSOCIATION_OVERRIDES_LIST = "virtualAssociationOverrides"; //$NON-NLS-1$
+	JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
 
-	/**
-	 * Return the association override, whether specified or default,
-	 * with the given name.
-	 */
-	AssociationOverride getAssociationOverrideNamed(String name);
-	
-	interface Owner extends OverrideContainer.Owner
+
+	// ********** owner **********
+
+	interface Owner
+		extends OverrideContainer.Owner
 	{
-		RelationshipReference resolveRelationshipReference(String associationOverrideName);
+		RelationshipReference resolveOverriddenRelationship(String attributeName);
 
 		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 
@@ -88,6 +73,4 @@ public interface AssociationOverrideContainer
 
 		JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
 	}
-
-
 }

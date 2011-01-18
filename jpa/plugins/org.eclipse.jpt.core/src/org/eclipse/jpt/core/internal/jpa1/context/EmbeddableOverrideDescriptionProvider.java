@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context;
 
-import org.eclipse.jpt.core.internal.jpa1.context.AbstractOverrideValidator.OverrideDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.OverrideValidator.OverrideDescriptionProvider;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 
 public class EmbeddableOverrideDescriptionProvider implements OverrideDescriptionProvider

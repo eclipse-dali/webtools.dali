@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * Java generated value
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,18 +29,10 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface JavaGeneratedValue
 	extends GeneratedValue, JavaJpaContextNode
 {
+	GeneratedValueAnnotation getGeneratedValueAnnotation();
 
 	/**
 	 * Return the (best guess) text location of the generator.
 	 */
 	TextRange getGeneratorTextRange(CompilationUnit astRoot);
-	
-	void initialize(GeneratedValueAnnotation generatedValueAnnotation);
-	
-	/**
-	 * Update the JavaGeneratedValue context model object to match the GeneratedValueAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(GeneratedValueAnnotation generatedValueAnnotation);
-
 }

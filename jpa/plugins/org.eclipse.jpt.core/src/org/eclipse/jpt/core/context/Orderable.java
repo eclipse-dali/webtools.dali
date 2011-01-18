@@ -24,6 +24,7 @@ package org.eclipse.jpt.core.context;
 public interface Orderable
 	extends JpaContextNode
 {
+	AttributeMapping getParent();
 
 	String getSpecifiedOrderBy();
 	void setSpecifiedOrderBy(String orderBy);
@@ -40,7 +41,4 @@ public interface Orderable
 	boolean isCustomOrdering();
 	void setCustomOrdering(boolean customOrdering);
 		String CUSTOM_ORDERING_PROPERTY = "customOrdering"; //$NON-NLS-1$
-
-	interface Owner {
-	}
 }

@@ -77,7 +77,7 @@ public class DiscriminatorValueTests extends JpaJavaResourceModelTestCase {
 		
 		discriminatorValue.setValue(null);
 		
-		assertSourceDoesNotContain("@DiscriminatorValue", cu);
+		assertSourceDoesNotContain("@DiscriminatorValue(", cu);
 	}
 
 }

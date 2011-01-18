@@ -39,8 +39,7 @@ public interface SequenceGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'sequenceName' element of the *Generator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the *Generator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setSequenceName(String sequenceName);
 	

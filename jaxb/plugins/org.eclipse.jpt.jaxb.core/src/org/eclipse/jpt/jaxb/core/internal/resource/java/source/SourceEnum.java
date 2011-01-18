@@ -23,7 +23,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.utility.internal.IntReference;
+import org.eclipse.jpt.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -191,20 +191,20 @@ final class SourceEnum
 	// ********** CounterMap **********
 
 	private static class CounterMap {
-		private final HashMap<Object, IntReference> counters;
+		private final HashMap<Object, SimpleIntReference> counters;
 
 		protected CounterMap(int initialCapacity) {
 			super();
-			this.counters = new HashMap<Object, IntReference>(initialCapacity);
+			this.counters = new HashMap<Object, SimpleIntReference>(initialCapacity);
 		}
 
 		/**
 		 * Return the incremented count for the specified object.
 		 */
 		int increment(Object o) {
-			IntReference counter = this.counters.get(o);
+			SimpleIntReference counter = this.counters.get(o);
 			if (counter == null) {
-				counter = new IntReference();
+				counter = new SimpleIntReference();
 				this.counters.put(o, counter);
 			}
 			counter.increment();

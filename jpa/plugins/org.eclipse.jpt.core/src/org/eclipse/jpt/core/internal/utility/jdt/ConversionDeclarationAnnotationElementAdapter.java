@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 /**
  * Wrap a declaration annotation element adapter that deals with AST
  * expressions, converting them to/from various other objects.
- * T is the type of the object to be passed to and returned by the adapter.
+ * 
+ * @param <T> the type of the object be passed to and returned by the adapter
  */
 public class ConversionDeclarationAnnotationElementAdapter<T>
 	implements DeclarationAnnotationElementAdapter<T>
@@ -40,23 +41,14 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	// ********** constructors **********
 
 	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed.
+	 * The default element name is <code>value</code>.
 	 */
 	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, ExpressionConverter<T> converter) {
 		this(new ExpressionDeclarationAnnotationElementAdapter<Expression>(annotationAdapter), converter);
 	}
 
-	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed.
-	 */
 	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<T> converter) {
 		this(new ExpressionDeclarationAnnotationElementAdapter<Expression>(annotationAdapter, elementName), converter);
-	}
-
-	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, ExpressionConverter<T> converter) {
-		this(new ExpressionDeclarationAnnotationElementAdapter<Expression>(annotationAdapter, elementName, removeAnnotationWhenEmpty), converter);
 	}
 
 	public ConversionDeclarationAnnotationElementAdapter(DeclarationAnnotationElementAdapter<Expression> adapter, ExpressionConverter<T> converter) {
@@ -101,8 +93,7 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	// ********** factory static methods **********
 
 	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed;
+	 * The default element name is <code>value</code>;
 	 * the default expression converter expects string constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<String> forStrings(DeclarationAnnotationAdapter annotationAdapter) {
@@ -110,24 +101,14 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	}
 
 	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed; the default expression converter expects
-	 * string constant expressions.
+	 * The default expression converter expects string constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<String> forStrings(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, StringExpressionConverter.instance());
 	}
 
 	/**
-	 * The default expression converter expects string constant expressions.
-	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forStrings(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, StringExpressionConverter.instance());
-	}
-
-	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed;
+	 * The default element name is <code>value</code>;
 	 * the default expression converter expects number constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter) {
@@ -135,24 +116,14 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	}
 
 	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed; the default expression converter expects
-	 * number constant expressions.
+	 * The default expression converter expects number constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, NumberIntegerExpressionConverter.instance());
 	}
 
 	/**
-	 * The default expression converter expects number constant expressions.
-	 */
-	public static ConversionDeclarationAnnotationElementAdapter<Integer> forNumbers(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NumberIntegerExpressionConverter.instance());
-	}
-
-	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed;
+	 * The default element name is <code>value</code>;
 	 * the default expression converter expects boolean constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter) {
@@ -160,24 +131,14 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	}
 
 	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed; the default expression converter expects
-	 * boolean constant expressions.
+	 * The default expression converter expects boolean constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 
 	/**
-	 * The default expression converter expects boolean constant expressions.
-	 */
-	public static ConversionDeclarationAnnotationElementAdapter<Boolean> forBooleans(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, removeAnnotationWhenEmpty, BooleanExpressionConverter.instance());
-	}
-
-	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed;
+	 * The default element name is <code>value</code>;
 	 * the default expression converter expects character constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<String> forCharacters(DeclarationAnnotationAdapter annotationAdapter) {
@@ -185,19 +146,9 @@ public class ConversionDeclarationAnnotationElementAdapter<T>
 	}
 
 	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed; the default expression converter expects
-	 * character constant expressions.
+	 * The default expression converter expects character constant expressions.
 	 */
 	public static ConversionDeclarationAnnotationElementAdapter<String> forCharacters(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, CharacterStringExpressionConverter.instance());
 	}
-
-	/**
-	 * The default expression converter expects character constant expressions.
-	 */
-	public static ConversionDeclarationAnnotationElementAdapter<String> forCharacters(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, CharacterStringExpressionConverter.instance());
-	}
-
 }

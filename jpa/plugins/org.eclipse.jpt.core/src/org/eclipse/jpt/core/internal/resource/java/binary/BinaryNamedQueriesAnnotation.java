@@ -15,7 +15,6 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedQueriesAnnotation;
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
@@ -55,7 +54,7 @@ public abstract class BinaryNamedQueriesAnnotation
 		return result;
 	}
 
-	protected abstract NamedQueryAnnotation buildNamedQuery(Object jdtQuery);
+	protected abstract NestableNamedQueryAnnotation buildNamedQuery(Object jdtQuery);
 
 	@Override
 	public void update() {

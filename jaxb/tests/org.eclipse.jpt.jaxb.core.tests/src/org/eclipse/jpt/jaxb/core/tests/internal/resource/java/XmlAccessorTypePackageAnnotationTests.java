@@ -55,8 +55,7 @@ public class XmlAccessorTypePackageAnnotationTests
 		assertSourceContains("@XmlAccessorType(value = PUBLIC_MEMBER)", cu);
 		
 		annotation.setValue(null);
-		assertNull(resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_TYPE));
-		assertSourceDoesNotContain("@XmlAccessorType", cu);
+		assertSourceDoesNotContain("@XmlAccessorType(", cu);
 		
 //		TODO uncomment when bug 328400 is addressed
 //		annotation = (XmlAccessorTypeAnnotation) packageResource.addAnnotation(JAXB.XML_ACCESSOR_TYPE);

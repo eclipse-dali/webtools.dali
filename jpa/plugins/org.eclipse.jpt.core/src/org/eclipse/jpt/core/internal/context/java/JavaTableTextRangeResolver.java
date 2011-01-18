@@ -11,23 +11,23 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.java.JavaBaseTable;
+import org.eclipse.jpt.core.context.java.JavaTable;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaTableTextRangeResolver
 	implements TableTextRangeResolver
 {
-	protected final JavaBaseTable javaTable;
+	protected final JavaTable javaTable;
 
 	protected final CompilationUnit astRoot;
 
-	public JavaTableTextRangeResolver(JavaBaseTable javaTable, CompilationUnit astRoot) {
+	public JavaTableTextRangeResolver(JavaTable javaTable, CompilationUnit astRoot) {
 		this.javaTable = javaTable;
 		this.astRoot = astRoot;
 	}
 
-	protected JavaBaseTable getTable() {
+	protected JavaTable getTable() {
 		return this.javaTable;
 	}
 

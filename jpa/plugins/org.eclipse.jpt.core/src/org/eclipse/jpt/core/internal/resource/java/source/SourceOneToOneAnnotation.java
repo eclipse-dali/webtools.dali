@@ -38,13 +38,13 @@ public final class SourceOneToOneAnnotation
 
 	private static final DeclarationAnnotationElementAdapter<String[]> CASCADE_ADAPTER = buildCascadeAdapter();
 
-	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
-	private final AnnotationElementAdapter<Boolean> optionalAdapter;
-	private Boolean optional;
-
 	private static final DeclarationAnnotationElementAdapter<String> MAPPED_BY_ADAPTER = buildMappedByAdapter();
 	private final AnnotationElementAdapter<String> mappedByAdapter;
 	private String mappedBy;
+
+	private static final DeclarationAnnotationElementAdapter<Boolean> OPTIONAL_ADAPTER = buildOptionalAdapter();
+	private final AnnotationElementAdapter<Boolean> optionalAdapter;
+	private Boolean optional;
 
 	//added in JPA 2.0
 	private static final DeclarationAnnotationElementAdapter<Boolean> ORPHAN_REMOVAL_ADAPTER = buildOrphanRemovalAdapter();
@@ -76,6 +76,14 @@ public final class SourceOneToOneAnnotation
 		this.syncMappedBy(this.buildMappedBy(astRoot));
 		this.syncOptional(this.buildOptional(astRoot));
 		this.syncOrphanRemoval(this.buildOrphanRemoval(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.mappedBy == null) &&
+				(this.optional == null) &&
+				(this.orphanRemoval == null);
 	}
 
 
@@ -190,7 +198,7 @@ public final class SourceOneToOneAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildMappedByAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ONE_TO_ONE__MAPPED_BY);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
@@ -202,7 +210,7 @@ public final class SourceOneToOneAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String[]> buildCascadeAdapter() {
@@ -214,6 +222,6 @@ public final class SourceOneToOneAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOrphanRemovalAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(annotationAdapter, elementName, BooleanExpressionConverter.instance());
 	}
 }

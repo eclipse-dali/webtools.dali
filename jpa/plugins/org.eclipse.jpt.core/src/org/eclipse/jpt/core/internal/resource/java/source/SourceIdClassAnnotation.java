@@ -37,7 +37,34 @@ public final class SourceIdClassAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
+	/**
+	 * We cache this here because we use the AST bindings to calculate it.<ul>
+	 * <li>We do not return a calculated value because it would force a JDT
+	 * parse with <em>every</em> context model <em>update</em>. (This property
+	 * is one that is read during the context model <em>update</em>, as opposed
+	 * to the context model <em>sync</em>.)
+	 * <li>We do not calculate it during {@link #synchronizeWith(CompilationUnit)}
+	 * because<ul>
+	 * <li>when the class name ({@link #value}) is changed via API from the UI,
+	 * we are ignoring Java change events; so we would need to calculate it
+	 * during {@link #setValue(String)} which might slow down our UI a bit (with
+	 * the additional parse), and setting the flag is effectively equivalent
+	 * <li>when the class name ({@link #value}) is changed via API from a test,
+	 * we are handling Java change events synchronously;
+	 * so we would detect a change in the fully-qualified class name during
+	 * {@link #synchronizeWith(CompilationUnit)}, triggering an
+	 * unwanted context model <em>sync</em> (Any resource model changes via
+	 * API should <em>not</em> trigger a context model <em>sync</em>.)
+	 * </ul>
+	 * </ul>
+	 * Also, there is no change notification tied to this property since it
+	 * would be fired at the same times as the change events for {@link #value}.
+	 */
+	// TODO any of a number of things can invalidate this: classpath change,
+	// added or removed matching class
 	private String fullyQualifiedClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqClassNameStale = true;
 
 
 	public SourceIdClassAnnotation(JavaResourcePersistentType parent, Type type) {
@@ -51,12 +78,16 @@ public final class SourceIdClassAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
-		this.fullyQualifiedClassName = this.buildFullyQualifiedClassName(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
-		this.syncFullyQualifiedClassName(this.buildFullyQualifiedClassName(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
 	}
 
 	@Override
@@ -75,13 +106,21 @@ public final class SourceIdClassAnnotation
 	public void setValue(String value) {
 		if (this.attributeValueHasChanged(this.value, value)) {
 			this.value = value;
+			this.fqClassNameStale = true;
 			this.valueAdapter.setValue(value);
 		}
 	}
 
 	private void syncValue(String astValue) {
+		if (this.attributeValueHasChanged(this.value, astValue)) {
+			this.syncValue_(astValue);
+		}
+	}
+
+	private void syncValue_(String astValue) {
 		String old = this.value;
 		this.value = astValue;
+		this.fqClassNameStale = true;
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
@@ -95,17 +134,19 @@ public final class SourceIdClassAnnotation
 
 	// ***** fully-qualified class name
 	public String getFullyQualifiedClassName() {
+		if (this.fqClassNameStale) {
+			this.fullyQualifiedClassName = this.buildFullyQualifiedClassName();
+			this.fqClassNameStale = false;
+		}
 		return this.fullyQualifiedClassName;
 	}
 
-	private void syncFullyQualifiedClassName(String astFullyQualifiedClassName) {
-		String old = this.fullyQualifiedClassName;
-		this.fullyQualifiedClassName = astFullyQualifiedClassName;
-		this.firePropertyChanged(FULLY_QUALIFIED_CLASS_NAME_PROPERTY, old, astFullyQualifiedClassName);
+	private String buildFullyQualifiedClassName() {
+		return (this.value == null) ? null : this.buildFullyQualifiedClassName_();
 	}
 
-	private String buildFullyQualifiedClassName(CompilationUnit astRoot) {
-		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(this.buildASTRoot()));
 	}
 
 

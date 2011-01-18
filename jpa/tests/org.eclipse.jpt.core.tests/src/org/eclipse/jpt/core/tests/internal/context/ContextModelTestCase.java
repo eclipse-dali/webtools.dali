@@ -121,6 +121,23 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected JpaXmlResource getOrmXmlResource() {
 		return this.ormXmlResource;
 	}
+
+	/**
+	 * It's nice to be able to call this method from the debugger,
+	 * to force the XML files to be written out so you can see their current state.
+	 */
+	protected void saveXmlFiles() {
+		try {
+			this.saveXmlFiles_();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+	}
+	
+	protected void saveXmlFiles_() throws Exception {
+		this.persistenceXmlResource.saveIfNecessary();
+		this.ormXmlResource.saveIfNecessary();
+	}
 	
 	protected XmlEntityMappings getXmlEntityMappings() {
 		return (XmlEntityMappings) getOrmXmlResource().getRootObject();
@@ -129,9 +146,13 @@ public abstract class ContextModelTestCase extends AnnotationTestCase
 	protected XmlPersistence getXmlPersistence() {
 		return (XmlPersistence) getPersistenceXmlResource().getRootObject();
 	}
-	
+
+	protected MappingFile getMappingFile() {
+		return this.getPersistenceUnit().mappingFileRefs().next().getMappingFile();
+	}
+
 	protected EntityMappings getEntityMappings() {
-		MappingFile mappingFile = getPersistenceUnit().mappingFileRefs().next().getMappingFile();
+		MappingFile mappingFile = this.getMappingFile();
 		return (mappingFile == null) ? null : (EntityMappings) mappingFile.getRoot();
 	}
 	

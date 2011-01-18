@@ -11,10 +11,11 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyReferenceTable;
+import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.ReferenceTable;
-import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -24,6 +25,7 @@ import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.details.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -38,7 +40,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
 
-public abstract class ReferenceTableComposite<T extends ReferenceTable> extends Pane<T>
+public abstract class ReferenceTableComposite<T extends ReadOnlyReferenceTable>
+	extends Pane<T>
 {
 	protected Button overrideDefaultJoinColumnsCheckBox;
 
@@ -78,7 +81,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		pane.installJoinColumnsPaneEnabler(new JoinColumnPaneEnablerHolder());
 	}
 
-	private void addJoinColumn(T referenceTable) {
+	void addJoinColumn(T referenceTable) {
 
 		JoinColumnInReferenceTableDialog dialog =
 			new JoinColumnInReferenceTableDialog(getShell(), referenceTable, null);
@@ -86,10 +89,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		dialog.openDialog(buildAddJoinColumnPostExecution());
 	}
 
-	private void addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
-		int index = getSubject().specifiedJoinColumnsSize();
-
-		JoinColumn joinColumn = getSubject().addSpecifiedJoinColumn(index);
+	void addJoinColumnFromDialog(JoinColumnInReferenceTableStateObject stateObject) {
+		JoinColumn joinColumn = ((ReferenceTable) getSubject()).addSpecifiedJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 		this.setSelectedJoinColumn(joinColumn);
 	}
@@ -126,11 +127,11 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		return new OverrideDefaultJoinColumnHolder();
 	}
 		
-	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<T, JoinColumn>(getSubjectHolder(), ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
+	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<T, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<JoinColumn> listIterator_() {
-				return this.subject.specifiedJoinColumns();
+			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
+				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedJoinColumns());
 			}
 
 			@Override
@@ -151,21 +152,21 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
 				super.propertyChanged(propertyName);
-				if (propertyName == Table.DEFAULT_SCHEMA_PROPERTY 
-					|| propertyName == Table.SPECIFIED_SCHEMA_PROPERTY
-					|| propertyName == Table.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+				if (propertyName == ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY 
+					|| propertyName == ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY
+					|| propertyName == ReadOnlyTable.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY ) {
 					repopulate();
 				}
 			}
@@ -177,7 +178,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 
 			@Override
 			protected void setValue(String value) {
-				this.getSubject().setSpecifiedName(value);
+				((ReferenceTable) this.getSubject()).setSpecifiedName(value);
 			}
 
 			@Override
@@ -187,9 +188,14 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 
 			@Override
 			protected Schema getDbSchema_() {
-				return this.getSubject().getDbSchema();
+				ReferenceTable table = this.getTable();
+				return (table == null) ? null : table.getDbSchema();
 			}
 
+			protected ReferenceTable getTable() {
+				ReadOnlyReferenceTable table = this.getSubject();
+				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
+			}
 		};
 	}
 	
@@ -200,17 +206,17 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_SCHEMA_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_SCHEMA_PROPERTY);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_SCHEMA_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
 			protected void propertyChanged(String propertyName) {
 				super.propertyChanged(propertyName);
-				if (propertyName == Table.DEFAULT_CATALOG_PROPERTY
-					|| propertyName == Table.SPECIFIED_CATALOG_PROPERTY ) {
+				if (propertyName == ReadOnlyTable.DEFAULT_CATALOG_PROPERTY
+					|| propertyName == ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY ) {
 					repopulate();
 				}
 			}
@@ -222,7 +228,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 
 			@Override
 			protected void setValue(String value) {
-				this.getSubject().setSpecifiedSchema(value);
+				((ReferenceTable) this.getSubject()).setSpecifiedSchema(value);
 			}
 
 			@Override
@@ -232,7 +238,13 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 			
 			@Override
 			protected SchemaContainer getDbSchemaContainer_() {
-				return this.getSubject().getDbSchemaContainer();
+				ReferenceTable table = this.getTable();
+				return (table == null) ? null : table.getDbSchemaContainer();
+			}
+
+			protected ReferenceTable getTable() {
+				ReadOnlyReferenceTable table = this.getSubject();
+				return (table instanceof ReferenceTable) ? (ReferenceTable) table : null;
 			}
 		};
 	}
@@ -244,8 +256,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(Table.DEFAULT_CATALOG_PROPERTY);
-				propertyNames.add(Table.SPECIFIED_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.DEFAULT_CATALOG_PROPERTY);
+				propertyNames.add(ReadOnlyTable.SPECIFIED_CATALOG_PROPERTY);
 			}
 
 			@Override
@@ -255,7 +267,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 
 			@Override
 			protected void setValue(String value) {
-				this.getSubject().setSpecifiedCatalog(value);
+				((ReferenceTable) this.getSubject()).setSpecifiedCatalog(value);
 			}
 
 			@Override
@@ -265,7 +277,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		};
 	}
 
-	private void editJoinColumn(JoinColumn joinColumn) {
+	void editJoinColumn(ReadOnlyJoinColumn joinColumn) {
 
 		JoinColumnInReferenceTableDialog dialog =
 			new JoinColumnInReferenceTableDialog(getShell(), getSubject(), joinColumn);
@@ -273,16 +285,16 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		dialog.openDialog(buildEditJoinColumnPostExecution());
 	}
 
-	private void editJoinColumn(JoinColumnInReferenceTableStateObject stateObject) {
+	void editJoinColumn(JoinColumnInReferenceTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	private void updateJoinColumns() {
+	void updateJoinColumns() {
 		if (this.isPopulating()) {
 			return;
 		}
 		
-		T referenceTable = this.getSubject();
+		ReferenceTable referenceTable = (ReferenceTable) this.getSubject();
 		if (referenceTable == null) {
 			return;
 		}
@@ -304,21 +316,21 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		}
 	}
 
-	private class JoinColumnsProvider implements JoinColumnsEditor<T> {
+	class JoinColumnsProvider implements JoinColumnsEditor<T> {
 
 		public void addJoinColumn(T subject) {
 			ReferenceTableComposite.this.addJoinColumn(subject);
 		}
 
-		public JoinColumn getDefaultJoinColumn(T subject) {
+		public ReadOnlyJoinColumn getDefaultJoinColumn(T subject) {
 			return subject.getDefaultJoinColumn();
 		}
 
 		public String getDefaultPropertyName() {
-			return ReferenceTable.DEFAULT_JOIN_COLUMN;
+			return ReadOnlyReferenceTable.DEFAULT_JOIN_COLUMN_PROPERTY;
 		}
 
-		public void editJoinColumn(T subject, JoinColumn joinColumn) {
+		public void editJoinColumn(T subject, ReadOnlyJoinColumn joinColumn) {
 			ReferenceTableComposite.this.editJoinColumn(joinColumn);
 		}
 
@@ -327,13 +339,13 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		}
 
 		public void removeJoinColumns(T subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; --index >= 0; ) {
-				subject.removeSpecifiedJoinColumn(selectedIndices[index]);
+			for (int index = selectedIndices.length; index-- > 0; ) {
+				((ReferenceTable) subject).removeSpecifiedJoinColumn(selectedIndices[index]);
 			}
 		}
 
-		public ListIterator<JoinColumn> specifiedJoinColumns(T subject) {
-			return subject.specifiedJoinColumns();
+		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(T subject) {
+			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedJoinColumns());
 		}
 
 		public int specifiedJoinColumnsSize(T subject) {
@@ -341,7 +353,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
-			return ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST;
+			return ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST;
 		}
 	}
 	
@@ -373,8 +385,8 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		public JoinColumnPaneEnablerHolder() {
 			super(
 				new ValueListAdapter<T>(
-					new ReadOnlyWritablePropertyValueModelWrapper(getSubjectHolder()), 
-					ReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST));
+					new ReadOnlyWritablePropertyValueModelWrapper<T>(getSubjectHolder()), 
+					ReadOnlyReferenceTable.SPECIFIED_JOIN_COLUMNS_LIST));
 			this.stateChangeListener = buildStateChangeListener();
 		}
 		
@@ -382,12 +394,12 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged(event);
+					valueStateChanged();
 				}
 			};
 		}
 		
-		private void valueStateChanged(StateChangeEvent event) {
+		void valueStateChanged() {
 			Object oldValue = this.cachedValue;
 			Object newValue = transformNew(this.valueHolder.getValue());
 			firePropertyChanged(VALUE, oldValue, newValue);
@@ -403,7 +415,7 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		
 		@Override
 		protected Boolean transform_(T value) {
-			boolean virtual = ReferenceTableComposite.this.isParentVirtual(value);
+			boolean virtual = ReferenceTableComposite.this.tableIsVirtual(value);
 			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 		}
 		
@@ -420,5 +432,5 @@ public abstract class ReferenceTableComposite<T extends ReferenceTable> extends 
 		}
 	}
 	
-	protected abstract boolean isParentVirtual(T referenceTable);
+	protected abstract boolean tableIsVirtual(T referenceTable);
 }

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
+ * Normal column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,37 +22,15 @@ package org.eclipse.jpt.core.context;
  * @since 2.0
  */
 public interface Column
-	extends BaseColumn
+	extends BaseColumn, ReadOnlyColumn
 {
-	int getLength();
+	void initializeFrom(ReadOnlyColumn oldColumn);
 
-	int getDefaultLength();
-		int DEFAULT_LENGTH = 255;
-		String DEFAULT_LENGTH_PROPERTY = "defaultLength"; //$NON-NLS-1$
+	void initializeFromVirtual(ReadOnlyColumn oldColumn);
 
-	Integer getSpecifiedLength();
-	void setSpecifiedLength(Integer newSpecifiedLength);
-		String SPECIFIED_LENGTH_PROPERTY = "specifiedLength"; //$NON-NLS-1$
-		
-	int getPrecision();
+	void setSpecifiedLength(Integer length);
 
-	int getDefaultPrecision();
-		int DEFAULT_PRECISION = 0;
-		String DEFAULT_PRECISION_PROPERTY = "defaultPrecision"; //$NON-NLS-1$
+	void setSpecifiedPrecision(Integer precision);
 
-	Integer getSpecifiedPrecision();
-	void setSpecifiedPrecision(Integer newSpecifiedPrecision);
-		String SPECIFIED_PRECISION_PROPERTY = "specifiedPrecision"; //$NON-NLS-1$
-
-	
-	int getScale();
-
-	int getDefaultScale();
-		int DEFAULT_SCALE = 0;
-		String DEFAULT_SCALE_PROPERTY = "defaultScale"; //$NON-NLS-1$
-
-	Integer getSpecifiedScale();
-	void setSpecifiedScale(Integer newSpecifiedScale);
-		String SPECIFIED_SCALE_PROPERTY = "specifiedScale"; //$NON-NLS-1$
-	
+	void setSpecifiedScale(Integer scale);
 }

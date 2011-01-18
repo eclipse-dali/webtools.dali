@@ -52,10 +52,11 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * This adapter provides a more object-oriented interface to the items and
  * selected items in a table.
- * 'listHolder' contains the data of a single column in the column.
- * 'selectedItemsHolder' contains the data of a single column in 'listHolder'
- * that are selected in the table.
+ * {@link #listHolder} contains the data of a single column in the table.
+ * {@link #selectedItemsHolder} contains the data of a single column in
+ * {@link #listHolder} that are selected in the table.
  */
+// TODO bjv
 @SuppressWarnings("nls")
 public class TableModelAdapter<E> {
 
@@ -96,14 +97,12 @@ public class TableModelAdapter<E> {
 	/**
 	 * Clients that are interested in selection change events.
 	 */
-	@SuppressWarnings("unchecked")
-	protected final ListenerList<SelectionChangeListener> selectionChangeListenerList;
+	protected final ListenerList<SelectionChangeListener<E>> selectionChangeListenerList;
 
 	/**
 	 * Clients that are interested in double click events.
 	 */
-	@SuppressWarnings("unchecked")
-	protected final ListenerList<DoubleClickListener> doubleClickListenerList;
+	protected final ListenerList<DoubleClickListener<E>> doubleClickListenerList;
 
 	/**
 	 * A listener that allows us to stop listening to stuff when the table
@@ -258,7 +257,7 @@ public class TableModelAdapter<E> {
 			}
 			@Override
 			public String toString() {
-				return "list listener";
+				return "TableModelAdapter list listener";
 			}
 		};
 	}
@@ -283,7 +282,7 @@ public class TableModelAdapter<E> {
 			}
 			@Override
 			public String toString() {
-				return "selected items listener";
+				return "TableModelAdapter selected items listener";
 			}
 		};
 	}
@@ -298,19 +297,19 @@ public class TableModelAdapter<E> {
 			}
 			@Override
 			public String toString() {
-				return "table selection listener";
+				return "TableModelAdapter table selection listener";
 			}
 		};
 	}
 
-	@SuppressWarnings("unchecked")
-	protected ListenerList<DoubleClickListener> buildDoubleClickListenerList() {
-		return new ListenerList<DoubleClickListener>(DoubleClickListener.class);
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	protected ListenerList<DoubleClickListener<E>> buildDoubleClickListenerList() {
+		return new ListenerList(DoubleClickListener.class);
 	}
 
-	@SuppressWarnings("unchecked")
-	protected ListenerList<SelectionChangeListener> buildSelectionChangeListenerList() {
-		return new ListenerList<SelectionChangeListener>(SelectionChangeListener.class);
+	@SuppressWarnings({"rawtypes", "unchecked"})
+	protected ListenerList<SelectionChangeListener<E>> buildSelectionChangeListenerList() {
+		return new ListenerList(SelectionChangeListener.class);
 	}
 
 	protected DisposeListener buildTableDisposeListener() {
@@ -320,7 +319,7 @@ public class TableModelAdapter<E> {
 			}
 			@Override
 			public String toString() {
-				return "table dispose listener";
+				return "TableModelAdapter table dispose listener";
 			}
 		};
 	}
@@ -368,7 +367,7 @@ public class TableModelAdapter<E> {
 			return;
 		}
 
-		for (int index = table.getItemCount(); --index >= 0; ) {
+		for (int index = this.table.getItemCount(); --index >= 0; ) {
 			this.table.remove(index);
 			this.tableItemModelAdapters.remove(index);
 		}
@@ -380,8 +379,8 @@ public class TableModelAdapter<E> {
 			TableItem tableItem = new TableItem(this.table, SWT.NULL, index);
 			tableItem.setData(this.listHolder.get(index));
 
-			TableItemModelAdapter adapter = buildItemModel(tableItem);
-			tableItemModelAdapters.add(adapter);
+			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
+			this.tableItemModelAdapters.add(adapter);
 		}
 	}
 
@@ -402,7 +401,7 @@ public class TableModelAdapter<E> {
 			tableItem.setData(item);
 
 			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
-			tableItemModelAdapters.add(index++, adapter);
+			this.tableItemModelAdapters.add(index++, adapter);
 		}
 	}
 
@@ -418,7 +417,7 @@ public class TableModelAdapter<E> {
 		this.table.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
 
 		for (int index = event.getIndex() + event.getItemsSize(); --index >= event.getIndex(); ) {
-			tableItemModelAdapters.remove(index);
+			this.tableItemModelAdapters.remove(index);
 		}
 	}
 
@@ -470,7 +469,7 @@ public class TableModelAdapter<E> {
 
 			// Adapt it with a model adapter
 			TableItemModelAdapter adapter = this.buildItemModel(tableItem);
-			tableItemModelAdapters.set(index, adapter);
+			this.tableItemModelAdapters.set(index, adapter);
 		}
 	}
 
@@ -478,8 +477,8 @@ public class TableModelAdapter<E> {
 	private TableItemModelAdapter buildItemModel(TableItem tableItem) {
 		return TableItemModelAdapter.adapt(
 			tableItem,
-			columnAdapter,
-			labelProvider
+			this.columnAdapter,
+			this.labelProvider
 		);
 	}
 
@@ -497,7 +496,7 @@ public class TableModelAdapter<E> {
 			TableItem tableItem = this.table.getItem(rowIndex);
 			tableItem.setData(item);
 
-			TableItemModelAdapter adapter = tableItemModelAdapters.get(rowIndex);
+			TableItemModelAdapter adapter = this.tableItemModelAdapters.get(rowIndex);
 
 			int columnCount = this.columnAdapter.columnCount();
 			boolean revalidate = (columnCount == 1);
@@ -558,8 +557,8 @@ public class TableModelAdapter<E> {
 		}
 		int[] indices = new int[this.selectedItemsHolder.size()];
 		int i = 0;
-		for (Iterator<E> stream = this.selectedItemsHolder.iterator(); stream.hasNext(); ) {
-			indices[i++] = this.indexOf(stream.next());
+		for (E selectedItemHolder : this.selectedItemsHolder) {
+			indices[i++] = this.indexOf(selectedItemHolder);
 		}
 		this.table.deselectAll();
 		this.table.select(indices);
@@ -614,29 +613,26 @@ public class TableModelAdapter<E> {
 
 	// ********** list box events **********
 
-	@SuppressWarnings("unchecked")
 	protected void tableSelectionChanged(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.selectionChangeListenerList.size() > 0) {
-			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent(this, this.selectedItems());
+			SelectionChangeEvent<E> scEvent = new SelectionChangeEvent<E>(this, this.selectedItems());
 			for (SelectionChangeListener<E> selectionChangeListener : this.selectionChangeListenerList.getListeners()) {
 				selectionChangeListener.selectionChanged(scEvent);
 			}
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Collection<E> selectedItems() {
 		if (this.table.isDisposed()) {
 			return Collections.emptySet();
 		}
-		ArrayList<E> selectedItems = new ArrayList(this.table.getSelectionCount());
+		ArrayList<E> selectedItems = new ArrayList<E>(this.table.getSelectionCount());
 		for (int selectionIndex : this.table.getSelectionIndices()) {
 			selectedItems.add(this.listHolder.get(selectionIndex));
 		}
 		return selectedItems;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void tableDoubleClicked(@SuppressWarnings("unused") SelectionEvent event) {
 		if (this.table.isDisposed()) {
 			return;
@@ -644,7 +640,7 @@ public class TableModelAdapter<E> {
 		if (this.doubleClickListenerList.size() > 0) {
 			// there should be only a single item selected during a double-click(?)
 			E selection = this.listHolder.get(this.table.getSelectionIndex());
-			DoubleClickEvent<E> dcEvent = new DoubleClickEvent(this, selection);
+			DoubleClickEvent<E> dcEvent = new DoubleClickEvent<E>(this, selection);
 			for (DoubleClickListener<E> doubleClickListener : this.doubleClickListenerList.getListeners()) {
 				doubleClickListener.doubleClick(dcEvent);
 			}

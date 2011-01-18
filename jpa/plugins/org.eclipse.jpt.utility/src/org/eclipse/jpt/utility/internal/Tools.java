@@ -18,7 +18,8 @@ public final class Tools {
 	// ********** object comparison **********
 
 	/**
-	 * Return whether the specified values are equal, with the appropriate null checks.
+	 * Return whether the specified values are equal, with the appropriate
+	 * <code>null</code> checks.
 	 */
 	public static boolean valuesAreEqual(Object value1, Object value2) {
 		return (value1 == null) ?
@@ -27,20 +28,23 @@ public final class Tools {
 	}
 
 	/**
-	 * Return whether the specified values are different, with the appropriate null checks.
+	 * Return whether the specified values are different, with the appropriate
+	 * <code>null</code> checks.
 	 */
 	public static boolean valuesAreDifferent(Object value1, Object value2) {
-		return ! valuesAreEqual(value1, value2);
+		return (value1 == null) ?
+				(value2 != null) :
+				((value2 == null) || ! value1.equals(value2));
 	}
 
 
 	// ********** System properties **********
 
 	/**
-	 * Return whether the current JVM is Sun's.
+	 * Return whether the current JVM is Sun's (or Oracle's).
 	 */
 	public static boolean jvmIsSun() {
-		return jvmIs("Sun");
+		return jvmIs("Sun") || jvmIs("Oracle");
 	}
 
 	/**
@@ -82,5 +86,4 @@ public final class Tools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

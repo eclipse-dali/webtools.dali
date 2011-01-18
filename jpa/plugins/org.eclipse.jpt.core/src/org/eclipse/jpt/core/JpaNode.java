@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.model.Model;
 /**
  * JPA-specific protocol. All JPA objects belong to a JPA project, are
  * associated with a resource, and have a parent (excepting the JPA project).
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -37,4 +37,16 @@ public interface JpaNode
 	 * Return the JPA node's parent. The JPA project will not have a parent.
 	 */
 	JpaNode getParent();
+
+	/**
+	 * Some state or child (or grandchild etc.) of the JPA node changed.
+	 * Fire a state change event. Implied by this behavior is that any change
+	 * to any JPA node in a JPA project will trigger the JPA project to fire a
+	 * state change event.
+	 * 
+	 * @see Model#addStateChangeListener(org.eclipse.jpt.utility.model.listener.StateChangeListener)
+	 * @see org.eclipse.jpt.utility.model.event.StateChangeEvent
+	 * @see org.eclipse.jpt.utility.model.listener.StateChangeListener
+	 */
+	void stateChanged();
 }

@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.Table
+ * <code>javax.persistence.Table</code>
  */
 public final class SourceTableAnnotation
 	extends SourceBaseTableAnnotation
@@ -46,20 +46,17 @@ public final class SourceTableAnnotation
 	// ********** SourceBaseTableAnnotation implementation **********
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @Table is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @Table is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildSchemaDeclarationAdapter() {
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @Table is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildCatalogDeclarationAdapter() {
 		return CATALOG_ADAPTER;
 	}
 

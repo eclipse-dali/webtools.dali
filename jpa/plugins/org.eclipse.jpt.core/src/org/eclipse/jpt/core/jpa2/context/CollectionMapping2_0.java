@@ -9,14 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.CollectionMapping;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.Embeddable;
-import org.eclipse.jpt.core.context.Entity;
 
 /**
- * 1:m, m:m, element collection are all collection mappings.
+ * JPA 2.0 collection mapping (e.g. 1:m, m:m, element collection)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,10 +27,9 @@ import org.eclipse.jpt.core.context.Entity;
  * @since 2.3
  */
 public interface CollectionMapping2_0
-	extends CollectionMapping
+	extends CollectionMapping, AttributeMapping2_0
 {
-
-	// **************** map key class **************************************
+	// ********** map key class **********
 	
 	String getMapKeyClass();
 
@@ -43,25 +41,14 @@ public interface CollectionMapping2_0
 		String DEFAULT_MAP_KEY_CLASS_PROPERTY = "defaultMapKeyClass"; //$NON-NLS-1$
 
 	/**
-	 * Return the char to be used for browsing or creating the map key class IType.
+	 * Return the character to be used for browsing or creating the map key
+	 * class {@link IType}.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getMapKeyClassEnclosingTypeSeparator();
 
-	/**
-	 * If the attribute type is not a map or if the map key class is a basic type this will return null.
-	 */
-	Embeddable getResolvedMapKeyEmbeddable();
-		String RESOLVED_MAP_KEY_EMBEDDABLE_PROPERTY = "resolvedMapKeyEmbeddable"; //$NON-NLS-1$
 
-	/**
-	 * If the attribute type is not a map or if the map key class is a basic type this will return null.
-	 */
-	Entity getResolvedMapKeyEntity();
-		String RESOLVED_MAP_KEY_ENTITY_PROPERTY = "resolvedMapKeyEntity"; //$NON-NLS-1$
-
-
-	// **************** key column **************************************
+	// ********** map key column **********
 
 	/**
 	 * Return the map key column for this collection mapping.
@@ -69,5 +56,4 @@ public interface CollectionMapping2_0
 	Column getMapKeyColumn();
 
 	AttributeOverrideContainer getMapKeyAttributeOverrideContainer();
-
 }

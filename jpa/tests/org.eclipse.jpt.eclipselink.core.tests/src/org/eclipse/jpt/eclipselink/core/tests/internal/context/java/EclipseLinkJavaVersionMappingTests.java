@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.context.TemporalType;
@@ -21,10 +20,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMutable;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkVersionMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkMutableAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -126,9 +125,9 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		getJpaProject().synchronizeContextModel();
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getSpecifiedMapping();
+		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
 	}
 	
 	public void testGetConvert2() throws Exception {
@@ -138,7 +137,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
 		assertEquals(EclipseLinkConvert.CLASS_INSTANCE_CONVERTER, ((EclipseLinkConvert) versionMapping.getConverter()).getConverterName());
 	}
 
@@ -147,10 +146,10 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getSpecifiedMapping();
-		assertEquals(Converter.NO_CONVERTER, versionMapping.getConverter().getType());
+		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
+		assertNull(versionMapping.getConverter().getType());
 		
-		versionMapping.setConverter(Converter.TEMPORAL_CONVERTER);
+		versionMapping.setConverter(TemporalConverter.class);
 		((TemporalConverter) versionMapping.getConverter()).setTemporalType(TemporalType.TIME);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -159,7 +158,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		
 		assertEquals(org.eclipse.jpt.core.resource.java.TemporalType.TIME, temporal.getValue());
 		
-		versionMapping.setConverter(Converter.NO_CONVERTER);
+		versionMapping.setConverter(null);
 		assertNull(attributeResource.getAnnotation(TemporalAnnotation.ANNOTATION_NAME));
 	}
 	
@@ -168,9 +167,9 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getSpecifiedMapping();
+		VersionMapping versionMapping = (VersionMapping) persistentAttribute.getMapping();
 
-		assertEquals(Converter.NO_CONVERTER, versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getType());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -179,15 +178,15 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		convert.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, versionMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, versionMapping.getConverter().getType());
 		assertEquals("foo", ((EclipseLinkConvert) versionMapping.getConverter()).getConverterName());
 		
 		attributeResource.removeAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(Converter.NO_CONVERTER, versionMapping.getConverter().getType());
+		assertNull(versionMapping.getConverter().getType());
 		assertFalse(versionMapping.isDefault());
-		assertSame(versionMapping, persistentAttribute.getSpecifiedMapping());
+		assertSame(versionMapping, persistentAttribute.getMapping());
 	}
 	
 	public void testGetSpecifiedMutable() throws Exception {
@@ -195,7 +194,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = versionMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
@@ -229,7 +228,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = versionMapping.getMutable();
 		assertEquals(Boolean.TRUE, mutable.getSpecifiedMutable());
 		
@@ -250,7 +249,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		assertEquals(Boolean.FALSE, mutableAnnotation.getValue());
 		
 		mutable.setSpecifiedMutable(Boolean.TRUE);	
-		assertEquals(null, mutableAnnotation.getValue());
+		assertEquals(Boolean.TRUE, mutableAnnotation.getValue());
 	}
 	
 	public void testIsDefaultMutable() throws Exception {
@@ -258,7 +257,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = versionMapping.getMutable();
 		assertTrue(mutable.isDefaultMutable());
 		
@@ -280,7 +279,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = versionMapping.getMutable();
 		assertFalse(mutable.isDefaultMutable());
 		
@@ -308,7 +307,7 @@ public class EclipseLinkJavaVersionMappingTests extends EclipseLinkContextModelT
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getSpecifiedMapping();
+		EclipseLinkVersionMapping versionMapping = (EclipseLinkVersionMapping) persistentAttribute.getMapping();
 		EclipseLinkMutable mutable = versionMapping.getMutable();
 		assertTrue(mutable.isMutable());
 		

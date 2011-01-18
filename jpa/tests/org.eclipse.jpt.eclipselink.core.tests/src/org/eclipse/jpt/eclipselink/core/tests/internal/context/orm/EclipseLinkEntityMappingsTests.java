@@ -14,7 +14,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
@@ -37,7 +37,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
@@ -112,7 +112,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
 		assertEquals(0, resourceEntityMappings.getConverters().size());
@@ -197,7 +197,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
@@ -272,7 +272,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getTypeConverters().size());
@@ -357,7 +357,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
@@ -432,7 +432,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
 		assertEquals(0, resourceEntityMappings.getObjectTypeConverters().size());
@@ -517,7 +517,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());
@@ -592,7 +592,7 @@ public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTe
 		XmlEntityMappings resourceEntityMappings = getXmlEntityMappings();
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		EclipseLinkEntityMappings contextEntityMappings = getEntityMappings();
-		EclipseLinkConverterHolder ormContextConverterHolder = contextEntityMappings.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = contextEntityMappings.getConverterContainer();
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
 		assertEquals(0, resourceEntityMappings.getStructConverters().size());

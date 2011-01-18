@@ -12,15 +12,15 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.EclipseLinkContextModelTestCase;
@@ -101,7 +101,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
 		
 		assertEquals(EclipseLinkConvert.NO_CONVERTER, eclipseLinkConvert.getConverterName());
@@ -125,8 +125,8 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
-		basicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
+		basicMapping.setConverter(EclipseLinkConvert.class);
 		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
 		assertEquals(null, eclipseLinkConvert.getSpecifiedConverterName());
 		
@@ -149,9 +149,9 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
-		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getSpecifiedMapping();
+		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 
-		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
+		assertNull(basicMapping.getConverter().getType());
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -160,15 +160,15 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		convert.setValue("foo");
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, basicMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, basicMapping.getConverter().getType());
 		assertEquals("foo", ((EclipseLinkConvert) basicMapping.getConverter()).getConverterName());
 		
 		attributeResource.removeAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(Converter.NO_CONVERTER, basicMapping.getConverter().getType());
+		assertNull(basicMapping.getConverter().getType());
 		assertFalse(basicMapping.isDefault());
-		assertSame(basicMapping, persistentAttribute.getSpecifiedMapping());
+		assertSame(basicMapping, persistentAttribute.getMapping());
 	}
 	
 
@@ -180,7 +180,7 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		BasicMapping basicMapping = (BasicMapping) persistentAttribute.getMapping();
 		EclipseLinkConvert eclipseLinkConvert = (EclipseLinkConvert) basicMapping.getConverter();
 		
-		assertEquals(EclipseLinkConverter.TYPE_CONVERTER, eclipseLinkConvert.getConverter().getType());
+		assertEquals(EclipseLinkTypeConverter.class, eclipseLinkConvert.getConverter().getType());
 	}
 	
 	public void testSetConverter() throws Exception {
@@ -193,29 +193,29 @@ public class EclipseLinkJavaConvertTests extends EclipseLinkContextModelTestCase
 		
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		
-		eclipseLinkConvert.setConverter(EclipseLinkConverter.TYPE_CONVERTER);	
-		assertEquals(EclipseLinkConverter.TYPE_CONVERTER, eclipseLinkConvert.getConverter().getType());
+		eclipseLinkConvert.setConverter(EclipseLinkTypeConverter.class);	
+		assertEquals(EclipseLinkTypeConverter.class, eclipseLinkConvert.getConverter().getType());
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		assertNotNull(attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));
 		
-		eclipseLinkConvert.setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		assertEquals(EclipseLinkConverter.STRUCT_CONVERTER, eclipseLinkConvert.getConverter().getType());
+		eclipseLinkConvert.setConverter(EclipseLinkStructConverter.class);
+		assertEquals(EclipseLinkStructConverter.class, eclipseLinkConvert.getConverter().getType());
 		assertNotNull(attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));
 
-		eclipseLinkConvert.setConverter(EclipseLinkConverter.NO_CONVERTER);
+		eclipseLinkConvert.setConverter(null);
 		assertEquals(null, eclipseLinkConvert.getConverter());
 		assertNull(attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME));
 		
-		eclipseLinkConvert.setConverter(EclipseLinkConverter.STRUCT_CONVERTER);
-		assertEquals(EclipseLinkConverter.STRUCT_CONVERTER, eclipseLinkConvert.getConverter().getType());
+		eclipseLinkConvert.setConverter(EclipseLinkStructConverter.class);
+		assertEquals(EclipseLinkStructConverter.class, eclipseLinkConvert.getConverter().getType());
 		assertNotNull(attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 
 		
-		basicMapping.setConverter(Converter.NO_CONVERTER);
+		basicMapping.setConverter(null);
 		assertNull(attributeResource.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME));
 		assertNull(attributeResource.getAnnotation(EclipseLinkConvertAnnotation.ANNOTATION_NAME));
 		

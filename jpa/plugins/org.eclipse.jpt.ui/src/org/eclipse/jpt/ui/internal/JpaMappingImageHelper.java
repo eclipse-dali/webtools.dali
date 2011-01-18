@@ -13,6 +13,7 @@ package org.eclipse.jpt.ui.internal;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.ui.JptUiPlugin;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.swt.graphics.Image;
 
 public class JpaMappingImageHelper
@@ -23,16 +24,16 @@ public class JpaMappingImageHelper
 	}
 
 	public static String iconKeyForTypeMapping(String mappingKey) {
-		if (MappingKeys.NULL_TYPE_MAPPING_KEY == mappingKey) {
+		if (Tools.valuesAreEqual(mappingKey, MappingKeys.NULL_TYPE_MAPPING_KEY)) {
 			return JptUiIcons.NULL_TYPE_MAPPING;
 		}
-		else if (MappingKeys.ENTITY_TYPE_MAPPING_KEY.equals(mappingKey)) {
+		if (Tools.valuesAreEqual(mappingKey, MappingKeys.ENTITY_TYPE_MAPPING_KEY)) {
 			return JptUiIcons.ENTITY;
 		}
-		else if (MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY.equals(mappingKey)) {
+		if (Tools.valuesAreEqual(mappingKey, MappingKeys.EMBEDDABLE_TYPE_MAPPING_KEY)) {
 			return JptUiIcons.EMBEDDABLE;
 		}
-		else if (MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY.equals(mappingKey)) {
+		if (Tools.valuesAreEqual(mappingKey, MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY)) {
 			return JptUiIcons.MAPPED_SUPERCLASS;
 		}
 		return null;

@@ -37,7 +37,6 @@ import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
 import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
@@ -112,17 +111,14 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		this.validateProject();
 	}
 
-	//reconnect since we disconnected in preGenerate(),
-	//use the synchronous JPA project updater so we can ensure
-	//the project is fully updated before validating. bug 277236
+	//reconnect since we disconnected in preGenerate();
+	//ensure the project is fully updated before validating - bug 277236
 	protected void reconnect() {
-		JpaProject.Updater updater = getJpaProject().getUpdater();
-		getJpaProject().setUpdater(new SynchronousJpaProjectUpdater(getJpaProject()));
+		getJpaProject().updateAndWait();
 		ConnectionProfile cp = this.getConnectionProfile();
 		if (cp != null) {
 			cp.connect();
 		}
-		getJpaProject().setUpdater(updater);
 	}
 
 	protected void validateProject() {

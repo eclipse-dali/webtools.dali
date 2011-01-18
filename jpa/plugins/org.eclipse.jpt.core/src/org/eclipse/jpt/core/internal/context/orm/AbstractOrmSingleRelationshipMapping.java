@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,107 +11,128 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmSingleRelationshipMapping;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractOrmSingleRelationshipMapping<T extends AbstractXmlSingleRelationshipMapping>
-	extends AbstractOrmRelationshipMapping<T>
+/**
+ * <code>orm.xml</code> single relationship mapping (1:1, m:1)
+ */
+public abstract class AbstractOrmSingleRelationshipMapping<X extends AbstractXmlSingleRelationshipMapping>
+	extends AbstractOrmRelationshipMapping<X>
 	implements OrmSingleRelationshipMapping2_0
 {
 	protected Boolean specifiedOptional;
-	
-	protected final OrmDerivedIdentity2_0 derivedIdentity;
-	
-	
-	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, T resourceMapping) {
-		super(parent, resourceMapping);
-		this.specifiedOptional = this.getResourceOptional();
-		//TODO defaultOptional
-		this.derivedIdentity = buildDerivedIdentity();
-	}
-	
-	
-	@Override
-	public void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
-		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
-		getDerivedIdentity().initializeFrom(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedIdentity());
-	}
-	
-	@Override
-	protected String getResourceDefaultTargetEntity() {
-		return this.getJavaPersistentAttribute().getSingleReferenceTargetTypeName();
-	}
-	
-	public FetchType getDefaultFetch() {
-		return DEFAULT_FETCH_TYPE;
-	}
-	
-	
-	// **************** optional ***********************************************
+	protected boolean defaultOptional;
 
-	public boolean isOptional() {
-		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.isDefaultOptional();
+	protected final OrmDerivedIdentity2_0 derivedIdentity;
+
+
+	protected AbstractOrmSingleRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
+		super(parent, xmlMapping);
+		this.specifiedOptional = xmlMapping.getOptional();
+		this.derivedIdentity = this.buildDerivedIdentity();
 	}
-	
-	public Boolean getSpecifiedOptional() {
-		return this.specifiedOptional;
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedOptional_(this.xmlAttributeMapping.getOptional());
+		this.derivedIdentity.synchronizeWithResourceModel();
 	}
-	
-	public void setSpecifiedOptional(Boolean optional) {
-		Boolean old = this.specifiedOptional;
-		this.specifiedOptional = optional;
-		this.resourceAttributeMapping.setOptional(optional);
-		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
-	}
-	
-	protected void setSpecifiedOptional_(Boolean optional) {
-		Boolean old = this.specifiedOptional;
-		this.specifiedOptional = optional;
-		this.firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, old, optional);
-	}
-	
-	public boolean isDefaultOptional() {
-		return Nullable.DEFAULT_OPTIONAL;
-	}
-	
-	
-	// ********** 2.0 derived identity **********
-	
-	protected OrmDerivedIdentity2_0 buildDerivedIdentity() {
-		return ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).
-				buildOrmDerivedIdentity(this, (XmlSingleRelationshipMapping_2_0) this.resourceAttributeMapping);
-	}
-	
-	public OrmDerivedIdentity2_0 getDerivedIdentity() {
-		return this.derivedIdentity;
-	}
-	
-	
-	// **************** resource => context ************************************
-	
+
 	@Override
 	public void update() {
 		super.update();
-		this.setSpecifiedOptional_(this.getResourceOptional());
+		this.setDefaultOptional(this.buildDefaultOptional());
 		this.derivedIdentity.update();
 	}
-	
-	protected Boolean getResourceOptional() {
-		return this.resourceAttributeMapping.getOptional();
+
+
+	// ********** optional **********
+
+	public boolean isOptional() {
+		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.defaultOptional;
 	}
-	
-	
-	// **************** validation ************************************
-	
+
+	public Boolean getSpecifiedOptional() {
+		return this.specifiedOptional;
+	}
+
+	public void setSpecifiedOptional(Boolean optional) {
+		this.setSpecifiedOptional_(optional);
+		this.xmlAttributeMapping.setOptional(optional);
+	}
+
+	protected void setSpecifiedOptional_(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.firePropertyChanged(SPECIFIED_OPTIONAL_PROPERTY, old, optional);
+	}
+
+	public boolean isDefaultOptional() {
+		return this.defaultOptional;
+	}
+
+	protected void setDefaultOptional(boolean optional) {
+		boolean old = this.defaultOptional;
+		this.defaultOptional = optional;
+		this.firePropertyChanged(DEFAULT_OPTIONAL_PROPERTY, old, optional);
+	}
+
+	protected boolean buildDefaultOptional() {
+		return DEFAULT_OPTIONAL;
+	}
+
+
+	// ********** derived identity **********
+
+	public OrmDerivedIdentity2_0 getDerivedIdentity() {
+		return this.derivedIdentity;
+	}
+
+	protected OrmDerivedIdentity2_0 buildDerivedIdentity() {
+		return this.isJpa2_0Compatible() ?
+				this.getContextNodeFactory2_0().buildOrmDerivedIdentity(this) :
+				new NullOrmDerivedIdentity2_0(this);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	protected void initializeFromOrmSingleRelationshipMapping(OrmSingleRelationshipMapping oldMapping) {
+		super.initializeFromOrmSingleRelationshipMapping(oldMapping);
+		if (this.isJpa2_0Compatible()) {
+			this.derivedIdentity.initializeFrom(((OrmSingleRelationshipMapping2_0) oldMapping).getDerivedIdentity());
+		}
+	}
+
+	/**
+	 * pre-condition: the mapping's Java persistent attribute is not
+	 * <code>null</code>.
+	 */
+	@Override
+	protected String getJavaTargetType() {
+		return this.getJavaPersistentAttribute().getSingleReferenceTargetTypeName();
+	}
+
+	@Override
+	protected FetchType buildDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);

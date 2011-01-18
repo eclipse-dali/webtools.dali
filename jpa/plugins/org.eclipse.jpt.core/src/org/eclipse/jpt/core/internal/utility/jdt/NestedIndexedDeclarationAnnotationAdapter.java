@@ -43,24 +43,15 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	// ********** constructors **********
 
 	/**
-	 * default element name is "value";
-	 * default behavior is to remove the outer annotation when it is empty
+	 * The default element name is <code>value</code>.
 	 */
 	public NestedIndexedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter annotationAdapter, int index, String annotationName) {
 		super(annotationAdapter, annotationName);
 		this.index = index;
 	}
 
-	/**
-	 * default behavior is to remove the outer annotation when it is empty
-	 */
 	public NestedIndexedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, int index, String annotationName) {
 		super(annotationAdapter, elementName, annotationName);
-		this.index = index;
-	}
-
-	public NestedIndexedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, int index, String annotationName, boolean removeOuterAnnotationWhenEmpty) {
-		super(annotationAdapter, elementName, annotationName, removeOuterAnnotationWhenEmpty);
 		this.index = index;
 	}
 
@@ -181,7 +172,7 @@ public class NestedIndexedDeclarationAnnotationAdapter
 	 */
 	private void addInnerToExpressions(Annotation inner, List<Expression> expressions) {
 		if (expressions.size() > this.index) {
-			throw new IllegalStateException("expressions size is greater than index - size: " + expressions.size() + " - index: " + this.index); //$NON-NLS-1$ //$NON-NLS-2$
+			throw new IllegalStateException("expressions size is greater than index (size: " + expressions.size() + "  index: " + this.index + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 		while (expressions.size() < this.index) {
 			expressions.add(inner.getAST().newNullLiteral());

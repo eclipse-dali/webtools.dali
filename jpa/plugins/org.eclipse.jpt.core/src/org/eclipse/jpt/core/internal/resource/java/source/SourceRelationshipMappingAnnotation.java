@@ -42,7 +42,12 @@ abstract class SourceRelationshipMappingAnnotation
 	final AnnotationElementAdapter<String> targetEntityAdapter;
 	String targetEntity;
 
-	String fullyQualifiedTargetEntityClassName;
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
+	private String fullyQualifiedTargetEntityClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqTargetEntityClassNameStale = true;
 
 	final DeclarationAnnotationElementAdapter<String> fetchDeclarationAdapter;
 	final AnnotationElementAdapter<String> fetchAdapter;
@@ -74,7 +79,6 @@ abstract class SourceRelationshipMappingAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetEntity = this.buildTargetEntity(astRoot);
-		this.fullyQualifiedTargetEntityClassName = this.buildFullyQualifiedTargetEntityClassName(astRoot);
 		this.fetch = this.buildFetch(astRoot);
 		this.cascadeTypes = this.buildCascadeTypes(astRoot);
 	}
@@ -82,8 +86,15 @@ abstract class SourceRelationshipMappingAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncFetch(this.buildFetch(astRoot));
 		this.syncTargetEntity(this.buildTargetEntity(astRoot));
-		this.syncFullyQualifiedTargetEntityClassName(this.buildFullyQualifiedTargetEntityClassName(astRoot));
 		this.syncCascadeTypes(this.buildCascadeTypes(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.targetEntity == null) &&
+				(this.fetch == null) &&
+				(this.cascadeTypes.length == 0);
 	}
 
 	@Override
@@ -102,13 +113,21 @@ abstract class SourceRelationshipMappingAnnotation
 	public void setTargetEntity(String targetEntity) {
 		if (this.attributeValueHasChanged(this.targetEntity, targetEntity)) {
 			this.targetEntity = targetEntity;
+			this.fqTargetEntityClassNameStale = true;
 			this.targetEntityAdapter.setValue(targetEntity);
 		}
 	}
 
 	private void syncTargetEntity(String astTargetEntity) {
+		if (this.attributeValueHasChanged(this.targetEntity, astTargetEntity)) {
+			this.syncTargetEntity_(astTargetEntity);
+		}
+	}
+
+	private void syncTargetEntity_(String astTargetEntity) {
 		String old = this.targetEntity;
 		this.targetEntity = astTargetEntity;
+		this.fqTargetEntityClassNameStale = true;
 		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, astTargetEntity);
 	}
 
@@ -127,17 +146,19 @@ abstract class SourceRelationshipMappingAnnotation
 
 	// ***** fully-qualified target entity class name
 	public String getFullyQualifiedTargetEntityClassName() {
+		if (this.fqTargetEntityClassNameStale) {
+			this.fullyQualifiedTargetEntityClassName = this.buildFullyQualifiedTargetEntityClassName();
+			this.fqTargetEntityClassNameStale = false;
+		}
 		return this.fullyQualifiedTargetEntityClassName;
 	}
 
-	private void syncFullyQualifiedTargetEntityClassName(String name) {
-		String old = this.fullyQualifiedTargetEntityClassName;
-		this.fullyQualifiedTargetEntityClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_ENTITY_CLASS_NAME_PROPERTY, old, name);
+	private String buildFullyQualifiedTargetEntityClassName() {
+		return (this.targetEntity == null) ? null : this.buildFullyQualifiedTargetEntityClassName_();
 	}
 
-	private String buildFullyQualifiedTargetEntityClassName(CompilationUnit astRoot) {
-		return (this.targetEntity == null) ? null : ASTTools.resolveFullyQualifiedName(this.targetEntityAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedTargetEntityClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.targetEntityAdapter.getExpression(this.buildASTRoot()));
 	}
 
 	// ***** fetch
@@ -322,15 +343,15 @@ abstract class SourceRelationshipMappingAnnotation
 	}
 
 	static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 	static DeclarationAnnotationElementAdapter<String> buildFetchAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new EnumDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
+		return new EnumDeclarationAnnotationElementAdapter(annotationAdapter, elementName);
 	}
 
 	static DeclarationAnnotationElementAdapter<String[]> buildEnumArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		return new EnumArrayDeclarationAnnotationElementAdapter(annotationAdapter, elementName, false);
+		return new EnumArrayDeclarationAnnotationElementAdapter(annotationAdapter, elementName);
 	}
 
 }

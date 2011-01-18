@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,18 +39,12 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * will almost certainly be broken (repeatedly) as the API evolves.
  * <!-- end-user-doc -->
  *
- * <p>
- * The following features are supported:
- * <ul>
- *   <li>{@link org.eclipse.jpt.core.resource.orm.XmlOneToOne#getPrimaryKeyJoinColumns <em>Primary Key Join Columns</em>}</li>
- * </ul>
- * </p>
  *
  * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne()
  * @model kind="class"
  * @generated
  */
-public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping, XmlOneToOne_2_0
+public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements XmlMappedByMapping, XmlPrimaryKeyJoinColumnContainer, XmlOneToOne_2_0
 {
 
 	/**
@@ -72,6 +66,15 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 */
 	protected String mappedBy = MAPPED_BY_EDEFAULT;
 	/**
+	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPrimaryKeyJoinColumns()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns;
+	/**
 	 * The default value of the '{@link #getOrphanRemoval() <em>Orphan Removal</em>}' attribute.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -89,15 +92,6 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * @ordered
 	 */
 	protected Boolean orphanRemoval = ORPHAN_REMOVAL_EDEFAULT;
-	/**
-	 * The cached value of the '{@link #getPrimaryKeyJoinColumns() <em>Primary Key Join Columns</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPrimaryKeyJoinColumns()
-	 * @generated
-	 * @ordered
-	 */
-	protected EList<XmlPrimaryKeyJoinColumn> primaryKeyJoinColumns;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -200,7 +194,7 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Primary Key Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlOneToOne_PrimaryKeyJoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -241,10 +235,10 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				return getMappedBy();
-			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
-				return getOrphanRemoval();
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				return getPrimaryKeyJoinColumns();
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				return getOrphanRemoval();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -263,12 +257,12 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				setMappedBy((String)newValue);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
-				setOrphanRemoval((Boolean)newValue);
-				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
 				getPrimaryKeyJoinColumns().addAll((Collection<? extends XmlPrimaryKeyJoinColumn>)newValue);
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				setOrphanRemoval((Boolean)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -287,11 +281,11 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				setMappedBy(MAPPED_BY_EDEFAULT);
 				return;
-			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
-				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
-				return;
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				getPrimaryKeyJoinColumns().clear();
+				return;
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				setOrphanRemoval(ORPHAN_REMOVAL_EDEFAULT);
 				return;
 		}
 		super.eUnset(featureID);
@@ -309,10 +303,10 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 		{
 			case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY:
 				return MAPPED_BY_EDEFAULT == null ? mappedBy != null : !MAPPED_BY_EDEFAULT.equals(mappedBy);
-			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
-				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
 			case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS:
 				return primaryKeyJoinColumns != null && !primaryKeyJoinColumns.isEmpty();
+			case OrmPackage.XML_ONE_TO_ONE__ORPHAN_REMOVAL:
+				return ORPHAN_REMOVAL_EDEFAULT == null ? orphanRemoval != null : !ORPHAN_REMOVAL_EDEFAULT.equals(orphanRemoval);
 		}
 		return super.eIsSet(featureID);
 	}
@@ -330,6 +324,14 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			switch (derivedFeatureID)
 			{
 				case OrmPackage.XML_ONE_TO_ONE__MAPPED_BY: return OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPrimaryKeyJoinColumnContainer.class)
+		{
+			switch (derivedFeatureID)
+			{
+				case OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS: return OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER__PRIMARY_KEY_JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -364,6 +366,14 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 			switch (baseFeatureID)
 			{
 				case OrmPackage.XML_MAPPED_BY_MAPPING__MAPPED_BY: return OrmPackage.XML_ONE_TO_ONE__MAPPED_BY;
+				default: return -1;
+			}
+		}
+		if (baseClass == XmlPrimaryKeyJoinColumnContainer.class)
+		{
+			switch (baseFeatureID)
+			{
+				case OrmPackage.XML_PRIMARY_KEY_JOIN_COLUMN_CONTAINER__PRIMARY_KEY_JOIN_COLUMNS: return OrmPackage.XML_ONE_TO_ONE__PRIMARY_KEY_JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -452,6 +462,6 @@ public class XmlOneToOne extends AbstractXmlSingleRelationshipMapping implements
 	}
 	
 	protected static Translator buildPrimaryKeyJoinColumnTranslator() {
-		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlOneToOne_PrimaryKeyJoinColumns());
+		return XmlPrimaryKeyJoinColumn.buildTranslator(JPA.PRIMARY_KEY_JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlPrimaryKeyJoinColumnContainer_PrimaryKeyJoinColumns());
 	}
 }

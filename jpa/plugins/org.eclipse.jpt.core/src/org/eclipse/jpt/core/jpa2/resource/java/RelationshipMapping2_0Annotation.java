@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.jpa2.resource.java;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 
 /**
- * Common protocol among 2.0
- *     javax.persistence.ManyToOne
- *     javax.persistence.ManyToMany
- *     javax.persistence.OneToMany
- *     javax.persistence.OneToOne
- * 
+ * Common protocol among the following JPA 2.0 relationship mappings:<ul>
+ * <li><code>javax.persistence.ManyToOne</code>
+ * <li><code>javax.persistence.ManyToMany</code>
+ * <li><code>javax.persistence.OneToMany</code>
+ * <li><code>javax.persistence.OneToOne</code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,8 +30,6 @@ import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 public interface RelationshipMapping2_0Annotation
 	extends RelationshipMappingAnnotation
 {
-
-
 	/**
 	 * Corresponds to the 'cascade' element of the relationship annotations.
 	 */
@@ -42,5 +40,4 @@ public interface RelationshipMapping2_0Annotation
 	 * Corresponds to the 'cascade' element of the relationship annotations.
 	 */
 	void setCascadeDetach(boolean detach);
-
 }

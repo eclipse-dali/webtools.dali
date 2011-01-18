@@ -40,8 +40,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'table' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setTable(String table);
 
@@ -67,8 +66,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'schema' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setSchema(String schema);
 
@@ -94,8 +92,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'catalog' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setCatalog(String catalog);
 
@@ -121,8 +118,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'pkColumnName' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setPkColumnName(String pkColumnName);
 
@@ -148,8 +144,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'valueColumnName' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setValueColumnName(String valueColumnName);
 
@@ -175,8 +170,7 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'pkColumnValue' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setPkColumnValue(String pkColumnValue);
 
@@ -227,7 +221,6 @@ public interface TableGeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'uniqueConstraints' element of the TableGenerator annotation.
-	 * If no other elements exist the TableGenerator annotation will be removed as well.
 	 */
 	void removeUniqueConstraint(int index);
 

@@ -1,59 +1,61 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.internal.context.java.JavaOneToOneMappingDefinition;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToOneMappingDefinition;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkPrivateOwnedAnnotation;
+import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 public class JavaEclipseLinkOneToOneMappingDefinition
-	extends AbstractJavaAttributeMappingDefinition
+	extends AbstractJavaOneToOneMappingDefinition
+	implements DefaultJavaAttributeMappingDefinition
 {
 	// singleton
-	private static final JavaEclipseLinkOneToOneMappingDefinition INSTANCE = 
-			new JavaEclipseLinkOneToOneMappingDefinition();
-	
-	
+	private static final DefaultJavaAttributeMappingDefinition INSTANCE = new JavaEclipseLinkOneToOneMappingDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
-	public static JavaAttributeMappingDefinition instance() {
+	public static DefaultJavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaEclipseLinkOneToOneMappingDefinition() {
 		super();
 	}
-	
-	
-	public String getKey() {
-		return JavaOneToOneMappingDefinition.instance().getKey();
-	}
-	
-	public String getAnnotationName() {
-		return JavaOneToOneMappingDefinition.instance().getAnnotationName();
-	}
-	
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
-		return JavaOneToOneMappingDefinition.instance().buildMapping(parent, factory);
-	}
-	
+
 	@Override
-	public boolean testDefault(JavaPersistentAttribute persistentAttribute) {
+	public Iterable<String> getSupportingAnnotationNames() {
+		return COMBINED_SUPPORTING_ANNOTATION_NAMES;
+	}
+
+	public static final String[] ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY = new String[] {
+		EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME,
+		EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME
+	};
+
+	protected static final String[] COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY = ArrayTools.concatenate(
+		SUPPORTING_ANNOTATION_NAMES_ARRAY,
+		ECLIPSE_LINK_SUPPORTING_ANNOTATION_NAMES_ARRAY
+	);
+	protected static final Iterable<String> COMBINED_SUPPORTING_ANNOTATION_NAMES = new ArrayIterable<String>(COMBINED_SUPPORTING_ANNOTATION_NAMES_ARRAY);
+
+	public boolean isDefault(JavaPersistentAttribute persistentAttribute) {
 		String targetEntity = persistentAttribute.getSingleReferenceTargetTypeName();
 		return (targetEntity != null)
 				&& (persistentAttribute.getPersistenceUnit().getEntity(targetEntity) != null);

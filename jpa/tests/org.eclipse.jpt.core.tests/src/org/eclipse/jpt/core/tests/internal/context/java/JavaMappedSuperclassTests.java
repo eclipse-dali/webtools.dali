@@ -25,6 +25,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaMappedSuperclassTests extends ContextModelTestCase
 {
 	public JavaMappedSuperclassTests(String name) {
@@ -152,7 +153,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 
-		assertFalse(mappedSuperclass.associatedTablesIncludingInherited().hasNext());
+		assertFalse(mappedSuperclass.allAssociatedTables().hasNext());
 	}
 	
 	public void testAssociatedTableNamesIncludingInherited() throws Exception {
@@ -161,7 +162,7 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 
-		assertFalse(mappedSuperclass.associatedTableNamesIncludingInherited().hasNext());
+		assertFalse(mappedSuperclass.allAssociatedTableNames().hasNext());
 	}
 	
 	public void testAllOverridableAttributeNames() throws Exception {
@@ -207,45 +208,49 @@ public class JavaMappedSuperclassTests extends ContextModelTestCase
 		createTestIdClass();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		MappedSuperclass mappedSuperclass = (MappedSuperclass) getJavaPersistentType().getMapping();
 		IdClassReference idClassRef = mappedSuperclass.getIdClassReference();
 		
-		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
-		IdClassAnnotation idClass = (IdClassAnnotation) typeResource.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
-		assertNotNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
+		IdClassAnnotation idClassAnnotation = (IdClassAnnotation) resourceType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
+		this.getJpaProject().synchronizeContextModel();
+		assertNotNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		// test setting id class name to nonexistent class.  test class name is set, but class is null
 		String nonExistentIdClassName = PACKAGE_NAME + ".Foo";
-		idClass.setValue(nonExistentIdClassName);
-		assertEquals(nonExistentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
+		idClassAnnotation.setValue(nonExistentIdClassName);
+		this.getJpaProject().synchronizeContextModel();
+		assertEquals(nonExistentIdClassName, ((IdClassAnnotation) resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		assertEquals(nonExistentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		// test setting id class name to existent class.  test class name is set and class is not null
 		String existentIdClassName = PACKAGE_NAME + ".TestTypeId";
-		idClass.setValue(existentIdClassName);
-		assertEquals(existentIdClassName, ((IdClassAnnotation) typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
+		idClassAnnotation.setValue(existentIdClassName);
+		this.getJpaProject().synchronizeContextModel();
+		assertEquals(existentIdClassName, ((IdClassAnnotation) resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME)).getValue());
 		assertEquals(existentIdClassName, idClassRef.getSpecifiedIdClassName());
 		assertNotNull(idClassRef.getIdClass());
 		
 		//test setting  @IdClass value to null, IdClass annotation is removed
-		idClass.setValue(null);
-		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
+		idClassRef.setSpecifiedIdClassName(null);
+		this.getJpaProject().synchronizeContextModel();
+		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());
 		
 		//reset @IdClass value and then remove @IdClass
-		idClass = (IdClassAnnotation) typeResource.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
-		idClass.setValue(existentIdClassName);
-		typeResource.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
+		idClassAnnotation = (IdClassAnnotation) resourceType.addAnnotation(IdClassAnnotation.ANNOTATION_NAME);	
+		idClassAnnotation.setValue(existentIdClassName);
+		resourceType.removeAnnotation(IdClassAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
-		assertNull(typeResource.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
+		assertNull(resourceType.getAnnotation(IdClassAnnotation.ANNOTATION_NAME));
 		assertNull(idClassRef.getSpecifiedIdClassName());
 		assertNull(idClassRef.getIdClass());		
 	}

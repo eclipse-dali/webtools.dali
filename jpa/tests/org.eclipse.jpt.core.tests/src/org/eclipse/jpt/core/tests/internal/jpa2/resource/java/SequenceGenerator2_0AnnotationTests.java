@@ -65,7 +65,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		sequenceGenerator.setCatalog(null);
 		assertNull(sequenceGenerator.getCatalog());
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 	}
 	
 	// ********** schema **********
@@ -95,7 +95,7 @@ public class SequenceGenerator2_0AnnotationTests extends JavaResourceModel2_0Tes
 		sequenceGenerator.setSchema(null);
 		assertNull(sequenceGenerator.getSchema());
 		
-		assertSourceDoesNotContain("@SequenceGenerator", cu);
+		assertSourceDoesNotContain("@SequenceGenerator(", cu);
 	}
 	
 	// ********** utility **********

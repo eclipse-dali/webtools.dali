@@ -156,7 +156,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 	
 	public void testGetTable() throws Exception {
@@ -183,7 +183,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 
 		
 		column.setTable(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -210,7 +210,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetUnique() throws Exception {
@@ -237,7 +237,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(unique = false)", cu);
 		
 		column.setUnique(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
@@ -264,7 +264,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(nullable = false)", cu);
 		
 		column.setNullable(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
@@ -291,7 +291,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(insertable = false)", cu);
 		
 		column.setInsertable(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
@@ -318,7 +318,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(updatable = false)", cu);
 		
 		column.setUpdatable(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetLength() throws Exception {
@@ -345,7 +345,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(length = 5)", cu);
 		
 		column.setLength(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetPrecision() throws Exception {
@@ -372,7 +372,7 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(precision = 5)", cu);
 		
 		column.setPrecision(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 
 	public void testGetScale() throws Exception {
@@ -399,6 +399,6 @@ public class MapKeyColumn2_0AnnotationTests extends JavaResourceModel2_0TestCase
 		assertSourceContains("@MapKeyColumn(scale = 5)", cu);
 		
 		column.setScale(null);
-		assertSourceDoesNotContain("@MapKeyColumn", cu);
+		assertSourceDoesNotContain("@MapKeyColumn(", cu);
 	}
 }

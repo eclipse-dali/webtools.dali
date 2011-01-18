@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 
 /**
- * 1:m, m:m, element collection are all collection mappings.
+ * JPA collection mapping (e.g. 1:m, m:m, element collection)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -24,7 +24,7 @@ import java.util.Iterator;
  * @since 2.3
  */
 public interface CollectionMapping
-	extends AttributeMapping, Fetchable
+	extends FetchableMapping
 {
 	FetchType DEFAULT_FETCH_TYPE = FetchType.LAZY;
 
@@ -33,6 +33,7 @@ public interface CollectionMapping
 	PersistentType getResolvedTargetType();
 
 
+	// ********** types **********
 
 	Type getValueType();
 		String VALUE_TYPE_PROPERTY = "valueType"; //$NON-NLS-1$
@@ -47,7 +48,8 @@ public interface CollectionMapping
 		NO_TYPE
 	}
 
-	//**************** map key *****************
+
+	// ********** map key **********
 
 	String getMapKey();
 
@@ -70,5 +72,4 @@ public interface CollectionMapping
 	Iterator<String> candidateMapKeyNames();
 
 	String getMetamodelFieldMapKeyTypeName();
-
 }

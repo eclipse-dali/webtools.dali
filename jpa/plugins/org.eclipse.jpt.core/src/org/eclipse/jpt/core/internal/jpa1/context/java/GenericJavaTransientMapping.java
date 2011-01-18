@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * Java transient mapping
+ */
 public class GenericJavaTransientMapping
 	extends AbstractJavaAttributeMapping<TransientAnnotation>
 	implements JavaTransientMapping
@@ -32,14 +30,10 @@ public class GenericJavaTransientMapping
 	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	public String getAnnotationName() {
-		return TransientAnnotation.ANNOTATION_NAME;
-	}
 
 	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
+	protected String getAnnotationName() {
+		return TransientAnnotation.ANNOTATION_NAME;
 	}
 
 
@@ -49,5 +43,4 @@ public class GenericJavaTransientMapping
 	public MetamodelField getMetamodelField() {
 		return null;
 	}
-
 }

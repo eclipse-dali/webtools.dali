@@ -206,11 +206,10 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 	
 	public Entity addEntity(String entityName) {
 		if (this.entityExists(entityName)) {
-			throw new IllegalStateException("Entity " + entityName + " already exists.");
+			throw new IllegalStateException("Duplicate entity: " + entityName); //$NON-NLS-1$
 		}
 		Entity newEntity = this.buildEntity(entityName);
-		this.entities.add(newEntity);
-		this.fireListChanged(ENTITIES_LIST, this.entities);
+		this.addItemToList(newEntity, this.entities, ENTITIES_LIST);
 		return newEntity;
 	}
 
@@ -542,10 +541,9 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 
 	private void removeEntity(Entity entity) {
 		if(entity == null) {
-			throw new IllegalArgumentException();
+			throw new NullPointerException();
 		}
-		this.entities.remove(entity);
-		this.fireListChanged(ENTITIES_LIST, this.entities);
+		this.removeItemFromList(entity, this.entities, ENTITIES_LIST);
 	}
 
 	/**

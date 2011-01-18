@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
 
 /**
- * 
- * 
+ * Behavior common to Java embedded and embedded ID mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.BaseEmbeddedMapping;
  * @since 2.0
  */
 public interface JavaBaseEmbeddedMapping
-	extends JavaAttributeMapping, BaseEmbeddedMapping
+	extends BaseEmbeddedMapping, JavaAttributeMapping
 {
 	JavaAttributeOverrideContainer getAttributeOverrideContainer();
 }

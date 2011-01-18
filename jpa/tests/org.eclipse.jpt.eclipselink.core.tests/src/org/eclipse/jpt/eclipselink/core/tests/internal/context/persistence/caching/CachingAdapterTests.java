@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.Eclip
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
@@ -32,7 +33,7 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Caching caching;
-	private ListChangeEvent entitiesEvent;
+	private ListEvent entitiesEvent;
 
 	public static final String ENTITY_TEST = "Employee";
 	public static final String ENTITY_TEST_2 = "Address";
@@ -115,11 +116,11 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 	private ListChangeListener buildEntitiesChangeListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent e) {
-				CachingAdapterTests.this.throwUnsupportedOperationException(e);
+				CachingAdapterTests.this.entityAdded(e);
 			}
 
 			public void itemsRemoved(ListRemoveEvent e) {
-				CachingAdapterTests.this.throwUnsupportedOperationException(e);
+				CachingAdapterTests.this.entityRemoved(e);
 			}
 
 			public void itemsReplaced(ListReplaceEvent e) {
@@ -135,7 +136,7 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 			}
 
 			public void listChanged(ListChangeEvent e) {
-				CachingAdapterTests.this.entityChanged(e);
+				CachingAdapterTests.this.throwUnsupportedOperationException(e);
 			}
 		};
 	}
@@ -146,7 +147,11 @@ public class CachingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 		this.entitiesEvent = null;
 	}
 
-	void entityChanged(ListChangeEvent e) {
+	void entityAdded(ListAddEvent e) {
+		this.entitiesEvent = e;
+	}
+
+	void entityRemoved(ListRemoveEvent e) {
 		this.entitiesEvent = e;
 	}
 

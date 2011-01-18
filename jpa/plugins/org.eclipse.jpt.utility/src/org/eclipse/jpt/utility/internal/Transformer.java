@@ -13,7 +13,11 @@ import java.io.Serializable;
 
 /**
  * Used by various "pluggable" classes to transform objects.
- * Transform an object of type T1 to an object of type T2.
+ * Transform an object of type <code>T1</code> to an object of type
+ * <code>T2</code>.
+ * 
+ * @param <T1> the type of the object passed to the transformer
+ * @param <T2> the type of the object returned by the transformer
  */
 public interface Transformer<T1, T2> {
 

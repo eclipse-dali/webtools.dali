@@ -14,17 +14,15 @@ import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdap
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.Column
+ * <code>javax.persistence.Column</code>
  */
 public final class SourceColumnAnnotation
 	extends SourceCompleteColumnAnnotation
-	implements NestableColumnAnnotation
+	implements ColumnAnnotation
 {
 	// this adapter is only used by a Column annotation associated with a mapping annotation (e.g. Basic)
 	public static final DeclarationAnnotationAdapter MAPPING_DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
@@ -95,35 +93,14 @@ public final class SourceColumnAnnotation
 		return JPA.COLUMN__SCALE;
 	}
 
-	 // ********** NestableAnnotation implementation **********
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		ColumnAnnotation oldColumn = (ColumnAnnotation) oldAnnotation;
-		this.setLength(oldColumn.getLength());
-		this.setPrecision(oldColumn.getPrecision());
-		this.setScale(oldColumn.getScale());
-	}
-
-	public void moveAnnotation(int newIndex) {
-		// the only place where a column annotation is nested is in an
-		// attribute override; and that only nests a single column, not an array
-		// of columns; so #moveAnnotation(int) is never called
-		// TODO maybe NestableAnnotation should be split up;
-		// moving this method to something like IndexableAnnotation
-		throw new UnsupportedOperationException();
-	}
-
 
 	// ********** static methods **********
 
-	static NestableColumnAnnotation createAttributeOverrideColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
+	static ColumnAnnotation createAttributeOverrideColumn(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new SourceColumnAnnotation(parent, member, buildAttributeOverrideAnnotationAdapter(attributeOverrideAnnotationAdapter));
 	}
 
 	static DeclarationAnnotationAdapter buildAttributeOverrideAnnotationAdapter(DeclarationAnnotationAdapter attributeOverrideAnnotationAdapter) {
 		return new NestedDeclarationAnnotationAdapter(attributeOverrideAnnotationAdapter, JPA.ATTRIBUTE_OVERRIDE__COLUMN, JPA.COLUMN);
 	}
-
 }

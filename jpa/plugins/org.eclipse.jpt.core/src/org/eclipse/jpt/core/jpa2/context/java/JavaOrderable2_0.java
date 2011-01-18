@@ -11,9 +11,11 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
 /**
- * 
+ * JPA 2.0 Java ordering
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,6 +28,7 @@ import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 public interface JavaOrderable2_0
 	extends Orderable2_0, JavaOrderable
 {
-	JavaOrderColumn2_0 getOrderColumn();
+	JavaResourcePersistentAttribute getResourcePersistentAttribute();
 
+	JavaOrderColumn2_0 getOrderColumn();
 }

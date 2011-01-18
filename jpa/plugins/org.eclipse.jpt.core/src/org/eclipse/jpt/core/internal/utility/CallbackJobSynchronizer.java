@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,8 @@ import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
  * for the moment, handled every "synchronize" request and quiesced.
  * This notification is <em>not</em> guaranteed to occur with <em>every</em>
  * synchronization "cycle";
- * since other, unrelated, synchronizations can be triggered concurrently.
+ * since other, unrelated, synchronizations can be triggered concurrently;
+ * preventing the synchronization from quiescing.
  */
 public class CallbackJobSynchronizer
 	extends JobSynchronizer
@@ -92,7 +93,7 @@ public class CallbackJobSynchronizer
 	 * initiate another synchronization until the synchronizer's listeners have been
 	 * notified. Note also, the synchronizer's listeners can, themselves,
 	 * trigger another synchronization (by directly or indirectly calling
-	 * {@link org.eclipse.jpt.utility.internal.synchronizers.Synchronizer#synchronize());
+	 * {@link org.eclipse.jpt.utility.synchronizers.Synchronizer#synchronize()});
 	 * but this synchronization will not occur until <em>after</em> all the
 	 * listeners have been notified.
 	 */

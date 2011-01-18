@@ -1620,7 +1620,7 @@ public class XmlOneToOne extends org.eclipse.jpt.core.resource.orm.XmlOneToOne i
 	}
 
 	protected static Translator buildJoinTableTranslator() {
-		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableContainer_JoinTable());
 	}
 
 }

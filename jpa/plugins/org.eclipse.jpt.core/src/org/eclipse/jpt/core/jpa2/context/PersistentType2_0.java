@@ -33,5 +33,4 @@ public interface PersistentType2_0
 	 */
 	String getDeclaringTypeName();
 		String DECLARING_TYPE_NAME_PROPERTY = "declaringTypeName"; //$NON-NLS-1$
-
 }

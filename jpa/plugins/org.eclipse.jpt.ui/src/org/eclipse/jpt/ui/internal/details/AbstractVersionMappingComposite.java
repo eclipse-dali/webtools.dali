@@ -101,7 +101,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		Button noConverterButton = addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_default, 
-			buildConverterBooleanHolder(Converter.NO_CONVERTER), 
+			buildConverterBooleanHolder(null), 
 			null);
 		((GridData) noConverterButton.getLayoutData()).horizontalSpan = 2;
 				
@@ -110,7 +110,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		addRadioButton(
 			container, 
 			JptUiDetailsMessages.TypeSection_temporal, 
-			buildConverterBooleanHolder(Converter.TEMPORAL_CONVERTER), 
+			buildConverterBooleanHolder(TemporalConverter.class), 
 			null);
 		registerSubPane(new TemporalTypeComposite(buildTemporalConverterHolder(converterHolder), container, getWidgetFactory()));
 	}
@@ -124,7 +124,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		};
 	}
 
-	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final String converterType) {
+	protected WritablePropertyValueModel<Boolean> buildConverterBooleanHolder(final Class<? extends Converter> converterType) {
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
@@ -154,7 +154,7 @@ public abstract class AbstractVersionMappingComposite<T extends VersionMapping>
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
+				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
 			}
 		};
 	}

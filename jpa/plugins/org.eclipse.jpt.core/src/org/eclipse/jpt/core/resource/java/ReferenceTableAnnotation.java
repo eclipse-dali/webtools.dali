@@ -12,10 +12,10 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.ListIterator;
 
 /**
- * Corresponds to the JPA annotations
- * javax.persistence.JoinTable
- * javax.persistence.CollectionTable
- * 
+ * Corresponds to the JPA annotations:<ul>
+ * <li><code>javax.persistence.JoinTable</code>
+ * <li><code>javax.persistence.CollectionTable</code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,6 +28,7 @@ import java.util.ListIterator;
 public interface ReferenceTableAnnotation
 	extends BaseTableAnnotation
 {
+	// ********** join columns **********
 
 	/**
 	 * Corresponds to the 'joinColumns' element of the JoinTable annotation.

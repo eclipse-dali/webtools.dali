@@ -13,7 +13,8 @@ import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.db.Table;
 
 /**
- * Multi-valued (1:m, m:m) relationship mappings support ordering.
+ * Multi-valued (1:m, m:m) relationship and element collection mappings support
+ * ordering.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,25 +28,26 @@ import org.eclipse.jpt.db.Table;
 public interface Orderable2_0
 	extends Orderable
 {
-	
 	boolean isOrderColumnOrdering();
 	void setOrderColumnOrdering(boolean value);
 		String ORDER_COLUMN_ORDERING_PROPERTY = "orderColumnOrdering"; //$NON-NLS-1$
-	
+
 	OrderColumn2_0 getOrderColumn();
-	
+
 	String getDefaultTableName();
-	
+
+
 	/**
-	 * interface allowing Orderable2_0 to be used in multiple places
+	 * interface allowing ordering in multiple places
+	 * (i.e. multi-value relationship and element collection mappings)
 	 */
-	interface Owner extends Orderable.Owner {
+	interface Owner
+	{
 		/**
-		 * Return the name of the table which the column belongs to
+		 * Return the name of the column's table.
 		 */
 		String getTableName();
 		
-		Table getDbTable(String tableName);
+		Table resolveDbTable(String tableName);
 	}
-
 }

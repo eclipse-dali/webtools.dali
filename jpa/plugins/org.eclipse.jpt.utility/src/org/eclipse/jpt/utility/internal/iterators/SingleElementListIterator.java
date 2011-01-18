@@ -15,7 +15,7 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * A <code>SingleElementListIterator</code> holds a single element
- * and returns it with the first call to {@link next()}, at
+ * and returns it with the first call to {@link #next()}, at
  * which point it will return <code>false</code> to any subsequent
  * call to {@link #hasNext()}. Likewise, it will return <code>false</code>
  * to a call to {@link #hasPrevious()} until a call to {@link #next()},
@@ -23,8 +23,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
  * single element.
  * <p>
  * A <code>SingleElementListIterator</code> is equivalent to the
- * {@link Iterator} returned by:
- * 	{@link java.util.Collections#singletonList(element)}<code>.listIterator()</code>
+ * {@link ListIterator} returned by:
+ * 	{@link java.util.Collections#singletonList(Object element)}<code>.listIterator()</code>
  * 
  * @param <E> the type of elements returned by the iterator
  * 

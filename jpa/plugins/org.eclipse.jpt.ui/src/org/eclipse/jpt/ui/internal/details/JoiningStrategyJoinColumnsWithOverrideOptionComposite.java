@@ -10,10 +10,13 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -42,14 +45,14 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class JoiningStrategyJoinColumnsWithOverrideOptionComposite 
-	extends Pane<JoinColumnJoiningStrategy>
+	extends Pane<ReadOnlyJoinColumnJoiningStrategy>
 {
 	
 	private JoiningStrategyJoinColumnsComposite joiningStrategyComposite;
 	
 	public JoiningStrategyJoinColumnsWithOverrideOptionComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<JoinColumnJoiningStrategy> subjectHolder,
+			PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
@@ -68,7 +71,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		this.joiningStrategyComposite = new JoiningStrategyJoinColumnsComposite(this, getSubjectHolder(), container);
 	}
 
-	private void setSelectedJoinColumn(JoinColumn joinColumn) {
+	void setSelectedJoinColumn(JoinColumn joinColumn) {
 		this.joiningStrategyComposite.setSelectedJoinColumn(joinColumn);
 	}
 
@@ -76,12 +79,12 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 		return new OverrideDefaultJoinColumnHolder();
 	}
 	
-	private ListValueModel<JoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<JoinColumnJoiningStrategy, JoinColumn>(
-				getSubjectHolder(), JoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
+	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+		return new ListAspectAdapter<ReadOnlyJoinColumnJoiningStrategy, ReadOnlyJoinColumn>(
+				getSubjectHolder(), ReadOnlyJoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<JoinColumn> listIterator_() {
-				return this.subject.specifiedJoinColumns();
+			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
+				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedJoinColumns());
 			}
 
 			@Override
@@ -116,18 +119,18 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			setPopulating(true);
 			
 			try {
-				JoinColumnJoiningStrategy subject = getSubject();
+				JoinColumnJoiningStrategy subject = (JoinColumnJoiningStrategy) getSubject();
 	
 				// Add a join column by creating a specified one using the default
 				// one if it exists
 				if (selected) {
-					JoinColumn defaultJoinColumn = subject.getDefaultJoinColumn();//TODO could be null, disable override default check box?
+					ReadOnlyJoinColumn defaultJoinColumn = subject.getDefaultJoinColumn();//TODO could be null, disable override default check box?
 					
 					if (defaultJoinColumn != null) {
 						String columnName = defaultJoinColumn.getDefaultName();
 						String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
 						
-						JoinColumn joinColumn = subject.addSpecifiedJoinColumn(0);
+						JoinColumn joinColumn = subject.addSpecifiedJoinColumn();
 						joinColumn.setSpecifiedName(columnName);
 						joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 						

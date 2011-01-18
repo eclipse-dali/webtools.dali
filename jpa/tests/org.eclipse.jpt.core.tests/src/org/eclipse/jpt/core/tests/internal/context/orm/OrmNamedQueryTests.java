@@ -148,12 +148,12 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		assertEquals("BAZ", namedQueryResource.getHints().get(1).getName());
 		assertEquals("FOO", namedQueryResource.getHints().get(2).getName());
 		
-		ListIterator<OrmQueryHint> queryHints = ormNamedQuery.hints();
+		ListIterator<OrmQueryHint> queryHints = ormNamedQuery.getHints().iterator();
 		assertEquals(queryHint2, queryHints.next());
 		assertEquals(queryHint3, queryHints.next());
 		assertEquals(queryHint, queryHints.next());
 		
-		queryHints = ormNamedQuery.hints();
+		queryHints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAR", queryHints.next().getName());
 		assertEquals("BAZ", queryHints.next().getName());
 		assertEquals("FOO", queryHints.next().getName());
@@ -200,7 +200,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		
 		
 		ormNamedQuery.moveHint(2, 0);
-		ListIterator<OrmQueryHint> hints = ormNamedQuery.hints();
+		ListIterator<OrmQueryHint> hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -211,7 +211,7 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 
 
 		ormNamedQuery.moveHint(0, 1);
-		hints = ormNamedQuery.hints();
+		hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -236,38 +236,38 @@ public class OrmNamedQueryTests extends ContextModelTestCase
 		namedQueryResource.getHints().get(1).setName("BAR");
 		namedQueryResource.getHints().get(2).setName("BAZ");
 
-		ListIterator<OrmQueryHint> hints = ormNamedQuery.hints();
+		ListIterator<OrmQueryHint> hints = ormNamedQuery.getHints().iterator();
 		assertEquals("FOO", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		namedQueryResource.getHints().move(2, 0);
-		hints = ormNamedQuery.hints();
+		hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().move(0, 1);
-		hints = ormNamedQuery.hints();
+		hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().remove(1);
-		hints = ormNamedQuery.hints();
+		hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 
 		namedQueryResource.getHints().remove(1);
-		hints = ormNamedQuery.hints();
+		hints = ormNamedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
 		namedQueryResource.getHints().remove(0);
-		assertFalse(ormNamedQuery.hints().hasNext());
+		assertFalse(ormNamedQuery.getHints().iterator().hasNext());
 	}
 }

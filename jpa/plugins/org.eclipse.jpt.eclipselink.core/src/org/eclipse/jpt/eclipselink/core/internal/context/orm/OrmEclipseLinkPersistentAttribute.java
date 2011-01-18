@@ -12,31 +12,35 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.JptValidator;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmPersistentAttribute;
+import org.eclipse.jpt.core.internal.context.orm.SpecifiedOrmPersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
 
-
-public class OrmEclipseLinkPersistentAttribute extends AbstractOrmPersistentAttribute
+/**
+ * EclipseLink
+ * <code>orm.xml</code> persistent attribute
+ */
+public class OrmEclipseLinkPersistentAttribute
+	extends SpecifiedOrmPersistentAttribute
 {
-	
-	public OrmEclipseLinkPersistentAttribute(OrmPersistentType parent, Owner owner, XmlAttributeMapping resourceMapping) {
-		super(parent, owner, resourceMapping);
+	public OrmEclipseLinkPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping) {
+		super(parent, xmlMapping);
 	}
 	
-	//****************** AccessHolder implementation *******************
-	
+
+	// ********** access **********
+
 	/**
-	 * EclipseLinkOrmPersistentAttribute does not support specified access (no access element in 1.0), so we return null
+	 * EclipseLink 1.0 does not support a specified access for attributes.
 	 */
+	@Override
 	public AccessType getSpecifiedAccess() {
 		return null;
 	}
-	
-	public void setSpecifiedAccess(AccessType newSpecifiedAccess) {
-		throw new UnsupportedOperationException("specifiedAccess is not supported for OrmEclipseLinkPersistentAttribute"); //$NON-NLS-1$
-	}
 
+	public void setSpecifiedAccess(AccessType access) {
+		throw new UnsupportedOperationException("A specified access is not supported in EclipseLink 1.0: " + this); //$NON-NLS-1$
+	}
 
 	// ********** validation **********
 

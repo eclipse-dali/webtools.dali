@@ -43,8 +43,10 @@ import org.eclipse.jpt.core.resource.xml.JpaEObject;
  * @extends JpaEObject
  * @generated
  */
-public interface XmlConverterHolder extends JpaEObject
+public interface XmlConverterHolder
+	extends JpaEObject
 {
+// TODO bjv rename to XmlConverterContainer
 	/**
 	 * Returns the value of the '<em><b>Converter</b></em>' containment reference.
 	 * <!-- begin-user-doc -->

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -14,54 +14,39 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmConverter;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
+import org.eclipse.jpt.core.context.orm.OrmLobConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.ReplaceEdit;
 
-public class GenericOrmLobConverter extends AbstractOrmXmlContextNode
-	implements LobConverter, OrmConverter
+public class GenericOrmLobConverter
+	extends AbstractOrmConverter
+	implements OrmLobConverter
 {
-	protected XmlConvertibleMapping resourceConvertibleMapping;
-	
-	public GenericOrmLobConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping) {
+	public GenericOrmLobConverter(OrmAttributeMapping parent) {
 		super(parent);
-		this.initialize(resourceMapping);
 	}
-	
-	@Override
-	public OrmAttributeMapping getParent() {
-		return (OrmAttributeMapping) super.getParent();
+
+
+	// ********** misc **********
+
+	public Class<? extends Converter> getType() {
+		return LobConverter.class;
 	}
-	
-	public String getType() {
-		return Converter.LOB_CONVERTER;
+
+	public void initialize() {
+		this.getXmlConvertibleMapping().setLob(true);
 	}
-	
-	public void initialize(XmlConvertibleMapping resourceConvertibleMapping) {
-		this.resourceConvertibleMapping = resourceConvertibleMapping;
-	}
-	
-	public void update() {
-		//do nothing
-	}
-	
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		return this.resourceConvertibleMapping.getLobTextRange();
-	}
-	
-	public void addToResourceModel() {
-		this.resourceConvertibleMapping.setLob(true);
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourceConvertibleMapping.setLob(false);
+		return this.getXmlConvertibleMapping().getLobTextRange();
 	}
 
 
-	//************************* refactoring ************************
+	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return EmptyIterable.instance();

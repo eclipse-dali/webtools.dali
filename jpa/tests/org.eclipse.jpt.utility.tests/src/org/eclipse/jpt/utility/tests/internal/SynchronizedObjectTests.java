@@ -56,26 +56,6 @@ public class SynchronizedObjectTests
 		assertSame(this.so, this.so.getMutex());
 	}
 
-	public void testEquals() throws Exception {
-		this.so.setValue(null);
-		SynchronizedObject<Object> so2 = new SynchronizedObject<Object>(null);
-		assertEquals(this.so, so2);
-
-		this.so.setValue(this.value);
-		assertFalse(this.so.equals(so2));
-
-		so2.setValue(this.value);
-		assertEquals(this.so, so2);
-	}
-
-	public void testHashCode() {
-		this.so.setValue(this.value);
-		assertEquals(this.value.hashCode(), this.so.hashCode());
-
-		this.so.setValue(null);
-		assertEquals(0, this.so.hashCode());
-	}
-
 	/**
 	 * t2 will wait indefinitely until t1 sets the value to null
 	 */

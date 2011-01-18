@@ -11,9 +11,10 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.core.context.ReadOnlyColumn;
+import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
@@ -30,11 +31,11 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
 
 public class ColumnComposite
-	extends Pane<Column>
+	extends Pane<ReadOnlyColumn>
 {
 	public ColumnComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends Column> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent, false);
@@ -42,7 +43,7 @@ public class ColumnComposite
 	
 	public ColumnComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends Column> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
 			Composite parent,
 			boolean automaticallyAlignWidgets) {
 		
@@ -51,7 +52,7 @@ public class ColumnComposite
 	
 	public ColumnComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends Column> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
 			Composite parent,
 			boolean automaticallyAlignWidgets,
 			boolean parentManagePane) {
@@ -60,22 +61,22 @@ public class ColumnComposite
 	}
 	
 	
-	private ColumnCombo<Column> addColumnCombo(Composite container) {
+	private ColumnCombo<ReadOnlyColumn> addColumnCombo(Composite container) {
 		
-		return new ColumnCombo<Column>(this, container) {
+		return new ColumnCombo<ReadOnlyColumn>(this, container) {
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(NamedColumn.DEFAULT_NAME_PROPERTY);
-				propertyNames.add(NamedColumn.SPECIFIED_NAME_PROPERTY);
-				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
 			
 			@Override
 			protected void propertyChanged(String propertyName) {
-				if (propertyName == BaseColumn.DEFAULT_TABLE_PROPERTY ||
-				    propertyName == BaseColumn.SPECIFIED_TABLE_PROPERTY) {
+				if (propertyName == ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY ||
+				    propertyName == ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY) {
 					this.doPopulate();
 				} else {
 					super.propertyChanged(propertyName);
@@ -89,12 +90,18 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue(String value) {
-				getSubject().setSpecifiedName(value);
+				((Column) this.getSubject()).setSpecifiedName(value);
 			}
 			
 			@Override
 			protected Table getDbTable_() {
-				return getSubject().getDbTable();
+				Column column = this.getColumn();
+				return (column == null) ? null : column.getDbTable();
+			}
+
+			protected Column getColumn() {
+				ReadOnlyColumn column = this.getSubject();
+				return (column instanceof Column) ? (Column) column : null;
 			}
 			
 			@Override
@@ -116,8 +123,8 @@ public class ColumnComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
-		return new PropertyAspectAdapter<Column, String>(getSubjectHolder(), NamedColumn.COLUMN_DEFINITION_PROPERTY) {
+	WritablePropertyValueModel<String> buildColumnDefinitionHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, String>(getSubjectHolder(), ReadOnlyNamedColumn.COLUMN_DEFINITION_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getColumnDefinition();
@@ -128,13 +135,13 @@ public class ColumnComposite
 				if (value.length() == 0) {
 					value = null;
 				}
-				this.subject.setColumnDefinition(value);
+				((Column) this.subject).setColumnDefinition(value);
 			}
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildInsertableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(getSubjectHolder(), BaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
+	WritablePropertyValueModel<Boolean> buildInsertableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(getSubjectHolder(), ReadOnlyBaseColumn.SPECIFIED_INSERTABLE_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedInsertable();
@@ -142,12 +149,12 @@ public class ColumnComposite
 
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedInsertable(value);
+				((Column) this.subject).setSpecifiedInsertable(value);
 			}
 		};
 	}
 	
-	private PropertyValueModel<String> buildInsertableStringHolder() {
+	PropertyValueModel<String> buildInsertableStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultInsertableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
@@ -160,11 +167,11 @@ public class ColumnComposite
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	PropertyValueModel<Boolean> buildDefaultInsertableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
-				BaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_INSERTABLE_PROPERTY,
+				ReadOnlyBaseColumn.DEFAULT_INSERTABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -176,10 +183,10 @@ public class ColumnComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildNullableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	WritablePropertyValueModel<Boolean> buildNullableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_NULLABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -188,12 +195,12 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedNullable(value);
+				((Column) this.subject).setSpecifiedNullable(value);
 			}
 		};
 	}
 	
-	private PropertyValueModel<String> buildNullableStringHolder() {
+	PropertyValueModel<String> buildNullableStringHolder() {
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultNullableHolder()) {
 			@Override
 			protected String transform(Boolean value) {
@@ -206,11 +213,11 @@ public class ColumnComposite
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildDefaultNullableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	PropertyValueModel<Boolean> buildDefaultNullableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_NULLABLE_PROPERTY,
-				BaseColumn.DEFAULT_NULLABLE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_NULLABLE_PROPERTY,
+				ReadOnlyBaseColumn.DEFAULT_NULLABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -222,15 +229,15 @@ public class ColumnComposite
 		};
 	}
 	
-	private Pane<Column> addTableCombo(Composite container) {
+	private Pane<ReadOnlyColumn> addTableCombo(Composite container) {
 		
-		return new DatabaseObjectCombo<Column>(this, container) {
+		return new DatabaseObjectCombo<ReadOnlyColumn>(this, container) {
 			
 			@Override
 			protected void addPropertyNames(Collection<String> propertyNames) {
 				super.addPropertyNames(propertyNames);
-				propertyNames.add(BaseColumn.DEFAULT_TABLE_PROPERTY);
-				propertyNames.add(BaseColumn.SPECIFIED_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.DEFAULT_TABLE_PROPERTY);
+				propertyNames.add(ReadOnlyBaseColumn.SPECIFIED_TABLE_PROPERTY);
 			}
 			
 			@Override
@@ -240,7 +247,7 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue(String value) {
-				this.getSubject().setSpecifiedTable(value);
+				((Column) this.getSubject()).setSpecifiedTable(value);
 			}
 			
 			@Override
@@ -254,7 +261,13 @@ public class ColumnComposite
 			}
 			
 			protected Iterator<String> values() {
-				return this.getSubject().candidateTableNames();
+				Column column = this.getColumn();
+				return (column == null) ? null : column.candidateTableNames();
+			}
+			
+			protected Column getColumn() {
+				ReadOnlyColumn column = this.getSubject();
+				return (column instanceof Column) ? (Column) column : null;
 			}
 			
 			@Override
@@ -271,10 +284,10 @@ public class ColumnComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildUniqueHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	WritablePropertyValueModel<Boolean> buildUniqueHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_UNIQUE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -283,12 +296,12 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedUnique(value);
+				((Column) this.subject).setSpecifiedUnique(value);
 			}
 		};
 	}
 	
-	private PropertyValueModel<String> buildUniqueStringHolder() {
+	PropertyValueModel<String> buildUniqueStringHolder() {
 		
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUniqueHolder()) {
 			
@@ -303,11 +316,11 @@ public class ColumnComposite
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	PropertyValueModel<Boolean> buildDefaultUniqueHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_UNIQUE_PROPERTY,
-				BaseColumn.DEFAULT_UNIQUE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_UNIQUE_PROPERTY,
+				ReadOnlyBaseColumn.DEFAULT_UNIQUE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -319,11 +332,11 @@ public class ColumnComposite
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	WritablePropertyValueModel<Boolean> buildUpdatableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.DEFAULT_UPDATABLE_PROPERTY,
-				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
+				ReadOnlyBaseColumn.DEFAULT_UPDATABLE_PROPERTY,
+				ReadOnlyBaseColumn.SPECIFIED_UPDATABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -332,12 +345,12 @@ public class ColumnComposite
 			
 			@Override
 			protected void setValue_(Boolean value) {
-				this.subject.setSpecifiedUpdatable(value);
+				((Column) this.subject).setSpecifiedUpdatable(value);
 			}
 		};
 	}
 	
-	private PropertyValueModel<String> buildUpdatableStringHolder() {
+	PropertyValueModel<String> buildUpdatableStringHolder() {
 		
 		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultUpdatableHolder()) {
 			
@@ -352,11 +365,11 @@ public class ColumnComposite
 		};
 	}
 	
-	private PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
-		return new PropertyAspectAdapter<Column, Boolean>(
+	PropertyValueModel<Boolean> buildDefaultUpdatableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyColumn, Boolean>(
 				getSubjectHolder(),
-				BaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
-				BaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
+				ReadOnlyBaseColumn.SPECIFIED_UPDATABLE_PROPERTY,
+				ReadOnlyBaseColumn.DEFAULT_UPDATABLE_PROPERTY) {
 			
 			@Override
 			protected Boolean buildValue_() {
@@ -398,11 +411,11 @@ public class ColumnComposite
 		new DetailsComposite(this, getSubjectHolder(), addSubPane(container, 0, 16));
 	}
 	
-	protected class DetailsComposite extends Pane<Column> {
+	protected class DetailsComposite extends Pane<ReadOnlyColumn> {
 				
 		public DetailsComposite(
 				Pane<?> parentPane,
-	            PropertyValueModel<? extends Column> subjectHolder,
+	            PropertyValueModel<? extends ReadOnlyColumn> subjectHolder,
 	            Composite parent) {
 			
 			super(parentPane, subjectHolder, parent, false);
@@ -454,7 +467,7 @@ public class ColumnComposite
 		}
 		
 		private void addLengthCombo(Composite container) {
-			new IntegerCombo<Column>(this, container) {
+			new IntegerCombo<ReadOnlyColumn>(this, container) {
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_length;
@@ -467,7 +480,7 @@ public class ColumnComposite
 				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_LENGTH_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return Integer.valueOf(this.subject.getDefaultLength());
@@ -477,7 +490,7 @@ public class ColumnComposite
 				
 				@Override
 				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_LENGTH_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_LENGTH_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedLength();
@@ -485,7 +498,7 @@ public class ColumnComposite
 						
 						@Override
 						protected void setValue_(Integer value) {
-							this.subject.setSpecifiedLength(value);
+							((Column) this.subject).setSpecifiedLength(value);
 						}
 					};
 				}
@@ -493,7 +506,7 @@ public class ColumnComposite
 		}
 		
 		private void addPrecisionCombo(Composite container) {
-			new IntegerCombo<Column>(this, container) {	
+			new IntegerCombo<ReadOnlyColumn>(this, container) {	
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_precision;
@@ -506,7 +519,7 @@ public class ColumnComposite
 				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_PRECISION_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_PRECISION_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return Integer.valueOf(this.subject.getDefaultPrecision());
@@ -516,7 +529,7 @@ public class ColumnComposite
 				
 				@Override
 				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_PRECISION_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_PRECISION_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedPrecision();
@@ -524,7 +537,7 @@ public class ColumnComposite
 						
 						@Override
 						protected void setValue_(Integer value) {
-							this.subject.setSpecifiedPrecision(value);
+							((Column) this.subject).setSpecifiedPrecision(value);
 						}
 					};
 				}
@@ -532,7 +545,7 @@ public class ColumnComposite
 		}
 		
 		private void addScaleCombo(Composite container) {
-			new IntegerCombo<Column>(this, container) {	
+			new IntegerCombo<ReadOnlyColumn>(this, container) {	
 				@Override
 				protected String getLabelText() {
 					return JptUiDetailsMessages.ColumnComposite_scale;
@@ -545,7 +558,7 @@ public class ColumnComposite
 				
 				@Override
 				protected PropertyValueModel<Integer> buildDefaultHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.DEFAULT_SCALE_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.DEFAULT_SCALE_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return Integer.valueOf(this.subject.getDefaultScale());
@@ -555,7 +568,7 @@ public class ColumnComposite
 				
 				@Override
 				protected WritablePropertyValueModel<Integer> buildSelectedItemHolder() {
-					return new PropertyAspectAdapter<Column, Integer>(getSubjectHolder(), Column.SPECIFIED_SCALE_PROPERTY) {
+					return new PropertyAspectAdapter<ReadOnlyColumn, Integer>(getSubjectHolder(), ReadOnlyColumn.SPECIFIED_SCALE_PROPERTY) {
 						@Override
 						protected Integer buildValue_() {
 							return this.subject.getSpecifiedScale();
@@ -563,7 +576,7 @@ public class ColumnComposite
 						
 						@Override
 						protected void setValue_(Integer value) {
-							this.subject.setSpecifiedScale(value);
+							((Column) this.subject).setSpecifiedScale(value);
 						}
 					};
 				}

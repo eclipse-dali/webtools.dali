@@ -12,14 +12,14 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkBasicMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasic;
@@ -138,24 +138,24 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		
-		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		ormPersistentAttribute.convertToVirtual();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		EclipseLinkBasicMapping virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
-		assertTrue(contextBasic.getMutable().isDefaultMutable());
-		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
-		assertFalse(contextBasic.getMutable().isMutable());
+		assertTrue(virtualContextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.FALSE, virtualContextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(virtualContextBasic.getMutable().isMutable());
 		assertFalse(javaBasicMapping.getMutable().isMutable());
 		
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceBasic.getMutable());
-		assertTrue(contextBasic.getMutable().isDefaultMutable());
-		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
-		assertTrue(contextBasic.getMutable().isMutable());
+		assertTrue(virtualContextBasic.getMutable().isDefaultMutable());
+		assertNull(virtualContextBasic.getMutable().getSpecifiedMutable());
+		assertTrue(virtualContextBasic.getMutable().isMutable());
 		assertFalse(javaBasicMapping.getMutable().isMutable());
 	}
 	
@@ -237,24 +237,24 @@ public class EclipseLinkOrmBasicMappingTests
 		
 		// remove attribute from xml, test default mutable from java
 		
-		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("myDate");
-		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		ormPersistentAttribute.convertToVirtual();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
+		EclipseLinkBasicMapping virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
 		assertNull(resourceBasic.getMutable());
-		assertFalse(contextBasic.getMutable().isDefaultMutable());
-		assertEquals(Boolean.TRUE, contextBasic.getMutable().getSpecifiedMutable());
-		assertTrue(contextBasic.getMutable().isMutable());
+		assertFalse(virtualContextBasic.getMutable().isDefaultMutable());
+		assertEquals(Boolean.TRUE, virtualContextBasic.getMutable().getSpecifiedMutable());
+		assertTrue(virtualContextBasic.getMutable().isMutable());
 		assertTrue(javaBasicMapping.getMutable().isMutable());
 		
 		// set metadata complete
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("myDate");
-		contextBasic = (OrmEclipseLinkBasicMapping) ormPersistentAttribute.getMapping();
+		ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("myDate");
+		virtualContextBasic = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		assertNull(resourceBasic.getMutable());
-		assertFalse(contextBasic.getMutable().isDefaultMutable());
-		assertEquals(Boolean.FALSE, contextBasic.getMutable().getSpecifiedMutable());
-		assertFalse(contextBasic.getMutable().isMutable());
+		assertFalse(virtualContextBasic.getMutable().isDefaultMutable());
+		assertNull(virtualContextBasic.getMutable().getSpecifiedMutable());
+		assertFalse(virtualContextBasic.getMutable().isMutable());
 		assertTrue(javaBasicMapping.getMutable().isMutable());
 	}
 
@@ -314,47 +314,47 @@ public class EclipseLinkOrmBasicMappingTests
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 		JavaBasicMapping javaBasicMapping = (JavaBasicMapping) ormPersistentType.getJavaPersistentType().getAttributeNamed("id").getMapping();
 		
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 				
 		//set lob in the resource model, verify context model updated
 		basicResource.setConvert("myConvert");
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 		assertEquals("myConvert", basicResource.getConvert());
 
 		//set lob to null in the resource model
 		basicResource.setConvert(null);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 		
 		
-		javaBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		javaBasicMapping.setConverter(EclipseLinkConvert.class);
 		((EclipseLinkConvert) javaBasicMapping.getConverter()).setSpecifiedConverterName("foo");
 		
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 		
 		
-		ormPersistentType.removeSpecifiedAttribute(ormPersistentAttribute);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
+		ormPersistentAttribute.convertToVirtual();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute2 = ormPersistentType.getAttributeNamed("id");
+		EclipseLinkBasicMapping virtualBasicMapping = (EclipseLinkBasicMapping) ormPersistentAttribute2.getMapping();
 		
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
-		assertEquals("foo", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
+		assertEquals(EclipseLinkConvert.class, virtualBasicMapping.getConverter().getType());
+		assertEquals("foo", ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, basicResource.getConvert());
 		assertEquals("foo", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 		
 		((EclipseLinkConvert) javaBasicMapping.getConverter()).setSpecifiedConverterName("bar");
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
-		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
+		assertEquals(EclipseLinkConvert.class, virtualBasicMapping.getConverter().getType());
+		assertEquals("bar", ((EclipseLinkConvert) virtualBasicMapping.getConverter()).getSpecifiedConverterName());
 		assertEquals(null, basicResource.getConvert());
 		assertEquals("bar", ((EclipseLinkConvert) javaBasicMapping.getConverter()).getSpecifiedConverterName());
 
-		javaBasicMapping.setConverter(Converter.NO_CONVERTER);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		javaBasicMapping.setConverter(null);
+		assertNull(virtualBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
-		assertEquals(Converter.NO_CONVERTER, javaBasicMapping.getConverter().getType());
+		assertNull(javaBasicMapping.getConverter().getType());
 	}
 	
 	public void testModifyConvert() throws Exception {
@@ -363,27 +363,27 @@ public class EclipseLinkOrmBasicMappingTests
 		OrmBasicMapping ormBasicMapping = (OrmBasicMapping) ormPersistentAttribute.getMapping();
 		XmlBasic basicResource = (XmlBasic) getXmlEntityMappings().getEntities().get(0).getAttributes().getBasics().get(0);
 	
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 				
 		//set lob in the context model, verify resource model updated
-		ormBasicMapping.setConverter(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER);
+		ormBasicMapping.setConverter(EclipseLinkConvert.class);
 		assertEquals("", basicResource.getConvert());
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 	
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName("bar");
 		assertEquals("bar", basicResource.getConvert());
-		assertEquals(EclipseLinkConvert.ECLIPSE_LINK_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertEquals(EclipseLinkConvert.class, ormBasicMapping.getConverter().getType());
 		assertEquals("bar", ((EclipseLinkConvert) ormBasicMapping.getConverter()).getSpecifiedConverterName());
 
 		((EclipseLinkConvert) ormBasicMapping.getConverter()).setSpecifiedConverterName(null);
 
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 
 		//set lob to false in the context model
-		ormBasicMapping.setConverter(Converter.NO_CONVERTER);
-		assertEquals(Converter.NO_CONVERTER, ormBasicMapping.getConverter().getType());
+		ormBasicMapping.setConverter(null);
+		assertNull(ormBasicMapping.getConverter().getType());
 		assertEquals(null, basicResource.getConvert());
 	}
 }

@@ -3,18 +3,17 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 
 /**
- * 
- * 
+ * database unique constraint
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,48 +24,52 @@ import java.util.ListIterator;
  * @since 2.0
  */
 public interface UniqueConstraint
-	extends JpaContextNode
+	extends ReadOnlyUniqueConstraint
 {
-	
-	// **************** column names **************************************
+	void initializeFrom(ReadOnlyUniqueConstraint oldUniqueConstraint);
+
+
+	// ********** column names **********
 
 	/**
-	 * Return a list iterator of the column names.
-	 * This will not be null.
+	 * Add the specified column name to the end of the
+	 * unique constraint's list of column names.
 	 */
-	ListIterator<String> columnNames();
-	
+	void addColumnName(String columnName);
+
 	/**
-	 * Return the number of column names.
-	 */
-	int columnNamesSize();
-		
-	/**
-	 * Add a column name to the list at the given index
+	 * Add the specified column name to the
+	 * unique constraint's list of column names
+	 * at the specified index.
 	 */
 	void addColumnName(int index, String columnName);
-	
+
 	/**
-	 * Remove the column name at the given index from the unique constraint
-	 */
-	void removeColumnName(int index);
-	
-	/**
-	 * Remove the column name from the unique constraint
+	 * Remove the specified column name from the
+	 * unique constraint's list of column names.
 	 */
 	void removeColumnName(String columnName);
-	
+
 	/**
-	 * Move the column name from the source index to the target index.
+	 * Remove the column name at the specified index from the
+	 * unique constraint's list of column names.
+	 */
+	void removeColumnName(int index);
+
+	/**
+	 * Move the column name at the specified source index
+	 * to the specified target index in the
+	 * unique constraint's list of column names.
 	 */
 	void moveColumnName(int targetIndex, int sourceIndex);
-		String COLUMN_NAMES_LIST = "columnNames"; //$NON-NLS-1$
-		
+
+
+	// ********** owner **********
+
 	/**
 	 * All containers must implement this interface.
 	 */
-	interface Owner
-	{
+	interface Owner {
 		Iterator<String> candidateUniqueConstraintColumnNames();
 	}
 }

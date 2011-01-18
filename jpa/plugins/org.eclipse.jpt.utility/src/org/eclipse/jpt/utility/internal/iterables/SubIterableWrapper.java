@@ -16,8 +16,8 @@ import org.eclipse.jpt.utility.internal.iterators.SubIteratorWrapper;
 
 /**
  * Wrap an iterable of elements of type <code>E1</code>, converting it into an
- * iterable of elements of type <code>E2</code>. Assume the wrapped iterable
- * contains only elements of type <code>E2</code>.
+ * iterable of elements of type <code>E2</code>. <em>Assume</em> the wrapped
+ * iterable contains only elements of type <code>E2</code>.
  * 
  * @param <E1> input: the type of elements contained by the wrapped iterable
  * @param <E2> output: the type of elements returned by the iterable's iterator

@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToOneMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedComposite;
@@ -19,6 +18,7 @@ import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
+import org.eclipse.jpt.ui.internal.details.MappedByPane;
 import org.eclipse.jpt.ui.internal.details.OneToOneJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
@@ -88,7 +88,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.2
  */
 public class OrmEclipseLinkOneToOneMapping1_1Composite
-extends EclipseLinkOneToOneMappingComposite<OrmOneToOneMapping>
+extends EclipseLinkOneToOneMappingComposite<OneToOneMapping>
 {
 	/**
 	 * Creates a new <code>Eclipselink1_1OneToOneMappingComposite</code>.
@@ -97,7 +97,7 @@ extends EclipseLinkOneToOneMappingComposite<OrmOneToOneMapping>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkOneToOneMapping1_1Composite(PropertyValueModel<? extends OrmOneToOneMapping> subjectHolder,
+	public OrmEclipseLinkOneToOneMapping1_1Composite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 

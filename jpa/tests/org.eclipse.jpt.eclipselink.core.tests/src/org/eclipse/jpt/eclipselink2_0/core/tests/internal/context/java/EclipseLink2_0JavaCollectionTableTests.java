@@ -14,8 +14,10 @@ import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.UniqueConstraint;
+import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
@@ -302,7 +304,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -328,7 +330,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("BAZ", joinTableResource.joinColumnAt(1).getName());
 		assertEquals("FOO", joinTableResource.joinColumnAt(2).getName());
 		
-		ListIterator<JoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals(joinColumn2, joinColumns.next());
 		assertEquals(joinColumn3, joinColumns.next());
 		assertEquals(joinColumn, joinColumns.next());
@@ -374,7 +376,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -388,7 +390,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		
 		collectionTable.moveSpecifiedJoinColumn(2, 0);
-		ListIterator<JoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
 		assertEquals("FOO", joinColumns.next().getName());
@@ -414,7 +416,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -430,7 +432,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		joinTableResource.joinColumnAt(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 	
-		ListIterator<JoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
+		ListIterator<JavaJoinColumn> joinColumns = collectionTable.specifiedJoinColumns();
 		assertEquals("FOO", joinColumns.next().getName());
 		assertEquals("BAR", joinColumns.next().getName());
 		assertEquals("BAZ", joinColumns.next().getName());
@@ -495,7 +497,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
@@ -509,8 +511,8 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		uniqueConstraints = collectionTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("bar", uniqueConstraints.next().columnNames().next());
-		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -581,7 +583,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -599,9 +601,9 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<UniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		Iterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
@@ -611,7 +613,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
@@ -627,7 +629,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		collectionTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		collectionTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		collectionTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -640,10 +642,10 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		
 		
 		collectionTable.moveUniqueConstraint(2, 0);
-		ListIterator<UniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
@@ -653,9 +655,9 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 
 		collectionTable.moveUniqueConstraint(0, 1);
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		uniqueConstraintAnnotations = joinTableAnnotation.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
@@ -668,7 +670,7 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaElementCollectionMapping2_0 elementCollectionMapping = (JavaElementCollectionMapping2_0) getJavaPersistentType().attributes().next().getMapping();
-		CollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
+		JavaCollectionTable2_0 collectionTable = elementCollectionMapping.getCollectionTable();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		CollectionTable2_0Annotation joinTableAnnotation = (CollectionTable2_0Annotation) attributeResource.addAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
@@ -679,39 +681,39 @@ public class EclipseLink2_0JavaCollectionTableTests extends EclipseLink2_0Contex
 		getJpaProject().synchronizeContextModel();
 
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = collectionTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.moveUniqueConstraint(2, 0);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.moveUniqueConstraint(0, 1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		joinTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = collectionTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		joinTableAnnotation.removeUniqueConstraint(0);

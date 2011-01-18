@@ -94,7 +94,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added"; //$NON-NLS-1$
+				return "items added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -106,7 +106,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed"; //$NON-NLS-1$
+				return "items removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -118,7 +118,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items moved"; //$NON-NLS-1$
+				return "items moved runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -130,7 +130,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items replaced"; //$NON-NLS-1$
+				return "items replaced runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -142,7 +142,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list cleared"; //$NON-NLS-1$
+				return "list cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -154,7 +154,7 @@ public final class AWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list changed"; //$NON-NLS-1$
+				return "list changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

@@ -245,7 +245,7 @@ public class AssociationOverridesTests extends JpaJavaResourceModelTestCase {
 		
 		associationOverride.setName(null);
 		associationOverride.removeJoinColumn(0);
-		assertSourceDoesNotContain("@AssociationOverride", cu);
+		assertSourceDoesNotContain("@JoinColumn", cu);
 	}
 	
 	public void testMoveJoinColumn() throws Exception {

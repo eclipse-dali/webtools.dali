@@ -593,7 +593,7 @@ public final class CollectionTools {
 	 * If the lists are identical, return -1.
 	 * If the lists are different sizes, return the index of the
 	 * last element in the longer list.
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 * <p>
 	 * <code>Collections.diffEnd(List list1, List list2)</code>
@@ -606,7 +606,7 @@ public final class CollectionTools {
 	 * Return the range of elements in the specified
 	 * arrays that are different.
 	 * If the arrays are identical, return [size, -1].
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 * <p>
 	 * <code>Collections.diffRange(List list1, List list2)</code>
@@ -625,7 +625,7 @@ public final class CollectionTools {
 	 * the shorter list match their corresponding elements in
 	 * the longer list, return the size of the shorter list
 	 * (i.e. one past the last index of the shorter list).
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 * <p>
 	 * <code>Collections.diffStart(List list1, List list2)</code>
@@ -701,7 +701,8 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return whether the specified iterables return equal elements.
+	 * Return whether the specified iterables return equal elements
+	 * in the same order.
 	 * <p>
 	 * <code>Iterable.elementsAreEqual(Iterable iterable)</code>
 	 */
@@ -710,7 +711,8 @@ public final class CollectionTools {
 	}
 
 	/**
-	 * Return whether the specified iterators return equal elements.
+	 * Return whether the specified iterators return equal elements
+	 * in the same order.
 	 * <p>
 	 * <code>Iterator.elementsAreEqual(Iterator iterator)</code>
 	 */
@@ -835,33 +837,55 @@ public final class CollectionTools {
 	// ********** insertion index of **********
 
 	/**
-	 * Return the maximum index of where the specified comparable object
-	 * should be inserted into the specified sorted list and still keep
-	 * the list sorted.
+	 * Return an index of where the specified comparable object
+	 * can be inserted into the specified sorted list and still keep
+	 * the list sorted. If the specified sorted list is an instance of
+	 * {@link RandomAccess} return the <em>maximum</em> insertion index;
+	 * otherwise return the <em>minimum</em> insertion index.
 	 */
 	public static <E extends Comparable<? super E>> int insertionIndexOf(List<E> sortedList, Comparable<E> value) {
-		int len = sortedList.size();
-		for (int i = 0; i < len; i++) {
-			if (value.compareTo(sortedList.get(i)) < 0) {
+		if (sortedList instanceof RandomAccess) {
+			for (int i = sortedList.size(); i-- > 0; ) {
+				if (value.compareTo(sortedList.get(i)) >= 0) {
+					return i + 1;
+				}
+			}
+			return 0;
+		}
+		int i = 0;
+		for (E element : sortedList) {
+			if (value.compareTo(element) <= 0) {
 				return i;
 			}
+			i++;
 		}
-		return len;
+		return i;
 	}
 
 	/**
-	 * Return the maximum index of where the specified object
-	 * should be inserted into the specified sorted list and still keep
-	 * the list sorted.
+	 * Return an index of where the specified comparable object
+	 * can be inserted into the specified sorted list and still keep
+	 * the list sorted. If the specified sorted list is an instance of
+	 * {@link RandomAccess} return the <em>maximum</em> insertion index;
+	 * otherwise return the <em>minimum</em> insertion index.
 	 */
 	public static <E> int insertionIndexOf(List<E> sortedList, E value, Comparator<? super E> comparator) {
-		int len = sortedList.size();
-		for (int i = 0; i < len; i++) {
-			if (comparator.compare(value, sortedList.get(i)) < 0) {
+		if (sortedList instanceof RandomAccess) {
+			for (int i = sortedList.size(); i-- > 0; ) {
+				if (comparator.compare(value, sortedList.get(i)) >= 0) {
+					return i + 1;
+				}
+			}
+			return 0;
+		}
+		int i = 0;
+		for (E element : sortedList) {
+			if (comparator.compare(value, element) <= 0) {
 				return i;
 			}
+			i++;
 		}
-		return len;
+		return i;
 	}
 
 
@@ -893,7 +917,7 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterable.last()</code>
 	 * 
-     * @exception NoSuchElementException iterable is empty.
+     * @exception java.util.NoSuchElementException iterable is empty.
 	 */
 	public static <E> E last(Iterable<E> iterable) {
 		return last(iterable.iterator());
@@ -904,7 +928,7 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterator.last()</code>
 	 * 
-     * @exception NoSuchElementException iterator is empty.
+     * @exception java.util.NoSuchElementException iterator is empty.
 	 */
 	public static <E> E last(Iterator<E> iterator) {
 		E last;
@@ -1359,7 +1383,7 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterable.reverseList()</code>
 	 */
-	public static <E> List<E> reverseList(Iterable<? extends E> iterable) {
+	public static <E> ArrayList<E> reverseList(Iterable<? extends E> iterable) {
 		return reverseList(iterable.iterator());
 	}
 
@@ -1370,7 +1394,7 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterable.reverseList()</code>
 	 */
-	public static <E> List<E> reverseList(Iterable<? extends E> iterable, int iterableSize) {
+	public static <E> ArrayList<E> reverseList(Iterable<? extends E> iterable, int iterableSize) {
 		return reverseList(iterable.iterator(), iterableSize);
 	}
 
@@ -1380,8 +1404,8 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterator.reverseList()</code>
 	 */
-	public static <E> List<E> reverseList(Iterator<? extends E> iterator) {
-		return reverse(list(iterator));
+	public static <E> ArrayList<E> reverseList(Iterator<? extends E> iterator) {
+		return (ArrayList<E>) reverse(list(iterator));
 	}
 
 	/**
@@ -1391,8 +1415,8 @@ public final class CollectionTools {
 	 * <p>
 	 * <code>Iterator.reverseList()</code>
 	 */
-	public static <E> List<E> reverseList(Iterator<? extends E> iterator, int size) {
-		return reverse(list(iterator, size));
+	public static <E> ArrayList<E> reverseList(Iterator<? extends E> iterator, int size) {
+		return (ArrayList<E>) reverse(list(iterator, size));
 	}
 
 

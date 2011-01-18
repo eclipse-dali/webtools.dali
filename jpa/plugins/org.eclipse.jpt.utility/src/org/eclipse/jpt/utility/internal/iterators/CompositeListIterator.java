@@ -34,8 +34,9 @@ public class CompositeListIterator<E>
 	private ListIterator<E> nextIterator;
 	private int nextIndex;
  	/**
- 	 * true if "next" was last returned; false if "previous" was last returned;
- 	 * this determines the effect of {@link #remove(Object)} on {@link #nextIndex}
+ 	 * <code>true</code> if "next" was last returned;
+ 	 * <code>false</code> if "previous" was last returned;
+ 	 * this determines the effect of {@link #remove()} on {@link #nextIndex}
  	 */
 	private boolean nextReturned;
 	private ListIterator<E> lastIteratorToReturnElement;

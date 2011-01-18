@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 
 /**
- * 
- * 
+ * Java discriminator column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,22 +25,20 @@ import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
  * @since 2.0
  */
 public interface JavaDiscriminatorColumn
-	extends JavaNamedColumn, DiscriminatorColumn
-{	
-	void initialize(DiscriminatorColumnAnnotation resourceColumn);
-	
-	/**
-	 * Update the JavaDiscriminatorColumn context model object to match the DiscriminatorColumnAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(DiscriminatorColumnAnnotation resourceColumn);
+	extends DiscriminatorColumn, JavaNamedColumn
+{
+	DiscriminatorColumnAnnotation getColumnAnnotation();
 		
+
+	// ********** owner **********
+
 	/**
 	 * interface allowing columns to be used in multiple places
 	 */
-	interface Owner extends JavaNamedColumn.Owner, DiscriminatorColumn.Owner
+	interface Owner
+		extends JavaNamedColumn.Owner, DiscriminatorColumn.Owner
 	{
-
+		// combine two interfaces
 	}
 
 }

@@ -1,710 +1,728 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCacheType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExistenceType;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkNonEmbeddableTypeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCache;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCacheHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTimeOfDay;
 
-public class OrmEclipseLinkCachingImpl 
+public class OrmEclipseLinkCachingImpl
 	extends AbstractOrmXmlContextNode
-	implements 
-		OrmEclipseLinkCaching,
-		OrmCacheableHolder2_0
+	implements OrmEclipseLinkCaching, OrmCacheableHolder2_0
 {
-	protected final XmlCacheHolder resource;
-	
-	protected int defaultSize;
-	protected Integer specifiedSize;
-	
-	protected boolean defaultShared;
-	protected Boolean specifiedShared;
-	
-	protected EclipseLinkCacheType defaultType;
 	protected EclipseLinkCacheType specifiedType;
-	
-	protected boolean defaultAlwaysRefresh;
+	protected EclipseLinkCacheType defaultType;
+
+	protected Integer specifiedSize;
+	protected int defaultSize;
+
+	protected Boolean specifiedShared;
+	protected boolean defaultShared;
+
 	protected Boolean specifiedAlwaysRefresh;
-	
-	protected boolean defaultRefreshOnlyIfNewer;
+	protected boolean defaultAlwaysRefresh;
+
 	protected Boolean specifiedRefreshOnlyIfNewer;
-	
-	protected boolean defaultDisableHits;
+	protected boolean defaultRefreshOnlyIfNewer;
+
 	protected Boolean specifiedDisableHits;
-	
-	protected EclipseLinkCacheCoordinationType defaultCoordinationType;
+	protected boolean defaultDisableHits;
+
 	protected EclipseLinkCacheCoordinationType specifiedCoordinationType;
-	
+	protected EclipseLinkCacheCoordinationType defaultCoordinationType;
+
+	protected Integer expiry;
+	protected EclipseLinkOrmTimeOfDay expiryTimeOfDay;
+
 	protected EclipseLinkExistenceType specifiedExistenceType;
 	protected EclipseLinkExistenceType defaultExistenceType;
-	
-	protected Integer expiry;
-	protected OrmEclipseLinkExpiryTimeOfDay expiryTimeOfDay;
 
 	protected final OrmCacheable2_0 cacheable;
-	
-	public OrmEclipseLinkCachingImpl(OrmTypeMapping parent, XmlCacheHolder resource, XmlCacheable_2_0 cacheableResource, JavaEclipseLinkCaching javaCaching) {
+
+
+	public OrmEclipseLinkCachingImpl(OrmEclipseLinkNonEmbeddableTypeMapping parent) {
 		super(parent);
-		this.resource = resource;
-		XmlCache resourceCache = getResourceCache();
-		this.defaultSize = this.defaultSize(javaCaching);
-		this.specifiedSize = getResourceSize(resourceCache);
-		this.defaultShared = this.defaultShared(javaCaching);
-		this.specifiedShared = this.getResourceShared(resourceCache);
-		this.defaultAlwaysRefresh = this.defaultAlwaysRefresh(javaCaching);
-		this.specifiedAlwaysRefresh = this.getResourceAlwaysRefresh(resourceCache);
-		this.defaultRefreshOnlyIfNewer = this.defaultRefreshOnlyIfNewer(javaCaching);
-		this.specifiedRefreshOnlyIfNewer = this.getResourceRefreshOnlyIfNewer(resourceCache);
-		this.defaultDisableHits = this.defaultDisableHits(javaCaching);
-		this.specifiedDisableHits = this.getResourceDisableHits(resourceCache);
-		this.defaultType = this.defaultType(javaCaching);
-		this.specifiedType = this.getResourceType(resourceCache);
-		this.defaultCoordinationType = this.defaultCoordinationType(javaCaching);
-		this.specifiedCoordinationType = this.getResourceCoordinationType(resourceCache);
-		this.defaultExistenceType = this.defaultExistenceType(javaCaching);
-		this.specifiedExistenceType = this.getResourceExistenceChecking();
-		this.initializeExpiry(resourceCache);
-		this.cacheable = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmCacheable(this, cacheableResource);
+
+		this.specifiedType = this.buildSpecifiedType();
+		this.specifiedSize = this.buildSpecifiedSize();
+		this.specifiedShared = this.buildSpecifiedShared();
+		this.specifiedAlwaysRefresh = this.buildSpecifiedAlwaysRefresh();
+		this.specifiedRefreshOnlyIfNewer = this.buildSpecifiedRefreshOnlyIfNewer();
+		this.specifiedDisableHits = this.buildSpecifiedDisableHits();
+
+		this.specifiedCoordinationType = this.buildSpecifiedCoordinationType();
+
+		this.expiry = this.buildExpiry();
+		this.expiryTimeOfDay = this.buildExpiryTimeOfDay();
+
+		this.specifiedExistenceType = this.buildSpecifiedExistenceType();
+
+		this.cacheable = this.buildCacheable();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+
+		this.setSpecifiedType_(this.buildSpecifiedType());
+		this.setSpecifiedSize_(this.buildSpecifiedSize());
+		this.setSpecifiedShared_(this.buildSpecifiedShared());
+		this.setSpecifiedAlwaysRefresh_(this.buildSpecifiedAlwaysRefresh());
+		this.setSpecifiedRefreshOnlyIfNewer_(this.buildSpecifiedRefreshOnlyIfNewer());
+		this.setSpecifiedDisableHits_(this.buildSpecifiedDisableHits());
+
+		this.setSpecifiedCoordinationType_(this.buildSpecifiedCoordinationType());
+
+		this.setExpiry_(this.buildExpiry());
+		this.syncExpiryTimeOfDay();
+
+		this.setSpecifiedExistenceType_(this.buildSpecifiedExistenceType());
+
+		this.cacheable.synchronizeWithResourceModel();
 	}
 
 	@Override
-	public OrmTypeMapping getParent() {
-		return (OrmTypeMapping) super.getParent();
-	}
-	
-	public int getSize() {
-		return (this.specifiedSize == null) ? this.defaultSize : this.specifiedSize.intValue();
-	}
-	
-	public int getDefaultSize() {
-		return this.defaultSize;
-	}
-	
-	protected void setDefaultSize(int newSize) {
-		int oldSize = this.defaultSize;
-		this.defaultSize = newSize;
-		firePropertyChanged(DEFAULT_SIZE_PROPERTY, oldSize, newSize);
-	}
-	
-	public Integer getSpecifiedSize() {
-		return this.specifiedSize;
-	}
-	
-	public void setSpecifiedSize(Integer newSpecifiedSize) {
-		Integer oldSpecifiedSize = this.specifiedSize;
-		this.specifiedSize = newSpecifiedSize;
-		if (oldSpecifiedSize != newSpecifiedSize) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setSize(newSpecifiedSize);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedSize != null) {
-				addResourceCache();
-				getResourceCache().setSize(newSpecifiedSize);
-			}
+	@SuppressWarnings("null")
+	public void update() {
+		super.update();
+
+		boolean xmlCacheNotSpecified = (this.getXmlCache() == null);
+		JavaEclipseLinkCaching javaCaching = this.getJavaCachingForDefaults();
+		boolean javaCacheSpecified = (javaCaching != null);
+		boolean useJavaValue = (xmlCacheNotSpecified && javaCacheSpecified);
+
+		this.setDefaultType(useJavaValue ? javaCaching.getType() : DEFAULT_TYPE);
+		this.setDefaultSize(useJavaValue ? javaCaching.getSize() : DEFAULT_SIZE);
+		this.setDefaultShared(useJavaValue ? javaCaching.isShared() : DEFAULT_SHARED);
+		this.setDefaultAlwaysRefresh(useJavaValue ? javaCaching.isAlwaysRefresh() : DEFAULT_ALWAYS_REFRESH);
+		this.setDefaultRefreshOnlyIfNewer(useJavaValue ? javaCaching.isRefreshOnlyIfNewer() : DEFAULT_REFRESH_ONLY_IF_NEWER);
+		this.setDefaultDisableHits(useJavaValue ? javaCaching.isDisableHits() : DEFAULT_DISABLE_HITS);
+
+		this.setDefaultCoordinationType(useJavaValue ? javaCaching.getCoordinationType() : DEFAULT_COORDINATION_TYPE);
+
+		if (this.expiryTimeOfDay != null) {
+			this.expiryTimeOfDay.update();
 		}
-		firePropertyChanged(SPECIFIED_SIZE_PROPERTY, oldSpecifiedSize, newSpecifiedSize);		
+
+		// existence checking is its own xml attribute, it is not part of the cache xml element
+		this.setDefaultExistenceType(javaCacheSpecified ? javaCaching.getExistenceType() : DEFAULT_EXISTENCE_TYPE);
+
+		this.cacheable.update();
 	}
-	
-	protected void setSpecifiedSize_(Integer newSpecifiedSize) {
-		Integer oldSpecifiedSize = this.specifiedSize;
-		this.specifiedSize = newSpecifiedSize;
-		firePropertyChanged(SPECIFIED_SIZE_PROPERTY, oldSpecifiedSize, newSpecifiedSize);
-	}
-	
-	
-	public boolean isShared() {
-		return (this.specifiedShared == null) ? this.defaultShared : this.specifiedShared.booleanValue();
-	}
-	
-	public boolean isDefaultShared() {
-		return this.defaultShared;
-	}
-	
-	protected void setDefaultShared(boolean newDefaultShared) {
-		boolean oldDefaultShared = this.defaultShared;
-		this.defaultShared = newDefaultShared;
-		firePropertyChanged(DEFAULT_SHARED_PROPERTY, oldDefaultShared, newDefaultShared);	
-	}
-	
-	public Boolean getSpecifiedShared() {
-		return this.specifiedShared;
-	}
-	
-	public void setSpecifiedShared(Boolean newSpecifiedShared) {
-		Boolean oldSpecifiedShared = this.specifiedShared;
-		this.specifiedShared = newSpecifiedShared;
-		if (oldSpecifiedShared != newSpecifiedShared) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setShared(newSpecifiedShared);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedShared != null) {
-				addResourceCache();
-				getResourceCache().setShared(newSpecifiedShared);
-			}
-		}
-		firePropertyChanged(SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);		
-		if (newSpecifiedShared == Boolean.FALSE) {
-			setSpecifiedType(null);
-			setSpecifiedSize(null);
-			setSpecifiedAlwaysRefresh(null);
-			setSpecifiedRefreshOnlyIfNewer(null);
-			setSpecifiedDisableHits(null);
-			setSpecifiedCoordinationType(null);
-			setExpiry(null);
-			if (this.expiryTimeOfDay != null) {
-				removeExpiryTimeOfDay();
-			}
-		}
-	}
-	
-	protected void setSpecifiedShared_(Boolean newSpecifiedShared) {
-		Boolean oldSpecifiedShared = this.specifiedShared;
-		this.specifiedShared = newSpecifiedShared;
-		firePropertyChanged(SPECIFIED_SHARED_PROPERTY, oldSpecifiedShared, newSpecifiedShared);	
-	}
-	
-	
-	public boolean isAlwaysRefresh() {
-		return (this.specifiedAlwaysRefresh == null) ? this.defaultAlwaysRefresh : this.specifiedAlwaysRefresh.booleanValue();
-	}
-	
-	public boolean isDefaultAlwaysRefresh() {
-		return this.defaultAlwaysRefresh;
-	}
-	
-	protected void setDefaultAlwaysRefresh(boolean newDefaultAlwaysRefresh) {
-		boolean oldDefaultAlwaysRefresh = this.defaultAlwaysRefresh;
-		this.defaultAlwaysRefresh = newDefaultAlwaysRefresh;
-		firePropertyChanged(DEFAULT_ALWAYS_REFRESH_PROPERTY, oldDefaultAlwaysRefresh, newDefaultAlwaysRefresh);	
-	}
-	
-	public Boolean getSpecifiedAlwaysRefresh() {
-		return this.specifiedAlwaysRefresh;
-	}
-	
-	public void setSpecifiedAlwaysRefresh(Boolean newSpecifiedAlwaysRefresh) {
-		Boolean oldSpecifiedAlwaysRefresh = this.specifiedAlwaysRefresh;
-		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
-		if (oldSpecifiedAlwaysRefresh != newSpecifiedAlwaysRefresh) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setAlwaysRefresh(newSpecifiedAlwaysRefresh);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedAlwaysRefresh != null) {
-				addResourceCache();
-				getResourceCache().setAlwaysRefresh(newSpecifiedAlwaysRefresh);
-			}
-		}
-		firePropertyChanged(SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldSpecifiedAlwaysRefresh, newSpecifiedAlwaysRefresh);		
-	}
-	
-	protected void setSpecifiedAlwaysRefresh_(Boolean newSpecifiedAlwaysRefresh) {
-		Boolean oldSpecifiedAlwaysRefresh = this.specifiedAlwaysRefresh;
-		this.specifiedAlwaysRefresh = newSpecifiedAlwaysRefresh;
-		firePropertyChanged(SPECIFIED_ALWAYS_REFRESH_PROPERTY, oldSpecifiedAlwaysRefresh, newSpecifiedAlwaysRefresh);	
-	}
-	
-	
-	public boolean isRefreshOnlyIfNewer() {
-		return (this.specifiedRefreshOnlyIfNewer == null) ? this.defaultRefreshOnlyIfNewer : this.specifiedRefreshOnlyIfNewer.booleanValue();
-	}
-	
-	public boolean isDefaultRefreshOnlyIfNewer() {
-		return this.defaultRefreshOnlyIfNewer;
-	}
-	
-	protected void setDefaultRefreshOnlyIfNewer(boolean newDefaultRefreshOnlyIfNewer) {
-		boolean oldDefaultRefreshOnlyIfNewer = this.defaultRefreshOnlyIfNewer;
-		this.defaultRefreshOnlyIfNewer = newDefaultRefreshOnlyIfNewer;
-		firePropertyChanged(DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY, oldDefaultRefreshOnlyIfNewer, newDefaultRefreshOnlyIfNewer);	
-	}
-	
-	public Boolean getSpecifiedRefreshOnlyIfNewer() {
-		return this.specifiedRefreshOnlyIfNewer;
-	}
-	
-	public void setSpecifiedRefreshOnlyIfNewer(Boolean newSpecifiedRefreshOnlyIfNewer) {
-		Boolean oldSpecifiedRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
-		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
-		if (oldSpecifiedRefreshOnlyIfNewer != newSpecifiedRefreshOnlyIfNewer) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setRefreshOnlyIfNewer(newSpecifiedRefreshOnlyIfNewer);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedRefreshOnlyIfNewer != null) {
-				addResourceCache();
-				getResourceCache().setRefreshOnlyIfNewer(newSpecifiedRefreshOnlyIfNewer);
-			}
-		}
-		firePropertyChanged(SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldSpecifiedRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);		
-	}
-	
-	protected void setSpecifiedRefreshOnlyIfNewer_(Boolean newSpecifiedRefreshOnlyIfNewer) {
-		Boolean oldSpecifiedRefreshOnlyIfNewer = this.specifiedRefreshOnlyIfNewer;
-		this.specifiedRefreshOnlyIfNewer = newSpecifiedRefreshOnlyIfNewer;
-		firePropertyChanged(SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, oldSpecifiedRefreshOnlyIfNewer, newSpecifiedRefreshOnlyIfNewer);	
-	}
-	
-	
-	public boolean isDisableHits() {
-		return (this.specifiedDisableHits == null) ? this.defaultDisableHits : this.specifiedDisableHits.booleanValue();
-	}
-	
-	public boolean isDefaultDisableHits() {
-		return this.defaultDisableHits;
-	}
-	
-	protected void setDefaultDisableHits(boolean newDefaultDisableHits) {
-		boolean oldDefaultDisableHits = this.defaultDisableHits;
-		this.defaultDisableHits = newDefaultDisableHits;
-		firePropertyChanged(DEFAULT_DISABLE_HITS_PROPERTY, oldDefaultDisableHits, newDefaultDisableHits);	
-	}
-	
-	public Boolean getSpecifiedDisableHits() {
-		return this.specifiedDisableHits;
-	}
-	
-	public void setSpecifiedDisableHits(Boolean newSpecifiedDisableHits) {
-		Boolean oldSpecifiedDisableHits = this.specifiedDisableHits;
-		this.specifiedDisableHits = newSpecifiedDisableHits;
-		if (oldSpecifiedDisableHits != newSpecifiedDisableHits) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setDisableHits(newSpecifiedDisableHits);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedDisableHits != null) {
-				addResourceCache();
-				getResourceCache().setDisableHits(newSpecifiedDisableHits);
-			}
-		}
-		firePropertyChanged(SPECIFIED_DISABLE_HITS_PROPERTY, oldSpecifiedDisableHits, newSpecifiedDisableHits);		
-	}
-	
-	protected void setSpecifiedDisableHits_(Boolean newSpecifiedDisableHits) {
-		Boolean oldSpecifiedDisableHits = this.specifiedDisableHits;
-		this.specifiedDisableHits = newSpecifiedDisableHits;
-		firePropertyChanged(SPECIFIED_DISABLE_HITS_PROPERTY, oldSpecifiedDisableHits, newSpecifiedDisableHits);	
-	}
-	
+
+
+	// ********** type **********
+
 	public EclipseLinkCacheType getType() {
-		return (this.specifiedType == null) ? this.defaultType : this.specifiedType;
+		return (this.specifiedType != null) ? this.specifiedType : this.defaultType;
+	}
+
+	public EclipseLinkCacheType getSpecifiedType() {
+		return this.specifiedType;
+	}
+
+	public void setSpecifiedType(EclipseLinkCacheType type) {
+		if (this.valuesAreDifferent(this.specifiedType, type)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedType_(type);
+			xmlCache.setType(EclipseLinkCacheType.toOrmResourceModel(type));
+			this.removeXmlCacheIfUnset();
+		}
+
+		if (type != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedType_(EclipseLinkCacheType type) {
+		EclipseLinkCacheType old = this.specifiedType;
+		this.specifiedType = type;
+		this.firePropertyChanged(SPECIFIED_TYPE_PROPERTY, old, type);
+	}
+
+	protected EclipseLinkCacheType buildSpecifiedType() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : EclipseLinkCacheType.fromOrmResourceModel(xmlCache.getType());
 	}
 
 	public EclipseLinkCacheType getDefaultType() {
 		return this.defaultType;
 	}
-	
-	protected void setDefaultType(EclipseLinkCacheType newDefaultType) {
-		EclipseLinkCacheType oldDefaultType= this.defaultType;
-		this.defaultType = newDefaultType;
-		firePropertyChanged(DEFAULT_TYPE_PROPERTY, oldDefaultType, newDefaultType);				
+
+	protected void setDefaultType(EclipseLinkCacheType type) {
+		EclipseLinkCacheType old = this.defaultType;
+		this.defaultType = type;
+		this.firePropertyChanged(DEFAULT_TYPE_PROPERTY, old, type);
 	}
-	
-	public EclipseLinkCacheType getSpecifiedType() {
-		return this.specifiedType;
+
+
+	// ********** size **********
+
+	public int getSize() {
+		return (this.specifiedSize != null) ? this.specifiedSize.intValue() : this.defaultSize;
 	}
-	
-	public void setSpecifiedType(EclipseLinkCacheType newSpecifiedType) {
-		EclipseLinkCacheType oldSpecifiedType = this.specifiedType;
-		this.specifiedType = newSpecifiedType;
-		if (oldSpecifiedType != newSpecifiedType) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setType(EclipseLinkCacheType.toOrmResourceModel(newSpecifiedType));						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedType != null) {
-				addResourceCache();
-				getResourceCache().setType(EclipseLinkCacheType.toOrmResourceModel(newSpecifiedType));
-			}
+
+	public Integer getSpecifiedSize() {
+		return this.specifiedSize;
+	}
+
+	public void setSpecifiedSize(Integer size) {
+		if (this.valuesAreDifferent(this.specifiedSize, size)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedSize_(size);
+			xmlCache.setSize(size);
+			this.removeXmlCacheIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);		
+
+		if (size != null) {
+			this.setSpecifiedShared(null);
+		}
 	}
-	
-	protected void setSpecifiedType_(EclipseLinkCacheType newSpecifiedType) {
-		EclipseLinkCacheType oldSpecifiedType= this.specifiedType;
-		this.specifiedType = newSpecifiedType;
-		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);		
+
+	protected void setSpecifiedSize_(Integer size) {
+		Integer old = this.specifiedSize;
+		this.specifiedSize = size;
+		this.firePropertyChanged(SPECIFIED_SIZE_PROPERTY, old, size);
 	}
-	
-	
+
+	protected Integer buildSpecifiedSize() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getSize();
+	}
+
+	public int getDefaultSize() {
+		return this.defaultSize;
+	}
+
+	protected void setDefaultSize(int size) {
+		int old = this.defaultSize;
+		this.defaultSize = size;
+		this.firePropertyChanged(DEFAULT_SIZE_PROPERTY, old, size);
+	}
+
+
+	// ********** shared **********
+
+	public boolean isShared() {
+		return (this.specifiedShared != null) ? this.specifiedShared.booleanValue() : this.defaultShared;
+	}
+
+	public Boolean getSpecifiedShared() {
+		return this.specifiedShared;
+	}
+
+	public void setSpecifiedShared(Boolean shared) {
+		if (this.valuesAreDifferent(this.specifiedShared, shared)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedShared_(shared);
+			xmlCache.setShared(shared);
+			this.removeXmlCacheIfUnset();
+		}
+
+		if ((shared != null) && ! shared.booleanValue()) {  // Boolean.FALSE
+			this.setSpecifiedType(null);
+			this.setSpecifiedSize(null);
+			this.setSpecifiedAlwaysRefresh(null);
+			this.setSpecifiedRefreshOnlyIfNewer(null);
+			this.setSpecifiedDisableHits(null);
+			this.setSpecifiedCoordinationType(null);
+			this.setExpiry(null);
+			this.removeExpiryTimeOfDayIfNecessary();
+		}
+	}
+
+	protected void setSpecifiedShared_(Boolean shared) {
+		Boolean old = this.specifiedShared;
+		this.specifiedShared = shared;
+		this.firePropertyChanged(SPECIFIED_SHARED_PROPERTY, old, shared);
+	}
+
+	protected Boolean buildSpecifiedShared() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getShared();
+	}
+
+	public boolean isDefaultShared() {
+		return this.defaultShared;
+	}
+
+	protected void setDefaultShared(boolean shared) {
+		boolean old = this.defaultShared;
+		this.defaultShared = shared;
+		this.firePropertyChanged(DEFAULT_SHARED_PROPERTY, old, shared);
+	}
+
+
+	// ********** always refresh **********
+
+	public boolean isAlwaysRefresh() {
+		return (this.specifiedAlwaysRefresh != null) ? this.specifiedAlwaysRefresh.booleanValue() : this.defaultAlwaysRefresh;
+	}
+
+	public Boolean getSpecifiedAlwaysRefresh() {
+		return this.specifiedAlwaysRefresh;
+	}
+
+	public void setSpecifiedAlwaysRefresh(Boolean alwaysRefresh) {
+		if (this.valuesAreDifferent(this.specifiedAlwaysRefresh, alwaysRefresh)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedAlwaysRefresh_(alwaysRefresh);
+			xmlCache.setAlwaysRefresh(alwaysRefresh);
+			this.removeXmlCacheIfUnset();
+		}
+
+		if (alwaysRefresh != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedAlwaysRefresh_(Boolean alwaysRefresh) {
+		Boolean old = this.specifiedAlwaysRefresh;
+		this.specifiedAlwaysRefresh = alwaysRefresh;
+		this.firePropertyChanged(SPECIFIED_ALWAYS_REFRESH_PROPERTY, old, alwaysRefresh);
+	}
+
+	protected Boolean buildSpecifiedAlwaysRefresh() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getAlwaysRefresh();
+	}
+
+	public boolean isDefaultAlwaysRefresh() {
+		return this.defaultAlwaysRefresh;
+	}
+
+	protected void setDefaultAlwaysRefresh(boolean alwaysRefresh) {
+		boolean old = this.defaultAlwaysRefresh;
+		this.defaultAlwaysRefresh = alwaysRefresh;
+		this.firePropertyChanged(DEFAULT_ALWAYS_REFRESH_PROPERTY, old, alwaysRefresh);
+	}
+
+
+	// ********** refresh only if newer **********
+
+	public boolean isRefreshOnlyIfNewer() {
+		return (this.specifiedRefreshOnlyIfNewer != null) ? this.specifiedRefreshOnlyIfNewer.booleanValue() : this.defaultRefreshOnlyIfNewer;
+	}
+
+	public Boolean getSpecifiedRefreshOnlyIfNewer() {
+		return this.specifiedRefreshOnlyIfNewer;
+	}
+
+	public void setSpecifiedRefreshOnlyIfNewer(Boolean refreshOnlyIfNewer) {
+		if (this.valuesAreDifferent(this.specifiedRefreshOnlyIfNewer, refreshOnlyIfNewer)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedRefreshOnlyIfNewer_(refreshOnlyIfNewer);
+			xmlCache.setRefreshOnlyIfNewer(refreshOnlyIfNewer);
+			this.removeXmlCacheIfUnset();
+		}
+
+		if (refreshOnlyIfNewer != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedRefreshOnlyIfNewer_(Boolean refreshOnlyIfNewer) {
+		Boolean old = this.specifiedRefreshOnlyIfNewer;
+		this.specifiedRefreshOnlyIfNewer = refreshOnlyIfNewer;
+		this.firePropertyChanged(SPECIFIED_REFRESH_ONLY_IF_NEWER_PROPERTY, old, refreshOnlyIfNewer);
+	}
+
+	protected Boolean buildSpecifiedRefreshOnlyIfNewer() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getRefreshOnlyIfNewer();
+	}
+
+	public boolean isDefaultRefreshOnlyIfNewer() {
+		return this.defaultRefreshOnlyIfNewer;
+	}
+
+	protected void setDefaultRefreshOnlyIfNewer(boolean refreshOnlyIfNewer) {
+		boolean old = this.defaultRefreshOnlyIfNewer;
+		this.defaultRefreshOnlyIfNewer = refreshOnlyIfNewer;
+		this.firePropertyChanged(DEFAULT_REFRESH_ONLY_IF_NEWER_PROPERTY, old, refreshOnlyIfNewer);
+	}
+
+
+	// ********** disable hits **********
+
+	public boolean isDisableHits() {
+		return (this.specifiedDisableHits != null) ? this.specifiedDisableHits.booleanValue() : this.defaultDisableHits;
+	}
+
+	public Boolean getSpecifiedDisableHits() {
+		return this.specifiedDisableHits;
+	}
+
+	public void setSpecifiedDisableHits(Boolean disableHits) {
+		if (this.valuesAreDifferent(this.specifiedDisableHits, disableHits)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedDisableHits_(disableHits);
+			xmlCache.setDisableHits(disableHits);
+			this.removeXmlCacheIfUnset();
+		}
+
+		if (disableHits != null) {
+			this.setSpecifiedShared(null);
+		}
+	}
+
+	protected void setSpecifiedDisableHits_(Boolean disableHits) {
+		Boolean old = this.specifiedDisableHits;
+		this.specifiedDisableHits = disableHits;
+		this.firePropertyChanged(SPECIFIED_DISABLE_HITS_PROPERTY, old, disableHits);
+	}
+
+	protected Boolean buildSpecifiedDisableHits() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getDisableHits();
+	}
+
+	public boolean isDefaultDisableHits() {
+		return this.defaultDisableHits;
+	}
+
+	protected void setDefaultDisableHits(boolean disableHits) {
+		boolean old = this.defaultDisableHits;
+		this.defaultDisableHits = disableHits;
+		this.firePropertyChanged(DEFAULT_DISABLE_HITS_PROPERTY, old, disableHits);
+	}
+
+
+	// ********** coordination type **********
+
 	public EclipseLinkCacheCoordinationType getCoordinationType() {
-		return (this.specifiedCoordinationType == null) ? this.defaultCoordinationType : this.specifiedCoordinationType;
+		return (this.specifiedCoordinationType != null) ? this.specifiedCoordinationType : this.defaultCoordinationType;
 	}
-	
-	public EclipseLinkCacheCoordinationType getDefaultCoordinationType() {
-		return this.defaultCoordinationType;
-	}
-	
-	protected void setDefaultCoordinationType(EclipseLinkCacheCoordinationType newDefaultcCoordinationType) {
-		EclipseLinkCacheCoordinationType oldDefaultcCoordinationType= this.defaultCoordinationType;
-		this.defaultCoordinationType = newDefaultcCoordinationType;
-		firePropertyChanged(DEFAULT_COORDINATION_TYPE_PROPERTY, oldDefaultcCoordinationType, newDefaultcCoordinationType);				
-	}
-	
+
 	public EclipseLinkCacheCoordinationType getSpecifiedCoordinationType() {
 		return this.specifiedCoordinationType;
 	}
-	
-	public void setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType newSpecifiedCoordinationType) {
-		EclipseLinkCacheCoordinationType oldSpecifiedCoordinationType = this.specifiedCoordinationType;
-		this.specifiedCoordinationType = newSpecifiedCoordinationType;
-		if (oldSpecifiedCoordinationType != newSpecifiedCoordinationType) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setCoordinationType(EclipseLinkCacheCoordinationType.toOrmResourceModel(newSpecifiedCoordinationType));						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newSpecifiedCoordinationType != null) {
-				addResourceCache();
-				getResourceCache().setCoordinationType(EclipseLinkCacheCoordinationType.toOrmResourceModel(newSpecifiedCoordinationType));
-			}
+
+	public void setSpecifiedCoordinationType(EclipseLinkCacheCoordinationType type) {
+		if (this.valuesAreDifferent(this.specifiedCoordinationType, type)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setSpecifiedCoordinationType_(type);
+			xmlCache.setCoordinationType(EclipseLinkCacheCoordinationType.toOrmResourceModel(type));
+			this.removeXmlCacheIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, oldSpecifiedCoordinationType, newSpecifiedCoordinationType);		
+
+		if (type != null) {
+			this.setSpecifiedShared(null);
+		}
 	}
-	
-	protected void setSpecifiedCoordinationType_(EclipseLinkCacheCoordinationType newSpecifiedCoordinationType) {
-		EclipseLinkCacheCoordinationType oldSpecifiedCoordinationType = this.specifiedCoordinationType;
-		this.specifiedCoordinationType = newSpecifiedCoordinationType;
-		firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, oldSpecifiedCoordinationType, newSpecifiedCoordinationType);		
+
+	protected void setSpecifiedCoordinationType_(EclipseLinkCacheCoordinationType type) {
+		EclipseLinkCacheCoordinationType old = this.specifiedCoordinationType;
+		this.specifiedCoordinationType = type;
+		this.firePropertyChanged(SPECIFIED_COORDINATION_TYPE_PROPERTY, old, type);
 	}
-	
-	public EclipseLinkExistenceType getExistenceType() {
-		return (this.specifiedExistenceType == null) ? this.defaultExistenceType : this.specifiedExistenceType;
+
+	protected EclipseLinkCacheCoordinationType buildSpecifiedCoordinationType() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : EclipseLinkCacheCoordinationType.fromOrmResourceModel(xmlCache.getCoordinationType());
 	}
-	
-	public EclipseLinkExistenceType getDefaultExistenceType() {
-		return this.defaultExistenceType;
+
+	public EclipseLinkCacheCoordinationType getDefaultCoordinationType() {
+		return this.defaultCoordinationType;
 	}
-	
-	protected void setDefaultExistenceType(EclipseLinkExistenceType newDefaultExistenceType) {
-		EclipseLinkExistenceType oldDefaultExistenceType = this.defaultExistenceType;
-		this.defaultExistenceType = newDefaultExistenceType;
-		firePropertyChanged(DEFAULT_EXISTENCE_TYPE_PROPERTY, oldDefaultExistenceType, newDefaultExistenceType);
+
+	protected void setDefaultCoordinationType(EclipseLinkCacheCoordinationType type) {
+		EclipseLinkCacheCoordinationType old= this.defaultCoordinationType;
+		this.defaultCoordinationType = type;
+		this.firePropertyChanged(DEFAULT_COORDINATION_TYPE_PROPERTY, old, type);
 	}
-	
-	public EclipseLinkExistenceType getSpecifiedExistenceType() {
-		return this.specifiedExistenceType;
-	}
-	
-	public void setSpecifiedExistenceType(EclipseLinkExistenceType newSpecifiedExistenceType) {
-		EclipseLinkExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
-		this.specifiedExistenceType = newSpecifiedExistenceType;
-		this.resource.setExistenceChecking(EclipseLinkExistenceType.toOrmResourceModel(newSpecifiedExistenceType));
-		firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);			
-	}
-	
-	protected void setSpecifiedExistenceType_(EclipseLinkExistenceType newSpecifiedExistenceType) {
-		EclipseLinkExistenceType oldSpecifiedExistenceType = this.specifiedExistenceType;
-		this.specifiedExistenceType = newSpecifiedExistenceType;
-		firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, oldSpecifiedExistenceType, newSpecifiedExistenceType);		
-	}	
-	
+
+
+	// ********** expiry **********
+
 	public Integer getExpiry() {
 		return this.expiry;
 	}
-	
-	public void setExpiry(Integer newExpiry) {
-		Integer oldExpiry = this.expiry;
-		this.expiry = newExpiry;
-		if (oldExpiry != newExpiry) {
-			if (this.getResourceCache() != null) {
-				this.getResourceCache().setExpiry(newExpiry);						
-				if (this.getResourceCache().isUnset()) {
-					removeResourceCache();
-				}
-			}
-			else if (newExpiry != null) {
-				addResourceCache();
-				this.getResourceCache().setExpiry(newExpiry);						
-			}
+
+	public void setExpiry(Integer expiry) {
+		if (this.valuesAreDifferent(this.expiry, expiry)) {
+			XmlCache xmlCache = this.getXmlCacheForUpdate();
+			this.setExpiry_(expiry);
+			xmlCache.setExpiry(expiry);
+			this.removeXmlCacheIfUnset();
 		}
-		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
-		if (newExpiry != null && this.expiryTimeOfDay != null) {
-			removeExpiryTimeOfDay();
+
+		if (expiry != null) {
+			this.removeExpiryTimeOfDayIfNecessary();
+			this.setSpecifiedShared(null);
 		}
 	}
-	
-	protected void setExpiry_(Integer newExpiry) {
-		Integer oldExpiry = this.expiry;
-		this.expiry = newExpiry;		
-		firePropertyChanged(EXPIRY_PROPERTY, oldExpiry, newExpiry);
+
+	protected void setExpiry_(Integer expiry) {
+		Integer old = this.expiry;
+		this.expiry = expiry;
+		this.firePropertyChanged(EXPIRY_PROPERTY, old, expiry);
 	}
-	
-	public EclipseLinkExpiryTimeOfDay getExpiryTimeOfDay() {
+
+	protected Integer buildExpiry() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getExpiry();
+	}
+
+
+	// ********** expiry time of day **********
+
+	public EclipseLinkTimeOfDay getExpiryTimeOfDay() {
 		return this.expiryTimeOfDay;
 	}
-	
-	public EclipseLinkExpiryTimeOfDay addExpiryTimeOfDay() {
+
+	public EclipseLinkTimeOfDay addExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay != null) {
-			throw new IllegalStateException("expiryTimeOfDay already exists, use getExpiryTimeOfDay()"); //$NON-NLS-1$
+			throw new IllegalStateException("expiry time of day already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
 		}
-		if (getResourceCache() == null) {
-			addResourceCache();
-		}
-		OrmEclipseLinkExpiryTimeOfDay newExpiryTimeOfDay = new OrmEclipseLinkExpiryTimeOfDay(this);
-		this.expiryTimeOfDay = newExpiryTimeOfDay;
-		XmlTimeOfDay resourceTimeOfDay = EclipseLinkOrmFactory.eINSTANCE.createXmlTimeOfDay();
-		newExpiryTimeOfDay.initialize(resourceTimeOfDay);
-		getResourceCache().setExpiryTimeOfDay(resourceTimeOfDay);
-		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, null, newExpiryTimeOfDay);
-		setExpiry(null);
-		return newExpiryTimeOfDay;
+
+		XmlCache xmlCache = this.getXmlCacheForUpdate();
+		XmlTimeOfDay xmlTimeOfDay = this.buildXmlTimeOfDay();
+		EclipseLinkOrmTimeOfDay timeOfDay = this.buildExpiryTimeOfDay(xmlTimeOfDay);
+		this.setExpiryTimeOfDay(timeOfDay);
+		xmlCache.setExpiryTimeOfDay(xmlTimeOfDay);
+
+		this.setExpiry(null);
+		this.setSpecifiedShared(null);
+
+		return timeOfDay;
 	}
-	
+
+	protected XmlTimeOfDay buildXmlTimeOfDay() {
+		return EclipseLinkOrmFactory.eINSTANCE.createXmlTimeOfDay();
+	}
+
 	public void removeExpiryTimeOfDay() {
 		if (this.expiryTimeOfDay == null) {
-			throw new IllegalStateException("timeOfDayExpiry does not exist"); //$NON-NLS-1$
+			throw new IllegalStateException("expiry time of day does not exist"); //$NON-NLS-1$
 		}
-		EclipseLinkExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
-		this.expiryTimeOfDay = null;
-		getResourceCache().setExpiryTimeOfDay(null);
-		if (this.getResourceCache().isUnset()) {
-			removeResourceCache();
+		this.removeExpiryTimeOfDay_();
+	}
+
+	protected void removeExpiryTimeOfDayIfNecessary() {
+		if (this.expiryTimeOfDay != null) {
+			this.removeExpiryTimeOfDay_();
 		}
-		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, null);
 	}
-	
-	protected void setExpiryTimeOfDay(OrmEclipseLinkExpiryTimeOfDay newExpiryTimeOfDay) {
-		OrmEclipseLinkExpiryTimeOfDay oldExpiryTimeOfDay = this.expiryTimeOfDay;
-		this.expiryTimeOfDay = newExpiryTimeOfDay;
-		firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, oldExpiryTimeOfDay, newExpiryTimeOfDay);
+
+	protected void removeExpiryTimeOfDay_() {
+		this.setExpiryTimeOfDay(null);
+		this.getXmlCache().setExpiryTimeOfDay(null);
+		this.removeXmlCacheIfUnset();
 	}
-	
-	protected XmlCache getResourceCache() {
-		return this.resource.getCache();
+
+	protected void setExpiryTimeOfDay(EclipseLinkOrmTimeOfDay timeOfDay) {
+		EclipseLinkOrmTimeOfDay old = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = timeOfDay;
+		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, timeOfDay);
 	}
-	
-	protected void addResourceCache() {
-		this.resource.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());		
+
+	protected void syncExpiryTimeOfDay() {
+		XmlTimeOfDay xmlTimeOfDay = this.getXmlExpiryTimeOfDay();
+		if (xmlTimeOfDay == null) {
+			if (this.expiryTimeOfDay != null) {
+				this.setExpiryTimeOfDay(null);
+			}
+		} else {
+			if ((this.expiryTimeOfDay != null) && (this.expiryTimeOfDay.getXmlTimeOfDay() == xmlTimeOfDay)) {
+				this.expiryTimeOfDay.synchronizeWithResourceModel();
+			} else {
+				this.setExpiryTimeOfDay(this.buildExpiryTimeOfDay(xmlTimeOfDay));
+			}
+		}
 	}
-	
-	protected void removeResourceCache() {
-		this.resource.setCache(null);
+
+	protected EclipseLinkOrmTimeOfDay buildExpiryTimeOfDay() {
+		return this.buildExpiryTimeOfDay(this.getXmlExpiryTimeOfDay());
 	}
-	
+
+	protected XmlTimeOfDay getXmlExpiryTimeOfDay() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getExpiryTimeOfDay();
+	}
+
+	protected EclipseLinkOrmTimeOfDay buildExpiryTimeOfDay(XmlTimeOfDay xmlTimeOfDay) {
+		return (xmlTimeOfDay == null) ? null : new EclipseLinkOrmTimeOfDay(this, xmlTimeOfDay);
+	}
+
+
+	// ********** existence type **********
+
+	public EclipseLinkExistenceType getExistenceType() {
+		return (this.specifiedExistenceType != null) ? this.specifiedExistenceType : this.defaultExistenceType;
+	}
+
+	public EclipseLinkExistenceType getSpecifiedExistenceType() {
+		return this.specifiedExistenceType;
+	}
+
+	public void setSpecifiedExistenceType(EclipseLinkExistenceType type) {
+		if (this.setSpecifiedExistenceType_(type)) {
+			this.getXmlCacheHolder().setExistenceChecking(EclipseLinkExistenceType.toOrmResourceModel(type));
+		}
+	}
+
+	protected boolean setSpecifiedExistenceType_(EclipseLinkExistenceType type) {
+		EclipseLinkExistenceType old = this.specifiedExistenceType;
+		this.specifiedExistenceType = type;
+		return this.firePropertyChanged(SPECIFIED_EXISTENCE_TYPE_PROPERTY, old, type);
+	}
+
+	protected EclipseLinkExistenceType buildSpecifiedExistenceType() {
+		XmlCacheHolder xmlCacheHolder = this.getXmlCacheHolder();
+		return (xmlCacheHolder == null) ? null : EclipseLinkExistenceType.fromOrmResourceModel(xmlCacheHolder.getExistenceChecking());
+	}
+
+	public EclipseLinkExistenceType getDefaultExistenceType() {
+		return this.defaultExistenceType;
+	}
+
+	protected void setDefaultExistenceType(EclipseLinkExistenceType type) {
+		EclipseLinkExistenceType old = this.defaultExistenceType;
+		this.defaultExistenceType = type;
+		this.firePropertyChanged(DEFAULT_EXISTENCE_TYPE_PROPERTY, old, type);
+	}
+
+
+	// ********** cacheable **********
+
 	public OrmCacheable2_0 getCacheable() {
 		return this.cacheable;
 	}
-	
+
+	protected OrmCacheable2_0 buildCacheable() {
+		return this.isJpa2_0Compatible() ?
+				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
+				new NullOrmCacheable2_0(this);
+	}
+
 	public boolean calculateDefaultCacheable() {
-		if (!getParent().isMetadataComplete()) {
-			JavaPersistentType javaPersistentType = getParent().getPersistentType().getJavaPersistentType();
-			if (javaPersistentType != null && javaPersistentType.getMapping() instanceof CacheableHolder2_0) {
+		if ( ! this.getTypeMapping().isMetadataComplete()) {
+			JavaPersistentType javaPersistentType = this.getTypeMapping().getPersistentType().getJavaPersistentType();
+			if ((javaPersistentType != null) && (javaPersistentType.getMapping() instanceof CacheableHolder2_0)) {
 				return ((CacheableHolder2_0) javaPersistentType.getMapping()).getCacheable().isCacheable();
 			}
 		}
-		CacheableHolder2_0 cacheableHolder = getCacheableSuperPersistentType(getParent().getPersistentType());
-		if (cacheableHolder != null) {
-			return cacheableHolder.getCacheable().isCacheable();
-		}
-		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
+		CacheableHolder2_0 superCacheableHolder = this.getCacheableSuperPersistentType(this.getTypeMapping().getPersistentType());
+		return (superCacheableHolder != null) ?
+				superCacheableHolder.getCacheable().isCacheable() :
+				((PersistenceUnit2_0) this.getPersistenceUnit()).calculateDefaultCacheable();
 	}
-	
+
 	protected CacheableHolder2_0 getCacheableSuperPersistentType(PersistentType persistentType) {
 		PersistentType superPersistentType = persistentType.getSuperPersistentType();
-		if (superPersistentType != null) {
-			if (superPersistentType.getMapping() instanceof CacheableHolder2_0) {
-				return (CacheableHolder2_0) superPersistentType.getMapping();
-			}
-			return getCacheableSuperPersistentType(superPersistentType);
+		if (superPersistentType == null) {
+			return null;
 		}
-		return null;
-	}
-	
-	// **************** initialize/update **************************************
-
-	protected void initializeExpiry(XmlCache resourceCache) {
-		if (resourceCache == null) {
-			return;
-		}
-		if (resourceCache.getExpiryTimeOfDay() == null) {
-			this.expiry = resourceCache.getExpiry();
-		}
-		else {
-			if (resourceCache.getExpiry() == null) { //handle with validation if both expiry and expiryTimeOfDay are set
-				this.expiryTimeOfDay = new OrmEclipseLinkExpiryTimeOfDay(this);
-				this.expiryTimeOfDay.initialize(resourceCache.getExpiryTimeOfDay());
-			}
-		}
+		TypeMapping superMapping = superPersistentType.getMapping();
+		return (superMapping instanceof CacheableHolder2_0) ?
+				(CacheableHolder2_0) superMapping :
+				this.getCacheableSuperPersistentType(superPersistentType);  // recurse
 	}
 
-	public void update(JavaEclipseLinkCaching javaCaching) {
-		XmlCache resourceCache = getResourceCache();
-		setDefaultSize(this.defaultSize(javaCaching));
-		setSpecifiedSize_(this.getResourceSize(resourceCache));
-		setDefaultShared(this.defaultShared(javaCaching));
-		setSpecifiedShared_(this.getResourceShared(resourceCache));
-		setDefaultAlwaysRefresh(this.defaultAlwaysRefresh(javaCaching));
-		setSpecifiedAlwaysRefresh_(this.getResourceAlwaysRefresh(resourceCache));
-		setDefaultRefreshOnlyIfNewer(this.defaultRefreshOnlyIfNewer(javaCaching));
-		setSpecifiedRefreshOnlyIfNewer_(this.getResourceRefreshOnlyIfNewer(resourceCache));
-		setDefaultDisableHits(this.defaultDisableHits(javaCaching));
-		setSpecifiedDisableHits_(this.getResourceDisableHits(resourceCache));
-		setDefaultType(this.defaultType(javaCaching));
-		setSpecifiedType_(this.getResourceType(resourceCache));
-		setDefaultCoordinationType(this.defaultCoordinationType(javaCaching));
-		setSpecifiedCoordinationType_(this.getResourceCoordinationType(resourceCache));
-		setDefaultExistenceType(this.defaultExistenceType(javaCaching));
-		setSpecifiedExistenceType_(this.getResourceExistenceChecking());
-		this.updateExpiry(resourceCache);
-		this.cacheable.update();
+
+	// ********** XML cache **********
+
+	/**
+	 * Return null if the XML cache does not exists.
+	 */
+	protected XmlCache getXmlCache() {
+		return this.getXmlCacheHolder().getCache();
 	}
-	
-	protected void updateExpiry(XmlCache resourceCache) {
-		if (resourceCache == null) {
-			setExpiryTimeOfDay(null);
-			setExpiry_(null);
-			return;
-		}
-		if (resourceCache.getExpiryTimeOfDay() == null) {
-			setExpiryTimeOfDay(null);
-			setExpiry_(resourceCache.getExpiry());
-		}
-		else {
-			if (this.expiryTimeOfDay != null) {
-				this.expiryTimeOfDay.update(resourceCache.getExpiryTimeOfDay());
-			}
-			else if (resourceCache.getExpiry() == null){
-				setExpiryTimeOfDay(new OrmEclipseLinkExpiryTimeOfDay(this));
-				this.expiryTimeOfDay.initialize(resourceCache.getExpiryTimeOfDay());
-			}
-			else { //handle with validation if both expiry and expiryTimeOfDay are set
-				setExpiryTimeOfDay(null);
-			}
+
+	/**
+	 * Build the XML cache if it does not exist.
+	 */
+	protected XmlCache getXmlCacheForUpdate() {
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache != null) ? xmlCache : this.buildXmlCache();
+	}
+
+	protected XmlCache buildXmlCache() {
+		XmlCache xmlCache = EclipseLinkOrmFactory.eINSTANCE.createXmlCache();
+		this.getXmlCacheHolder().setCache(xmlCache);
+		return xmlCache;
+	}
+
+	protected void removeXmlCacheIfUnset() {
+		if (this.getXmlCache().isUnset()) {
+			this.removeXmlCache();
 		}
 	}
-	
-	protected int defaultSize(JavaEclipseLinkCaching javaCaching) {
-		return (javaCaching == null) ? DEFAULT_SIZE : javaCaching.getSize();
+
+	protected void removeXmlCache() {
+		this.getXmlCacheHolder().setCache(null);
 	}
-	
-	protected Integer getResourceSize(XmlCache resource) {
-		return (resource == null) ? null : resource.getSize();
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmEclipseLinkNonEmbeddableTypeMapping getParent() {
+		return (OrmEclipseLinkNonEmbeddableTypeMapping) super.getParent();
 	}
-	
-	protected boolean defaultShared(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_SHARED;
-		}
-		return getResourceCache() == null ? javaCaching.isShared() : DEFAULT_SHARED;
+
+	protected OrmEclipseLinkNonEmbeddableTypeMapping getTypeMapping() {
+		return this.getParent();
 	}
-	
-	protected Boolean getResourceShared(XmlCache resource) {
-		return (resource == null) ? null : resource.getShared();
+
+	protected XmlTypeMapping getXmlTypeMapping() {
+		return this.getTypeMapping().getXmlTypeMapping();
 	}
-	
-	protected boolean defaultAlwaysRefresh(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_ALWAYS_REFRESH;
-		}
-		return getResourceCache() == null ? javaCaching.isAlwaysRefresh() : DEFAULT_ALWAYS_REFRESH;
+
+	public XmlCacheable_2_0 getXmlCacheable() {
+		return (XmlCacheable_2_0) this.getXmlTypeMapping();
 	}
-	
-	protected Boolean getResourceAlwaysRefresh(XmlCache resource) {
-		return (resource == null) ? null : resource.getAlwaysRefresh();
+
+	protected XmlCacheHolder getXmlCacheHolder() {
+		return (XmlCacheHolder) this.getXmlTypeMapping();
 	}
-	
-	protected boolean defaultRefreshOnlyIfNewer(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_REFRESH_ONLY_IF_NEWER;
-		}
-		return getResourceCache() == null ? javaCaching.isRefreshOnlyIfNewer() : DEFAULT_REFRESH_ONLY_IF_NEWER;
+
+	protected JavaEclipseLinkNonEmbeddableTypeMapping getJavaTypeMappingForDefaults() {
+		return this.getTypeMapping().getJavaTypeMappingForDefaults();
 	}
-	
-	protected Boolean getResourceRefreshOnlyIfNewer(XmlCache resource) {
-		return (resource == null) ? null : resource.getRefreshOnlyIfNewer();
+
+	protected JavaEclipseLinkCaching getJavaCachingForDefaults() {
+		JavaEclipseLinkNonEmbeddableTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		return (javaTypeMapping == null) ? null : javaTypeMapping.getCaching();
 	}
-	
-	protected boolean defaultDisableHits(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_DISABLE_HITS;
-		}
-		return getResourceCache() == null ? javaCaching.isDisableHits() : DEFAULT_DISABLE_HITS;
-	}
-	
-	protected Boolean getResourceDisableHits(XmlCache resource) {
-		return (resource == null) ? null : resource.getDisableHits();
-	}
-	
-	protected EclipseLinkCacheType defaultType(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_TYPE;
-		}
-		return getResourceCache() == null ? javaCaching.getType() : DEFAULT_TYPE;
-	}
-	
-	protected EclipseLinkCacheType getResourceType(XmlCache resource) {
-		return (resource == null) ? null : EclipseLinkCacheType.fromOrmResourceModel(resource.getType());
-	}
-	
-	protected EclipseLinkCacheCoordinationType defaultCoordinationType(JavaEclipseLinkCaching javaCaching) {
-		if (javaCaching == null) {
-			return DEFAULT_COORDINATION_TYPE;
-		}
-		return getResourceCache() == null ? javaCaching.getCoordinationType() : DEFAULT_COORDINATION_TYPE;
-	}
-	
-	protected EclipseLinkCacheCoordinationType getResourceCoordinationType(XmlCache resource) {
-		return (resource == null) ? null : EclipseLinkCacheCoordinationType.fromOrmResourceModel(resource.getCoordinationType());
-	}
-	
-	protected EclipseLinkExistenceType defaultExistenceType(JavaEclipseLinkCaching javaCaching) {
-		return (javaCaching == null) ? DEFAULT_EXISTENCE_TYPE : javaCaching.getExistenceType();
-	}
-	
-	protected EclipseLinkExistenceType getResourceExistenceChecking() {
-		return (this.resource == null) ? null : EclipseLinkExistenceType.fromOrmResourceModel(this.resource.getExistenceChecking());
-	}
-	
-	protected Integer getResourceExpiry(XmlCache resource) {
-		return (resource == null) ? null : resource.getExpiry();
-	}
-	
-	// **************** validation **************************************
-	
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		XmlCache resource = getResourceCache();
-		return resource == null ? null : resource.getValidationTextRange();
+		XmlCache xmlCache = this.getXmlCache();
+		return (xmlCache == null) ? null : xmlCache.getValidationTextRange();
 	}
-
 }

@@ -11,10 +11,11 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.MappedSuperclass;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
+import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> mapped superclass
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,11 +28,11 @@ import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 public interface OrmMappedSuperclass
 	extends MappedSuperclass, OrmTypeMapping
 {
-	/**
-	 * Return the Java Mapped Superclass this ORM MappedSuperclass corresponds to.  
-	 * Return null if there is no java persistent type or it is not a mapped superclass.
-	 */
-	JavaMappedSuperclass getJavaMappedSuperclass();
-	
+	XmlMappedSuperclass getXmlTypeMapping();
+
 	OrmIdClassReference getIdClassReference();
+
+	JavaMappedSuperclass getJavaTypeMapping();
+
+	JavaMappedSuperclass getJavaTypeMappingForDefaults();
 }

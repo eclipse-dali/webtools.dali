@@ -33,10 +33,7 @@ public final class SourceMapsId2_0Annotation
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 	
 	private static final DeclarationAnnotationElementAdapter<String> VALUE_ADAPTER = buildValueAdapter();
-	
-	
 	private final AnnotationElementAdapter<String> valueAdapter;
-	
 	private String value;
 	
 	
@@ -58,6 +55,12 @@ public final class SourceMapsId2_0Annotation
 		this.syncValue(this.buildValue(astRoot));
 	}
 	
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
@@ -100,6 +103,6 @@ public final class SourceMapsId2_0Annotation
 	
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(
-				DECLARATION_ANNOTATION_ADAPTER, JPA2_0.MAPS_ID__VALUE, false);
+				DECLARATION_ANNOTATION_ADAPTER, JPA2_0.MAPS_ID__VALUE);
 	}
 }

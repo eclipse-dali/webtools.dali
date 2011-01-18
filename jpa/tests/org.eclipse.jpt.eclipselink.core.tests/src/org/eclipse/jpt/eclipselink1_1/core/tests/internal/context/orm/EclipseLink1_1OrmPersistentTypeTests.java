@@ -14,8 +14,8 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -136,8 +136,8 @@ public class EclipseLink1_1OrmPersistentTypeTests extends EclipseLink1_1OrmConte
 		assertEquals(null, javaPersistentType.getSpecifiedAccess());
 		
 		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
-		ormPersistentAttribute.makeSpecified();
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("id");
+		ormPersistentAttribute.convertToSpecified();
 		assertEquals(AccessType.FIELD, ormPersistentType.getAccess());
 		assertEquals(AccessType.FIELD, javaPersistentType.getAccess());
 		assertEquals(null, javaPersistentType.getSpecifiedAccess());

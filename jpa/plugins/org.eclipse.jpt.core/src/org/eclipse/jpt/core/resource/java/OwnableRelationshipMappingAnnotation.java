@@ -13,12 +13,13 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Represents a relationship mapping annotation that may have the 'mappedBy'
- * element:
- *     javax.persistence.ManyToMany
- *     javax.persistence.OneToMany
- *     javax.persistence.OneToOne
- * 
+ * Represents a relationship mapping annotation that may have the
+ * <code>mappedBy</code> element:<ul>
+ * <li><code>javax.persistence.ManyToMany</code>
+ * <li><code>javax.persistence.OneToMany</code>
+ * <li><code>javax.persistence.OneToOne</code>
+ * </ul>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -31,6 +32,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OwnableRelationshipMappingAnnotation
 	extends RelationshipMappingAnnotation
 {
+// TODO bjv rename to MappedByRelationshipMappingAnnotation
 	/**
 	 * Corresponds to the 'mappedBy' element of the annotation.
 	 * Return null if the element does not exist in Java.

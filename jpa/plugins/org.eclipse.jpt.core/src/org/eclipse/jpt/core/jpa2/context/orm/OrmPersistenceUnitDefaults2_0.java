@@ -13,9 +13,8 @@ import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
 import org.eclipse.jpt.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 
 /**
- * Context <code>orm.xml</code> persistence unit defaults.
- * Context model corresponding to the
- * XML resource model {@link XmlPersistenceUnitDefaults},
+ * JPA 2.0 context model corresponding to the
+ * XML resource model {@link org.eclipse.jpt.core.resource.orm.v2_0.XmlPersistenceUnitDefaults_2_0},
  * which corresponds to the <code>persistence-unit-defaults</code> element
  * in the <code>orm.xml</code> file.
  * <p>
@@ -31,7 +30,6 @@ import org.eclipse.jpt.core.jpa2.context.MappingFilePersistenceUnitDefaults2_0;
 public interface OrmPersistenceUnitDefaults2_0
 	extends MappingFilePersistenceUnitDefaults2_0, OrmPersistenceUnitDefaults
 {
-	boolean isDelimitedIdentifiers();
 	void setDelimitedIdentifiers(boolean value);
 		String DELIMITED_IDENTIFIERS_PROPERTY = "delimitedIdentifiers"; //$NON-NLS-1$
 }

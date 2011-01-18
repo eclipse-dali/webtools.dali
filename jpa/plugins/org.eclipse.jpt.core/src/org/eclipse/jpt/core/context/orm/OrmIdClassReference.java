@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jdt.core.IPackageFragment;
@@ -15,9 +14,12 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
+import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
+ * <code>orm.xml</code> ID class reference
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,9 +32,6 @@ import org.eclipse.text.edits.ReplaceEdit;
 public interface OrmIdClassReference
 	extends IdClassReference, XmlContextNode
 {
-	void update(JavaIdClassReference javaIdClassReference);
-
-
 	// ********** refactoring **********
 
 	/**
@@ -52,4 +51,12 @@ public interface OrmIdClassReference
 	 * The originalPackage has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
+
+
+	// ********** owner **********
+
+	interface Owner {
+		XmlIdClassContainer getXmlIdClassContainer();
+		JavaIdClassReference getJavaIdClassReferenceForDefaults();
+	}
 }

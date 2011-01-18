@@ -10,7 +10,11 @@
 package org.eclipse.jpt.core.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.core.resource.java.AccessType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.SimpleFilter;
 
 /**
  * JPA 2.0 Java source code or binary persistent type.
@@ -61,4 +65,21 @@ public interface JavaResourcePersistentType2_0
 	 */
 	String METAMODEL_GENERATED_ANNOTATION_VALUE = "Dali"; //$NON-NLS-1$
 
+
+	// ********** access type filters **********
+
+	Filter<JavaResourcePersistentAttribute> PROPERTY_ACCESS_TYPE_FILTER = new AccessTypeFilter(AccessType.PROPERTY);
+	Filter<JavaResourcePersistentAttribute> FIELD_ACCESS_TYPE_FILTER = new AccessTypeFilter(AccessType.FIELD);
+
+	class AccessTypeFilter
+		extends SimpleFilter<JavaResourcePersistentAttribute, AccessType>
+	{
+		AccessTypeFilter(AccessType accessType) {
+			super(accessType);
+		}
+		@Override
+		public boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
+			return resourceAttribute.getSpecifiedAccess() == this.criterion;
+		}
+	}
 }

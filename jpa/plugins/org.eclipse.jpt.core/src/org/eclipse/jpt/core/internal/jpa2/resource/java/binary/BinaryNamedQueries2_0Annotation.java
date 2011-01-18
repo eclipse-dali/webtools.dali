@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryNamedQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
 
 /**
  * javax.persistence.NamedQueries
@@ -25,7 +25,7 @@ public final class BinaryNamedQueries2_0Annotation
 	}
 
 	@Override
-	protected NamedQueryAnnotation buildNamedQuery(Object jdtQuery) {
+	protected NestableNamedQueryAnnotation buildNamedQuery(Object jdtQuery) {
 		return new BinaryNamedQuery2_0Annotation(this, (IAnnotation) jdtQuery);
 	}
 

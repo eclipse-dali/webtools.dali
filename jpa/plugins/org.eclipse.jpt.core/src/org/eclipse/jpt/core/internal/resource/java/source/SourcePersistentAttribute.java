@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.ITypeBinding;
@@ -152,7 +151,7 @@ final class SourcePersistentAttribute
 	}
 
 
-	// ******** AbstractJavaResourcePersistentMember implementation ********
+	// ******** SourcePersistentMember implementation ********
 
 	@Override
 	Iterator<String> validAnnotationNames() {
@@ -164,19 +163,28 @@ final class SourcePersistentAttribute
 		return this.getAnnotationProvider().buildAttributeAnnotation(this, this.annotatedElement, annotationName);
 	}
 
-	Annotation buildNullAnnotation_(String annotationName) {
+	private Annotation buildNullAnnotation_(String annotationName) {
 		return this.getAnnotationProvider().buildNullAttributeAnnotation(this, annotationName);
-	}
-
-	public boolean isFor(MethodSignature signature, int occurrence) {
-		return ((MethodAttribute) this.annotatedElement).matches(signature, occurrence);
 	}
 
 
 	// ******** JavaResourcePersistentAttribute implementation ********
 
+	@Override
+	public JavaResourcePersistentType getParent() {
+		return (JavaResourcePersistentType) super.getParent();
+	}
+
+	public JavaResourcePersistentType getResourcePersistentType() {
+		return this.getParent();
+	}
+
 	public String getName() {
 		return this.annotatedElement.getAttributeName();
+	}
+
+	public boolean isFor(MethodSignature signature, int occurrence) {
+		return ((MethodAttribute) this.annotatedElement).matches(signature, occurrence);
 	}
 
 	@Override

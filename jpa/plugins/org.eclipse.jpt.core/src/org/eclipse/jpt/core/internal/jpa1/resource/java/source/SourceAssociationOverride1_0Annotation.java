@@ -12,8 +12,6 @@ package org.eclipse.jpt.core.internal.jpa1.resource.java.source;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
@@ -22,14 +20,11 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.AssociationOverride
+ * <code>javax.persistence.AssociationOverride</code>
  */
 public final class SourceAssociationOverride1_0Annotation
 	extends SourceAssociationOverrideAnnotation
 {
-
-	// ********** construction/initialization **********
-
 	public SourceAssociationOverride1_0Annotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
 	}
@@ -41,13 +36,8 @@ public final class SourceAssociationOverride1_0Annotation
 	}
 
 	static SourceAssociationOverride1_0Annotation buildNestedAssociationOverride(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceAssociationOverride1_0Annotation(parent, member, idaa, annotationAdapter);
 	}
-
-	protected static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(attributeOverridesAdapter, index, JPA.ASSOCIATION_OVERRIDE);
-	}
-
 }

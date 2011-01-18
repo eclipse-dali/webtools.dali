@@ -11,11 +11,10 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.resource.orm.XmlDiscriminatorColumn;
-import org.eclipse.jpt.core.resource.orm.XmlEntity;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> discriminator column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,21 +27,21 @@ import org.eclipse.jpt.core.resource.orm.XmlEntity;
 public interface OrmDiscriminatorColumn
 	extends DiscriminatorColumn, OrmNamedColumn
 {
-	void initialize(XmlEntity entity);
+	XmlDiscriminatorColumn getXmlColumn();
+	
+
+	// ********** owner **********
 
 	/**
-	 * Update the OrmDiscriminatorColumn context model object to match the XmlEntity 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * interface allowing discriminator columns to be used in multiple places
 	 */
-	void update(XmlEntity entity);
-	
-	XmlDiscriminatorColumn getResourceColumn();
-	
-	/**
-	 * interface allowing columns to be used in multiple places
-	 */
-	interface Owner extends OrmNamedColumn.Owner, DiscriminatorColumn.Owner
+	interface Owner
+		extends OrmNamedColumn.Owner, DiscriminatorColumn.Owner
 	{
-
+		XmlDiscriminatorColumn getXmlColumn();
+		
+		XmlDiscriminatorColumn buildXmlColumn();
+		
+		void removeXmlColumn();
 	}
 }

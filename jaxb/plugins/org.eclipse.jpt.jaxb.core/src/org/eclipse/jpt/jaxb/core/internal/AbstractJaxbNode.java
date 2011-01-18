@@ -30,7 +30,7 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -77,11 +77,11 @@ public abstract class AbstractJaxbNode
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+		return new AspectChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
-		return new CallbackChangeSupport.Listener() {
+	protected AspectChangeSupport.Listener buildChangeSupportListener() {
+		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractJaxbNode.this.aspectChanged(aspectName);
 			}

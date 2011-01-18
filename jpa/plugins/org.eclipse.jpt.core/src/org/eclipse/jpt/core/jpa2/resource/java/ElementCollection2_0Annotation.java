@@ -59,15 +59,15 @@ public interface ElementCollection2_0Annotation
 	TextRange getTargetClassTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified target class name as resolved by the AST's bindings.
+	 * Return the fully-qualified target class name as resolved by the AST's
+	 * bindings.
 	 * <pre>
 	 *     &#64;ElementCollection(targetClass=Employee.class)
 	 * </pre>
-	 * will return "model.Employee" if there is an import for model.Employee.
-	 * @return
+	 * will return <code>"model.Employee"</code> if there is an import for
+	 * <code>model.Employee</code>.
 	 */
 	String getFullyQualifiedTargetClassName();
-		String FULLY_QUALIFIED_TARGET_CLASS_NAME_PROPERTY = "fullyQualifiedTargetClassName"; //$NON-NLS-1$
 
 
 	/**

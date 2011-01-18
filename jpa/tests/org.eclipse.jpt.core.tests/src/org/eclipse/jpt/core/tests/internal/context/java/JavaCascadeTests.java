@@ -66,13 +66,13 @@ public class JavaCascadeTests
 		
 		//set all in the resource model, verify context model updated
 		annotation.setCascadeAll(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadeAll());
 		assertTrue(cascade.isAll());
 		
 		//set all to false in the resource model
 		annotation.setCascadeAll(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadeAll());
 		assertFalse(cascade.isAll());
 	}
@@ -120,13 +120,13 @@ public class JavaCascadeTests
 		
 		//set persist in the resource model, verify context model updated
 		annotation.setCascadePersist(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadePersist());
 		assertTrue(cascade.isPersist());
 		
 		//set persist to false in the resource model
 		annotation.setCascadePersist(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadePersist());
 		assertFalse(cascade.isPersist());
 	}
@@ -174,13 +174,13 @@ public class JavaCascadeTests
 		
 		//set merge in the resource model, verify context model updated
 		annotation.setCascadeMerge(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadeMerge());
 		assertTrue(cascade.isMerge());
 		
 		//set merge to false in the resource model
 		annotation.setCascadeMerge(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadeMerge());
 		assertFalse(cascade.isMerge());
 	}
@@ -228,13 +228,13 @@ public class JavaCascadeTests
 		
 		//set remove in the resource model, verify context model updated
 		annotation.setCascadeRemove(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadeRemove());
 		assertTrue(cascade.isRemove());
 		
 		//set remove to false in the resource model
 		annotation.setCascadeRemove(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadeRemove());
 		assertFalse(cascade.isRemove());
 	}
@@ -282,13 +282,13 @@ public class JavaCascadeTests
 		
 		//set refresh in the resource model, verify context model updated
 		annotation.setCascadeRefresh(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadeRefresh());
 		assertTrue(cascade.isRefresh());
 		
 		//set refresh to false in the resource model
 		annotation.setCascadeRefresh(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadeRefresh());
 		assertFalse(cascade.isRefresh());
 	}

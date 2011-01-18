@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import java.util.ListIterator;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 
@@ -41,30 +41,30 @@ public interface JpaPlatformProvider
 	/**
 	 * Return the most recent resource type for the given content type supported by this platform
 	 */
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
 	/**
 	 * Return the resource model providers that apply to this platform.
 	 */
-	ListIterator<JpaResourceModelProvider> resourceModelProviders();
+	Iterable<JpaResourceModelProvider> getResourceModelProviders();
 
 	/**
 	 * Return the resource definitions supported by this platform.
 	 */
-	ListIterator<ResourceDefinition> resourceDefinitions();
+	Iterable<ResourceDefinition> getResourceDefinitions();
 
 	/**
-	 * Return the java type mapping definitions that apply to this platform.
+	 * Return the platform's Java type mapping definitions.
 	 */
-	ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions();
+	Iterable<JavaTypeMappingDefinition> getJavaTypeMappingDefinitions();
 	
 	/**
-	 * Return the mapping definitions to use for default java attribute mappings for this platform.
+	 * Return the platform's default Java attribute mapping definitions.
 	 */
-	ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions();
+	Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions();
 
 	/**
-	 * Return the mapping definitions to use for specified java attribute mappings for this platform.
+	 * Return the platform's specified Java attribute mapping definitions.
 	 */
-	ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions();
+	Iterable<JavaAttributeMappingDefinition> getSpecifiedJavaAttributeMappingDefinitions();
 }

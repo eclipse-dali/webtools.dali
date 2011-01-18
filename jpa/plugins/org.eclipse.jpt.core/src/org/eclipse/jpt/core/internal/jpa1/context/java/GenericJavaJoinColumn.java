@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,12 +11,13 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseColumn;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -27,86 +28,150 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
-
-public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnnotation> implements JavaJoinColumn
+/**
+ * Java join column
+ */
+public class GenericJavaJoinColumn
+	extends AbstractJavaBaseColumn<JoinColumnAnnotation, JavaJoinColumn.Owner>
+	implements JavaJoinColumn
 {
+	/** @see AbstractJavaNamedColumn#AbstractJavaNamedColumn(JavaJpaContextNode, org.eclipse.jpt.core.context.java.JavaNamedColumn.Owner, org.eclipse.jpt.core.resource.java.NamedColumnAnnotation) */
+	protected /* final */ JoinColumnAnnotation columnAnnotation;  // never null
 
 	protected String specifiedReferencedColumnName;
-
 	protected String defaultReferencedColumnName;
-	
+
+
 	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
-		super(parent, owner);
+		this(parent, owner, null);
 	}
-	
-	@Override
-	public void initialize(JoinColumnAnnotation annotation) {
-		super.initialize(annotation);
-		this.specifiedReferencedColumnName = annotation.getReferencedColumnName();
-		this.defaultReferencedColumnName = this.buildDefaultReferencedColumnName();
+
+	public GenericJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation columnAnnotation) {
+		super(parent, owner, columnAnnotation);
+		this.specifiedReferencedColumnName = this.buildSpecifiedReferencedColumnName();
 	}
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public void update(JoinColumnAnnotation annotation) {
-		super.update(annotation);
-		this.setSpecifiedReferencedColumnName_(annotation.getReferencedColumnName());
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedReferencedColumnName_(this.buildSpecifiedReferencedColumnName());
+	}
+
+	@Override
+	public void update() {
+		super.update();
 		this.setDefaultReferencedColumnName(this.buildDefaultReferencedColumnName());
 	}
 
-	
+
+	// ********** column annotation **********
+
+	@Override
+	public JoinColumnAnnotation getColumnAnnotation() {
+		return this.columnAnnotation;
+	}
+
+	@Override
+	protected void setColumnAnnotation(JoinColumnAnnotation columnAnnotation) {
+		this.columnAnnotation = columnAnnotation;
+	}
+
+	@Override
+	protected void removeColumnAnnotation() {
+		// we don't remove a join column annotation when it is empty
+	}
+
+
+	// ********** referenced column name **********
+
 	public String getReferencedColumnName() {
-		return (this.specifiedReferencedColumnName == null) ? this.defaultReferencedColumnName : this.specifiedReferencedColumnName;
+		return (this.specifiedReferencedColumnName != null) ? this.specifiedReferencedColumnName : this.defaultReferencedColumnName;
 	}
 
 	public String getSpecifiedReferencedColumnName() {
 		return this.specifiedReferencedColumnName;
 	}
 
-	public void setSpecifiedReferencedColumnName(String newSpecifiedReferencedColumnName) {
-		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
-		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		this.getResourceColumn().setReferencedColumnName(newSpecifiedReferencedColumnName);
-		firePropertyChanged(BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	public void setSpecifiedReferencedColumnName(String name) {
+		if (this.valuesAreDifferent(this.specifiedReferencedColumnName, name)) {
+			this.getColumnAnnotation().setReferencedColumnName(name);
+			this.removeColumnAnnotationIfUnset();
+			this.setSpecifiedReferencedColumnName_(name);
+		}
 	}
 
-	protected void setSpecifiedReferencedColumnName_(String newSpecifiedReferencedColumnName) {
-		String oldSpecifiedReferencedColumnName = this.specifiedReferencedColumnName;
-		this.specifiedReferencedColumnName = newSpecifiedReferencedColumnName;
-		firePropertyChanged(BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, oldSpecifiedReferencedColumnName, newSpecifiedReferencedColumnName);
+	protected void setSpecifiedReferencedColumnName_(String name) {
+		String old = this.specifiedReferencedColumnName;
+		this.specifiedReferencedColumnName = name;
+		this.firePropertyChanged(SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildSpecifiedReferencedColumnName() {
+		return this.getColumnAnnotation().getReferencedColumnName();
 	}
 
 	public String getDefaultReferencedColumnName() {
 		return this.defaultReferencedColumnName;
 	}
 
-	protected void setDefaultReferencedColumnName(String newDefaultReferencedColumnName) {
-		String oldDefaultReferencedColumnName = this.defaultReferencedColumnName;
-		this.defaultReferencedColumnName = newDefaultReferencedColumnName;
-		firePropertyChanged(BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY, oldDefaultReferencedColumnName, newDefaultReferencedColumnName);
+	protected void setDefaultReferencedColumnName(String name) {
+		String old = this.defaultReferencedColumnName;
+		this.defaultReferencedColumnName = name;
+		this.firePropertyChanged(DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-
-	@Override
-	public JavaJoinColumn.Owner getOwner() {
-		return (JavaJoinColumn.Owner) super.getOwner();
+	protected String buildDefaultReferencedColumnName() {
+		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.owner);
 	}
 
-	public boolean isVirtual() {
-		return getOwner().isVirtual(this);
+	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getColumnAnnotation().getReferencedColumnNameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
 	}
+	
+
+	// ********** database stuff **********
 
 	public Table getReferencedColumnDbTable() {
-		return getOwner().getReferencedColumnDbTable();
+		return this.owner.getReferencedColumnDbTable();
 	}
 
-	public Column getReferencedDbColumn() {
+	protected Column getReferencedDbColumn() {
 		Table table = this.getReferencedColumnDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getReferencedColumnName());
 	}
 
-	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return getResourceColumn().referencedColumnNameTouches(pos, astRoot);
+	public boolean referencedColumnIsResolved() {
+		return this.getReferencedDbColumn() != null;
 	}
+
+
+	// ********** misc **********
+
+	public void initializeFrom(ReadOnlyJoinColumn oldColumn) {
+		super.initializeFrom(oldColumn);
+		this.setSpecifiedReferencedColumnName(oldColumn.getSpecifiedReferencedColumnName());
+	}
+
+	public void initializeFromVirtual(ReadOnlyJoinColumn virtualColumn) {
+		super.initializeFromVirtual(virtualColumn);
+		this.setSpecifiedReferencedColumnName(virtualColumn.getReferencedColumnName());
+	}
+
+	public boolean isDefault() {
+		return this.owner.joinColumnIsDefault(this);
+	}
+
+	@Override
+	protected String buildDefaultName() {
+		return MappingTools.buildJoinColumnDefaultName(this, this.owner);
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -120,36 +185,25 @@ public class GenericJavaJoinColumn extends AbstractJavaBaseColumn<JoinColumnAnno
 		return null;
 	}
 
-	private Iterable<String> getJavaCandidateReferencedColumnNames(Filter<String> filter) {
+	protected boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
+		return this.getColumnAnnotation().referencedColumnNameTouches(pos, astRoot);
+	}
+
+	protected Iterable<String> getJavaCandidateReferencedColumnNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.getCandidateReferencedColumnNames(filter));
 	}
 
-	private Iterable<String> getCandidateReferencedColumnNames(Filter<String> filter) {
+	protected Iterable<String> getCandidateReferencedColumnNames(Filter<String> filter) {
 		return new FilteringIterable<String>(this.getCandidateReferencedColumnNames(), filter);
 	}
 
-	private Iterable<String> getCandidateReferencedColumnNames() {
-		Table table = this.getOwner().getReferencedColumnDbTable();
+	protected Iterable<String> getCandidateReferencedColumnNames() {
+		Table table = this.owner.getReferencedColumnDbTable();
 		return (table != null) ? table.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
-	public boolean isReferencedColumnResolved() {
-		return getReferencedDbColumn() != null;
-	}
 
-	public TextRange getReferencedColumnNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getResourceColumn().getReferencedColumnNameTextRange(astRoot);
-		return (textRange != null) ? textRange : getOwner().getValidationTextRange(astRoot);
-	}
-	
-	@Override
-	protected String buildDefaultName() {
-		return MappingTools.buildJoinColumnDefaultName(this, this.getOwner());
-	}
-	
-	protected String buildDefaultReferencedColumnName() {
-		return MappingTools.buildJoinColumnDefaultReferencedColumnName(this.getOwner());
-	}
+	// ********** validation **********
 
 	@Override
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {

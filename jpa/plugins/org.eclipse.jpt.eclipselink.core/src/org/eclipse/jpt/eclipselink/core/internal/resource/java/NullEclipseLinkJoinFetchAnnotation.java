@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,10 @@ import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnota
 import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType;
 
 /**
- * org.eclipse.persistence.annotations.JoinFetch
+ * <code>org.eclipse.persistence.annotations.JoinFetch</code>
  */
-public class NullEclipseLinkJoinFetchAnnotation
-	extends NullAnnotation
+public final class NullEclipseLinkJoinFetchAnnotation
+	extends NullAnnotation<EclipseLinkJoinFetchAnnotation>
 	implements EclipseLinkJoinFetchAnnotation
 {
 	protected NullEclipseLinkJoinFetchAnnotation(JavaResourcePersistentAttribute parent) {
@@ -29,11 +29,6 @@ public class NullEclipseLinkJoinFetchAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected EclipseLinkJoinFetchAnnotation addAnnotation() {
-		return (EclipseLinkJoinFetchAnnotation) super.addAnnotation();
 	}
 
 	// ***** value
@@ -50,5 +45,4 @@ public class NullEclipseLinkJoinFetchAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

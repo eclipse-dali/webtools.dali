@@ -9,20 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEmbeddedIdMappingComposite
-	extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
-	implements JpaComposite
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
 {
 	public OrmEmbeddedIdMappingComposite(
-			PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		

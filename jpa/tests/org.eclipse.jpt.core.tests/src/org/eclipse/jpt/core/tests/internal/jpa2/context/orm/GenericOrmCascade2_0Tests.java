@@ -43,7 +43,7 @@ public class GenericOrmCascade2_0Tests extends Generic2_0ContextModelTestCase
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "oneToOneMapping");
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
-		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		Cascade2_0 cascade = (Cascade2_0) ormOneToOneMapping.getCascade();
 		
 		assertEquals(false, cascade.isDetach());
 		assertNull(oneToOne.getCascade());
@@ -70,7 +70,7 @@ public class GenericOrmCascade2_0Tests extends Generic2_0ContextModelTestCase
 		OrmOneToOneMapping ormOneToOneMapping = (OrmOneToOneMapping) ormPersistentAttribute.getMapping();
 		XmlOneToOne oneToOne = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToOnes().get(0);
 		
-		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		Cascade2_0 cascade = (Cascade2_0) ormOneToOneMapping.getCascade();
 		
 		assertEquals(false, cascade.isDetach());
 		assertNull(oneToOne.getCascade());

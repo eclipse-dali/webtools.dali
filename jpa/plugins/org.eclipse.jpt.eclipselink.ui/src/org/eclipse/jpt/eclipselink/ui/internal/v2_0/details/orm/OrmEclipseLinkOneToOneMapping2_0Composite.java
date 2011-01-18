@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
+import org.eclipse.jpt.core.jpa2.context.OneToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneRelationshipReference2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
@@ -34,10 +34,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkOneToOneMapping2_0Composite
-	extends AbstractOneToOneMapping2_0Composite<OrmOneToOneMapping, OrmOneToOneRelationshipReference2_0>
+	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping, OneToOneRelationshipReference2_0>
 {
 	public OrmEclipseLinkOneToOneMapping2_0Composite(
-			PropertyValueModel<? extends OrmOneToOneMapping> subjectHolder,
+			PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -64,7 +64,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();
@@ -73,7 +73,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<EclipseLinkJoinFetch> buildJoinFetchableHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, EclipseLinkJoinFetch>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkJoinFetch buildValue_() {
 				return ((EclipseLinkOneToOneMapping) this.subject).getJoinFetch();
@@ -82,7 +82,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<EclipseLinkPrivateOwned> buildPrivateOwnableHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, EclipseLinkPrivateOwned>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, EclipseLinkPrivateOwned>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPrivateOwned buildValue_() {
 				return ((EclipseLinkOneToOneMapping) this.subject).getPrivateOwned();
@@ -91,7 +91,7 @@ public class OrmEclipseLinkOneToOneMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<OrmOneToOneMapping, OrphanRemovable2_0>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToOneMapping, OrphanRemovable2_0>(getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

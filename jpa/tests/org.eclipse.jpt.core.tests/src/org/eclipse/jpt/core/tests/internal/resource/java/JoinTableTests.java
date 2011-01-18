@@ -169,7 +169,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		table.setName(null);
 		assertNull(table.getName());
 		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 
 	public void testGetCatalog() throws Exception {
@@ -208,7 +208,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		table.setCatalog(null);
 		assertNull(table.getCatalog());
 		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -247,7 +247,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		table.setSchema(null);
 		assertNull(table.getSchema());
 		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testUniqueConstraints() throws Exception {
@@ -326,7 +326,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		
 		table.removeUniqueConstraint(0);
 		assertEquals(0, table.uniqueConstraintsSize());		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {
@@ -431,7 +431,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		
 		table.removeJoinColumn(0);
 		assertEquals(0, table.joinColumnsSize());
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testMoveJoinColumn() throws Exception {
@@ -587,7 +587,7 @@ public class JoinTableTests extends JpaJavaResourceModelTestCase {
 		assertFalse(inverseJoinColumns.hasNext());
 		
 		table.removeInverseJoinColumn(0);
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testMoveInverseJoinColumn() throws Exception {

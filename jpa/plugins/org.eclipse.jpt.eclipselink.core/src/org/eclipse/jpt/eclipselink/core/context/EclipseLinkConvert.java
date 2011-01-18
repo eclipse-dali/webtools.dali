@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,10 @@
 package org.eclipse.jpt.eclipselink.core.context;
 
 import org.eclipse.jpt.core.context.Converter;
-import org.eclipse.jpt.core.context.JpaContextNode;
 
 /**
- * Corresponds to a Convert resource model object
- * 
+ * EclipseLink convert (not to be confused with Eclipse converter)
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,40 +23,39 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConvert extends JpaContextNode, Converter
+public interface EclipseLinkConvert
+	extends Converter
 {
-	
-	String ECLIPSE_LINK_CONVERTER = "eclipseLinkConverter"; //$NON-NLS-1$
-	
 	String getConverterName();
+	
+	String getSpecifiedConverterName();
+	void setSpecifiedConverterName(String converterName);
+		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterName"; //$NON-NLS-1$
 	
 	String getDefaultConverterName();
 		String DEFAULT_CONVERTER_NAME_PROPERTY = "defaultConverterName"; //$NON-NLS-1$
 
-	String getSpecifiedConverterName();
-	
-	void setSpecifiedConverterName(String converterName);
-		String SPECIFIED_CONVERTER_NAME_PROPERTY = "specifiedConverterName"; //$NON-NLS-1$
-	
 	/**
-	 * Reserved name for specifying a serialized object converter.  In this
-	 * case there does not need to be a corresponding @CustomConverter defined.
+	 * Reserved name for specifying a serialized object converter.
+	 * In this case a corresponding @CustomConverter is unnecessary.
 	 */
 	String SERIALIZED_CONVERTER = "serialized"; //$NON-NLS-1$
 	
 	/**
-	 * Reserved name for specifying a class instance converter.  Will use a ClassInstanceConverter
-	 * on the associated mapping.  When using a ClassInstanceConverter the database representation is a 
+	 * Reserved name for specifying a class instance converter.
+	 * Will use a ClassInstanceConverter
+	 * on the associated mapping. When using a ClassInstanceConverter the database representation is a 
 	 * String representing the Class name and the object-model representation is an instance 
-	 * of that class built with a no-args constructor
-	 * In this case there does not need to be a corresponding @CustomConverter defined.
+	 * of that class built with the zero-argument constructor.
+	 * In this case a corresponding @CustomConverter is unnecessary.
 	 */
 	String CLASS_INSTANCE_CONVERTER = "class-instance"; //$NON-NLS-1$
 	
 	/**
-	 * Reserved name for specifying no converter.  This can be used to override a situation where either 
-	 *  another converter is defaulted or another converter is set.
-	 *  In this case there does not need to be a corresponding @CustomConverter defined.
+	 * Reserved name for specifying no converter.
+	 * This can be used to override a situation where either 
+	 * another converter is defaulted or another converter is set.
+	 * In this case a corresponding @CustomConverter is unnecessary.
 	 */
 	String NO_CONVERTER = "none"; //$NON-NLS-1$
 	
@@ -66,21 +64,19 @@ public interface EclipseLinkConvert extends JpaContextNode, Converter
 	String DEFAULT_CONVERTER_NAME = NO_CONVERTER;
 
 	/**
-	 * This will return null if there is no converter specified on the mapping
-	 * @return
+	 * Return the mapping's converter.
 	 */
 	EclipseLinkConverter getConverter();
 		String CONVERTER_PROPERTY = "converter"; //$NON-NLS-1$
 	
 	/**
-	 * Possible values for converter type are:
-	 * {@value EclipseLinkNamedConverter#TYPE_CONVERTER}
-	 * {@value EclipseLinkNamedConverter#STRUCT_CONVERTER}
-	 * {@value EclipseLinkNamedConverter#CUSTOM_CONVERTER}
-	 * {@value EclipseLinkNamedConverter#NO_CONVERTER}
-	 * {@value EclipseLinkNamedConverter#OBJECT_TYPE_CONVERTER}
-	 * @param converterType
+	 * Possible values for the converter type are:<ul>
+	 * <li>{@link EclipseLinkCustomConverter}
+	 * <li>{@link EclipseLinkTypeConverter}
+	 * <li>{@link EclipseLinkObjectTypeConverter}
+	 * <li>{@link EclipseLinkStructConverter}
+	 * <li><code>null</code>
+	 * </ul>
 	 */
-	void setConverter(String converterType);
-
+	void setConverter(Class<? extends EclipseLinkConverter> converterType);
 }

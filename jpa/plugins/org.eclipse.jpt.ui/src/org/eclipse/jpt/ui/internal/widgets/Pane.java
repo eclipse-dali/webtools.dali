@@ -103,7 +103,7 @@ public abstract class Pane<T extends Model>
 	/**
 	 * The container of this composite.
 	 */
-	private Composite container;
+	private final Composite container;
 
 	/**
 	 * The aligner responsible to align the left controls.
@@ -183,16 +183,6 @@ public abstract class Pane<T extends Model>
 	
 	private PropertyChangeListener combinedEnabledModelListener;
 	
-	/**
-	 * Creates a new <code>Pane</code>.
-	 *
-	 * @category Constructor
-	 */
-	@SuppressWarnings("unused")
-	private Pane() {
-		super();
-	}
-
 	/**
 	 * Creates a new <code>Pane</code>.
 	 *

@@ -82,7 +82,7 @@ public class TemporalTests extends JpaJavaResourceModelTestCase {
 		
 		temporal.setValue(null);
 		
-		assertSourceDoesNotContain("@Temporal", cu);
+		assertSourceDoesNotContain("@Temporal(", cu);
 	}
 
 }

@@ -1,188 +1,234 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.Vector;
 
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryHint;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
 import org.eclipse.jpt.core.context.orm.OrmQueryHint;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryHint;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
-
-public abstract class AbstractOrmQuery<E extends XmlQuery> extends AbstractOrmXmlContextNode 
+/**
+ * <code>orm.xml</code> query
+ */
+public abstract class AbstractOrmQuery<X extends XmlQuery>
+	extends AbstractOrmXmlContextNode
 	implements OrmQuery
 {
+	protected final X xmlQuery;
 
 	protected String name;
 
 	protected String query;
 
-	protected final List<OrmQueryHint> hints;
+	protected final Vector<OrmQueryHint> hints = new Vector<OrmQueryHint>();
+	protected final HintContainerAdapter hintContainerAdapter = new HintContainerAdapter();
 
-	protected E resourceQuery;
-	
-	protected AbstractOrmQuery(XmlContextNode parent, E resourceQuery) {
+
+	protected AbstractOrmQuery(XmlContextNode parent, X xmlQuery) {
 		super(parent);
-		this.hints = new ArrayList<OrmQueryHint>();
-		this.initialize(resourceQuery);
+		this.xmlQuery = xmlQuery;
+		this.name = xmlQuery.getName();
+		this.query = xmlQuery.getQuery();
+		this.initializeHints();
 	}
 
-	protected E getResourceQuery() {
-		return this.resourceQuery;
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() { 
+		super.synchronizeWithResourceModel();
+		this.setName_(this.xmlQuery.getName());
+		this.setQuery_(this.xmlQuery.getQuery());
+		this.syncHints();
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+		this.updateNodes(this.getHints());
+		this.getPersistenceUnit().addQuery(this);
+	}
+
+
+	// ********** name **********
+
 	public String getName() {
 		return this.name;
 	}
 
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.getResourceQuery().setName(newName);
-		firePropertyChanged(Query.NAME_PROPERTY, oldName, newName);
+	public void setName(String name) {
+		this.setName_(name);
+		this.xmlQuery.setName(name);
 	}
+
+	protected void setName_(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+
+	// ********** query **********
 
 	public String getQuery() {
 		return this.query;
 	}
 
-	public void setQuery(String newQuery) {
-		String oldQuery = this.query;
-		this.query = newQuery;
-		this.getResourceQuery().setQuery(newQuery);
-		firePropertyChanged(Query.QUERY_PROPERTY, oldQuery, newQuery);
+	public void setQuery(String query) {
+		this.setQuery_(query);
+		this.xmlQuery.setQuery(query);
 	}
 
-	public ListIterator<OrmQueryHint> hints() {
-		return new CloneListIterator<OrmQueryHint>(this.hints);
+	protected void setQuery_(String query) {
+		String old = this.query;
+		this.query = query;
+		this.firePropertyChanged(QUERY_PROPERTY, old, query);
 	}
-	
-	public int hintsSize() {
+
+
+	// ********** hints **********
+
+	public ListIterable<OrmQueryHint> getHints() {
+		return new LiveCloneListIterable<OrmQueryHint>(this.hints);
+	}
+
+	public int getHintsSize() {
 		return this.hints.size();
 	}
-	
+
+	public OrmQueryHint addHint() {
+		return this.addHint(this.hints.size());
+	}
+
 	public OrmQueryHint addHint(int index) {
-		XmlQueryHint resourceQueryHint = OrmFactory.eINSTANCE.createXmlQueryHint();
-		OrmQueryHint contextQueryHint = buildQueryHint(resourceQueryHint);
-		this.hints.add(index, contextQueryHint);
-		this.getResourceQuery().getHints().add(index, resourceQueryHint);
-		this.fireItemAdded(Query.HINTS_LIST, index, contextQueryHint);
-		return contextQueryHint;
+		XmlQueryHint xmlHint = this.buildXmlQueryHint();
+		OrmQueryHint hint = this.addHint_(index, xmlHint);
+		this.xmlQuery.getHints().add(index, xmlHint);
+		return hint;
 	}
 
-	protected void addHint(int index, OrmQueryHint queryHint) {
-		addItemToList(index, queryHint, this.hints, Query.HINTS_LIST);
+	protected XmlQueryHint buildXmlQueryHint() {
+		return OrmFactory.eINSTANCE.createXmlQueryHint();
 	}
-	
-	protected void addHint(OrmQueryHint queryHint) {
-		this.addHint(this.hints.size(), queryHint);
+
+	public void removeHint(QueryHint hint) {
+		this.removeHint(this.hints.indexOf(hint));
 	}
-	
-	public void removeHint(QueryHint queryHint) {
-		removeHint(this.hints.indexOf(queryHint));
-	}
-	
+
 	public void removeHint(int index) {
-		OrmQueryHint queryHint = this.hints.remove(index);
-		this.getResourceQuery().getHints().remove(index);
-		fireItemRemoved(Query.HINTS_LIST, index, queryHint);
+		this.removeHint_(index);
+		this.xmlQuery.getHints().remove(index);
 	}
 
-	protected void removeHint_(OrmQueryHint queryHint) {
-		removeItemFromList(queryHint, this.hints, Query.HINTS_LIST);
+	protected void removeHint_(int index) {
+		this.removeItemFromList(index, this.hints, HINTS_LIST);
 	}
-	
+
 	public void moveHint(int targetIndex, int sourceIndex) {
-		this.getResourceQuery().getHints().move(targetIndex, sourceIndex);
-		moveItemInList(targetIndex, sourceIndex, this.hints, Query.HINTS_LIST);		
+		this.moveItemInList(targetIndex, sourceIndex, this.hints, HINTS_LIST);
+		this.xmlQuery.getHints().move(targetIndex, sourceIndex);
 	}
 
-	
-	protected void initialize(E xmlQuery) {
-		this.resourceQuery = xmlQuery;
-		this.name = xmlQuery.getName();
-		this.query = xmlQuery.getQuery();
-		this.initializeHints();
-	}
-	
 	protected void initializeHints() {
-		for (XmlQueryHint resourceQueryHint : this.resourceQuery.getHints()) {
-			this.hints.add(buildQueryHint(resourceQueryHint));
+		for (XmlQueryHint xmlHint : this.getXmlHints()) {
+			this.hints.add(this.buildHint(xmlHint));
 		}
 	}
 
-	protected OrmQueryHint buildQueryHint(XmlQueryHint resourceQueryHint) {
-		return getXmlContextNodeFactory().buildOrmQueryHint(this, resourceQueryHint);
+	protected OrmQueryHint buildHint(XmlQueryHint xmlHint) {
+		return this.getContextNodeFactory().buildOrmQueryHint(this, xmlHint);
 	}
-	
-	public void update(E xmlQuery) {
-		this.resourceQuery = xmlQuery;
-		this.setName(xmlQuery.getName());
-		this.setQuery(xmlQuery.getQuery());
-		this.updateHints();
-		getPersistenceUnit().addQuery(this);
-	}
-	
-	protected void updateHints() {
-		// make a copy of the XML hints (to prevent ConcurrentModificationException)
-		Iterator<XmlQueryHint> xmlHints = new CloneIterator<XmlQueryHint>(this.resourceQuery.getHints());
 
-		for (Iterator<OrmQueryHint> contextHints = this.hints(); contextHints.hasNext(); ) {
-			OrmQueryHint contextHint = contextHints.next();
-			if (xmlHints.hasNext()) {
-				contextHint.update(xmlHints.next());
-			}
-			else {
-				removeHint_(contextHint);
-			}
+	protected void syncHints() {
+		ContextContainerTools.synchronizeWithResourceModel(this.hintContainerAdapter);
+	}
+
+	protected Iterable<XmlQueryHint> getXmlHints() {
+		// clone to reduce chance of concurrency problems
+		return new LiveCloneIterable<XmlQueryHint>(this.xmlQuery.getHints());
+	}
+
+	protected void moveHint_(int index, OrmQueryHint hint) {
+		this.moveItemInList(index, hint, this.hints, HINTS_LIST);
+	}
+
+	protected OrmQueryHint addHint_(int index, XmlQueryHint xmlHint) {
+		OrmQueryHint hint = this.buildHint(xmlHint);
+		this.addItemToList(index, hint, this.hints, HINTS_LIST);
+		return hint;
+	}
+
+	protected void removeHint_(OrmQueryHint hint) {
+		this.removeHint_(this.hints.indexOf(hint));
+	}
+
+	/**
+	 * hint container adapter
+	 */
+	protected class HintContainerAdapter
+		implements ContextContainerTools.Adapter<OrmQueryHint, XmlQueryHint>
+	{
+		public Iterable<OrmQueryHint> getContextElements() {
+			return AbstractOrmQuery.this.getHints();
 		}
-		
-		while (xmlHints.hasNext()) {
-			addHint(buildQueryHint(xmlHints.next()));
+		public Iterable<XmlQueryHint> getResourceElements() {
+			return AbstractOrmQuery.this.getXmlHints();
+		}
+		public XmlQueryHint getResourceElement(OrmQueryHint contextElement) {
+			return contextElement.getXmlQueryHint();
+		}
+		public void moveContextElement(int index, OrmQueryHint element) {
+			AbstractOrmQuery.this.moveHint_(index, element);
+		}
+		public void addContextElement(int index, XmlQueryHint resourceElement) {
+			AbstractOrmQuery.this.addHint_(index, resourceElement);
+		}
+		public void removeContextElement(OrmQueryHint element) {
+			AbstractOrmQuery.this.removeHint_(element);
 		}
 	}
-	
+
+
+	// ********** misc **********
+
+	public X getXmlQuery() {
+		return this.xmlQuery;
+	}
+
 	public boolean overrides(Query other) {
-		// this isn't ideal, but it will have to do until we have further adopter input
-		return (this.name != null)
-				&& this.name.equals(other.getName())
-				&& (other instanceof JavaQuery);
+		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
 	}
-	
+
 	public boolean duplicates(Query other) {
-		return (this != other)
-				&& ! StringTools.stringIsEmpty(this.name)
-				&& this.name.equals(other.getName())
-				&& ! this.overrides(other)
-				&& ! other.overrides(this);
+		return MappingTools.nodesAreDuplicates(this, other);
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getResourceQuery().getValidationTextRange();
+		return this.xmlQuery.getValidationTextRange();
 	}
-	
+
 	public TextRange getNameTextRange() {
-		return this.getResourceQuery().getNameTextRange();
+		return this.xmlQuery.getNameTextRange();
 	}
 
 	@Override

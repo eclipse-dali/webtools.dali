@@ -22,13 +22,7 @@ import org.eclipse.jpt.core.context.MappedSuperclass;
  * @since 2.1
  */
 public interface EclipseLinkMappedSuperclass
-	extends EclipseLinkTypeMapping, MappedSuperclass
+	extends MappedSuperclass, EclipseLinkNonEmbeddableTypeMapping
 {
-	EclipseLinkCaching getCaching();
-	
-	EclipseLinkReadOnly getReadOnly();
-	
-	EclipseLinkCustomizer getCustomizer();
-	
-	EclipseLinkChangeTracking getChangeTracking();
+	// combine various interfaces
 }

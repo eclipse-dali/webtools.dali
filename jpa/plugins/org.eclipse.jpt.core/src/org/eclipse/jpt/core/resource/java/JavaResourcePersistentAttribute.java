@@ -31,17 +31,23 @@ import org.eclipse.jpt.utility.MethodSignature;
 public interface JavaResourcePersistentAttribute
 	extends JavaResourcePersistentMember
 {
+
+	JavaResourcePersistentType getParent();
+
+	JavaResourcePersistentType getResourcePersistentType();
+
 	/**
 	 * The Java resource persistent attribute's name does not change.
 	 */
 	String getName();
 	
 	/**
-	 * Return a null annotation for the specified annotation name.
-	 * Return null if the specified annotation name is null.
-	 * The corresponding AnnotationDefinition must implement #buildNullAnnotation()
-	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember,
-	 * org.eclipse.jpt.core.utility.jdt.Member)}
+	 * Return a <em>null</em> annotation for the specified annotation name.
+	 * Return <code>null</code> if the specified annotation name is
+	 * <code>null</code>.
+	 * The corresponding annotation definition must implement 
+	 * {@link AnnotationDefinition#buildNullAnnotation(JavaResourcePersistentMember)
+	 * buildNullAnnotation()}.
 	 */
 	Annotation buildNullAnnotation(String annotationName);
 	
@@ -135,5 +141,4 @@ public interface JavaResourcePersistentAttribute
 	int typeTypeArgumentNamesSize();
 
 	String getTypeTypeArgumentName(int index);
-
 }

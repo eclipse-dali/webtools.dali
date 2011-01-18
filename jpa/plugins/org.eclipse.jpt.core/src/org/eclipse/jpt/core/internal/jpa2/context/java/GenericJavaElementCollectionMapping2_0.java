@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 
-
 public class GenericJavaElementCollectionMapping2_0
 	extends AbstractJavaElementCollectionMapping2_0
 {

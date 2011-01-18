@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 
 /**
  * Java join table
- * 
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,33 +28,19 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 public interface JavaJoinTable
 	extends JoinTable, JavaReferenceTable
 {
-	void initialize(JoinTableAnnotation joinTableAnnotation);
+	JavaJoinTableJoiningStrategy getParent();
 
-	void update(JoinTableAnnotation joinTableAnnotation);
+	JoinTableAnnotation getTableAnnotation();
 
 
-	// ********** covariant overrides **********
+	// ********** inverse join columns **********
 
-	ListIterator<JavaJoinColumn> joinColumns();
-
-	JavaJoinColumn getDefaultJoinColumn();
-
-	ListIterator<JavaJoinColumn> specifiedJoinColumns();
-
-	JavaJoinColumn addSpecifiedJoinColumn(int index);
-
-	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> inverseJoinColumns();
 
-	JavaJoinColumn getDefaultInverseJoinColumn();
-
-	@SuppressWarnings("unchecked")
 	ListIterator<JavaJoinColumn> specifiedInverseJoinColumns();
-
+	JavaJoinColumn getSpecifiedInverseJoinColumn(int index);
+	JavaJoinColumn addSpecifiedInverseJoinColumn();
 	JavaJoinColumn addSpecifiedInverseJoinColumn(int index);
 
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
-
-	JavaUniqueConstraint addUniqueConstraint(int index);
-
+	JavaJoinColumn getDefaultInverseJoinColumn();
 }

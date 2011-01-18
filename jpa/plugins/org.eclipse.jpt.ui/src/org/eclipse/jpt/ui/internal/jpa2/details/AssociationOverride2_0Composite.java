@@ -10,8 +10,11 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.jpa2.context.AssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.ui.internal.details.AssociationOverrideComposite;
+import org.eclipse.jpt.ui.internal.details.EntityOverridesComposite;
+import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -47,7 +50,7 @@ public class AssociationOverride2_0Composite
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
 	public AssociationOverride2_0Composite(Pane<?> parentPane, 
-			PropertyValueModel<? extends AssociationOverride> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyAssociationOverride> subjectHolder,
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
@@ -71,11 +74,12 @@ public class AssociationOverride2_0Composite
 		new JoinTableJoiningStrategyPane(this, buildRelationshipReferenceHolder(), container);		
 	}
 	
-	private PropertyValueModel<AssociationOverrideRelationshipReference2_0> buildRelationshipReferenceHolder() {
-		return new TransformationPropertyValueModel<AssociationOverride, AssociationOverrideRelationshipReference2_0>(getSubjectHolder()) {
+	private PropertyValueModel<ReadOnlyJoinTableEnabledRelationshipReference> buildRelationshipReferenceHolder() {
+		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinTableEnabledRelationshipReference>(getSubjectHolder()) {
 			@Override
-			protected AssociationOverrideRelationshipReference2_0 transform_(AssociationOverride value) {
-				return (AssociationOverrideRelationshipReference2_0) value.getRelationshipReference();
+			protected ReadOnlyJoinTableEnabledRelationshipReference transform_(ReadOnlyAssociationOverride value) {
+				// all specified and virtual (mappings) overrides support join tables
+				return (ReadOnlyJoinTableEnabledRelationshipReference) value.getRelationshipReference();
 			}
 		};
 	}

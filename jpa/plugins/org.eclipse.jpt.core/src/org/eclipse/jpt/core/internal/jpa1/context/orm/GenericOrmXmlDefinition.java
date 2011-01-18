@@ -1,14 +1,15 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -17,6 +18,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
+import org.eclipse.jpt.core.internal.GenericJpaPlatformProvider;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.orm.GenericOrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.context.orm.OrmBasicMappingDefinition;
@@ -33,75 +35,77 @@ import org.eclipse.jpt.core.internal.context.orm.OrmOneToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class GenericOrmXmlDefinition
 	extends AbstractOrmXmlDefinition
 {
 	// singleton
-	private static final OrmXmlDefinition INSTANCE = 
-			new GenericOrmXmlDefinition();
-	
-	
+	private static final OrmXmlDefinition INSTANCE = new GenericOrmXmlDefinition();
+
 	/**
 	 * Return the singleton
 	 */
 	public static OrmXmlDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private GenericOrmXmlDefinition() {
 		super();
 	}
-	
-	
+
+	public JpaResourceType getResourceType() {
+		return JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
+	}
+
 	public EFactory getResourceNodeFactory() {
 		return OrmFactory.eINSTANCE;
 	}
-	
+
 	@Override
 	protected OrmXmlContextNodeFactory buildContextNodeFactory() {
 		return new GenericOrmXmlContextNodeFactory();
 	}
-	
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
-	}
-	
-	
-	// ********** ORM type mappings **********
-	
+
 	@Override
-	protected OrmTypeMappingDefinition[] buildOrmTypeMappingDefinitions() {
-		// order should not matter here, but we'll use the same order as for java 
-		// (@see {@link GenericJpaPlatformProvider})
-		return new OrmTypeMappingDefinition[] {
-			OrmEntityDefinition.instance(),
-			OrmEmbeddableDefinition.instance(),
-			OrmMappedSuperclassDefinition.instance()};
+	protected void addTypeMappingDefinitionsTo(ArrayList<OrmTypeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_MAPPING_DEFINITIONS);
 	}
-	
-	
-	// ********** ORM attribute mappings **********
-	
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see GenericJpaPlatformProvider
+	 */
+	protected static final OrmTypeMappingDefinition[] TYPE_MAPPING_DEFINITIONS = new OrmTypeMappingDefinition[] {
+		OrmEntityDefinition.instance(),
+		OrmEmbeddableDefinition.instance(),
+		OrmMappedSuperclassDefinition.instance()
+	};
+
 	@Override
-	protected OrmAttributeMappingDefinition[] buildOrmAttributeMappingDefinitions() {
-		// order should not matter here, but we'll use the same order as for java
-		// (@see {@link GenericJpaPlatformProvider})
-		return new OrmAttributeMappingDefinition[] {
-			OrmTransientMappingDefinition.instance(),
-			OrmIdMappingDefinition.instance(),
-			OrmVersionMappingDefinition.instance(),
-			OrmBasicMappingDefinition.instance(),
-			OrmEmbeddedMappingDefinition.instance(),
-			OrmEmbeddedIdMappingDefinition.instance(),
-			OrmManyToManyMappingDefinition.instance(),
-			OrmManyToOneMappingDefinition.instance(),
-			OrmOneToManyMappingDefinition.instance(),
-			OrmOneToOneMappingDefinition.instance(),
-			NullOrmAttributeMappingDefinition.instance()};
+	protected void addAttributeMappingDefinitionsTo(ArrayList<OrmAttributeMappingDefinition> definitions) {
+		CollectionTools.addAll(definitions, ATTRIBUTE_MAPPING_DEFINITIONS);
 	}
+
+	/**
+	 * Order should not matter here; but we'll use the same order as for Java.
+	 * @see GenericJpaPlatformProvider
+	 */
+	protected static final OrmAttributeMappingDefinition[] ATTRIBUTE_MAPPING_DEFINITIONS = new OrmAttributeMappingDefinition[] {
+		OrmTransientMappingDefinition.instance(),
+		OrmIdMappingDefinition.instance(),
+		OrmVersionMappingDefinition.instance(),
+		OrmBasicMappingDefinition.instance(),
+		OrmEmbeddedMappingDefinition.instance(),
+		OrmEmbeddedIdMappingDefinition.instance(),
+		OrmManyToManyMappingDefinition.instance(),
+		OrmManyToOneMappingDefinition.instance(),
+		OrmOneToManyMappingDefinition.instance(),
+		OrmOneToOneMappingDefinition.instance(),
+		NullOrmAttributeMappingDefinition.instance()
+	};
 }

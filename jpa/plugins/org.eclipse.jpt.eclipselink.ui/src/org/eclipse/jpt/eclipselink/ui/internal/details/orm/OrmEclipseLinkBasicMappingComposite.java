@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Composite;
 
 //Remove the Converters section from 1.0 orm basic mappings.
 //This is supported in EclipseLink in version 1.1, but not 1.0
-public class OrmEclipseLinkBasicMappingComposite extends EclipseLinkBasicMappingComposite<OrmBasicMapping>
+public class OrmEclipseLinkBasicMappingComposite extends EclipseLinkBasicMappingComposite<BasicMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLinkOrmBasicMappingComposite</code>.
@@ -33,7 +33,7 @@ public class OrmEclipseLinkBasicMappingComposite extends EclipseLinkBasicMapping
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkBasicMappingComposite(PropertyValueModel<? extends OrmBasicMapping> subjectHolder,
+	public OrmEclipseLinkBasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 

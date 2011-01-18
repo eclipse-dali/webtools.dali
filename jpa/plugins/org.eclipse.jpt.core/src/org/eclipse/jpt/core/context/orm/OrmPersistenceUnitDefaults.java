@@ -11,15 +11,13 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 
 /**
- * Context <code>orm.xml</code> persistence unit defaults.
  * Context model corresponding to the
- * XML resource model {@link XmlPersistenceUnitDefaults},
+ * XML resource model {@link org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults},
  * which corresponds to the <code>persistence-unit-defaults</code> element
  * in the <code>orm.xml</code> file.
  * <p>
@@ -33,18 +31,21 @@ import org.eclipse.jpt.db.SchemaContainer;
  * @since 2.1
  */
 public interface OrmPersistenceUnitDefaults
-	extends XmlContextNode, MappingFilePersistenceUnitDefaults
-{	
-	AccessType getAccess();
+	extends MappingFilePersistenceUnitDefaults
+{
+	/**
+	 * Covariant override.
+	 */
+	OrmPersistenceUnitMetadata getParent();
+
+	// ********** access **********
 	void setAccess(AccessType value);
 		String ACCESS_PROPERTY = "access"; //$NON-NLS-1$
 
+	// ********** schema container **********
 	SchemaContainer getDbSchemaContainer();
 
-	/**
-	 * Return the specified catalog if present, otherwise return the default catalog.
-	 */
-	String getCatalog();
+	// ********** catalog **********
 	String getSpecifiedCatalog();
 	void setSpecifiedCatalog(String newSpecifiedCatalog);
 		String SPECIFIED_CATALOG_PROPERTY = "specifiedCatalog"; //$NON-NLS-1$
@@ -52,10 +53,7 @@ public interface OrmPersistenceUnitDefaults
 		String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 	Catalog getDbCatalog();
 
-	/**
-	 * Return the specified schema if present, otherwise return the default schema.
-	 */
-	String getSchema();
+	// ********** schema **********
 	String getSpecifiedSchema();
 	void setSpecifiedSchema(String newSpecifiedSchema);
 		String SPECIFIED_SCHEMA_PROPERTY = "specifiedSchema"; //$NON-NLS-1$
@@ -63,14 +61,7 @@ public interface OrmPersistenceUnitDefaults
 		String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 	Schema getDbSchema();
 
-	boolean isCascadePersist();
+	// ********** cascade persist **********
 	void setCascadePersist(boolean value);
 		String CASCADE_PERSIST_PROPERTY = "cascadePersist"; //$NON-NLS-1$
-
-	/**
-	 * Update the ORM persistence unit defaults context model to match the resource model.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update();
-
 }

@@ -14,6 +14,7 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.ConvertibleMapping;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
+import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
@@ -23,6 +24,7 @@ import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.EnumTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
+import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -280,13 +282,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		return new PropertyAspectAdapter<T, Boolean>(getSubjectHolder(), ConvertibleMapping.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
-				return Boolean.valueOf(this.subject.getConverter().getType() == Converter.NO_CONVERTER);
+				return Boolean.valueOf(this.subject.getConverter().getType() == null);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.NO_CONVERTER);
+					this.subject.setConverter(null);
 				}
 			}
 		};
@@ -297,13 +299,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.LOB_CONVERTER);
+				return Boolean.valueOf(converter.getType() == LobConverter.class);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.LOB_CONVERTER);
+					this.subject.setConverter(LobConverter.class);
 				}
 			}
 		};
@@ -322,7 +324,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		return new TransformationPropertyValueModel<Converter, TemporalConverter>(converterHolder) {
 			@Override
 			protected TemporalConverter transform_(Converter converter) {
-				return converter.getType() == Converter.TEMPORAL_CONVERTER ? (TemporalConverter) converter : null;
+				return converter.getType() == TemporalConverter.class ? (TemporalConverter) converter : null;
 			}
 		};
 	}
@@ -331,7 +333,7 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 		return new TransformationPropertyValueModel<Converter, EnumeratedConverter>(converterHolder) {
 			@Override
 			protected EnumeratedConverter transform_(Converter converter) {
-				return converter.getType() == Converter.ENUMERATED_CONVERTER ? (EnumeratedConverter) converter : null;
+				return converter.getType() == EnumeratedConverter.class ? (EnumeratedConverter) converter : null;
 			}
 		};
 	}
@@ -341,13 +343,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.TEMPORAL_CONVERTER);
+				return Boolean.valueOf(converter.getType() == TemporalConverter.class);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.TEMPORAL_CONVERTER);
+					this.subject.setConverter(TemporalConverter.class);
 				}
 			}
 		};
@@ -358,13 +360,13 @@ public abstract class AbstractElementCollectionMapping2_0Composite<T extends Ele
 			@Override
 			protected Boolean buildValue_() {
 				Converter converter = this.subject.getConverter();
-				return Boolean.valueOf(converter.getType() == Converter.ENUMERATED_CONVERTER);
+				return Boolean.valueOf(converter.getType() == EnumeratedConverter.class);
 			}
 
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(Converter.ENUMERATED_CONVERTER);
+					this.subject.setConverter(EnumeratedConverter.class);
 				}
 			}
 		};

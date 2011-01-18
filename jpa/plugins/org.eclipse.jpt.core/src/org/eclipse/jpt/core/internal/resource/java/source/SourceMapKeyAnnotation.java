@@ -54,6 +54,12 @@ public final class SourceMapKeyAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
@@ -95,7 +101,7 @@ public final class SourceMapKeyAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MAP_KEY__NAME, false);
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.MAP_KEY__NAME);
 	}
 
 }

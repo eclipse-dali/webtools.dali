@@ -56,7 +56,6 @@ public final class BinaryStaticMetamodelAnnotation
 		String old = this.value;
 		this.value = value;
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
-		this.firePropertyChanged(FULLY_QUALIFIED_CLASS_NAME_PROPERTY, old, value);
 	}
 
 	private String buildValue() {

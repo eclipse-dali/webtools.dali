@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
@@ -59,9 +58,5 @@ public class UnsupportedOrmAttributeMappingDefinition
 	
 	public OrmAttributeMapping buildContextMapping(OrmPersistentAttribute parent, XmlAttributeMapping resourceMapping, OrmXmlContextNodeFactory factory) {
 		return factory.buildUnsupportedOrmAttributeMapping(parent, (XmlNullAttributeMapping) resourceMapping);
-	}
-	
-	public XmlAttributeMapping buildVirtualResourceMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping, OrmXmlContextNodeFactory factory) {
-		return factory.buildVirtualXmlNullAttributeMapping(ormTypeMapping, javaAttributeMapping);
 	}
 }

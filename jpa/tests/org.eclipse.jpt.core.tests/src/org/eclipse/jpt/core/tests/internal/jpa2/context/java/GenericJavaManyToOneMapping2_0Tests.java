@@ -17,8 +17,8 @@ import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.ManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
@@ -101,8 +101,8 @@ public class GenericJavaManyToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
-			each.makeSpecified();
+		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.convertToSpecified();
 		}
 	}
 	
@@ -309,7 +309,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		assertNull(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertTrue(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
@@ -317,7 +317,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		assertNull(((JavaOneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertTrue(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getIdDerivedIdentityStrategy().getValue());
@@ -325,17 +325,17 @@ public class GenericJavaManyToOneMapping2_0Tests
 		assertNull(((JavaManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertTrue(contextAttribute.getMapping() instanceof JavaIdMapping);
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertNotNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertTrue(contextAttribute.getMapping() instanceof JavaManyToOneMapping2_0);	
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertNull(resourceAttribute.getAnnotation(JPA.ID));
 		assertNull(resourceAttribute.getAnnotation(JPA2_0.MAPS_ID));
 		assertTrue(contextAttribute.getMapping() instanceof JavaBasicMapping);
@@ -348,7 +348,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
-		ManyToOneRelationshipReference2_0 relationshipReference = mapping.getRelationshipReference();
+		ManyToOneRelationshipReference2_0 relationshipReference = (ManyToOneRelationshipReference2_0) mapping.getRelationshipReference();
 
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
@@ -381,7 +381,7 @@ public class GenericJavaManyToOneMapping2_0Tests
 		JavaResourcePersistentAttribute resourceAttribute = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
 		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping2_0 mapping = (ManyToOneMapping2_0) contextAttribute.getMapping();
-		ManyToOneRelationshipReference2_0 relationshipReference = mapping.getRelationshipReference();
+		ManyToOneRelationshipReference2_0 relationshipReference = (ManyToOneRelationshipReference2_0) mapping.getRelationshipReference();
 
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));

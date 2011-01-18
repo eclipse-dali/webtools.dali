@@ -48,7 +48,7 @@ public final class OneToManyAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullOneToManyAnnotation((JavaResourcePersistentAttribute) parent);
+		throw new UnsupportedOperationException();
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

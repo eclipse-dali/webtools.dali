@@ -62,15 +62,15 @@ public final class SourceXmlAttributeAnnotation
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_ATTRIBUTE__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_ATTRIBUTE__NAME);
 	}
 
 	private DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_ATTRIBUTE__NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(daa, JAXB.XML_ATTRIBUTE__NAMESPACE);
 	}
 
 	private DeclarationAnnotationElementAdapter<Boolean> buildRequiredAdapter(DeclarationAnnotationAdapter daa) {
-		return ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, JAXB.XML_ATTRIBUTE__REQUIRED, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forBooleans(daa, JAXB.XML_ATTRIBUTE__REQUIRED);
 	}
 
 	private AnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {

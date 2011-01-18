@@ -45,6 +45,7 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -56,6 +57,7 @@ import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
@@ -539,8 +541,13 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jpaResourceType));
 		}
 
-		protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String mappingKey) {
-			return getJpaProject().getJpaPlatform().getJavaTypeMappingDefinition(mappingKey);
+		protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String key) {
+			for (JavaTypeMappingDefinition definition : getJpaProject().getJpaPlatform().getJavaTypeMappingDefinitions()) {
+				if (Tools.valuesAreEqual(definition.getKey(), key)) {
+					return definition;
+				}
+			}
+			throw new IllegalArgumentException("Illegal type mapping key: " + key); //$NON-NLS-1$
 		}
 
 		protected JavaResourcePersistentType getJavaResourcePersistentType() {

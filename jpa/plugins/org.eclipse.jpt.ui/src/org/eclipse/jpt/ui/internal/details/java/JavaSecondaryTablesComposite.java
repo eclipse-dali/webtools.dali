@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.details.java;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaEntity;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.AbstractSecondaryTablesComposite;
@@ -45,7 +45,6 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see EntityComposite - The container of this pane
  * @see AddRemoveListPane
  * @see PrimaryKeyJoinColumnsInSecondaryTableComposite
  *
@@ -80,21 +79,21 @@ public class JavaSecondaryTablesComposite extends AbstractSecondaryTablesComposi
 		super(subjectHolder, parent, widgetFactory);
 	}
 
-	private ListValueModel<SecondaryTable> buildSecondaryTablesListModel() {
-		return new ItemPropertyListValueModelAdapter<SecondaryTable>(buildSecondaryTablesListHolder(), 
-			Table.SPECIFIED_NAME_PROPERTY);
+	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListModel() {
+		return new ItemPropertyListValueModelAdapter<JavaSecondaryTable>(buildSecondaryTablesListHolder(), 
+			ReadOnlyTable.SPECIFIED_NAME_PROPERTY);
 	}	
 
-	private ListValueModel<SecondaryTable> buildSecondaryTablesListHolder() {
-		return new ListAspectAdapter<Entity, SecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
+	private ListValueModel<JavaSecondaryTable> buildSecondaryTablesListHolder() {
+		return new ListAspectAdapter<JavaEntity, JavaSecondaryTable>(getSubjectHolder(), Entity.SPECIFIED_SECONDARY_TABLES_LIST) {
 			@Override
-			protected ListIterator<SecondaryTable> listIterator_() {
-				return subject.specifiedSecondaryTables();
+			protected ListIterator<JavaSecondaryTable> listIterator_() {
+				return this.subject.specifiedSecondaryTables();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.specifiedSecondaryTablesSize();
+				return this.subject.specifiedSecondaryTablesSize();
 			}
 		};
 	}

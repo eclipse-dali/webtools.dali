@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,7 +11,6 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.MappingKeys;
@@ -23,229 +22,303 @@ import org.eclipse.jpt.core.context.orm.OrmColumn;
 import org.eclipse.jpt.core.context.orm.OrmColumnMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmTemporalConverter;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.NullOrmConverter;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractOrmVersionMapping<T extends XmlVersion>
-	extends AbstractOrmAttributeMapping<T>
+/**
+ * <code>orm.xml</code> version mapping
+ */
+public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
+	extends AbstractOrmAttributeMapping<X>
 	implements OrmVersionMapping
 {
 	protected final OrmColumn column;
 
-	protected OrmConverter converter;
-	
-	protected final OrmConverter nullConverter;
-	
-	protected AbstractOrmVersionMapping(OrmPersistentAttribute parent, T resourceMapping) {
-		super(parent, resourceMapping);
-		this.column = getXmlContextNodeFactory().buildOrmColumn(this, this);
-		this.column.initialize(this.getResourceColumn());//TODO pass in to constructor
-		this.nullConverter = this.getXmlContextNodeFactory().buildOrmNullConverter(this);
-		this.converter = this.buildConverter(this.getResourceConverterType());
+	protected OrmConverter converter;  // never null
+
+
+	// the spec does not list Temporal explicitly,
+	// but it is included in the orm.xml schema...
+	protected static final OrmConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new OrmConverter.Adapter[] {
+		OrmTemporalConverter.Adapter.instance(),
+	};
+	protected static final Iterable<OrmConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<OrmConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+
+
+	protected AbstractOrmVersionMapping(OrmPersistentAttribute parent, X xmlMapping) {
+		super(parent, xmlMapping);
+		this.column = this.buildColumn();
+		this.converter = this.buildConverter();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.column.synchronizeWithResourceModel();
+		this.syncConverter();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.column.update();
+		this.converter.update();
+	}
+
+
+	// ********** column **********
+
+	public OrmColumn getColumn() {
+		return this.column;
+	}
+
+	protected OrmColumn buildColumn() {
+		return this.getContextNodeFactory().buildOrmColumn(this, this);
+	}
+
+
+	// ********** converter **********
+
+	public OrmConverter getConverter() {
+		return this.converter;
+	}
+
+	public void setConverter(Class<? extends Converter> converterType) {
+		if (this.converter.getType() != converterType) {
+			// note: we may also clear the XML value we want;
+			// but if we leave it, the resulting sync will screw things up...
+			this.clearXmlConverterValues();
+			OrmConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
+			this.setConverter_(this.buildConverter(converterAdapter));
+			this.converter.initialize();
+		}
+	}
+
+	protected OrmConverter buildConverter(OrmConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getContextNodeFactory()) :
+				this.buildNullConverter();
+	}
+
+	protected void setConverter_(OrmConverter converter) {
+		Converter old = this.converter;
+		this.converter = converter;
+		this.firePropertyChanged(CONVERTER_PROPERTY, old, converter);
+	}
+
+	protected void clearXmlConverterValues() {
+		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
+			adapter.clearXmlValue(this.xmlAttributeMapping);
+		}
+	}
+
+	protected OrmConverter buildConverter() {
+		OrmXmlContextNodeFactory factory = this.getContextNodeFactory();
+		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
+			OrmConverter ormConverter = adapter.buildConverter(this, factory);
+			if (ormConverter != null) {
+				return ormConverter;
+			}
+		}
+		return this.buildNullConverter();
+	}
+
+	protected void syncConverter() {
+		OrmConverter.Adapter adapter = this.getXmlConverterAdapter();
+		if (adapter == null) {
+			if (this.converter.getType() != null) {
+				this.setConverter_(this.buildNullConverter());
+			}
+		} else {
+			if (this.converter.getType() == adapter.getConverterType()) {
+				this.converter.synchronizeWithResourceModel();
+			} else {
+				this.setConverter_(adapter.buildNewConverter(this, this.getContextNodeFactory()));
+			}
+		}
+	}
+
+	/**
+	 * Return the first adapter whose converter value is set in the XML mapping.
+	 * Return <code>null</code> if there are no converter values in the XML.
+	 */
+	protected OrmConverter.Adapter getXmlConverterAdapter() {
+		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter.isActive(this.xmlAttributeMapping)) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected OrmConverter buildNullConverter() {
+		return new NullOrmConverter(this);
+	}
+
+
+	// ********** converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected OrmConverter.Adapter getConverterAdapter(Class<? extends Converter> converterType) {
+		for (OrmConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		return null;
+	}
+
+	protected Iterable<OrmConverter.Adapter> getConverterAdapters() {
+		return CONVERTER_ADAPTERS;
+	}
+
+
+	// ********** misc **********
+
+	public String getKey() {
+		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	public int getXmlSequence() {
 		return 30;
 	}
 
-	public String getKey() {
-		return MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY;
-	}
-	
 	public void initializeOn(OrmAttributeMapping newMapping) {
 		newMapping.initializeFromOrmVersionMapping(this);
 	}
 
 	@Override
-	public void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
+	protected void initializeFromOrmColumnMapping(OrmColumnMapping oldMapping) {
 		super.initializeFromOrmColumnMapping(oldMapping);
-		getColumn().initializeFrom(oldMapping.getColumn());
+		this.column.initializeFrom(oldMapping.getColumn());
 	}
 
-	public OrmColumn getColumn() {
-		return this.column;
-	}
-	
-	public OrmConverter getConverter() {
-		return this.converter;
-	}
-	
-	protected String getConverterType() {
-		return this.converter.getType();
-	}
-	
-	public void setConverter(String converterType) {
-		if (this.valuesAreEqual(getConverterType(), converterType)) {
-			return;
-		}
-		OrmConverter oldConverter = this.converter;
-		OrmConverter newConverter = buildConverter(converterType);
-		this.converter = this.nullConverter;
-		if (oldConverter != null) {
-			oldConverter.removeFromResourceModel();
-		}
-		this.converter = newConverter;
-		if (newConverter != null) {
-			newConverter.addToResourceModel();
-		}
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}
-	
-	protected void setConverter(OrmConverter newConverter) {
-		OrmConverter oldConverter = this.converter;
-		this.converter = newConverter;
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}	
-
-	public void addToResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getVersions().add(this.resourceAttributeMapping);
-	}
-	
-	public void removeFromResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getVersions().remove(this.resourceAttributeMapping);
+	public void addXmlAttributeMappingTo(Attributes xmlAttributes) {
+		xmlAttributes.getVersions().add(this.xmlAttributeMapping);
 	}
 
-	//************** NamedColumn.Owner implementation ***************
-
-	public String getDefaultColumnName() {		
-		return getName();
+	public void removeXmlAttributeMappingFrom(Attributes xmlAttributes) {
+		xmlAttributes.getVersions().remove(this.xmlAttributeMapping);
 	}
 
-	public Table getDbTable(String tableName) {
-		return getTypeMapping().getDbTable(tableName);
-	}
 
-	//************** BaseColumn.Owner implementation ***************
+	// ********** OrmColumn.Owner implementation **********
+
+	public String getDefaultColumnName() {
+		return this.name;
+	}
 
 	public String getDefaultTableName() {
-		return getTypeMapping().getPrimaryTableName();
+		return this.getTypeMapping().getPrimaryTableName();
 	}
-	
+
+	public Table resolveDbTable(String tableName) {
+		return this.getTypeMapping().resolveDbTable(tableName);
+	}
+
 	public boolean tableNameIsInvalid(String tableName) {
-		return getTypeMapping().tableNameIsInvalid(tableName);
+		return this.getTypeMapping().tableNameIsInvalid(tableName);
 	}
 
 	public Iterator<String> candidateTableNames() {
-		return getTypeMapping().associatedTableNamesIncludingInherited();
+		return this.getTypeMapping().allAssociatedTableNames();
 	}
+
+	public XmlColumn getXmlColumn() {
+		return this.xmlAttributeMapping.getColumn();
+	}
+
+	public XmlColumn buildXmlColumn() {
+		XmlColumn xmlColumn = OrmFactory.eINSTANCE.createXmlColumn();
+		this.xmlAttributeMapping.setColumn(xmlColumn);
+		return xmlColumn;
+	}
+
+	public void removeXmlColumn() {
+		this.xmlAttributeMapping.setColumn(null);
+	}
+
+
+	// ********** refactoring **********
 
 	@Override
-	public void update() {
-		super.update();
-		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
-			getConverter().update();
-		}
-		else {
-			setConverter(buildConverter(getResourceConverterType()));
-		}
-	}
-	
-	protected OrmConverter buildConverter(String converterType) {
-		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return this.nullConverter;
-		}
-		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getXmlContextNodeFactory().buildOrmTemporalConverter(this, this.resourceAttributeMapping);
-		}
-		return null;
-	}
-	
-	protected String getResourceConverterType() {
-		if (this.resourceAttributeMapping.getTemporal() != null) {
-			return Converter.TEMPORAL_CONVERTER;
-		}
-		return Converter.NO_CONVERTER;
-	}
-
-	//***************** XmlColumn.Owner implementation ****************
-	
-	public XmlColumn getResourceColumn() {
-		return this.resourceAttributeMapping.getColumn();
-	}
-	
-	public void addResourceColumn() {
-		this.resourceAttributeMapping.setColumn(OrmFactory.eINSTANCE.createXmlColumn());
-	}
-	
-	public void removeResourceColumn() {
-		this.resourceAttributeMapping.setColumn(null);
-	}
-
-
-	//************ refactoring ************
-
 	@SuppressWarnings("unchecked")
-	@Override
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenameTypeEdits(originalType, newName),
-			this.createConverterRenameTypeEdits(originalType, newName));
+				super.createRenameTypeEdits(originalType, newName),
+				this.createConverterRenameTypeEdits(originalType, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
-		if (getConverter() != null) {
-			return getConverter().createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (this.converter != null) ?
+				this.converter.createRenameTypeEdits(originalType, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createMoveTypeEdits(originalType, newPackage),
-			this.createConverterMoveTypeEdits(originalType, newPackage));
-	}
-	
-	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (getConverter() != null) {
-			return getConverter().createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+				super.createMoveTypeEdits(originalType, newPackage),
+				this.createConverterMoveTypeEdits(originalType, newPackage)
+			);
 	}
 
-	@SuppressWarnings("unchecked")
+	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return (this.converter != null) ?
+				this.converter.createMoveTypeEdits(originalType, newPackage) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenamePackageEdits(originalPackage, newName),
-			this.createConverterRenamePackageEdits(originalPackage, newName));
+				super.createRenamePackageEdits(originalPackage, newName),
+				this.createConverterRenamePackageEdits(originalPackage, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (getConverter() != null) {
-			return getConverter().createRenamePackageEdits(originalPackage, newName);
-		}
-		return EmptyIterable.instance();
+		return (this.converter != null) ?
+				this.converter.createRenamePackageEdits(originalPackage, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 
-	// ****************** validation ****************
-	
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
-		this.getColumn().validate(messages, reporter);
+		this.column.validate(messages, reporter);
 	}
-	
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator(getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+
+	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator(this.getPersistentAttribute(), (BaseColumn) col, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
 	}
 }

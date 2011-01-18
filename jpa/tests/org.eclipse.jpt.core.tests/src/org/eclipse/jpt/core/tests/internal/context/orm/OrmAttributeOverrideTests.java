@@ -46,11 +46,11 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedOverrides().next();
 		
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());
-		assertTrue(overrideContainer.attributeOverrides().hasNext());
+		assertTrue(overrideContainer.overrides().hasNext());
 		assertFalse(entityResource.getAttributeOverrides().isEmpty());
 		
 		//set name in the resource model, verify context model updated
@@ -68,7 +68,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		assertEquals("FOO", attributeOverrideResource.getName());
 
 		entityResource.getAttributeOverrides().remove(0);
-		assertFalse(overrideContainer.attributeOverrides().hasNext());
+		assertFalse(overrideContainer.overrides().hasNext());
 		assertTrue(entityResource.getAttributeOverrides().isEmpty());
 	}
 	
@@ -80,7 +80,7 @@ public class OrmAttributeOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAttributeOverrides().add(OrmFactory.eINSTANCE.createXmlAttributeOverride());
 		XmlAttributeOverride attributeOverrideResource = entityResource.getAttributeOverrides().get(0);
-		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		OrmAttributeOverride ormAttributeOverride = overrideContainer.specifiedOverrides().next();
 
 		assertNull(ormAttributeOverride.getName());
 		assertNull(attributeOverrideResource.getName());

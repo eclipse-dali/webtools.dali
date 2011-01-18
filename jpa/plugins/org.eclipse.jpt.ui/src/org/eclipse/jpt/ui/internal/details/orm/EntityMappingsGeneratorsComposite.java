@@ -15,7 +15,7 @@ import java.util.List;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -82,8 +82,8 @@ import org.eclipse.ui.part.PageBook;
 public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 {
 	private WritablePropertyValueModel<OrmGenerator> generatorHolder;
-	private GeneratorComposite<SequenceGenerator> sequenceGeneratorPane;
-	private TableGeneratorComposite tableGeneratorPane;
+	GeneratorComposite<SequenceGenerator> sequenceGeneratorPane;
+	TableGeneratorComposite tableGeneratorPane;
 	private AddRemoveListPane<EntityMappings> listPane;
 
 	/**
@@ -99,7 +99,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		super(parentPane, parent, false);
 	}
 	
-	private void addGenerator(ObjectListSelectionModel listSelectionModel) {
+	void addGenerator(ObjectListSelectionModel listSelectionModel) {
 		addGeneratorFromDialog(listSelectionModel, buildAddGeneratorDialog());
 	}
 	
@@ -113,11 +113,11 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 		}
 		String generatorType = dialog.getGeneratorType();
 		OrmGenerator generator;
-		if (generatorType == Generator.TABLE_GENERATOR) {
-			generator = this.getSubject().addTableGenerator(getSubject().getTableGeneratorsSize());
+		if (generatorType == AddGeneratorDialog.TABLE_GENERATOR) {
+			generator = this.getSubject().addTableGenerator();
 		}
-		else if (generatorType == Generator.SEQUENCE_GENERATOR) {
-			generator = this.getSubject().addSequenceGenerator(getSubject().getSequenceGeneratorsSize());
+		else if (generatorType == AddGeneratorDialog.SEQUENCE_GENERATOR) {
+			generator = this.getSubject().addSequenceGenerator();
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -130,7 +130,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	private ListValueModel<OrmGenerator> buildDisplayableGeneratorListHolder() {
 		return new ItemPropertyListValueModelAdapter<OrmGenerator>(
 			buildGeneratorsListHolder(),
-			Generator.NAME_PROPERTY
+			JpaNamedContextNode.NAME_PROPERTY
 		);
 	}
 

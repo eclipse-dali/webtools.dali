@@ -11,41 +11,35 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
-import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
-
+/**
+ * 
+ */
 public class NullJavaMapKeyColumn2_0
 	extends AbstractJavaJpaContextNode
 	implements JavaColumn
 {
-
-	public NullJavaMapKeyColumn2_0(JavaJpaContextNode parent) {
+	public NullJavaMapKeyColumn2_0(JavaMultiRelationshipMapping parent) {
 		super(parent);
 	}
 
-	public void initialize(JavaResourcePersistentAttribute resource) {
-		//no-op
+
+	// ********** column annotation **********
+
+	public ColumnAnnotation getColumnAnnotation() {
+		return (ColumnAnnotation) this.getParent().getPersistentAttribute().getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
 	}
 
-	public void update(JavaResourcePersistentAttribute resource) {
-		//no-op
-	}
 
-	public void initialize(ColumnAnnotation resourceColumn) {
-		//no-op
-	}
-
-	public void update(ColumnAnnotation resourceColumn) {
-		//no-op
-	}
+	// ********** name **********
 
 	public String getName() {
 		return null;
@@ -55,7 +49,7 @@ public class NullJavaMapKeyColumn2_0
 		return null;
 	}
 
-	public void setSpecifiedName(String newSpecifiedName) {
+	public void setSpecifiedName(String name) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -63,115 +57,21 @@ public class NullJavaMapKeyColumn2_0
 		return null;
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
+
+	// ********** column definition **********
+
+	public String getColumnDefinition() {
 		return null;
 	}
 
-	public boolean isNullable() {
-		return false;
-	}
-
-	public boolean isDefaultNullable() {
-		return false;
-	}
-
-	public Boolean getSpecifiedNullable() {
-		return null;
-	}
-
-	public void setSpecifiedNullable(Boolean newSpecifiedNullable) {
+	public void setColumnDefinition(String columnDefinition) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean isInsertable() {
-		return false;
-	}
 
-	public boolean isDefaultInsertable() {
-		return false;
-	}
+	// ********** table **********
 
-	public Boolean getSpecifiedInsertable() {
-		return null;
-	}
-
-	public void setSpecifiedInsertable(Boolean newSpecifiedInsertable) {
-		throw new UnsupportedOperationException();
-	}
-
-	public boolean isUpdatable() {
-		return false;
-	}
-
-	public boolean isDefaultUpdatable() {
-		return false;
-	}
-
-	public Boolean getSpecifiedUpdatable() {
-		return null;
-	}
-
-	public void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable) {
-		throw new UnsupportedOperationException();
-	}
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return null;
-	}
-
-	public int getDefaultLength() {
-		return 0;
-	}
-
-	public int getDefaultPrecision() {
-		return 0;
-	}
-
-	public int getDefaultScale() {
-		return 0;
-	}
-
-	public int getLength() {
-		return 0;
-	}
-
-	public int getPrecision() {
-		return 0;
-	}
-
-	public int getScale() {
-		return 0;
-	}
-
-	public Integer getSpecifiedLength() {
-		return null;
-	}
-
-	public Integer getSpecifiedPrecision() {
-		return null;
-	}
-
-	public Integer getSpecifiedScale() {
-		return null;
-	}
-
-	public void setSpecifiedLength(Integer newSpecifiedLength) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setSpecifiedPrecision(Integer newSpecifiedPrecision) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void setSpecifiedScale(Integer newSpecifiedScale) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Iterator<String> candidateTableNames() {
-		return EmptyIterator.instance();
-	}
-
-	public String getDefaultTable() {
+	public String getTable() {
 		return null;
 	}
 
@@ -179,19 +79,26 @@ public class NullJavaMapKeyColumn2_0
 		return null;
 	}
 
-	public String getTable() {
+	public void setSpecifiedTable(String table) {
+		throw new UnsupportedOperationException();
+	}
+
+	public String getDefaultTable() {
 		return null;
 	}
 
-	public void setSpecifiedTable(String value) {
-		throw new UnsupportedOperationException();
+
+	// ********** unique **********
+
+	public boolean isUnique() {
+		return false;
 	}
 
 	public Boolean getSpecifiedUnique() {
 		return null;
 	}
 
-	public void setSpecifiedUnique(Boolean newSpecifiedUnique) {
+	public void setSpecifiedUnique(Boolean unique) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -199,27 +106,144 @@ public class NullJavaMapKeyColumn2_0
 		return false;
 	}
 
-	public boolean isUnique() {
+
+	// ********** nullable **********
+
+	public boolean isNullable() {
 		return false;
 	}
 
-	public String getColumnDefinition() {
+	public Boolean getSpecifiedNullable() {
 		return null;
 	}
 
-	public void setColumnDefinition(String value) {
+	public void setSpecifiedNullable(Boolean nullable) {
 		throw new UnsupportedOperationException();
 	}
 
-	public boolean tableNameIsInvalid() {
+	public boolean isDefaultNullable() {
 		return false;
 	}
 
-	public TextRange getTableTextRange(CompilationUnit astRoot) {
+
+	// ********** insertable **********
+
+	public boolean isInsertable() {
+		return false;
+	}
+
+	public Boolean getSpecifiedInsertable() {
 		return null;
 	}
 
-	public Column getDbColumn() {
+	public void setSpecifiedInsertable(Boolean insertable) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isDefaultInsertable() {
+		return false;
+	}
+
+
+	// ********** updatable **********
+
+	public boolean isUpdatable() {
+		return false;
+	}
+
+	public Boolean getSpecifiedUpdatable() {
+		return null;
+	}
+
+	public void setSpecifiedUpdatable(Boolean updatable) {
+		throw new UnsupportedOperationException();
+	}
+
+	public boolean isDefaultUpdatable() {
+		return false;
+	}
+
+
+	// ********** length **********
+
+	public int getLength() {
+		return 0;
+	}
+
+	public Integer getSpecifiedLength() {
+		return null;
+	}
+
+	public void setSpecifiedLength(Integer length) {
+		throw new UnsupportedOperationException();
+	}
+
+	public int getDefaultLength() {
+		return 0;
+	}
+
+
+	// ********** precision **********
+
+	public int getPrecision() {
+		return 0;
+	}
+
+	public Integer getSpecifiedPrecision() {
+		return null;
+	}
+
+	public void setSpecifiedPrecision(Integer precision) {
+		throw new UnsupportedOperationException();
+	}
+
+	public int getDefaultPrecision() {
+		return 0;
+	}
+
+
+	// ********** scale **********
+
+	public int getScale() {
+		return 0;
+	}
+
+	public Integer getSpecifiedScale() {
+		return null;
+	}
+
+	public void setSpecifiedScale(Integer scale) {
+		throw new UnsupportedOperationException();
+	}
+
+	public int getDefaultScale() {
+		return 0;
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public JavaMultiRelationshipMapping getParent() {
+		return (JavaMultiRelationshipMapping) super.getParent();
+	}
+
+	public void initializeFrom(ReadOnlyColumn oldColumn) {
+		// NOP
+	}
+
+	public void initializeFromVirtual(ReadOnlyColumn virtualColumn) {
+		// NOP
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return EmptyIterator.instance();
+	}
+
+
+	// ********** database stuff **********
+
+	public org.eclipse.jpt.db.Column getDbColumn() {
 		return null;
 	}
 
@@ -231,4 +255,22 @@ public class NullJavaMapKeyColumn2_0
 		return false;
 	}
 
+
+	// ********** validation **********
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
+	public TextRange getTableTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
+	public boolean tableNameIsInvalid() {
+		return false;
+	}
 }

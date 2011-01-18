@@ -62,9 +62,9 @@ public class GenericJpaPlatformUiProvider extends AbstractJpaPlatformUiProvider
 	// ********** resource ui definitions **********
 	
 	@Override
-	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> defintions) {
-		defintions.add(GenericJavaResourceUiDefinition.instance());
-		defintions.add(OrmXmlUiDefinition.instance());
-		defintions.add(PersistenceXmlUiDefinition.instance());
+	protected void addResourceUiDefinitionsTo(List<ResourceUiDefinition> definitions) {
+		definitions.add(GenericJavaResourceUiDefinition.instance());
+		definitions.add(OrmXmlUiDefinition.instance());
+		definitions.add(PersistenceXmlUiDefinition.instance());
 	}
 }

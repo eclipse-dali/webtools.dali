@@ -48,14 +48,13 @@ public interface StaticMetamodelAnnotation
 	void setValue(String value);
 	
 	/**
-	 * Return the <code>StaticMetamodel</code>'s fully-qualified class name as resolved by
+	 * Return the static metamodel's fully-qualified class name as resolved by
 	 * the AST's bindings.
 	 * <pre>
 	 *     &#64;StaticMetamodel(Employee.class)
 	 * </pre>
-	 * will return <code>"model.Employee"</code> if there is an import for <code>model.Employee</code>.
+	 * will return <code>"model.Employee"</code> if there is an import for
+	 * <code>model.Employee</code>.
 	 */
 	String getFullyQualifiedClassName();
-		String FULLY_QUALIFIED_CLASS_NAME_PROPERTY = "fullyQualifiedClassName"; //$NON-NLS-1$
-
 }

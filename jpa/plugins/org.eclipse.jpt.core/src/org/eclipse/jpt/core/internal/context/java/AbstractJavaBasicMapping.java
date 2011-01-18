@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,248 +11,308 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.Fetchable;
 import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.Nullable;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaConverter;
+import org.eclipse.jpt.core.context.java.JavaEnumeratedConverter;
+import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaTemporalConverter;
+import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaConverter;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.NamedColumnValidator;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.BasicAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
-import org.eclipse.jpt.core.resource.java.JPA;
-import org.eclipse.jpt.core.resource.java.LobAnnotation;
-import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.Association;
+import org.eclipse.jpt.utility.internal.SimpleAssociation;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * Java basic mapping
+ */
 public abstract class AbstractJavaBasicMapping
 	extends AbstractJavaAttributeMapping<BasicAnnotation>
 	implements JavaBasicMapping
 {
+	protected final JavaColumn column;
+
 	protected FetchType specifiedFetch;
+	protected FetchType defaultFetch;
 
 	protected Boolean specifiedOptional;
-	
-	protected final JavaColumn column;
-	
-	protected JavaConverter converter;
-	
-	protected final JavaConverter nullConverter;
-	
+	protected boolean defaultOptional;
+
+	protected JavaConverter converter;  // never null
+
+
+	protected static final JavaConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaConverter.Adapter[] {
+		JavaEnumeratedConverter.Adapter.instance(),
+		JavaTemporalConverter.Adapter.instance(),
+		JavaLobConverter.Adapter.instance()
+	};
+	protected static final Iterable<JavaConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+
+
 	protected AbstractJavaBasicMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		this.column = getJpaFactory().buildJavaColumn(this, this);
-		this.nullConverter = getJpaFactory().buildJavaNullConverter(this);
-		this.converter = this.nullConverter;
+		this.column = this.buildColumn();
+		this.specifiedFetch = this.buildSpecifiedFetch();
+		this.specifiedOptional = this.buildSpecifiedOptional();
+		this.converter = this.buildConverter();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.column.synchronizeWithResourceModel();
+		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
+		this.setSpecifiedOptional_(this.buildSpecifiedOptional());
+		this.syncConverter();
 	}
 
 	@Override
-	protected void initialize() {
-		super.initialize();
-		this.column.initialize(this.getResourceColumn());
-		this.converter = this.buildConverter(this.getResourceConverterType());
-		this.specifiedFetch = this.getResourceFetch();
-		this.specifiedOptional = this.getResourceOptional();
-	}
-	
-	public ColumnAnnotation getResourceColumn() {
-		return (ColumnAnnotation) getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
-	}
-	
-	//************** AttributeMapping implementation ***************
-	public String getKey() {
-		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
+	public void update() {
+		super.update();
+		this.column.update();
+		this.setDefaultFetch(this.buildDefaultFetch());
+		this.setDefaultOptional(this.buildDefaultOptional());
+		this.converter.update();
 	}
 
-	//************** JavaAttributeMapping implementation ***************
-	public String getAnnotationName() {
-		return BasicAnnotation.ANNOTATION_NAME;
-	}
-	
-	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(JPA.COLUMN);
-		names.add(JPA.LOB);
-		names.add(JPA.TEMPORAL);
-		names.add(JPA.ENUMERATED);
-	}
-	
-	public String getDefaultColumnName() {
-		return getName();
-	}
 
-	public String getDefaultTableName() {
-		return getTypeMapping().getPrimaryTableName();
-	}
-
-	public boolean tableNameIsInvalid(String tableName) {
-		return getTypeMapping().tableNameIsInvalid(tableName);
-	}
-
-	public Iterator<String> candidateTableNames() {
-		return getTypeMapping().associatedTableNamesIncludingInherited();
-	}
-	
-	//************** BasicMapping implementation ***************
+	// ********** column **********
 
 	public JavaColumn getColumn() {
 		return this.column;
 	}
-	
-	public FetchType getFetch() {
-		return (this.getSpecifiedFetch() == null) ? this.getDefaultFetch() : this.getSpecifiedFetch();
+
+	protected JavaColumn buildColumn() {
+		return this.getJpaFactory().buildJavaColumn(this, this);
 	}
 
-	public FetchType getDefaultFetch() {
-		return DEFAULT_FETCH_TYPE;
+
+	// ********** fetch **********
+
+	public FetchType getFetch() {
+		return (this.specifiedFetch != null) ? this.specifiedFetch : this.defaultFetch;
 	}
-		
+
 	public FetchType getSpecifiedFetch() {
 		return this.specifiedFetch;
 	}
-	
-	public void setSpecifiedFetch(FetchType newSpecifiedFetch) {
-		FetchType oldFetch = this.specifiedFetch;
-		this.specifiedFetch = newSpecifiedFetch;
-		this.mappingAnnotation.setFetch(FetchType.toJavaResourceModel(newSpecifiedFetch));
-		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setSpecifiedFetch_(FetchType newSpecifiedFetch) {
-		FetchType oldFetch = this.specifiedFetch;
-		this.specifiedFetch = newSpecifiedFetch;
-		firePropertyChanged(Fetchable.SPECIFIED_FETCH_PROPERTY, oldFetch, newSpecifiedFetch);
+
+	public void setSpecifiedFetch(FetchType fetch) {
+		if (this.valuesAreDifferent(fetch, this.specifiedFetch)) {
+			this.getAnnotationForUpdate().setFetch(FetchType.toJavaResourceModel(fetch));
+			this.setSpecifiedFetch_(fetch);
+		}
 	}
 
+	protected void setSpecifiedFetch_(FetchType fetch) {
+		FetchType old = this.specifiedFetch;
+		this.specifiedFetch = fetch;
+		this.firePropertyChanged(SPECIFIED_FETCH_PROPERTY, old, fetch);
+	}
+
+	protected FetchType buildSpecifiedFetch() {
+		BasicAnnotation annotation = this.getMappingAnnotation();
+		return (annotation == null) ? null : FetchType.fromJavaResourceModel(annotation.getFetch());
+	}
+
+	public FetchType getDefaultFetch() {
+		return this.defaultFetch;
+	}
+
+	protected void setDefaultFetch(FetchType fetch) {
+		FetchType old = this.defaultFetch;
+		this.defaultFetch = fetch;
+		this.firePropertyChanged(DEFAULT_FETCH_PROPERTY, old, fetch);
+	}
+
+	protected FetchType buildDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** optional **********
+
 	public boolean isOptional() {
-		return (this.getSpecifiedOptional() == null) ? this.isDefaultOptional() : this.getSpecifiedOptional().booleanValue();
+		return (this.specifiedOptional != null) ? this.specifiedOptional.booleanValue() : this.isDefaultOptional();
 	}
-	
-	public boolean isDefaultOptional() {
-		return Nullable.DEFAULT_OPTIONAL;
-	}
-	
+
 	public Boolean getSpecifiedOptional() {
 		return this.specifiedOptional;
 	}
-	
-	public void setSpecifiedOptional(Boolean newSpecifiedOptional) {
-		Boolean oldOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		this.mappingAnnotation.setOptional(newSpecifiedOptional);
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+
+	public void setSpecifiedOptional(Boolean optional) {
+		if (this.valuesAreDifferent(optional, this.specifiedOptional)) {
+			this.getAnnotationForUpdate().setOptional(optional);
+			this.setSpecifiedOptional_(optional);
+		}
 	}
 
-	protected void setSpecifiedOptional_(Boolean newSpecifiedOptional) {
-		Boolean oldOptional = this.specifiedOptional;
-		this.specifiedOptional = newSpecifiedOptional;
-		firePropertyChanged(Nullable.SPECIFIED_OPTIONAL_PROPERTY, oldOptional, newSpecifiedOptional);
+	protected void setSpecifiedOptional_(Boolean optional) {
+		Boolean old = this.specifiedOptional;
+		this.specifiedOptional = optional;
+		this.firePropertyChanged(SPECIFIED_OPTIONAL_PROPERTY, old, optional);
 	}
-	
+
+	protected Boolean buildSpecifiedOptional() {
+		BasicAnnotation annotation = this.getMappingAnnotation();
+		return (annotation == null) ? null : annotation.getOptional();
+	}
+
+	public boolean isDefaultOptional() {
+		return defaultOptional;
+	}
+
+	protected void setDefaultOptional(boolean optional) {
+		boolean old = this.defaultOptional;
+		this.defaultOptional = optional;
+		this.firePropertyChanged(DEFAULT_OPTIONAL_PROPERTY, old, optional);
+	}
+
+	protected boolean buildDefaultOptional() {
+		return DEFAULT_OPTIONAL;
+	}
+
+
+	// ********** converter **********
+
 	public JavaConverter getConverter() {
 		return this.converter;
 	}
-	
-	protected String getConverterType() {
-		return this.converter.getType();
-	}
-	
-	public void setConverter(String converterType) {
-		if (this.valuesAreEqual(getConverterType(), converterType)) {
-			return;
+
+	public void setConverter(Class<? extends Converter> converterType) {
+		if (this.converter.getType() != converterType) {
+			this.converter.dispose();
+			JavaConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
+			this.retainConverterAnnotation(converterAdapter);
+			this.setConverter_(this.buildConverter(converterAdapter));
 		}
-		JavaConverter oldConverter = this.converter;
-		JavaConverter newConverter = buildConverter(converterType);
-		this.converter = this.nullConverter;
-		if (oldConverter != null) {
-			oldConverter.removeFromResourceModel();
-		}
-		this.converter = newConverter;
-		if (newConverter != null) {
-			newConverter.addToResourceModel();
-		}
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}
-	
-	protected void setConverter(JavaConverter newConverter) {
-		JavaConverter oldConverter = this.converter;
-		this.converter = newConverter;
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
 	}
 
-	@Override
-	protected void update() {
-		super.update();
-		this.column.update(this.getResourceColumn());
-		if (this.valuesAreEqual(getResourceConverterType(), getConverterType())) {
-			getConverter().update(this.getResourcePersistentAttribute());
-		}
-		else {
-			JavaConverter javaConverter = buildConverter(getResourceConverterType());
-			setConverter(javaConverter);
-		}
-		this.setSpecifiedFetch_(this.getResourceFetch());
-		this.setSpecifiedOptional_(this.getResourceOptional());
+	protected JavaConverter buildConverter(JavaConverter.Adapter converterAdapter) {
+		 return (converterAdapter != null) ?
+				converterAdapter.buildNewConverter(this, this.getJpaFactory()) :
+				this.buildNullConverter();
 	}
-	
-	protected FetchType getResourceFetch() {
-		return FetchType.fromJavaResourceModel(this.mappingAnnotation.getFetch());
+
+	protected void setConverter_(JavaConverter converter) {
+		Converter old = this.converter;
+		this.converter = converter;
+		this.firePropertyChanged(CONVERTER_PROPERTY, old, converter);
 	}
-	
-	protected Boolean getResourceOptional() {
-		return this.mappingAnnotation.getOptional();
+
+	/**
+	 * Clear all the converter annotations <em>except</em> for the annotation
+	 * corresponding to the specified adapter. If the specified adapter is
+	 * <code>null</code>, remove <em>all</em> the converter annotations.
+	 */
+	protected void retainConverterAnnotation(JavaConverter.Adapter converterAdapter) {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter != converterAdapter) {
+				adapter.removeConverterAnnotation(resourceAttribute);
+			}
+		}
 	}
-	
-	protected JavaConverter buildConverter(String converterType) {
-		if (this.valuesAreEqual(converterType, Converter.NO_CONVERTER)) {
-			return this.nullConverter;		
+
+	protected JavaConverter buildConverter() {
+		JpaFactory jpaFactory = this.getJpaFactory();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			JavaConverter javaConverter = adapter.buildConverter(this, jpaFactory);
+			if (javaConverter != null) {
+				return javaConverter;
+			}
 		}
-		if (this.valuesAreEqual(converterType, Converter.ENUMERATED_CONVERTER)) {
-			return getJpaFactory().buildJavaEnumeratedConverter(this, this.getResourcePersistentAttribute());
+		return this.buildNullConverter();
+	}
+
+	protected void syncConverter() {
+		Association<JavaConverter.Adapter, Annotation> assoc = this.getConverterAnnotation();
+		if (assoc == null) {
+			if (this.converter.getType() != null) {
+				this.setConverter_(this.buildNullConverter());
+			}
+		} else {
+			JavaConverter.Adapter adapter = assoc.getKey();
+			Annotation annotation = assoc.getValue();
+			if ((this.converter.getType() == adapter.getConverterType()) &&
+					(this.converter.getConverterAnnotation() == annotation)) {
+				this.converter.synchronizeWithResourceModel();
+			} else {
+				this.setConverter_(adapter.buildConverter(annotation, this, this.getJpaFactory()));
+			}
 		}
-		if (this.valuesAreEqual(converterType, Converter.TEMPORAL_CONVERTER)) {
-			return getJpaFactory().buildJavaTemporalConverter(this, this.getResourcePersistentAttribute());
-		}
-		if (this.valuesAreEqual(converterType, Converter.LOB_CONVERTER)) {
-			return getJpaFactory().buildJavaLobConverter(this, this.getResourcePersistentAttribute());
+	}
+
+	/**
+	 * Return the first converter annotation we find along with its corresponding
+	 * adapter. Return <code>null</code> if there are no converter annotations.
+	 */
+	protected Association<JavaConverter.Adapter, Annotation> getConverterAnnotation() {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			Annotation annotation = adapter.getConverterAnnotation(resourceAttribute);
+			if (annotation != null) {
+				return new SimpleAssociation<JavaConverter.Adapter, Annotation>(adapter, annotation);
+			}
 		}
 		return null;
 	}
-	
-	protected String getResourceConverterType() {
-		if (this.getResourcePersistentAttribute().getAnnotation(EnumeratedAnnotation.ANNOTATION_NAME) != null) {
-			return Converter.ENUMERATED_CONVERTER;
+
+	protected JavaConverter buildNullConverter() {
+		return new NullJavaConverter(this);
+	}
+
+
+	// ********** converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected JavaConverter.Adapter getConverterAdapter(Class<? extends Converter> converterType) {
+		for (JavaConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
 		}
-		if (this.getResourcePersistentAttribute().getAnnotation(TemporalAnnotation.ANNOTATION_NAME) != null) {
-			return Converter.TEMPORAL_CONVERTER;
-		}
-		if (this.getResourcePersistentAttribute().getAnnotation(LobAnnotation.ANNOTATION_NAME) != null) {
-			return Converter.LOB_CONVERTER;
-		}
-		return Converter.NO_CONVERTER;
+		return null;
+	}
+
+	protected Iterable<JavaConverter.Adapter> getConverterAdapters() {
+		return CONVERTER_ADAPTERS;
+	}
+
+
+	// ********** misc **********
+
+	public String getKey() {
+		return MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	@Override
+	protected String getAnnotationName() {
+		return BasicAnnotation.ANNOTATION_NAME;
 	}
 
 	@Override
@@ -260,17 +320,51 @@ public abstract class AbstractJavaBasicMapping
 		return true;
 	}
 
+
+	// ********** JavaColumn.Owner implementation **********
+
+	public ColumnAnnotation getColumnAnnotation() {
+		return (ColumnAnnotation) this.getResourcePersistentAttribute().getNonNullAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+	}
+
+	public void removeColumnAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+	}
+
+	public String getDefaultColumnName() {
+		return this.getName();
+	}
+
+	public String getDefaultTableName() {
+		return this.getTypeMapping().getPrimaryTableName();
+	}
+
+	public boolean tableNameIsInvalid(String tableName) {
+		return this.getTypeMapping().tableNameIsInvalid(tableName);
+	}
+
+	public Iterator<String> candidateTableNames() {
+		return this.getTypeMapping().allAssociatedTableNames();
+	}
+
+	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
+		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+	}
+
+
+	// ********** Java completion proposals **********
+
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getColumn().javaCompletionProposals(pos, filter, astRoot);
+		result = this.column.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = getConverter().javaCompletionProposals(pos, filter, astRoot);
+		result = this.converter.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -279,15 +373,11 @@ public abstract class AbstractJavaBasicMapping
 
 
 	// ********** validation **********
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.getColumn().validate(messages, reporter, astRoot);
-		this.getConverter().validate(messages, reporter, astRoot);
-	}
-
-	public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-		return new NamedColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new EntityTableDescriptionProvider());
+		this.column.validate(messages, reporter, astRoot);
+		this.converter.validate(messages, reporter, astRoot);
 	}
 }

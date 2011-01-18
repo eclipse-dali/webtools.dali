@@ -287,7 +287,7 @@
 			<enabledWhen>
 				<iterate>
 					<and>
-						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
 						<test property="org.eclipse.jpt.core.isMapped" value="true"/>
 					</and>
@@ -306,7 +306,7 @@
 			<enabledWhen>
 				<iterate>
 					<and>
-						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
 					</and>
 				</iterate>
@@ -324,7 +324,7 @@
 			<enabledWhen>
 				<iterate>
 					<and>
-						<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
 					</and>
 				</iterate>
@@ -355,7 +355,7 @@
 			<enabledWhen>
 				<iterate>
 					<and>
-						<instanceof value="org.eclipse.jpt.core.context.PersistentAttribute"/>
+						<instanceof value="org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute"/>
 						<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
 					</and>
 				</iterate>
@@ -504,7 +504,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<and>
-								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
 							</and>
 						</iterate>
@@ -518,7 +518,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<and>
-								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="true"/>
 							</and>
 						</iterate>
@@ -532,7 +532,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<and>
-								<instanceof value="org.eclipse.jpt.core.context.orm.OrmPersistentAttribute"/>
+								<instanceof value="org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
 							</and>
 						</iterate>
@@ -567,7 +567,7 @@
 						variable="selection">
 						<iterate ifEmpty="false">
 							<and>
-								<instanceof value="org.eclipse.jpt.core.context.PersistentAttribute"/>
+								<instanceof value="org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute"/>
 								<test property="org.eclipse.jpt.core.isVirtual" value="false"/>
 							</and>
 						</iterate>

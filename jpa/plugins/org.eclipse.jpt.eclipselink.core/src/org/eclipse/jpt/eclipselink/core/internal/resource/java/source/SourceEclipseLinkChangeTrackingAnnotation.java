@@ -56,6 +56,12 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
@@ -93,7 +99,7 @@ public final class SourceEclipseLinkChangeTrackingAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CHANGE_TRACKING__VALUE, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CHANGE_TRACKING__VALUE);
 	}
 
 }

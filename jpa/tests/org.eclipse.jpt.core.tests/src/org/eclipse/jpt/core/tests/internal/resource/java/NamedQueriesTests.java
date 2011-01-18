@@ -125,7 +125,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		namedQuery.setName(null);
 		assertNull(namedQuery.getName());
 		
-		assertSourceDoesNotContain("@NamedQuery", cu);
+		assertSourceDoesNotContain("@NamedQuery(", cu);
 	}
 
 	public void testGetQuery() throws Exception {
@@ -153,7 +153,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		namedQuery.setQuery(null);
 		assertNull(namedQuery.getQuery());
 		
-		assertSourceDoesNotContain("@NamedQuery", cu);
+		assertSourceDoesNotContain("@NamedQuery(", cu);
 	}
 	
 	public void testHints() throws Exception {
@@ -233,7 +233,7 @@ public class NamedQueriesTests extends JpaJavaResourceModelTestCase {
 		
 		namedQuery.removeHint(0);
 		assertEquals(0, namedQuery.hintsSize());
-		assertSourceDoesNotContain("@NamedQueries", cu);
+		assertSourceDoesNotContain("@NamedQuery(", cu);
 	}
 	
 	public void testMoveHint() throws Exception {

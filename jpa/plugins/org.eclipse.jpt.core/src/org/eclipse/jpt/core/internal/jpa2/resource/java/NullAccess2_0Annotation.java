@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Access
+ * <code>javax.persistence.Access</code>
  */
-public class NullAccess2_0Annotation
-	extends NullAnnotation
+public final class NullAccess2_0Annotation
+	extends NullAnnotation<Access2_0Annotation>
 	implements Access2_0Annotation
 {
 
@@ -32,11 +32,6 @@ public class NullAccess2_0Annotation
 		return ANNOTATION_NAME;
 	}
 
-	@Override
-	protected Access2_0Annotation addAnnotation() {
-		return (Access2_0Annotation) super.addAnnotation();
-	}
-	
 	// ***** value
 	public AccessType getValue() {
 		return null;

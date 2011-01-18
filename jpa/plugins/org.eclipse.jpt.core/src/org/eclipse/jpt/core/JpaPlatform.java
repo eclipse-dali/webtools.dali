@@ -11,13 +11,9 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullDefaultJavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullJavaTypeMappingDefinition;
-import org.eclipse.jpt.core.context.java.NullSpecifiedJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
@@ -48,6 +44,8 @@ import org.eclipse.jpt.db.ConnectionProfileFactory;
  */
 public interface JpaPlatform
 {
+	// ********** meta stuff **********
+
 	/**
 	 * Get the ID for this platform
 	 */
@@ -62,6 +60,7 @@ public interface JpaPlatform
 	 * Get the version object for this platform. 
 	 */
 	Version getJpaVersion();
+	
 	
 	// ********** factory **********
 
@@ -97,54 +96,29 @@ public interface JpaPlatform
 	AnnotationEditFormatter getAnnotationEditFormatter();
 
 
-	// ********** Java type/attribute mappings **********
-	
+	// ********** Java type mappings **********
+
 	/**
-	 * Return a {@link JavaTypeMappingDefinition} that describes the interpretation of the type
-	 * as it exists, complete with annotations.
-	 * This may not be null (@see {@link NullJavaTypeMappingDefinition},) else
-	 * an {@link IllegalStateException} is thrown.
-	 * 
-	 * @param type The persistent type to analyze
-	 * @return The mapping definition used to describe the annotated state of the type
+	 * Return the Java type mapping definitions that will be used to build Java
+	 * type mappings and their corresponding annotations.
 	 */
-	JavaTypeMappingDefinition getJavaTypeMappingDefinition(JavaPersistentType type);
-	
+	Iterable<JavaTypeMappingDefinition> getJavaTypeMappingDefinitions();
+
+
+	// ********** Java attribute mappings **********
+
 	/**
-	 * Return a {@link JavaTypeMappingDefinition} for the given mapping key.
-	 * Throw an {@link IllegalArgumentException} if the key is not supported by the platform.
+	 * Return the Java attribute mapping definitions that will be used to build
+	 * Java attribute mappings and their corresponding annotations.
 	 */
-	JavaTypeMappingDefinition getJavaTypeMappingDefinition(String mappingKey);
-	
+	Iterable<JavaAttributeMappingDefinition> getSpecifiedJavaAttributeMappingDefinitions();
+
 	/**
-	 * Return a {@link JavaAttributeMappingDefinition} that describes the interpretation of the attribute
-	 * as it exists, ignoring all annotations.
-	 * This may not be null (@see {@link NullDefaultJavaAttributeMappingDefinition},) else
-	 * an {@link IllegalStateException} is thrown.
-	 * 
-	 * @param attribute The persistent attribute to analyze
-	 * @return The mapping definition describing the unannotated state of the attribute
+	 * Return the Java attribute mapping definitions that will be used to build
+	 * default Java attribute mappings.
 	 */
-	JavaAttributeMappingDefinition getDefaultJavaAttributeMappingDefinition(JavaPersistentAttribute attribute);
-	
-	/**
-	 * Return a {@link JavaAttributeMappingDefinition} that describes the interpretation of the attribute
-	 * as it exists, complete with annotations.  It is assumed that the attribute's default mapping
-	 * has already been determined.
-	 * This may not be null (@see {@link NullSpecifiedJavaAttributeMappingDefinition},) else
-	 * an {@link IllegalStateException} is thrown.
-	 * 
-	 * @param attribute The persistent attribute to analyze
-	 * @return The mapping definition describing the annotated state of the attribute
-	 */
-	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(JavaPersistentAttribute attribute);
-	
-	/**
-	 * Return a {@link JavaAttributeMappingDefinition} for the given mapping key.
-	 * Throw an {@link IllegalArgumentException} if the key is not supported by the platform.
-	 */
-	JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey);
-	
+	Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions();
+
 	
 	// ********** resource types and definitions **********
 	

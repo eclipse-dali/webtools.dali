@@ -14,9 +14,10 @@ import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 
 /**
- * javax.persistence.JoinTable found in a javax.persistence.AssociationOverride annotation
+ * <code>javax.persistence.JoinTable</code> found in a
+ * <code>javax.persistence.AssociationOverride</code> annotation
  */
-public class NullAssociationOverrideJoinTableAnnotation
+public final class NullAssociationOverrideJoinTableAnnotation
 	extends NullJoinTableAnnotation
 {
 	public NullAssociationOverrideJoinTableAnnotation(AssociationOverride2_0Annotation parent) {
@@ -31,5 +32,4 @@ public class NullAssociationOverrideJoinTableAnnotation
 	protected JoinTableAnnotation addAnnotation() {
 		return this.getAssociationOverride2_0Annotation().addJoinTable();
 	}
-	
 }

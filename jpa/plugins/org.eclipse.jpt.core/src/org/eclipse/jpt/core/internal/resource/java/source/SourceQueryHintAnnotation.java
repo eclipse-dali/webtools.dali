@@ -9,62 +9,47 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableQueryHintAnnotation;
-import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.QueryHint
+ * <code>javax.persistence.QueryHint</code>
  */
 public final class SourceQueryHintAnnotation
 	extends SourceAnnotation<Type>
 	implements NestableQueryHintAnnotation
 {
-	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> nameAdapter;
+	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 
-	private final DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
-	private final AnnotationElementAdapter<String> valueAdapter;
+	private DeclarationAnnotationElementAdapter<String> valueDeclarationAdapter;
+	private AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
 
 	public SourceQueryHintAnnotation(JavaResourceNode parent, Type type, IndexedDeclarationAnnotationAdapter idaa) {
 		super(parent, type, idaa, new ElementIndexedAnnotationAdapter(type, idaa));
-		this.nameDeclarationAdapter = this.buildNameAdapter(idaa);
-		this.nameAdapter = this.buildAdapter(this.nameDeclarationAdapter);
-		this.valueDeclarationAdapter = this.buildValueAdapter(idaa);
-		this.valueAdapter = this.buildAdapter(this.valueDeclarationAdapter);
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
+		this.valueAdapter = this.buildValueAdapter();
 	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	private AnnotationElementAdapter<String> buildAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
-	}
-
-	private DeclarationAnnotationElementAdapter<String> buildNameAdapter(DeclarationAnnotationAdapter adapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(adapter, JPA.QUERY_HINT__NAME);
-	}
-
-	private DeclarationAnnotationElementAdapter<String> buildValueAdapter(DeclarationAnnotationAdapter adapter) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(adapter, JPA.QUERY_HINT__VALUE);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -75,15 +60,6 @@ public final class SourceQueryHintAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.syncValue(this.buildValue(astRoot));
-	}
-
-	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
 	}
 
 
@@ -115,6 +91,14 @@ public final class SourceQueryHintAnnotation
 		return this.getElementTextRange(this.nameDeclarationAdapter, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JPA.QUERY_HINT__NAME);
+	}
+
+	private AnnotationElementAdapter<String> buildNameAdapter() {
+		return this.buildStringElementAdapter(this.nameDeclarationAdapter);
+	}
+
 	// ***** value
 	public String getValue() {
 		return this.value;
@@ -141,17 +125,59 @@ public final class SourceQueryHintAnnotation
 		return this.getElementTextRange(this.valueDeclarationAdapter, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildValueDeclarationAdapter() {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, JPA.QUERY_HINT__VALUE);
+	}
+
+	private AnnotationElementAdapter<String> buildValueAdapter() {
+		return this.buildStringElementAdapter(this.valueDeclarationAdapter);
+	}
+
 
 	// ********** NestableAnnotation implementation **********
 
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		QueryHintAnnotation oldHint = (QueryHintAnnotation) oldAnnotation;
-		this.setName(oldHint.getName());
-		this.setValue(oldHint.getValue());
-	}
-
 	public void moveAnnotation(int newIndex) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(newIndex);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null) &&
+				(this.value == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.valueDeclarationAdapter = this.buildValueDeclarationAdapter();
+		this.valueAdapter = this.buildValueAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(VALUE_PROPERTY, this.value);
+		this.value = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setValue((String) map.get(VALUE_PROPERTY));
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
 	}
 
 
@@ -162,7 +188,7 @@ public final class SourceQueryHintAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNamedQueryQueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedQueryAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(namedQueryAdapter, JPA.NAMED_QUERY__HINTS, index, JPA.QUERY_HINT);
+		return new NestedIndexedDeclarationAnnotationAdapter(namedQueryAdapter, JPA.NAMED_QUERY__HINTS, index, ANNOTATION_NAME);
 	}
 
 	static SourceQueryHintAnnotation createNamedNativeQueryQueryHint(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
@@ -170,7 +196,6 @@ public final class SourceQueryHintAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildNamedNativeQueryQueryHintAnnotationAdapter(DeclarationAnnotationAdapter namedNativeQueryAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(namedNativeQueryAdapter, JPA.NAMED_NATIVE_QUERY__HINTS, index, JPA.QUERY_HINT);
+		return new NestedIndexedDeclarationAnnotationAdapter(namedNativeQueryAdapter, JPA.NAMED_NATIVE_QUERY__HINTS, index, ANNOTATION_NAME);
 	}
-
 }

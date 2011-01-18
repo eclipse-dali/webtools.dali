@@ -23,7 +23,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * A JAR file identified by a <code>persistence.xml</code> <code>jar-file</code> element.
- * Holds persistent types corresponding to all the "persistable" types
+ * This holds persistent types corresponding to all the "persistable" types
  * discovered in the JAR.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
@@ -38,6 +38,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public interface JarFile
 	extends JpaContextNode, JpaStructureNode, PersistentTypeContainer
 {
+	JavaResourcePackageFragmentRoot getJarResourcePackageFragmentRoot();
+
+
+	// ********** Java persistent types **********
+
 	/**
 	 * Return the JAR file's Java persistent types.
 	 * Return only the types that are annotated with JPA annotations.
@@ -56,12 +61,8 @@ public interface JarFile
 	 */
 	PersistentType getPersistentType(String typeName);
 
-	/**
-	 * Synchronize the context JAR file to the specified Java package fragment
-	 * root.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(JavaResourcePackageFragmentRoot jrpfr);
+
+	// ********** validation **********
 
 	/**
 	 * Add to the list of current validation messages

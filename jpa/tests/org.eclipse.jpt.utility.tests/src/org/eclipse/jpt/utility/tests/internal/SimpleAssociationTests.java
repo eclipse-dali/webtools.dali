@@ -40,17 +40,17 @@ public class SimpleAssociationTests extends TestCase {
 	}
 
 	public void testGetKey() {
-		assertEquals("foo", this.assoc.key());
+		assertEquals("foo", this.assoc.getKey());
 	}
 
 	public void testGetValue() {
-		assertEquals("bar", this.assoc.value());
+		assertEquals("bar", this.assoc.getValue());
 	}
 
 	public void testSetValue() {
-		assertEquals("bar", this.assoc.value());
+		assertEquals("bar", this.assoc.getValue());
 		this.assoc.setValue("baz");
-		assertEquals("baz", this.assoc.value());
+		assertEquals("baz", this.assoc.getValue());
 	}
 
 	public void testEquals() {
@@ -87,10 +87,10 @@ public class SimpleAssociationTests extends TestCase {
 	private void verifyClone(Association<String, String> expected, Association<String, String> actual) {
 		assertEquals(expected, actual);
 		assertNotSame(expected, actual);
-		assertEquals(expected.key(), actual.key());
-		assertSame(expected.key(), actual.key());
-		assertEquals(expected.value(), actual.value());
-		assertSame(expected.value(), actual.value());
+		assertEquals(expected.getKey(), actual.getKey());
+		assertSame(expected.getKey(), actual.getKey());
+		assertEquals(expected.getValue(), actual.getValue());
+		assertSame(expected.getValue(), actual.getValue());
 	}
 
 	public void testSerialization() throws Exception {
@@ -99,14 +99,14 @@ public class SimpleAssociationTests extends TestCase {
 
 		assertEquals(this.assoc, assoc2);
 		assertNotSame(this.assoc, assoc2);
-		assertEquals(this.assoc.key(), assoc2.key());
-		assertNotSame(this.assoc.key(), assoc2.key());
-		assertEquals(this.assoc.value(), assoc2.value());
-		assertNotSame(this.assoc.value(), assoc2.value());
+		assertEquals(this.assoc.getKey(), assoc2.getKey());
+		assertNotSame(this.assoc.getKey(), assoc2.getKey());
+		assertEquals(this.assoc.getValue(), assoc2.getValue());
+		assertNotSame(this.assoc.getValue(), assoc2.getValue());
 	}
 
 	private SimpleAssociation<String, String> copy(SimpleAssociation<String, String> sa) {
-		return new SimpleAssociation<String, String>(sa.key(), sa.value());
+		return new SimpleAssociation<String, String>(sa.getKey(), sa.getValue());
 	}
 
 }

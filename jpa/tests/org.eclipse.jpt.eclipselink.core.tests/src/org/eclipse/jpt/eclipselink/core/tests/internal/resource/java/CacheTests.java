@@ -188,7 +188,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(cache.getType());
 		
 		assertSourceDoesNotContain("(type = WEAK)", cu);
-		assertSourceDoesNotContain("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 	
 	public void testGetSize() throws Exception {
@@ -215,7 +215,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(cache.getSize());
 		
 		assertSourceDoesNotContain("(size = 80)", cu);
-		assertSourceDoesNotContain("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 	
 	public void testGetShared() throws Exception {
@@ -247,9 +247,8 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertEquals(Boolean.TRUE, cache.getShared());
 		
 		cache.setShared(null);
-		assertNull(typeResource.getAnnotation(EclipseLink.CACHE));
-		
-		assertSourceDoesNotContain("@Cache", cu);
+	
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 	
 	public void testGetExpiry() throws Exception {
@@ -276,7 +275,7 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(cache.getExpiry());
 		
 		assertSourceDoesNotContain("(expiry = 80)", cu);
-		assertSourceDoesNotContain("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 	
 	public void testGetExpiryTimeOfDay() throws Exception {
@@ -342,9 +341,11 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertEquals(Boolean.TRUE, cache.getAlwaysRefresh());
 		
 		cache.setAlwaysRefresh(null);
-		assertNull(typeResource.getAnnotation(EclipseLink.CACHE));
+		cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		assertNull(cache.getAlwaysRefresh());
 		
-		assertSourceDoesNotContain("@Cache", cu);
+		assertSourceContains("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 
 	public void testGetRefreshOnlyIfNewer() throws Exception {
@@ -376,9 +377,10 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertEquals(Boolean.TRUE, cache.getRefreshOnlyIfNewer());
 		
 		cache.setRefreshOnlyIfNewer(null);
-		assertNull(typeResource.getAnnotation(EclipseLink.CACHE));
-		
-		assertSourceDoesNotContain("@Cache", cu);
+		cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		assertNull(cache.getRefreshOnlyIfNewer());
+		assertSourceContains("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 
 	public void testGetDisableHits() throws Exception {
@@ -410,9 +412,10 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertEquals(Boolean.TRUE, cache.getDisableHits());
 		
 		cache.setDisableHits(null);
-		assertNull(typeResource.getAnnotation(EclipseLink.CACHE));
-		
-		assertSourceDoesNotContain("@Cache", cu);
+		cache = (EclipseLinkCacheAnnotation) typeResource.getAnnotation(EclipseLink.CACHE);
+		assertNull(cache.getDisableHits());
+		assertSourceContains("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
 
 	
@@ -440,8 +443,6 @@ public class CacheTests extends EclipseLinkJavaResourceModelTestCase {
 		assertNull(cache.getCoordinationType());
 		
 		assertSourceDoesNotContain("(coordinationType = SEND_NEW_OBJECTS_WITH_CHANGES)", cu);
-		assertSourceDoesNotContain("@Cache", cu);
+		assertSourceDoesNotContain("@Cache(", cu);
 	}
-	
-
 }

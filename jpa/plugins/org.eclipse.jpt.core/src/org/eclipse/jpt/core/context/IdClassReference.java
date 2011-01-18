@@ -1,19 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 
 /**
+ * ID class reference
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,8 +24,15 @@ import org.eclipse.jpt.core.context.java.JavaPersistentType;
  * @since 2.3
  */
 public interface IdClassReference
-	extends JpaNode, PersistentType.Owner
+	extends PersistentType.Owner
 {
+	// ********** id class name **********
+
+	/**
+	 * Return the name of the id class, taking into consideration the default value if applicable
+	 */
+	String getIdClassName();
+	
 	/**
 	 * Property string associated with changes to the {@link IdClassHolder}'s specified id class name
 	 */
@@ -53,17 +60,15 @@ public interface IdClassReference
 	String getDefaultIdClassName();
 	
 	/**
-	 * Return the name of the id class, taking into consideration the default value if applicable
-	 */
-	String getIdClassName();
-	
-	/**
 	 * Return whether the id class has been specified.
 	 * Generally, this simply means that the id class name has been set, although if a default
 	 * applies, this should also return true.
 	 */
 	boolean isSpecified();
 	
+
+	// ********** id class **********
+
 	/**
 	 * Property string associated with changes to the {@link IdClassHolder}'s id class.
 	 * This will change (potentially) if the id class name changes, or if other changes result

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,7 @@ import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveTablePane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -83,7 +84,7 @@ public class QueryHintsComposite extends Pane<Query>
 	private Adapter buildQueryHintAdapter() {
 		return new AddRemoveTablePane.AbstractAdapter() {
 			public void addNewItem(ObjectListSelectionModel listSelectionModel) {
-				QueryHint queryHint = getSubject().addHint(getSubject().hintsSize());
+				QueryHint queryHint = getSubject().addHint(getSubject().getHintsSize());
 				queryHintHolder.setValue(queryHint);
 			}
 
@@ -106,13 +107,13 @@ public class QueryHintsComposite extends Pane<Query>
 	private ListValueModel<QueryHint> buildQueryHintListHolder() {
 		return new ListAspectAdapter<Query, QueryHint>(getSubjectHolder(), NamedQuery.HINTS_LIST) {
 			@Override
-			protected ListIterator<QueryHint> listIterator_() {
-				return subject.hints();
+			protected ListIterable<QueryHint> getListIterable() {
+				return subject.getHints();
 			}
 
 			@Override
 			protected int size_() {
-				return subject.hintsSize();
+				return subject.getHintsSize();
 			}
 		};
 	}

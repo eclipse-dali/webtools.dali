@@ -44,7 +44,7 @@ public class EclipseLinkReadOnlyComposite extends Pane<EclipseLinkReadOnly>
 
 	@Override
 	protected void initializeLayout(Composite container) {
-		// Unique tri-state check box
+		// read-only check box
 		addTriStateCheckBoxWithDefault(
 			container,
 			EclipseLinkUiDetailsMessages.EclipseLinkReadOnlyComposite_readOnlyLabel,

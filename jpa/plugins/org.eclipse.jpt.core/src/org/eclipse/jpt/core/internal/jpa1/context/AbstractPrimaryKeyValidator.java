@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.IdClassReference;
 import org.eclipse.jpt.core.context.IdMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
@@ -45,6 +46,7 @@ public abstract class AbstractPrimaryKeyValidator
 	
 	private PrimaryKeyTextRangeResolver textRangeResolver;
 	
+	public static final String[] EMPTY_STRING_ARRAY = StringTools.EMPTY_STRING_ARRAY;
 	
 	protected AbstractPrimaryKeyValidator(
 			TypeMapping typeMapping, PrimaryKeyTextRangeResolver textRangeResolver) {
@@ -73,7 +75,7 @@ public abstract class AbstractPrimaryKeyValidator
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_CLASS,
-							new String[0],
+							EMPTY_STRING_ARRAY,
 							typeMapping(),
 							textRangeResolver().getIdClassTextRange()));
 			}
@@ -82,7 +84,7 @@ public abstract class AbstractPrimaryKeyValidator
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
 							JpaValidationMessages.TYPE_MAPPING_PK_REDEFINED_ID_ATTRIBUTE,
-							new String[0],
+							EMPTY_STRING_ARRAY,
 							each,
 							textRangeResolver().getAttributeMappingTextRange(each.getName())));
 			}
@@ -97,7 +99,7 @@ public abstract class AbstractPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_REQUIRED,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						typeMapping(),
 						textRangeResolver().getTypeMappingTextRange()));
 		}
@@ -111,7 +113,7 @@ public abstract class AbstractPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TYPE_MAPPING_ID_CLASS_AND_EMBEDDED_ID_BOTH_USED,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						typeMapping(),
 						textRangeResolver().getTypeMappingTextRange()));
 		}
@@ -124,7 +126,7 @@ public abstract class AbstractPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.TYPE_MAPPING_MULTIPLE_EMBEDDED_ID,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						typeMapping(),
 						textRangeResolver().getTypeMappingTextRange()));
 		}
@@ -169,7 +171,7 @@ public abstract class AbstractPrimaryKeyValidator
 			return;
 		}
 		for (JavaPersistentAttribute idClassAttribute : 
-				new SubIterableWrapper<PersistentAttribute, JavaPersistentAttribute>(
+				new SubIterableWrapper<ReadOnlyPersistentAttribute, JavaPersistentAttribute>(
 					CollectionTools.iterable(idClass.allAttributes()))) {
 			boolean foundMatch = false;
 			for (AttributeMapping attributeMapping : getAttributeMappings(typeMapping())) {
@@ -321,19 +323,39 @@ public abstract class AbstractPrimaryKeyValidator
 	 */
 	protected boolean definesPrimaryKey(AttributeMapping attributeMapping) {
 		String mappingKey = attributeMapping.getKey();
-		if (StringTools.stringsAreEqual(mappingKey, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
-				|| StringTools.stringsAreEqual(mappingKey, MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY)) {
+		if (CollectionTools.contains(this.getIdMappingKeys(), mappingKey)) {
 			return true;
 		}
-		if (StringTools.stringsAreEqual(mappingKey, MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
-				|| StringTools.stringsAreEqual(mappingKey, MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY)) {
+		if (CollectionTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
 			SingleRelationshipMapping2_0 relationshipMapping = (SingleRelationshipMapping2_0) attributeMapping;
 			return (relationshipMapping.getDerivedIdentity().usesIdDerivedIdentityStrategy()
 					|| relationshipMapping.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy());
 		}
 		return false;
 	}
+
+	protected Iterable<String> getIdMappingKeys() {
+		return ID_MAPPING_KEYS;
+	}
+
+	protected static final String[] ID_MAPPING_KEYS_ARRAY = new String[] {
+		MappingKeys.ID_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY
+	};
 	
+	protected static final Iterable<String> ID_MAPPING_KEYS = new ArrayIterable<String>(ID_MAPPING_KEYS_ARRAY);
+
+	protected Iterable<String> getSingleRelationshipMappingKeys() {
+		return SINGLE_RELATIONSHIP_MAPPING_KEYS;
+	}
+
+	protected static final String[] SINGLE_RELATIONSHIP_MAPPING_KEYS_ARRAY = new String[] {
+		MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY
+	};
+	
+	protected static final Iterable<String> SINGLE_RELATIONSHIP_MAPPING_KEYS = new ArrayIterable<String>(SINGLE_RELATIONSHIP_MAPPING_KEYS_ARRAY);
+
 	
 	// **************** id class **********************************************
 	
@@ -462,11 +484,7 @@ public abstract class AbstractPrimaryKeyValidator
 	// **************** derived id mappings ***********************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(
-				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
-					new CompositeIterable<AttributeMapping>(
-						typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getAllSingleRelationshipMappings(typeMapping)) {
 			@Override
 			protected boolean accept(SingleRelationshipMapping2_0 o) {
 				return o.getDerivedIdentity().usesIdDerivedIdentityStrategy();
@@ -474,12 +492,20 @@ public abstract class AbstractPrimaryKeyValidator
 		};
 	}
 	
+	protected Iterable<SingleRelationshipMapping2_0> getAllSingleRelationshipMappings(TypeMapping typeMapping) {
+		return new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(this.getAllSingleRelationshipMappings_(typeMapping));
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<AttributeMapping> getAllSingleRelationshipMappings_(TypeMapping typeMapping) {
+		return new CompositeIterable<AttributeMapping>(
+					typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+					typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
+				);
+	}
+
 	protected Iterable<SingleRelationshipMapping2_0> getDerivedIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(
-				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
-					new CompositeIterable<AttributeMapping>(
-						typeMapping.getAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						typeMapping.getAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings(typeMapping)) {
 			@Override
 			protected boolean accept(SingleRelationshipMapping2_0 o) {
 				return o.getDerivedIdentity().usesIdDerivedIdentityStrategy();
@@ -487,15 +513,23 @@ public abstract class AbstractPrimaryKeyValidator
 		};
 	}
 	
+	protected Iterable<SingleRelationshipMapping2_0> getSingleRelationshipMappings(TypeMapping typeMapping) {
+		return new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings_(typeMapping));
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Iterable<AttributeMapping> getSingleRelationshipMappings_(TypeMapping typeMapping) {
+		return new CompositeIterable<AttributeMapping>(
+					typeMapping.getAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
+					typeMapping.getAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
+				);
+	}
+
 	
 	// **************** maps id mappings **************************************
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappings(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(
-				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
-					new CompositeIterable<AttributeMapping>(
-						typeMapping.getAllAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						typeMapping.getAllAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getAllSingleRelationshipMappings(typeMapping)) {
 			@Override
 			protected boolean accept(SingleRelationshipMapping2_0 o) {
 				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
@@ -504,11 +538,7 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	protected Iterable<SingleRelationshipMapping2_0> getMapsIdMappingsDefinedLocally(TypeMapping typeMapping) {
-		return new FilteringIterable<SingleRelationshipMapping2_0>(
-				new SubIterableWrapper<AttributeMapping, SingleRelationshipMapping2_0>(
-					new CompositeIterable<AttributeMapping>(
-						typeMapping.getAttributeMappings(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY),
-						typeMapping.getAttributeMappings(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)))) {
+		return new FilteringIterable<SingleRelationshipMapping2_0>(this.getSingleRelationshipMappings(typeMapping)) {
 			@Override
 			protected boolean accept(SingleRelationshipMapping2_0 o) {
 				return o.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy();
@@ -572,12 +602,11 @@ public abstract class AbstractPrimaryKeyValidator
 	}
 	
 	protected String getTypeNameForIdClass(AttributeMapping attributeMapping) {
-		if (StringTools.stringsAreEqual(attributeMapping.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
-				|| StringTools.stringsAreEqual(attributeMapping.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
+		String mappingKey = attributeMapping.getKey();
+		if (CollectionTools.contains(this.getIdMappingKeys(), mappingKey)) {
 			return attributeMapping.getPersistentAttribute().getTypeName();
 		}
-		if (StringTools.stringsAreEqual(attributeMapping.getKey(), MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY)
-				|| StringTools.stringsAreEqual(attributeMapping.getKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY)) {
+		if (CollectionTools.contains(this.getSingleRelationshipMappingKeys(), mappingKey)) {
 			SingleRelationshipMapping2_0 relationshipMapping = (SingleRelationshipMapping2_0) attributeMapping;
 			Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
 			if (targetEntity != null) {

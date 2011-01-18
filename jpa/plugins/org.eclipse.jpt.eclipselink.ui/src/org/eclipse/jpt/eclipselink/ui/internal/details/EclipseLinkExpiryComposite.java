@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkExpiryTimeOfDay;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTimeOfDay;
 import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Group;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see EclipseLinkCaching
- * @see EclipseLinkExpiryTimeOfDay
+ * @see EclipseLinkTimeOfDay
  * @see EclipseLinkCachingComposite - A container of this widget
  *
  * @version 2.1
@@ -140,7 +140,7 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 			todEnabled
 		);
 		
-		PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
+		PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder = buildTimeOfDayExpiryHolder();
 		addDateTime(
 			container, 
 			buildTimeOfDayExpiryHourHolder(timeOfDayExpiryHolder), 
@@ -277,19 +277,19 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 	
-	private PropertyValueModel<EclipseLinkExpiryTimeOfDay> buildTimeOfDayExpiryHolder() {
-		return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkExpiryTimeOfDay>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
+	private PropertyValueModel<EclipseLinkTimeOfDay> buildTimeOfDayExpiryHolder() {
+		return new PropertyAspectAdapter<EclipseLinkCaching, EclipseLinkTimeOfDay>(getSubjectHolder(), EclipseLinkCaching.EXPIRY_TIME_OF_DAY_PROPERTY) {
 			@Override
-			protected EclipseLinkExpiryTimeOfDay buildValue_() {
+			protected EclipseLinkTimeOfDay buildValue_() {
 				return this.subject.getExpiryTimeOfDay();
 			}
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryHourHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.HOUR_PROPERTY) {
+					EclipseLinkTimeOfDay.HOUR_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getHour();
@@ -302,10 +302,10 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpiryMinuteHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.MINUTE_PROPERTY) {
+					EclipseLinkTimeOfDay.MINUTE_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getMinute();
@@ -318,10 +318,10 @@ public class EclipseLinkExpiryComposite extends Pane<EclipseLinkCaching> {
 		};
 	}
 
-	private WritablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkExpiryTimeOfDay> timeOfDayExpiryHolder) {
-		return new PropertyAspectAdapter<EclipseLinkExpiryTimeOfDay, Integer>(
+	private WritablePropertyValueModel<Integer> buildTimeOfDayExpirySecondHolder(PropertyValueModel<EclipseLinkTimeOfDay> timeOfDayExpiryHolder) {
+		return new PropertyAspectAdapter<EclipseLinkTimeOfDay, Integer>(
 					timeOfDayExpiryHolder, 
-					EclipseLinkExpiryTimeOfDay.SECOND_PROPERTY) {
+					EclipseLinkTimeOfDay.SECOND_PROPERTY) {
 			@Override
 			protected Integer buildValue_() {
 				return this.subject.getSecond();

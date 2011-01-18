@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,7 +19,6 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
@@ -28,6 +27,7 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
@@ -43,17 +43,20 @@ public class GenericOrmXml
 {
 	/**
 	 * If the XML resource's content type changes, the mapping file
-	 * ref will dispose its current mapping file and build a new one.
+	 * ref will throw out its current mapping file.
 	 */
-	protected final JpaXmlResource xmlResource;
-	
+	protected final JpaXmlResource xmlResource;  // never null
+
 	/**
 	 * The resouce type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
 	protected JpaResourceType resourceType;
 
-	protected EntityMappings entityMappings;
+	/**
+	 * The root element of the <code>orm.xml</code> file.
+	 */
+	protected EntityMappings root;
 
 
 	public GenericOrmXml(MappingFileRef parent, JpaXmlResource xmlResource) {
@@ -64,9 +67,79 @@ public class GenericOrmXml
 
 		XmlEntityMappings xmlEntityMappings = (XmlEntityMappings) xmlResource.getRootObject();
 		if (xmlEntityMappings != null) {
-			this.entityMappings = this.buildEntityMappings(xmlEntityMappings);
+			this.root = this.buildRoot(xmlEntityMappings);
 		}
 	}
+
+
+	// ********** synchronize/update **********
+
+	/**
+	 * @see org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml#synchronizeWithResourceModel()
+	 */
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		XmlEntityMappings oldXmlEntityMappings = (this.root == null) ? null : this.root.getXmlEntityMappings();
+		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
+		JpaResourceType newResourceType = this.xmlResource.getResourceType();
+
+		// If the old and new XML entity mappings are different instances,
+		// we scrap the old context entity mappings and rebuild.
+		// (This can happen when the resource model changes drastically,
+		// such as a CVS checkout or an edit reversion.)
+		if ((oldXmlEntityMappings != newXmlEntityMappings) ||
+				(newXmlEntityMappings == null) ||
+				this.valuesAreDifferent(this.resourceType, newResourceType)
+		) {
+			if (this.root != null) {
+				this.unregisterRootStructureNode();
+				this.root.dispose();
+				this.setRoot(null);
+			}
+		}
+
+		this.resourceType = newResourceType;
+
+		if (newXmlEntityMappings != null) {
+			if (this.root == null) {
+				this.setRoot(this.buildRoot(newXmlEntityMappings));
+			} else {
+				// the context entity mappings already holds the XML entity mappings
+				this.root.synchronizeWithResourceModel();
+			}
+		}
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		if (this.root != null) {
+			this.root.update();
+			// this will happen redundantly - need to hold JpaFile?
+			this.registerRootStructureNode();
+		}
+	}
+
+
+	// ********** root **********
+
+	public EntityMappings getRoot() {
+		return this.root;
+	}
+
+	protected void setRoot(EntityMappings root) {
+		EntityMappings old = this.root;
+		this.root = root;
+		this.firePropertyChanged(ROOT_PROPERTY, old, root);
+	}
+
+	protected EntityMappings buildRoot(XmlEntityMappings xmlEntityMappings) {
+		return this.getContextNodeFactory().buildEntityMappings(this, xmlEntityMappings);
+	}
+
+
+	// ********** misc **********
 
 	protected void checkXmlResource(JpaXmlResource resource) {
 		if (resource == null) {
@@ -76,8 +149,6 @@ public class GenericOrmXml
 			throw new IllegalArgumentException("Content type is not 'mapping file': " + resource); //$NON-NLS-1$
 		}
 	}
-
-	// ********** overrides **********
 
 	@Override
 	public MappingFileRef getParent() {
@@ -94,6 +165,16 @@ public class GenericOrmXml
 		return this.resourceType;
 	}
 
+	protected JpaFile getJpaFile() {
+		return this.getJpaFile(this.xmlResource.getFile());
+	}
+
+	public boolean isIn(IFolder folder) {
+		IResource member = folder.findMember(this.xmlResource.getFile().getName());
+		IFile file = this.xmlResource.getFile();
+		return Tools.valuesAreEqual(member, file);
+	}
+
 	// ********** JpaStructureNode implementation **********
 
 	public String getId() {
@@ -102,8 +183,8 @@ public class GenericOrmXml
 	}
 
 	public JpaStructureNode getStructureNode(int textOffset) {
-		if ((this.entityMappings != null) && this.entityMappings.containsOffset(textOffset)) {
-			return this.entityMappings.getStructureNode(textOffset);
+		if ((this.root != null) && this.root.containsOffset(textOffset)) {
+			return this.root.getStructureNode(textOffset);
 		}
 		return this;
 	}
@@ -114,14 +195,24 @@ public class GenericOrmXml
 	}
 
 	public void dispose() {
-		if (this.entityMappings != null) {
-			this.entityMappings.dispose();
-		}
-		JpaFile jpaFile = getJpaFile();
-		if (jpaFile != null) {
-			jpaFile.removeRootStructureNode(this.xmlResource);
+		if (this.root != null) {
+			JpaFile jpaFile = this.getJpaFile();
+			if (jpaFile != null) {
+				this.unregisterRootStructureNode();
+			}
+			this.root.dispose();
 		}
 	}
+
+	// TODO hold the JpaFile?
+	protected void registerRootStructureNode() {
+		this.getJpaFile().addRootStructureNode(this.xmlResource, this.root);
+	}
+
+	protected void unregisterRootStructureNode() {
+		this.getJpaFile().removeRootStructureNode(this.xmlResource, this.root);
+	}
+
 
 	// ********** MappingFile implementation **********
 
@@ -129,141 +220,62 @@ public class GenericOrmXml
 		return this.xmlResource;
 	}
 
-	public MappingFileRoot getRoot() {
-		return this.entityMappings;
+	public OrmPersistentType getPersistentType(String name) {
+		return (this.root == null) ? null : this.root.getPersistentType(name);
 	}
 
-	public OrmPersistentType getPersistentType(String name) {
-		return (this.entityMappings == null) ? null : this.entityMappings.getPersistentType(name);
-	}
 
 	// ********** PersistentTypeContainer implementation **********
 
 	/**
-	 * All orm.xml mapping files must be able to generate a static metamodel
-	 * because 1.0 orm.xml files can be referenced from 2.0 persistence.xml
+	 * All <code>orm.xml</code> mapping files must be able to generate a static metamodel
+	 * because 1.0 <code>orm.xml</code> files can be referenced from 2.0
+	 * <code>persistence.xml</code>
 	 * files.
 	 */
 	public Iterable<OrmPersistentType> getPersistentTypes() {
-		return (this.entityMappings != null) ? this.entityMappings.getPersistentTypes() : EmptyIterable.<OrmPersistentType> instance();
-	}
-
-	// ********** entity mappings **********
-
-	public EntityMappings getEntityMappings() {
-		return this.entityMappings;
-	}
-
-	protected void setEntityMappings(EntityMappings entityMappings) {
-		EntityMappings old = this.entityMappings;
-		this.entityMappings = entityMappings;
-		this.firePropertyChanged(ENTITY_MAPPINGS_PROPERTY, old, entityMappings);
-	}
-
-	protected EntityMappings buildEntityMappings(XmlEntityMappings xmlEntityMappings) {
-		return this.getXmlContextNodeFactory().buildEntityMappings(this, xmlEntityMappings);
-	}
-
-	// ********** updating **********
-
-	public void update() {
-		XmlEntityMappings oldXmlEntityMappings = (this.entityMappings == null) ? null : this.entityMappings.getXmlEntityMappings();
-		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
-		JpaResourceType newResourceType = this.xmlResource.getResourceType();
-		
-		// If the old and new xml entity mappings are different instances,
-		// we scrap the old context entity mappings and rebuild. This can
-		// happen when the resource model drastically changes, such as
-		// a cvs checkout or an edit reversion.
-		if ((oldXmlEntityMappings != newXmlEntityMappings)
-				|| (newXmlEntityMappings == null)
-				|| this.valuesAreDifferent(this.resourceType, newResourceType)) {
-			
-			if (this.entityMappings != null) {
-				getJpaFile().removeRootStructureNode(this.xmlResource);
-				this.entityMappings.dispose();
-				setEntityMappings(null);
-			}
-		}
-		
-		this.resourceType = newResourceType;
-		
-		if (newXmlEntityMappings != null) {
-			if (this.entityMappings != null) {
-				this.entityMappings.update();
-			}
-			else {
-				setEntityMappings(buildEntityMappings(newXmlEntityMappings));
-			}
-			
-			this.getJpaFile().addRootStructureNode(this.xmlResource, this.entityMappings);
-		}
-	}
-
-	protected JpaFile getJpaFile() {
-		return this.getJpaFile(this.xmlResource.getFile());
-	}
-
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.entityMappings != null) {
-			this.entityMappings.postUpdate();
-		}
-	}
-
-
-	// ********** misc **********
-
-	public boolean isIn(IFolder folder) {
-		IResource member = folder.findMember(this.getXmlResource().getFile().getName());
-		IFile file = this.getXmlResource().getFile();
-		return member != null && file != null && member.equals(file);
-	}
-
-
-	// ********** validation **********
-
-	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance();
-	}
-
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter) {
-		super.validate(messages, reporter);
-		if (this.entityMappings != null) {
-			this.entityMappings.validate(messages, reporter);
-		}
+		return (this.root != null) ? this.root.getPersistentTypes() : EmptyIterable.<OrmPersistentType>instance();
 	}
 
 
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
-		if (this.entityMappings != null) {
-			return this.entityMappings.createDeleteTypeEdits(type);
-		}
-		return EmptyIterable.instance();
+		return (this.root != null) ?
+				this.root.createDeleteTypeEdits(type) :
+				EmptyIterable.<DeleteEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.entityMappings != null) {
-			return this.entityMappings.createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (this.root != null) ?
+				this.root.createRenameTypeEdits(originalType, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.entityMappings != null) {
-			return this.entityMappings.createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+		return (this.root != null) ?
+				this.root.createMoveTypeEdits(originalType, newPackage) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (this.entityMappings != null) {
-			return this.entityMappings.createRenamePackageEdits(originalPackage, newName);
+		return (this.root != null) ?
+				this.root.createRenamePackageEdits(originalPackage, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		if (this.root != null) {
+			this.root.validate(messages, reporter);
 		}
-		return EmptyIterable.instance();
+	}
+
+	public TextRange getValidationTextRange() {
+		return TextRange.Empty.instance();
 	}
 }

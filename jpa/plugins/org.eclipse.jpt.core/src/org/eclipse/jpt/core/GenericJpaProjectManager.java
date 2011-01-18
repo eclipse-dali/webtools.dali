@@ -23,15 +23,19 @@ import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.ILock;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.AsynchronousJpaProjectUpdater;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.SimpleJpaProjectConfig;
+import org.eclipse.jpt.core.internal.utility.CallbackJobSynchronizer;
+import org.eclipse.jpt.core.internal.utility.JobCommand;
+import org.eclipse.jpt.core.internal.utility.JobSynchronizer;
 import org.eclipse.jpt.utility.Command;
 import org.eclipse.jpt.utility.internal.AsynchronousCommandExecutor;
 import org.eclipse.jpt.utility.internal.SimpleCommandExecutor;
@@ -40,6 +44,9 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
@@ -111,7 +118,8 @@ import org.osgi.framework.BundleContext;
  *     -> {@link IResourceDelta#CHANGED} facet settings file
  * </ul>
  */
-//TODO Still need to look at faceted project listener for facet uninstall
+// TODO remove faceted project listener and rely solely on resource change events
+// for the faceted project settings file
 class GenericJpaProjectManager
 	extends AbstractModel
 	implements JpaProjectManager
@@ -124,7 +132,7 @@ class GenericJpaProjectManager
 	/**
 	 * Synchronize access to the JPA projects.
 	 */
-	/* private */ final ILock lock = this.getJobManager().newLock();
+	/* CU private */ final ILock lock = this.getJobManager().newLock();
 
 	/**
 	 * Determine how Resource and Java change events are
@@ -344,7 +352,7 @@ class GenericJpaProjectManager
 
 	// ********** adding/removing JPA projects **********
 
-	/* private */ void addJpaProject(IProject project) {
+	/* CU private */ void addJpaProject(IProject project) {
 		this.addJpaProject(this.buildJpaProject(project));
 	}
 
@@ -377,7 +385,8 @@ class GenericJpaProjectManager
 		if (jpaProject == null) {
 			return null;
 		}
-		jpaProject.setUpdater(new AsynchronousJpaProjectUpdater(jpaProject));
+		jpaProject.setContextModelSynchronizer(this.buildJobContextModelSynchronizer(jpaProject));
+		jpaProject.setUpdateSynchronizer(this.buildJobUpdateSynchronizer(jpaProject));
 		return jpaProject;
 	}
 
@@ -405,7 +414,47 @@ class GenericJpaProjectManager
 		return config;
 	}
 
-	/* private */ void removeJpaProject(JpaProject jpaProject) {
+	private Synchronizer buildJobContextModelSynchronizer(JpaProject jpaProject) {
+		return new JobSynchronizer(
+				this.buildContextModelJobName(jpaProject),
+				this.buildContextModelJobCommand(jpaProject),
+				jpaProject.getProject()
+			);
+	}
+
+	private String buildContextModelJobName(JpaProject jpaProject) {
+		return NLS.bind(JptCoreMessages.CONTEXT_MODEL_SYNC_JOB_NAME, jpaProject.getName());
+	}
+
+	private JobCommand buildContextModelJobCommand(final JpaProject jpaProject) {
+		return new JobCommand() {
+			public IStatus execute(IProgressMonitor monitor) {
+				return jpaProject.synchronizeContextModel(monitor);
+			}
+		};
+	}
+
+	private CallbackSynchronizer buildJobUpdateSynchronizer(JpaProject jpaProject) {
+		return new CallbackJobSynchronizer(
+				this.buildUpdateJobName(jpaProject),
+				this.buildUpdateJobCommand(jpaProject),
+				jpaProject.getProject()
+			);
+	}
+
+	private String buildUpdateJobName(JpaProject jpaProject) {
+		return NLS.bind(JptCoreMessages.UPDATE_JOB_NAME, jpaProject.getName());
+	}
+
+	private JobCommand buildUpdateJobCommand(final JpaProject jpaProject) {
+		return new JobCommand() {
+			public IStatus execute(IProgressMonitor monitor) {
+				return jpaProject.update(monitor);
+			}
+		};
+	}
+
+	/* CU private */ void removeJpaProject(JpaProject jpaProject) {
 		// figure out exactly when JPA projects are removed
 		dumpStackTrace("remove: ", jpaProject); //$NON-NLS-1$
 		this.removeItemFromCollection(jpaProject, this.jpaProjects, JPA_PROJECTS_COLLECTION);
@@ -415,7 +464,7 @@ class GenericJpaProjectManager
 
 	// ********** Project POST_CHANGE **********
 
-	/* private */ void projectChanged(IResourceDelta delta) {
+	/* CU private */ void projectChanged(IResourceDelta delta) {
 		this.eventHandler.execute(this.buildProjectChangedCommand(delta));
 	}
 
@@ -432,7 +481,7 @@ class GenericJpaProjectManager
 	 * Forward the specified resource delta to all our JPA projects;
 	 * they will each determine whether the event is significant.
 	 */
-	/* private */ void projectChanged_(IResourceDelta delta) {
+	/* CU private */ void projectChanged_(IResourceDelta delta) {
 		for (JpaProject jpaProject : this.jpaProjects) {
 			jpaProject.projectChanged(delta);
 		}
@@ -441,7 +490,7 @@ class GenericJpaProjectManager
 
 	// ********** Project POST_BUILD (CLEAN_BUILD) **********
 
-	/* private */ void projectPostCleanBuild(IProject project) {
+	/* CU private */ void projectPostCleanBuild(IProject project) {
 		this.executeAfterEventsHandled(this.buildProjectPostCleanBuildCommand(project));
 	}
 
@@ -454,7 +503,7 @@ class GenericJpaProjectManager
 		};
 	}
 
-	/* private */ void projectPostCleanBuild_(IProject project) {
+	/* CU private */ void projectPostCleanBuild_(IProject project) {
 		JpaProject jpaProject = this.getJpaProject_(project);
 		if (jpaProject != null) {
 			this.removeJpaProject(jpaProject);
@@ -470,7 +519,7 @@ class GenericJpaProjectManager
 	 * whether the JPA facet has been added to or removed from the specified
 	 * project.
 	 */
-	/* private */ void checkForJpaFacetTransition(IProject project) {
+	/* CU private */ void checkForJpaFacetTransition(IProject project) {
 		JpaProject jpaProject = this.getJpaProject_(project);
 
 		if (JpaFacet.isInstalled(project)) {
@@ -502,9 +551,10 @@ class GenericJpaProjectManager
 		};
 	}
 
+
 	// ********** FacetedProject PRE_UNINSTALL **********
 
-	/* private */ void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
+	/* CU private */ void jpaFacetedProjectPreUninstall(IProjectFacetActionEvent event) {
 		IProject project = event.getProject().getProject();
 		this.executeAfterEventsHandled(this.buildJpaFacetedProjectPreUninstallCommand(project));
 	}
@@ -518,7 +568,7 @@ class GenericJpaProjectManager
 		};
 	}
 
-	/* private */ void jpaFacetedProjectPreUninstall_(IProject project) {
+	/* CU private */ void jpaFacetedProjectPreUninstall_(IProject project) {
 		// assume(?) this is the first event to indicate we need to remove the JPA project from the JPA project manager
 		this.removeJpaProject(this.getJpaProject_(project));
 	}
@@ -526,7 +576,7 @@ class GenericJpaProjectManager
 
 	// ********** Java element changed **********
 
-	/* private */ void javaElementChanged(ElementChangedEvent event) {
+	/* CU private */ void javaElementChanged(ElementChangedEvent event) {
 		this.eventHandler.execute(this.buildJavaElementChangedCommand(event));
 	}
 
@@ -543,14 +593,14 @@ class GenericJpaProjectManager
 	 * Forward the Java element changed event to all the JPA projects
 	 * because the event could affect multiple projects.
 	 */
-	/* private */ void javaElementChanged_(ElementChangedEvent event) {
+	/* CU private */ void javaElementChanged_(ElementChangedEvent event) {
 		for (JpaProject jpaProject : this.jpaProjects) {
 			jpaProject.javaElementChanged(event);
 		}
 	}
 
 
-	// ********** miscellaneous **********
+	// ********** misc **********
 
 	@Override
 	public void toString(StringBuilder sb) {
@@ -629,9 +679,10 @@ class GenericJpaProjectManager
 
 	/**
 	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * @see JptCoreTestsPlugin#start(BundleContext)
+	 * See JptCoreTestsPlugin#start(BundleContext)
 	 */
-	public void handleEventsSynchronously() {
+	@SuppressWarnings("unused")
+	private void handleEventsSynchronously() {
 		try {
 			this.lock.acquire();
 			this.handleEventsSynchronously_();
@@ -653,7 +704,9 @@ class GenericJpaProjectManager
 	 * Visit the workspace resource tree, adding a JPA project to the
 	 * JPA project manager for each open Eclipse project that has a JPA facet.
 	 */
-	private class ResourceProxyVisitor implements IResourceProxyVisitor {
+	private class ResourceProxyVisitor
+		implements IResourceProxyVisitor
+	{
 		ResourceProxyVisitor() {
 			super();
 		}
@@ -729,8 +782,9 @@ class GenericJpaProjectManager
 
 	// ********** resource change listener **********
 
-	private class ResourceChangeListener implements IResourceChangeListener {
-
+	private class ResourceChangeListener
+		implements IResourceChangeListener
+	{
 		ResourceChangeListener() {
 			super();
 		}
@@ -904,8 +958,9 @@ class GenericJpaProjectManager
 	/**
 	 * Forward the Faceted project change event back to the JPA project manager.
 	 */
-	private class FacetedProjectListener implements IFacetedProjectListener {
-
+	private class FacetedProjectListener
+		implements IFacetedProjectListener
+	{
 		FacetedProjectListener() {
 			super();
 		}
@@ -945,7 +1000,9 @@ class GenericJpaProjectManager
 	/**
 	 * Forward the Java element change event back to the JPA project manager.
 	 */
-	private class JavaElementChangeListener implements IElementChangedListener {
+	private class JavaElementChangeListener
+		implements IElementChangedListener
+	{
 		/**
 		 * A flag to activate/deactivate the listener
 		 * so we can ignore Java events whenever Dali is manipulating the Java
@@ -963,6 +1020,7 @@ class GenericJpaProjectManager
 			if (this.active) {
 				GenericJpaProjectManager.this.javaElementChanged(event);
 			}
+			// TODO save unhandled events and process when listener is reactivated?
 		}
 
 		void setActive(boolean active) {
@@ -989,13 +1047,13 @@ class GenericJpaProjectManager
 	/**
 	 * trigger #toString() call and string concatenation only if DEBUG is true
 	 */
-	/* private */ static void debug(String message, Object object) {
+	/* CU private */ static void debug(String message, Object object) {
 		if (DEBUG) {
 			debug_(message + object);
 		}
 	}
 
-	/* private */ static void debug(String message) {
+	/* CU private */ static void debug(String message) {
 		if (DEBUG) {
 			debug_(message);
 		}
@@ -1005,17 +1063,17 @@ class GenericJpaProjectManager
 		System.out.println(Thread.currentThread().getName() + ": " + message); //$NON-NLS-1$
 	}
 
-	/* private */ static void dumpStackTrace() {
+	/* CU private */ static void dumpStackTrace() {
 		dumpStackTrace(null);
 	}
 
-	/* private */ static void dumpStackTrace(String message, Object object) {
+	/* CU private */ static void dumpStackTrace(String message, Object object) {
 		if (DEBUG) {
 			dumpStackTrace_(message + object);
 		}
 	}
 
-	/* private */ static void dumpStackTrace(String message) {
+	/* CU private */ static void dumpStackTrace(String message) {
 		if (DEBUG) {
 			dumpStackTrace_(message);
 		}

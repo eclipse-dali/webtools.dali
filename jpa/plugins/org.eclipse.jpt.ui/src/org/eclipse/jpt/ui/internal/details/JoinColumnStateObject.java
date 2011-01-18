@@ -10,9 +10,11 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
@@ -24,7 +26,8 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
  * @since 2.0
  */
 @SuppressWarnings("nls")
-public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
+public abstract class JoinColumnStateObject
+	extends BaseJoinColumnStateObject
 {
 	private Boolean insertable;
 	private Boolean nullable;
@@ -42,7 +45,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	 * @param owner The owner of the join column to create or where it is located
 	 * @param joinColumn The join column to edit
 	 */
-	public JoinColumnStateObject(Object owner, JoinColumn joinColumn) {
+	public JoinColumnStateObject(Object owner, ReadOnlyJoinColumn joinColumn) {
 		super(owner, joinColumn);
 	}
 
@@ -54,7 +57,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.isDefaultInsertable();
 		}
 
-		return BaseColumn.DEFAULT_INSERTABLE;
+		return ReadOnlyBaseColumn.DEFAULT_INSERTABLE;
 	}
 
 	public boolean isDefaultNullable() {
@@ -65,7 +68,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.isDefaultNullable();
 		}
 
-		return BaseColumn.DEFAULT_NULLABLE;
+		return ReadOnlyBaseColumn.DEFAULT_NULLABLE;
 	}
 
 	public boolean isDefaultUnique() {
@@ -76,7 +79,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.isDefaultUnique();
 		}
 
-		return BaseColumn.DEFAULT_UNIQUE;
+		return ReadOnlyBaseColumn.DEFAULT_UNIQUE;
 	}
 
 	public boolean isDefaultUpdatable() {
@@ -87,7 +90,7 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 			return joinColumn.isDefaultUpdatable();
 		}
 
-		return BaseColumn.DEFAULT_UPDATABLE;
+		return ReadOnlyBaseColumn.DEFAULT_UPDATABLE;
 	}
 
 	public Boolean getInsertable() {
@@ -112,12 +115,12 @@ public abstract class JoinColumnStateObject extends BaseJoinColumnStateObject
 	}
 
 	@Override
-	protected void initialize(Object owner, BaseJoinColumn baseJoinColumn) {
+	protected void initialize(Object owner, ReadOnlyBaseJoinColumn baseJoinColumn) {
 
 		super.initialize(owner, baseJoinColumn);
 
 		if (baseJoinColumn != null) {
-			JoinColumn joinColumn = (JoinColumn) baseJoinColumn;
+			ReadOnlyJoinColumn joinColumn = (ReadOnlyJoinColumn) baseJoinColumn;
 
 			this.insertable       = joinColumn.getSpecifiedInsertable();
 			this.nullable         = joinColumn.getSpecifiedNullable();

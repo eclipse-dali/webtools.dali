@@ -9,11 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import java.util.ListIterator;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.OverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.VirtualOverride;
 import org.eclipse.jpt.core.context.XmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlOverride;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
+ * <code>orm.xml</code> attribute or association override container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,18 +31,25 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.3
  */
 public interface OrmOverrideContainer
-	extends
-		OverrideContainer,
-		XmlContextNode
+	extends OverrideContainer, XmlContextNode
 {
-	
-	void update();
-	
-	interface Owner extends OverrideContainer.Owner
+	ListIterator<? extends OrmReadOnlyOverride> overrides();
+	OrmReadOnlyOverride getOverrideNamed(String name);
+	ListIterator<? extends OrmOverride> specifiedOverrides();
+	OrmOverride getSpecifiedOverride(int index);
+	OrmOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<? extends OrmVirtualOverride> virtualOverrides();
+	OrmVirtualOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	OrmOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
+
+
+	interface Owner
+		extends OverrideContainer.Owner
 	{		
+		<T extends XmlOverride> EList<T> getXmlOverrides();
+
 		OrmTypeMapping getTypeMapping();
 		
 		TextRange getValidationTextRange();
 	}
-
 }

@@ -3,13 +3,12 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
-import java.util.ListIterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
@@ -25,9 +24,8 @@ import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
+import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
@@ -35,8 +33,6 @@ import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Tools;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -46,18 +42,18 @@ public class GenericJpaPlatform
 	implements JpaPlatform
 {
 	private final String id;
-	
+
 	private final Version jpaVersion;
-	
+
 	private final JpaFactory jpaFactory;
-	
+
 	private final JpaAnnotationProvider annotationProvider;
-	
+
 	private final JpaPlatformProvider platformProvider;
-	
+
 	private final JpaPlatformVariation jpaVariation;
-	
-	
+
+
 	public GenericJpaPlatform(String id, Version jpaVersion, JpaFactory jpaFactory, JpaAnnotationProvider jpaAnnotationProvider, JpaPlatformProvider platformProvider, JpaPlatformVariation jpaVariation) {
 		super();
 		this.id = id;
@@ -67,34 +63,37 @@ public class GenericJpaPlatform
 		this.jpaVariation = jpaVariation;
 		this.platformProvider = platformProvider;
 	}
-	
-	
+
+
+	// ********** meta stuff **********
+
 	public String getId() {
 		return this.id;
 	}
-	
+
 	public JpaPlatformDescription getDescription() {
-		return JptCorePlugin.getJpaPlatformManager().getJpaPlatform(getId());
+		return JptCorePlugin.getJpaPlatformManager().getJpaPlatform(this.getId());
 	}
-	
+
 	public Version getJpaVersion() {
 		return this.jpaVersion;
 	}
-	
+
+
 	// ********** factory **********
 
 	public JpaFactory getJpaFactory() {
 		return this.jpaFactory;
 	}
-	
-	
+
+
 	// ********** platform providers **********
-	
+
 	protected JpaPlatformProvider getPlatformProvider() {
 		return this.platformProvider;
 	}
-	
-	
+
+
 	// ********** JPA file/resource models **********
 
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file) {
@@ -117,7 +116,7 @@ public class GenericJpaPlatform
 	 * (since we don't have control over the possible content types).
 	 */
 	protected JpaResourceModelProvider getResourceModelProvider(IContentType contentType) {
-		for (JpaResourceModelProvider provider : CollectionTools.iterable(resourceModelProviders())) {
+		for (JpaResourceModelProvider provider : this.platformProvider.getResourceModelProviders()) {
 			if (contentType.equals(provider.getContentType())) {
 				return provider;
 			}
@@ -125,11 +124,7 @@ public class GenericJpaPlatform
 		return null;
 	}
 
-	protected ListIterator<JpaResourceModelProvider> resourceModelProviders() {
-		return this.platformProvider.resourceModelProviders();
-	}
-	
-	
+
 	// ********** Java annotations **********
 
 	public JpaAnnotationProvider getAnnotationProvider() {
@@ -142,104 +137,48 @@ public class GenericJpaPlatform
 
 
 	// ********** Java type mappings **********
-	
-	public JavaTypeMappingDefinition getJavaTypeMappingDefinition(JavaPersistentType type) {
-		for (JavaTypeMappingDefinition definition : 
-				CollectionTools.iterable(javaTypeMappingDefinitions())) {
-			if (definition.test(type)) {
-				return definition;
-			}
-		}
-		throw new IllegalStateException("There must be a mapping definition for all types"); //$NON-NLS-1$
+
+	public Iterable<JavaTypeMappingDefinition> getJavaTypeMappingDefinitions() {
+		return this.platformProvider.getJavaTypeMappingDefinitions();
 	}
-	
-	public JavaTypeMappingDefinition getJavaTypeMappingDefinition(String mappingKey) {
-		for (JavaTypeMappingDefinition definition : 
-				CollectionTools.iterable(javaTypeMappingDefinitions())) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
-				return definition;
-			}
-		}
-		throw new IllegalArgumentException("Illegal type mapping key: " + mappingKey); //$NON-NLS-1$
-	}
-	
-	protected ListIterator<JavaTypeMappingDefinition> javaTypeMappingDefinitions() {
-		return this.platformProvider.javaTypeMappingDefinitions();
-	}
-	
-	
+
+
 	// ********** Java attribute mappings **********
-	
-	public JavaAttributeMappingDefinition getDefaultJavaAttributeMappingDefinition(
-			JavaPersistentAttribute attribute) {
-		for (JavaAttributeMappingDefinition definition : 
-				CollectionTools.iterable(defaultJavaAttributeMappingDefinitions())) {
-			if (definition.testDefault(attribute)) {
-				return definition;
-			}
-		}
-		throw new IllegalStateException("There must be a mapping definition for all attributes"); //$NON-NLS-1$
+
+	public Iterable<JavaAttributeMappingDefinition> getSpecifiedJavaAttributeMappingDefinitions() {
+		return this.platformProvider.getSpecifiedJavaAttributeMappingDefinitions();
 	}
-	
-	protected ListIterator<JavaAttributeMappingDefinition> defaultJavaAttributeMappingDefinitions() {
-		return this.platformProvider.defaultJavaAttributeMappingDefinitions();
+
+	public Iterable<DefaultJavaAttributeMappingDefinition> getDefaultJavaAttributeMappingDefinitions() {
+		return this.platformProvider.getDefaultJavaAttributeMappingDefinitions();
 	}
-	
-	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(
-			JavaPersistentAttribute attribute) {
-		for (JavaAttributeMappingDefinition definition : 
-				CollectionTools.iterable(specifiedJavaAttributeMappingDefinitions())) {
-			if (definition.testSpecified(attribute)) {
-				return definition;
-			}
-		}
-		throw new IllegalStateException("There must be a mapping definition for all attributes"); //$NON-NLS-1$
-	}
-	
-	protected ListIterator<JavaAttributeMappingDefinition> specifiedJavaAttributeMappingDefinitions() {
-		return this.platformProvider.specifiedJavaAttributeMappingDefinitions();
-	}
-	
-	public JavaAttributeMappingDefinition getSpecifiedJavaAttributeMappingDefinition(String mappingKey) {
-		for (JavaAttributeMappingDefinition definition : 
-				CollectionTools.iterable(specifiedJavaAttributeMappingDefinitions())) {
-			if (Tools.valuesAreEqual(definition.getKey(), mappingKey)) {
-				return definition;
-			}
-		}
-		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
-	}
-	
-	
+
+
 	// ********** resource types and definitions **********
-	
+
 	public boolean supportsResourceType(JpaResourceType resourceType) {
-		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
+		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
-		for (ResourceDefinition resourceDefinition : CollectionTools.iterable(resourceDefinitions())) {
+		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
 			}
 		}
 		throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
 	}
-	
-	protected ListIterator<ResourceDefinition> resourceDefinitions() {
-		return this.platformProvider.resourceDefinitions();
-	}
-	
+
 	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
 		return this.platformProvider.getMostRecentSupportedResourceType(contentType);
 	}
-	
-	
+
+
 	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
@@ -250,9 +189,9 @@ public class GenericJpaPlatform
 		return GenericEntityGeneratorDatabaseAnnotationNameBuilder.instance();
 	}
 
-	
+
 	// ********** validation **********
-	
+
 	public JpaPlatformVariation getJpaVariation() {
 		return this.jpaVariation;
 	}

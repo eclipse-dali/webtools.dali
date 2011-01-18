@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,43 +19,54 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> attribute mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ *
  * @version 3.0
  * @since 2.3
  */
 public interface OrmAttributeMapping
 	extends AttributeMapping, XmlContextNode
 {
-	OrmPersistentAttribute getPersistentAttribute();
-	
-	XmlAttributeMapping getResourceAttributeMapping();
+	OrmPersistentAttribute getParent();
 
-	String getName();
-	void setName(String newName);
-	String NAME_PROPERTY = "name"; //$NON-NLS-1$
+	OrmPersistentAttribute getPersistentAttribute();
+
+	XmlAttributeMapping getXmlAttributeMapping();
+
+	OrmTypeMapping getTypeMapping();
+
+	void setName(String name);
+		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	/**
-	 * Attributes are a sequence in the orm schema. We must keep
-	 * the list of attributes in the appropriate order so the wtp xml 
-	 * translators will write them to the xml in that order and they
-	 * will adhere to the schema.  
-	 * 
-	 * Each concrete subclass of XmlAttributeMapping must implement this
-	 * method and return an int that matches it's order in the schema
-	 * @return
+	 * Attributes are a sequence in the <code>orm.xml</code> schema. We must keep
+	 * the list of attributes in the appropriate order so the WTP XML
+	 * translators will write them to the XML document in that order and they
+	 * will adhere to the schema.
+	 * <p>
+	 * Each implementation must implement this
+	 * method and return a number that matches its order in the schema.
 	 */
 	int getXmlSequence();
 
-	void addToResourceModel(Attributes resourceAttributes);
-	
-	void removeFromResourceModel(Attributes resourceAttributes);
+	void addXmlAttributeMappingTo(Attributes resourceAttributes);
+
+	void removeXmlAttributeMappingFrom(Attributes resourceAttributes);
+
+	boolean contains(int textOffset);
+
+	TextRange getSelectionTextRange();
+
+	TextRange getNameTextRange();
+
+
+	// ********** morphing mappings **********
 
 	void initializeOn(OrmAttributeMapping newMapping);
 
@@ -80,23 +91,9 @@ public interface OrmAttributeMapping
 	void initializeFromOrmOneToOneMapping(OrmOneToOneMapping oldMapping);
 
 	void initializeFromOrmManyToManyMapping(OrmManyToManyMapping oldMapping);
-	
-	boolean contains(int textOffset);
-
-	TextRange getSelectionTextRange();
-	
-	TextRange getNameTextRange();
-	
-	//******************* initialization/updating *******************
-
-	/**
-	 * Update the OrmAttributeMapping context model object to match the 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update();
 
 
-	//******************* refactoring *******************
+	// ********** refactoring **********
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalType to the newName.
@@ -115,5 +112,4 @@ public interface OrmAttributeMapping
 	 * The originalPackage has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
-
 }

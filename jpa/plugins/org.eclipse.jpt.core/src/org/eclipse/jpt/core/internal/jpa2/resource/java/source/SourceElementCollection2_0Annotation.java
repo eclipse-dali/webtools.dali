@@ -41,7 +41,12 @@ public final class SourceElementCollection2_0Annotation
 	private final AnnotationElementAdapter<String> targetClassAdapter;
 	private String targetClass;
 
-	String fullyQualifiedTargetClassName;
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
+	private String fullyQualifiedTargetClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqTargetClassNameStale = true;
 
 	private static final DeclarationAnnotationElementAdapter<String> FETCH_ADAPTER = buildFetchAdapter();
 	private final AnnotationElementAdapter<String> fetchAdapter;
@@ -61,14 +66,19 @@ public final class SourceElementCollection2_0Annotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.targetClass = this.buildTargetClass(astRoot);
-		this.fullyQualifiedTargetClassName = this.buildFullyQualifiedTargetClassName(astRoot);
 		this.fetch = this.buildFetch(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncTargetClass(this.buildTargetClass(astRoot));
-		this.syncFullyQualifiedTargetClassName(this.buildFullyQualifiedTargetClassName(astRoot));
 		this.syncFetch(this.buildFetch(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.targetClass == null) &&
+				(this.fetch == null);
 	}
 
 	@Override
@@ -87,13 +97,21 @@ public final class SourceElementCollection2_0Annotation
 	public void setTargetClass(String targetClass) {
 		if (this.attributeValueHasChanged(this.targetClass, targetClass)) {
 			this.targetClass = targetClass;
+			this.fqTargetClassNameStale = true;
 			this.targetClassAdapter.setValue(targetClass);
 		}
 	}
 
 	private void syncTargetClass(String astTargetClass) {
+		if (this.attributeValueHasChanged(this.targetClass, astTargetClass)) {
+			this.syncTargetClass_(astTargetClass);
+		}
+	}
+
+	private void syncTargetClass_(String astTargetClass) {
 		String old = this.targetClass;
 		this.targetClass = astTargetClass;
+		this.fqTargetClassNameStale = true;
 		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, astTargetClass);
 	}
 
@@ -107,17 +125,19 @@ public final class SourceElementCollection2_0Annotation
 
 	// ***** fully-qualified target entity class name
 	public String getFullyQualifiedTargetClassName() {
+		if (this.fqTargetClassNameStale) {
+			this.fullyQualifiedTargetClassName = this.buildFullyQualifiedTargetClassName();
+			this.fqTargetClassNameStale = false;
+		}
 		return this.fullyQualifiedTargetClassName;
 	}
 
-	private void syncFullyQualifiedTargetClassName(String name) {
-		String old = this.fullyQualifiedTargetClassName;
-		this.fullyQualifiedTargetClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_CLASS_NAME_PROPERTY, old, name);
+	private String buildFullyQualifiedTargetClassName() {
+		return (this.targetClass == null) ? null : this.buildFullyQualifiedTargetClassName_();
 	}
 
-	private String buildFullyQualifiedTargetClassName(CompilationUnit astRoot) {
-		return (this.targetClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.targetClassAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedTargetClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.targetClassAdapter.getExpression(this.buildASTRoot()));
 	}
 
 	// ***** fetch
@@ -149,7 +169,7 @@ public final class SourceElementCollection2_0Annotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.ELEMENT_COLLECTION__FETCH, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA2_0.ELEMENT_COLLECTION__FETCH);
 	}
 	
 	private static DeclarationAnnotationElementAdapter<String> buildTargetClassAdapter() {
@@ -162,7 +182,7 @@ public final class SourceElementCollection2_0Annotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 
 }

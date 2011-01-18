@@ -52,6 +52,7 @@ public class JptCoreMessages {
 	public static String REGISTRY_FAILED_CLASS_LOAD;
 	public static String REGISTRY_FAILED_INTERFACE_ASSIGNMENT;
 	public static String REGISTRY_FAILED_INSTANTIATION;
+	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
 	public static String UPDATE_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
 	public static String DALI_EVENT_HANDLER_THREAD_NAME;

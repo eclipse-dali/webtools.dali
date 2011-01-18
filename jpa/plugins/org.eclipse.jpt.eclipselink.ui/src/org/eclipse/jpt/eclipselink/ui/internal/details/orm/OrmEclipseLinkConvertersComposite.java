@@ -22,7 +22,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCustomConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkObjectTypeConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkStructConverterComposite;
@@ -78,9 +78,9 @@ import org.eclipse.ui.part.PageBook;
  * @version 2.1
  * @since 2.1
  */
-public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverterHolder>
+public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConverterContainer>
 {
-	private AddRemoveListPane<EclipseLinkConverterHolder> listPane;
+	private AddRemoveListPane<OrmEclipseLinkConverterContainer> listPane;
 	private EclipseLinkCustomConverterComposite converterComposite;
 	private EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite;
 	private EclipseLinkStructConverterComposite structConverterComposite;
@@ -89,7 +89,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 
 	public OrmEclipseLinkConvertersComposite(
 		Pane<?> parentPane, 
-		PropertyValueModel<? extends EclipseLinkConverterHolder> subjectHolder,
+		PropertyValueModel<? extends OrmEclipseLinkConverterContainer> subjectHolder,
 		Composite parent) {
 
 			super(parentPane, subjectHolder, parent, false);
@@ -146,9 +146,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		installPaneSwitcher(pageBook);
 	}
 
-	private AddRemoveListPane<EclipseLinkConverterHolder> addListPane(Composite container) {
+	private AddRemoveListPane<OrmEclipseLinkConverterContainer> addListPane(Composite container) {
 
-		return new AddRemoveListPane<EclipseLinkConverterHolder>(
+		return new AddRemoveListPane<OrmEclipseLinkConverterContainer>(
 			this,
 			container,
 			buildConvertersAdapter(),
@@ -183,16 +183,16 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 
 			public void removeSelectedItems(ObjectListSelectionModel listSelectionModel) {
 				for (Object item : listSelectionModel.selectedValues()) {
-					if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
+					if (((EclipseLinkConverter) item).getType() == EclipseLinkCustomConverter.class) {
 						getSubject().removeCustomConverter((EclipseLinkCustomConverter) item);
 					}
-					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+					else if (((EclipseLinkConverter) item).getType() == EclipseLinkObjectTypeConverter.class) {
 						getSubject().removeObjectTypeConverter((EclipseLinkObjectTypeConverter) item);
 					}
-					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
+					else if (((EclipseLinkConverter) item).getType() == EclipseLinkStructConverter.class) {
 						getSubject().removeStructConverter((EclipseLinkStructConverter) item);
 					}
-					else if (((EclipseLinkConverter) item).getType() == EclipseLinkConverter.TYPE_CONVERTER) {
+					else if (((EclipseLinkConverter) item).getType() == EclipseLinkTypeConverter.class) {
 						getSubject().removeTypeConverter((EclipseLinkTypeConverter) item);
 					}
 				}
@@ -212,18 +212,18 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		if (dialog.open() != Window.OK) {
 			return;
 		}
-		String converterType = dialog.getConverterType();
+		Class<? extends EclipseLinkConverter> converterType = dialog.getConverterType();
 		EclipseLinkConverter converter;
-		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
+		if (converterType == EclipseLinkCustomConverter.class) {
 			converter = this.getSubject().addCustomConverter(getSubject().customConvertersSize());
 		}
-		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+		else if (converterType == EclipseLinkObjectTypeConverter.class) {
 			converter = this.getSubject().addObjectTypeConverter(getSubject().objectTypeConvertersSize());
 		}
-		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
+		else if (converterType == EclipseLinkStructConverter.class) {
 			converter = this.getSubject().addStructConverter(getSubject().structConvertersSize());
 		}
-		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
+		else if (converterType == EclipseLinkTypeConverter.class) {
 			converter = this.getSubject().addTypeConverter(getSubject().typeConvertersSize());
 		}
 		else {
@@ -240,16 +240,16 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 					return null;
 				}
 
-				if (converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) {
+				if (converter.getType() == EclipseLinkCustomConverter.class) {
 					return OrmEclipseLinkConvertersComposite.this.converterComposite.getControl();
 				}
-				if (converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
+				if (converter.getType() == EclipseLinkObjectTypeConverter.class) {
 					return OrmEclipseLinkConvertersComposite.this.objectTypeConverterComposite.getControl();
 				}
-				if (converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) {
+				if (converter.getType() == EclipseLinkStructConverter.class) {
 					return OrmEclipseLinkConvertersComposite.this.structConverterComposite.getControl();
 				}
-				if (converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) {
+				if (converter.getType() == EclipseLinkTypeConverter.class) {
 					return OrmEclipseLinkConvertersComposite.this.typeConverterComposite.getControl();
 				}
 
@@ -275,9 +275,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 	}
 
 	private ListValueModel<EclipseLinkCustomConverter> buildCustomConvertersListHolder() {
-		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkCustomConverter>(
+		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkCustomConverter>(
 			getSubjectHolder(),
-			EclipseLinkConverterHolder.CUSTOM_CONVERTERS_LIST)
+			OrmEclipseLinkConverterContainer.CUSTOM_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterator<EclipseLinkCustomConverter> listIterator_() {
@@ -292,9 +292,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 	}
 
 	private ListValueModel<EclipseLinkObjectTypeConverter> buildObjectTypeConvertersListHolder() {
-		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkObjectTypeConverter>(
+		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkObjectTypeConverter>(
 			getSubjectHolder(),
-			EclipseLinkConverterHolder.OBJECT_TYPE_CONVERTERS_LIST)
+			OrmEclipseLinkConverterContainer.OBJECT_TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterator<EclipseLinkObjectTypeConverter> listIterator_() {
@@ -309,9 +309,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 	}
 
 	private ListValueModel<EclipseLinkStructConverter> buildStructConvertersListHolder() {
-		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkStructConverter>(
+		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkStructConverter>(
 			getSubjectHolder(),
-			EclipseLinkConverterHolder.STRUCT_CONVERTERS_LIST)
+			OrmEclipseLinkConverterContainer.STRUCT_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterator<EclipseLinkStructConverter> listIterator_() {
@@ -326,9 +326,9 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 	}
 
 	private ListValueModel<EclipseLinkTypeConverter> buildTypeConvertersListHolder() {
-		return new ListAspectAdapter<EclipseLinkConverterHolder, EclipseLinkTypeConverter>(
+		return new ListAspectAdapter<OrmEclipseLinkConverterContainer, EclipseLinkTypeConverter>(
 			getSubjectHolder(),
-			EclipseLinkConverterHolder.TYPE_CONVERTERS_LIST)
+			OrmEclipseLinkConverterContainer.TYPE_CONVERTERS_LIST)
 		{
 			@Override
 			protected ListIterator<EclipseLinkTypeConverter> listIterator_() {
@@ -346,7 +346,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(this.selectedConverterHolder) {
 			@Override
 			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.CUSTOM_CONVERTER ? (EclipseLinkCustomConverter) value : null;
+				return value.getType() == EclipseLinkCustomConverter.class ? (EclipseLinkCustomConverter) value : null;
 			}
 		};
 	}
@@ -355,7 +355,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(this.selectedConverterHolder) {
 			@Override
 			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER ? (EclipseLinkObjectTypeConverter) value : null;
+				return value.getType() == EclipseLinkObjectTypeConverter.class ? (EclipseLinkObjectTypeConverter) value : null;
 			}
 		};
 	}
@@ -364,7 +364,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(this.selectedConverterHolder) {
 			@Override
 			protected EclipseLinkStructConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.STRUCT_CONVERTER ? (EclipseLinkStructConverter) value : null;
+				return value.getType() == EclipseLinkStructConverter.class ? (EclipseLinkStructConverter) value : null;
 			}
 		};
 	}
@@ -373,7 +373,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<EclipseLinkConverter
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(this.selectedConverterHolder) {
 			@Override
 			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter value) {
-				return value.getType() == EclipseLinkConverter.TYPE_CONVERTER ? (EclipseLinkTypeConverter) value : null;
+				return value.getType() == EclipseLinkTypeConverter.class ? (EclipseLinkTypeConverter) value : null;
 			}
 		};
 	}

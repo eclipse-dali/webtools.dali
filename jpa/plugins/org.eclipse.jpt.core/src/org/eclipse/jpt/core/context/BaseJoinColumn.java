@@ -9,12 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 
 /**
- * 
- * 
+ * Specified
+ * <ul>
+ * <li>join column
+ * <li>primary key join column
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,45 +27,32 @@ import org.eclipse.jpt.db.Table;
  * @since 2.0
  */
 public interface BaseJoinColumn
-	extends NamedColumn
+	extends NamedColumn, ReadOnlyBaseJoinColumn
 {
-	String getReferencedColumnName();
-	String getSpecifiedReferencedColumnName();
 	void setSpecifiedReferencedColumnName(String value);
-		String SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY = "specifiedReferencedColumnName"; //$NON-NLS-1$
-	String getDefaultReferencedColumnName();
-		String DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY = "defaultReferencedColumnName"; //$NON-NLS-1$
-	
-	/**
-	 * Return the wrapper for the datasource referenced column
-	 */
-	Column getReferencedDbColumn();
-
-	/**
-	 * Return whether the reference column is found on the datasource
-	 * @see #getReferencedDbColumn()
-	 */
-	boolean isReferencedColumnResolved();
 
 	/**
 	 * Return the wrapper for the referenced column datasource table
 	 */
 	Table getReferencedColumnDbTable();
 
+	boolean referencedColumnIsResolved();
+
 	boolean isVirtual();
 
-	interface Owner extends NamedColumn.Owner
+
+	// ********** owner **********
+
+	/**
+	 * Interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides).
+	 */
+	interface Owner
+		extends ReadOnlyBaseJoinColumn.Owner, NamedColumn.Owner
 	{
 		/**
 		 * Return the wrapper for the datasource table for the referenced column
 		 */
 		Table getReferencedColumnDbTable();
-		
-		boolean isVirtual(BaseJoinColumn joinColumn);
-		
-		/**
-		 * return the size of the joinColumns collection this join column is a part of
-		 */
-		int joinColumnsSize();
 	}
 }

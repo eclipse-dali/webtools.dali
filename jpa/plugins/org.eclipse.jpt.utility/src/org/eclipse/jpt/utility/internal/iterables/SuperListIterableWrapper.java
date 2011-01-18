@@ -16,10 +16,12 @@ import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 
 /**
- * Wrap a list iterable of elements of any sub-type of <code>E</code>, converting it into a
- * list iterable of elements of type <code>E</code>. This shouldn't be a problem since the
- * resulting list iterable's list iterator disables the methods that would put invalid elements
- * in the list iterator's backing list (i.e. {@link #set(E)} and {@link #add(E)}).
+ * Wrap a list iterable of elements of any sub-type of <code>E</code>,
+ * converting it into a list iterable of elements of type <code>E</code>.
+ * This shouldn't be a problem since the resulting list iterable's list
+ * iterator disables the methods that would put invalid elements in the list
+ * iterator's backing list (i.e. {@link SuperListIteratorWrapper#set(Object)}
+ * and {@link SuperListIteratorWrapper#add(Object)}).
  * 
  * @param <E> the type of elements returned by the iterable's iterators
  * 

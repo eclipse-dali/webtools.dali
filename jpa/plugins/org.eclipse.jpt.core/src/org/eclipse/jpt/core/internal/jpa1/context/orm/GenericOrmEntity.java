@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,47 +11,72 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEntity;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmCacheable2_0;
+import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 
 public class GenericOrmEntity
-	extends AbstractOrmEntity
-
+	extends AbstractOrmEntity<XmlEntity>
 {
-
+	// EclipseLink holds its cacheable in its caching
 	protected final OrmCacheable2_0 cacheable;
-	
-	public GenericOrmEntity(OrmPersistentType parent, XmlEntity resourceMapping) {
-		super(parent, resourceMapping);
-		this.cacheable = ((OrmXml2_0ContextNodeFactory) getXmlContextNodeFactory()).buildOrmCacheable(this, resourceMapping);
+
+
+	public GenericOrmEntity(OrmPersistentType parent, XmlEntity xmlEntity) {
+		super(parent, xmlEntity);
+		this.cacheable = this.buildCacheable();
 	}
-	
-	public OrmCacheable2_0 getCacheable() {
-		return this.cacheable;
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.cacheable.synchronizeWithResourceModel();
 	}
-	
-	public boolean calculateDefaultCacheable() {
-		if (!isMetadataComplete()) {
-			CacheableHolder2_0 javaEntity = (CacheableHolder2_0) getJavaEntity();
-			if (javaEntity != null) {
-				return javaEntity.getCacheable().isCacheable();
-			}
-		}
-		
-		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) getParentEntity();
-		if (parentEntity != null) {
-			return parentEntity.getCacheable().isCacheable();
-		}
-		return ((PersistenceUnit2_0) getPersistenceUnit()).calculateDefaultCacheable();
-	}
-	
+
 	@Override
 	public void update() {
 		super.update();
-		getCacheable().update();
+		this.cacheable.update();
 	}
 
+
+	// ********** cacheable **********
+
+	public OrmCacheable2_0 getCacheable() {
+		return this.cacheable;
+	}
+
+	protected OrmCacheable2_0 buildCacheable() {
+		return this.isJpa2_0Compatible() ?
+				this.getContextNodeFactory2_0().buildOrmCacheable(this) :
+				new NullOrmCacheable2_0(this);
+	}
+
+	public boolean calculateDefaultCacheable() {
+		CacheableHolder2_0 javaEntity = (CacheableHolder2_0) this.getJavaTypeMappingForDefaults();
+		if (javaEntity != null) {
+			return javaEntity.getCacheable().isCacheable();
+		}
+
+		Cacheable2_0 parentCacheable = this.getParentCacheable();
+		return (parentCacheable != null) ?
+				parentCacheable.isCacheable() :
+				((PersistenceUnit2_0) this.getPersistenceUnit()).calculateDefaultCacheable();
+	}
+
+	protected Cacheable2_0 getParentCacheable() {
+		CacheableHolder2_0 parentEntity = (CacheableHolder2_0) this.getParentEntity();
+		return (parentEntity == null) ? null : parentEntity.getCacheable();
+	}
+
+	public XmlCacheable_2_0 getXmlCacheable() {
+		return this.getXmlTypeMapping();
+	}
 }

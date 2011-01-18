@@ -9,18 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.AnnotationContainer;
-import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
@@ -32,7 +32,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
- * javax.persistence.AssociationOverride
+ * <code>javax.persistence.AssociationOverride</code>
  */
 public abstract class SourceAssociationOverrideAnnotation
 	extends SourceOverrideAnnotation
@@ -43,8 +43,6 @@ public abstract class SourceAssociationOverrideAnnotation
 	private final Vector<NestableJoinColumnAnnotation> joinColumns = new Vector<NestableJoinColumnAnnotation>();
 	private final JoinColumnsAnnotationContainer joinColumnsContainer = new JoinColumnsAnnotationContainer();
 
-
-	// ********** construction/initialization **********
 
 	protected SourceAssociationOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
@@ -98,6 +96,10 @@ public abstract class SourceAssociationOverrideAnnotation
 		return this.joinColumns.indexOf(joinColumn);
 	}
 
+	private NestableJoinColumnAnnotation addJoinColumn() {
+		return this.addJoinColumn(this.joinColumns.size());
+	}
+
 	public NestableJoinColumnAnnotation addJoinColumn(int index) {
 		return (NestableJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.joinColumnsContainer);
 	}
@@ -108,7 +110,7 @@ public abstract class SourceAssociationOverrideAnnotation
 
 	private NestableJoinColumnAnnotation addJoinColumn_(int index) {
 		NestableJoinColumnAnnotation joinColumn = this.buildJoinColumn(index);
-		this.joinColumns.add(joinColumn);
+		this.joinColumns.add(index, joinColumn);
 		return joinColumn;
 	}
 
@@ -147,18 +149,6 @@ public abstract class SourceAssociationOverrideAnnotation
 		this.removeItemsFromList(index, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
 
-
-	// ********** NestableAnnotation implementation **********
-
-	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		AssociationOverrideAnnotation oldOverride = (AssociationOverrideAnnotation) oldAnnotation;
-		for (JoinColumnAnnotation oldJoinColumn : CollectionTools.iterable(oldOverride.joinColumns())) {
-			NestableJoinColumnAnnotation newJoinColumn = this.addJoinColumn(oldOverride.indexOfJoinColumn(oldJoinColumn));
-			newJoinColumn.initializeFrom((NestableAnnotation) oldJoinColumn);
-		}
-	}
 
 	// ********** join column container **********
 
@@ -212,7 +202,44 @@ public abstract class SourceAssociationOverrideAnnotation
 		public String toString() {
 			return StringTools.buildToStringFor(this);
 		}
-
 	}
 
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.joinColumns.isEmpty();
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		List<Map<String, Object>> joinColumnsState = this.buildStateList(this.joinColumns.size());
+		for (NestableJoinColumnAnnotation joinColumn : this.getNestableJoinColumns()) {
+			Map<String, Object> joinColumnState = new HashMap<String, Object>();
+			joinColumn.storeOn(joinColumnState);
+			joinColumnsState.add(joinColumnState);
+		}
+		map.put(JOIN_COLUMNS_LIST, joinColumnsState);
+		this.joinColumns.clear();
+	}
+
+	@Override
+	public void restoreFrom(Map<String,Object> map) {
+		super.restoreFrom(map);
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> joinColumnsState = (List<Map<String, Object>>) map.get(JOIN_COLUMNS_LIST);
+		for (Map<String, Object> joinColumnState : joinColumnsState) {
+			this.addJoinColumn().restoreFrom(joinColumnState);
+		}
+	}
 }

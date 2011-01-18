@@ -145,7 +145,7 @@ final class BooleanButtonModelBinding {
 	 * If the new model value is null, use the binding's default value
 	 * (which is typically false).
 	 */
-	/* private */ void booleanChanged(PropertyChangeEvent event) {
+	/* CU private */ void booleanChanged(PropertyChangeEvent event) {
 		this.setButtonSelection((Boolean) event.getNewValue());
 	}
 
@@ -165,13 +165,13 @@ final class BooleanButtonModelBinding {
 	/**
 	 * The button has been "selected" - synchronize the model.
 	 */
-	/* private */ void buttonSelected() {
+	/* CU private */ void buttonSelected() {
 		if ( ! this.button.isDisposed()) {
 			this.booleanModel.setValue(Boolean.valueOf(this.button.getSelection()));
 		}
 	}
 
-	/* private */ void buttonDisposed() {
+	/* CU private */ void buttonDisposed() {
 		// the button is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.button.removeSelectionListener(this.buttonSelectionListener);

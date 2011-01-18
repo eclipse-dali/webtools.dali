@@ -1,20 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
 
-
 /**
- * Joining strategy that uses primary key join columns
+ * Primary key join column joining strategy.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,11 +20,11 @@ import java.util.ListIterator;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
+ * @see RelationshipMapping
+ * @see PrimaryKeyJoinColumnEnabledRelationshipReference
+ * 
  * @version 2.2
  * @since 2.2
- * 
- * @see {@link RelationshipMapping}
- * @see {@link PrimaryKeyJoinColumnEnabledRelationshipReference}
  */
 public interface PrimaryKeyJoinColumnJoiningStrategy
 	extends JoiningStrategy
@@ -40,7 +38,7 @@ public interface PrimaryKeyJoinColumnJoiningStrategy
 	 * Return a list iterator of the primary key join columns.
 	 * This will not be null.
 	 */
-	<T extends PrimaryKeyJoinColumn> ListIterator<T> primaryKeyJoinColumns();
+	ListIterator<? extends PrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	
 	/**
 	 * Return the number of join columns, both specified and default.
@@ -52,6 +50,17 @@ public interface PrimaryKeyJoinColumnJoiningStrategy
 	 * (Equivalent to {@link #primaryKeyJoinColumnsSize()} == 0)
 	 */
 	boolean hasPrimaryKeyJoinColumns();
+
+	/**
+	 * Return the primary key join column at the specified index.
+	 */
+	PrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
+	
+	/**
+	 * Add a specified join column to the join table return the object 
+	 * representing it.
+	 */
+	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
 	
 	/**
 	 * Add a specified join column to the join table return the object 

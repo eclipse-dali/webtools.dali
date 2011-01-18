@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTransformationMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkTransformationMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTransformationMappingComposite;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkTransformationMappingUiDefinition
-	extends AbstractEclipseLinkTransformationMappingUiDefinition<PersistentAttribute, EclipseLinkTransformationMapping>
+	extends AbstractEclipseLinkTransformationMappingUiDefinition<ReadOnlyPersistentAttribute, EclipseLinkTransformationMapping>
 	implements JavaAttributeMappingUiDefinition<EclipseLinkTransformationMapping>
 {
 	// singleton

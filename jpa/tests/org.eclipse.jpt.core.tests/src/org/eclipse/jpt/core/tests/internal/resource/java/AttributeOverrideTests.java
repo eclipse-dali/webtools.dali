@@ -125,6 +125,8 @@ public class AttributeOverrideTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\", column = @Column(name = \"Foo\"))", cu);
 		
 		column.setName(null);
+		assertNull(attributeOverride.getColumn().getName());
+		attributeOverride.removeColumn();
 		assertNull(attributeOverride.getColumn());
 		assertSourceContains("@AttributeOverride(name = \"" + ATTRIBUTE_OVERRIDE_NAME + "\")", cu);
 	}

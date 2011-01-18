@@ -13,12 +13,12 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Common protocol among
- *     javax.persistence.ManyToOne
- *     javax.persistence.ManyToMany
- *     javax.persistence.OneToMany
- *     javax.persistence.OneToOne
- * 
+ * Common protocol among the following relationship mappings:<ul>
+ * <li><code>javax.persistence.ManyToOne</code>
+ * <li><code>javax.persistence.ManyToMany</code>
+ * <li><code>javax.persistence.OneToMany</code>
+ * <li><code>javax.persistence.OneToOne</code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -58,15 +58,15 @@ public interface RelationshipMappingAnnotation
 	TextRange getTargetEntityTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified target entity class name as resolved by the AST's bindings.
+	 * Return the fully-qualified target entity class name as resolved by the
+	 * AST's bindings.
 	 * <pre>
 	 *     &#64;ManyToMany(targetEntity=Employee.class)
 	 * </pre>
-	 * will return "model.Employee" if there is an import for model.Employee.
-	 * @return
+	 * will return <code>"model.Employee"</code> if there is an import for
+	 * <code>model.Employee</code>.
 	 */
 	String getFullyQualifiedTargetEntityClassName();
-		String FULLY_QUALIFIED_TARGET_ENTITY_CLASS_NAME_PROPERTY = "fullyQualifiedTargetEntityClassName"; //$NON-NLS-1$
 
 
 	/**

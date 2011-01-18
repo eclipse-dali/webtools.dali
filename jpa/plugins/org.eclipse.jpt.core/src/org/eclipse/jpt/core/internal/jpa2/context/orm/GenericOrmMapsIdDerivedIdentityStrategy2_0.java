@@ -1,14 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.List;
@@ -17,6 +15,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
@@ -24,12 +23,12 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmMapsIdDerivedIdentityStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmSingleRelationshipMapping2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlMapsId_2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlSingleRelationshipMapping_2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -42,186 +41,242 @@ public class GenericOrmMapsIdDerivedIdentityStrategy2_0
 	extends AbstractOrmXmlContextNode
 	implements OrmMapsIdDerivedIdentityStrategy2_0
 {
-	protected XmlMapsId_2_0 resource;
-	
-	protected String value;
-	
-	
-	public GenericOrmMapsIdDerivedIdentityStrategy2_0(
-			OrmDerivedIdentity2_0 parent, XmlMapsId_2_0 resource) {
+	protected String specifiedValue;
+	// no default value
+
+
+	public GenericOrmMapsIdDerivedIdentityStrategy2_0(OrmDerivedIdentity2_0 parent) {
 		super(parent);
-		this.resource = resource;
-		this.value = this.resource.getMapsId();
+		this.specifiedValue = this.getXmlMapping().getMapsId();
 	}
-	
-	
-	public OrmDerivedIdentity2_0 getDerivedIdentity() {
-		return (OrmDerivedIdentity2_0) getParent();
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedValue_(this.getXmlMapping().getMapsId());
 	}
-	
-	public OrmSingleRelationshipMapping2_0 getMapping() {
-		return getDerivedIdentity().getMapping();
+
+
+	// ********** value **********
+
+	public String getValue() {
+		// there is no default value
+		return this.specifiedValue;
 	}
-	
+
 	public String getSpecifiedValue() {
-		return this.value;
+		return this.specifiedValue;
 	}
-	
-	public void setSpecifiedValue(String newValue) {
-		String oldValue = this.value;
-		this.value = newValue;
-		this.resource.setMapsId(this.value);
-		firePropertyChanged(SPECIFIED_VALUE_PROPERTY, oldValue, newValue);
+
+	public void setSpecifiedValue(String value) {
+		this.setSpecifiedValue_(value);
+		this.getXmlMapping().setMapsId(value);
 	}
-	
-	protected void setSpecifiedValue_(String newValue) {
-		String oldValue = this.value;
-		this.value = newValue;
-		firePropertyChanged(SPECIFIED_VALUE_PROPERTY, oldValue, newValue);
+
+	protected void setSpecifiedValue_(String value) {
+		String old = this.specifiedValue;
+		this.specifiedValue = value;
+		this.firePropertyChanged(SPECIFIED_VALUE_PROPERTY, old, value);
 	}
-	
-	public boolean usesDefaultValue() {
-		return false;
-	}
-	
+
 	public String getDefaultValue() {
 		// there is no way to have default values in xml
 		return null;
 	}
-	
-	public String getValue() {
-		// there is never a default value
-		return this.value;
+
+	public boolean usesDefaultValue() {
+		return false;
 	}
-	
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmDerivedIdentity2_0 getParent() {
+		return (OrmDerivedIdentity2_0) super.getParent();
+	}
+
+	protected OrmDerivedIdentity2_0 getDerivedIdentity() {
+		return this.getParent();
+	}
+
+	public OrmSingleRelationshipMapping2_0 getMapping() {
+		return this.getDerivedIdentity().getMapping();
+	}
+
+	protected OrmPersistentAttribute getPersistentAttribute() {
+		return this.getMapping().getPersistentAttribute();
+	}
+
+	protected XmlSingleRelationshipMapping_2_0 getXmlMapping() {
+		return this.getMapping().getXmlAttributeMapping();
+	}
+
+	protected Iterable<AttributeMapping> getAllAttributeMappings() {
+		return CollectionTools.collection(this.getPersistentAttribute().getOwningTypeMapping().allAttributeMappings());
+	}
+
 	public Iterable<String> getSortedValueChoices() {
-		return CollectionTools.sort(
-			new TransformationIterable<AttributeMapping, String>(getAllAttributeMappingChoices()) {
+		return CollectionTools.sort(this.getAllAttributeMappingChoiceNames());
+	}
+
+	protected Iterable<String> getAllAttributeMappingChoiceNames() {
+		return new TransformationIterable<AttributeMapping, String>(this.getAllAttributeMappingChoices()) {
 				@Override
-				protected String transform(AttributeMapping o) {
-					return o.getName();
+				protected String transform(AttributeMapping mapping) {
+					return mapping.getName();
 				}
-			});
+			};
 	}
-	
-	public Iterable<AttributeMapping> getAllAttributeMappingChoices() {
-		return 	new CompositeIterable<AttributeMapping>(
-			getAttributeMappingChoiceIterables(
-				CollectionTools.collection(getMapping().getPersistentAttribute().getOwningTypeMapping().allAttributeMappings())));
+
+	protected Iterable<AttributeMapping> getAllAttributeMappingChoices() {
+		return this.buildAttributeMappingChoices(this.getAllAttributeMappings());
 	}
-	
+
+	protected Iterable<AttributeMapping> buildAttributeMappingChoices(Iterable<AttributeMapping> attributeMappings) {
+		return new CompositeIterable<AttributeMapping>(this.getAttributeMappingChoiceIterables(attributeMappings));
+	}
+
+	/**
+	 * @see #getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping)
+	 */
 	protected Iterable<Iterable<AttributeMapping>> getAttributeMappingChoiceIterables(Iterable<AttributeMapping> availableMappings) {
 		return new TransformationIterable<AttributeMapping, Iterable<AttributeMapping>>(availableMappings) {
 			@Override
 			protected Iterable<AttributeMapping> transform(AttributeMapping o) {
-				if (StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY)) {
-					return getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) o);
-				}
-				else {
-					return new SingleElementIterable(o);
-				}
+				return Tools.valuesAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY) ?
+					GenericOrmMapsIdDerivedIdentityStrategy2_0.this.getEmbeddedIdMappingChoiceIterable((EmbeddedIdMapping) o) :
+					new SingleElementIterable<AttributeMapping>(o);
 			}
 		};
 	}
-	
+
+	/**
+	 * Convert the specified mapping into a collection of its "mappings".
+	 * Typically, this collection will include just the mapping itself;
+	 * but, if the mapping is an embedded ID, this collection will include
+	 * the mapping itself plus all the mappings of its target embeddable.
+	 */
 	protected Iterable<AttributeMapping> getEmbeddedIdMappingChoiceIterable(EmbeddedIdMapping mapping) {
 		Embeddable embeddable = mapping.getTargetEmbeddable();
 		if (embeddable == null) {
-			return new SingleElementIterable(mapping);
+			return new SingleElementIterable<AttributeMapping>(mapping);
 		}
-		else {
-			return new CompositeIterable<AttributeMapping>(
-					mapping,
-					CollectionTools.collection(embeddable.allAttributeMappings()));
-		}		
+		return new CompositeIterable<AttributeMapping>(
+				mapping,
+				CollectionTools.collection(embeddable.allAttributeMappings())
+			);
 	}
-	
+
 	public AttributeMapping getResolvedAttributeMappingValue() {
-		if (getValue() != null) {
-			for (AttributeMapping each : getAllAttributeMappingChoices()) {
-				if (Tools.valuesAreEqual(each.getName(), getValue())) {
-					return each;
+		String value = this.getValue();
+		if (value != null) {
+			for (AttributeMapping mapping : this.getAllAttributeMappingChoices()) {
+				if (value.equals(mapping.getName())) {
+					return mapping;
 				}
 			}
 		}
 		return null;
 	}
-	
+
 	public boolean isSpecified() {
-		return this.resource.getMapsId() != null;
+		return this.getXmlMapping().getMapsId() != null;
 	}
-	
+
 	public void addStrategy() {
-		this.resource.setMapsId("");	
+		this.getXmlMapping().setMapsId(""); //$NON-NLS-1$
 	}
-	
+
 	public void removeStrategy() {
-		this.resource.setMapsId(null);
+		this.getXmlMapping().setMapsId(null);
 	}
-	
-	public void update() {
-		setSpecifiedValue_(this.resource.getMapsId());
-	}
-	
+
 	public void initializeFrom(OrmMapsIdDerivedIdentityStrategy2_0 oldStrategy) {
-		setSpecifiedValue(oldStrategy.getSpecifiedValue());
+		this.setSpecifiedValue(oldStrategy.getSpecifiedValue());
 	}
-	
-	public TextRange getValidationTextRange() {
-		TextRange textRange = this.resource.getMapsIdTextRange();
-		return (textRange == null) ? getDerivedIdentity().getValidationTextRange() : textRange;
+
+
+	// ********** ID mappings **********
+
+	protected Iterable<AttributeMapping> getIdAttributeMappings() {
+		return new FilteringIterable<AttributeMapping>(this.getAllAttributeMappings()) {
+			@Override
+			protected boolean accept(AttributeMapping mapping) {
+				return GenericOrmMapsIdDerivedIdentityStrategy2_0.this.mappingIsIdMapping(mapping);
+			}
+		};
 	}
+
+	protected boolean mappingIsIdMapping(AttributeMapping mapping) {
+		return CollectionTools.contains(this.getIdMappingKeys(), mapping.getKey());
+	}
+
+	protected Iterable<String> getIdMappingKeys() {
+		return ID_MAPPING_KEYS;
+	}
+
+	protected static final String[] ID_MAPPING_KEYS_ARRAY = new String[] {
+		MappingKeys.ID_ATTRIBUTE_MAPPING_KEY,
+		MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY
+	};
 	
+	protected static final Iterable<String> ID_MAPPING_KEYS = new ArrayIterable<String>(ID_MAPPING_KEYS_ARRAY);
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		validateMapsId(messages, reporter);
+		this.validateMapsId(messages);
 	}
-	
-	protected void validateMapsId(List<IMessage> messages, IReporter reporter) {
-		// shortcut out if maps id is not even used
-		if (! getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
-			return;
+
+	protected void validateMapsId(List<IMessage> messages) {
+		if (this.getDerivedIdentity().usesMapsIdDerivedIdentityStrategy()) {
+			this.validateMapsId_(messages);
 		}
-		
+	}
+
+	protected void validateMapsId_(List<IMessage> messages) {
 		// test whether value can be resolved
-		AttributeMapping attributeMappingValue = getResolvedAttributeMappingValue();
-		if (attributeMappingValue == null) {
+		AttributeMapping attributeMapping = this.getResolvedAttributeMappingValue();
+		if (attributeMapping == null) {
 			// there is no defaulting, so only use the 'resolved' error, even if the value is empty string
-			messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {getValue()}));
-		}
-		
-		// test whether attribute mapping is allowable
-		if (attributeMappingValue != null) {
-			if (! CollectionTools.contains(getValidAttributeMappingChoices(), attributeMappingValue)) {
-				messages.add(buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {getValue()}));
+			messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_NOT_RESOLVED, new String[] {this.getValue()}));
+		} else {
+			// test whether attribute mapping is allowable
+			if ( ! CollectionTools.contains(this.getValidAttributeMappingChoices(), attributeMapping)) {
+				messages.add(this.buildMessage(JpaValidationMessages.MAPS_ID_VALUE_INVALID, new String[] {this.getValue()}));
 			}
 		}
 	}
-	
+
 	protected Iterable<AttributeMapping> getValidAttributeMappingChoices() {
-		return 	new CompositeIterable<AttributeMapping>(
-			getAttributeMappingChoiceIterables(
-				new FilteringIterable<AttributeMapping>(
-						CollectionTools.collection(getMapping().getPersistentAttribute().getOwningTypeMapping().allAttributeMappings())) {
-					@Override
-					protected boolean accept(AttributeMapping o) {
-						return StringTools.stringsAreEqual(o.getKey(), MappingKeys.ID_ATTRIBUTE_MAPPING_KEY)
-							|| StringTools.stringsAreEqual(o.getKey(), MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
-					}
-				}));
+		return this.buildAttributeMappingChoices(this.getIdAttributeMappings());
 	}
-	
-	protected IMessage buildMessage(String msgID, String[] params) {
-		String attributeDescString;
-		PersistentAttribute attribute = getDerivedIdentity().getMapping().getPersistentAttribute();
-		if (attribute.isVirtual()) {
-			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC, attribute.getName());
-		}
-		else {
-			attributeDescString = NLS.bind(JpaValidationDescriptionMessages.ATTRIBUTE_DESC, attribute.getName());
-		}
+
+	protected IMessage buildMessage(String msgID, String[] parms) {
+		PersistentAttribute attribute = this.getPersistentAttribute();
+		String attributeDescription = attribute.isVirtual() ?
+				JpaValidationDescriptionMessages.VIRTUAL_ATTRIBUTE_DESC :
+				JpaValidationDescriptionMessages.ATTRIBUTE_DESC;
+		attributeDescription = NLS.bind(attributeDescription, attribute.getName());
+		parms = ArrayTools.add(parms, 0, attributeDescription);
 		return DefaultJpaValidationMessages.buildMessage(
-				IMessage.HIGH_SEVERITY, msgID, ArrayTools.add(params, 0, attributeDescString), this, getValidationTextRange());
+				IMessage.HIGH_SEVERITY,
+				msgID,
+				parms,
+				this,
+				this.getValidationTextRange()
+			);
+	}
+
+	public TextRange getValidationTextRange() {
+		TextRange textRange = this.getXmlMapping().getMapsIdTextRange();
+		return (textRange != null) ? textRange : this.getDerivedIdentity().getValidationTextRange();
 	}
 }

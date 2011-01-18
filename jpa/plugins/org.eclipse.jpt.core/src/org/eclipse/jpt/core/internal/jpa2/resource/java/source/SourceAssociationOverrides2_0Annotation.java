@@ -15,19 +15,19 @@ import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.AssociationOverrides
+ * <code>javax.persistence.AssociationOverrides</code>
  */
 public final class SourceAssociationOverrides2_0Annotation
 	extends SourceAssociationOverridesAnnotation
 {
-
 	public SourceAssociationOverrides2_0Annotation(JavaResourceNode parent, Member member) {
 		super(parent, member);
 	}
 
 	@Override
 	protected NestableAssociationOverrideAnnotation buildAssociationOverride(int index) {
-		return SourceAssociationOverride2_0Annotation.buildNestedAssociationOverride(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceAssociationOverride2_0Annotation.buildNestedAssociationOverride(this.parent, this.annotatedElement, index, this.daa);
 	}
-
 }

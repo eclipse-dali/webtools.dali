@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaGenerator;
@@ -22,7 +23,6 @@ import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
-import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -30,175 +30,173 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
+public class GenericJavaGeneratorContainer
+	extends AbstractJavaJpaContextNode
 	implements JavaGeneratorContainer
 {
-	protected JavaResourceAnnotatedElement javaResourceAnnotatedElement;
+	protected final Owner owner;
 
 	protected JavaSequenceGenerator sequenceGenerator;
 
 	protected JavaTableGenerator tableGenerator;
-	
-	public GenericJavaGeneratorContainer(JavaJpaContextNode parent) {
+
+
+	public GenericJavaGeneratorContainer(JavaJpaContextNode parent, Owner owner) {
 		super(parent);
+		this.owner = owner;
+		this.sequenceGenerator = this.buildSequenceGenerator();
+		this.tableGenerator = this.buildTableGenerator();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.syncSequenceGenerator();
+		this.syncTableGenerator();
 	}
 
 	@Override
-	public JavaJpaContextNode getParent() {
-		return (JavaJpaContextNode) super.getParent();
-	}
-	
-	public JavaTableGenerator addTableGenerator() {
-		if (getTableGenerator() != null) {
-			throw new IllegalStateException("tableGenerator already exists"); //$NON-NLS-1$
+	public void update() {
+		super.update();
+		if (this.sequenceGenerator != null) {
+			this.sequenceGenerator.update();
 		}
-		this.tableGenerator = getJpaFactory().buildJavaTableGenerator(this);
-		TableGeneratorAnnotation tableGeneratorResource = 
-				(TableGeneratorAnnotation) this.javaResourceAnnotatedElement.
-					addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
-		this.tableGenerator.initialize(tableGeneratorResource);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, null, this.tableGenerator);
-		return this.tableGenerator;
-	}
-	
-	public void removeTableGenerator() {
-		if (getTableGenerator() == null) {
-			throw new IllegalStateException("tableGenerator does not exist, cannot be removed"); //$NON-NLS-1$
+		if (this.tableGenerator != null) {
+			this.tableGenerator.update();
 		}
-		JavaTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = null;
-		this.javaResourceAnnotatedElement.removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, null);
-	}
-	
-	public JavaTableGenerator getTableGenerator() {
-		return this.tableGenerator;
-	}
-	
-	protected void setTableGenerator(JavaTableGenerator newTableGenerator) {
-		JavaTableGenerator oldTableGenerator = this.tableGenerator;
-		this.tableGenerator = newTableGenerator;
-		firePropertyChanged(TABLE_GENERATOR_PROPERTY, oldTableGenerator, newTableGenerator);
 	}
 
-	public JavaSequenceGenerator addSequenceGenerator() {
-		if (getSequenceGenerator() != null) {
-			throw new IllegalStateException("sequenceGenerator already exists"); //$NON-NLS-1$
-		}
-		this.sequenceGenerator = getJpaFactory().buildJavaSequenceGenerator(this);
-		SequenceGeneratorAnnotation sequenceGeneratorResource = 
-				(SequenceGeneratorAnnotation) this.javaResourceAnnotatedElement.
-					addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
-		this.sequenceGenerator.initialize(sequenceGeneratorResource);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, null, this.sequenceGenerator);
-		return this.sequenceGenerator;
-	}
-	
-	public void removeSequenceGenerator() {
-		if (getSequenceGenerator() == null) {
-			throw new IllegalStateException("sequenceGenerator does not exist, cannot be removed"); //$NON-NLS-1$
-		}
-		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = null;
-		this.javaResourceAnnotatedElement.removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator,null);
-	}
-	
+
+	// ********** sequence generator **********
+
 	public JavaSequenceGenerator getSequenceGenerator() {
 		return this.sequenceGenerator;
 	}
 
-	protected void setSequenceGenerator(JavaSequenceGenerator newSequenceGenerator) {
-		JavaSequenceGenerator oldSequenceGenerator = this.sequenceGenerator;
-		this.sequenceGenerator = newSequenceGenerator;
-		firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, oldSequenceGenerator, newSequenceGenerator);
-	}
-	
-	
-	public void initialize(JavaResourceAnnotatedElement jrae) {
-		this.javaResourceAnnotatedElement = jrae;
-		this.initializeTableGenerator();
-		this.initializeSequenceGenerator();
-	}
-	
-	protected void initializeTableGenerator() {
-		TableGeneratorAnnotation tableGeneratorResource = getResourceTableGenerator();
-		if (tableGeneratorResource != null) {
-			this.tableGenerator = buildTableGenerator(tableGeneratorResource);
+	public JavaSequenceGenerator addSequenceGenerator() {
+		if (this.sequenceGenerator != null) {
+			throw new IllegalStateException("sequence generator already exists: " + this.sequenceGenerator); //$NON-NLS-1$
 		}
+		SequenceGeneratorAnnotation annotation = this.buildSequenceGeneratorAnnotation();
+		JavaSequenceGenerator generator = this.buildSequenceGenerator(annotation);
+		this.setSequenceGenerator(generator);
+		return generator;
 	}
-	
-	protected void initializeSequenceGenerator() {
-		SequenceGeneratorAnnotation sequenceGeneratorResource = getResourceSequenceGenerator();
-		if (sequenceGeneratorResource != null) {
-			this.sequenceGenerator = buildSequenceGenerator(sequenceGeneratorResource);
+
+	protected SequenceGeneratorAnnotation buildSequenceGeneratorAnnotation() {
+		return (SequenceGeneratorAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+	}
+
+	public void removeSequenceGenerator() {
+		if (this.sequenceGenerator == null) {
+			throw new IllegalStateException("sequence generator does not exist"); //$NON-NLS-1$
+		}
+		this.owner.getResourceAnnotatedElement().removeAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+		this.setSequenceGenerator(null);
+	}
+
+	protected JavaSequenceGenerator buildSequenceGenerator() {
+		SequenceGeneratorAnnotation annotation = this.getSequenceGeneratorAnnotation();
+		return (annotation == null) ? null : this.buildSequenceGenerator(annotation);
+	}
+
+	protected SequenceGeneratorAnnotation getSequenceGeneratorAnnotation() {
+		return (SequenceGeneratorAnnotation) this.owner.getResourceAnnotatedElement().getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+	}
+
+	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
+		return this.getJpaFactory().buildJavaSequenceGenerator(this, sequenceGeneratorAnnotation);
+	}
+
+	protected void syncSequenceGenerator() {
+		SequenceGeneratorAnnotation annotation = this.getSequenceGeneratorAnnotation();
+		if (annotation == null) {
+			if (this.sequenceGenerator != null) {
+				this.setSequenceGenerator(null);
+			}
+		} else {
+			if ((this.sequenceGenerator != null) && (this.sequenceGenerator.getGeneratorAnnotation() == annotation)) {
+				this.sequenceGenerator.synchronizeWithResourceModel();
+			} else {
+				this.setSequenceGenerator(this.buildSequenceGenerator(annotation));
+			}
 		}
 	}
 
-	public void update(JavaResourceAnnotatedElement jrae) {
-		this.javaResourceAnnotatedElement = jrae;
-		this.updateTableGenerator();
-		this.updateSequenceGenerator();
-	}
-	
-	protected void updateTableGenerator() {
-		TableGeneratorAnnotation tableGeneratorResource = getResourceTableGenerator();
-		if (tableGeneratorResource == null) {
-			if (getTableGenerator() != null) {
-				setTableGenerator(null);
-			}
-		}
-		else {
-			if (getTableGenerator() == null) {
-				setTableGenerator(buildTableGenerator(tableGeneratorResource));
-			}
-			else {
-				getTableGenerator().update(tableGeneratorResource);
-			}
-		}
-	}
-	
-	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorResource) {
-		JavaTableGenerator generator = getJpaFactory().buildJavaTableGenerator(this);
-		generator.initialize(tableGeneratorResource);
-		return generator;
-	}
-	
-	protected TableGeneratorAnnotation getResourceTableGenerator() {
-		return (TableGeneratorAnnotation) this.javaResourceAnnotatedElement.
-				getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+	protected void setSequenceGenerator(JavaSequenceGenerator sequenceGenerator) {
+		JavaSequenceGenerator old = this.sequenceGenerator;
+		this.sequenceGenerator = sequenceGenerator;
+		this.firePropertyChanged(SEQUENCE_GENERATOR_PROPERTY, old, sequenceGenerator);
 	}
 
-	protected void updateSequenceGenerator() {
-		SequenceGeneratorAnnotation sequenceGeneratorResource = getResourceSequenceGenerator();
-		if (sequenceGeneratorResource == null) {
-			if (getSequenceGenerator() != null) {
-				setSequenceGenerator(null);
-			}
-		}
-		else {
-			if (getSequenceGenerator() == null) {
-				setSequenceGenerator(buildSequenceGenerator(sequenceGeneratorResource));
-			}
-			else {
-				getSequenceGenerator().update(sequenceGeneratorResource);
-			}
-		}
+
+	// ********** table generator **********
+
+	public JavaTableGenerator getTableGenerator() {
+		return this.tableGenerator;
 	}
-	
-	protected JavaSequenceGenerator buildSequenceGenerator(SequenceGeneratorAnnotation sequenceGeneratorResource) {
-		JavaSequenceGenerator generator = getJpaFactory().buildJavaSequenceGenerator(this);
-		generator.initialize(sequenceGeneratorResource);
+
+	public JavaTableGenerator addTableGenerator() {
+		if (this.tableGenerator != null) {
+			throw new IllegalStateException("table generator already exists: " + this.tableGenerator); //$NON-NLS-1$
+		}
+		TableGeneratorAnnotation annotation = this.buildTableGeneratorAnnotation();
+		JavaTableGenerator generator = this.buildTableGenerator(annotation);
+		this.setTableGenerator(generator);
 		return generator;
 	}
-	
-	protected SequenceGeneratorAnnotation getResourceSequenceGenerator() {
-		return (SequenceGeneratorAnnotation) this.javaResourceAnnotatedElement.
-				getAnnotation(SequenceGeneratorAnnotation.ANNOTATION_NAME);
+
+	protected TableGeneratorAnnotation buildTableGeneratorAnnotation() {
+		return (TableGeneratorAnnotation) this.owner.getResourceAnnotatedElement().addAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
 	}
-	
-	
-	//******************** Code Completion *************************
+
+	public void removeTableGenerator() {
+		if (this.tableGenerator == null) {
+			throw new IllegalStateException("table generator does not exist"); //$NON-NLS-1$
+		}
+		this.owner.getResourceAnnotatedElement().removeAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+		this.setTableGenerator(null);
+	}
+
+	protected JavaTableGenerator buildTableGenerator() {
+		TableGeneratorAnnotation annotation = this.getTableGeneratorAnnotation();
+		return (annotation == null) ? null : this.buildTableGenerator(annotation);
+	}
+
+	protected TableGeneratorAnnotation getTableGeneratorAnnotation() {
+		return (TableGeneratorAnnotation) this.owner.getResourceAnnotatedElement().getAnnotation(TableGeneratorAnnotation.ANNOTATION_NAME);
+	}
+
+	protected JavaTableGenerator buildTableGenerator(TableGeneratorAnnotation tableGeneratorAnnotation) {
+		return this.getJpaFactory().buildJavaTableGenerator(this, tableGeneratorAnnotation);
+	}
+
+	protected void syncTableGenerator() {
+		TableGeneratorAnnotation annotation = this.getTableGeneratorAnnotation();
+		if (annotation == null) {
+			if (this.tableGenerator != null) {
+				this.setTableGenerator(null);
+			}
+		} else {
+			if ((this.tableGenerator != null) && (this.tableGenerator.getGeneratorAnnotation() == annotation)) {
+				this.tableGenerator.synchronizeWithResourceModel();
+			} else {
+				this.setTableGenerator(this.buildTableGenerator(annotation));
+			}
+		}
+	}
+
+	protected void setTableGenerator(JavaTableGenerator tableGenerator) {
+		JavaTableGenerator old = this.tableGenerator;
+		this.tableGenerator = tableGenerator;
+		this.firePropertyChanged(TABLE_GENERATOR_PROPERTY, old, tableGenerator);
+	}
+
+
+	// ********** code completion **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -206,32 +204,31 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		if (result != null) {
 			return result;
 		}
-		if (this.getTableGenerator() != null) {
-			result = this.getTableGenerator().javaCompletionProposals(pos, filter, astRoot);
+		if (this.tableGenerator != null) {
+			result = this.tableGenerator.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
-		if (this.getSequenceGenerator() != null) {
-			result = this.getSequenceGenerator().javaCompletionProposals(pos, filter, astRoot);
+		if (this.sequenceGenerator != null) {
+			result = this.sequenceGenerator.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
 			}
 		}
 		return null;
 	}
-	
-	//********** Validation ********************************************
-	
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.validateGenerators(messages, astRoot);
 	}
-	
+
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
-		for (Iterator<JavaGenerator> localGenerators = this.generators(); localGenerators.hasNext(); ) {
-			JavaGenerator localGenerator = localGenerators.next();
+		for (JavaGenerator localGenerator : this.getGenerators()) {
 			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
 				if (localGenerator.duplicates(globalGenerators.next())) {
 					messages.add(
@@ -248,10 +245,10 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 		}
 	}
 
-	protected final Iterator<JavaGenerator> generators() {
+	protected Iterable<JavaGenerator> getGenerators() {
 		ArrayList<JavaGenerator> generators = new ArrayList<JavaGenerator>();
 		this.addGeneratorsTo(generators);
-		return generators.iterator();
+		return generators;
 	}
 
 	protected void addGeneratorsTo(ArrayList<JavaGenerator> generators) {
@@ -264,7 +261,7 @@ public class GenericJavaGeneratorContainer extends AbstractJavaJpaContextNode
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.javaResourceAnnotatedElement.getTextRange(astRoot);
+		return this.owner.getResourceAnnotatedElement().getTextRange(astRoot);
 	}
 
 }

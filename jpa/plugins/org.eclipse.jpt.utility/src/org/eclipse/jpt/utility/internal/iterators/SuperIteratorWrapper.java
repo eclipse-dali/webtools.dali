@@ -13,9 +13,11 @@ import java.util.Iterator;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * Wrap an iterator on elements of any sub-type of <code>E</code>, converting it into an
- * iterator on elements of type <code>E</code>. This shouldn't be a problem since there
- * is no way to add invalid elements to the iterator's backing collection.
+ * Wrap an iterator on elements of any sub-type of <code>E</code>, converting
+ * it into an iterator on elements of type <code>E</code>. This shouldn't be a
+ * problem since there is no way to add invalid elements to the iterator's
+ * backing collection. (Note the lack of compiler warnings, suppressed or
+ * otherwise.)
  * 
  * @param <E> the type of elements returned by the iterator
  * 

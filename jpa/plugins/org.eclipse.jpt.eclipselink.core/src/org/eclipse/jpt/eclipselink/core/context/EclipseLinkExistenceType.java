@@ -22,6 +22,7 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
+// TODO bjv rename to EclipseLinkExistenceCheckingPolicy
 public enum EclipseLinkExistenceType {
 
     CHECK_CACHE,

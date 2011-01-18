@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,10 +17,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.MapKeyEnumerated
+ * <code>javax.persistence.MapKeyEnumerated</code>
  */
 public final class NullMapKeyEnumerated2_0Annotation
-	extends NullAnnotation
+	extends NullAnnotation<MapKeyEnumerated2_0Annotation>
 	implements MapKeyEnumerated2_0Annotation
 {
 	protected NullMapKeyEnumerated2_0Annotation(JavaResourcePersistentAttribute parent) {
@@ -30,14 +30,6 @@ public final class NullMapKeyEnumerated2_0Annotation
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
-	@Override
-	protected MapKeyEnumerated2_0Annotation addAnnotation() {
-		return (MapKeyEnumerated2_0Annotation) super.addAnnotation();
-	}
-
-
-	// ********** MapKeyEnumerated2_0Annotation implementation **********
 
 	// ***** value
 	public EnumType getValue() {
@@ -53,5 +45,4 @@ public final class NullMapKeyEnumerated2_0Annotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

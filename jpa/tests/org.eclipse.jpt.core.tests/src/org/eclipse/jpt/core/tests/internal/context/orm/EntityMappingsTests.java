@@ -193,13 +193,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedSchema());
 		assertNull(getXmlEntityMappings().getSchema());
 
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("DEFAULT_SCHEMA");
 		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getDefaultSchema());
 		assertEquals("DEFAULT_SCHEMA", getEntityMappings().getSchema());
 		assertNull(getEntityMappings().getSpecifiedSchema());
 		assertNull(getXmlEntityMappings().getSchema());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(getEntityMappings().getDefaultSchema());
 		assertNull(getEntityMappings().getSchema());
 		assertNull(getEntityMappings().getSpecifiedSchema());
@@ -260,13 +260,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedCatalog());
 		assertNull(getXmlEntityMappings().getCatalog());
 
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("DEFAULT_CATALOG");
 		assertEquals("DEFAULT_CATALOG", getEntityMappings().getDefaultCatalog());
 		assertEquals("DEFAULT_CATALOG", getEntityMappings().getCatalog());
 		assertNull(getEntityMappings().getSpecifiedCatalog());
 		assertNull(getXmlEntityMappings().getCatalog());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(getEntityMappings().getDefaultCatalog());
 		assertNull(getEntityMappings().getCatalog());
 		assertNull(getEntityMappings().getSpecifiedCatalog());
@@ -345,13 +345,13 @@ public class EntityMappingsTests extends ContextModelTestCase
 		assertNull(getEntityMappings().getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getAccess());
 
-		getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);
 		assertEquals(AccessType.FIELD, getEntityMappings().getDefaultAccess());
 		assertEquals(AccessType.FIELD, getEntityMappings().getAccess());
 		assertNull(getEntityMappings().getSpecifiedAccess());
 		assertNull(getXmlEntityMappings().getAccess());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setAccess(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);
 		assertNull(getEntityMappings().getDefaultAccess());
 		assertNull(getEntityMappings().getAccess());
 		assertNull(getEntityMappings().getSpecifiedAccess());

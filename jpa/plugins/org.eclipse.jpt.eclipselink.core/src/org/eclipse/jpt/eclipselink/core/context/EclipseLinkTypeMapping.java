@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -22,8 +21,13 @@ import org.eclipse.jpt.core.context.TypeMapping;
  * @version 2.3
  * @since 2.3
  */
-public interface EclipseLinkTypeMapping extends TypeMapping
+public interface EclipseLinkTypeMapping
+	extends TypeMapping
 {
+	EclipseLinkCustomizer getCustomizer();
+	
+	EclipseLinkChangeTracking getChangeTracking();
+
 	/**
 	 * Return whether this type mapping specifies primary key columns rather than using
 	 * JPA-style attributes

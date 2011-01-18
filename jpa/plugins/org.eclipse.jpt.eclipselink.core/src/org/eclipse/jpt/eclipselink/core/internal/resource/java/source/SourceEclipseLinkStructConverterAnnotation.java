@@ -58,6 +58,12 @@ public final class SourceEclipseLinkStructConverterAnnotation
 		this.syncConverter(this.buildConverter(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.converter == null);
+	}
+
 
 	// ********** SourceNamedConverterAnnotation implementation **********
 
@@ -99,7 +105,7 @@ public final class SourceEclipseLinkStructConverterAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildConverterAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.STRUCT_CONVERTER__CONVERTER, false, StringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.STRUCT_CONVERTER__CONVERTER, StringExpressionConverter.instance());
 	}
 
 }

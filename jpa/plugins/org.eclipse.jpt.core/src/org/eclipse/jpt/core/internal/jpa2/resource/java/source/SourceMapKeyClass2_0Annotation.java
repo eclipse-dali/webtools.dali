@@ -38,7 +38,12 @@ public final class SourceMapKeyClass2_0Annotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
 	private String fullyQualifiedClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqClassNameStale = true;
 
 
 	public SourceMapKeyClass2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
@@ -52,12 +57,16 @@ public final class SourceMapKeyClass2_0Annotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
-		this.fullyQualifiedClassName = this.buildFullyQualifiedClassName(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
-		this.syncFullyQualifiedClassName(this.buildFullyQualifiedClassName(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
 	}
 
 	@Override
@@ -76,13 +85,21 @@ public final class SourceMapKeyClass2_0Annotation
 	public void setValue(String value) {
 		if (this.attributeValueHasChanged(this.value, value)) {
 			this.value = value;
+			this.fqClassNameStale = true;
 			this.valueAdapter.setValue(value);
 		}
 	}
 
 	private void syncValue(String astValue) {
+		if (this.attributeValueHasChanged(this.value, astValue)) {
+			this.syncValue_(astValue);
+		}
+	}
+
+	private void syncValue_(String astValue) {
 		String old = this.value;
 		this.value = astValue;
+		this.fqClassNameStale = true;
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
@@ -96,17 +113,19 @@ public final class SourceMapKeyClass2_0Annotation
 
 	// ***** fully-qualified class name
 	public String getFullyQualifiedClassName() {
+		if (this.fqClassNameStale) {
+			this.fullyQualifiedClassName = this.buildFullyQualifiedClassName();
+			this.fqClassNameStale = false;
+		}
 		return this.fullyQualifiedClassName;
 	}
 
-	private void syncFullyQualifiedClassName(String astfullyQualifiedClassName) {
-		String old = this.fullyQualifiedClassName;
-		this.fullyQualifiedClassName = astfullyQualifiedClassName;
-		this.firePropertyChanged(FULLY_QUALIFIED_CLASS_NAME_PROPERTY, old, astfullyQualifiedClassName);
+	private String buildFullyQualifiedClassName() {
+		return (this.value == null) ? null : this.buildFullyQualifiedClassName_();
 	}
 
-	private String buildFullyQualifiedClassName(CompilationUnit astRoot) {
-		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(this.buildASTRoot()));
 	}
 
 

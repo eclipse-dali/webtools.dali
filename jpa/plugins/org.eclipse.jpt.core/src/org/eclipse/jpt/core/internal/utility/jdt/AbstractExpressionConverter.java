@@ -49,7 +49,7 @@ public abstract class AbstractExpressionConverter<T>
 
 	/**
 	 * The specified object is not null.
-	 * @see #convert(T, AST)
+	 * @see #convert(Object, AST)
 	 */
 	protected abstract Expression convertObject(T object, AST ast);
 

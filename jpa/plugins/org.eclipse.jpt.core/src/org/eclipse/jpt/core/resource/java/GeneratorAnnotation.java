@@ -38,8 +38,7 @@ public interface GeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'name' element of the *Generator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the *Generator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setName(String name);
 
@@ -59,8 +58,7 @@ public interface GeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'initialValue' element of the *Generator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the *Generator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setInitialValue(Integer initialValue);
 
@@ -80,8 +78,7 @@ public interface GeneratorAnnotation
 
 	/**
 	 * Corresponds to the 'allocationSize' element of the *Generator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the *Generator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setAllocationSize(Integer allocationSize);
 

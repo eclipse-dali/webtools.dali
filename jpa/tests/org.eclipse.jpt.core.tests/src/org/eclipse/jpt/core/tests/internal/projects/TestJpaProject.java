@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,9 +11,14 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.JpaFacet;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.SynchronousJpaProjectUpdater;
+import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
@@ -26,7 +31,7 @@ import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
  */
 @SuppressWarnings("nls")
 public class TestJpaProject extends TestJavaProject {
-	private final JpaProject jpaProject;
+	final JpaProject jpaProject;
 
 	public static final String JPA_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.jpa.jar";
 	public static final String ECLIPSELINK_JAR_NAME_SYSTEM_PROPERTY = "org.eclipse.jpt.eclipselink.jar";
@@ -68,7 +73,36 @@ public class TestJpaProject extends TestJavaProject {
 		}
 		this.jpaProject = JptCorePlugin.getJpaProject(this.getProject());
 		this.jpaProject.setDiscoversAnnotatedClasses(true);
-		this.jpaProject.setUpdater(new SynchronousJpaProjectUpdater(this.jpaProject));
+		this.jpaProject.setContextModelSynchronizer(this.buildSynchronousContextModelSynchronizer());
+		this.jpaProject.setUpdateSynchronizer(this.buildSynchronousUpdateSynchronizer());
+	}
+
+	protected Synchronizer buildSynchronousContextModelSynchronizer() {
+		return new SynchronousSynchronizer(this.buildSynchronousContextModelSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousContextModelSynchronizerCommand() {
+		return new SynchronousContextModelSynchronizerCommand();
+	}
+
+	protected class SynchronousContextModelSynchronizerCommand implements Command {
+		public void execute() {
+			TestJpaProject.this.jpaProject.synchronizeContextModel(new NullProgressMonitor());
+		}
+	}
+
+	protected CallbackSynchronizer buildSynchronousUpdateSynchronizer() {
+		return new CallbackSynchronousSynchronizer(this.buildSynchronousUpdateSynchronizerCommand());
+	}
+
+	protected Command buildSynchronousUpdateSynchronizerCommand() {
+		return new SynchronousUpdateSynchronizerCommand();
+	}
+
+	protected class SynchronousUpdateSynchronizerCommand implements Command {
+		public void execute() {
+			TestJpaProject.this.jpaProject.update(new NullProgressMonitor());
+		}
 	}
 
 	public static String jpaJarName() {

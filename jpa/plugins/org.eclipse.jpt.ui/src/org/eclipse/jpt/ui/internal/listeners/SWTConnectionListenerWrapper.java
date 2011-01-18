@@ -22,10 +22,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another connection listener and forward events to it on the SWT
- * UI thread, asynchronously if necessary. If the event arrived on the UI
- * thread that is probably because it was initiated by a UI widget; as a
- * result, we want to loop back synchronously so the events can be
- * short-circuited.
+ * UI thread, asynchronously if necessary.
  */
 public class SWTConnectionListenerWrapper
 	implements ConnectionListener
@@ -144,7 +141,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "opened"; //$NON-NLS-1$
+				return "opened runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -156,7 +153,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "modified"; //$NON-NLS-1$
+				return "modified runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -168,7 +165,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "OK to close"; //$NON-NLS-1$
+				return "OK to close runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -180,7 +177,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "about to close"; //$NON-NLS-1$
+				return "about to close runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -192,7 +189,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "closed"; //$NON-NLS-1$
+				return "closed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -204,7 +201,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "database changed"; //$NON-NLS-1$
+				return "database changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -216,7 +213,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "catalog changed"; //$NON-NLS-1$
+				return "catalog changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -228,7 +225,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "schema changed"; //$NON-NLS-1$
+				return "schema changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -240,7 +237,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "sequence changed"; //$NON-NLS-1$
+				return "sequence changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -252,7 +249,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "table changed"; //$NON-NLS-1$
+				return "table changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -264,7 +261,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "column changed"; //$NON-NLS-1$
+				return "column changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -276,7 +273,7 @@ public class SWTConnectionListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "foreign key changed"; //$NON-NLS-1$
+				return "foreign key changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

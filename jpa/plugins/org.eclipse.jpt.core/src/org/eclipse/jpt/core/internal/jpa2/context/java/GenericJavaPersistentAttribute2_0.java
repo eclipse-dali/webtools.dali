@@ -15,7 +15,6 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericPersistentAttributeValidator;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 
@@ -24,7 +23,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
  */
 public class GenericJavaPersistentAttribute2_0
 	extends AbstractJavaPersistentAttribute
-	implements JavaPersistentAttribute2_0
 {
 	protected AccessType specifiedAccess;
 
@@ -35,8 +33,18 @@ public class GenericJavaPersistentAttribute2_0
 	}
 
 
-	// ********** AccessHolder implementation **********
+	// ********** synchronize/update **********
 
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+	}
+
+
+	// ********** access **********
+
+	@Override
 	public AccessType getSpecifiedAccess() {
 		return this.specifiedAccess;
 	}
@@ -50,23 +58,19 @@ public class GenericJavaPersistentAttribute2_0
 		throw new UnsupportedOperationException();
 	}
 
-	protected void setSpecifiedAccess_(AccessType specifiedAccess) {
+	protected void setSpecifiedAccess_(AccessType access) {
 		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = specifiedAccess;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
+		this.specifiedAccess = access;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
 	}
 
 	protected AccessType buildSpecifiedAccess() {
-		Access2_0Annotation accessAnnotation = 
-				(Access2_0Annotation) this.resourcePersistentAttribute.
-					getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
-		return accessAnnotation == null ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
+		Access2_0Annotation accessAnnotation = this.getAccessAnnotation();
+		return (accessAnnotation == null) ? null : AccessType.fromJavaResourceModel(accessAnnotation.getValue());
 	}
 
-	@Override
-	public void update() {
-		super.update();
-		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+	protected Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.resourcePersistentAttribute.getAnnotation(Access2_0Annotation.ANNOTATION_NAME);
 	}
 
 

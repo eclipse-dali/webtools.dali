@@ -97,7 +97,7 @@ public class ChangeSupport
 
 	/**
 	 * Construct support for the specified source of change events.
-	 * The source cannot be null.
+	 * The source cannot be <code>null</code>.
 	 */
 	public ChangeSupport(Model source) {
 		super();
@@ -113,7 +113,7 @@ public class ChangeSupport
 	/**
 	 * Add a listener that listens to all the events of the specified type and
 	 * carrying the specified aspect name.
-	 * Neither the aspect name nor the listener can be null.
+	 * Neither the aspect name nor the listener can be <code>null</code>.
 	 */
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, String aspectName, L listener) {
 		ListenerList<L> aspectListenerList = this.getListenerList(listenerClass, aspectName);
@@ -126,7 +126,7 @@ public class ChangeSupport
 
 	/**
 	 * Add a listener that listens to all the events of the specified type.
-	 * The listener cannot be null.
+	 * The listener cannot be <code>null</code>.
 	 */
 	protected synchronized <L extends EventListener> void addListener(Class<L> listenerClass, L listener) {
 		ListenerList<L> listenerList = this.getListenerList(listenerClass);
@@ -140,7 +140,7 @@ public class ChangeSupport
 	/**
 	 * Remove a listener that has been registered for all the
 	 * events of the specified type and carrying the specified aspect name.
-	 * Neither the aspect name nor the listener can be null.
+	 * Neither the aspect name nor the listener can be <code>null</code>.
 	 */
 	protected synchronized <L extends EventListener> void removeListener(Class<L> listenerClass, String aspectName, L listener) {
 		ListenerList<L> aspectListenerList = this.getListenerList(listenerClass, aspectName);
@@ -152,7 +152,7 @@ public class ChangeSupport
 
 	/**
 	 * Remove a listener that has been registered for all the events of the specified type.
-	 * The listener cannot be null.
+	 * The listener cannot be <code>null</code>.
 	 */
 	protected synchronized <L extends EventListener> void removeListener(Class<L> listenerClass, L listener) {
 		ListenerList<L> listenerList = this.getListenerList(listenerClass);
@@ -164,8 +164,8 @@ public class ChangeSupport
 
 	/**
 	 * Return the listener list for the specified listener class and aspect name.
-	 * Return null if the listener list is not present.
-	 * The aspect name cannot be null.
+	 * Return <code>null</code> if the listener list is not present.
+	 * The aspect name cannot be <code>null</code>.
 	 */
 	protected <L extends EventListener> ListenerList<L> getListenerList(Class<L> listenerClass, String aspectName) {
 		// put in a null check to simplify calling code
@@ -177,7 +177,7 @@ public class ChangeSupport
 
 	/**
 	 * Return the listener list for the specified listener class.
-	 * Return null if the listener list is not present.
+	 * Return <code>null</code> if the listener list is not present.
 	 */
 	protected <L extends EventListener> ListenerList<L> getListenerList(Class<L> listenerClass) {
 		return this.getListenerList_(listenerClass, null);
@@ -185,7 +185,7 @@ public class ChangeSupport
 
 	/**
 	 * Return the listener list for the specified listener class and aspect name.
-	 * Return null if the listener list is not present.
+	 * Return <code>null</code> if the listener list is not present.
 	 */
 	protected synchronized <L extends EventListener> ListenerList<L> getListenerList_(Class<L> listenerClass, String aspectName) {
 		for (AspectListenerListPair<?> pair : this.aspectListenerListPairs) {
@@ -427,14 +427,17 @@ public class ChangeSupport
 
 	/**
 	 * Fire the specified property change event to any registered listeners.
-	 * No event is fired if the given event's old and new values are the same;
+	 * No event is fired if the specified event's old and new values are the same;
 	 * this includes when both values are null. Use a state change event
 	 * for general purpose notification of changes.
+	 * Return whether the old and new values are different.
 	 */
-	public void firePropertyChanged(PropertyChangeEvent event) {
+	public boolean firePropertyChanged(PropertyChangeEvent event) {
 		if (this.valuesAreDifferent(event.getOldValue(), event.getNewValue())) {
 			this.firePropertyChanged_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -463,15 +466,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound property update to any registered property change listeners.
-	 * No event is fired if the given old and new values are the same;
+	 * No event is fired if the specified old and new values are the same;
 	 * this includes when both values are null. Use a state change event
 	 * for general purpose notification of changes.
+	 * Return whether the old and new values are different.
 	 */
-	public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
-//		this.firePropertyChanged(new PropertyChangeEvent(this.source, propertyName, oldValue, newValue));
+	public boolean firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+//		return this.firePropertyChanged(new PropertyChangeEvent(this.source, propertyName, oldValue, newValue));
 		if (this.valuesAreDifferent(oldValue, newValue)) {
 			this.firePropertyChanged_(propertyName, oldValue, newValue);
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -505,17 +511,20 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Report an int bound property update to any registered listeners.
-	 * No event is fired if old and new are equal.
+	 * Report an <code>int</code> bound property update to any registered listeners.
+	 * No event is fired if the specified old and new values are equal.
+	 * Return whether the old and new values are different.
 	 * <p>
-	 * This is merely a convenience wrapper around the more general
-	 * firePropertyChange method that takes Object values.
+	 * This is merely a convenience wrapper around the more general method
+	 * {@link #firePropertyChanged(String, Object, Object)}.
 	 */
-	public void firePropertyChanged(String propertyName, int oldValue, int newValue) {
-//		this.firePropertyChanged(propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
+	public boolean firePropertyChanged(String propertyName, int oldValue, int newValue) {
+//		return this.firePropertyChanged(propertyName, Integer.valueOf(oldValue), Integer.valueOf(newValue));
 		if (oldValue != newValue) {
 			this.firePropertyChanged_(propertyName, oldValue, newValue);
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -549,17 +558,20 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Report a boolean bound property update to any registered listeners.
-	 * No event is fired if old and new are equal.
+	 * Report a <code>boolean</code> bound property update to any registered listeners.
+	 * No event is fired if the specified old and new values are equal.
+	 * Return whether the old and new values are different.
 	 * <p>
-	 * This is merely a convenience wrapper around the more general
-	 * firePropertyChange method that takes Object values.
+	 * This is merely a convenience wrapper around the more general method
+	 * {@link #firePropertyChanged(String, Object, Object)}.
 	 */
-	public void firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
-//		this.firePropertyChanged(propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
+	public boolean firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
+//		return this.firePropertyChanged(propertyName, Boolean.valueOf(oldValue), Boolean.valueOf(newValue));
 		if (oldValue != newValue) {
 			this.firePropertyChanged_(propertyName, oldValue, newValue);
+			return true;
 		}
+		return false;
 	}
 
 	/**
@@ -635,15 +647,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound collection update to any registered listeners.
+	 * Return whether the event has any items.
 	 */
-	public void fireItemsAdded(CollectionAddEvent event) {
+	public boolean fireItemsAdded(CollectionAddEvent event) {
 		if (event.getItemsSize() != 0) {
 			this.fireItemsAdded_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were added
+	 * pre-condition: the specified event contains items
 	 */
 	protected void fireItemsAdded_(CollectionAddEvent event) {
 		String collectionName = event.getCollectionName();
@@ -668,16 +683,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound collection update to any registered listeners.
+	 * Return whether there are any added items.
 	 */
-	public void fireItemsAdded(String collectionName, Collection<?> addedItems) {
-//		this.fireItemsAdded(new CollectionAddEvent(this.source, collectionName, addedItems));
+	public boolean fireItemsAdded(String collectionName, Collection<?> addedItems) {
+//		return this.fireItemsAdded(new CollectionAddEvent(this.source, collectionName, addedItems));
 		if ( ! addedItems.isEmpty()) {
 			this.fireItemsAdded_(collectionName, addedItems);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were added
+	 * pre-condition: 'addedItems' is not empty
 	 */
 	protected void fireItemsAdded_(String collectionName, Collection<?> addedItems) {
 		CollectionAddEvent event = null;
@@ -740,15 +758,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound collection update to any registered listeners.
+	 * Return whether the event has any items.
 	 */
-	public void fireItemsRemoved(CollectionRemoveEvent event) {
+	public boolean fireItemsRemoved(CollectionRemoveEvent event) {
 		if (event.getItemsSize() != 0) {
 			this.fireItemsRemoved_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were removed
+	 * pre-condition: the specified event contains items
 	 */
 	protected void fireItemsRemoved_(CollectionRemoveEvent event) {
 		String collectionName = event.getCollectionName();
@@ -773,16 +794,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound collection update to any registered listeners.
+	 * Return whether there are any removed items.
 	 */
-	public void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
-//		this.fireItemsRemoved(new CollectionRemoveEvent(this.source, collectionName, removedItems));
+	public boolean fireItemsRemoved(String collectionName, Collection<?> removedItems) {
+//		return this.fireItemsRemoved(new CollectionRemoveEvent(this.source, collectionName, removedItems));
 		if ( ! removedItems.isEmpty()) {
 			this.fireItemsRemoved_(collectionName, removedItems);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were removed
+	 * pre-condition: 'removedItems' is not empty
 	 */
 	protected void fireItemsRemoved_(String collectionName, Collection<?> removedItems) {
 		CollectionRemoveEvent event = null;
@@ -959,7 +983,7 @@ public class ChangeSupport
 	 * Add the specified item to the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#add(Object)
+	 * @see Collection#add(Object)
 	 */
 	public <E> boolean addItemToCollection(E item, Collection<E> collection, String collectionName) {
 		if (collection.add(item)) {
@@ -973,7 +997,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
+	 * @see Collection#addAll(Collection)
 	 */
 	public <E> boolean addItemsToCollection(E[] items, Collection<E> collection, String collectionName) {
 		return (items.length != 0)
@@ -984,7 +1008,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
+	 * @see Collection#addAll(Collection)
 	 */
 	public <E> boolean addItemsToCollection(Collection<? extends E> items, Collection<E> collection, String collectionName) {
 		return ( ! items.isEmpty())
@@ -995,7 +1019,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
+	 * @see Collection#addAll(Collection)
 	 */
 	public <E> boolean addItemsToCollection(Iterable<? extends E> items, Collection<E> collection, String collectionName) {
 		return this.addItemsToCollection(items.iterator(), collection, collectionName);
@@ -1005,7 +1029,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether collection changed.
-	 * @see java.util.Collection#addAll(java.util.Collection)
+	 * @see Collection#addAll(Collection)
 	 */
 	public <E> boolean addItemsToCollection(Iterator<? extends E> items, Collection<E> collection, String collectionName) {
 		return items.hasNext()
@@ -1027,7 +1051,7 @@ public class ChangeSupport
 			}
 		}
 		if (addedItems != null) {
-			this.fireItemsAdded(collectionName, addedItems);
+			this.fireItemsAdded_(collectionName, addedItems);
 			return true;
 		}
 		return false;
@@ -1037,7 +1061,7 @@ public class ChangeSupport
 	 * Remove the specified item from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#remove(Object)
+	 * @see Collection#remove(Object)
 	 */
 	public boolean removeItemFromCollection(Object item, Collection<?> collection, String collectionName) {
 		if (collection.remove(item)) {
@@ -1051,7 +1075,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 * @see Collection#removeAll(Collection)
 	 */
 	public boolean removeItemsFromCollection(Object[] items, Collection<?> collection, String collectionName) {
 		return (items.length != 0)
@@ -1063,7 +1087,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 * @see Collection#removeAll(Collection)
 	 */
 	public boolean removeItemsFromCollection(Collection<?> items, Collection<?> collection, String collectionName) {
 		return ( ! items.isEmpty())
@@ -1075,7 +1099,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 * @see Collection#removeAll(Collection)
 	 */
 	public boolean removeItemsFromCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
 		return this.removeItemsFromCollection(items.iterator(), collection, collectionName);
@@ -1085,7 +1109,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#removeAll(java.util.Collection)
+	 * @see Collection#removeAll(Collection)
 	 */
 	public boolean removeItemsFromCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
 		return items.hasNext()
@@ -1102,7 +1126,7 @@ public class ChangeSupport
 		boolean changed = collection.removeAll(removedItems);
 
 		if ( ! removedItems.isEmpty()) {
-			this.fireItemsRemoved(collectionName, removedItems);
+			this.fireItemsRemoved_(collectionName, removedItems);
 		}
 		return changed;
 	}
@@ -1111,7 +1135,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 * @see Collection#retainAll(Collection)
 	 */
 	public boolean retainItemsInCollection(Object[] items, Collection<?> collection, String collectionName) {
 		if (collection.isEmpty()) {
@@ -1127,7 +1151,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 * @see Collection#retainAll(Collection)
 	 */
 	public boolean retainItemsInCollection(Collection<?> items, Collection<?> collection, String collectionName) {
 		if (collection.isEmpty()) {
@@ -1143,7 +1167,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 * @see Collection#retainAll(Collection)
 	 */
 	public boolean retainItemsInCollection(Iterable<?> items, Collection<?> collection, String collectionName) {
 		return this.retainItemsInCollection(items.iterator(), collection, collectionName);
@@ -1153,7 +1177,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#retainAll(java.util.Collection)
+	 * @see Collection#retainAll(Collection)
 	 */
 	public boolean retainItemsInCollection(Iterator<?> items, Collection<?> collection, String collectionName) {
 		if (collection.isEmpty()) {
@@ -1175,7 +1199,7 @@ public class ChangeSupport
 		boolean changed = collection.retainAll(retainedItems);
 
 		if ( ! removedItems.isEmpty()) {
-			this.fireItemsRemoved(collectionName, removedItems);
+			this.fireItemsRemoved_(collectionName, removedItems);
 		}
 		return changed;
 	}
@@ -1184,7 +1208,7 @@ public class ChangeSupport
 	 * Clear the entire collection
 	 * and fire the appropriate event if necessary.
 	 * Return whether the collection changed.
-	 * @see java.util.Collection#clear()
+	 * @see Collection#clear()
 	 */
 	public boolean clearCollection(Collection<?> collection, String collectionName) {
 		if (collection.isEmpty()) {
@@ -1217,6 +1241,15 @@ public class ChangeSupport
 		}
 
 		return this.synchronizeCollection_(newCollection, collection, collectionName);
+	}
+
+	/**
+	 * Synchronize the collection with the specified new collection,
+	 * making a minimum number of removes and adds.
+	 * Return whether the collection changed.
+	 */
+	public <E> boolean synchronizeCollection(Iterable<E> newCollection, Collection<E> collection, String collectionName) {
+		return this.synchronizeCollection(newCollection.iterator(), collection, collectionName);
 	}
 
 	/**
@@ -1295,15 +1328,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any added items.
 	 */
-	public void fireItemsAdded(ListAddEvent event) {
+	public boolean fireItemsAdded(ListAddEvent event) {
 		if (event.getItemsSize() != 0) {
 			this.fireItemsAdded_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were added
+	 * pre-condition: the specified event contains items
 	 */
 	protected void fireItemsAdded_(ListAddEvent event) {
 		String listName = event.getListName();
@@ -1328,16 +1364,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any added items.
 	 */
-	public void fireItemsAdded(String listName, int index, List<?> addedItems) {
-//		this.fireItemsAdded(new ListAddEvent(this.source, listName, index, addedItems));
+	public boolean fireItemsAdded(String listName, int index, List<?> addedItems) {
+//		return this.fireItemsAdded(new ListAddEvent(this.source, listName, index, addedItems));
 		if ( ! addedItems.isEmpty()) {
 			this.fireItemsAdded_(listName, index, addedItems);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were added
+	 * pre-condition: 'addedItems' is not empty
 	 */
 	protected void fireItemsAdded_(String listName, int index, List<?> addedItems) {
 		ListAddEvent event = null;
@@ -1400,15 +1439,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any removed items.
 	 */
-	public void fireItemsRemoved(ListRemoveEvent event) {
+	public boolean fireItemsRemoved(ListRemoveEvent event) {
 		if (event.getItemsSize() != 0) {
 			this.fireItemsRemoved_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were removed
+	 * pre-condition: the specified event contains items
 	 */
 	protected void fireItemsRemoved_(ListRemoveEvent event) {
 		String listName = event.getListName();
@@ -1433,16 +1475,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any removed items.
 	 */
-	public void fireItemsRemoved(String listName, int index, List<?> removedItems) {
-//		this.fireItemsRemoved(new ListRemoveEvent(this.source, listName, index, removedItems));
+	public boolean fireItemsRemoved(String listName, int index, List<?> removedItems) {
+//		return this.fireItemsRemoved(new ListRemoveEvent(this.source, listName, index, removedItems));
 		if ( ! removedItems.isEmpty()) {
 			this.fireItemsRemoved_(listName, index, removedItems);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were removed
+	 * pre-condition: 'removedItems' is not empty
 	 */
 	protected void fireItemsRemoved_(String listName, int index, List<?> removedItems) {
 		ListRemoveEvent event = null;
@@ -1505,15 +1550,18 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any replaced items.
 	 */
-	public void fireItemsReplaced(ListReplaceEvent event) {
+	public boolean fireItemsReplaced(ListReplaceEvent event) {
 		if ((event.getItemsSize() != 0) && this.elementsAreDifferent(event.getNewItems(), event.getOldItems())) {
 			this.fireItemsReplaced_(event);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were replaced
+	 * pre-condition: the specified event contains new items
 	 */
 	protected void fireItemsReplaced_(ListReplaceEvent event) {
 		String listName = event.getListName();
@@ -1538,16 +1586,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any replaced items.
 	 */
-	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> oldItems) {
-//		this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, oldItems));
+	public boolean fireItemsReplaced(String listName, int index, List<?> newItems, List<?> oldItems) {
+//		return this.fireItemsReplaced(new ListReplaceEvent(this.source, listName, index, newItems, oldItems));
 		if (( ! newItems.isEmpty()) && this.elementsAreDifferent(newItems, oldItems)) {
 			this.fireItemsReplaced_(listName, index, newItems, oldItems);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were replaced
+	 * pre-condition: 'newItems' is not empty and unequal to 'oldItems'
 	 */
 	protected void fireItemsReplaced_(String listName, int index, List<?> newItems, List<?> oldItems) {
 		ListReplaceEvent event = null;
@@ -1578,16 +1629,19 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether the item changed.
 	 */
-	public void fireItemReplaced(String listName, int index, Object newItem, Object oldItem) {
-//		this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(oldItem));
+	public boolean fireItemReplaced(String listName, int index, Object newItem, Object oldItem) {
+//		return this.fireItemsReplaced(listName, index, Collections.singletonList(newItem), Collections.singletonList(oldItem));
 		if (this.valuesAreDifferent(newItem, oldItem)) {
 			this.fireItemReplaced_(listName, index, newItem, oldItem);
+			return true;
 		}
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were replaced
+	 * pre-condition: the specified old and new items are different
 	 */
 	protected void fireItemReplaced_(String listName, int index, Object newItem, Object oldItem) {
 		ListReplaceEvent event = null;
@@ -1618,16 +1672,20 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any moved items.
 	 */
-	public void fireItemsMoved(ListMoveEvent event) {
+	// it's unlikely but possible the list is unchanged by the move...
+	// e.g. any moves within ["foo", "foo", "foo"]
+	public boolean fireItemsMoved(ListMoveEvent event) {
 		if (event.getTargetIndex() != event.getSourceIndex()) {
 			this.fireItemsMoved_(event);
+			return true;
 		}
-		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were moved
+	 * pre-condition: the specified event indicates a move
 	 */
 	protected void fireItemsMoved_(ListMoveEvent event) {
 		String listName = event.getListName();
@@ -1652,17 +1710,21 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any moved items.
 	 */
-	public void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
-//		this.fireItemsMoved(new ListMoveEvent(this.source, listName, targetIndex, sourceIndex, length));
+	// it's unlikely but possible the list is unchanged by the move...
+	// e.g. any moves within ["foo", "foo", "foo"]
+	public boolean fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+//		return this.fireItemsMoved(new ListMoveEvent(this.source, listName, targetIndex, sourceIndex, length));
 		if (targetIndex != sourceIndex) {
 			this.fireItemsMoved_(listName, targetIndex, sourceIndex, length);
+			return true;
 		}
-		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
+		return false;
 	}
 
 	/**
-	 * pre-condition: items were moved
+	 * pre-condition: the specified indices indicate a move
 	 */
 	protected void fireItemsMoved_(String listName, int targetIndex, int sourceIndex, int length) {
 		ListMoveEvent event = null;
@@ -1693,9 +1755,23 @@ public class ChangeSupport
 
 	/**
 	 * Report a bound list update to any registered listeners.
+	 * Return whether there are any moved items.
 	 */
-	public void fireItemMoved(String listName, int targetIndex, int sourceIndex) {
-		this.fireItemsMoved(listName, targetIndex, sourceIndex, 1);
+	// it's unlikely but possible the list is unchanged by the move...
+	// e.g. any moves within ["foo", "foo", "foo"]
+	public boolean fireItemMoved(String listName, int targetIndex, int sourceIndex) {
+		if (targetIndex != sourceIndex) {
+			this.fireItemMoved_(listName, targetIndex, sourceIndex);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * pre-condition: the specified indices indicate a move
+	 */
+	protected void fireItemMoved_(String listName, int targetIndex, int sourceIndex) {
+		this.fireItemsMoved_(listName, targetIndex, sourceIndex, 1);
 	}
 
 	/**
@@ -1813,7 +1889,7 @@ public class ChangeSupport
 	/**
 	 * Add the specified item to the specified bound list at the specified index
 	 * and fire the appropriate event.
-	 * @see java.util.List#add(int, Object)
+	 * @see List#add(int, Object)
 	 */
 	public <E> void addItemToList(int index, E item, List<E> list, String listName) {
 		list.add(index, item);
@@ -1824,7 +1900,7 @@ public class ChangeSupport
 	 * Add the specified item to the end of the specified bound list
 	 * and fire the appropriate event.
 	 * Return whether the list changed (i.e. 'true').
-	 * @see java.util.List#add(Object)
+	 * @see List#add(Object)
 	 */
 	public <E> boolean addItemToList(E item, List<E> list, String listName) {
 		if (list.add(item)) {
@@ -1838,7 +1914,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound list at the specified index
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(int, java.util.Collection)
+	 * @see List#addAll(int, Collection)
 	 */
 	public <E> boolean addItemsToList(int index, E[] items, List<E> list, String listName) {
 		return (items.length != 0)
@@ -1849,7 +1925,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound list at the specified index
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(int, java.util.Collection)
+	 * @see List#addAll(int, Collection)
 	 */
 	public <E> boolean addItemsToList(int index, Collection<? extends E> items, List<E> list, String listName) {
 		return ( ! items.isEmpty())
@@ -1871,7 +1947,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(int, java.util.Collection)
+	 * @see List#addAll(int, Collection)
 	 */
 	public <E> boolean addItemsToList(int index, Iterable<? extends E> items, List<E> list, String listName) {
 		return this.addItemsToList(index, items.iterator(), list, listName);
@@ -1881,7 +1957,7 @@ public class ChangeSupport
 	 * Add the specified items to the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(int, java.util.Collection)
+	 * @see List#addAll(int, Collection)
 	 */
 	public <E> boolean addItemsToList(int index, Iterator<? extends E> items, List<E> list, String listName) {
 		if ( ! items.hasNext()) {
@@ -1900,7 +1976,7 @@ public class ChangeSupport
 	 * Add the specified items to the end of to the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(java.util.Collection)
+	 * @see List#addAll(Collection)
 	 */
 	public <E> boolean addItemsToList(E[] items, List<E> list, String listName) {
 		return (items.length != 0)
@@ -1911,7 +1987,7 @@ public class ChangeSupport
 	 * Add the specified items to the end of the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(int, java.util.Collection)
+	 * @see List#addAll(int, Collection)
 	 */
 	public <E> boolean addItemsToList(Collection<? extends E> items, List<E> list, String listName) {
 		return ( ! items.isEmpty())
@@ -1938,7 +2014,7 @@ public class ChangeSupport
 	 * Add the specified items to the end of to the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(java.util.Collection)
+	 * @see List#addAll(Collection)
 	 */
 	public <E> boolean addItemsToList(Iterable<? extends E> items, List<E> list, String listName) {
 		return this.addItemsToList(items.iterator(), list, listName);
@@ -1948,7 +2024,7 @@ public class ChangeSupport
 	 * Add the specified items to the end of to the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#addAll(java.util.Collection)
+	 * @see List#addAll(Collection)
 	 */
 	public <E> boolean addItemsToList(Iterator<? extends E> items, List<E> list, String listName) {
 		if ( ! items.hasNext()) {
@@ -1974,7 +2050,7 @@ public class ChangeSupport
 	 * Remove the specified item from the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the removed item.
-	 * @see java.util.List#remove(int)
+	 * @see List#remove(int)
 	 */
 	public <E> E removeItemFromList(int index, List<E> list, String listName) {
 		E item = list.remove(index);
@@ -1986,7 +2062,7 @@ public class ChangeSupport
 	 * Remove the specified item from the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#remove(Object)
+	 * @see List#remove(Object)
 	 */
 	public boolean removeItemFromList(Object item, List<?> list, String listName) {
 		int index = list.indexOf(item);
@@ -1999,37 +2075,49 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Remove the items from the specified index on
+	 * Remove the items from the specified index to the end of the list
 	 * from the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the removed items.
-	 * @see java.util.List#remove(int)
+	 * @see List#remove(int)
 	 */
 	public <E> List<E> removeItemsFromList(int index, List<E> list, String listName) {
-		return this.removeItemsFromList(index, list.size() - index, list, listName);
+		return this.removeRangeFromList(index, list.size(), list, listName);
 	}
 
 	/**
 	 * Remove the specified items from the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the removed items.
-	 * @see java.util.List#remove(int)
+	 * @see List#remove(int)
 	 */
 	public <E> List<E> removeItemsFromList(int index, int length, List<E> list, String listName) {
-		if (length == 0) {
+		return this.removeRangeFromList(index, index + length, list, listName);
+	}
+
+	/**
+	 * Remove the specified items from the specified bound list
+	 * and fire the appropriate event if necessary. The begin index
+	 * is inclusive, while the end index is exclusive.
+	 * Return the removed items.
+	 * @see List#remove(int)
+	 * @see List#subList(int, int)
+	 */
+	public <E> List<E> removeRangeFromList(int beginIndex, int endIndex, List<E> list, String listName) {
+		if (beginIndex == endIndex) {
 			return Collections.emptyList();
 		}
-		return this.removeItemsFromList_(index, length, list, listName);
+		return this.removeRangeFromList_(beginIndex, endIndex, list, listName);
 	}
 
 	/**
 	 * no empty check
 	 */
-	protected <E> List<E> removeItemsFromList_(int index, int length, List<E> list, String listName) {
-		List<E> subList = list.subList(index, index + length);
+	protected <E> List<E> removeRangeFromList_(int beginIndex, int endIndex, List<E> list, String listName) {
+		List<E> subList = list.subList(beginIndex, endIndex);
 		List<E> removedItems = new ArrayList<E>(subList);
 		subList.clear();
-		this.fireItemsRemoved(listName, index, removedItems);
+		this.fireItemsRemoved(listName, beginIndex, removedItems);
 		return removedItems;
 	}
 
@@ -2037,7 +2125,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#removeAll(java.util.Collection)
+	 * @see List#removeAll(Collection)
 	 */
 	public boolean removeItemsFromList(Object[] items, List<?> list, String listName) {
 		return (items.length != 0)
@@ -2049,7 +2137,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#removeAll(java.util.Collection)
+	 * @see List#removeAll(Collection)
 	 */
 	public boolean removeItemsFromList(Collection<?> items, List<?> list, String listName) {
 		return ( ! items.isEmpty())
@@ -2061,7 +2149,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#removeAll(java.util.Collection)
+	 * @see List#removeAll(Collection)
 	 */
 	public boolean removeItemsFromList(Iterable<?> items, List<?> list, String listName) {
 		return this.removeItemsFromList(items.iterator(), list, listName);
@@ -2071,7 +2159,7 @@ public class ChangeSupport
 	 * Remove the specified items from the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#removeAll(java.util.Collection)
+	 * @see List#removeAll(Collection)
 	 */
 	public boolean removeItemsFromList(Iterator<?> items, List<?> list, String listName) {
 		return (items.hasNext())
@@ -2094,7 +2182,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
+	 * @see List#retainAll(Collection)
 	 */
 	public boolean retainItemsInList(Object[] items, List<?> list, String listName) {
 		if (list.isEmpty()) {
@@ -2110,7 +2198,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
+	 * @see List#retainAll(Collection)
 	 */
 	public boolean retainItemsInList(Collection<?> items, List<?> list, String listName) {
 		if (list.isEmpty()) {
@@ -2126,7 +2214,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
+	 * @see List#retainAll(Collection)
 	 */
 	public boolean retainItemsInList(Iterable<?> items, List<?> list, String listName) {
 		return this.retainItemsInList(items.iterator(), list, listName);
@@ -2136,7 +2224,7 @@ public class ChangeSupport
 	 * Retain the specified items in the specified bound list
 	 * and fire the appropriate event(s) if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#retainAll(java.util.Collection)
+	 * @see List#retainAll(Collection)
 	 */
 	public boolean retainItemsInList(Iterator<?> items, List<?> list, String listName) {
 		if (list.isEmpty()) {
@@ -2162,7 +2250,7 @@ public class ChangeSupport
 	 * Set the specified item in the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the replaced item.
-	 * @see java.util.List#set(int, Object)
+	 * @see List#set(int, Object)
 	 */
 	public <E> E setItemInList(int index, E item, List<E> list, String listName) {
 		E oldItem = list.set(index, item);
@@ -2176,7 +2264,7 @@ public class ChangeSupport
 	 * and fire the appropriate event if necessary.
 	 * Return the index of the replaced item.
 	 * Return -1 if the item was not found in the list.
-	 * @see java.util.List#set(int, Object)
+	 * @see List#set(int, Object)
 	 */
 	public <E> int replaceItemInList(E oldItem, E newItem, List<E> list, String listName) {
 		if (list.isEmpty()) {
@@ -2195,7 +2283,7 @@ public class ChangeSupport
 	 * Set the specified items in the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the replaced items.
-	 * @see java.util.List#set(int, Object)
+	 * @see List#set(int, Object)
 	 */
 	public <E> List<E> setItemsInList(int index, E[] items, List<E> list, String listName) {
 		if (items.length == 0) {
@@ -2208,7 +2296,7 @@ public class ChangeSupport
 	 * Set the specified items in the specified bound list
 	 * and fire the appropriate event if necessary.
 	 * Return the replaced items.
-	 * @see java.util.List#set(int, Object)
+	 * @see List#set(int, Object)
 	 */
 	public <E> List<E> setItemsInList(int index, List<? extends E> items, List<E> list, String listName) {
 		if (items.isEmpty()) {
@@ -2247,22 +2335,7 @@ public class ChangeSupport
 	}
 
 	/**
-	 * Move an item in the specified list from the specified source index to the
-	 * specified target index.
-	 * Return whether the list changed.
-	 */
-	public <E> boolean moveItemInList(int targetIndex, int sourceIndex, List<E> list, String listName) {
-		if (targetIndex == sourceIndex) {
-			return false;
-		}
-		// it's unlikely but possible the list is unchanged by the move... (e.g. any moves within ["foo", "foo", "foo"]...)
-		CollectionTools.move(list, targetIndex, sourceIndex);
-		this.fireItemMoved(listName, targetIndex, sourceIndex);
-		return true;
-	}
-
-	/**
-	 * Move an item in the specified list from the specified source index to the
+	 * Move the specified item in the specified list to the
 	 * specified target index.
 	 * Return whether the list changed.
 	 */
@@ -2271,16 +2344,30 @@ public class ChangeSupport
 	}
 
 	/**
+	 * Move an item in the specified list from the specified source index to the
+	 * specified target index.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean moveItemInList(int targetIndex, int sourceIndex, List<E> list, String listName) {
+		if (targetIndex == sourceIndex) {
+			return false;
+		}
+		if (this.valuesAreEqual(list.get(targetIndex), list.get(sourceIndex))) {
+			return false;
+		}
+		CollectionTools.move(list, targetIndex, sourceIndex);
+		this.fireItemMoved_(listName, targetIndex, sourceIndex);
+		return true;
+	}
+
+	/**
 	 * Clear the entire list
 	 * and fire the appropriate event if necessary.
 	 * Return whether the list changed.
-	 * @see java.util.List#clear()
+	 * @see List#clear()
 	 */
 	public boolean clearList(List<?> list, String listName) {
-		if (list.isEmpty()) {
-			return false;
-		}
-		return this.clearList_(list, listName);
+		return ( ! list.isEmpty()) && this.clearList_(list, listName);
 	}
 
 	/**
@@ -2312,7 +2399,16 @@ public class ChangeSupport
 	 * making a minimum number of sets, removes, and/or adds.
 	 * Return whether the list changed.
 	 */
-	public <E> boolean synchronizeList(Iterator<E> newList, List<E> list, String listName) {
+	public <E> boolean synchronizeList(Iterable<? extends E> newList, List<E> list, String listName) {
+		return this.synchronizeList(newList.iterator(), list, listName);
+	}
+
+	/**
+	 * Synchronize the list with the specified new list,
+	 * making a minimum number of sets, removes, and/or adds.
+	 * Return whether the list changed.
+	 */
+	public <E> boolean synchronizeList(Iterator<? extends E> newList, List<E> list, String listName) {
 		if ( ! newList.hasNext()) {
 			return this.clearList(list, listName);
 		}
@@ -2325,11 +2421,12 @@ public class ChangeSupport
 	/**
 	 * no empty checks
 	 */
-	protected <E> boolean synchronizeList_(List<E> newList, List<E> oldList, String listName) {
+	protected <E> boolean synchronizeList_(List<? extends E> newList, List<E> oldList, String listName) {
 		int newSize = newList.size();
 		int oldSize = oldList.size();
 
 		boolean changed = false;
+		// TODO check for RandomAccess
 		int min = Math.min(newSize, oldSize);
 		for (int i = 0; i < min; i++) {
 			E newItem = newList.get(i);
@@ -2345,7 +2442,7 @@ public class ChangeSupport
 		}
 
 		if (newSize < oldSize) {
-			this.removeItemsFromList_(newSize, oldSize - newSize, oldList, listName);
+			this.removeRangeFromList_(newSize, oldSize, oldList, listName);
 			return true;
 		}
 
@@ -2619,42 +2716,37 @@ public class ChangeSupport
 	}
 
 
-	// ********** convenience methods **********
+	// ********** misc **********
 
 	/**
-	 * Return whether the specified values are equal, with the appropriate null checks.
 	 * Convenience method for checking whether an attribute value has changed.
+	 * @see Tools#valuesAreEqual(Object, Object)
 	 */
 	public boolean valuesAreEqual(Object value1, Object value2) {
 		return Tools.valuesAreEqual(value1, value2);
 	}
 
 	/**
-	 * Return whether the specified values are different, with the appropriate null checks.
 	 * Convenience method for checking whether an attribute value has changed.
+	 * @see Tools#valuesAreDifferent(Object, Object)
 	 */
 	public boolean valuesAreDifferent(Object value1, Object value2) {
 		return Tools.valuesAreDifferent(value1, value2);
 	}
 
 	/**
-	 * Return whether the specified iterables return the same elements
-	 * in the same order.
+	 * @see CollectionTools#elementsAreEqual(Iterable, Iterable)
 	 */
 	public boolean elementsAreEqual(Iterable<?> iterable1, Iterable<?> iterable2) {
 		return CollectionTools.elementsAreEqual(iterable1, iterable2);
 	}
 
 	/**
-	 * Return whether the specified iterables do not return the same elements
-	 * in the same order.
+	 * @see CollectionTools#elementsAreDifferent(Iterable, Iterable)
 	 */
 	public boolean elementsAreDifferent(Iterable<?> iterable1, Iterable<?> iterable2) {
 		return CollectionTools.elementsAreDifferent(iterable1, iterable2);
 	}
-
-
-	// ********** standard methods **********
 
 	@Override
 	public String toString() {
@@ -2665,7 +2757,8 @@ public class ChangeSupport
 	// ********** member classes **********
 
 	/**
-	 * Pair an aspect name with its associated listeners.
+	 * Pair a possibly <code>null</code> aspect name with its associated
+	 * listeners.
 	 */
 	static abstract class AspectListenerListPair<L extends EventListener>
 		implements Serializable
@@ -2693,11 +2786,10 @@ public class ChangeSupport
 		}
 
 		abstract String getAspectName();
-
 	}
 
 	/**
-	 * Pair an aspect name with its associated listeners.
+	 * Pair a non-<code>null</code> aspect name with its associated listeners.
 	 */
 	static class SimpleAspectListenerListPair<L extends EventListener>
 		extends AspectListenerListPair<L>
@@ -2724,11 +2816,10 @@ public class ChangeSupport
 		String getAspectName() {
 			return this.aspectName;
 		}
-
 	}
 
 	/**
-	 * Pair a null aspect name with its associated listeners.
+	 * Pair a <code>null</code> aspect name with its associated listeners.
 	 */
 	static class NullAspectListenerListPair<L extends EventListener>
 		extends AspectListenerListPair<L>
@@ -2749,7 +2840,5 @@ public class ChangeSupport
 		String getAspectName() {
 			return null;
 		}
-
 	}
-
 }

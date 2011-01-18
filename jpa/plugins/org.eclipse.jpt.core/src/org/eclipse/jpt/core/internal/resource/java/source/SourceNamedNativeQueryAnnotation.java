@@ -9,18 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleTypeStringExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableQueryHintAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -33,31 +31,36 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.NamedNativeQuery
+ * <code>javax.persistence.NamedNativeQuery</code>
  */
 public final class SourceNamedNativeQueryAnnotation
-	extends SourceBaseNamedQueryAnnotation
+	extends SourceQueryAnnotation
 	implements NestableNamedNativeQueryAnnotation
 {
 	public static final SimpleDeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
-	private final AnnotationElementAdapter<String> resultClassAdapter;
+	private DeclarationAnnotationElementAdapter<String> resultClassDeclarationAdapter;
+	private AnnotationElementAdapter<String> resultClassAdapter;
 	private String resultClass;
 
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
 	private String fullyQualifiedResultClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqResultClassNameStale = true;
 
-	private final DeclarationAnnotationElementAdapter<String> resultSetMappingDeclarationAdapter;
-	private final AnnotationElementAdapter<String> resultSetMappingAdapter;
+	private DeclarationAnnotationElementAdapter<String> resultSetMappingDeclarationAdapter;
+	private AnnotationElementAdapter<String> resultSetMappingAdapter;
 	private String resultSetMapping;
 
 
 	public SourceNamedNativeQueryAnnotation(JavaResourceNode parent, Type type, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, type, daa, annotationAdapter);
-		this.resultClassDeclarationAdapter = this.buildResultClassAdapter(daa);
-		this.resultClassAdapter = this.buildAdapter(this.resultClassDeclarationAdapter);
+		this.resultClassDeclarationAdapter = this.buildResultClassDeclarationAdapter();
+		this.resultClassAdapter = this.buildResultClassAdapter();
 		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
-		this.resultSetMappingAdapter = this.buildAdapter(this.resultSetMappingDeclarationAdapter);
+		this.resultSetMappingAdapter = this.buildResultSetMappingAdapter();
 	}
 
 	public String getAnnotationName() {
@@ -68,7 +71,6 @@ public final class SourceNamedNativeQueryAnnotation
 	public void initialize(CompilationUnit astRoot) {
 		super.initialize(astRoot);
 		this.resultClass = this.buildResultClass(astRoot);
-		this.fullyQualifiedResultClassName = this.buildFullyQualifiedResultClassName(astRoot);
 		this.resultSetMapping = this.buildResultSetMapping(astRoot);
 	}
 
@@ -76,7 +78,6 @@ public final class SourceNamedNativeQueryAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		super.synchronizeWith(astRoot);
 		this.syncResultClass(this.buildResultClass(astRoot));
-		this.syncFullyQualifiedResultClassName(this.buildFullyQualifiedResultClassName(astRoot));
 		this.syncResultSetMapping(this.buildResultSetMapping(astRoot));
 	}
 
@@ -114,13 +115,21 @@ public final class SourceNamedNativeQueryAnnotation
 	public void setResultClass(String resultClass) {
 		if (this.attributeValueHasChanged(this.resultClass, resultClass)) {
 			this.resultClass = resultClass;
+			this.fqResultClassNameStale = true;
 			this.resultClassAdapter.setValue(resultClass);
 		}
 	}
 
 	private void syncResultClass(String astResultClass) {
+		if (this.attributeValueHasChanged(this.resultClass, astResultClass)) {
+			this.syncResultClass_(astResultClass);
+		}
+	}
+
+	private void syncResultClass_(String astResultClass) {
 		String old = this.resultClass;
 		this.resultClass = astResultClass;
+		this.fqResultClassNameStale = true;
 		this.firePropertyChanged(RESULT_CLASS_PROPERTY, old, astResultClass);
 	}
 
@@ -132,23 +141,29 @@ public final class SourceNamedNativeQueryAnnotation
 		return this.getElementTextRange(this.resultClassDeclarationAdapter, astRoot);
 	}
 
-	private DeclarationAnnotationElementAdapter<String> buildResultClassAdapter(DeclarationAnnotationAdapter daAdapter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(daAdapter, JPA.NAMED_NATIVE_QUERY__RESULT_CLASS, SimpleTypeStringExpressionConverter.instance());
+	private DeclarationAnnotationElementAdapter<String> buildResultClassDeclarationAdapter() {
+		return new ConversionDeclarationAnnotationElementAdapter<String>(this.daa, JPA.NAMED_NATIVE_QUERY__RESULT_CLASS, SimpleTypeStringExpressionConverter.instance());
+	}
+
+	private AnnotationElementAdapter<String> buildResultClassAdapter() {
+		return this.buildStringElementAdapter(this.resultClassDeclarationAdapter);
 	}
 
 	// ***** fully-qualified result class name
 	public String getFullyQualifiedResultClassName()  {
+		if (this.fqResultClassNameStale) {
+			this.fullyQualifiedResultClassName = this.buildFullyQualifiedResultClassName();
+			this.fqResultClassNameStale = false;
+		}
 		return this.fullyQualifiedResultClassName;
 	}
 
-	private void syncFullyQualifiedResultClassName(String astName) {
-		String old = this.fullyQualifiedResultClassName;
-		this.fullyQualifiedResultClassName = astName;
-		this.firePropertyChanged(FULLY_QUALIFIED_RESULT_CLASS_NAME_PROPERTY, old, astName);
+	private String buildFullyQualifiedResultClassName() {
+		return (this.resultClass == null) ? null : this.buildFullyQualifiedResultClassName_();
 	}
 
-	private String buildFullyQualifiedResultClassName(CompilationUnit astRoot) {
-		return (this.resultClass == null) ? null : ASTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedResultClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.resultClassAdapter.getExpression(this.buildASTRoot()));
 	}
 
 	// ***** result set mapping
@@ -181,15 +196,43 @@ public final class SourceNamedNativeQueryAnnotation
 		return ConversionDeclarationAnnotationElementAdapter.forStrings(daAdapter, JPA.NAMED_NATIVE_QUERY__RESULT_SET_MAPPING);
 	}
 
+	private AnnotationElementAdapter<String> buildResultSetMappingAdapter() {
+		return this.buildStringElementAdapter(this.resultSetMappingDeclarationAdapter);
+	}
 
-	// ********** NestableAnnotation implementation **********
+
+	// ********** misc **********
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		NamedNativeQueryAnnotation oldQuery = (NamedNativeQueryAnnotation) oldAnnotation;
-		this.setResultClass(oldQuery.getResultClass());
-		this.setResultSetMapping(oldQuery.getResultSetMapping());
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.resultClass == null) &&
+				(this.resultSetMapping == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.resultClassDeclarationAdapter = this.buildResultClassDeclarationAdapter();
+		this.resultClassAdapter = this.buildResultClassAdapter();
+		this.resultSetMappingDeclarationAdapter = this.buildResultSetMappingAdapter(daa);
+		this.resultSetMappingAdapter = this.buildResultSetMappingAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(RESULT_CLASS_PROPERTY, this.resultClass);
+		this.resultClass = null;
+		map.put(RESULT_SET_MAPPING_PROPERTY, this.resultSetMapping);
+		this.resultSetMapping = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setResultClass((String) map.get(RESULT_CLASS_PROPERTY));
+		this.setResultSetMapping((String) map.get(RESULT_SET_MAPPING_PROPERTY));
 	}
 
 
@@ -200,13 +243,8 @@ public final class SourceNamedNativeQueryAnnotation
 	}
 
 	static SourceNamedNativeQueryAnnotation createNestedNamedNativeQuery(JavaResourceNode parent, Type type, int index, DeclarationAnnotationAdapter attributeOverridesAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, attributeOverridesAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(type, idaa);
 		return new SourceNamedNativeQueryAnnotation(parent, type, idaa, annotationAdapter);
 	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter namedQueriesAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(namedQueriesAdapter, index, JPA.NAMED_NATIVE_QUERY);
-	}
-
 }

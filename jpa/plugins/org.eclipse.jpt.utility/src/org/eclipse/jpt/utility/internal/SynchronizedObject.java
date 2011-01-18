@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.utility.internal;
 
 import java.io.Serializable;
 import org.eclipse.jpt.utility.Command;
+import org.eclipse.jpt.utility.ObjectReference;
 
 /**
  * This class provides synchronized access to an object of type <code>V</code>.
@@ -19,10 +20,10 @@ import org.eclipse.jpt.utility.Command;
  * with optional time-outs.
  * 
  * @parm V the type of the synchronized object's value
- * @see ObjectReference
+ * @see SimpleObjectReference
  */
 public class SynchronizedObject<V>
-	implements Cloneable, Serializable
+	implements ObjectReference<V>, Cloneable, Serializable
 {
 	/** Backing value. */
 	private V value;
@@ -66,45 +67,26 @@ public class SynchronizedObject<V>
 
 	// ********** accessors **********
 
-	/**
-	 * Return the current value.
-	 */
 	public V getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
 	}
 
-	/**
-	 * Return whether the current value is equal to the specified value.
-	 */
-	public boolean valueEquals(V v) {
-		synchronized (this.mutex) {
-			return Tools.valuesAreEqual(this.value, v);
-		}
+	public boolean valueEquals(Object object) {
+		return Tools.valuesAreEqual(this.getValue(), object);
 	}
 
-	/**
-	 * Return whether the current value is not equal to the specified value.
-	 */
-	public boolean valueNotEqual(V v) {
-		synchronized (this.mutex) {
-			return Tools.valuesAreDifferent(this.value, v);
-		}
+	public boolean valueNotEqual(Object object) {
+		return Tools.valuesAreDifferent(this.getValue(), object);
 	}
 
-	/**
-	 * Return whether the current value is <code>null</code>.
-	 */
 	public boolean isNull() {
 		synchronized (this.mutex) {
 			return this.value == null;
 		}
 	}
 
-	/**
-	 * Return whether the current value is not <code>null</code>.
-	 */
 	public boolean isNotNull() {
 		synchronized (this.mutex) {
 			return this.value != null;
@@ -126,10 +108,22 @@ public class SynchronizedObject<V>
 	 */
 	private V setValue_(V v) {
 		V old = this.value;
-		if (this.value != v) {
-			this.value = v;
-			this.mutex.notifyAll();
-		}
+		return Tools.valuesAreEqual(old, v) ? old : this.setValue_(v, old);
+	}
+
+	/**
+	 * Pre-condition: synchronized and new value is different
+	 */
+	private V setChangedValue_(V v) {
+		return this.setValue_(v, this.value);
+	}
+
+	/**
+	 * Pre-condition: synchronized and new value is different
+	 */
+	private V setValue_(V v, V old) {
+		this.value = v;
+		this.mutex.notifyAll();
 		return old;
 	}
 
@@ -239,7 +233,7 @@ public class SynchronizedObject<V>
 	public V waitToSetValue(V v) throws InterruptedException {
 		synchronized (this.mutex) {
 			this.waitUntilValueIsNot_(v);
-			return this.setValue_(v);
+			return this.setChangedValue_(v);
 		}
 	}
 
@@ -303,7 +297,7 @@ public class SynchronizedObject<V>
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
-		return (this.value == v);
+		return Tools.valuesAreEqual(this.value, v);
 	}
 
 	/**
@@ -336,7 +330,7 @@ public class SynchronizedObject<V>
 			this.mutex.wait(remaining);
 			remaining = stop - System.currentTimeMillis();
 		}
-		return (this.value != v);
+		return Tools.valuesAreDifferent(this.value, v);
 	}
 
 	/**
@@ -383,7 +377,7 @@ public class SynchronizedObject<V>
 		synchronized (this.mutex) {
 			boolean success = this.waitUntilValueIsNot_(v, timeout);
 			if (success) {
-				this.setValue_(v);
+				this.setChangedValue_(v);
 			}
 			return success;
 		}
@@ -462,18 +456,6 @@ public class SynchronizedObject<V>
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return (obj instanceof SynchronizedObject<?>) &&
-			Tools.valuesAreEqual(this.getValue(), ((SynchronizedObject<?>) obj).getValue());
-	}
-
-	@Override
-	public int hashCode() {
-		Object v = this.getValue();
-		return (v == null) ? 0 : v.hashCode();
 	}
 
 	@Override

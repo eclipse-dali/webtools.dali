@@ -110,26 +110,6 @@ public class SynchronizedBooleanTests
 		assertSame(mutex, syncBool.getMutex());
 	}
 
-	public void testEquals() throws Exception {
-		this.sb.setValue(false);
-		SynchronizedBoolean sb2 = new SynchronizedBoolean(false);
-		assertEquals(this.sb, sb2);
-
-		this.sb.setValue(true);
-		assertFalse(this.sb.equals(sb2));
-
-		sb2.setValue(true);
-		assertEquals(this.sb, sb2);
-	}
-
-	public void testHashCode() {
-		this.sb.setValue(false);
-		assertEquals(0, this.sb.hashCode());
-
-		this.sb.setValue(true);
-		assertEquals(1, this.sb.hashCode());
-	}
-
 	/**
 	 * t2 will wait indefinitely until t1 sets the value to true
 	 */

@@ -17,7 +17,6 @@ import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
@@ -113,19 +112,6 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("foo", table.getName());
 	}
 	
-	public void testSetSpecifiedNameNull() throws Exception {
-		createTestEntityWithSecondaryTable();
-		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-
-		SecondaryTable secondaryTable = getJavaEntity().secondaryTables().next();
-		secondaryTable.setSpecifiedName(null);
-		
-		assertEquals(0, getJavaEntity().secondaryTablesSize());
-		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
-	}
-	
 	public void testUpdateFromSpecifiedNameChangeInResourceModel() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
@@ -201,12 +187,8 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		table.setSpecifiedName(null);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
-		
-		assertEquals("myCatalog", tableResource.getCatalog());
-		
-		table.setSpecifiedCatalog(null);
-		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		SecondaryTableAnnotation tableAnnotation = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
+		assertEquals("myCatalog", tableAnnotation.getCatalog());
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -242,19 +224,15 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		table.setSpecifiedName(null);
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		SecondaryTableAnnotation tableResource = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
-		
-		assertEquals("mySchema", tableResource.getSchema());
-		
-		table.setSpecifiedSchema(null);
-		assertNull(typeResource.getAnnotation(JPA.SECONDARY_TABLE));
+		SecondaryTableAnnotation tableAnnotation = (SecondaryTableAnnotation) typeResource.getAnnotation(JPA.SECONDARY_TABLE);
+		assertEquals("mySchema", tableAnnotation.getSchema());
 	}
 
 	public void testSpecifiedPrimaryKeyJoinColumns() throws Exception {
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		ListIterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		
 		assertFalse(specifiedPkJoinColumns.hasNext());
@@ -368,12 +346,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("BAZ");
 		
-		Iterator<PrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
+		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
@@ -392,13 +370,13 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		Iterator<PrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
+		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
@@ -416,7 +394,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
@@ -434,7 +412,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", pkJoinColumnResources.next().getName());
 		assertFalse(pkJoinColumnResources.hasNext());
 		
-		Iterator<PrimaryKeyJoinColumn> pkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
+		Iterator<JavaPrimaryKeyJoinColumn> pkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("FOO", pkJoinColumns.next().getName());		
 		assertEquals("BAZ", pkJoinColumns.next().getName());
 		assertFalse(pkJoinColumns.hasNext());
@@ -463,12 +441,12 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0).setSpecifiedName("FOO");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(1).setSpecifiedName("BAR");
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(2).setSpecifiedName("BAZ");
 		
-		Iterator<PrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
+		Iterator<JavaPrimaryKeyJoinColumn> specifiedPkJoinColumns = secondaryTable.specifiedPrimaryKeyJoinColumns();
 		assertEquals("FOO", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAR", specifiedPkJoinColumns.next().getName());
 		assertEquals("BAZ", specifiedPkJoinColumns.next().getName());
@@ -501,7 +479,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		//remove @Id annotation
 		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
-		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultName());
 	}
@@ -515,7 +493,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		//remove @Id annotation
 		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
-		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(defaultPkJoinColumn.getDefaultReferencedColumnName());
 	}
@@ -525,11 +503,11 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		
-		assertTrue(secondaryTable.getDefaultPrimaryKeyJoinColumn().isVirtual());
+		assertTrue(secondaryTable.getDefaultPrimaryKeyJoinColumn().isDefault());
 		
 		secondaryTable.addSpecifiedPrimaryKeyJoinColumn(0);
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = secondaryTable.specifiedPrimaryKeyJoinColumns().next();
-		assertFalse(specifiedPkJoinColumn.isVirtual());
+		assertFalse(specifiedPkJoinColumn.isDefault());
 		
 		assertNull(secondaryTable.getDefaultPrimaryKeyJoinColumn());
 	}
@@ -539,7 +517,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
@@ -552,8 +530,8 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		uniqueConstraints = secondaryTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("bar", uniqueConstraints.next().columnNames().next());
-		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -616,7 +594,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -633,9 +611,9 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 		
-		Iterator<UniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		Iterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
@@ -645,7 +623,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraintAnnotations.hasNext());
 
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
@@ -660,7 +638,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		secondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		secondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		secondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -672,10 +650,10 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		
 		
 		secondaryTable.moveUniqueConstraint(2, 0);
-		ListIterator<UniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		ListIterator<UniqueConstraintAnnotation> uniqueConstraintAnnotations = secondaryTableAnnotation.uniqueConstraints();
 		assertEquals("BAR", uniqueConstraintAnnotations.next().columnNames().next());
@@ -685,9 +663,9 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 
 		secondaryTable.moveUniqueConstraint(0, 1);
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		uniqueConstraintAnnotations = secondaryTableAnnotation.uniqueConstraints();
 		assertEquals("BAZ", uniqueConstraintAnnotations.next().columnNames().next());
@@ -699,7 +677,7 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		createTestEntityWithSecondaryTable();
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		SecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
+		JavaSecondaryTable secondaryTable = getJavaEntity().specifiedSecondaryTables().next();
 		JavaResourcePersistentType resourcePersistentType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		SecondaryTableAnnotation secondaryTableAnnotation = (SecondaryTableAnnotation) resourcePersistentType.getAnnotation(JPA.SECONDARY_TABLE);
 	
@@ -709,39 +687,39 @@ public class JavaSecondaryTableTests extends ContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 
 		
-		ListIterator<UniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		ListIterator<JavaUniqueConstraint> uniqueConstraints = secondaryTable.uniqueConstraints();
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableAnnotation.moveUniqueConstraint(2, 0);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.moveUniqueConstraint(0, 1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableAnnotation.removeUniqueConstraint(1);
 		getJpaProject().synchronizeContextModel();
 		uniqueConstraints = secondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableAnnotation.removeUniqueConstraint(0);

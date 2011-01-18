@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaJoinColumnTests extends ContextModelTestCase
 {
 	public JavaJoinColumnTests(String name) {
@@ -95,28 +96,28 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
 		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
 	
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) resourceAttribute.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		
 		assertEquals(0, joinColumns.specifiedJoinColumnsSize());
-		assertNull(javaJoinColumn);
+		assertNull(joinColumnAnnotation);
 		
 		
 		//set name in the resource model, verify context model updated
-		javaJoinColumn = (JoinColumnAnnotation) attributeResource.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
-		javaJoinColumn.setName("FOO");	
+		joinColumnAnnotation = (JoinColumnAnnotation) resourceAttribute.addAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+		joinColumnAnnotation.setName("FOO");	
 		getJpaProject().synchronizeContextModel();
 		JavaJoinColumn joinColumn = joinColumns.specifiedJoinColumns().next();
 		assertEquals("FOO", joinColumn.getSpecifiedName());
-		assertEquals("FOO", javaJoinColumn.getName());
+		assertEquals("FOO", joinColumnAnnotation.getName());
 	
-		//set name to null in the resource model, annotation removed, specified join column removed
-		javaJoinColumn.setName(null);
-		getJpaProject().synchronizeContextModel();
-		assertEquals(0, joinColumns.specifiedJoinColumnsSize());
-		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		//set name to null, annotation is NOT removed
+		joinColumn.setSpecifiedName(null);
+		assertEquals(1, joinColumns.specifiedJoinColumnsSize());
+		joinColumnAnnotation = (JoinColumnAnnotation) resourceAttribute.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+		assertNull(joinColumnAnnotation.getName());
 	}
 	
 	public void testModifySpecifiedName() throws Exception {
@@ -126,21 +127,22 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
 		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
 
 		
 		JavaJoinColumn joinColumn = joinColumns.addSpecifiedJoinColumn(0);
 		//set name in the context model, verify resource model modified
 		joinColumn.setSpecifiedName("foo");
-		JoinColumnAnnotation javaJoinColumn = (JoinColumnAnnotation) attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+		JoinColumnAnnotation joinColumnAnnotation = (JoinColumnAnnotation) resourceAttribute.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", joinColumn.getSpecifiedName());
-		assertEquals("foo", javaJoinColumn.getName());
+		assertEquals("foo", joinColumnAnnotation.getName());
 		
 		//set name to null in the context model
 		joinColumn.setSpecifiedName(null);
 		assertNull(joinColumn.getSpecifiedName());
-		assertNull(attributeResource.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME));
+		joinColumnAnnotation = (JoinColumnAnnotation) resourceAttribute.getAnnotation(JoinColumnAnnotation.ANNOTATION_NAME);
+		assertNull(joinColumnAnnotation.getName());
 	}
 	
 	// <attribute name>_<referenced column name>

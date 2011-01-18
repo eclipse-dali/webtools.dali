@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,17 +14,18 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
+import org.eclipse.jpt.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.AbstractAdapter;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.widgets.PostExecution;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -54,7 +55,6 @@ import org.eclipse.swt.widgets.Group;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see Entity
- * @see InheritanceComposite - The container of this pane
  *
  * @version 2.0
  * @since 2.0
@@ -63,28 +63,18 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 {
 	protected WritablePropertyValueModel<PrimaryKeyJoinColumn> joinColumnHolder;
 
-	/**
-	 * Creates a new <code>PrimaryKeyJoinColumnsComposite</code>.
-	 *
-	 * @param parentPane The parent controller of this one
-	 * @param parent The parent container
-	 */
 	public AbstractPrimaryKeyJoinColumnsComposite(Pane<? extends T> subjectHolder,
 	                                      Composite parent) {
 
 		super(subjectHolder, parent, false);
 	}
 
-	private void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
-
-		Entity subject = getSubject();
-		int index = subject.specifiedPrimaryKeyJoinColumnsSize();
-
-		PrimaryKeyJoinColumn joinColumn = subject.addSpecifiedPrimaryKeyJoinColumn(index);
+	void addJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
+		PrimaryKeyJoinColumn joinColumn = getSubject().addSpecifiedPrimaryKeyJoinColumn();
 		stateObject.updateJoinColumn(joinColumn);
 	}
 
-	private void addPrimaryKeyJoinColumn() {
+	void addPrimaryKeyJoinColumn() {
 
 		PrimaryKeyJoinColumnDialog dialog = new PrimaryKeyJoinColumnDialog(
 			getShell(),
@@ -105,7 +95,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		};
 	}
 
-	protected abstract ListValueModel<? extends PrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
+	protected abstract ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn> buildDefaultJoinColumnsListHolder();
 
 	private PostExecution<PrimaryKeyJoinColumnDialog> buildEditPrimaryKeyJoinColumnPostExecution() {
 		return new PostExecution<PrimaryKeyJoinColumnDialog>() {
@@ -121,8 +111,8 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		return new SimplePropertyValueModel<PrimaryKeyJoinColumn>();
 	}
 
-	private String buildJoinColumnLabel(PrimaryKeyJoinColumn joinColumn) {
-		if (joinColumn.isVirtual()) {
+	String buildJoinColumnLabel(ReadOnlyPrimaryKeyJoinColumn joinColumn) {
+		if (joinColumn.isDefault()) {
 			return NLS.bind(
 				JptUiDetailsMessages.PrimaryKeyJoinColumnsComposite_mappingBetweenTwoParamsDefault,
 				joinColumn.getName(),
@@ -198,7 +188,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		return new LabelProvider() {
 			@Override
 			public String getText(Object element) {
-				return buildJoinColumnLabel((PrimaryKeyJoinColumn) element);
+				return buildJoinColumnLabel((ReadOnlyPrimaryKeyJoinColumn) element);
 			}
 		};
 	}
@@ -207,28 +197,29 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		return new OverrideDefaultJoinColumnHolder();
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
-		List<ListValueModel<? extends PrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends PrimaryKeyJoinColumn>>();
+	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListHolder() {
+		List<ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn>> list = new ArrayList<ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn>>();
 		list.add(buildSpecifiedJoinColumnsListHolder());
 		list.add(buildDefaultJoinColumnsListHolder());
-		return new CompositeListValueModel<ListValueModel<? extends PrimaryKeyJoinColumn>, PrimaryKeyJoinColumn>(list);
+		return new CompositeListValueModel<ListValueModel<? extends ReadOnlyPrimaryKeyJoinColumn>, ReadOnlyPrimaryKeyJoinColumn>(list);
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
-		return new ItemPropertyListValueModelAdapter<PrimaryKeyJoinColumn>(
+	private ListValueModel<ReadOnlyPrimaryKeyJoinColumn> buildPrimaryKeyJoinColumnsListModel() {
+		return new ItemPropertyListValueModelAdapter<ReadOnlyPrimaryKeyJoinColumn>(
 			buildPrimaryKeyJoinColumnsListHolder(),
-			NamedColumn.SPECIFIED_NAME_PROPERTY,
-			NamedColumn.DEFAULT_NAME_PROPERTY,
-			BaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
-			BaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
+			ReadOnlyNamedColumn.SPECIFIED_NAME_PROPERTY,
+			ReadOnlyNamedColumn.DEFAULT_NAME_PROPERTY,
+			ReadOnlyBaseJoinColumn.SPECIFIED_REFERENCED_COLUMN_NAME_PROPERTY,
+			ReadOnlyBaseJoinColumn.DEFAULT_REFERENCED_COLUMN_NAME_PROPERTY
 		);
 	}
 
-	private ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
+	ListValueModel<PrimaryKeyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
 		return new ListAspectAdapter<Entity, PrimaryKeyJoinColumn>(getSubjectHolder(), Entity.SPECIFIED_PRIMARY_KEY_JOIN_COLUMNS_LIST) {
 			@Override
+			@SuppressWarnings("unchecked")
 			protected ListIterator<PrimaryKeyJoinColumn> listIterator_() {
-				return subject.specifiedPrimaryKeyJoinColumns();
+				return (ListIterator<PrimaryKeyJoinColumn>) subject.specifiedPrimaryKeyJoinColumns();
 			}
 
 			@Override
@@ -238,11 +229,11 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		};
 	}
 
-	private void editJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
+	void editJoinColumn(PrimaryKeyJoinColumnStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	private void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
+	void editPrimaryKeyJoinColumn(ObjectListSelectionModel listSelectionModel) {
 
 		PrimaryKeyJoinColumn joinColumn = (PrimaryKeyJoinColumn) listSelectionModel.selectedValue();
 
@@ -305,7 +296,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		);
 	}
 
-	private void updateJoinColumns(boolean selected) {
+	void updateJoinColumns(boolean selected) {
 
 		if (isPopulating()) {
 			return;
@@ -347,7 +338,7 @@ public abstract class AbstractPrimaryKeyJoinColumnsComposite<T extends Entity> e
 		}
 
 		public void setValue(Boolean value) {
-			updateJoinColumns(value);
+			updateJoinColumns(value.booleanValue());
 		}
 	}
 }

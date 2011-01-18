@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.SingleRelationshipMapping;
+import org.eclipse.jpt.core.resource.java.SingleRelationshipMappingAnnotation;
 
 /**
+ * Java single (m:1, 1:1) mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,7 +25,7 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * @since 2.0
  */
 public interface JavaSingleRelationshipMapping
-	extends JavaRelationshipMapping, SingleRelationshipMapping
+	extends SingleRelationshipMapping, JavaRelationshipMapping
 {
-	
+	SingleRelationshipMappingAnnotation getMappingAnnotation();
 }

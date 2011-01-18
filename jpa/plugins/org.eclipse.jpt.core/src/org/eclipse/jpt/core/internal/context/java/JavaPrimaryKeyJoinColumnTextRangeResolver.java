@@ -17,8 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaPrimaryKeyJoinColumnTextRangeResolver
 	extends JavaNamedColumnTextRangeResolver
-	implements
-		BaseJoinColumnTextRangeResolver
+	implements BaseJoinColumnTextRangeResolver
 {
 
 	public JavaPrimaryKeyJoinColumnTextRangeResolver(JavaPrimaryKeyJoinColumn column, CompilationUnit astRoot) {

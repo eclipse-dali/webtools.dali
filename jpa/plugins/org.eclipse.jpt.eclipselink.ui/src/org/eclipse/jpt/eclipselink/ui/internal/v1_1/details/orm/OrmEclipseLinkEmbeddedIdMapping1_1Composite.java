@@ -11,9 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
@@ -23,11 +21,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkEmbeddedIdMapping1_1Composite
-	extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
-	implements JpaComposite
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
 {
 	public OrmEclipseLinkEmbeddedIdMapping1_1Composite(
-			PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		

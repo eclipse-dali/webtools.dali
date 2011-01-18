@@ -156,7 +156,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("(name", cu);
 	}
 	
 	public void testGetTable() throws Exception {
@@ -183,7 +183,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setTable(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("table", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -210,7 +210,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("columnDefinition", cu);
 	}
 
 	public void testGetUnique() throws Exception {
@@ -237,7 +237,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(unique = false)", cu);
 		
 		column.setUnique(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("unique", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
@@ -264,7 +264,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(nullable = false)", cu);
 		
 		column.setNullable(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("nullable", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
@@ -291,7 +291,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(insertable = false)", cu);
 		
 		column.setInsertable(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("insertable", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
@@ -318,7 +318,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(updatable = false)", cu);
 		
 		column.setUpdatable(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("updatable", cu);
 	}
 
 	public void testGetLength() throws Exception {
@@ -345,7 +345,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(length = 5)", cu);
 		
 		column.setLength(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("length", cu);
 	}
 
 	public void testGetPrecision() throws Exception {
@@ -372,7 +372,7 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(precision = 5)", cu);
 		
 		column.setPrecision(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("precision", cu);
 	}
 
 	public void testGetScale() throws Exception {
@@ -399,6 +399,6 @@ public class ColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Column(scale = 5)", cu);
 		
 		column.setScale(null);
-		assertSourceDoesNotContain("@Column", cu);
+		assertSourceDoesNotContain("scale", cu);
 	}
 }

@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.Column;
-import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.CompleteColumnAnnotation;
 
 /**
- * 
- * 
+ * Java column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,12 +27,14 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 public interface JavaColumn
 	extends Column, JavaBaseColumn
 {
-	void initialize(ColumnAnnotation resourceColumn);
-	
-	/**
-	 * Update the JavaColumn context model object to match the ColumnAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(ColumnAnnotation resourceColumn);
+	CompleteColumnAnnotation getColumnAnnotation();
 
+	// ********** owner **********
+
+	interface Owner
+		extends JavaBaseColumn.Owner
+	{
+		CompleteColumnAnnotation getColumnAnnotation();
+		void removeColumnAnnotation();
+	}
 }

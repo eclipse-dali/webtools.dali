@@ -73,6 +73,14 @@ abstract class SourceGeneratorAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null) &&
+				(this.initialValue == null) &&
+				(this.allocationSize == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}

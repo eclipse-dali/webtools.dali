@@ -10,9 +10,10 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite.JoinColumnsEditor;
@@ -21,6 +22,7 @@ import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.details.db.TableCombo;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.PostExecution;
+import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.CachingTransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListPropertyValueModelAdapter;
@@ -66,18 +68,19 @@ import org.eclipse.swt.widgets.Group;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link JoinTable}
- * @see {@link JoinTableJoiningStrategyPane}
- * @see {@link JoinColumnsComposite
+ * @see JoinTable
+ * @see JoinTableJoiningStrategyPane
+ * @see JoinColumnsComposite
  *
  * @version 2.1
  * @since 1.0
  */
-public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
+public class JoinTableComposite
+	extends ReferenceTableComposite<ReadOnlyJoinTable>
 {
 	private Button overrideDefaultInverseJoinColumnsCheckBox;
 
-	private JoinColumnsComposite<JoinTable> inverseJoinColumnsComposite;
+	private JoinColumnsComposite<ReadOnlyJoinTable> inverseJoinColumnsComposite;
 	/**
 	 * Creates a new <code>JoinTableComposite</code>.
 	 *
@@ -87,7 +90,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 	 */
 	public JoinTableComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends JoinTable> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyJoinTable> subjectHolder,
 			Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -100,7 +103,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public JoinTableComposite(PropertyValueModel<? extends JoinTable> subjectHolder,
+	public JoinTableComposite(PropertyValueModel<? extends ReadOnlyJoinTable> subjectHolder,
 	                          Composite parent,
 	                          WidgetFactory widgetFactory) {
 
@@ -108,8 +111,8 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 	}
 
 	@Override
-	protected boolean isParentVirtual(JoinTable joinTable) {
-		return joinTable.getParent().getRelationshipReference().isParentVirtual();
+	protected boolean tableIsVirtual(ReadOnlyJoinTable joinTable) {
+		return joinTable.getParent().getRelationshipReference().isVirtual();
 	}
 	@Override
 	protected void initializeLayout(Composite container) {
@@ -117,7 +120,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		int groupBoxMargin = getGroupBoxMargin();
 
 		// Name widgets
-		TableCombo<JoinTable> tableCombo = addTableCombo(container);
+		TableCombo<ReadOnlyJoinTable> tableCombo = addTableCombo(container);
 		Composite tablePane = addPane(container, groupBoxMargin);
 		addLabeledComposite(
 				tablePane,
@@ -127,7 +130,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		);
 		
 		// schema widgets
-		SchemaCombo<JoinTable> schemaCombo = addSchemaCombo(container);
+		SchemaCombo<ReadOnlyJoinTable> schemaCombo = addSchemaCombo(container);
 
 		addLabeledComposite(
 			tablePane,
@@ -137,7 +140,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		);
 		
 		// catalog widgets
-		CatalogCombo<JoinTable> catalogCombo = addCatalogCombo(container);
+		CatalogCombo<ReadOnlyJoinTable> catalogCombo = addCatalogCombo(container);
 
 		addLabeledComposite(
 			tablePane,
@@ -160,7 +163,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 			null
 		);
 
-		this.joinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor()
@@ -182,7 +185,7 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 			null
 		);
 
-		this.inverseJoinColumnsComposite = new JoinColumnsComposite<JoinTable>(
+		this.inverseJoinColumnsComposite = new JoinColumnsComposite<ReadOnlyJoinTable>(
 			this,
 			inverseJoinColumnGroupPane,
 			buildInverseJoinColumnsEditor()
@@ -191,11 +194,11 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		installInverseJoinColumnsPaneEnabler(this.inverseJoinColumnsComposite);
 	}
 
-	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<JoinTable> pane) {
+	private void installInverseJoinColumnsPaneEnabler(JoinColumnsComposite<ReadOnlyJoinTable> pane) {
 		pane.installJoinColumnsPaneEnabler(new InverseJoinColumnPaneEnablerHolder());
 	}
 
-	private void addInverseJoinColumn(JoinTable joinTable) {
+	void addInverseJoinColumn(ReadOnlyJoinTable joinTable) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
 			new InverseJoinColumnInJoinTableDialog(getShell(), joinTable, null);
@@ -203,9 +206,9 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		dialog.openDialog(buildAddInverseJoinColumnPostExecution());
 	}
 
-	private void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
+	void addInverseJoinColumnFromDialog(InverseJoinColumnInJoinTableStateObject stateObject) {
 
-		JoinTable subject = getSubject();
+		JoinTable subject = (JoinTable) getSubject();
 		int index = subject.specifiedInverseJoinColumnsSize();
 
 		JoinColumn joinColumn = subject.addSpecifiedInverseJoinColumn(index);
@@ -246,11 +249,11 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		return new OverrideDefaultInverseJoinColumnHolder();
 	}
 	
-	private ListValueModel<JoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
-		return new ListAspectAdapter<JoinTable, JoinColumn>(getSubjectHolder(), JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
+	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedInverseJoinColumnsListHolder() {
+		return new ListAspectAdapter<ReadOnlyJoinTable, ReadOnlyJoinColumn>(getSubjectHolder(), ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST) {
 			@Override
-			protected ListIterator<JoinColumn> listIterator_() {
-				return this.subject.specifiedInverseJoinColumns();
+			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
+				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedInverseJoinColumns());
 			}
 
 			@Override
@@ -261,11 +264,11 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 	}
 
 
-	private void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
+	void editInverseJoinColumn(InverseJoinColumnInJoinTableStateObject stateObject) {
 		stateObject.updateJoinColumn(stateObject.getJoinColumn());
 	}
 
-	private void editInverseJoinColumn(JoinColumn joinColumn) {
+	void editInverseJoinColumn(ReadOnlyJoinColumn joinColumn) {
 
 		InverseJoinColumnInJoinTableDialog dialog =
 			new InverseJoinColumnInJoinTableDialog(getShell(), getSubject(), joinColumn);
@@ -273,12 +276,12 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		dialog.openDialog(buildEditInverseJoinColumnPostExecution());
 	}
 
-	private void updateInverseJoinColumns() {
+	void updateInverseJoinColumns() {
 		if (this.isPopulating()) {
 			return;
 		}
 		
-		JoinTable joinTable = this.getSubject();
+		JoinTable joinTable = (JoinTable) this.getSubject();
 		if (joinTable == null) {
 			return;
 		}
@@ -300,44 +303,44 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 
 
 
-	private class InverseJoinColumnsProvider implements JoinColumnsEditor<JoinTable> {
+	class InverseJoinColumnsProvider implements JoinColumnsEditor<ReadOnlyJoinTable> {
 
-		public void addJoinColumn(JoinTable subject) {
+		public void addJoinColumn(ReadOnlyJoinTable subject) {
 			JoinTableComposite.this.addInverseJoinColumn(subject);
 		}
 
-		public JoinColumn getDefaultJoinColumn(JoinTable subject) {
+		public ReadOnlyJoinColumn getDefaultJoinColumn(ReadOnlyJoinTable subject) {
 			return subject.getDefaultInverseJoinColumn();
 		}
 
 		public String getDefaultPropertyName() {
-			return JoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
+			return ReadOnlyJoinTable.DEFAULT_INVERSE_JOIN_COLUMN;
 		}
 
-		public void editJoinColumn(JoinTable subject, JoinColumn joinColumn) {
+		public void editJoinColumn(ReadOnlyJoinTable subject, ReadOnlyJoinColumn joinColumn) {
 			JoinTableComposite.this.editInverseJoinColumn(joinColumn);
 		}
 
-		public boolean hasSpecifiedJoinColumns(JoinTable subject) {
+		public boolean hasSpecifiedJoinColumns(ReadOnlyJoinTable subject) {
 			return subject.hasSpecifiedInverseJoinColumns();
 		}
 
-		public void removeJoinColumns(JoinTable subject, int[] selectedIndices) {
-			for (int index = selectedIndices.length; --index >= 0; ) {
-				subject.removeSpecifiedInverseJoinColumn(selectedIndices[index]);
+		public void removeJoinColumns(ReadOnlyJoinTable subject, int[] selectedIndices) {
+			for (int index = selectedIndices.length; index-- > 0; ) {
+				((JoinTable) subject).removeSpecifiedInverseJoinColumn(selectedIndices[index]);
 			}
 		}
 
-		public ListIterator<JoinColumn> specifiedJoinColumns(JoinTable subject) {
-			return subject.specifiedInverseJoinColumns();
+		public ListIterator<ReadOnlyJoinColumn> specifiedJoinColumns(ReadOnlyJoinTable subject) {
+			return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(subject.specifiedInverseJoinColumns());
 		}
 
-		public int specifiedJoinColumnsSize(JoinTable subject) {
+		public int specifiedJoinColumnsSize(ReadOnlyJoinTable subject) {
 			return subject.specifiedInverseJoinColumnsSize();
 		}
 
 		public String getSpecifiedJoinColumnsListPropertyName() {
-			return JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
+			return ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST;
 		}
 	}
 	
@@ -360,16 +363,16 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 
 	
 	private class InverseJoinColumnPaneEnablerHolder 
-		extends CachingTransformationPropertyValueModel<JoinTable, Boolean>
+		extends CachingTransformationPropertyValueModel<ReadOnlyJoinTable, Boolean>
 	{
 		private StateChangeListener stateChangeListener;
 		
 		
 		public InverseJoinColumnPaneEnablerHolder() {
 			super(
-				new ValueListAdapter<JoinTable>(
-					new ReadOnlyWritablePropertyValueModelWrapper(getSubjectHolder()), 
-					JoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST));
+				new ValueListAdapter<ReadOnlyJoinTable>(
+					new ReadOnlyWritablePropertyValueModelWrapper<ReadOnlyJoinTable>(getSubjectHolder()), 
+					ReadOnlyJoinTable.SPECIFIED_INVERSE_JOIN_COLUMNS_LIST));
 			this.stateChangeListener = buildStateChangeListener();
 		}
 		
@@ -377,28 +380,25 @@ public class JoinTableComposite extends ReferenceTableComposite<JoinTable>
 		private StateChangeListener buildStateChangeListener() {
 			return new StateChangeListener() {
 				public void stateChanged(StateChangeEvent event) {
-					valueStateChanged(event);
+					valueStateChanged();
 				}
 			};
 		}
 		
-		private void valueStateChanged(StateChangeEvent event) {
+		void valueStateChanged() {
 			Object oldValue = this.cachedValue;
 			Object newValue = transformNew(this.valueHolder.getValue());
 			firePropertyChanged(VALUE, oldValue, newValue);
 		}
 		
 		@Override
-		protected Boolean transform(JoinTable value) {
-			if (value == null) {
-				return false;
-			}
-			return super.transform(value);
+		protected Boolean transform(ReadOnlyJoinTable value) {
+			return (value == null) ? Boolean.FALSE : super.transform(value);
 		}
 		
 		@Override
-		protected Boolean transform_(JoinTable value) {
-			boolean virtual = JoinTableComposite.this.isParentVirtual(value);
+		protected Boolean transform_(ReadOnlyJoinTable value) {
+			boolean virtual = JoinTableComposite.this.tableIsVirtual(value);
 			return Boolean.valueOf(! virtual && value.specifiedInverseJoinColumnsSize() > 0);
 		}
 		

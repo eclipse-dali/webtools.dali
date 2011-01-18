@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,20 +18,18 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
- * javax.persistence.Table
- * javax.persistence.JoinTable
+ * <ul>
+ * <li><code>javax.persistence.Table</code>
+ * <li><code>javax.persistence.JoinTable</code>
+ * <li><code>javax.persistence.CollectionTable</code>
+ * <ul>
  */
-public abstract class NullBaseTableAnnotation
-	extends NullAnnotation
+public abstract class NullBaseTableAnnotation<A extends BaseTableAnnotation>
+	extends NullAnnotation<A>
 	implements BaseTableAnnotation
 {
 	protected NullBaseTableAnnotation(JavaResourceNode parent) {
 		super(parent);
-	}
-	
-	@Override
-	protected BaseTableAnnotation addAnnotation() {
-		return (BaseTableAnnotation) super.addAnnotation();
 	}
 	
 	public boolean isSpecified() {
@@ -123,5 +121,4 @@ public abstract class NullBaseTableAnnotation
 	public void removeUniqueConstraint(int index) {
 		throw new UnsupportedOperationException();
 	}
-
 }

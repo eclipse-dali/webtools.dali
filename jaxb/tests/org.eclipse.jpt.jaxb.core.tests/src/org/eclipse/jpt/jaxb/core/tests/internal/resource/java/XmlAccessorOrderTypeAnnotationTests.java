@@ -90,7 +90,5 @@ public class XmlAccessorOrderTypeAnnotationTests
 
 		xmlAccessorOrderAnnotation.setValue(null);
 		assertNull(xmlAccessorOrderAnnotation.getValue());
-
-		assertSourceDoesNotContain("@XmlAccessorOrder", cu);
 	}
 }

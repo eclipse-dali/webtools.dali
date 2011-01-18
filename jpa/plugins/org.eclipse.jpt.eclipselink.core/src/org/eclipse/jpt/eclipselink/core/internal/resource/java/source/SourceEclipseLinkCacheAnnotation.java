@@ -52,29 +52,29 @@ public final class SourceEclipseLinkCacheAnnotation
 	private final AnnotationElementAdapter<Boolean> sharedAdapter;
 	private Boolean shared;
 
+	private static final DeclarationAnnotationElementAdapter<Boolean> ALWAYS_REFRESH_ADAPTER = buildAlwaysRefreshAdapter();
+	private final AnnotationElementAdapter<Boolean> alwaysRefreshAdapter;
+	private Boolean alwaysRefresh;
+
+	private static final DeclarationAnnotationElementAdapter<Boolean> REFRESH_ONLY_IF_NEWER_ADAPTER = buildRefreshOnlyIfNewerAdapter();
+	private final AnnotationElementAdapter<Boolean> refreshOnlyIfNewerAdapter;
+	private Boolean refreshOnlyIfNewer;
+
+	private static final DeclarationAnnotationElementAdapter<Boolean> DISABLE_HITS_ADAPTER = buildDisableHitsAdapter();
+	private final AnnotationElementAdapter<Boolean> disableHitsAdapter;
+	private Boolean disableHits;
+
+	private static final DeclarationAnnotationElementAdapter<String> COORDINATION_TYPE_ADAPTER = buildCoordinationTypeAdapter();
+	private final AnnotationElementAdapter<String> coordinationTypeAdapter;
+	private CacheCoordinationType coordinationType;
+
 	private static final DeclarationAnnotationElementAdapter<Integer> EXPIRY_ADAPTER = buildExpiryAdapter();
 	private final AnnotationElementAdapter<Integer> expiryAdapter;
 	private Integer expiry;
 
-	private static final DeclarationAnnotationElementAdapter<Boolean> ALWAYS_REFRESH_ADAPTER = buildAlwaysRefreshAdapter();
-	private final AnnotationElementAdapter<Boolean> alwaysRefreshAdapter;
-	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
-
-	private static final DeclarationAnnotationElementAdapter<Boolean> REFRESH_ONLY_IF_NEWER_ADAPTER = buildRefreshOnlyIfNewerAdapter();
-	private final AnnotationElementAdapter<Boolean> refreshOnlyIfNewerAdapter;
-	private Boolean alwaysRefresh;
-
-	private static final DeclarationAnnotationElementAdapter<Boolean> DISABLE_HITS_ADAPTER = buildDisableHitsAdapter();
-	private final AnnotationElementAdapter<Boolean> disableHitsAdapter;
-	private Boolean refreshOnlyIfNewer;
-
-	private static final DeclarationAnnotationElementAdapter<String> COORDINATION_TYPE_ADAPTER = buildCoordinationTypeAdapter();
-	private final AnnotationElementAdapter<String> coordinationTypeAdapter;
-	private Boolean disableHits;
-
 	private static final NestedDeclarationAnnotationAdapter EXPIRY_TIME_OF_DAY_ADAPTER = buildExpiryTimeOfDayAdapter();
 	private final ElementAnnotationAdapter expiryTimeOfDayAdapter;
-	private CacheCoordinationType coordinationType;
+	private EclipseLinkTimeOfDayAnnotation expiryTimeOfDay;
 
 
 	public SourceEclipseLinkCacheAnnotation(JavaResourcePersistentType parent, Type type) {
@@ -82,11 +82,11 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.typeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, TYPE_ADAPTER);
 		this.sizeAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, SIZE_ADAPTER);
 		this.sharedAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, SHARED_ADAPTER);
-		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
 		this.alwaysRefreshAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, ALWAYS_REFRESH_ADAPTER);
 		this.refreshOnlyIfNewerAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, REFRESH_ONLY_IF_NEWER_ADAPTER);
 		this.disableHitsAdapter = new AnnotatedElementAnnotationElementAdapter<Boolean>(type, DISABLE_HITS_ADAPTER);
 		this.coordinationTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, COORDINATION_TYPE_ADAPTER);
+		this.expiryAdapter = new AnnotatedElementAnnotationElementAdapter<Integer>(type, EXPIRY_ADAPTER);
 		this.expiryTimeOfDayAdapter = new ElementAnnotationAdapter(type, EXPIRY_TIME_OF_DAY_ADAPTER);
 	}
 
@@ -98,12 +98,12 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.type = this.buildType(astRoot);
 		this.size = this.buildSize(astRoot);
 		this.shared = this.buildShared(astRoot);
-		this.expiry = this.buildExpiry(astRoot);
-		this.initializeExpiryTimeOfDay(astRoot);
 		this.alwaysRefresh = this.buildAlwaysRefresh(astRoot);
 		this.refreshOnlyIfNewer = this.buildRefreshOnlyIfNewer(astRoot);
 		this.disableHits = this.buildDisableHits(astRoot);
 		this.coordinationType = this.buildCoordinationType(astRoot);
+		this.expiry = this.buildExpiry(astRoot);
+		this.initializeExpiryTimeOfDay(astRoot);
 	}
 
 	private void initializeExpiryTimeOfDay(CompilationUnit astRoot) {
@@ -117,12 +117,26 @@ public final class SourceEclipseLinkCacheAnnotation
 		this.syncType(this.buildType(astRoot));
 		this.syncSize(this.buildSize(astRoot));
 		this.syncShared(this.buildShared(astRoot));
-		this.syncExpiry(this.buildExpiry(astRoot));
-		this.syncExpiryTimeOfDay(astRoot);
 		this.syncAlwaysRefresh(this.buildAlwaysRefresh(astRoot));
 		this.syncRefreshOnlyIfNewer(this.buildRefreshOnlyIfNewer(astRoot));
 		this.syncDisableHits(this.buildDisableHits(astRoot));
 		this.syncCoordinationType(this.buildCoordinationType(astRoot));
+		this.syncExpiry(this.buildExpiry(astRoot));
+		this.syncExpiryTimeOfDay(astRoot);
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.type == null) &&
+				(this.size == null) &&
+				(this.shared == null) &&
+				(this.alwaysRefresh == null) &&
+				(this.refreshOnlyIfNewer == null) &&
+				(this.disableHits == null) &&
+				(this.coordinationType == null) &&
+				(this.expiry == null) &&
+				(this.expiryTimeOfDay == null);
 	}
 
 	@Override
@@ -209,82 +223,6 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	public TextRange getSharedTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(SHARED_ADAPTER, astRoot);
-	}
-
-	// ***** expiry
-	public Integer getExpiry() {
-		return this.expiry;
-	}
-
-	public void setExpiry(Integer expiry) {
-		if (this.attributeValueHasChanged(this.expiry, expiry)) {
-			this.expiry = expiry;
-			this.expiryAdapter.setValue(expiry);
-		}
-	}
-
-	private void syncExpiry(Integer astExpiry) {
-		Integer old = this.expiry;
-		this.expiry = astExpiry;
-		this.firePropertyChanged(EXPIRY_PROPERTY, old, astExpiry);
-	}
-
-	private Integer buildExpiry(CompilationUnit astRoot) {
-		return this.expiryAdapter.getValue(astRoot);
-	}
-
-	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
-		return this.getElementTextRange(EXPIRY_ADAPTER, astRoot);
-	}
-
-	// ***** expiry time of day
-	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
-		return this.expiryTimeOfDay;
-	}
-
-	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
-		if (this.expiryTimeOfDay != null) {
-			throw new IllegalStateException("'expiryTimeOfDay' element already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
-		}
-		this.expiryTimeOfDay = this.buildExpiryTimeOfDay();
-		this.expiryTimeOfDay.newAnnotation();
-		return this.expiryTimeOfDay;
-	}
-
-	public void removeExpiryTimeOfDay() {
-		if (this.expiryTimeOfDay == null) {
-			throw new IllegalStateException("'expiryTimeOfDay' element does not exist"); //$NON-NLS-1$
-		}
-		this.expiryTimeOfDay.removeAnnotation();
-		this.expiryTimeOfDay = null;
-	}
-
-	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
-		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
-	}
-
-	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {
-		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
-			this.syncExpiryTimeOfDay_(null);
-		} else {
-			if (this.expiryTimeOfDay == null) {
-				EclipseLinkTimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
-				tod.initialize(astRoot);
-				this.syncExpiryTimeOfDay_(tod);
-			} else {
-				this.expiryTimeOfDay.synchronizeWith(astRoot);
-			}
-		}
-	}
-
-	private void syncExpiryTimeOfDay_(EclipseLinkTimeOfDayAnnotation astExpiryTimeOfDay) {
-		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
-		this.expiryTimeOfDay = astExpiryTimeOfDay;
-		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, astExpiryTimeOfDay);
-	}
-
-	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
-		return null;//TODO return this.getElementTextRange(EXPIRY_TIME_OF_DAY_ADAPTER, astRoot);
 	}
 
 	// ***** always refresh
@@ -389,6 +327,83 @@ public final class SourceEclipseLinkCacheAnnotation
 
 	public TextRange getCoordinationTypeTextRange(CompilationUnit astRoot) {
 		return this.getElementTextRange(COORDINATION_TYPE_ADAPTER, astRoot);
+	}
+
+	// ***** expiry
+	public Integer getExpiry() {
+		return this.expiry;
+	}
+
+	public void setExpiry(Integer expiry) {
+		if (this.attributeValueHasChanged(this.expiry, expiry)) {
+			this.expiry = expiry;
+			this.expiryAdapter.setValue(expiry);
+		}
+	}
+
+	private void syncExpiry(Integer astExpiry) {
+		Integer old = this.expiry;
+		this.expiry = astExpiry;
+		this.firePropertyChanged(EXPIRY_PROPERTY, old, astExpiry);
+	}
+
+	private Integer buildExpiry(CompilationUnit astRoot) {
+		return this.expiryAdapter.getValue(astRoot);
+	}
+
+	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+		return this.getElementTextRange(EXPIRY_ADAPTER, astRoot);
+	}
+
+	// ***** expiry time of day
+	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
+		return this.expiryTimeOfDay;
+	}
+
+	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay != null) {
+			throw new IllegalStateException("'expiryTimeOfDay' element already exists: " + this.expiryTimeOfDay); //$NON-NLS-1$
+		}
+		this.expiryTimeOfDay = this.buildExpiryTimeOfDay();
+		this.expiryTimeOfDay.newAnnotation();
+		return this.expiryTimeOfDay;
+	}
+
+	public void removeExpiryTimeOfDay() {
+		if (this.expiryTimeOfDay == null) {
+			throw new IllegalStateException("'expiryTimeOfDay' element does not exist"); //$NON-NLS-1$
+		}
+		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = null;
+		old.removeAnnotation();
+	}
+
+	private EclipseLinkTimeOfDayAnnotation buildExpiryTimeOfDay() {
+		return new SourceEclipseLinkTimeOfDayAnnotation(this, this.annotatedElement, EXPIRY_TIME_OF_DAY_ADAPTER);
+	}
+
+	private void syncExpiryTimeOfDay(CompilationUnit astRoot) {
+		if (this.expiryTimeOfDayAdapter.getAnnotation(astRoot) == null) {
+			this.syncExpiryTimeOfDay_(null);
+		} else {
+			if (this.expiryTimeOfDay == null) {
+				EclipseLinkTimeOfDayAnnotation tod = this.buildExpiryTimeOfDay();
+				tod.initialize(astRoot);
+				this.syncExpiryTimeOfDay_(tod);
+			} else {
+				this.expiryTimeOfDay.synchronizeWith(astRoot);
+			}
+		}
+	}
+
+	private void syncExpiryTimeOfDay_(EclipseLinkTimeOfDayAnnotation astExpiryTimeOfDay) {
+		EclipseLinkTimeOfDayAnnotation old = this.expiryTimeOfDay;
+		this.expiryTimeOfDay = astExpiryTimeOfDay;
+		this.firePropertyChanged(EXPIRY_TIME_OF_DAY_PROPERTY, old, astExpiryTimeOfDay);
+	}
+
+	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+		return this.getTextRange(this.expiryTimeOfDayAdapter.getAstNode(astRoot));
 	}
 
 

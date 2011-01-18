@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TableGenerator;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> table generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,20 +25,18 @@ import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
  * @since 2.0
  */
 public interface OrmTableGenerator
-	extends TableGenerator, OrmGenerator, XmlContextNode
+	extends TableGenerator, OrmGenerator
 {
+	XmlTableGenerator getXmlGenerator();
 
-	/**
-	 * Update the OrmTableGenerator context model object to match the XmlTableGenerator 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlTableGenerator tableGenerator);
-	
-	//****************** covariant overrides *******************
+
+	// ********** unique constraints **********
 
 	@SuppressWarnings("unchecked")
-	ListIterator<OrmUniqueConstraint> uniqueConstraints();
-	
+	Iterable<OrmUniqueConstraint> getUniqueConstraints();
+
+	OrmUniqueConstraint addUniqueConstraint();
+
 	OrmUniqueConstraint addUniqueConstraint(int index);
 
 }

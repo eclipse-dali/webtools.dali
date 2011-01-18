@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.resource.java;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.DiscriminatorColumn
- * 
+ * <code>javax.persistence.DiscriminatorColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,6 +27,9 @@ public interface DiscriminatorColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA.DISCRIMINATOR_COLUMN;
 
+
+	// ********** discriminator type **********
+
 	/**
 	 * Corresponds to the 'discriminatorType' element of the DiscriminatorColumn annotation.
 	 * Return null if the element does not exist in Java.
@@ -40,6 +43,8 @@ public interface DiscriminatorColumnAnnotation
 	 */
 	void setDiscriminatorType(DiscriminatorType discriminatorType);
 
+
+	// ********** length **********
 
 	/**
 	 * Corresponds to the 'length' element of the DiscriminatorColumn annotation.

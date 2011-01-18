@@ -31,7 +31,8 @@ public class JavaEclipseLinkBasicMapMapping
 		return EclipseLinkMappingKeys.BASIC_MAP_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String getAnnotationName() {
+	@Override
+	protected String getAnnotationName() {
 		return EclipseLinkBasicMapAnnotation.ANNOTATION_NAME;
 	}
 

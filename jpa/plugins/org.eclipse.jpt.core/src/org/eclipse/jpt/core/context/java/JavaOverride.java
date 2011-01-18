@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.BaseOverride;
+import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * Java override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,23 +27,14 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.3
  */
 public interface JavaOverride
-	extends BaseOverride, JavaJpaContextNode
+	extends Override_, JavaReadOnlyOverride
 {
+	JavaVirtualOverride convertToVirtual();
 
 	OverrideAnnotation getOverrideAnnotation();
-	
+
 	/**
 	 * Return the (best guess) text location of the override's name.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	interface Owner extends BaseOverride.Owner
-	{
-
-		/**
-		 * Return a prefix (ending in '.') that is allowed to be appended to the override name.
-		 * Return null if no prefix is supported.
-		 */
-		String getPossiblePrefix();
-	}
 }

@@ -15,7 +15,7 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicCollection;
 public class OrmEclipseLinkBasicCollectionMapping
 	extends AbstractOrmEclipseLinkBasicCollectionMapping
 {
-	public OrmEclipseLinkBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection resourceMapping) {
-		super(parent, resourceMapping);
+	public OrmEclipseLinkBasicCollectionMapping(OrmPersistentAttribute parent, XmlBasicCollection xmlMapping) {
+		super(parent, xmlMapping);
 	}
 }

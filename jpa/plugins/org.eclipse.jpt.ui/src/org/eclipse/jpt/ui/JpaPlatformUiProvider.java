@@ -18,7 +18,7 @@ import org.eclipse.jpt.ui.details.JpaDetailsProvider;
  * JPA UI functionality.  This is intended to work in conjunction with a core
  * JPA platform ({@link JpaPlatform}) implementation with the same ID.
  * <p>
- * Any implementation should be <i>stateless</i> in nature.
+ * Any implementation should be <em>stateless</em> in nature.
  * <p>
  * The "generic" extension supplies UI for the core platform extension with the same
  * ID.

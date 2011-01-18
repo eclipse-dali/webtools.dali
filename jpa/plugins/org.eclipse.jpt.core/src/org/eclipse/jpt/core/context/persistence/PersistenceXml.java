@@ -27,24 +27,16 @@ public interface PersistenceXml
 	extends XmlFile
 {
 	// ********** persistence **********
-	
+
 	/**
 	 * String constant associated with changes to the persistence property
 	 */
 	public final static String PERSISTENCE_PROPERTY = "persistence"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the content represented by the root of the <code>persistence.xml</code> file.
 	 * This may be null.
 	 */
 	Persistence getPersistence();
-	
-	
-	// ********** updating **********
-	
-	/**
-	 * Update the context persistence XML model to match its resource file.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update();
+
 }

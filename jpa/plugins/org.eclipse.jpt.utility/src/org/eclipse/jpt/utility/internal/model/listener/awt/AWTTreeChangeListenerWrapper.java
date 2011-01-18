@@ -76,7 +76,7 @@ public final class AWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node added"; //$NON-NLS-1$
+				return "node added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -88,7 +88,7 @@ public final class AWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node removed"; //$NON-NLS-1$
+				return "node removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -100,7 +100,7 @@ public final class AWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree cleared"; //$NON-NLS-1$
+				return "tree cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -112,7 +112,7 @@ public final class AWTTreeChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree changed"; //$NON-NLS-1$
+				return "tree changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

@@ -10,11 +10,12 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> primary key join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,11 +28,7 @@ import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 public interface OrmPrimaryKeyJoinColumn
 	extends PrimaryKeyJoinColumn, OrmBaseJoinColumn
 {	
-	/**
-	 * Update the OrmPrimaryKeyJoinColumn context model object to match the XmlPrimaryKeyJoinColumn 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlPrimaryKeyJoinColumn column);
-	
-	void initializeFrom(PrimaryKeyJoinColumn oldPkJoinColumn);
+	XmlPrimaryKeyJoinColumn getXmlColumn();
+
+	void initializeFrom(ReadOnlyPrimaryKeyJoinColumn oldColumn);
 }

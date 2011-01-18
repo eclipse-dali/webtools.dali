@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 
 public abstract class AbstractEntityMappingsDetailsProvider
 	implements JpaDetailsProvider
@@ -24,7 +24,7 @@ public abstract class AbstractEntityMappingsDetailsProvider
 	
 	
 	public final boolean providesDetails(JpaStructureNode structureNode) {
-		return StringTools.stringsAreEqual(structureNode.getId(), OrmStructureNodes.ENTITY_MAPPINGS_ID)
+		return Tools.valuesAreEqual(structureNode.getId(), OrmStructureNodes.ENTITY_MAPPINGS_ID)
 				&& providesDetails(structureNode.getResourceType());
 	}
 	

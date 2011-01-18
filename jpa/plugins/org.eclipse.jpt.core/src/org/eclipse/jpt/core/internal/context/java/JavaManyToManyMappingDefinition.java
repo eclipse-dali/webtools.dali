@@ -1,54 +1,34 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import org.eclipse.jpt.core.JpaFactory;
-import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.core.resource.java.ManyToManyAnnotation;
 
 public class JavaManyToManyMappingDefinition
-	extends AbstractJavaAttributeMappingDefinition
+	extends AbstractJavaManyToManyMappingDefinition
 {
 	// singleton
-	private static final JavaManyToManyMappingDefinition INSTANCE = 
-		new JavaManyToManyMappingDefinition();
-	
-	
+	private static final JavaAttributeMappingDefinition INSTANCE = new JavaManyToManyMappingDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaManyToManyMappingDefinition() {
 		super();
-	}
-	
-	
-	public String getKey() {
-		return MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	public String getAnnotationName() {
-		return ManyToManyAnnotation.ANNOTATION_NAME;
-	}
-
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
-		return factory.buildJavaManyToManyMapping(parent);
 	}
 }

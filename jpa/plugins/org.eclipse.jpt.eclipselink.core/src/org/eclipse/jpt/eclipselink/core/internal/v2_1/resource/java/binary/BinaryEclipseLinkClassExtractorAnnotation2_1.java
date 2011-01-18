@@ -58,7 +58,6 @@ public final class BinaryEclipseLinkClassExtractorAnnotation2_1
 		String old = this.value;
 		this.value = value;
 		this.firePropertyChanged(VALUE_PROPERTY, old, value);
-		this.firePropertyChanged(FULLY_QUALIFIED_CLASS_NAME_PROPERTY, old, value);
 	}
 
 	private String buildValue() {
@@ -76,5 +75,4 @@ public final class BinaryEclipseLinkClassExtractorAnnotation2_1
 	public String getFullyQualifiedClassName() {
 		return this.value;
 	}
-
 }

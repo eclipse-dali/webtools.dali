@@ -284,15 +284,15 @@ public final class SourceXmlElementDeclAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAME);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__NAMESPACE);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildDefaultValueAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__DEFAULT_VALUE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__DEFAULT_VALUE);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildScopeAdapter() {
@@ -300,14 +300,14 @@ public final class SourceXmlElementDeclAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAME);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildSubstitutionHeadNamespaceAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAMESPACE, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_ELEMENT_DECL__SUBSTITUTION_HEAD_NAMESPACE);
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, converter);
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,18 +17,23 @@ import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlNullAttributeMapping;
 
 /**
- * This will be used in cases where the java support attribute mapping types
- * that are not supported by the particular version of the orm.xml file.  For example,
- * EclipseLink supports variable 1-1 mappings, but the generic orm.xml file does not.
+ * This will be used in cases where Java-supported attribute mapping types
+ * are not supported by the particular version of the <code>orm.xml</code>
+ * file. For example, EclipseLink supports variable 1:1 mappings, but the
+ * generic <code>orm.xml</code> file does not.
  */
 public class UnsupportedOrmAttributeMapping 
 	extends AbstractOrmAttributeMapping<XmlNullAttributeMapping>
 {
-
-	public UnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping resourceMapping) {
-		super(parent, resourceMapping);
+	public UnsupportedOrmAttributeMapping(OrmPersistentAttribute parent, XmlNullAttributeMapping xmlMapping) {
+		super(parent, xmlMapping);
 	}
 
+	public String getKey() {
+		//this ends up returning the java attribute mapping key
+		return this.xmlAttributeMapping.getMappingKey();
+	}
+	
 	public int getXmlSequence() {
 		return -1;
 	}
@@ -37,18 +42,14 @@ public class UnsupportedOrmAttributeMapping
 		newMapping.initializeFromOrmAttributeMapping(this);
 	}
 
-	public String getKey() {
-		//this ends up returning the java attribute mapping key
-		return this.resourceAttributeMapping.getMappingKey();
-	}
-	
-	public void addToResourceModel(Attributes resourceAttributes) {
+	public void addXmlAttributeMappingTo(Attributes xmlAttributes) {
 		throw new UnsupportedOperationException();
 	}
 
-	public void removeFromResourceModel(Attributes resourceAttributes) {
+	public void removeXmlAttributeMappingFrom(Attributes xmlAttributes) {
 		throw new UnsupportedOperationException();
 	}
+
 
 	// ********** metamodel **********  
 
@@ -56,5 +57,4 @@ public class UnsupportedOrmAttributeMapping
 	public MetamodelField getMetamodelField() {
 		return null;
 	}
-
 }

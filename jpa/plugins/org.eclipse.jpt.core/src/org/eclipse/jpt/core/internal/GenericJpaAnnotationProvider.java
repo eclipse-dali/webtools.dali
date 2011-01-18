@@ -3,28 +3,27 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal;
 
 import java.util.Iterator;
-import java.util.ListIterator;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Delegate to annotation definition providers.
@@ -35,127 +34,99 @@ import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 public class GenericJpaAnnotationProvider
 	implements JpaAnnotationProvider
 {
-	private final JpaAnnotationDefinitionProvider[] annotationDefinitionProviders;
-	
+	private final Iterable<JpaAnnotationDefinitionProvider> annotationDefinitionProviders;
+
+
 	public GenericJpaAnnotationProvider(JpaAnnotationDefinitionProvider... annotationDefinitionProviders) {
 		super();
-		this.annotationDefinitionProviders = annotationDefinitionProviders;
-	}
-	
-	
-	// ********** convenience methods **********
-	
-	protected Iterator<String> annotationNames(Iterator<AnnotationDefinition> annotationDefinitions) {
-		return new TransformationIterator<AnnotationDefinition, String>(annotationDefinitions) {
-			@Override
-			protected String transform(AnnotationDefinition annotationDefinition) {
-				return annotationDefinition.getAnnotationName();
-			}
-		};
-	}
-	
-	protected AnnotationDefinition selectAnnotationDefinition(Iterator<AnnotationDefinition> annotationDefinitions, String annotationName) {
-		while (annotationDefinitions.hasNext()) {
-			AnnotationDefinition annotationDefinition = annotationDefinitions.next();
-			if (annotationDefinition.getAnnotationName().equals(annotationName)) {
-				return annotationDefinition;
-			}
-		}
-		return null;
-	}
-	
-	
-	// ********** annotation definition providers **********
-
-	protected ListIterator<JpaAnnotationDefinitionProvider> annotationDefinitionProviders() {
-		return new ArrayListIterator<JpaAnnotationDefinitionProvider>(this.annotationDefinitionProviders);
+		this.annotationDefinitionProviders = new ArrayIterable<JpaAnnotationDefinitionProvider>(annotationDefinitionProviders);
 	}
 
 
 	// ********** type annotations **********
-	
+
 	public Iterator<String> typeAnnotationNames() {
-		return this.annotationNames(this.typeAnnotationDefinitions());
+		return this.convertToNames(this.getTypeAnnotationDefinitions()).iterator();
 	}
-	
-	protected Iterator<AnnotationDefinition> typeAnnotationDefinitions() {
-		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
+
+	protected Iterable<AnnotationDefinition> getTypeAnnotationDefinitions() {
+		return new CompositeIterable<AnnotationDefinition> (
+			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<AnnotationDefinition>>(this.annotationDefinitionProviders) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.typeAnnotationDefinitions();
+				protected Iterable<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.getTypeAnnotationDefinitions();
 				}
 			}
 		);
 	}
-	
+
 	public Iterator<String> typeMappingAnnotationNames() {
-		return this.annotationNames(typeMappingAnnotationDefinitions());
+		return this.convertToNames(this.getTypeMappingAnnotationDefinitions()).iterator();
 	}
-	
-	protected Iterator<AnnotationDefinition> typeMappingAnnotationDefinitions() {
-		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
+
+	protected Iterable<AnnotationDefinition> getTypeMappingAnnotationDefinitions() {
+		return new CompositeIterable<AnnotationDefinition> (
+			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<AnnotationDefinition>>(this.annotationDefinitionProviders) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.typeMappingAnnotationDefinitions();
+				protected Iterable<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.getTypeMappingAnnotationDefinitions();
 				}
 			}
 		);
 	}
-	
+
 	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, Type type, String annotationName) {
 		return this.getTypeAnnotationDefinition(annotationName).buildAnnotation(parent, type);
 	}
-	
+
 	public Annotation buildTypeAnnotation(JavaResourcePersistentType parent, IAnnotation jdtAnnotation) {
 		return this.getTypeAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
-	
+
 	protected AnnotationDefinition getTypeAnnotationDefinition(String annotationName) {
-		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.typeAnnotationDefinitions(), annotationName);
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.getTypeAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
 			throw new IllegalArgumentException("unsupported type annotation: " + annotationName); //$NON-NLS-1$
 		}
 		return annotationDefinition;
 	}
-	
+
 	public Annotation buildNullTypeAnnotation(JavaResourcePersistentType parent, String annotationName) {
 		return this.getTypeAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
-	
-	
+
+
 	// ********** attribute annotations **********
-	
+
 	public Iterator<String> attributeAnnotationNames() {
-		return this.annotationNames(attributeAnnotationDefinitions());
+		return this.convertToNames(this.getAttributeAnnotationDefinitions()).iterator();
 	}
-	
-	protected Iterator<AnnotationDefinition> attributeAnnotationDefinitions() {
-		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
+
+	protected Iterable<AnnotationDefinition> getAttributeAnnotationDefinitions() {
+		return new CompositeIterable<AnnotationDefinition> (
+			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<AnnotationDefinition>>(this.annotationDefinitionProviders) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.attributeAnnotationDefinitions();
+				protected Iterable<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.getAttributeAnnotationDefinitions();
 				}
 			}
 		);
 	}
-	
+
 	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, Attribute attribute, String annotationName) {
 		return this.getAttributeAnnotationDefinition(annotationName).buildAnnotation(parent, attribute);
 	}
-	
+
 	public Annotation buildAttributeAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		return this.getAttributeAnnotationDefinition(jdtAnnotation.getElementName()).buildAnnotation(parent, jdtAnnotation);
 	}
-	
+
 	public Annotation buildNullAttributeAnnotation(JavaResourcePersistentAttribute parent, String annotationName) {
 		return this.getAttributeAnnotationDefinition(annotationName).buildNullAnnotation(parent);
 	}
-	
+
 	protected AnnotationDefinition getAttributeAnnotationDefinition(String annotationName) {
-		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.attributeAnnotationDefinitions(), annotationName);
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.getAttributeAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
 			throw new IllegalArgumentException("unsupported attribute annotation: " + annotationName); //$NON-NLS-1$
 		}
@@ -166,22 +137,22 @@ public class GenericJpaAnnotationProvider
 	// ********** package annotations **********
 
 	public Iterator<String> packageAnnotationNames() {
-		return annotationNames(packageAnnotationDefinitions());
+		return this.convertToNames(this.getPackageAnnotationDefinitions()).iterator();
 	}
 
-	protected Iterator<AnnotationDefinition> packageAnnotationDefinitions() {
-		return new CompositeIterator<AnnotationDefinition> ( 
-			new TransformationIterator<JpaAnnotationDefinitionProvider, Iterator<AnnotationDefinition>>(this.annotationDefinitionProviders()) {
+	protected Iterable<AnnotationDefinition> getPackageAnnotationDefinitions() {
+		return new CompositeIterable<AnnotationDefinition> ( 
+			new TransformationIterable<JpaAnnotationDefinitionProvider, Iterable<AnnotationDefinition>>(this.annotationDefinitionProviders) {
 				@Override
-				protected Iterator<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
-					return annotationDefinitionProvider.packageAnnotationDefinitions();
+				protected Iterable<AnnotationDefinition> transform(JpaAnnotationDefinitionProvider annotationDefinitionProvider) {
+					return annotationDefinitionProvider.getPackageAnnotationDefinitions();
 				}
 			}
 		);
 	}
 
-	public Annotation buildPackageAnnotation(JavaResourcePackage parent, AnnotatedPackage pack, String annotationName) {
-		return this.getPackageAnnotationDefinition(annotationName).buildAnnotation(parent, pack);
+	public Annotation buildPackageAnnotation(JavaResourcePackage parent, AnnotatedPackage pkg, String annotationName) {
+		return this.getPackageAnnotationDefinition(annotationName).buildAnnotation(parent, pkg);
 	}
 
 	public Annotation buildPackageAnnotation(JavaResourcePackage parent, IAnnotation jdtAnnotation) {
@@ -193,11 +164,31 @@ public class GenericJpaAnnotationProvider
 	}
 
 	protected AnnotationDefinition getPackageAnnotationDefinition(String annotationName) {
-		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.packageAnnotationDefinitions(), annotationName);
+		AnnotationDefinition annotationDefinition = this.selectAnnotationDefinition(this.getPackageAnnotationDefinitions(), annotationName);
 		if (annotationDefinition == null) {
-			throw new IllegalArgumentException("unsupported package mapping annotation: " + annotationName); //$NON-NLS-1$
+			throw new IllegalArgumentException("unsupported package annotation: " + annotationName); //$NON-NLS-1$
 		}
 		return annotationDefinition;
 	}
 
+
+	// ********** convenience methods **********
+
+	protected Iterable<String> convertToNames(Iterable<AnnotationDefinition> annotationDefinitions) {
+		return new TransformationIterable<AnnotationDefinition, String>(annotationDefinitions) {
+			@Override
+			protected String transform(AnnotationDefinition annotationDefinition) {
+				return annotationDefinition.getAnnotationName();
+			}
+		};
+	}
+
+	protected AnnotationDefinition selectAnnotationDefinition(Iterable<AnnotationDefinition> annotationDefinitions, String annotationName) {
+		for (AnnotationDefinition annotationDefinition : annotationDefinitions) {
+			if (annotationDefinition.getAnnotationName().equals(annotationName)) {
+				return annotationDefinition;
+			}
+		}
+		return null;
+	}
 }

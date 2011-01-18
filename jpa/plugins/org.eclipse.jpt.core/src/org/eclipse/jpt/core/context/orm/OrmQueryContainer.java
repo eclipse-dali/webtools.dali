@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * The orm.xml representation of a {@link QueryContainer}
- * 
+ * <code>orm.xml</code> query container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,15 +28,23 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmQueryContainer
 	extends QueryContainer, XmlContextNode
 {
+	// ********** named queries **********
+
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedQuery> namedQueries();
 
+	OrmNamedQuery addNamedQuery();
+
 	OrmNamedQuery addNamedQuery(int index);
+
+
+	// ********** named native queries **********
 
 	@SuppressWarnings("unchecked")
 	ListIterator<OrmNamedNativeQuery> namedNativeQueries();
 
+	OrmNamedNativeQuery addNamedNativeQuery();
+
 	OrmNamedNativeQuery addNamedNativeQuery(int index);
-	
-	void update();
+
 }

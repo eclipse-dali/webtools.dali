@@ -9,15 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NumberIntegerExpressionConverter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -26,21 +22,28 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.Column
- * javax.persistence.JoinColumn
- * javax.persistence.DiscriminatorColumn
- * javax.persistence.PrimaryKeyJoinColumn.
+ * <code>
+ * <ul>
+ * <li>javax.persistence.Column
+ * <li>javax.persistence.JoinColumn
+ * <li>javax.persistence.DiscriminatorColumn
+ * <li>javax.persistence.PrimaryKeyJoinColumn
+ * <li>javax.persistence.MapKeyColumn
+ * <li>javax.persistence.MapKeyJoinColumn
+ * <li>javax.persistence.OrderColumn
+ * </ul>
+ * </code>
  */
 public abstract class SourceNamedColumnAnnotation
 	extends SourceAnnotation<Member>
 	implements NamedColumnAnnotation
 {
-	private final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	private final AnnotationElementAdapter<String> nameAdapter;
+	private DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	private AnnotationElementAdapter<String> nameAdapter;
 	private String name;
 
-	private final DeclarationAnnotationElementAdapter<String> columnDefinitionDeclarationAdapter;
-	private final AnnotationElementAdapter<String> columnDefinitionAdapter;
+	private DeclarationAnnotationElementAdapter<String> columnDefinitionDeclarationAdapter;
+	private AnnotationElementAdapter<String> columnDefinitionAdapter;
 	private String columnDefinition;
 
 
@@ -50,38 +53,10 @@ public abstract class SourceNamedColumnAnnotation
 	
 	protected SourceNamedColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = this.buildStringElementAdapter(this.getNameElementName());
-		this.nameAdapter = this.buildShortCircuitElementAdapter(this.nameDeclarationAdapter);
-		this.columnDefinitionDeclarationAdapter = this.buildStringElementAdapter(this.getColumnDefinitionElementName());
-		this.columnDefinitionAdapter = this.buildShortCircuitElementAdapter(this.columnDefinitionDeclarationAdapter);
-	}
-
-	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
-	}
-
-	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(this.daa, elementName, BooleanExpressionConverter.instance());
-	}
-
-	protected DeclarationAnnotationElementAdapter<Integer> buildIntegerElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(this.daa, elementName, NumberIntegerExpressionConverter.instance());
-	}
-
-	AnnotationElementAdapter<String> buildShortCircuitElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
-	}
-
-	protected AnnotationElementAdapter<Boolean> buildShortCircuitBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
-	}
-
-	protected AnnotationElementAdapter<Integer> buildShortCircuitIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
-		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
-	}
-
-	AnnotationElementAdapter<String> buildShortCircuitStringElementAdapter(String elementName) {
-		return this.buildShortCircuitElementAdapter(this.buildStringElementAdapter(elementName));
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.columnDefinitionDeclarationAdapter = this.buildColumnDefinitionDeclarationAdapter();
+		this.columnDefinitionAdapter = this.buildColumnDefinitionAdapter();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -92,11 +67,6 @@ public abstract class SourceNamedColumnAnnotation
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
 		this.syncColumnDefinition(this.buildColumnDefinition(astRoot));
-	}
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
 	}
 
 
@@ -136,6 +106,14 @@ public abstract class SourceNamedColumnAnnotation
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
+		return this.buildStringElementAdapter(this.getNameElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildNameAdapter() {
+		return this.buildStringElementAdapter(this.nameDeclarationAdapter);
+	}
+
 	protected abstract String getNameElementName();
 
 	// ***** column definition
@@ -164,15 +142,53 @@ public abstract class SourceNamedColumnAnnotation
 		return this.getElementTextRange(this.columnDefinitionDeclarationAdapter, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildColumnDefinitionDeclarationAdapter() {
+		return this.buildStringElementAdapter(this.getColumnDefinitionElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildColumnDefinitionAdapter() {
+		return this.buildStringElementAdapter(this.columnDefinitionDeclarationAdapter);
+	}
+
 	protected abstract String getColumnDefinitionElementName();
 
 
-	// ********** NestableAnnotation implementation **********
+	// ********** misc **********
 
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		NamedColumnAnnotation oldColumn = (NamedColumnAnnotation) oldAnnotation;
-		this.setName(oldColumn.getName());
-		this.setColumnDefinition(oldColumn.getColumnDefinition());
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null) &&
+				(this.columnDefinition == null);
 	}
 
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+		this.columnDefinitionDeclarationAdapter = this.buildColumnDefinitionDeclarationAdapter();
+		this.columnDefinitionAdapter = this.buildColumnDefinitionAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+		map.put(COLUMN_DEFINITION_PROPERTY, this.columnDefinition);
+		this.columnDefinition = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setName((String) map.get(NAME_PROPERTY));
+		this.setColumnDefinition((String) map.get(COLUMN_DEFINITION_PROPERTY));
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
 }

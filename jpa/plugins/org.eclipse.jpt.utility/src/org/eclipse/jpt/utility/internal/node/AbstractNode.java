@@ -23,7 +23,7 @@ import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.CallbackChangeSupport;
+import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
 import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
@@ -149,11 +149,11 @@ public abstract class AbstractNode
 
 	@Override
 	protected ChangeSupport buildChangeSupport() {
-		return new CallbackChangeSupport(this, this.buildChangeSupportListener());
+		return new AspectChangeSupport(this, this.buildChangeSupportListener());
 	}
 
-	protected CallbackChangeSupport.Listener buildChangeSupportListener() {
-		return new CallbackChangeSupport.Listener() {
+	protected AspectChangeSupport.Listener buildChangeSupportListener() {
+		return new AspectChangeSupport.Listener() {
 			public void aspectChanged(String aspectName) {
 				AbstractNode.this.aspectChanged(aspectName);
 			}

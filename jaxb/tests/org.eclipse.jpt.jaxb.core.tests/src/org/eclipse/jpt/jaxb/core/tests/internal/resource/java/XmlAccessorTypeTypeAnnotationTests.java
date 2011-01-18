@@ -101,6 +101,6 @@ public class XmlAccessorTypeTypeAnnotationTests
 		xmlAccessorTypeAnnotation.setValue(null);
 		assertNull(xmlAccessorTypeAnnotation.getValue());
 
-		assertSourceDoesNotContain("@XmlAccessorType", cu);
+		assertSourceDoesNotContain("@XmlAccessorType(", cu);
 	}
 }

@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.JavaModelException;
@@ -40,6 +40,11 @@ abstract class BinaryAnnotatedElement
 
 	/** annotations */
 	final Vector<Annotation> annotations = new Vector<Annotation>();
+
+	/**
+	 * these are built as needed
+	 */
+	private final HashMap<String, Annotation> nullAnnotationsCache = new HashMap<String, Annotation>();
 
 
 	// ********** construction/initialization **********
@@ -97,7 +102,16 @@ abstract class BinaryAnnotatedElement
 
 	public Annotation getNonNullAnnotation(String annotationName) {
 		Annotation annotation = this.getAnnotation(annotationName);
-		return (annotation != null) ? annotation : this.buildNullAnnotation(annotationName);
+		return (annotation != null) ? annotation : this.getNullAnnotation(annotationName);
+	}
+
+	private synchronized Annotation getNullAnnotation(String annotationName) {
+		Annotation annotation = this.nullAnnotationsCache.get(annotationName);
+		if (annotation == null) {
+			annotation = this.buildNullAnnotation(annotationName);
+			this.nullAnnotationsCache.put(annotationName, annotation);
+		}
+		return annotation;
 	}
 
 	public Iterator<NestableAnnotation> annotations(String nestableAnnotationName, String containerAnnotationName) {
@@ -138,7 +152,7 @@ abstract class BinaryAnnotatedElement
 	}
 
 
-	// ********** miscellaneous **********
+	// ********** misc **********
 
 	IJavaElement getAnnotatedElement() {
 		return this.adapter.getElement();
@@ -198,6 +212,10 @@ abstract class BinaryAnnotatedElement
 	}
 
 	public void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void addStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
 		throw new UnsupportedOperationException();
 	}
 

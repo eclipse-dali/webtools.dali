@@ -9,13 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.TableGenerator;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 
 /**
- * 
- * 
+ * Java table generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,20 +27,10 @@ import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 public interface JavaTableGenerator
 	extends JavaGenerator, TableGenerator
 {
-	void initialize(TableGeneratorAnnotation resourceGenerator);
-	
-	/**
-	 * Update the JavaTableGenerator context model object to match the TableGeneratorAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(TableGeneratorAnnotation resourceGenerator);
-	
-	
-	//****************** covariant overrides *******************
+	TableGeneratorAnnotation getGeneratorAnnotation();
 
 	@SuppressWarnings("unchecked")
-	ListIterator<JavaUniqueConstraint> uniqueConstraints();
+	Iterable<JavaUniqueConstraint> getUniqueConstraints();
 	
 	JavaUniqueConstraint addUniqueConstraint(int index);
-
 }

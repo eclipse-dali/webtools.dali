@@ -1,104 +1,166 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2009  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTracking;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
 
-public class OrmEclipseLinkChangeTracking extends AbstractOrmXmlContextNode
+public class OrmEclipseLinkChangeTracking
+	extends AbstractOrmXmlContextNode
 	implements EclipseLinkChangeTracking
 {
-	protected final XmlChangeTrackingHolder resource;
-	
-	protected EclipseLinkChangeTrackingType defaultType;
-	
 	protected EclipseLinkChangeTrackingType specifiedType;
-	
-	
-	public OrmEclipseLinkChangeTracking(OrmTypeMapping parent, XmlChangeTrackingHolder resource, EclipseLinkChangeTracking javaChangeTracking) {
+	protected EclipseLinkChangeTrackingType defaultType;
+
+
+	public OrmEclipseLinkChangeTracking(EclipseLinkOrmTypeMapping parent) {
 		super(parent);
-		this.resource = resource;
-		this.defaultType = calculateDefaultType(javaChangeTracking);
-		this.specifiedType = getResourceChangeTracking();
+		this.specifiedType = this.buildSpecifiedType();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedType_(this.buildSpecifiedType());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultType(this.buildDefaultType());
+	}
+
+
+	// ********** type **********
+
 	public EclipseLinkChangeTrackingType getType() {
-		return (getSpecifiedType() != null) ? getSpecifiedType() : getDefaultType();
+		return (this.specifiedType != null) ? this.specifiedType : this.defaultType;
 	}
-	
-	public EclipseLinkChangeTrackingType getDefaultType() {
-		return this.defaultType;
-	}
-	
-	protected void setDefaultType_(EclipseLinkChangeTrackingType newDefaultType) {
-		EclipseLinkChangeTrackingType oldDefaultType = this.defaultType;
-		this.defaultType = newDefaultType;
-		firePropertyChanged(DEFAULT_TYPE_PROPERTY, oldDefaultType, newDefaultType);
-	}
-	
+
 	public EclipseLinkChangeTrackingType getSpecifiedType() {
 		return this.specifiedType;
 	}
-	
-	public void setSpecifiedType(EclipseLinkChangeTrackingType newSpecifiedType) {
-		EclipseLinkChangeTrackingType oldSpecifiedType = this.specifiedType;
-		this.specifiedType = newSpecifiedType;
-		
-		if (newSpecifiedType == null) {
-			this.resource.setChangeTracking(null);
+
+	public void setSpecifiedType(EclipseLinkChangeTrackingType type) {
+		if (this.specifiedType != type) {
+			XmlChangeTracking xmlChangeTracking = this.getXmlChangeTrackingForUpdate();
+			this.setSpecifiedType_(type);
+			xmlChangeTracking.setType(EclipseLinkChangeTrackingType.toOrmResourceModel(type));
+			this.removeXmlChangeTrackingIfUnset();
 		}
-		else {
-			if (this.resource.getChangeTracking() == null) {
-				this.resource.setChangeTracking(EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking());
-			}
-			this.resource.getChangeTracking().setType(EclipseLinkChangeTrackingType.toOrmResourceModel(newSpecifiedType));
+	}
+
+	protected void setSpecifiedType_(EclipseLinkChangeTrackingType type) {
+		EclipseLinkChangeTrackingType old = this.specifiedType;
+		this.specifiedType = type;
+		this.firePropertyChanged(SPECIFIED_TYPE_PROPERTY, old, type);
+	}
+
+	protected EclipseLinkChangeTrackingType buildSpecifiedType() {
+		XmlChangeTracking xmlChangeTracking = this.getXmlChangeTracking();
+		return (xmlChangeTracking == null) ? null : EclipseLinkChangeTrackingType.fromOrmResourceModel(xmlChangeTracking.getType());
+	}
+
+	public EclipseLinkChangeTrackingType getDefaultType() {
+		return this.defaultType;
+	}
+
+	protected void setDefaultType(EclipseLinkChangeTrackingType type) {
+		EclipseLinkChangeTrackingType old = this.defaultType;
+		this.defaultType = type;
+		this.firePropertyChanged(DEFAULT_TYPE_PROPERTY, old, type);
+	}
+
+	protected EclipseLinkChangeTrackingType buildDefaultType() {
+		EclipseLinkChangeTracking javaChangeTracking = this.getJavaChangeTrackingForDefaults();
+		return (javaChangeTracking != null) ? javaChangeTracking.getType() : DEFAULT_TYPE;
+	}
+
+
+	// ********** xml customizer class ref **********
+
+	/**
+	 * Return null if the XML change tracking does not exists.
+	 */
+	protected XmlChangeTracking getXmlChangeTracking() {
+		return this.getXmlChangeTrackingHolder().getChangeTracking();
+	}
+
+	/**
+	 * Build the XML change tracking if it does not exist.
+	 */
+	protected XmlChangeTracking getXmlChangeTrackingForUpdate() {
+		XmlChangeTracking xmlChangeTracking = this.getXmlChangeTracking();
+		return (xmlChangeTracking != null) ? xmlChangeTracking : this.buildXmlChangeTracking();
+	}
+
+	protected XmlChangeTracking buildXmlChangeTracking() {
+		XmlChangeTracking xmlChangeTracking = EclipseLinkOrmFactory.eINSTANCE.createXmlChangeTracking();
+		this.getXmlChangeTrackingHolder().setChangeTracking(xmlChangeTracking);
+		return xmlChangeTracking;
+	}
+
+	protected void removeXmlChangeTrackingIfUnset() {
+		if (this.getXmlChangeTracking().isUnset()) {
+			this.removeXmlChangeTracking();
 		}
-		
-		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
 	}
-	
-	protected void setSpecifiedType_(EclipseLinkChangeTrackingType newSpecifiedType) {
-		EclipseLinkChangeTrackingType oldSpecifiedType = this.specifiedType;
-		this.specifiedType = newSpecifiedType;
-		firePropertyChanged(SPECIFIED_TYPE_PROPERTY, oldSpecifiedType, newSpecifiedType);
+
+	protected void removeXmlChangeTracking() {
+		this.getXmlChangeTrackingHolder().setChangeTracking(null);
 	}
-	
-	
-	// **************** updating **************************************
-	
-	protected void update(EclipseLinkChangeTracking javaChangeTracking) {
-		setDefaultType_(calculateDefaultType(javaChangeTracking));
-		setSpecifiedType_(getResourceChangeTracking());
+
+
+	// ********** misc **********
+
+	@Override
+	public EclipseLinkOrmTypeMapping getParent() {
+		return (EclipseLinkOrmTypeMapping) super.getParent();
 	}
-	
-	protected EclipseLinkChangeTrackingType calculateDefaultType(EclipseLinkChangeTracking javaChangeTracking) {
-		return (javaChangeTracking != null) ? javaChangeTracking.getType() : EclipseLinkChangeTracking.DEFAULT_TYPE;
+
+	protected EclipseLinkOrmTypeMapping getTypeMapping() {
+		return this.getParent();
 	}
-	
-	protected EclipseLinkChangeTrackingType getResourceChangeTracking() {
-		XmlChangeTracking xmlChangeTracking = this.resource.getChangeTracking();
-		return (xmlChangeTracking != null) ? EclipseLinkChangeTrackingType.fromOrmResourceModel(xmlChangeTracking.getType()) : null;
+
+	protected XmlTypeMapping getXmlTypeMapping() {
+		return this.getTypeMapping().getXmlTypeMapping();
 	}
-	
-	
-	// **************** validation **************************************
-	
+
+	protected XmlChangeTrackingHolder getXmlChangeTrackingHolder() {
+		return (XmlChangeTrackingHolder) this.getXmlTypeMapping();
+	}
+
+	protected EclipseLinkJavaTypeMapping getJavaTypeMappingForDefaults() {
+		return this.getTypeMapping().getJavaTypeMappingForDefaults();
+	}
+
+	protected EclipseLinkChangeTracking getJavaChangeTrackingForDefaults() {
+		EclipseLinkJavaTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		return (javaTypeMapping == null) ? null : javaTypeMapping.getChangeTracking();
+	}
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		return this.resource.getValidationTextRange();
+		return this.getXmlChangeTrackingHolder().getValidationTextRange();
 	}
 }

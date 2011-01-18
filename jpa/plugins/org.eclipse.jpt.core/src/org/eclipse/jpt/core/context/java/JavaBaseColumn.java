@@ -11,11 +11,12 @@ package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.BaseColumn;
+import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * 
- * 
+ * Java column or join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,18 +29,23 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface JavaBaseColumn
 	extends BaseColumn, JavaNamedColumn
 {
+	BaseColumnAnnotation getColumnAnnotation();
 
 	/**
 	 * Return the (best guess) text location of the column's table.
 	 */
 	TextRange getTableTextRange(CompilationUnit astRoot);
-	
+
+
+	// ********** owner **********
+
 	/**
 	 * interface allowing columns to be used in multiple places
 	 * (e.g. basic mappings and attribute overrides)
 	 */
-	interface Owner extends JavaNamedColumn.Owner, BaseColumn.Owner
+	interface Owner
+		extends JavaNamedColumn.Owner, BaseColumn.Owner
 	{
-		// nothing?
+		// combine two interfaces
 	}
 }

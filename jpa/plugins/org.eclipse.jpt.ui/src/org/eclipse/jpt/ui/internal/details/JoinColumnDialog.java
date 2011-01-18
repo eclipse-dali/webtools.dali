@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -24,7 +25,9 @@ import org.eclipse.swt.widgets.Shell;
  * @version 2.0
  * @since 2.0
  */
-public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends BaseJoinColumnDialog<T> {
+public abstract class JoinColumnDialog<T extends JoinColumnStateObject>
+	extends BaseJoinColumnDialog<T>
+{
 
 	/**
 	 * Creates a new <code>AbstractJoinColumnDialog</code>.
@@ -34,23 +37,17 @@ public abstract class JoinColumnDialog<T extends JoinColumnStateObject> extends 
 	 * @param joinColumn Either the join column to edit or <code>null</code> if
 	 * this state object is used to create a new one
 	 */
-	public JoinColumnDialog(Shell parent, Object owner, JoinColumn joinColumn) {
+	public JoinColumnDialog(Shell parent, Object owner, ReadOnlyJoinColumn joinColumn) {
 		super(parent, owner, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected DialogPane<?> buildLayout(Composite container) {
 		return new JoinColumnDialogPane<T>(getSubjectHolder(), container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
-	public JoinColumn getJoinColumn() {
-		return (JoinColumn) super.getJoinColumn();
+	public ReadOnlyJoinColumn getJoinColumn() {
+		return (ReadOnlyJoinColumn) super.getJoinColumn();
 	}
 }

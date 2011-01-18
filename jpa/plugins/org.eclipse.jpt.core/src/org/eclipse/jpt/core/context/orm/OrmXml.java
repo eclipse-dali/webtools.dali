@@ -26,18 +26,18 @@ import org.eclipse.jpt.core.context.MappingFile;
 public interface OrmXml
 	extends MappingFile
 {
-	// ********** entity mappings **********
+	// ********** root **********
 
 	/**
-	 * String constant associated with changes to the entity-mappings property
+	 * String constant associated with changes to the
+	 * <code>entity-mappings</code> property
 	 */
-	String ENTITY_MAPPINGS_PROPERTY = "entityMappings"; //$NON-NLS-1$
+	String ROOT_PROPERTY = "root"; //$NON-NLS-1$
 
 	/**
-	 * Return the content represented by the root of the <code>orm.xml</code> file.
-	 * This may be null.
+	 * Covariant override.
 	 */
-	EntityMappings getEntityMappings();
+	EntityMappings getRoot();
 
 	OrmPersistentType getPersistentType(String name);
 }

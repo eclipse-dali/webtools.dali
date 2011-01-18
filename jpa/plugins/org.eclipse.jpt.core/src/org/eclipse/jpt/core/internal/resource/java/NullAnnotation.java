@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
@@ -17,17 +18,16 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Simplify null annotation classes
+ * Simplify null annotation classes.
  */
-public abstract class NullAnnotation
+public abstract class NullAnnotation<A extends Annotation>
 	extends AbstractJavaResourceNode
 	implements Annotation
 {
-
 	protected NullAnnotation(JavaResourceNode parent) {
 		super(parent);
 	}
-	
+
 	public void initialize(CompilationUnit astRoot) {
 		// do nothing
 	}
@@ -48,6 +48,18 @@ public abstract class NullAnnotation
 		throw new UnsupportedOperationException();
 	}
 
+	public boolean isUnset() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void storeOn(Map<String, Object> map) {
+		// NOP
+	}
+
+	public void restoreFrom(Map<String, Object> map) {
+		// NOP
+	}
+
 	public TextRange getTextRange(CompilationUnit astRoot) {
 		return null;
 	}
@@ -63,15 +75,20 @@ public abstract class NullAnnotation
 	protected JavaResourcePersistentMember getMember() {
 		return (JavaResourcePersistentMember) this.parent;
 	}
-	
+
 	/**
 	 * Convenience method: Add the type or attribute's annotation
 	 * and return it.
+	 * <p>
 	 * Pre-condition: The annotation's parent must be a persistent member
 	 * (type or attribute).
 	 */
-	protected Annotation addAnnotation() {
+	@SuppressWarnings("unchecked")
+	protected A addAnnotation() {
+		return (A) this.addAnnotation_();
+	}
+
+	protected Annotation addAnnotation_() {
 		return this.getMember().addAnnotation(this.getAnnotationName());
 	}
-	
 }

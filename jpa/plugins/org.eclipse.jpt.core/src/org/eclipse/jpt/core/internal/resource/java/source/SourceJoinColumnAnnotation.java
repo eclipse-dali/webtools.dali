@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.JoinColumn
+ * <code>javax.persistence.JoinColumn</code>
  */
 public final class SourceJoinColumnAnnotation
 	extends SourceBaseJoinColumnAnnotation
@@ -104,13 +104,9 @@ public final class SourceJoinColumnAnnotation
 	}
 
 	static SourceJoinColumnAnnotation createNestedJoinColumn(JavaResourceNode parent, Member member, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(member, idaa);
 		return new SourceJoinColumnAnnotation(parent, member, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(joinColumnsAdapter, index, JPA.JOIN_COLUMN);
 	}
 
 	static NestableJoinColumnAnnotation createAssociationOverrideJoinColumn(DeclarationAnnotationAdapter associationOverrideAdapter, JavaResourceNode parent, Member member, int index) {
@@ -118,7 +114,6 @@ public final class SourceJoinColumnAnnotation
 	}
 
 	private static IndexedDeclarationAnnotationAdapter buildAssociationOverrideAnnotationAdapter(DeclarationAnnotationAdapter associationOverrideAdapter, int index) {
-		return new NestedIndexedDeclarationAnnotationAdapter(associationOverrideAdapter, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, JPA.JOIN_COLUMN);
+		return new NestedIndexedDeclarationAnnotationAdapter(associationOverrideAdapter, JPA.ASSOCIATION_OVERRIDE__JOIN_COLUMNS, index, ANNOTATION_NAME);
 	}
-
 }

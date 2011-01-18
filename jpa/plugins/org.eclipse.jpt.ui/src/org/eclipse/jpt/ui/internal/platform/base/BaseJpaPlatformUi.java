@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
@@ -131,11 +131,11 @@ public abstract class BaseJpaPlatformUi
 				mappingKey, mappingHolder, parent, widgetFactory);
 	}
 	
-	public DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
+	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
 		return getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 	
-	public Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
+	public Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).attributeMappingUiDefinitions();
 	}
 	
@@ -165,10 +165,10 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	public MappingResourceUiDefinition getMappingResourceUiDefinition(JpaResourceType resourceType) {
+		ResourceUiDefinition def = this.getResourceUiDefinition(resourceType);
 		try {
-			return (MappingResourceUiDefinition) getResourceUiDefinition(resourceType);
-		}
-		catch (ClassCastException cce) {
+			return (MappingResourceUiDefinition) def;
+		} catch (ClassCastException cce) {
 			// TODO (bug 313632) - return a null resource ui definition?
 			throw new IllegalArgumentException("No mapping resource UI definition for the resource type: " + resourceType, cce); //$NON-NLS-1$
 		}

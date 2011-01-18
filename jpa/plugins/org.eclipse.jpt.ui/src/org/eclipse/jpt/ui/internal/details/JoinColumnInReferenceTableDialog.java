@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
@@ -39,8 +41,8 @@ public class JoinColumnInReferenceTableDialog extends BaseJoinColumnDialog<JoinC
 	 * this state object is used to create a new one
 	 */
 	public JoinColumnInReferenceTableDialog(Shell parent,
-	                                   ReferenceTable referenceTable,
-	                                   JoinColumn joinColumn) {
+	                                   ReadOnlyReferenceTable referenceTable,
+	                                   ReadOnlyJoinColumn joinColumn) {
 
 		super(parent, referenceTable, joinColumn);
 	}

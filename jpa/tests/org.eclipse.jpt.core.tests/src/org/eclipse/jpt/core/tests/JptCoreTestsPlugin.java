@@ -16,11 +16,15 @@ import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.osgi.framework.BundleContext;
 
 /**
- * configure the core to handle events synchronously when we are
- * running tests
+ * Configure the core for testing:<ul>
+ * <li>handle events synchronously
+ * <li>do not flush preferences
+ * </ul>
  */
 @SuppressWarnings("nls")
-public class JptCoreTestsPlugin extends Plugin {
+public class JptCoreTestsPlugin
+	extends Plugin
+{
 	
 	private static JptCoreTestsPlugin INSTANCE;
 

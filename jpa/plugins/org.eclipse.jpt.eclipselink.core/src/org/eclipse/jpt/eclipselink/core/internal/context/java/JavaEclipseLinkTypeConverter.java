@@ -3,67 +3,73 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
 
-public class JavaEclipseLinkTypeConverter extends JavaEclipseLinkConverter
+public class JavaEclipseLinkTypeConverter
+	extends JavaEclipseLinkConverter<EclipseLinkTypeConverterAnnotation>
 	implements EclipseLinkTypeConverter
-{	
+{
 	private String dataType;
 	private String fullyQualifiedDataType;
 		public static final String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
-	
+
 	private String objectType;
 	private String fullyQualifiedObjectType;
 		public static final String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
-	
-	
-	public JavaEclipseLinkTypeConverter(JavaJpaContextNode parent) {
-		super(parent);
+
+
+	public JavaEclipseLinkTypeConverter(JavaJpaContextNode parent, EclipseLinkTypeConverterAnnotation converterAnnotation) {
+		super(parent, converterAnnotation);
+		this.dataType = this.converterAnnotation.getDataType();
+		this.objectType = this.converterAnnotation.getObjectType();
 	}
-	
-	public String getType() {
-		return EclipseLinkConverter.TYPE_CONVERTER;
-	}
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public String getAnnotationName() {
-		return EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME;
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setDataType_(this.converterAnnotation.getDataType());
+		this.setObjectType_(this.converterAnnotation.getObjectType());
 	}
-	
+
 	@Override
-	protected EclipseLinkTypeConverterAnnotation getAnnotation() {
-		return (EclipseLinkTypeConverterAnnotation) super.getAnnotation();
+	public void update() {
+		super.update();
+		this.setFullyQualifiedDataType(this.converterAnnotation.getFullyQualifiedDataType());
+		this.setFullyQualifiedObjectType(this.converterAnnotation.getFullyQualifiedObjectType());
 	}
-	
-	
-	// **************** data type **********************************************
-	
+
+
+	// ********** data type **********
+
 	public String getDataType() {
 		return this.dataType;
 	}
-	
-	public void setDataType(String newDataType) {
-		String oldDataType = this.dataType;
-		this.dataType = newDataType;
-		getAnnotation().setDataType(newDataType);
-		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
+
+	public void setDataType(String dataType) {
+		this.converterAnnotation.setDataType(dataType);
+		this.setDataType_(dataType);
 	}
-	
-	protected void setDataType_(String newDataType) {
-		String oldDataType = this.dataType;
-		this.dataType = newDataType;
-		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
+
+	protected void setDataType_(String dataType) {
+		String old = this.dataType;
+		this.dataType = dataType;
+		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, dataType);
 	}
+
+
+	// ********** fully qualified data type **********
 
 	public String getFullyQualifiedDataType() {
 		return this.fullyQualifiedDataType;
@@ -75,31 +81,26 @@ public class JavaEclipseLinkTypeConverter extends JavaEclipseLinkConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
-	protected String buildFullyQualifiedDataType(EclipseLinkTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ?
-				null :
-					resourceConverter.getFullyQualifiedDataType();
-	}
-	
-	
-	// **************** object type ********************************************
-	
+
+	// ********** object type **********
+
 	public String getObjectType() {
 		return this.objectType;
 	}
-	
-	public void setObjectType(String newObjectType) {
-		String oldObjectType = this.objectType;
-		this.objectType = newObjectType;
-		getAnnotation().setObjectType(newObjectType);
-		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
+
+	public void setObjectType(String objectType) {
+		this.converterAnnotation.setObjectType(objectType);
+		this.setObjectType_(objectType);
 	}
-	
-	protected void setObjectType_(String newObjectType) {
-		String oldObjectType = this.objectType;
-		this.objectType = newObjectType;
-		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
+
+	protected void setObjectType_(String objectType) {
+		String old = this.objectType;
+		this.objectType = objectType;
+		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, objectType);
 	}
+
+
+	// ********** fully qualified object type **********
 
 	public String getFullyQualifiedObjectType() {
 		return this.fullyQualifiedObjectType;
@@ -111,40 +112,39 @@ public class JavaEclipseLinkTypeConverter extends JavaEclipseLinkConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
 	}
 
-	protected String buildFullyQualifiedObjectType(EclipseLinkTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ?
-				null :
-					resourceConverter.getFullyQualifiedObjectType();
+
+	// ********** misc **********
+
+	public Class<EclipseLinkTypeConverter> getType() {
+		return EclipseLinkTypeConverter.class;
 	}
-	
-	
-	// **************** resource interaction ***********************************
-	
-	@Override
-	protected void initialize(JavaResourcePersistentMember jrpm) {
-		super.initialize(jrpm);
-		EclipseLinkTypeConverterAnnotation resourceConverter = getAnnotation();
-		this.dataType = this.dataType(resourceConverter);
-		this.fullyQualifiedDataType = this.buildFullyQualifiedDataType(resourceConverter);
-		this.objectType = this.objectType(resourceConverter);
-		this.fullyQualifiedObjectType = this.buildFullyQualifiedObjectType(resourceConverter);
-	}
-	
-	@Override
-	public void update(JavaResourcePersistentMember jrpm) {
-		super.update(jrpm);
-		EclipseLinkTypeConverterAnnotation resourceConverter = getAnnotation();
-		this.setDataType_(this.dataType(resourceConverter));
-		this.setFullyQualifiedDataType(this.buildFullyQualifiedDataType(resourceConverter));
-		this.setObjectType_(this.objectType(resourceConverter));
-		this.setFullyQualifiedObjectType(this.buildFullyQualifiedObjectType(resourceConverter));
-	}
-	
-	protected String dataType(EclipseLinkTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getDataType();
-	}
-	
-	protected String objectType(EclipseLinkTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getObjectType();
+
+
+	// ********** adapter **********
+
+	public static class Adapter
+		extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new Adapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+
+		private Adapter() {
+			super();
+		}
+
+		public Class<EclipseLinkTypeConverter> getConverterType() {
+			return EclipseLinkTypeConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME;
+		}
+
+		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
+			return new JavaEclipseLinkTypeConverter(parent, (EclipseLinkTypeConverterAnnotation) converterAnnotation);
+		}
 	}
 }

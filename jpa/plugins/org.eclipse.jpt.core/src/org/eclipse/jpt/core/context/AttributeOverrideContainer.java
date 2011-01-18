@@ -12,6 +12,9 @@ package org.eclipse.jpt.core.context;
 import java.util.ListIterator;
 
 /**
+ * Attribute override container.
+ * Used by entities, embedded mappings, and element collection mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,61 +27,29 @@ import java.util.ListIterator;
 public interface AttributeOverrideContainer
 	extends OverrideContainer
 {
-
-	// **************** attribute overrides **************************************
-
-	/**
-	 * Return a list iterator of the attribute overrides whether specified or default.
-	 * This will not be null.
-	 */
-	<T extends AttributeOverride> ListIterator<T> attributeOverrides();
-
-	/**
-	 * Return the number of attribute overrides, both specified and default.
-	 */
-	int attributeOverridesSize();
+	ListIterator<? extends ReadOnlyAttributeOverride> overrides();
+	ReadOnlyAttributeOverride getOverrideNamed(String name);
+	ListIterator<? extends AttributeOverride> specifiedOverrides();
+	AttributeOverride getSpecifiedOverride(int index);
+	AttributeOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<? extends VirtualAttributeOverride> virtualOverrides();
+	VirtualAttributeOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	AttributeOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
 	/**
-	 * Return a list iterator of the specified attribute overrides.
-	 * This will not be null.  No add/remove for specified attribute overrides, the
-	 * virtual attribute overrides will be populated from superclasses, then use
-	 * {@link AttributeOverride#setVirtual(boolean)} to add/remove the attribute
-	 * override from the source
+	 * Return the column of the mapping or attribute override with the specified
+	 * attribute name. Return <code>null</code> if it does not exist. This
+	 * column mapping/attribute override will be found in the mapped superclass
+	 * (or embeddable), not in the owning entity.
 	 */
-	<T extends AttributeOverride> ListIterator<T> specifiedAttributeOverrides();
+	Column resolveOverriddenColumn(String attributeName);
 
-	/**
-	 * Return the number of specified attribute overrides.
-	 */
-	int specifiedAttributeOverridesSize();
 
-	/**
-	 * Return a list iterator of the virtual attribute overrides, those not specified.
-	 * This will not be null.
-	 */
-	<T extends AttributeOverride> ListIterator<T> virtualAttributeOverrides();
+	// ********** owner **********
 
-	/**
-	 * Return the number of default attribute overrides.
-	 */
-	int virtualAttributeOverridesSize();
-
-	/**
-	 * Move the specified attribute override from the source index to the target index.
-	 */
-	void moveSpecifiedAttributeOverride(int targetIndex, int sourceIndex);
-		String SPECIFIED_ATTRIBUTE_OVERRIDES_LIST = "specifiedAttributeOverrides"; //$NON-NLS-1$
-		String VIRTUAL_ATTRIBUTE_OVERRIDES_LIST = "virtualAttributeOverrides"; //$NON-NLS-1$
-
-	/**
-	 * Return the attribute override, whether specified or default,
-	 * with the given name.
-	 */
-	AttributeOverride getAttributeOverrideNamed(String name);
-	
-	interface Owner extends OverrideContainer.Owner
+	interface Owner
+		extends OverrideContainer.Owner
 	{
-		Column resolveOverriddenColumn(String attributeOverrideName);
+		Column resolveOverriddenColumn(String attributeName);
 	}
-
 }

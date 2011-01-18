@@ -61,5 +61,9 @@ public interface MappingUiDefinition<M, T>
 	 * Return whether the mapping type represented by this definition is enabled for the given
 	 * mappable object.  This is almost always true.
 	 */
+	// TODO bjv remove this; either
+	// - delegate to whatever controls the list of UI definitions so it can be overridden by EclipseLink
+	// or
+	// - delegate to the model definitions (if we think there are more extends that need this...)
 	boolean isEnabledFor(M mappableObject);
 }

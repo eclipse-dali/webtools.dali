@@ -54,7 +54,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		ormResource.getContents().add(xmlEntityMappings);
 		ormResource.save(null);
 		
-		assertNotNull(getOrmXml().getEntityMappings());
+		assertNotNull(getOrmXml().getRoot());
 		assertEquals(2, getJpaProject().jpaFilesSize());
 	}
 	

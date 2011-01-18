@@ -11,11 +11,10 @@ package org.eclipse.jpt.core.context.orm;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.ReferenceTable;
-import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * orm.xml join table and collection table
- * 
+ * <code>orm.xml</code> join table or collection table
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,23 +25,16 @@ import org.eclipse.jpt.core.context.XmlContextNode;
  * @since 2.3
  */
 public interface OrmReferenceTable
-	extends ReferenceTable, XmlContextNode
+	extends ReferenceTable, OrmTable
 {
-	// ********** covariant overrides **********
+	// ********** join columns **********
 	
-	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> joinColumns();
 
-	OrmJoinColumn getDefaultJoinColumn();
-	
-	@SuppressWarnings("unchecked")
 	ListIterator<OrmJoinColumn> specifiedJoinColumns();
-
+	OrmJoinColumn getSpecifiedJoinColumn(int index);
+	OrmJoinColumn addSpecifiedJoinColumn();
 	OrmJoinColumn addSpecifiedJoinColumn(int index);
-	
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmUniqueConstraint> uniqueConstraints();
-	
-	OrmUniqueConstraint addUniqueConstraint(int index);
 
+	OrmJoinColumn getDefaultJoinColumn();
 }

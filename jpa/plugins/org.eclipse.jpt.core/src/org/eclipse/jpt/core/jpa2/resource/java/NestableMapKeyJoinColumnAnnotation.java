@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.MapKeyJoinColumn
- * 
+ * <code>javax.persistence.MapKeyJoinColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 public interface NestableMapKeyJoinColumnAnnotation
 	extends MapKeyJoinColumn2_0Annotation, NestableAnnotation
 {
-	// combine two interfaces
+	// combine interfaces
 }

@@ -21,6 +21,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
 /**
@@ -106,12 +107,9 @@ abstract class BinaryPersistentMember
 	 * convenience method
 	 */
 	<T extends JavaResourcePersistentMember> Iterator<T> persistableMembers(Iterator<T> members) {
-		return new FilteringIterator<T>(members) {
-			@Override
-			protected boolean accept(T m) {
-				return m.isPersistable();
-			}
-		};
+		@SuppressWarnings("unchecked")
+		Filter<T> filter = (Filter<T>) PERSISTABLE_MEMBER_FILTER;
+		return new FilteringIterator<T>(members, filter);
 	}
 
 	/**

@@ -1,187 +1,172 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
+import org.eclipse.jpt.core.context.OwnableRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationshipReference;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmRelationshipReference;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmManyToManyRelationshipReference
-	extends AbstractOrmRelationshipReference
+	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationshipReference
 {
-	protected OrmMappedByJoiningStrategy mappedByJoiningStrategy;
-	
-	protected OrmJoinTableJoiningStrategy joinTableJoiningStrategy;
-	
-	
-	public GenericOrmManyToManyRelationshipReference(
-			OrmManyToManyMapping parent, XmlManyToMany resource) {
-		super(parent, resource);
+	protected final OrmMappedByJoiningStrategy mappedByStrategy;
+
+	protected final OrmJoinTableJoiningStrategy joinTableStrategy;
+
+
+	public GenericOrmManyToManyRelationshipReference(OrmManyToManyMapping parent) {
+		super(parent);
+		this.mappedByStrategy = this.buildMappedByStrategy();
+		this.joinTableStrategy = this.buildJoinTableStrategy();
+
+		this.strategy = this.buildStrategy();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	protected void initializeJoiningStrategies() {
-		this.mappedByJoiningStrategy = buildMappedByJoiningStrategy();
-		
-		// initialize join table last, as the existence of a default join 
-		// table is dependent on the other mechanisms (mappedBy)
-		// not being specified
-		this.joinTableJoiningStrategy = buildJoinTableJoiningStrategy();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.mappedByStrategy.synchronizeWithResourceModel();
+		this.joinTableStrategy.synchronizeWithResourceModel();
 	}
-	
-	protected OrmMappedByJoiningStrategy buildMappedByJoiningStrategy() {
-		return new GenericOrmMappedByJoiningStrategy(this, getResourceMapping());
-	}
-	
-	protected OrmJoinTableJoiningStrategy buildJoinTableJoiningStrategy() {
-		return 	new GenericOrmJoinTableJoiningStrategy(this, getResourceMapping());
-	}
-	
-	public void initializeOn(OrmRelationshipReference newRelationshipReference) {
-		newRelationshipReference.initializeFromOwnableRelationshipReference(this);
-		newRelationshipReference.initializeFromJoinTableEnabledRelationshipReference(this);
-	}
-	
+
 	@Override
-	public void initializeFromOwnableRelationshipReference(
-			OrmOwnableRelationshipReference oldRelationshipReference) {
-		super.initializeFromOwnableRelationshipReference(oldRelationshipReference);
-		this.mappedByJoiningStrategy.setMappedByAttribute(
-			oldRelationshipReference.getMappedByJoiningStrategy().getMappedByAttribute());
+	public void update() {
+		super.update();
+		this.mappedByStrategy.update();
+		this.joinTableStrategy.update();
 	}
-	
+
+
+	// ********** strategy **********
+
 	@Override
-	public void initializeFromJoinTableEnabledRelationshipReference(
-			OrmJoinTableEnabledRelationshipReference oldRelationshipReference) {
-		super.initializeFromJoinTableEnabledRelationshipReference(oldRelationshipReference);
-		OrmJoinTable oldTable = 
-			oldRelationshipReference.getJoinTableJoiningStrategy().getJoinTable();
-		if (oldTable != null) {
-			this.joinTableJoiningStrategy.addJoinTable().initializeFrom(oldTable);
+	protected OrmJoiningStrategy buildStrategy() {
+		if (this.mappedByStrategy.getMappedByAttribute() != null) {
+			return this.mappedByStrategy;
 		}
+		return this.joinTableStrategy;
 	}
-	
-	
-	@Override
-	public OrmManyToManyMapping getRelationshipMapping() {
-		return (OrmManyToManyMapping) super.getRelationshipMapping();
-	}
-	
-	public XmlManyToMany getResourceMapping() {
-		return getRelationshipMapping().getResourceAttributeMapping();
-	}
-	
-	public boolean isRelationshipOwner() {
-		return this.mappedByJoiningStrategy.getMappedByAttribute() == null;
-	}
-	
-	public boolean isOwnedBy(RelationshipMapping mapping) {
-		return this.mappedByJoiningStrategy.relationshipIsOwnedBy(mapping);
-	}
-	
-	@Override
-	protected OrmJoiningStrategy calculatePredominantJoiningStrategy() {
-		if (this.mappedByJoiningStrategy.getMappedByAttribute() != null) {
-			return this.mappedByJoiningStrategy;
-		}
-		return this.joinTableJoiningStrategy;
-	}
-	
-	
-	// **************** mapped by **********************************************
-	
+
+
+	// ********** mapped by strategy **********
+
 	public OrmMappedByJoiningStrategy getMappedByJoiningStrategy() {
-		return this.mappedByJoiningStrategy;
+		return this.mappedByStrategy;
 	}
-	
+
 	public boolean usesMappedByJoiningStrategy() {
-		return getPredominantJoiningStrategy() == this.mappedByJoiningStrategy;
+		return this.strategy == this.mappedByStrategy;
 	}
-	
+
 	public void setMappedByJoiningStrategy() {
-		this.mappedByJoiningStrategy.addStrategy();
-		this.joinTableJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
+		this.mappedByStrategy.addStrategy();
+		this.joinTableStrategy.removeStrategy();
+		this.updateStrategy();
 	}
-	
-	public void unsetMappedByJoiningStrategy() {
-		this.mappedByJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
-	}
-	
+
 	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
 		return mappedByMapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	
-	// **************** join table joining strategy  ***************************
-	
+
+	protected OrmMappedByJoiningStrategy buildMappedByStrategy() {
+		return new GenericOrmMappedByJoiningStrategy(this);
+	}
+
+
+	// ********** join table strategy **********
+
 	public OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
-		return this.joinTableJoiningStrategy;
+		return this.joinTableStrategy;
 	}
-	
+
 	public boolean usesJoinTableJoiningStrategy() {
-		return getPredominantJoiningStrategy() == this.joinTableJoiningStrategy;
+		return this.strategy == this.joinTableStrategy;
 	}
-	
+
 	public void setJoinTableJoiningStrategy() {
 		// join table is the default strategy, so no need to add to resource
-		this.mappedByJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
+		this.mappedByStrategy.removeStrategy();
+		this.updateStrategy();
 	}
-	
-	public void unsetJoinTableJoiningStrategy() {
-		this.joinTableJoiningStrategy.removeStrategy();
-		setPredominantJoiningStrategy();
-	}
-	
+
 	public boolean mayHaveDefaultJoinTable() {
-		return getMappedByJoiningStrategy().getMappedByAttribute() == null;
+		return this.mappedByStrategy.getMappedByAttribute() == null;
 	}
-	
-	
-	// **************** resource => context ************************************
-	
+
+	protected OrmJoinTableJoiningStrategy buildJoinTableStrategy() {
+		return new GenericOrmMappingJoinTableJoiningStrategy(this);
+	}
+
+
+	// ********** conversions **********
+
+	public void initializeOn(RelationshipReference newRelationship) {
+		newRelationship.initializeFromMappedByRelationship(this);
+		newRelationship.initializeFromJoinTableRelationship(this);
+	}
+
 	@Override
-	protected void updateJoiningStrategies() {
-		this.mappedByJoiningStrategy.update();
-		
-		// update join table last, as the existence of a default join 
-		// table is dependent on the other mechanisms (mappedBy)
-		// not being specified
-		this.joinTableJoiningStrategy.update();
+	public void initializeFromMappedByRelationship(OwnableRelationshipReference oldRelationship) {
+		super.initializeFromMappedByRelationship(oldRelationship);
+		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByJoiningStrategy());
 	}
-	
-	
-	// **************** Validation *********************************************
-	
+
+	@Override
+	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableEnabledRelationshipReference oldRelationship) {
+		super.initializeFromJoinTableRelationship(oldRelationship);
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	protected XmlManyToMany getXmlMapping() {
+		return (XmlManyToMany) super.getXmlMapping();
+	}
+
+	public XmlManyToMany getXmlContainer() {
+		return this.getXmlMapping();
+	}
+
+	public boolean isOwner() {
+		return this.mappedByStrategy.getMappedByAttribute() == null;
+	}
+
+	public boolean isOwnedBy(RelationshipMapping mapping) {
+		return this.mappedByStrategy.relationshipIsOwnedBy(mapping);
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.mappedByJoiningStrategy.validate(messages, reporter);
-		this.joinTableJoiningStrategy.validate(messages, reporter);
+		this.mappedByStrategy.validate(messages, reporter);
+		this.joinTableStrategy.validate(messages, reporter);
 	}
 }

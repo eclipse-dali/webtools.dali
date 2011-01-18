@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,30 +13,24 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.NullAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheCoordinationType;
 import org.eclipse.jpt.eclipselink.core.resource.java.CacheType;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkCacheAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTimeOfDayAnnotation;
 
 /**
- * org.eclipse.persistence.annotations.Cache
+ * <code>org.eclipse.persistence.annotations.Cache</code>
  */
-public class NullEclipseLinkCacheAnnotation
-	extends NullAnnotation
+public final class NullEclipseLinkCacheAnnotation
+	extends NullAnnotation<EclipseLinkCacheAnnotation>
 	implements EclipseLinkCacheAnnotation
 {
-
 	protected NullEclipseLinkCacheAnnotation(JavaResourcePersistentType parent) {
 		super(parent);
 	}
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected EclipseLinkCacheAnnotation addAnnotation() {
-		return (EclipseLinkCacheAnnotation) super.addAnnotation();
 	}
 
 	// ***** type
@@ -81,38 +75,6 @@ public class NullEclipseLinkCacheAnnotation
 	}
 
 	public TextRange getSharedTextRange(CompilationUnit astRoot) {
-		return null;
-	}
-
-	// ***** expiry
-	public Integer getExpiry() {
-		return null;
-	}
-
-	public void setExpiry(Integer expiry) {
-		if (expiry != null) {
-			this.addAnnotation().setExpiry(expiry);
-		}
-	}
-
-	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
-		return null;
-	}
-
-	// ***** expiry time of day
-	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
-		return null;
-	}
-
-	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
-		return this.addAnnotation().addExpiryTimeOfDay();
-	}
-
-	public void removeExpiryTimeOfDay() {
-		// do nothing
-	}
-
-	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
 		return null;
 	}
 
@@ -176,4 +138,35 @@ public class NullEclipseLinkCacheAnnotation
 		return null;
 	}
 
+	// ***** expiry
+	public Integer getExpiry() {
+		return null;
+	}
+
+	public void setExpiry(Integer expiry) {
+		if (expiry != null) {
+			this.addAnnotation().setExpiry(expiry);
+		}
+	}
+
+	public TextRange getExpiryTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
+	// ***** expiry time of day
+	public EclipseLinkTimeOfDayAnnotation getExpiryTimeOfDay() {
+		return null;
+	}
+
+	public EclipseLinkTimeOfDayAnnotation addExpiryTimeOfDay() {
+		return this.addAnnotation().addExpiryTimeOfDay();
+	}
+
+	public void removeExpiryTimeOfDay() {
+		// do nothing
+	}
+
+	public TextRange getExpiryTimeOfDayTextRange(CompilationUnit astRoot) {
+		return null;
+	}
 }

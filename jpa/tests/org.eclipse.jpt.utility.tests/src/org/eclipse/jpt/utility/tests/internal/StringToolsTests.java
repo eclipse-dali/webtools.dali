@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -294,6 +294,132 @@ public class StringToolsTests extends TestCase {
 	private void verifyZeroPadOrTruncateOnStringBuilder(String expected, String string, int length) {
 		StringBuilder sb = new StringBuilder();
 		StringTools.zeroPadOrTruncateOn(string, length, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	// ********** separating **********
+
+	public void testSeparateStringCharInt() {
+		this.verifySeparate("012345", '-', 22, "012345");
+		this.verifySeparate("012345", '-',  6, "012345");
+		this.verifySeparate("012345", '-',  5, "01234-5");
+		this.verifySeparate("012345", '-',  4, "0123-45");
+		this.verifySeparate("012345", '-',  3, "012-345");
+		this.verifySeparate("012345", '-',  2, "01-23-45");
+		this.verifySeparate("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparate(String string, char separator, int segmentLength, String expected) {
+		assertEquals(expected, StringTools.separate(string, separator, segmentLength));
+	}
+
+	public void testSeparateOnStringCharIntWriter() {
+		this.verifySeparateOnWriter("012345", '-', 22, "012345");
+		this.verifySeparateOnWriter("012345", '-',  6, "012345");
+		this.verifySeparateOnWriter("012345", '-',  5, "01234-5");
+		this.verifySeparateOnWriter("012345", '-',  4, "0123-45");
+		this.verifySeparateOnWriter("012345", '-',  3, "012-345");
+		this.verifySeparateOnWriter("012345", '-',  2, "01-23-45");
+		this.verifySeparateOnWriter("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateOnWriter(String string, char separator, int segmentLength, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.separateOn(string, separator, segmentLength, writer);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testSeparateOnStringCharIntStringBuffer() {
+		this.verifySeparateOnStringBuffer("012345", '-', 22, "012345");
+		this.verifySeparateOnStringBuffer("012345", '-',  6, "012345");
+		this.verifySeparateOnStringBuffer("012345", '-',  5, "01234-5");
+		this.verifySeparateOnStringBuffer("012345", '-',  4, "0123-45");
+		this.verifySeparateOnStringBuffer("012345", '-',  3, "012-345");
+		this.verifySeparateOnStringBuffer("012345", '-',  2, "01-23-45");
+		this.verifySeparateOnStringBuffer("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateOnStringBuffer(String string, char separator, int segmentLength, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.separateOn(string, separator, segmentLength, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testSeparateOnStringCharIntStringBuilder() {
+		this.verifySeparateOnStringBuilder("012345", '-', 22, "012345");
+		this.verifySeparateOnStringBuilder("012345", '-',  6, "012345");
+		this.verifySeparateOnStringBuilder("012345", '-',  5, "01234-5");
+		this.verifySeparateOnStringBuilder("012345", '-',  4, "0123-45");
+		this.verifySeparateOnStringBuilder("012345", '-',  3, "012-345");
+		this.verifySeparateOnStringBuilder("012345", '-',  2, "01-23-45");
+		this.verifySeparateOnStringBuilder("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateOnStringBuilder(String string, char separator, int segmentLength, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.separateOn(string, separator, segmentLength, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testSeparateCharArrayCharInt() {
+		this.verifySeparateCharArray("012345", '-', 22, "012345");
+		this.verifySeparateCharArray("012345", '-',  6, "012345");
+		this.verifySeparateCharArray("012345", '-',  5, "01234-5");
+		this.verifySeparateCharArray("012345", '-',  4, "0123-45");
+		this.verifySeparateCharArray("012345", '-',  3, "012-345");
+		this.verifySeparateCharArray("012345", '-',  2, "01-23-45");
+		this.verifySeparateCharArray("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateCharArray(String string, char separator, int segmentLength, String expected) {
+		assertEquals(expected, StringTools.separate(string.toCharArray(), separator, segmentLength));
+	}
+
+	public void testSeparateOnCharArrayCharIntWriter() {
+		this.verifySeparateCharArrayOnWriter("012345", '-', 22, "012345");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  6, "012345");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  5, "01234-5");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  4, "0123-45");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  3, "012-345");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  2, "01-23-45");
+		this.verifySeparateCharArrayOnWriter("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateCharArrayOnWriter(String string, char separator, int segmentLength, String expected) {
+		Writer writer = new StringWriter();
+		StringTools.separateOn(string.toCharArray(), separator, segmentLength, writer);
+		assertEquals(expected, writer.toString());
+	}
+
+	public void testSeparateOnCharArrayCharIntStringBuffer() {
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-', 22, "012345");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  6, "012345");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  5, "01234-5");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  4, "0123-45");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  3, "012-345");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  2, "01-23-45");
+		this.verifySeparateCharArrayOnStringBuffer("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateCharArrayOnStringBuffer(String string, char separator, int segmentLength, String expected) {
+		StringBuffer sb = new StringBuffer();
+		StringTools.separateOn(string.toCharArray(), separator, segmentLength, sb);
+		assertEquals(expected, sb.toString());
+	}
+
+	public void testSeparateOnCharArrayCharIntStringBuilder() {
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-', 22, "012345");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  6, "012345");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  5, "01234-5");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  4, "0123-45");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  3, "012-345");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  2, "01-23-45");
+		this.verifySeparateCharArrayOnStringBuilder("012345", '-',  1, "0-1-2-3-4-5");
+	}
+
+	private void verifySeparateCharArrayOnStringBuilder(String string, char separator, int segmentLength, String expected) {
+		StringBuilder sb = new StringBuilder();
+		StringTools.separateOn(string.toCharArray(), separator, segmentLength, sb);
 		assertEquals(expected, sb.toString());
 	}
 
@@ -940,7 +1066,7 @@ public class StringToolsTests extends TestCase {
 	private void verifyStringIsEmptyCharArray(String string) {
 		assertTrue(StringTools.stringIsEmpty(string.toCharArray()));
 	}
-	
+
 	public void testStringsAreEqualStringString() {
 		assertTrue(StringTools.stringsAreEqual((String) null, (String) null));
 		assertFalse(StringTools.stringsAreEqual(null, "asdf"));
@@ -948,7 +1074,7 @@ public class StringToolsTests extends TestCase {
 		assertTrue(StringTools.stringsAreEqual("asdf", "asdf"));
 		assertFalse(StringTools.stringsAreEqual("asdf", "ASDF"));
 	}
-	
+
 	public void testStringsAreEqualCharArrayCharArray() {
 		assertTrue(StringTools.stringsAreEqual((char[]) null, (char[]) null));
 		assertFalse(StringTools.stringsAreEqual((char[]) null, "asdf".toCharArray()));
@@ -956,7 +1082,7 @@ public class StringToolsTests extends TestCase {
 		assertTrue(StringTools.stringsAreEqual("asdf".toCharArray(), "asdf".toCharArray()));
 		assertFalse(StringTools.stringsAreEqual("asdf".toCharArray(), "ASDF".toCharArray()));
 	}
-	
+
 	public void testStringsAreEqualIgnoreCaseStringString() {
 		assertTrue(StringTools.stringsAreEqualIgnoreCase((String) null, (String) null));
 		assertFalse(StringTools.stringsAreEqualIgnoreCase(null, "asdf"));
@@ -1006,7 +1132,7 @@ public class StringToolsTests extends TestCase {
 		assertTrue(StringTools.charactersAreEqualIgnoreCase('a', 'A'));
 		assertTrue(StringTools.charactersAreEqualIgnoreCase('A', 'a'));
 		assertTrue(StringTools.charactersAreEqualIgnoreCase('A', 'A'));
-		
+
 		assertFalse(StringTools.charactersAreEqualIgnoreCase('a', 'b'));
 		assertFalse(StringTools.charactersAreEqualIgnoreCase('A', 'b'));
 	}

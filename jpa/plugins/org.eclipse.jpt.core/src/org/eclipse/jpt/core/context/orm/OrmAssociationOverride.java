@@ -13,34 +13,23 @@ import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> association override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  */
 public interface OrmAssociationOverride
-	extends AssociationOverride, OrmOverride
+	extends OrmReadOnlyAssociationOverride, AssociationOverride, OrmOverride
 {
+	OrmVirtualAssociationOverride convertToVirtual();
+
+	XmlAssociationOverride getXmlOverride();
+
 	OrmAssociationOverrideRelationshipReference getRelationshipReference();
-	
-	OrmAssociationOverride setVirtual(boolean virtual);
-
-	/**
-	 * Update the OrmAssociationOverride context model object to match the XmlAssociationOverride 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlAssociationOverride associationOverride);
-
-	OrmAssociationOverride.Owner getOwner();
-
-	interface Owner extends AssociationOverride.Owner, OrmOverride.Owner
-	{
-		//nothing yet
-	}
 }

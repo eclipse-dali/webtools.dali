@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -20,12 +20,14 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.RelationshipReference;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
+import org.eclipse.jpt.core.internal.context.AttributeMappingTools;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.TypeMappingTools;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -36,6 +38,7 @@ import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -46,119 +49,173 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
-	extends AbstractOrmXmlContextNode 
+/**
+ * <code>orm.xml</code> type mapping
+ */
+public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
+	extends AbstractOrmXmlContextNode
 	implements OrmTypeMapping
 {
+	protected final X xmlTypeMapping;
+
 	protected String class_;
-	
-	public boolean defaultMetadataComplete;
-	
+
 	protected Boolean specifiedMetadataComplete;
-	
-	protected final T resourceTypeMapping;
-	
-	
-	protected AbstractOrmTypeMapping(OrmPersistentType parent, T resourceMapping) {
+	protected boolean overrideMetadataComplete;
+
+
+	protected AbstractOrmTypeMapping(OrmPersistentType parent, X xmlTypeMapping) {
 		super(parent);
-		this.resourceTypeMapping = resourceMapping;
-		this.class_ = this.getResourceClassName();
-		this.specifiedMetadataComplete = this.getResourceMetadataComplete();
-		this.defaultMetadataComplete = this.getPersistentType().isDefaultMetadataComplete();
-	}	
-	
-	// **************** Type Mapping implementation *****************************
+		this.xmlTypeMapping = xmlTypeMapping;
+		this.class_ = xmlTypeMapping.getClassName();
+		this.specifiedMetadataComplete = xmlTypeMapping.getMetadataComplete();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setClass_(this.xmlTypeMapping.getClassName());
+		this.setSpecifiedMetadataComplete_(this.xmlTypeMapping.getMetadataComplete());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setOverrideMetadataComplete(this.buildOverrideMetadataComplete());
+	}
+
+
+	// ********** class **********
+
+	public String getClass_() {
+		return this.class_;
+	}
+
+	public void setClass(String class_) {
+		this.setClass_(class_);
+		this.xmlTypeMapping.setClassName(class_);
+	}
+
+	protected void setClass_(String class_) {
+		String old = this.class_;
+		this.class_ = class_;
+		if (this.firePropertyChanged(CLASS_PROPERTY, old, class_)) {
+			this.getPersistentType().mappingClassChanged(old, class_);
+		}
+	}
+
+
+	// ********** metadata complete **********
+
+	/**
+	 * If <code>entity-mappings/persistence-unit-metadata/xml-mapping-metadata-complete</code>
+	 * is specified, it overrides anything set here.
+	 */
+	public boolean isMetadataComplete() {
+		if (this.overrideMetadataComplete) {
+			return true;
+		}
+		return (this.specifiedMetadataComplete != null) ? this.specifiedMetadataComplete.booleanValue() : false;
+	}
+
+	public Boolean getSpecifiedMetadataComplete() {
+		return this.specifiedMetadataComplete;
+	}
+
+	public void setSpecifiedMetadataComplete(Boolean metadataComplete) {
+		this.setSpecifiedMetadataComplete_(metadataComplete);
+		this.xmlTypeMapping.setMetadataComplete(metadataComplete);
+	}
+
+	protected void setSpecifiedMetadataComplete_(Boolean metadataComplete) {
+		Boolean old = this.specifiedMetadataComplete;
+		this.specifiedMetadataComplete = metadataComplete;
+		this.firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, old, metadataComplete);
+	}
+
+	public boolean isOverrideMetadataComplete() {
+		return this.overrideMetadataComplete;
+	}
+
+	protected void setOverrideMetadataComplete(boolean metadataComplete) {
+		boolean old = this.overrideMetadataComplete;
+		this.overrideMetadataComplete = metadataComplete;
+		this.firePropertyChanged(OVERRIDE_METADATA_COMPLETE_PROPERTY, old, metadataComplete);
+	}
+
+	protected boolean buildOverrideMetadataComplete() {
+		return this.getPersistenceUnit().isXmlMappingMetadataComplete();
+	}
+
+
+	// ********** Java type mapping **********
+
+	public JavaTypeMapping getJavaTypeMapping() {
+		JavaPersistentType javaType = this.getJavaPersistentType();
+		if (javaType == null) {
+			return null;
+		}
+		return (javaType.getMappingKey() == this.getKey()) ? javaType.getMapping() : null;
+	}
+
+	public JavaTypeMapping getJavaTypeMappingForDefaults() {
+		return this.isMetadataComplete() ? null : this.getJavaTypeMapping();
+	}
+
+
+	// ********** misc **********
 
 	@Override
 	public OrmPersistentType getParent() {
 		return (OrmPersistentType) super.getParent();
 	}
 
-	public String getName() {
-		return getPersistentType().getName();
-	}
-
 	public OrmPersistentType getPersistentType() {
 		return this.getParent();
 	}
-	
+
+	public String getName() {
+		return this.getPersistentType().getName();
+	}
+
 	protected JavaPersistentType getJavaPersistentType() {
 		return this.getPersistentType().getJavaPersistentType();
 	}
-	
+
+	protected JavaResourcePersistentType getJavaResourcePersistentType() {
+		JavaPersistentType javaType = this.getJavaPersistentType();
+		return (javaType == null) ? null : javaType.getResourcePersistentType();
+	}
+
 	public boolean isMapped() {
 		return true;
 	}
-	
-	/* default implementation */
-	public JavaPersistentType getIdClass() {
-		return null;
-	}
-	
-	public String getPrimaryTableName() {
-		return null;
-	}
-
-	public String getClass_() {
-		return this.class_;
-	}
-
-	public void setClass(String newClass) {
-		String oldClass = this.class_;
-		this.class_ = newClass;
-		this.resourceTypeMapping.setClassName(newClass);
-		firePropertyChanged(CLASS_PROPERTY, oldClass, newClass);
-		getPersistentType().classChanged(oldClass, newClass);
-	}
-	
-
-	public boolean isMetadataComplete() {
-		if (isDefaultMetadataComplete()) {
-			//entity-mappings/persistence-unit-metadata/xml-mapping-metadata-complete is specified, then it overrides
-			//anything set here
-			return true;
-		}
-		return (this.getSpecifiedMetadataComplete() == null) ? this.isDefaultMetadataComplete() : this.getSpecifiedMetadataComplete().booleanValue();
-	}
-
-	public boolean isDefaultMetadataComplete() {
-		return this.defaultMetadataComplete;
-	}
-	
-	protected void setDefaultMetadataComplete(boolean newDefaultMetadataComplete) {
-		boolean oldMetadataComplete = this.defaultMetadataComplete;
-		this.defaultMetadataComplete = newDefaultMetadataComplete;
-		firePropertyChanged(DEFAULT_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newDefaultMetadataComplete);
-	}
-	
-	public Boolean getSpecifiedMetadataComplete() {
-		return this.specifiedMetadataComplete;
-	}
-	
-	public void setSpecifiedMetadataComplete(Boolean newSpecifiedMetadataComplete) {
-		Boolean oldMetadataComplete = this.specifiedMetadataComplete;
-		this.specifiedMetadataComplete = newSpecifiedMetadataComplete;
-		this.resourceTypeMapping.setMetadataComplete(newSpecifiedMetadataComplete);
-		firePropertyChanged(SPECIFIED_METADATA_COMPLETE_PROPERTY, oldMetadataComplete, newSpecifiedMetadataComplete);
-	}
 
 	/**
-	 * ITypeMapping is changed and various ITypeMappings may have
-	 * common settings.  In this method initialize the new ITypeMapping (this)
-	 * fromthe old ITypeMapping (oldMapping)
+	 * A type's mapping is being changed. Copy the common settings from the old
+	 * mapping to the new (this).
 	 */
 	public void initializeFrom(OrmTypeMapping oldMapping) {
 		this.setClass(oldMapping.getClass_());
 		this.setSpecifiedMetadataComplete(oldMapping.getSpecifiedMetadataComplete());
-		this.setDefaultMetadataComplete(oldMapping.isDefaultMetadataComplete());
+		this.setOverrideMetadataComplete(oldMapping.isOverrideMetadataComplete());
 	}
-	
+
+
+	// ********** tables **********
+
+	public String getPrimaryTableName() {
+		return null;
+	}
+
 	public Table getPrimaryDbTable() {
 		return null;
 	}
 
-	public Table getDbTable(String tableName) {
+	public Table resolveDbTable(String tableName) {
 		return null;
 	}
 
@@ -166,189 +223,222 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 		return null;
 	}
 
+
+	// ********** attribute mappings **********
+
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return true;
 	}
 
-	public Iterator<OrmAttributeMapping> attributeMappings() {
-		return new TransformationIterator<OrmPersistentAttribute, OrmAttributeMapping>(getPersistentType().attributes()) {
+	public Iterator<AttributeMapping> attributeMappings() {
+		return new TransformationIterator<OrmReadOnlyPersistentAttribute, AttributeMapping>(this.getPersistentType().attributes()) {
 			@Override
-			protected OrmAttributeMapping transform(OrmPersistentAttribute attribute) {
+			protected AttributeMapping transform(OrmReadOnlyPersistentAttribute attribute) {
 				return attribute.getMapping();
-			}
-		};
-	}
-	
-	public Iterable<OrmAttributeMapping> getAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<OrmAttributeMapping>(CollectionTools.collection(attributeMappings())) {
-			@Override
-			protected boolean accept(OrmAttributeMapping o) {
-				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
 			}
 		};
 	}
 
 	public Iterator<AttributeMapping> allAttributeMappings() {
-		return new CompositeIterator<AttributeMapping>(
-			new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy()) {
-				@Override
-				protected Iterator<AttributeMapping> transform(TypeMapping typeMapping) {
-					return typeMapping.attributeMappings();
-				}
-			});
-	}
-	
-	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
-		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(allAttributeMappings())) {
-			@Override
-			protected boolean accept(AttributeMapping o) {
-				return StringTools.stringsAreEqual(o.getKey(), mappingKey);
-			}
-		};
-	}
-	
-	public TypeMapping getSuperTypeMapping() {
-		return (getPersistentType().getSuperPersistentType() == null) ?
-				null 
-				: getPersistentType().getSuperPersistentType().getMapping();
+		return new CompositeIterator<AttributeMapping>(this.allAttributeMappingsLists());
 	}
 
-	/**
-	 * Return an iterator of TypeMappings, each which inherits from the one before,
-	 * and terminates at the root entity (or at the point of cyclicity).
-	 */
-	public Iterator<TypeMapping> inheritanceHierarchy() {
-		return new TransformationIterator<PersistentType, TypeMapping>(getPersistentType().inheritanceHierarchy()) {
-			@Override
-			protected TypeMapping transform(PersistentType type) {
-				return type.getMapping();
-			}
-		};
+	protected Iterator<Iterator<AttributeMapping>> allAttributeMappingsLists() {
+		return new TransformationIterator<TypeMapping, Iterator<AttributeMapping>>(this.inheritanceHierarchy(), TypeMappingTools.ATTRIBUTE_MAPPINGS_TRANSFORMER);
 	}
-	
+
 	public Iterator<String> overridableAttributeNames() {
-		return new CompositeIterator<String>(
-			new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings()) {
-				@Override
-				protected Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allOverrideableAttributeMappingNames();
-				}
-			});
+		return new CompositeIterator<String>(this.overridableAttributeNamesLists());
+	}
+
+	protected Iterator<Iterator<String>> overridableAttributeNamesLists() {
+		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ATTRIBUTE_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterator<String> allOverridableAttributeNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAttributeNames();
-			}
-		});
+		return new CompositeIterator<String>(this.allOverridableAttributeNamesLists());
 	}
-	
+
+	protected Iterator<Iterator<String>> allOverridableAttributeNamesLists() {
+		return new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ATTRIBUTE_NAMES_TRANSFORMER);
+	}
+
+	public Iterable<AttributeMapping> getAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.attributeMappings())) {
+			@Override
+			protected boolean accept(AttributeMapping o) {
+				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+			}
+		};
+	}
+
+	public Iterable<AttributeMapping> getAllAttributeMappings(final String mappingKey) {
+		return new FilteringIterable<AttributeMapping>(CollectionTools.collection(this.allAttributeMappings())) {
+			@Override
+			protected boolean accept(AttributeMapping o) {
+				return Tools.valuesAreEqual(o.getKey(), mappingKey);
+			}
+		};
+	}
+
 	public Column resolveOverriddenColumn(String attributeName) {
-		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
-			Column resolvedColumn = attributeMapping.resolveOverriddenColumn(attributeName);
-			if (resolvedColumn != null) {
-				return resolvedColumn;
+		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.attributeMappings())) {
+			Column column = attributeMapping.resolveOverriddenColumn(attributeName);
+			if (column != null) {
+				return column;
 			}
 		}
-		if (!isMetadataComplete()) {
-			JavaPersistentType javaPersistentType = getJavaPersistentType();
+		if ( ! this.isMetadataComplete()) {
+			JavaPersistentType javaPersistentType = this.getJavaPersistentType();
 			if (javaPersistentType != null) {
 				return javaPersistentType.getMapping().resolveOverriddenColumn(attributeName);
 			}
 		}
 		return null;
 	}
-	
+
 	public Iterator<String> overridableAssociationNames() {
-		return new CompositeIterator<String>(
-			new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings()) {
-				@Override
-				protected Iterator<String> transform(AttributeMapping mapping) {
-					return mapping.allOverrideableAssociationMappingNames();
-				}
-			});
+		return new CompositeIterator<String>(this.overridableAssociationNamesLists());
+	}
+
+	protected Iterator<Iterator<String>> overridableAssociationNamesLists() {
+		return new TransformationIterator<AttributeMapping, Iterator<String>>(this.attributeMappings(), AttributeMappingTools.ALL_OVERRIDABLE_ASSOCIATION_MAPPING_NAMES_TRANSFORMER);
 	}
 
 	public Iterator<String> allOverridableAssociationNames() {
-		return new CompositeIterator<String>(new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy()) {
-			@Override
-			protected Iterator<String> transform(TypeMapping mapping) {
-				return mapping.overridableAssociationNames();
-			}
-		});
+		return new CompositeIterator<String>(this.allOverridableAssociationNamesLists());
 	}
-	
-	public RelationshipReference resolveRelationshipReference(String attributeName) {
-		for (AttributeMapping attributeMapping : CollectionTools.iterable(attributeMappings())) {
-			RelationshipReference resolvedRelationshipReference = attributeMapping.resolveRelationshipReference(attributeName);
+
+	protected Iterator<Iterator<String>> allOverridableAssociationNamesLists() {
+		return new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
+	}
+
+	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.attributeMappings())) {
+			RelationshipReference resolvedRelationshipReference = attributeMapping.resolveOverriddenRelationship(attributeName);
 			if (resolvedRelationshipReference != null) {
 				return resolvedRelationshipReference;
 			}
 		}
-		if (!isMetadataComplete()) {
-			JavaPersistentType javaPersistentType = getJavaPersistentType();
+		if ( ! this.isMetadataComplete()) {
+			JavaPersistentType javaPersistentType = this.getJavaPersistentType();
 			if (javaPersistentType != null) {
-				return javaPersistentType.getMapping().resolveRelationshipReference(attributeName);
+				return javaPersistentType.getMapping().resolveOverriddenRelationship(attributeName);
 			}
 		}
 		return null;
 	}
 
-	public T getResourceTypeMapping() {
-		return this.resourceTypeMapping;
-	}
-	
-	public void update() {
-		this.setClass(this.getResourceClassName());
-		this.setSpecifiedMetadataComplete(this.getResourceMetadataComplete());
-		this.setDefaultMetadataComplete(this.getPersistentType().isDefaultMetadataComplete());
-	}
-	
-	protected String getResourceClassName() {
-		return this.resourceTypeMapping.getClassName();
-	}
-	
-	protected Boolean getResourceMetadataComplete() {
-		return this.resourceTypeMapping.getMetadataComplete();
+
+	// ********** inheritance hierarchy **********
+
+	public TypeMapping getSuperTypeMapping() {
+		PersistentType superPersistentType = this.getPersistentType().getSuperPersistentType();
+		return (superPersistentType == null) ? null : superPersistentType.getMapping();
 	}
 
-	
-	// *************************************************************************
-	
-	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		if (getPersistentType().getJavaPersistentType() != null) {
-			return getPersistentType().getJavaPersistentType().getResourcePersistentType();
-		}
-		return null;
+	public Iterator<TypeMapping> inheritanceHierarchy() {
+		return this.convertToMappings(this.getPersistentType().inheritanceHierarchy());
 	}
+
+	protected Iterable<TypeMapping> getInheritanceHierarchy() {
+		return CollectionTools.iterable(this.inheritanceHierarchy());
+	}
+
+	/**
+	 * Return the type mapping's "persistence" ancestors,
+	 * <em>excluding</em> the type mapping itself.
+	 * The returned iterator will return elements infinitely if the hierarchy
+	 * has a loop.
+	 */
+	protected Iterator<TypeMapping> ancestors() {
+		return this.convertToMappings(this.getPersistentType().ancestors());
+	}
+
+	protected Iterable<TypeMapping> getAncestors() {
+		return CollectionTools.iterable(this.ancestors());
+	}
+
+	protected Iterator<TypeMapping> convertToMappings(Iterator<PersistentType> types) {
+		return new TransformationIterator<PersistentType, TypeMapping>(types) {
+			@Override
+			protected TypeMapping transform(PersistentType type) {
+				return type.getMapping();
+			}
+		};
+	}
+
+
+	// ********** misc **********
+
+	public X getXmlTypeMapping() {
+		return this.xmlTypeMapping;
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getPersistentType().getName());
+	}
+
+
+	// ********** text ranges **********
 
 	public JpaStructureNode getStructureNode(int offset) {
-		if (this.resourceTypeMapping.containsOffset(offset)) {
-			return getPersistentType();
-		}
-		return null;
+		return this.xmlTypeMapping.containsOffset(offset) ? this.getPersistentType() : null;
 	}
-	
+
 	public TextRange getSelectionTextRange() {
-		return this.resourceTypeMapping.getSelectionTextRange();
+		return this.xmlTypeMapping.getSelectionTextRange();
 	}
-	
+
 	public TextRange getClassTextRange() {
-		return this.resourceTypeMapping.getClassTextRange();
+		return this.xmlTypeMapping.getClassTextRange();
 	}
-	
+
 	public TextRange getAttributesTextRange() {
-		return this.resourceTypeMapping.getAttributesTextRange();
+		return this.xmlTypeMapping.getAttributesTextRange();
 	}
 
 	public boolean containsOffset(int textOffset) {
-		return this.resourceTypeMapping.containsOffset(textOffset);
+		return this.xmlTypeMapping.containsOffset(textOffset);
 	}
 
 
-	//************************* validation ************************
+	// ********** refactoring **********
+
+	public DeleteEdit createDeleteEdit() {
+		return this.xmlTypeMapping.createDeleteEdit();
+	}
+
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
+		return this.xmlTypeMapping.createRenameTypeEdit(originalType, newName);
+	}
+
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		return this.getPersistentType().isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		return this.getPersistentType().isIn(originalPackage) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return this.xmlTypeMapping.createRenamePackageEdit(newName);
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
@@ -361,7 +451,7 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENT_TYPE_UNSPECIFIED_CLASS,
-					this, 
+					this,
 					this.getClassTextRange()
 				)
 			);
@@ -371,62 +461,18 @@ public abstract class AbstractOrmTypeMapping<T extends XmlTypeMapping>
 	}
 
 	protected JptValidator buildTypeMappingValidator() {
-		return new GenericTypeMappingValidator(this, this.getJavaResourcePersistentType(), buildTextRangeResolver());
+		return new GenericTypeMappingValidator(this, this.getJavaResourcePersistentType(), this.buildTextRangeResolver());
 	}
 
 	protected TypeMappingTextRangeResolver buildTextRangeResolver() {
 		return new OrmTypeMappingTextRangeResolver(this);
 	}
-	
-	public boolean shouldValidateAgainstDatabase() {
-		return getPersistenceUnit().shouldValidateAgainstDatabase();
+
+	public boolean validatesAgainstDatabase() {
+		return this.getPersistenceUnit().validatesAgainstDatabase();
 	}
-	
+
 	public TextRange getValidationTextRange() {
-		return this.resourceTypeMapping.getValidationTextRange();
-	}
-
-
-	//************************* refactoring ************************
-
-	public DeleteEdit createDeleteEdit() {
-		return this.resourceTypeMapping.createDeleteEdit();
-	}
-
-	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName));
-		}
-		return EmptyIterable.instance();
-	}
-
-	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
-		return this.resourceTypeMapping.createRenameTypeEdit(originalType, newName);
-	}
-
-	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (getPersistentType().isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
-		}
-		return EmptyIterable.instance();
-	}
-
-	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (getPersistentType().isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
-	}
-
-	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return this.resourceTypeMapping.createRenamePackageEdit(newName);
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getPersistentType().getName());
+		return this.xmlTypeMapping.getValidationTextRange();
 	}
 }

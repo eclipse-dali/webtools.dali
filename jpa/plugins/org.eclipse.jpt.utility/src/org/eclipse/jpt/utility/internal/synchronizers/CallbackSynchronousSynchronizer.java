@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
  * start until all the listeners are notified.
  * Note also, the synchronizer's listeners can, themselves,
  * trigger another synchronization (by directly or indirectly calling
- * {@link org.eclipse.jpt.utility.internal.synchronizers.Synchronizer#synchronize());
+ * {@link org.eclipse.jpt.utility.synchronizers.Synchronizer#synchronize()});
  * but this synchronization will not occur until <em>after</em> all the
  * listeners have been notified.
  */

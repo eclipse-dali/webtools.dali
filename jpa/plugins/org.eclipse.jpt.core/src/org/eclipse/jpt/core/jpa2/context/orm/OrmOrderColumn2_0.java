@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.OrderColumn2_0;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
+import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> order column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,12 +28,21 @@ import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 public interface OrmOrderColumn2_0
 	extends OrderColumn2_0, OrmNamedColumn
 {
-	void initialize(XmlOrderable_2_0 orderable);
+	XmlOrderColumn getXmlColumn();
+
+
+	// ********** owner **********
 
 	/**
-	 * Update the OrmOrderColumn2_0 context model object to match the XmlOrderable2_0 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
+	 * interface allowing order columns to be used in multiple places
 	 */
-	void update(XmlOrderable_2_0 orderable);
-
+	interface Owner
+		extends OrmNamedColumn.Owner
+	{
+		XmlOrderColumn getXmlColumn();
+		
+		XmlOrderColumn buildXmlColumn();
+		
+		void removeXmlColumn();
+	}
 }

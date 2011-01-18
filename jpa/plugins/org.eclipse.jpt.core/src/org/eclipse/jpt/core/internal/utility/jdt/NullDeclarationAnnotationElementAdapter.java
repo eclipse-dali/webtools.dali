@@ -22,7 +22,7 @@ public class NullDeclarationAnnotationElementAdapter<T>
 {
 
 	// singleton
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("rawtypes")
 	private static final DeclarationAnnotationElementAdapter INSTANCE
 			= new NullDeclarationAnnotationElementAdapter();
 

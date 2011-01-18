@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.eclipse.jpt.core.context.Query;
+
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -33,6 +33,8 @@ import org.eclipse.swt.widgets.Text;
  * @since 2.1
  */
 public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
+	public static final String NAMED_QUERY = "namedQuery"; //$NON-NLS-1$
+	public static final String NAMED_NATIVE_QUERY = "namedNativeQuery"; //$NON-NLS-1$
 
 	
 	// ********** constructors **********
@@ -131,8 +133,8 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 
 		protected ListValueModel<String> buildQueryTypeListHolder() {
 			List<String> queryTypes = new ArrayList<String>();
-			queryTypes.add(Query.NAMED_QUERY);
-			queryTypes.add(Query.NAMED_NATIVE_QUERY);
+			queryTypes.add(NAMED_QUERY);
+			queryTypes.add(NAMED_NATIVE_QUERY);
 			
 			return new StaticListValueModel<String>(queryTypes);
 		}
@@ -140,10 +142,10 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 		private StringConverter<String> buildStringConverter() {
 			return new StringConverter<String>() {
 				public String convertToString(String value) {
-					if (value == Query.NAMED_QUERY) {
+					if (value == NAMED_QUERY) {
 						return JptUiDetailsMessages.AddQueryDialog_namedQuery;
 					}
-					if (value == Query.NAMED_NATIVE_QUERY) {
+					if (value == NAMED_NATIVE_QUERY) {
 						return JptUiDetailsMessages.AddQueryDialog_namedNativeQuery;
 					}
 					return value;

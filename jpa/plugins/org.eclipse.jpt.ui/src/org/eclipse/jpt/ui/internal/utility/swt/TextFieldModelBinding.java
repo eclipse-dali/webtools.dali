@@ -136,7 +136,7 @@ class TextFieldModelBinding {
 
 	// ********** text model events **********
 
-	/* private */ void textModelChanged(PropertyChangeEvent event) {
+	/* CU private */ void textModelChanged(PropertyChangeEvent event) {
 		if ( ! this.textField.isDisposed()) {  // ???
 			this.setTextFieldText((String) event.getNewValue());
 		}
@@ -165,7 +165,7 @@ class TextFieldModelBinding {
 
 	// ********** text field events **********
 
-	/* private */ void textFieldModified() {
+	/* CU private */ void textFieldModified() {
 		if ( ! this.settingTextFieldText) {
 			this.setTextModelText(this.textField.getText());
 		}
@@ -177,7 +177,7 @@ class TextFieldModelBinding {
 		}
 	}
 
-	/* private */ void textFieldDisposed() {
+	/* CU private */ void textFieldDisposed() {
 		// the text field is not yet "disposed" when we receive this event
 		// so we can still remove our listeners
 		this.textField.removeDisposeListener(this.textFieldDisposeListener);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,10 +15,10 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.JoinColumn
+ * <code>javax.persistence.JoinColumn</code>
  */
 public final class NullJoinColumnAnnotation
-	extends NullBaseColumnAnnotation
+	extends NullBaseColumnAnnotation<JoinColumnAnnotation>
 	implements JoinColumnAnnotation
 {	
 	public NullJoinColumnAnnotation(JavaResourceNode parent) {
@@ -27,11 +27,6 @@ public final class NullJoinColumnAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected JoinColumnAnnotation addAnnotation() {
-		throw new UnsupportedOperationException();
 	}
 
 	// ***** referenced column name
@@ -50,5 +45,4 @@ public final class NullJoinColumnAnnotation
 	public boolean referencedColumnNameTouches(int pos, CompilationUnit astRoot) {
 		return false;
 	}
-
 }

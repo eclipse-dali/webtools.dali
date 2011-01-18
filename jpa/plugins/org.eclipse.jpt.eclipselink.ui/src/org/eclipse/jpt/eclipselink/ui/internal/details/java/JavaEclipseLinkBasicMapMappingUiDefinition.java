@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkBasicMapMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingComposite;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkBasicMapMappingUiDefinition
-	extends AbstractEclipseLinkBasicMapMappingUiDefinition<PersistentAttribute, EclipseLinkBasicMapMapping>
+	extends AbstractEclipseLinkBasicMapMappingUiDefinition<ReadOnlyPersistentAttribute, EclipseLinkBasicMapMapping>
 	implements JavaAttributeMappingUiDefinition<EclipseLinkBasicMapMapping>
 {
 	// singleton

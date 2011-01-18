@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,16 +13,20 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
-
+/**
+ * JPA 2.0
+ * Java embeddable type mapping
+ */
 public class GenericJavaEmbeddable2_0
 	extends AbstractJavaEmbeddable
 {
-	public GenericJavaEmbeddable2_0(JavaPersistentType parent) {
-		super(parent);
+	public GenericJavaEmbeddable2_0(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
+		super(parent, mappingAnnotation);
 	}
-	
+
 	@Override
 	public boolean attributeMappingKeyAllowed(String attributeMappingKey) {
 		return ArrayTools.contains(ALLOWED_ATTRIBUTE_MAPPING_KEYS, attributeMappingKey);
@@ -39,5 +43,4 @@ public class GenericJavaEmbeddable2_0
 			MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY,
 			MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY
 		};
-
 }

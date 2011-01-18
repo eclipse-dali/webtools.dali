@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the EclipseLink annotation
- * org.eclipse.persistence.annotations.TimeOfDay
- * 
+ * <code>org.eclipse.persistence.annotations.TimeOfDay</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,6 +30,9 @@ public interface EclipseLinkTimeOfDayAnnotation
 	extends Annotation
 {
 	String ANNOTATION_NAME = EclipseLink.TIME_OF_DAY;
+
+
+	// ********** hour **********
 
 	/**
 	 * Corresponds to the 'hour' element of the TimeOfDay annotation.
@@ -51,6 +54,8 @@ public interface EclipseLinkTimeOfDayAnnotation
 	TextRange getHourTextRange(CompilationUnit astRoot);
 
 
+	// ********** minute **********
+
 	/**
 	 * Corresponds to the 'minute' element of the TimeOfDay annotation.
 	 * Return null if the element does not exist in the annotation.
@@ -70,6 +75,8 @@ public interface EclipseLinkTimeOfDayAnnotation
 	 */
 	TextRange getMinuteTextRange(CompilationUnit astRoot);
 
+
+	// ********** second **********
 
 	/**
 	 * Corresponds to the 'second' element of the TimeOfDay annotation.
@@ -91,6 +98,8 @@ public interface EclipseLinkTimeOfDayAnnotation
 	TextRange getSecondTextRange(CompilationUnit astRoot);
 
 
+	// ********** millisecond **********
+
 	/**
 	 * Corresponds to the 'millisecond' element of the TimeOfDay annotation.
 	 * Return null if the element does not exist in the annotation.
@@ -109,5 +118,4 @@ public interface EclipseLinkTimeOfDayAnnotation
 	 * does not exist return the {@link TextRange} for the TimeOfDay annotation.
 	 */
 	TextRange getMillisecondTextRange(CompilationUnit astRoot);
-
 }

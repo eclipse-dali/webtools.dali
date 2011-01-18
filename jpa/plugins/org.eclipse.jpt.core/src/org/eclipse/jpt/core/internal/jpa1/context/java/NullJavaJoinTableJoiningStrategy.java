@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,12 +11,10 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -25,86 +23,65 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 
-public class NullJavaJoinTableJoiningStrategy 
+public class NullJavaJoinTableJoiningStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaJoinTableJoiningStrategy
-{	
-
-	public NullJavaJoinTableJoiningStrategy(JoinTableEnabledRelationshipReference parent) {
+{
+	public NullJavaJoinTableJoiningStrategy(JavaJoinTableEnabledRelationshipReference parent) {
 		super(parent);
 	}
 
-	public void initializeFrom(JoinTableJoiningStrategy oldStrategy) {
-		throw new UnsupportedOperationException();
+
+	// ********** join table **********
+
+	public JavaJoinTable getJoinTable() {
+		return null;
 	}
 
-	@Override
-	public JoinTableEnabledRelationshipReference getParent() {
-		return (JoinTableEnabledRelationshipReference) super.getParent();
-	}
-
-	public JoinTableEnabledRelationshipReference getRelationshipReference() {
-		return this.getParent();
-	}
-
-	public RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getRelationshipMapping();
-	}
-
-	public void addStrategy() {
-		//do nothing
-	}
-
-	public void removeStrategy() {
-		//do nothing, no join table to remove
+	public JoinTableAnnotation getJoinTableAnnotation() {
+		return null;
 	}
 
 
-
-	// **************** resource => context ************************************
-
-	public void initialize() {
-		//no-op
-	}
-
-
-	public void update() {
-		//no-op
-	}
+	// ********** validation **********
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 
-	public String getColumnTableNotValidDescription() {
-		throw new UnsupportedOperationException();
+
+	// ********** misc **********
+
+	@Override
+	public JavaJoinTableEnabledRelationshipReference getParent() {
+		return (JavaJoinTableEnabledRelationshipReference) super.getParent();
 	}
 
-	public Table getDbTable(String tableName) {
-		throw new UnsupportedOperationException();
+	public JavaJoinTableEnabledRelationshipReference getRelationshipReference() {
+		return this.getParent();
+	}
+
+	public void initializeFrom(ReadOnlyJoinTableJoiningStrategy oldStrategy) {
+		// NOP
+	}
+
+	public void initializeFromVirtual(ReadOnlyJoinTableJoiningStrategy virtualStrategy) {
+		// NOP
 	}
 
 	public String getTableName() {
 		return null;
 	}
 
-	public boolean isOverridableAssociation() {
-		return false;
-	}
-
-	public boolean tableNameIsInvalid(String tableName) {
-		throw new UnsupportedOperationException();
-	}
-
-	public TypeMapping getTypeMapping() {
-		return getRelationshipMapping().getTypeMapping();
-	}
-
-	public JoinTableAnnotation getAnnotation() {
+	public Table resolveDbTable(String tableName) {
 		return null;
 	}
 
-	public JavaJoinTable getJoinTable() {
+	public boolean tableNameIsInvalid(String tableName) {
+		return true;
+	}
+
+	public String getColumnTableNotValidDescription() {
 		return null;
 	}
 
@@ -112,7 +89,19 @@ public class NullJavaJoinTableJoiningStrategy
 		return null;
 	}
 
-	public boolean shouldValidateAgainstDatabase() {
+	public void addStrategy() {
+		// NOP
+	}
+
+	public void removeStrategy() {
+		// NOP
+	}
+
+	public boolean isOverridable() {
+		return false;
+	}
+
+	public boolean validatesAgainstDatabase() {
 		return false;
 	}
 

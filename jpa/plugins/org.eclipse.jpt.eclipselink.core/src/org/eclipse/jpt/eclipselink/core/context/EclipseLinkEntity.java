@@ -22,13 +22,7 @@ import org.eclipse.jpt.core.context.Entity;
  * @since 2.1
  */
 public interface EclipseLinkEntity
-	extends EclipseLinkTypeMapping, Entity
+	extends Entity, EclipseLinkNonEmbeddableTypeMapping
 {
-	EclipseLinkCaching getCaching();
-	
-	EclipseLinkReadOnly getReadOnly();
-	
-	EclipseLinkCustomizer getCustomizer();
-	
-	EclipseLinkChangeTracking getChangeTracking();
+	// combine various interfaces
 }

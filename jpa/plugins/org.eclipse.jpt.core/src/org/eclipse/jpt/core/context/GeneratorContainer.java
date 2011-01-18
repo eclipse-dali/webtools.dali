@@ -10,6 +10,9 @@
 package org.eclipse.jpt.core.context;
 
 /**
+ * Container for a table generator and/or sequence generator.
+ * Used by entities and ID mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,7 +25,18 @@ package org.eclipse.jpt.core.context;
 public interface GeneratorContainer
 	extends JpaContextNode
 {
-	//******************** table generator *****************
+	// ********** sequence generator **********
+
+	String SEQUENCE_GENERATOR_PROPERTY = "sequenceGenerator"; //$NON-NLS-1$
+	
+	SequenceGenerator getSequenceGenerator();
+	
+	SequenceGenerator addSequenceGenerator();
+	
+	void removeSequenceGenerator();
+	
+
+	// ********** table generator **********
 	
 	String TABLE_GENERATOR_PROPERTY = "tableGenerator"; //$NON-NLS-1$
 	
@@ -31,16 +45,5 @@ public interface GeneratorContainer
 	TableGenerator addTableGenerator();
 	
 	void removeTableGenerator();
-	
-	
-	//******************** sequence generator *****************
-	
-	String SEQUENCE_GENERATOR_PROPERTY = "sequenceGenerator"; //$NON-NLS-1$
-	
-	SequenceGenerator getSequenceGenerator();
-	
-	SequenceGenerator addSequenceGenerator();
-	
-	void removeSequenceGenerator();
 	
 }

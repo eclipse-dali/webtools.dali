@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.IntReference;
+import org.eclipse.jpt.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
@@ -170,20 +170,20 @@ abstract class SourceAbstractType<A extends AbstractType>
 	// ********** CounterMap **********
 
 	protected static class CounterMap {
-		private final HashMap<Object, IntReference> counters;
+		private final HashMap<Object, SimpleIntReference> counters;
 
 		protected CounterMap(int initialCapacity) {
 			super();
-			this.counters = new HashMap<Object, IntReference>(initialCapacity);
+			this.counters = new HashMap<Object, SimpleIntReference>(initialCapacity);
 		}
 
 		/**
 		 * Return the incremented count for the specified object.
 		 */
 		int increment(Object o) {
-			IntReference counter = this.counters.get(o);
+			SimpleIntReference counter = this.counters.get(o);
 			if (counter == null) {
-				counter = new IntReference();
+				counter = new SimpleIntReference();
 				this.counters.put(o, counter);
 			}
 			counter.increment();

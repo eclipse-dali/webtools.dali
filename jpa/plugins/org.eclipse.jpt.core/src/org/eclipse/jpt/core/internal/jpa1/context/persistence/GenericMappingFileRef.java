@@ -31,10 +31,8 @@ import org.eclipse.text.edits.ReplaceEdit;
 public class GenericMappingFileRef
 	extends AbstractMappingFileRef
 {
-	protected XmlMappingFileRef xmlMappingFileRef;
+	protected final XmlMappingFileRef xmlMappingFileRef;
 
-
-	// ********** construction/initialization **********
 
 	public GenericMappingFileRef(PersistenceUnit parent, XmlMappingFileRef xmlMappingFileRef) {
 		super(parent, xmlMappingFileRef.getFileName());
@@ -42,28 +40,39 @@ public class GenericMappingFileRef
 	}
 
 
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		// set the file name *before* calling super
+		this.setFileName_(this.xmlMappingFileRef.getFileName());
+		super.synchronizeWithResourceModel();
+	}
+
+
 	// ********** file name **********
 
 	public void setFileName(String fileName) {
-		String old = this.fileName;
-		this.fileName = fileName;
+		this.setFileName_(fileName);
 		this.xmlMappingFileRef.setFileName(fileName);
-		this.firePropertyChanged(FILE_NAME_PROPERTY, old, fileName);
 	}
 
-	protected void setFileName_(String newFileName) {
+	protected void setFileName_(String xmlFileName) {
 		String old = this.fileName;
-		this.fileName = newFileName;
-		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
+		this.fileName = xmlFileName;
+		if (this.firePropertyChanged(FILE_NAME_PROPERTY, old, xmlFileName)) {
+			if (this.mappingFile != null) {
+				this.mappingFile.dispose();
+				this.setMappingFile(null);
+			}
+		}
 	}
 
 
-	// ********** MappingFileRef implementation **********
+	// ********** misc **********
 
-	public void update(XmlMappingFileRef mappingFileRef) {
-		this.xmlMappingFileRef = mappingFileRef;
-		this.setFileName_(mappingFileRef.getFileName());
-		this.update();
+	public XmlMappingFileRef getXmlMappingFileRef() {
+		return this.xmlMappingFileRef;
 	}
 
 	public boolean isImplied() {
@@ -82,7 +91,7 @@ public class GenericMappingFileRef
 	}
 
 
-	// ********** XmlContextNode implementation **********
+	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
 		return this.xmlMappingFileRef.getValidationTextRange();
@@ -92,10 +101,9 @@ public class GenericMappingFileRef
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteMappingFileEdits(IFile file) {
-		if (this.isFor(file)) {
-			return new SingleElementIterable<DeleteEdit>(this.createDeleteEdit());
-		}
-		return EmptyIterable.instance();
+		return this.isFor(file) ?
+				new SingleElementIterable<DeleteEdit>(this.createDeleteEdit()) :
+				EmptyIterable.<DeleteEdit>instance();
 	}
 
 	protected DeleteEdit createDeleteEdit() {
@@ -108,10 +116,9 @@ public class GenericMappingFileRef
 	}
 
 	public Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName) {
-		if (this.isIn(originalFolder)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameFolderEdit(originalFolder, newName));
-		}
-		return EmptyIterable.instance();
+		return this.isIn(originalFolder) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameFolderEdit(originalFolder, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenameFolderEdit(IFolder originalFolder, String newName) {
@@ -124,18 +131,19 @@ public class GenericMappingFileRef
 	}
 
 	public Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination) {
-		if (this.isIn(originalFolder)) {
-			IProject project = originalFolder.getProject();
-			IPath fullPath = originalFolder.getFullPath();
-			IPath originalLocation = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
-			
-			return new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalLocation, runtimeDestination));
-		}
-		return EmptyIterable.instance();
+		return this.isIn(originalFolder) ?
+				new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalFolder, runtimeDestination)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createMoveEdit(IFolder originalFolder, IPath runtimeDestination) {
+		IProject project = originalFolder.getProject();
+		IPath fullPath = originalFolder.getFullPath();
+		IPath originalLocation = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+		return this.createMoveEdit(originalLocation, runtimeDestination);
 	}
 
 	protected ReplaceEdit createMoveEdit(IPath originalLocation, IPath runtineDestination) {
 		return this.xmlMappingFileRef.createMoveEdit(originalLocation, runtineDestination);
 	}
-
 }

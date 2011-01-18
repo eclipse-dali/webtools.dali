@@ -44,15 +44,15 @@ public interface EclipseLinkConverterAnnotation
 	void setConverterClass(String value);
 
 	/**
-	 * Return the fully-qualified customizer class name as resolved by the AST's bindings.
+	 * Return the fully-qualified converter class name as resolved by the
+	 * AST's bindings.
 	 * <pre>
 	 *     &#64;Converter(GenderConverter.class)
 	 * </pre>
-	 * will return "model.GenderConverter" if there is an import for model.GenderConverter.
-	 * @return
+	 * will return <code>"model.GenderConverter"</code> if there is an import for
+	 * <code>model.GenderConverter</code>.
 	 */
 	String getFullyQualifiedConverterClassName();
-		String FULLY_QUALIFIED_CONVERTER_CLASS_NAME_PROPERTY = "fullyQualifiedConverterClassName"; //$NON-NLS-1$
 		
 	/**
 	 * Return the {@link TextRange} for the 'converterClass' element. If the element 

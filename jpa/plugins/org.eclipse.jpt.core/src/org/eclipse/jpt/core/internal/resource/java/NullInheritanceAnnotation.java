@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Inheritance
+ * <code>javax.persistence.Inheritance</code>
  */
 public final class NullInheritanceAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<InheritanceAnnotation>
 	implements InheritanceAnnotation
 {
 	protected NullInheritanceAnnotation(JavaResourcePersistentType parent) {
@@ -28,11 +28,6 @@ public final class NullInheritanceAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected InheritanceAnnotation addAnnotation() {
-		return (InheritanceAnnotation) super.addAnnotation();
 	}
 
 	// ***** strategy
@@ -49,5 +44,4 @@ public final class NullInheritanceAnnotation
 	public TextRange getStrategyTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

@@ -46,6 +46,10 @@ public class SWTStateChangeListenerWrapper
 			public void run() {
 				SWTStateChangeListenerWrapper.this.stateChanged_(event);
 			}
+			@Override
+			public String toString() {
+				return "state changed runnable"; //$NON-NLS-1$
+			}
 		};
 	}
 

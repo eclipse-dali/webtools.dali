@@ -19,7 +19,7 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
@@ -49,78 +49,33 @@ public abstract class AbstractMappingFileRef
 	protected String fileName;
 
 	/**
-	 * the mapping file corresponding to the ref's file name;
-	 * this can be null if the name is invalid
+	 * The mapping file corresponding to the ref's file name.
+	 * This can be <code>null</code> if the name is invalid.
 	 */
 	protected MappingFile mappingFile;
 
 
 	// ********** construction/initialization **********
 
-	protected AbstractMappingFileRef(PersistenceUnit parent, String resourceFileName) {
+	protected AbstractMappingFileRef(PersistenceUnit parent, String fileName) {
 		super(parent);
-		this.fileName = resourceFileName;
+		this.fileName = fileName;
 		this.mappingFile = this.buildMappingFile();
 	}
 
 
-	// ********** overrides **********
+	// ********** synchronize/update **********
 
 	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.syncMappingFile();
 	}
 
 	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.fileName);
-	}
-
-
-	// ********** JpaStructureNode implementation **********
-
-	public String getId() {
-		return PersistenceStructureNodes.MAPPING_FILE_REF_ID;
-	}
-
-	public JpaStructureNode getStructureNode(int textOffset) {
-		return this;
-	}
-
-	public void dispose() {
-		if (this.mappingFile != null) {
-			this.mappingFile.dispose();
-		}
-	}
-
-
-	// ********** queries **********
-
-	public boolean persistenceUnitDefaultsExists() {
-		MappingFilePersistenceUnitDefaults defaults = this.getPersistenceUnitDefaults();
-		return (defaults != null) && defaults.resourceExists();
-	}
-
-	public MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults() {
-		MappingFileRoot root = this.getChildMappingFileRoot();
-		return (root == null) ? null : root.getPersistenceUnitDefaults();
-	}
-
-	/**
-	 * The method {@link #getMappingFileRoot()} is already defined by
-	 * {@link org.eclipse.jpt.core.internal.context.AbstractJpaContextNode}
-	 * for getting what would be the "mapping file root" that <em>contains</em>
-	 * the context node. We want something slightly different here: i.e. the
-	 * "mapping file root" contained by the mapping file ref (since, actually,
-	 * the mapping file ref is not even contained by a "mapping file root").
-	 */
-	protected MappingFileRoot getChildMappingFileRoot() {
-		return (this.mappingFile == null) ? null : this.mappingFile.getRoot();
-	}
-
-	public PersistentType getPersistentType(String typeName) {
-		return (this.mappingFile == null) ? null : this.mappingFile.getPersistentType(typeName);
+	public void update() {
+		super.update();
+		this.updateMappingFile();
 	}
 
 
@@ -131,14 +86,11 @@ public abstract class AbstractMappingFileRef
 	}
 
 	public boolean isFor(IFile file) {
-		return this.mappingFile != null && file.equals(this.mappingFile.getXmlResource().getFile());
+		return (this.mappingFile != null) && file.equals(this.mappingFile.getXmlResource().getFile());
 	}
 
 	protected boolean isIn(IFolder folder) {
-		if (this.mappingFile == null) {
-			return false;
-		}
-		return this.mappingFile.isIn(folder);
+		return (this.mappingFile != null) && this.mappingFile.isIn(folder);
 	}
 
 
@@ -159,24 +111,31 @@ public abstract class AbstractMappingFileRef
 		return (xmlResource == null) ? null : this.buildMappingFile(xmlResource);
 	}
 
+	protected void syncMappingFile() {
+		if (this.mappingFile != null) {
+			this.mappingFile.synchronizeWithResourceModel();
+		}
+	}
+
 	protected void updateMappingFile() {
-		JpaXmlResource xmlResource = this.resolveMappingFileXmlResource();
-		
-		if (xmlResource == null) {
+		JpaXmlResource newXmlResource = this.resolveMappingFileXmlResource();
+		if (newXmlResource == null) {
 			if (this.mappingFile != null) {
 				this.mappingFile.dispose();
 				this.setMappingFile(null);
 			}
 		} else {
 			if (this.mappingFile == null) {
-				this.setMappingFile(this.buildMappingFile(xmlResource));
+				this.setMappingFile(this.buildMappingFile(newXmlResource));
 			} else {
-				if (this.mappingFile.getXmlResource() == xmlResource) {
+				if (this.mappingFile.getXmlResource() == newXmlResource) {
 					this.mappingFile.update();
 				} else {
+					// [seems like we should never get here; since if the file's
+					// content type changed, the JPA project would return null...  ~bjv]
 					// if the resource's content type has changed, we completely rebuild the mapping file
 					this.mappingFile.dispose();
-					this.setMappingFile(this.buildMappingFile(xmlResource));
+					this.setMappingFile(this.buildMappingFile(newXmlResource));
 				}
 			}
 		}
@@ -218,24 +177,64 @@ public abstract class AbstractMappingFileRef
 	}
 
 
-	// ********** PersistentTypeContainer implementation **********
+	// ********** JpaStructureNode implementation **********
 
-	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
+	public String getId() {
+		return PersistenceStructureNodes.MAPPING_FILE_REF_ID;
 	}
 
-	// ********** updating **********
+	public JpaStructureNode getStructureNode(int textOffset) {
+		return this;
+	}
 
-	protected void update() {
-		this.updateMappingFile();
+	public void dispose() {
+		if (this.mappingFile != null) {
+			this.mappingFile.dispose();
+		}
+	}
+
+
+	// ********** misc **********
+
+	public boolean persistenceUnitMetadataExists() {
+		MappingFilePersistenceUnitMetadata metadata = this.getPersistenceUnitMetadata();
+		return (metadata != null) && metadata.resourceExists();
+	}
+
+	public MappingFilePersistenceUnitMetadata getPersistenceUnitMetadata() {
+		MappingFileRoot root = this.getChildMappingFileRoot();
+		return (root == null) ? null : root.getPersistenceUnitMetadata();
+	}
+
+	/**
+	 * The method {@link #getMappingFileRoot()} is already defined by
+	 * {@link org.eclipse.jpt.core.internal.context.AbstractJpaContextNode}
+	 * for getting what would be the "mapping file root" that <em>contains</em>
+	 * the context node. We want something slightly different here: i.e. the
+	 * "mapping file root" contained by the mapping file ref (since, actually,
+	 * the mapping file ref is not even contained by a "mapping file root").
+	 */
+	protected MappingFileRoot getChildMappingFileRoot() {
+		return (this.mappingFile == null) ? null : this.mappingFile.getRoot();
+	}
+
+	public PersistentType getPersistentType(String typeName) {
+		return (this.mappingFile == null) ? null : this.mappingFile.getPersistentType(typeName);
 	}
 
 	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.mappingFile != null) {
-			this.mappingFile.postUpdate();
-		}
+	public PersistenceUnit getParent() {
+		return (PersistenceUnit) super.getParent();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		super.toString(sb);
+		sb.append(this.fileName);
+	}
+
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.mappingFile != null) ? this.mappingFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
 	}
 
 
@@ -244,103 +243,102 @@ public abstract class AbstractMappingFileRef
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
+
 		if (StringTools.stringIsEmpty(this.fileName)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_MAPPING_FILE,
 					this,
-					this.getValidationTextRange()));
+					this.getValidationTextRange()
+				)
+			);
 			return;
 		}
-		
+
 		if (this.mappingFile == null) {
-			messages.add(buildMappingFileValidationMessage());
+			messages.add(this.buildMappingFileValidationMessage());
 			return;
 		}
-		
+
 		this.mappingFile.validate(messages, reporter);
 	}
-	
+
 	protected IMessage buildMappingFileValidationMessage() {
 		int severity = IMessage.HIGH_SEVERITY;
-		IFile file = getPlatformFile();
-		if (file.exists()) {
-			JpaXmlResource xmlResource = getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
-			if (xmlResource != null 
-					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
-				return DefaultJpaValidationMessages.buildMessage(
-					severity,
-					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT,
-					new String[] {file.getName()},
-					file);
-			}
+		IFile file = this.getPlatformFile();
+		if ( ! file.exists()) {
 			return DefaultJpaValidationMessages.buildMessage(
-				severity,
-				JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE,
-				new String[] {file.getName()},
-				file);
+					severity,
+					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
+					new String[] {this.fileName},
+					this,
+					this.getValidationTextRange()
+				);
 		}
+		String msgText = this.mappingFileContentIsUnsupported() ?
+					JpaValidationMessages.PERSISTENCE_UNIT_UNSUPPORTED_MAPPING_FILE_CONTENT :
+					JpaValidationMessages.PERSISTENCE_UNIT_INVALID_MAPPING_FILE;
 		return DefaultJpaValidationMessages.buildMessage(
-			severity,
-			JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_MAPPING_FILE,
-			new String[] {this.fileName},
-			this,
-			getValidationTextRange());
+				severity,
+				msgText,
+				new String[] {file.getName()},
+				file
+			);
 	}
-	
+
 	protected IFile getPlatformFile() {
 		return this.getJpaProject().getPlatformFile(new Path(this.fileName));
+	}
+
+	/**
+	 * pre-condition: {@link #getPlatformFile()} exists
+	 */
+	protected boolean mappingFileContentIsUnsupported() {
+		JpaXmlResource xmlResource = this.getJpaProject().getMappingFileXmlResource(new Path(this.fileName));
+		return (xmlResource != null) && ! this.getJpaPlatform().supportsResourceType(xmlResource.getResourceType());
 	}
 
 
 	// ********** refactoring **********
 
 	public Iterable<DeleteEdit> createDeleteTypeEdits(IType type) {
-		if (this.mappingFile != null) {
-			return this.mappingFile.createDeleteTypeEdits(type);
-		}
-		return EmptyIterable.instance();
+		return (this.mappingFile != null) ?
+				this.mappingFile.createDeleteTypeEdits(type) :
+				EmptyIterable.<DeleteEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.mappingFile != null) {
-			return this.mappingFile.createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (this.mappingFile != null) ?
+				this.mappingFile.createRenameTypeEdits(originalType, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.mappingFile != null) {
-			return this.mappingFile.createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+		return (this.mappingFile != null) ?
+				this.mappingFile.createMoveTypeEdits(originalType, newPackage) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (this.mappingFile != null) {
-			return this.mappingFile.createRenamePackageEdits(originalPackage, newName);
-		}
-		return EmptyIterable.instance();
+		return (this.mappingFile != null) ?
+				this.mappingFile.createRenamePackageEdits(originalPackage, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName) {
-		if (this.isFor(originalFile)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalFile, newName));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalFile) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalFile, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected abstract ReplaceEdit createRenameEdit(IFile originalFile, String newName);
 
 	public Iterable<ReplaceEdit> createMoveMappingFileEdits(IFile originalFile, IPath runtineDestination) {
-		if (this.isFor(originalFile)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalFile, runtineDestination));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalFile) ?
+				new SingleElementIterable<ReplaceEdit>(this.createMoveEdit(originalFile, runtineDestination)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected abstract ReplaceEdit createMoveEdit(IFile originalFile, IPath runtineDestination);
-
 }

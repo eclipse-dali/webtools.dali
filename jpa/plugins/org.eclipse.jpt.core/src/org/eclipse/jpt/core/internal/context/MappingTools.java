@@ -1,9 +1,9 @@
 /*******************************************************************************
  * Copyright (c) 2006, 2010 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -16,8 +16,12 @@ import org.eclipse.jpt.core.context.ColumnMapping;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.JpaNamedContextNode;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.RelationshipReference;
@@ -28,11 +32,13 @@ import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
  * Gather some of the behavior common to the Java and XML models. :-(
  */
-public class MappingTools {
+public final class MappingTools {
 
 	/**
 	 * Default join table name from the JPA spec:<br>
@@ -56,7 +62,7 @@ public class MappingTools {
 	 * database connection. We need the database to convert the resulting name
 	 * to an identifier appropriate to the current database.
 	 */
-	public static String buildJoinTableDefaultName(RelationshipReference relationshipReference) {
+	public static String buildJoinTableDefaultName(ReadOnlyRelationshipReference relationshipReference) {
 		if (relationshipReference.getJpaProject().getDataSource().connectionProfileIsActive()) {
 			return buildDbJoinTableDefaultName(relationshipReference);
 		}
@@ -65,7 +71,7 @@ public class MappingTools {
 		if (owningTableName == null) {
 			return null;
 		}
-		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		RelationshipMapping relationshipMapping = relationshipReference.getMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -83,12 +89,12 @@ public class MappingTools {
 	/**
 	 * Use the database to build a more accurate default name.
 	 */
-	protected static String buildDbJoinTableDefaultName(RelationshipReference relationshipReference) {
+	private static String buildDbJoinTableDefaultName(ReadOnlyRelationshipReference relationshipReference) {
 		Table owningTable = relationshipReference.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
 			return null;
 		}
-		RelationshipMapping relationshipMapping = relationshipReference.getRelationshipMapping();
+		RelationshipMapping relationshipMapping = relationshipReference.getMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -103,10 +109,10 @@ public class MappingTools {
 		String name = owningTable.getName() + '_' + targetTable.getName();
 		return owningTable.getDatabase().convertNameToIdentifier(name);
 	}
-	
+
 	/**
 	 * Default collection table name from the JPA spec:<br>
-	 * 	"The concatenation of the name of the containing entity and 
+	 * 	"The concatenation of the name of the containing entity and
 	 *  the name of the collection attribute, separated by an underscore."
 	 * <pre>
 	 * [owning entity name]_[attribute name]
@@ -129,10 +135,10 @@ public class MappingTools {
 	 * But, if we don't have an attribute name (e.g. in a unidirectional
 	 * OneToMany or ManyToMany) is
 	 *     [target entity name]_[referenced column name]
-	 * 
-	 * @see #buildJoinTableDefaultName(RelationshipMapping)
+	 *
+	 * @see #buildJoinTableDefaultName(ReadOnlyRelationshipReference)
 	 */
-	public static String buildJoinColumnDefaultName(JoinColumn joinColumn, JoinColumn.Owner owner) {
+	public static String buildJoinColumnDefaultName(ReadOnlyJoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
 		if (owner.joinColumnsSize() != 1) {
 			return null;
 		}
@@ -162,13 +168,33 @@ public class MappingTools {
 	}
 
 	/**
+	 * Return the name of the attribute in the specified mapping's target entity
+	 * that is owned by the mapping.
+	 */
+	public static String getTargetAttributeName(RelationshipMapping relationshipMapping) {
+		if (relationshipMapping == null) {
+			return null;
+		}
+		Entity targetEntity = relationshipMapping.getResolvedTargetEntity();
+		if (targetEntity == null) {
+			return null;
+		}
+		for (ReadOnlyPersistentAttribute attribute : CollectionTools.iterable(targetEntity.getPersistentType().allAttributes())) {
+			if (attribute.getMapping().isOwnedBy(relationshipMapping)) {
+				return attribute.getName();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * If appropriate, return the name of the single primary key column of the
 	 * relationship target.
 	 * Spec states:<br>
 	 *     "The same name as the primary key column of the referenced table."<br>
 	 * We are assuming that the primary key column is defined by the mappings instead of the database.
 	 */
-	public static String buildJoinColumnDefaultReferencedColumnName(JoinColumn.Owner joinColumnOwner) {
+	public static String buildJoinColumnDefaultReferencedColumnName(ReadOnlyJoinColumn.Owner joinColumnOwner) {
 		if (joinColumnOwner.joinColumnsSize() != 1) {
 			return null;
 		}
@@ -180,11 +206,11 @@ public class MappingTools {
 	}
 
 	public static ColumnMapping getColumnMapping(String attributeName, PersistentType persistentType) {
-		if (attributeName == null || persistentType == null) {
+		if ((attributeName == null) || (persistentType == null)) {
 			return null;
 		}
-		for (Iterator<PersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
-			PersistentAttribute persAttribute = stream.next();
+		for (Iterator<ReadOnlyPersistentAttribute> stream = persistentType.allAttributes(); stream.hasNext(); ) {
+			ReadOnlyPersistentAttribute persAttribute = stream.next();
 			if (attributeName.equals(persAttribute.getName())) {
 				if (persAttribute.getMapping() instanceof ColumnMapping) {
 					return (ColumnMapping) persAttribute.getMapping();
@@ -192,11 +218,11 @@ public class MappingTools {
 				// keep looking or return null???
 			}
 		}
-		return null;		
+		return null;
 	}
-	
+
 	public static RelationshipMapping getRelationshipMapping(String attributeName, TypeMapping typeMapping) {
-		if (attributeName == null || typeMapping == null) {
+		if ((attributeName == null) || (typeMapping == null)) {
 			return null;
 		}
 		for (Iterator<AttributeMapping> stream = typeMapping.allAttributeMappings(); stream.hasNext(); ) {
@@ -208,7 +234,7 @@ public class MappingTools {
 				// keep looking or return null???
 			}
 		}
-		return null;		
+		return null;
 	}
 
 	public static void convertReferenceTableDefaultToSpecifiedJoinColumn(ReferenceTable referenceTable) {
@@ -216,7 +242,7 @@ public class MappingTools {
 		if (defaultJoinColumn != null) {
 			String columnName = defaultJoinColumn.getDefaultName();
 			String referencedColumnName = defaultJoinColumn.getDefaultReferencedColumnName();
-			JoinColumn joinColumn = referenceTable.addSpecifiedJoinColumn(0);
+			JoinColumn joinColumn = referenceTable.addSpecifiedJoinColumn();
 			joinColumn.setSpecifiedName(columnName);
 			joinColumn.setSpecifiedReferencedColumnName(referencedColumnName);
 		}
@@ -236,11 +262,11 @@ public class MappingTools {
 	public static String getMetamodelFieldMapKeyTypeName(CollectionMapping2_0 mapping) {
 		PersistentType targetType = mapping.getResolvedTargetType();
 		String mapKey = mapping.getMapKey();
-		if (mapKey == null || targetType == null) {
+		if ((mapKey == null) || (targetType == null)) {
 			String mapKeyClass = mapping.getMapKeyClass();
 			return mapKeyClass != null ? mapKeyClass : MetamodelField.DEFAULT_TYPE_NAME;
 		}
-		PersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
+		ReadOnlyPersistentAttribute mapKeyAttribute = targetType.resolveAttribute(mapKey);
 		if (mapKeyAttribute == null) {
 			return MetamodelField.DEFAULT_TYPE_NAME;
 		}
@@ -251,29 +277,148 @@ public class MappingTools {
 		return mapKeyMapping.getMetamodelTypeName();
 	}
 
-	public static Column resolveOverridenColumn(TypeMapping overridableTypeMapping, String attributeOverrideName) {
-		if (overridableTypeMapping != null) {
-			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-				Column column = typeMapping.resolveOverriddenColumn(attributeOverrideName);
-				if (column != null) {
-					return column;
-				}
-			}
+	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
+	public static Column resolveOverriddenColumn(TypeMapping overridableTypeMapping, String attributeName) {
+		// convenience null check to simplify client code
+		if (overridableTypeMapping == null) {
+			return null;
 		}
-		return null;		
-	}
 
-	public static RelationshipReference resolveRelationshipReference(TypeMapping overridableTypeMapping, String associationOverrideName) {
-		if (overridableTypeMapping != null) {
-			for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-				RelationshipReference relationshipReference = typeMapping.resolveRelationshipReference(associationOverrideName);
-				if (relationshipReference != null) {
-					return relationshipReference;
-				}
+		for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+			Column column = typeMapping.resolveOverriddenColumn(attributeName);
+			if (column != null) {
+				return column;
 			}
 		}
 		return null;
 	}
+
+	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
+	public static RelationshipReference resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
+		// convenience null check to simplify client code
+		if (overridableTypeMapping == null) {
+			return null;
+		}
+
+		for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
+			RelationshipReference relationship = typeMapping.resolveOverriddenRelationship(attributeName);
+			if (relationship != null) {
+				return relationship;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return whether the specified nodes are "duplicates".
+	 * @see JpaNamedContextNode#duplicates(Object)
+	 */
+	public static <T extends JpaNamedContextNode<? super T>> boolean nodesAreDuplicates(T node1, T node2) {
+		return (node1 != node2) &&
+				! StringTools.stringIsEmpty(node1.getName()) &&
+				node1.getName().equals(node2.getName()) &&
+				! node1.overrides(node2) &&
+				! node2.overrides(node1);
+	}
+
+	/**
+	 * Return whether the first specified node "overrides" the second,
+	 * based on the "precedence" of their classes.
+	 * @see JpaNamedContextNode#overrides(Object)
+	 */
+	public static <T extends JpaNamedContextNode<? super T>> boolean nodeOverrides(T node1, T node2, Iterable<Class<? extends T>> precedenceTypeList) {
+		// this isn't ideal, but use it until adopters protest...
+		return (node1.getName() != null) &&
+				(node2.getName() != null) &&
+				node1.getName().equals(node2.getName()) &&
+				(node1.getPersistenceUnit() == node2.getPersistenceUnit()) &&
+				(calculatePrecedence(node1, precedenceTypeList) < calculatePrecedence(node2, precedenceTypeList));
+	}
+
+	/**
+	 * Loop through the specified classes; return the index of the first class
+	 * the specified node is an instance of.
+	 */
+	private static <T extends JpaNamedContextNode<? super T>> int calculatePrecedence(T node, Iterable<Class<? extends T>> precedenceTypeList) {
+		int precedence = 0;
+		for (Class<?> nodeClass : precedenceTypeList) {
+			if (nodeClass.isInstance(node)) {
+				return precedence;
+			}
+			precedence++;
+		}
+		throw new IllegalArgumentException("unknown named node: " + node); //$NON-NLS-1$
+	}
+
+	public static String getPrimaryKeyColumnName(Entity entity) {
+		String pkColumnName = null;
+		for (Iterator<ReadOnlyPersistentAttribute> stream = entity.getPersistentType().allAttributes(); stream.hasNext(); ) {
+			ReadOnlyPersistentAttribute attribute = stream.next();
+			String current = attribute.getPrimaryKeyColumnName();
+			if (current != null) {
+				// 229423 - if the attribute is a primary key, but it has an attribute override,
+				// use the override column instead
+				ReadOnlyAttributeOverride attributeOverride = entity.getAttributeOverrideContainer().getOverrideNamed(attribute.getName());
+				if (attributeOverride != null) {
+					current = attributeOverride.getColumn().getName();
+				}
+			}
+			if (pkColumnName == null) {
+				pkColumnName = current;
+			} else {
+				if (current != null) {
+					// if we encounter a composite primary key, return null
+					return null;
+				}
+			}
+		}
+		// if we encounter only a single primary key column name, return it
+		return pkColumnName;
+	}
+
+	/**
+	 * "Unqualify" the specified attribute name, removing the mapping's name
+	 * from the front of the attribute name if it is present. For example, if
+	 * the mapping's name is <code>"foo"</code>, the attribute name
+	 * <code>"foo.bar"</code> would be converted to <code>"bar"</code>).
+	 * Return <code>null</code> if the attribute name cannot be "unqualified".
+	 */
+	public static String unqualify(String mappingName, String attributeName) {
+		if (mappingName == null) {
+			return null;
+		}
+		if ( ! attributeName.startsWith(mappingName)) {
+			return null;
+		}
+		int mappingNameLength = mappingName.length();
+		if (attributeName.length() <= mappingNameLength) {
+			return null;
+		}
+		return (attributeName.charAt(mappingNameLength) == '.') ? attributeName.substring(mappingNameLength + 1) : null;
+	}
+
+	/**
+	 * This transformer will prepend a specified qualifier, followed by a
+	 * dot ('.'), to a string. For example, if a mapping's name is
+	 * <code>"foo"</code> and one of its attribute's is named
+	 * <code>"bar"</code>, the attribute's name will be transformed
+	 * into <code>"foo.bar"</code>. If the specified qualifier is
+	 * <code>null</code> (or an empty string), only a dot will be prepended
+	 * to a string.
+	 */
+	public static class QualifierTransformer
+		implements Transformer<String, String>
+	{
+		private final String prefix;
+		public QualifierTransformer(String qualifier) {
+			super();
+			this.prefix = (qualifier == null) ? "." : qualifier + '.'; //$NON-NLS-1$
+		}
+		public String transform(String s) {
+			return this.prefix + s;
+		}
+	}
+
 
 	// ********** constructor **********
 
@@ -284,5 +429,4 @@ public class MappingTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

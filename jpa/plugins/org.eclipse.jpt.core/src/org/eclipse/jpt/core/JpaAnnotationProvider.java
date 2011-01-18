@@ -105,7 +105,7 @@ public interface JpaAnnotationProvider
 	/**
 	 * Build a null attribute annotation with the specified name.
 	 * Throw an IllegalArgumentException if the specified annotation is unsupported.
-	 * @see #attributeMappingAnnotationNames()
+	 * @see #attributeAnnotationNames()
 	 */
 	Annotation buildNullAttributeAnnotation(
 			JavaResourcePersistentAttribute parent, String annotationName);

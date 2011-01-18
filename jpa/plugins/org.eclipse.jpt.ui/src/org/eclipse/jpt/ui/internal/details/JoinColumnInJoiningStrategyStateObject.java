@@ -12,6 +12,8 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
@@ -39,8 +41,8 @@ public class JoinColumnInJoiningStrategyStateObject
 	 * used to create a new one
 	 */
 	public JoinColumnInJoiningStrategyStateObject(
-			JoinColumnJoiningStrategy joiningStrategy,
-		    JoinColumn joinColumn) {
+			ReadOnlyJoinColumnJoiningStrategy joiningStrategy,
+		    ReadOnlyJoinColumn joinColumn) {
 		super(joiningStrategy, joinColumn);
 	}
 	

@@ -67,8 +67,6 @@ final class BinaryPersistentType
 
 	private final Vector<JavaResourcePersistentAttribute> methods;
 
-	private AccessType access;
-
 
 	// ********** construction/initialization **********
 
@@ -86,8 +84,6 @@ final class BinaryPersistentType
 		this.hasPrivateNoArgConstructor = this.buildHasPrivateNoArgConstructor();
 		this.fields = this.buildFields();
 		this.methods = this.buildMethods();
-		// need to wait until everything is built to calculate 'access'
-		this.access = this.buildAccess();
 	}
 
 
@@ -108,8 +104,6 @@ final class BinaryPersistentType
 		this.setHasPrivateNoArgConstructor(this.buildHasPrivateNoArgConstructor());
 		this.updateFields();
 		this.updateMethods();
-		// need to wait until everything is updated to calculate 'access'
-		this.setAccess(this.buildAccess());
 	}
 
 	// TODO
@@ -348,18 +342,10 @@ final class BinaryPersistentType
 		}
 	}
 
-	// ***** access
+
+	// ********** misc **********
+
 	public AccessType getAccess() {
-		return this.access;
-	}
-
-	private void setAccess(AccessType access) {
-		AccessType old = this.access;
-		this.access = access;
-		this.firePropertyChanged(ACCESS_PROPERTY, old, access);
-	}
-
-	private AccessType buildAccess() {
 		return JPTTools.buildAccess(this);
 	}
 	
@@ -407,12 +393,10 @@ final class BinaryPersistentType
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableFields()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
-				return resourceAttribute.getSpecifiedAccess() == AccessType.FIELD;
-			}
-		};
+		return new FilteringIterator<JavaResourcePersistentAttribute>(
+				this.persistableFields(),
+				FIELD_ACCESS_TYPE_FILTER
+			);
 	}
 	
 	private void addField(JavaResourcePersistentAttribute field) {
@@ -471,12 +455,10 @@ final class BinaryPersistentType
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableProperties()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
-				return resourceAttribute.getSpecifiedAccess() == AccessType.PROPERTY;
-			}
-		};
+		return new FilteringIterator<JavaResourcePersistentAttribute>(
+				this.persistableProperties(),
+				PROPERTY_ACCESS_TYPE_FILTER
+			);
 	}
 
 	private JavaResourcePersistentAttribute getMethod(MethodSignature signature, int occurrence) {
@@ -531,12 +513,14 @@ final class BinaryPersistentType
 	}
 	
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess) {
-		if (specifiedAccess == null) {
-			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
+		switch (specifiedAccess) {
+			case FIELD :
+				return this.persistableAttributesForFieldAccessType();
+			case PROPERTY :
+				return this.persistableAttributesForPropertyAccessType();
+			default :
+				throw new IllegalArgumentException("unknown access: " + specifiedAccess); //$NON-NLS-1$
 		}
-		return (specifiedAccess == AccessType.FIELD) ?
-					this.persistableAttributesForFieldAccessType() :
-					this.persistableAttributesForPropertyAccessType();
 	}
 	
 	@SuppressWarnings("unchecked")

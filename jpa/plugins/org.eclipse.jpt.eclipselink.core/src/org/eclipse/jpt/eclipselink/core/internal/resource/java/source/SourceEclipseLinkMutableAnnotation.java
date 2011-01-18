@@ -56,6 +56,12 @@ public final class SourceEclipseLinkMutableAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}
@@ -93,7 +99,7 @@ public final class SourceEclipseLinkMutableAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MUTABLE__VALUE, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.MUTABLE__VALUE, BooleanExpressionConverter.instance());
 	}
 
 }

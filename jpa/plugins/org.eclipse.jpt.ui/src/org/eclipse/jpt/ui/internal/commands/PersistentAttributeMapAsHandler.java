@@ -72,7 +72,7 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 		// Change the mapping key for all the selected items
 		for (Object item : selection.toArray()) {
 			PersistentAttribute attribute = (PersistentAttribute) item;
-			attribute.setSpecifiedMappingKey(mappingKey);
+			attribute.setMappingKey(mappingKey);
 		}
 
 		return null;
@@ -108,7 +108,7 @@ public class PersistentAttributeMapAsHandler extends AbstractHandler
 			}
 			
 			PersistentAttribute persistentAttribute = (PersistentAttribute) obj;
-			if (persistentAttribute.getSpecifiedMapping() == null) {
+			if (persistentAttribute.getMapping().isDefault()) {
 				if (commonSpecifiedKey != null) {
 					return false;
 				}

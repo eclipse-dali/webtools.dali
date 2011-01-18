@@ -199,7 +199,7 @@ public class PreferencePropertyValueModel<P>
 		this.value = value;
 		this.fireAspectChanged(old, value);
 
-		if ((this.subject != null) && this.shouldSetPreference(old, value)) {
+		if ((this.subject != null) && this.preferenceIsToBeSet(old, value)) {
 			this.setValue_(value);
 		}
 	}
@@ -305,7 +305,7 @@ public class PreferencePropertyValueModel<P>
 	 * Subclasses can override this method to return true if they
 	 * would like to ALWAYS pass through the new value to the preference.
 	 */
-	protected boolean shouldSetPreference(Object oldValue, Object newValue) {
+	protected boolean preferenceIsToBeSet(Object oldValue, Object newValue) {
 		return this.attributeValueHasChanged(oldValue, newValue);
 	}
 

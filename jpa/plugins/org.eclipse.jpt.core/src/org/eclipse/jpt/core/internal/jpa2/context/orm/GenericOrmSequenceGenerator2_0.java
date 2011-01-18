@@ -15,9 +15,11 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmSequenceGenerator2_0;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
- *  Generic2_0OrmSequenceGenerator
+ * JPA 2.0
+ * <code>orm.xml</code> sequence generator
  */
-public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
+public class GenericOrmSequenceGenerator2_0
+	extends AbstractOrmSequenceGenerator
 	implements OrmSequenceGenerator2_0
 {
 	protected String specifiedCatalog;
@@ -26,9 +28,30 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	protected String specifiedSchema;
 	protected String defaultSchema;
 
-	public GenericOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
-		super(parent, resourceSequenceGenerator);
+
+	public GenericOrmSequenceGenerator2_0(XmlContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+		super(parent, xmlSequenceGenerator);
+		this.specifiedCatalog = xmlSequenceGenerator.getCatalog();
+		this.specifiedSchema = xmlSequenceGenerator.getSchema();
 	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedCatalog_(this.xmlGenerator.getCatalog());
+		this.setSpecifiedSchema_(this.xmlGenerator.getSchema());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setDefaultSchema(this.buildDefaultSchema());
+	}
+
 
 	// ********** catalog **********
 
@@ -42,10 +65,8 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.getResourceGenerator().setCatalog(catalog);
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.setSpecifiedCatalog_(catalog);
+		this.xmlGenerator.setCatalog(catalog);
 	}
 
 	protected void setSpecifiedCatalog_(String catalog) {
@@ -61,12 +82,13 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
 		this.defaultCatalog = catalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
 	}
 
 	protected String buildDefaultCatalog() {
 		return this.getContextDefaultCatalog();
 	}
+
 
 	// ********** schema **********
 
@@ -80,10 +102,8 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.getResourceGenerator().setSchema(schema);
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.setSpecifiedSchema_(schema);
+		this.xmlGenerator.setSchema(schema);
 	}
 
 	protected void setSpecifiedSchema_(String schema) {
@@ -105,27 +125,4 @@ public class GenericOrmSequenceGenerator2_0 extends AbstractOrmSequenceGenerator
 	protected String buildDefaultSchema() {
 		return this.getContextDefaultSchema();
 	}
-
-	// ********** resource => context **********
-
-	@Override
-	protected void initialize(XmlSequenceGenerator xmlResource) {
-		super.initialize(xmlResource);
-
-		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = xmlResource.getCatalog();
-		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = xmlResource.getSchema();
-	}
-
-	@Override
-	public void update(XmlSequenceGenerator xmlResource) {
-		super.update(xmlResource);
-
-		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(xmlResource.getCatalog());
-		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(xmlResource.getSchema());
-	}
-
 }

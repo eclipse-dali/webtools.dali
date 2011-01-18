@@ -22,9 +22,7 @@ import org.eclipse.jpt.core.context.Embeddable;
  * @since 2.1
  */
 public interface EclipseLinkEmbeddable 
-	extends EclipseLinkTypeMapping, Embeddable
+	extends Embeddable, EclipseLinkTypeMapping
 {
-	EclipseLinkCustomizer getCustomizer();
-	
-	EclipseLinkChangeTracking getChangeTracking();
+	// combine various interfaces
 }

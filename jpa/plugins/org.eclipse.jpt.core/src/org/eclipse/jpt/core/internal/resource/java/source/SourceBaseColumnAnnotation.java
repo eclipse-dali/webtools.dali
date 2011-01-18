@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.BaseColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -22,31 +22,35 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * javax.persistence.Column
- * javax.persistence.JoinColumn
+ * <ul>
+ * <li><code>javax.persistence.Column</code>
+ * <li><code>javax.persistence.JoinColumn</code>
+ * <li><code>javax.persistence.MapKeyColumn</code>
+ * <li><code>javax.persistence.MapKeyJoinColumn</code>
+ * </ul>
  */
 public abstract class SourceBaseColumnAnnotation
 	extends SourceNamedColumnAnnotation
 	implements BaseColumnAnnotation
 {
-	protected final DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
-	protected final AnnotationElementAdapter<String> tableAdapter;
+	protected DeclarationAnnotationElementAdapter<String> tableDeclarationAdapter;
+	protected AnnotationElementAdapter<String> tableAdapter;
 	protected String table;
 
-	protected final DeclarationAnnotationElementAdapter<Boolean> uniqueDeclarationAdapter;
-	protected final AnnotationElementAdapter<Boolean> uniqueAdapter;
+	protected DeclarationAnnotationElementAdapter<Boolean> uniqueDeclarationAdapter;
+	protected AnnotationElementAdapter<Boolean> uniqueAdapter;
 	protected Boolean unique;
 
-	protected final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
-	protected final AnnotationElementAdapter<Boolean> nullableAdapter;
+	protected DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
+	protected AnnotationElementAdapter<Boolean> nullableAdapter;
 	protected Boolean nullable;
 
-	protected final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
-	protected final AnnotationElementAdapter<Boolean> insertableAdapter;
+	protected DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
+	protected AnnotationElementAdapter<Boolean> insertableAdapter;
 	protected Boolean insertable;
 
-	protected final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
-	protected final AnnotationElementAdapter<Boolean> updatableAdapter;
+	protected DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
+	protected AnnotationElementAdapter<Boolean> updatableAdapter;
 	protected Boolean updatable;
 
 
@@ -56,16 +60,16 @@ public abstract class SourceBaseColumnAnnotation
 	
 	protected SourceBaseColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.tableDeclarationAdapter = this.buildStringElementAdapter(this.getTableElementName());
-		this.tableAdapter = this.buildShortCircuitElementAdapter(this.tableDeclarationAdapter);
-		this.uniqueDeclarationAdapter = this.buildBooleanElementAdapter(this.getUniqueElementName());
-		this.uniqueAdapter = this.buildShortCircuitBooleanElementAdapter(this.uniqueDeclarationAdapter);
-		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.getNullableElementName());
-		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableDeclarationAdapter);
-		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.getInsertableElementName());
-		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableDeclarationAdapter);
-		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.getUpdatableElementName());
-		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableDeclarationAdapter);
+		this.tableDeclarationAdapter = this.buildTableDeclarationAdapter();
+		this.tableAdapter = this.buildTableAdapter();
+		this.uniqueDeclarationAdapter = this.buildUniqueDeclarationAdapter();
+		this.uniqueAdapter = this.buildUniqueAdapter();
+		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
+		this.nullableAdapter = this.buildNullableAdapter();
+		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
+		this.insertableAdapter = this.buildInsertableAdapter();
+		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
+		this.updatableAdapter = this.buildUpdatableAdapter();
 	}
 	
 	@Override
@@ -87,7 +91,7 @@ public abstract class SourceBaseColumnAnnotation
 		this.syncInsertable(this.buildInsertable(astRoot));
 		this.syncUpdatable(this.buildUpdatable(astRoot));
 	}
-	
+
 
 	//************* BaseColumnAnnotation implementation *************
 
@@ -121,6 +125,14 @@ public abstract class SourceBaseColumnAnnotation
 		return this.elementTouches(this.tableDeclarationAdapter, pos, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildTableDeclarationAdapter() {
+		return this.buildStringElementAdapter(this.getTableElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildTableAdapter() {
+		return this.buildStringElementAdapter(this.tableDeclarationAdapter);
+	}
+
 	protected abstract String getTableElementName();
 
 	// ***** unique
@@ -149,6 +161,14 @@ public abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.uniqueDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildUniqueDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getUniqueElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildUniqueAdapter() {
+		return this.buildBooleanElementAdapter(this.uniqueDeclarationAdapter);
+	}
+
 	protected abstract String getUniqueElementName();
 
 	// ***** nullable
@@ -177,6 +197,14 @@ public abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildNullableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getNullableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildNullableAdapter() {
+		return this.buildBooleanElementAdapter(this.nullableDeclarationAdapter);
+	}
+
 	protected abstract String getNullableElementName();
 
 	// ***** insertable
@@ -205,6 +233,14 @@ public abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildInsertableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getInsertableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildInsertableAdapter() {
+		return this.buildBooleanElementAdapter(this.insertableDeclarationAdapter);
+	}
+
 	protected abstract String getInsertableElementName();
 
 	// ***** updatable
@@ -233,20 +269,66 @@ public abstract class SourceBaseColumnAnnotation
 		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildUpdatableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getUpdatableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildUpdatableAdapter() {
+		return this.buildBooleanElementAdapter(this.updatableDeclarationAdapter);
+	}
+
 	protected abstract String getUpdatableElementName();
 
 
-	//************* NestableAnnotation implementation *************
+	// ********** misc **********
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		super.initializeFrom(oldAnnotation);
-		BaseColumnAnnotation oldColumn = (BaseColumnAnnotation) oldAnnotation;
-		this.setTable(oldColumn.getTable());
-		this.setUnique(oldColumn.getUnique());
-		this.setNullable(oldColumn.getNullable());
-		this.setInsertable(oldColumn.getInsertable());
-		this.setUpdatable(oldColumn.getUpdatable());
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.table == null) &&
+				(this.unique == null) &&
+				(this.nullable == null) &&
+				(this.insertable == null) &&
+				(this.updatable == null);
 	}
 
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.tableDeclarationAdapter = this.buildTableDeclarationAdapter();
+		this.tableAdapter = this.buildTableAdapter();
+		this.uniqueDeclarationAdapter = this.buildUniqueDeclarationAdapter();
+		this.uniqueAdapter = this.buildUniqueAdapter();
+		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
+		this.nullableAdapter = this.buildNullableAdapter();
+		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
+		this.insertableAdapter = this.buildInsertableAdapter();
+		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
+		this.updatableAdapter = this.buildUpdatableAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(TABLE_PROPERTY, this.table);
+		this.table = null;
+		map.put(UNIQUE_PROPERTY, this.unique);
+		this.unique = null;
+		map.put(NULLABLE_PROPERTY, this.nullable);
+		this.nullable = null;
+		map.put(INSERTABLE_PROPERTY, this.insertable);
+		this.insertable = null;
+		map.put(UPDATABLE_PROPERTY, this.updatable);
+		this.updatable = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setTable((String) map.get(TABLE_PROPERTY));
+		this.setUnique((Boolean) map.get(UNIQUE_PROPERTY));
+		this.setNullable((Boolean) map.get(NULLABLE_PROPERTY));
+		this.setInsertable((Boolean) map.get(INSERTABLE_PROPERTY));
+		this.setUpdatable((Boolean) map.get(UPDATABLE_PROPERTY));
+	}
 }

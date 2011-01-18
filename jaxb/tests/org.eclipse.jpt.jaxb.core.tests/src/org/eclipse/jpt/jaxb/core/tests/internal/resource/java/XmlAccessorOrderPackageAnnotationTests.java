@@ -39,7 +39,7 @@ public class XmlAccessorOrderPackageAnnotationTests
 		
 		XmlAccessorOrderAnnotation annotation = 
 				(XmlAccessorOrderAnnotation) resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
-		assertTrue(annotation != null);
+		assertNotNull(annotation);
 		assertEquals(XmlAccessOrder.UNDEFINED, annotation.getValue());
 		
 		annotation.setValue(XmlAccessOrder.ALPHABETICAL);
@@ -47,8 +47,9 @@ public class XmlAccessorOrderPackageAnnotationTests
 		assertSourceContains("@XmlAccessorOrder(ALPHABETICAL)", cu);
 		
 		annotation.setValue(null);
-		assertNull(resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_ORDER));
-		assertSourceDoesNotContain("@XmlAccessorOrder", cu);
+		annotation = (XmlAccessorOrderAnnotation) resourcePackage.getAnnotation(JAXB.XML_ACCESSOR_ORDER);
+		assertNull(annotation.getValue());
+		assertSourceDoesNotContain("@XmlAccessorOrder(", cu);
 		
 //		TODO uncomment when bug 328400 is addressed
 //		annotation = (XmlAccessorOrderAnnotation) packageResource.addAnnotation(JAXB.XML_ACCESSOR_ORDER);

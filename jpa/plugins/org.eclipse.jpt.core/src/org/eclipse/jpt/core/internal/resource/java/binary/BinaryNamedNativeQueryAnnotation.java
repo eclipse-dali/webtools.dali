@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * javax.persistence.NamedNativeQuery
  */
 public final class BinaryNamedNativeQueryAnnotation
-	extends BinaryBaseNamedQueryAnnotation
+	extends BinaryQueryAnnotation
 	implements NestableNamedNativeQueryAnnotation
 {
 	private String resultClass;

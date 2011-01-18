@@ -9,12 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.db.Table;
 
 /**
- * 
- * 
+ * table generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -116,8 +115,9 @@ public interface TableGenerator
 
 	// ********** unique constraints **********
 
-	<T extends UniqueConstraint> ListIterator<T> uniqueConstraints();
-	int uniqueConstraintsSize();
+	<T extends UniqueConstraint> Iterable<T> getUniqueConstraints();
+	int getUniqueConstraintsSize();
+	UniqueConstraint addUniqueConstraint();
 	UniqueConstraint addUniqueConstraint(int index);
 	void removeUniqueConstraint(int index);
 	void removeUniqueConstraint(UniqueConstraint uniqueConstraint);
@@ -128,8 +128,8 @@ public interface TableGenerator
 	// ********** database stuff **********
 
 	/**
-	 * Return a db Table object with the specified/default table name.
-	 * This can return null if no Table exists on the database with that name.
+	 * Return the generator's database table.
+	 * Return null if the generator's table (name) is invalid.
 	 */
 	Table getDbTable();
 

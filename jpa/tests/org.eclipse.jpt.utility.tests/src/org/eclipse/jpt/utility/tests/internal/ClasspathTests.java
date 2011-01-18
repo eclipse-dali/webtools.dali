@@ -342,10 +342,11 @@ public class ClasspathTests extends TestCase {
 
 	public void testEntry_getCanonicalFileName() {
 		Classpath.Entry entry = Classpath.bootClasspath().getEntryForClassNamed(java.lang.String.class.getName());
+		String name = entry.getCanonicalFileName();
 		if (Tools.jvmIsSun()) {
-			assertTrue(entry.getCanonicalFileName().endsWith("rt.jar"));
+			assertTrue(name.endsWith("rt.jar"));
 		} else if (Tools.jvmIsIBM()) {
-			assertTrue(entry.getCanonicalFileName().endsWith("vm.jar"));
+			assertTrue(name.endsWith("vm.jar"));
 		}
 	}
 

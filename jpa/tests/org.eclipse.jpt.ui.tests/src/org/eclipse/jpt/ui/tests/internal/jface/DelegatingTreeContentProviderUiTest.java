@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ActionContributionItem;
 import org.eclipse.jface.action.IAction;
@@ -33,6 +32,7 @@ import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.NotNullFilter;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.jpt.utility.internal.iterators.ReadOnlyListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -524,12 +524,9 @@ public class DelegatingTreeContentProviderUiTest extends ApplicationWindow
 							}
 							return (Child) next;
 						}
-					}) {
-				@Override
-				protected boolean accept(Child c) {
-					return c != null;
-				}
-			};
+					},
+					NotNullFilter.<Child>instance()
+				);
 		}
 	}
 

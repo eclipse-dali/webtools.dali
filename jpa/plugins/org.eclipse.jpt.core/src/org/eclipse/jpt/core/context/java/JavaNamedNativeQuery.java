@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * 
- * 
+ * Java named native query
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,15 +28,8 @@ import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
 public interface JavaNamedNativeQuery
 	extends NamedNativeQuery, JavaQuery
 {
+	NamedNativeQueryAnnotation getQueryAnnotation();
 
-	ListIterator<JavaQueryHint> hints();
-
-	void initialize(NamedNativeQueryAnnotation resourceQuery);
-
-	/**
-	 * Update the JavaNamedNativeQuery context model object to match the NamedNativeQueryAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(NamedNativeQueryAnnotation resourceQuery);
-
+	// required to resolve ambiguity
+	ListIterable<JavaQueryHint> getHints();
 }

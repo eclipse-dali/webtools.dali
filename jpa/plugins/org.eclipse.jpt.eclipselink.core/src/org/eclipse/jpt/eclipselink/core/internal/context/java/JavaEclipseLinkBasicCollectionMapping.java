@@ -30,7 +30,8 @@ public class JavaEclipseLinkBasicCollectionMapping
 		return EclipseLinkMappingKeys.BASIC_COLLECTION_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String getAnnotationName() {
+	@Override
+	protected String getAnnotationName() {
 		return EclipseLinkBasicCollectionAnnotation.ANNOTATION_NAME;
 	}
 

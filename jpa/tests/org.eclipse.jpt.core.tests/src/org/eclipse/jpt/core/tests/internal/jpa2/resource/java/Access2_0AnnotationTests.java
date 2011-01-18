@@ -98,8 +98,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(typeResource.getAnnotation(JPA2_0.ACCESS));
-		assertSourceDoesNotContain("@Access", cu);
+		assertSourceDoesNotContain("@Access(", cu);
 	}
 	
 	public void testGetAccessOnField() throws Exception {
@@ -135,8 +134,7 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(attributeResource.getAnnotation(JPA2_0.ACCESS));
-		assertSourceDoesNotContain("@Access", cu);
+		assertSourceDoesNotContain("@Access(", cu);
 	}
 	
 	public void testGetAccessOnProperty() throws Exception {
@@ -172,7 +170,6 @@ public class Access2_0AnnotationTests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@Access(PROPERTY)", cu);
 		
 		access.setValue(null);
-		assertNull(attributeResource.getAnnotation(JPA2_0.ACCESS));
-		assertSourceDoesNotContain("@Access", cu);
+		assertSourceDoesNotContain("@Access(", cu);
 	}
 }

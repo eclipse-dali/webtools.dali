@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.context;
 import java.util.Iterator;
 
 /**
- * 
- * 
+ * column or join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,59 +24,14 @@ import java.util.Iterator;
  * @since 2.0
  */
 public interface BaseColumn
-	extends NamedColumn
+	extends NamedColumn, ReadOnlyBaseColumn
 {
+	void setSpecifiedTable(String table);
+	void setSpecifiedUnique(Boolean unique);
+	void setSpecifiedNullable(Boolean nullable);
+	void setSpecifiedInsertable(Boolean insertable);
+	void setSpecifiedUpdatable(Boolean updatable);
 
-	String getDefaultTable();
-		String DEFAULT_TABLE_PROPERTY = "defaultTable"; //$NON-NLS-1$
-
-	String getSpecifiedTable();
-	void setSpecifiedTable(String value);
-		String SPECIFIED_TABLE_PROPERTY = "specifiedTable"; //$NON-NLS-1$
-
-	
-	boolean isUnique();
-	
-	boolean isDefaultUnique();
-		String DEFAULT_UNIQUE_PROPERTY = "defaultUnique"; //$NON-NLS-1$
-		boolean DEFAULT_UNIQUE = false;
-	Boolean getSpecifiedUnique();
-	void setSpecifiedUnique(Boolean newSpecifiedUnique);
-		String SPECIFIED_UNIQUE_PROPERTY = "specifiedUnique"; //$NON-NLS-1$
-	
-
-	boolean isNullable();
-		
-	boolean isDefaultNullable();
-		String DEFAULT_NULLABLE_PROPERTY = "defaultNullable"; //$NON-NLS-1$
-		boolean DEFAULT_NULLABLE = true;
-	Boolean getSpecifiedNullable();
-	void setSpecifiedNullable(Boolean newSpecifiedNullable);
-		String SPECIFIED_NULLABLE_PROPERTY = "specifiedNullable"; //$NON-NLS-1$
-
-
-	boolean isInsertable();
-	
-	boolean isDefaultInsertable();
-		String DEFAULT_INSERTABLE_PROPERTY = "defaultInsertable"; //$NON-NLS-1$
-		boolean DEFAULT_INSERTABLE = true;
-	Boolean getSpecifiedInsertable();
-	void setSpecifiedInsertable(Boolean newSpecifiedInsertable);
-		String SPECIFIED_INSERTABLE_PROPERTY = "specifiedInsertable"; //$NON-NLS-1$
-	
-	
-	boolean isUpdatable();
-	
-	boolean isDefaultUpdatable();
-		String DEFAULT_UPDATABLE_PROPERTY = "defaultUpdatable"; //$NON-NLS-1$
-		boolean DEFAULT_UPDATABLE = true;
-	Boolean getSpecifiedUpdatable();
-	void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable);
-		String SPECIFIED_UPDATABLE_PROPERTY = "specifiedUpdatable"; //$NON-NLS-1$
-
-	/**
-	 * return whether the column's table is invalid in the given context
-	 */
 	boolean tableNameIsInvalid();
 
 	//TODO This is used by ColumnComposite to get a list of possible associated tables,
@@ -86,13 +41,17 @@ public interface BaseColumn
 	 */
 	Iterator<String> candidateTableNames();
 
+
+	// ********** owner **********
+
 	/**
-	 * interface allowing columns to be used in multiple places
-	 * (e.g. basic mappings and attribute overrides)
+	 * Interface allowing columns to be used in multiple places
+	 * (e.g. basic mappings and attribute overrides).
 	 */
-	interface Owner extends NamedColumn.Owner
+	interface Owner
+		extends NamedColumn.Owner
+		// ReadOnlyBaseColumn does not define an Owner
 	{
-		
 		/**
 		 * return whether the given table cannot be explicitly specified
 		 * in the column's 'table' element

@@ -10,15 +10,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
-import org.eclipse.jpt.core.utility.TextRange;
-
 /**
  * Interface to resolve text ranges on join columns
  */
 public interface JoinColumnTextRangeResolver
-	extends 
-		BaseJoinColumnTextRangeResolver,
-		BaseColumnTextRangeResolver
+	extends BaseJoinColumnTextRangeResolver, BaseColumnTextRangeResolver
 {
-	TextRange getReferencedColumnNameTextRange();
+	// combine interfaces
 }

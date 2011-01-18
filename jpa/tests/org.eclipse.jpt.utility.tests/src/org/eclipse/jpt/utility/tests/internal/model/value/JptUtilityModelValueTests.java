@@ -58,8 +58,8 @@ public class JptUtilityModelValueTests {
 		suite.addTestSuite(StaticCollectionValueModelTests.class);
 		suite.addTestSuite(StaticListValueModelTests.class);
 		suite.addTestSuite(StaticValueModelTests.class);
-		suite.addTestSuite(TransformationListValueModelAdapterTests.class);
-		suite.addTestSuite(TransformationListValueModelAdapterTests.TransformerTests.class);
+		suite.addTestSuite(TransformationListValueModelTests.class);
+		suite.addTestSuite(TransformationListValueModelTests.TransformerTests.class);
 		suite.addTestSuite(TransformationPropertyValueModelTests.class);
 		suite.addTestSuite(TreeAspectAdapterTests.class);
 		suite.addTestSuite(ValueCollectionAdapterTests.class);

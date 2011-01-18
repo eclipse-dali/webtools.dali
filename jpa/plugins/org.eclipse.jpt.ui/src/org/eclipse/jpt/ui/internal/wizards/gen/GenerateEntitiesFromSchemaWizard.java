@@ -220,7 +220,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 			JptUiPlugin.log(e);
 		}
 		OverwriteConfirmer overwriteConfirmer = null;
-		if (shouldShowOverwriteWarning()) {
+		if (showOverwriteWarning()) {
 			overwriteConfirmer = new OverwriteConfirmer();
 		}
 		
@@ -251,7 +251,7 @@ public class GenerateEntitiesFromSchemaWizard extends Wizard
 		}
 	}
 
-    public static boolean shouldShowOverwriteWarning(){
+    public static boolean showOverwriteWarning(){
     	IEclipsePreferences pref = new InstanceScope().getNode(JptUiPlugin.PLUGIN_ID); 
     	boolean ret = ! pref.getBoolean( DONT_SHOW_OVERWRITE_WARNING_DIALOG, false) ;
     	return ret;

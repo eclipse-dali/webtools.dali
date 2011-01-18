@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,22 +11,22 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
+import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
- * 
+ * <code>orm.xml</code> sequence or table generator
  */
-public abstract class AbstractOrmGenerator<T extends XmlGenerator>
-	extends AbstractOrmXmlContextNode 
+public abstract class AbstractOrmGenerator<X extends XmlGenerator>
+	extends AbstractOrmXmlContextNode
 	implements OrmGenerator
 {
+	protected final X xmlGenerator;
 
 	protected String name;
 
@@ -36,17 +36,34 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	protected Integer specifiedAllocationSize;
 	protected int defaultAllocationSize;
 
-	protected T resourceGenerator;
 
-
-	protected AbstractOrmGenerator(XmlContextNode parent) {
+	protected AbstractOrmGenerator(XmlContextNode parent, X xmlGenerator) {
 		super(parent);
+		this.xmlGenerator = xmlGenerator;
+		this.name = xmlGenerator.getName();
+		this.specifiedInitialValue = xmlGenerator.getInitialValue();
+		this.specifiedAllocationSize = xmlGenerator.getAllocationSize();
 	}
 
-	protected T getResourceGenerator() {
-		return this.resourceGenerator;
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.xmlGenerator.getName());
+		this.setSpecifiedInitialValue_(this.xmlGenerator.getInitialValue());
+		this.setSpecifiedAllocationSize_(this.xmlGenerator.getAllocationSize());
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultInitialValue(this.buildDefaultInitialValue());
+		this.setDefaultAllocationSize(this.buildDefaultAllocationSize());
+		this.getPersistenceUnit().addGenerator(this);
+	}
+
 
 	// ********** name **********
 
@@ -55,12 +72,10 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 
 	public void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.getResourceGenerator().setName(name);
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
+		this.setName_(name);
+		this.xmlGenerator.setName(name);
 	}
-	
+
 	protected void setName_(String name) {
 		String old = this.name;
 		this.name = name;
@@ -79,28 +94,28 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 
 	public void setSpecifiedInitialValue(Integer specifiedInitialValue) {
-		Integer old = this.specifiedInitialValue;
-		this.specifiedInitialValue = specifiedInitialValue;
-		this.getResourceGenerator().setInitialValue(specifiedInitialValue);
-		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
+		this.setSpecifiedInitialValue_(specifiedInitialValue);
+		this.xmlGenerator.setInitialValue(specifiedInitialValue);
 	}
-	
+
 	protected void setSpecifiedInitialValue_(Integer specifiedInitialValue) {
 		Integer old = this.specifiedInitialValue;
 		this.specifiedInitialValue = specifiedInitialValue;
 		this.firePropertyChanged(SPECIFIED_INITIAL_VALUE_PROPERTY, old, specifiedInitialValue);
 	}
-	
+
 	public int getDefaultInitialValue() {
 		return this.defaultInitialValue;
 	}
-	
+
 	protected void setDefaultInitialValue(int defaultInitialValue) {
 		int old = this.defaultInitialValue;
 		this.defaultInitialValue = defaultInitialValue;
 		this.firePropertyChanged(DEFAULT_INITIAL_VALUE_PROPERTY, old, defaultInitialValue);
 	}
-	
+
+	protected abstract int buildDefaultInitialValue();
+
 
 	// ********** allocation size **********
 
@@ -113,12 +128,10 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 
 	public void setSpecifiedAllocationSize(Integer specifiedAllocationSize) {
-		Integer old = this.specifiedAllocationSize;
-		this.specifiedAllocationSize = specifiedAllocationSize;
-		this.getResourceGenerator().setAllocationSize(specifiedAllocationSize);
-		this.firePropertyChanged(SPECIFIED_ALLOCATION_SIZE_PROPERTY, old, specifiedAllocationSize);
+		this.setSpecifiedAllocationSize_(specifiedAllocationSize);
+		this.xmlGenerator.setAllocationSize(specifiedAllocationSize);
 	}
-	
+
 	protected void setSpecifiedAllocationSize_(Integer specifiedAllocationSize) {
 		Integer old = this.specifiedAllocationSize;
 		this.specifiedAllocationSize = specifiedAllocationSize;
@@ -126,48 +139,32 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	}
 
 	public int getDefaultAllocationSize() {
-		return Generator.DEFAULT_ALLOCATION_SIZE;
+		return this.defaultAllocationSize;
 	}
-	
+
 	protected void setDefaultAllocationSize(int defaultAllocationSize) {
 		int old = this.defaultAllocationSize;
 		this.defaultAllocationSize = defaultAllocationSize;
 		this.firePropertyChanged(DEFAULT_ALLOCATION_SIZE_PROPERTY, old, defaultAllocationSize);
 	}
 
+	protected int buildDefaultAllocationSize() {
+		return DEFAULT_ALLOCATION_SIZE;
+	}
+
 
 	// ********** text ranges **********
 
 	public TextRange getValidationTextRange() {
-		TextRange validationTextRange = this.getResourceGenerator().getValidationTextRange();
-		return validationTextRange != null ? validationTextRange : getParent().getValidationTextRange();
+		TextRange validationTextRange = this.xmlGenerator.getValidationTextRange();
+		return (validationTextRange != null) ? validationTextRange : this.getParent().getValidationTextRange();
 	}
-	
+
 	public TextRange getNameTextRange() {
-		TextRange nameTextRange = this.getResourceGenerator().getNameTextRange();
-		return nameTextRange != null ? nameTextRange : getValidationTextRange();
+		TextRange nameTextRange = this.xmlGenerator.getNameTextRange();
+		return (nameTextRange != null) ? nameTextRange : this.getValidationTextRange();
 	}
 
-
-	// ********** resource => context **********
-
-	protected void initialize(T xmlResourceGenerator) {
-		this.resourceGenerator = xmlResourceGenerator;
-		this.name = xmlResourceGenerator.getName();
-		this.specifiedInitialValue = xmlResourceGenerator.getInitialValue();
-		this.specifiedAllocationSize = xmlResourceGenerator.getAllocationSize();
-		//TODO defaults
-	}
-	
-	protected void update(T xmlResourceGenerator) {
-		this.resourceGenerator = xmlResourceGenerator;
-		this.setName_(xmlResourceGenerator.getName());
-		this.setSpecifiedInitialValue_(xmlResourceGenerator.getInitialValue());
-		this.setSpecifiedAllocationSize_(xmlResourceGenerator.getAllocationSize());
-		getPersistenceUnit().addGenerator(this);
-		//TODO defaults
-	}
-	
 
 	// ********** database stuff **********
 
@@ -183,7 +180,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	 */
 	public SchemaContainer getDbSchemaContainer() {
 		String catalog = this.getCatalog();
-		return (catalog != null) ? this.getDbCatalog(catalog) : this.getDatabase();
+		return (catalog != null) ? this.resolveDbCatalog(catalog) : this.getDatabase();
 	}
 
 	protected abstract String getSchema();
@@ -194,7 +191,7 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 	 */
 	public Catalog getDbCatalog() {
 		String catalog = this.getCatalog();
-		return (catalog == null) ? null : this.getDbCatalog(catalog);
+		return (catalog == null) ? null : this.resolveDbCatalog(catalog);
 	}
 
 	protected abstract String getCatalog();
@@ -202,34 +199,25 @@ public abstract class AbstractOrmGenerator<T extends XmlGenerator>
 
 	// ********** misc **********
 
-	public boolean isVirtual() {
-		return getResourceGenerator().isVirtual();
+	public X getXmlGenerator() {
+		return this.xmlGenerator;
 	}
-	
+
 	@Override
 	public XmlContextNode getParent() {
 		return (XmlContextNode) super.getParent();
 	}
-	
+
 	public boolean overrides(Generator other) {
-		// this isn't ideal, but it will have to do until we have further adopter input
-		return (this.name != null)
-				&& this.name.equals(other.getName())
-				&& (other instanceof JavaGenerator);
+		return MappingTools.nodeOverrides(this, other, PRECEDENCE_TYPE_LIST);
 	}
-	
+
 	public boolean duplicates(Generator other) {
-		return (this != other)
-				&& ! StringTools.stringIsEmpty(this.name)
-				&& this.name.equals(other.getName())
-				&& ! this.isVirtual()
-				&& ! this.overrides(other)
-				&& ! other.overrides(this);
+		return MappingTools.nodesAreDuplicates(this, other);
 	}
-	
+
 	@Override
 	public void toString(StringBuilder sb) {
-		super.toString(sb);
 		sb.append(this.name);
 	}
 

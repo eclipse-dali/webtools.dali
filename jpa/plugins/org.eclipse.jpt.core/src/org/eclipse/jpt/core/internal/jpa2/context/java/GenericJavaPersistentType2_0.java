@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentType;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.Access2_0Annotation;
@@ -40,65 +40,70 @@ public class GenericJavaPersistentType2_0
 
 	public GenericJavaPersistentType2_0(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
 		super(parent, jrpt);
+		this.declaringTypeName = this.buildDeclaringTypeName();
 		this.metamodelSynchronizer = this.buildMetamodelSynchronizer();
 	}
 
-	@Override
-	protected void initialize(JavaResourcePersistentType jrpt) {
-		super.initialize(jrpt);
-		this.declaringTypeName = this.buildDeclaringTypeName();
-	}
 
-	protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
-		return ((JpaFactory2_0) this.getJpaFactory()).buildMetamodelSynchronizer(this);
-	}
+	// ********** synchronize/update **********
 
 	@Override
-	public void update() {
-		super.update();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setDeclaringTypeName(this.buildDeclaringTypeName());
+	}
+
+
+	// ********** access annotation **********
+
+	protected Access2_0Annotation getAccessAnnotation() {
+		return (Access2_0Annotation) this.resourcePersistentType.getNonNullAnnotation(this.getAccessAnnotationName());
+	}
+
+	protected void removeAccessAnnotationIfUnset() {
+		if (this.getAccessAnnotation().isUnset()) {
+			this.removeAccessAnnotation();
+		}
+	}
+
+	protected void removeAccessAnnotation() {
+		this.resourcePersistentType.removeAnnotation(this.getAccessAnnotationName());
+	}
+
+	protected String getAccessAnnotationName() {
+		return Access2_0Annotation.ANNOTATION_NAME;
 	}
 
 
 	// ********** access **********
 
-	protected Access2_0Annotation getAccessAnnotation() {
-		return (Access2_0Annotation) this.resourcePersistentType.getNonNullAnnotation(this.getAccessAnnotationName());
+	public void setSpecifiedAccess(AccessType access) {
+		if (this.valuesAreDifferent(this.specifiedAccess, access)) {
+			this.getAccessAnnotation().setValue(AccessType.toJavaResourceModel(access));
+			this.removeAccessAnnotationIfUnset();
+			this.setSpecifiedAccess_(access);
+		}
 	}
-	
-	protected String getAccessAnnotationName() {
-		return Access2_0Annotation.ANNOTATION_NAME;
-	}
-	
+
 	@Override
 	protected AccessType buildSpecifiedAccess() {
 		return AccessType.fromJavaResourceModel(this.getAccessAnnotation().getValue());
 	}
-	
-	public void setSpecifiedAccess(AccessType specifiedAccess) {
-		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = specifiedAccess;
-		this.getAccessAnnotation().setValue(AccessType.toJavaResourceModel(specifiedAccess));
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
+
+
+	// ********** attributes **********
+
+	// suppress type-safety warning
+	@Override
+	public ListIterator<JavaPersistentAttribute> attributes() {
+		return super.attributes();
 	}
-	
-	protected void setSpecifiedAccess_(AccessType specifiedAccess) {
-		AccessType old = this.specifiedAccess;
-		this.specifiedAccess = specifiedAccess;
-		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, specifiedAccess);
-	}
-	
+
 	@Override
 	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
 		return (this.specifiedAccess == null) ?
 				super.resourceAttributes() :
 				this.resourcePersistentType.persistableAttributes(AccessType.toJavaResourceModel(this.specifiedAccess));
-	}
-	
-	@Override
-	public void updateAccess() {
-		super.updateAccess();
-		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
 	}
 
 
@@ -136,7 +141,7 @@ public class GenericJavaPersistentType2_0
 	public void synchronizeMetamodel(Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
 		this.metamodelSynchronizer.synchronize(memberTypeTree);
 	}
-	
+
 	public void printBodySourceOn(BodySourceWriter pw, Map<String, Collection<MetamodelSourceType>> memberTypeTree) {
 		this.metamodelSynchronizer.printBodySourceOn(pw, memberTypeTree);
 	}
@@ -145,4 +150,7 @@ public class GenericJavaPersistentType2_0
 		// do nothing - probably shouldn't be called...
 	}
 
+	protected MetamodelSourceType.Synchronizer buildMetamodelSynchronizer() {
+		return this.getJpaFactory2_0().buildMetamodelSynchronizer(this);
+	}
 }

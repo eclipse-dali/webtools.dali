@@ -23,6 +23,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Custom
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weaving;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -96,17 +97,20 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	}
 
 	private void initializeSessionCustomizersFromPersistenceUnit() {
-		Set<PersistenceUnit.Property> properties = 
-			this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER);
-		
-		this.sessionCustomizers = new ArrayList<String>(properties.size());
-		this.initializeSessionCustomizersWith(properties);
+		this.sessionCustomizers = this.buildSessionCustomizers();
 	}
 
-	private void initializeSessionCustomizersWith(Set<PersistenceUnit.Property> properties) {
-		for (PersistenceUnit.Property property : properties) {
-			this.sessionCustomizers.add(property.getValue());
-		}
+	private List<String> buildSessionCustomizers() {
+		return CollectionTools.list(this.convertToValues(this.getPropertiesSetWithPrefix(ECLIPSELINK_SESSION_CUSTOMIZER)));
+	}
+
+	private Iterable<String> convertToValues(Iterable<PersistenceUnit.Property> properties) {
+		return new TransformationIterable<PersistenceUnit.Property, String>(properties) {
+			@Override
+			protected String transform(PersistenceUnit.Property property) {
+				return property.getValue();
+			}
+		};
 	}
 
 	private void initializeEntitiesCustomizerClass(Set<PersistenceUnit.Property> descriptorCustomizerProperties) {
@@ -297,11 +301,10 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	public Entity addEntity(String entityName) {
 		if (this.entityExists(entityName)) {
-			throw new IllegalStateException("Entity " + entityName + " already exists.");
+			throw new IllegalStateException("Duplicate entity: " + entityName); //$NON-NLS-1$
 		}
 		Entity newEntity = this.buildEntity(entityName);
-		this.entities.add(newEntity);
-		this.fireListChanged(ENTITIES_LIST, this.entities);
+		this.addItemToList(newEntity, this.entities, ENTITIES_LIST);
 		return newEntity;
 	}
 
@@ -529,38 +532,21 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	public String addSessionCustomizer(String newSessionCustomizerClassName){
 
 		if( ! this.sessionCustomizerExists(newSessionCustomizerClassName)) {
-			this.sessionCustomizers.add(newSessionCustomizerClassName);
+			this.addItemToList(newSessionCustomizerClassName, this.sessionCustomizers, SESSION_CUSTOMIZER_LIST);
 			this.putProperty(SESSION_CUSTOMIZER_PROPERTY, newSessionCustomizerClassName, true);
-			this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
 			return newSessionCustomizerClassName;
 		}
 		return null;
 	}
 	
 	public void removeSessionCustomizer(String className){
-
-		if(this.removeSessionCustomizer_(className) != null) {
+		if (this.removeItemFromList(className, this.sessionCustomizers, SESSION_CUSTOMIZER_LIST)) {
 			this.removeProperty(SESSION_CUSTOMIZER_PROPERTY, className);
-			this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
 		}
 	}
 	
-	private String removeSessionCustomizer_(String className){
-
-		for ( ListIterator<String> i = this.sessionCustomizers(); i.hasNext();) {
-			String sessionCustomizer = i.next();
-			if(sessionCustomizer.equals(className)) {
-				this.sessionCustomizers.remove(sessionCustomizer);
-				return sessionCustomizer;
-			}
-		}
-		return null;
-	}
-
 	private void sessionCustomizersChanged() {
-
-		this.initializeSessionCustomizersFromPersistenceUnit();
-		this.fireListChanged(SESSION_CUSTOMIZER_LIST, this.sessionCustomizers);
+		this.synchronizeList(this.buildSessionCustomizers(), this.sessionCustomizers, SESSION_CUSTOMIZER_LIST);
 	}
 
 	// ********** Weaving **********
@@ -765,10 +751,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	
 	private void removeEntity(Entity entity) {
 		if(entity == null) {
-			throw new IllegalArgumentException();
+			throw new NullPointerException();
 		}
-		this.entities.remove(entity);
-		this.fireListChanged(ENTITIES_LIST, this.entities);
+		this.removeItemFromList(entity, this.entities, ENTITIES_LIST);
 	}
 
 	/**
@@ -809,8 +794,9 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerRenameTypeEdits(originalType, newName),
-					this.createExceptionHandlerRenameTypeEdits(originalType, newName));
+				this.createSessionCustomizerRenameTypeEdits(originalType, newName),
+				this.createExceptionHandlerRenameTypeEdits(originalType, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createSessionCustomizerRenameTypeEdits(final IType originalType, final String newName) {
@@ -826,18 +812,18 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerRenameTypeEdits(IType originalType, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
-		if (property != null) {
-			return property.createRenameTypeEdits(originalType, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenameTypeEdits(originalType, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerMoveTypeEdits(originalType, newPackage),
-					this.createExceptionHandlerMoveTypeEdits(originalType, newPackage));
+				this.createSessionCustomizerMoveTypeEdits(originalType, newPackage),
+				this.createExceptionHandlerMoveTypeEdits(originalType, newPackage)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createSessionCustomizerMoveTypeEdits(final IType originalType, final IPackageFragment newPackage) {
@@ -853,18 +839,18 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
-		if (property != null) {
-			return property.createMoveTypeEdits(originalType, newPackage);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createMoveTypeEdits(originalType, newPackage) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-					this.createSessionCustomizerRenamePackageEdits(originalPackage, newName),
-					this.createExceptionHandlerRenamePackageEdits(originalPackage, newName));
+				this.createSessionCustomizerRenamePackageEdits(originalPackage, newName),
+				this.createExceptionHandlerRenamePackageEdits(originalPackage, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createSessionCustomizerRenamePackageEdits(final IPackageFragment originalPackage, final String newName) {
@@ -880,9 +866,8 @@ public class EclipseLinkCustomization extends EclipseLinkPersistenceUnitProperti
 
 	protected Iterable<ReplaceEdit> createExceptionHandlerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		PersistenceUnit.Property property = getPersistenceUnit().getProperty(ECLIPSELINK_EXCEPTION_HANDLER);
-		if (property != null) {
-			return property.createRenamePackageEdits(originalPackage, newName);
-		}
-		return EmptyIterable.instance();
+		return (property != null) ?
+				property.createRenamePackageEdits(originalPackage, newName) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 }

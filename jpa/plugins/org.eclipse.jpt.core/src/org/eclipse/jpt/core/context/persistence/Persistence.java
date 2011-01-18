@@ -16,7 +16,9 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 
 /**
- * The <code>persistence</code> element in the JPA <code>persistence.xml</code> file.
+ * Context model corresponding to the XML resource model {@link XmlPersistence},
+ * which corresponds to the <code>persistence</code> element in the
+ * <code>persistence.xml</code> file.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -40,6 +42,7 @@ public interface Persistence
 	 */
 	PersistenceXml getParent();
 	
+
 	// **************** persistence units **************************************
 	
 	/**
@@ -48,31 +51,27 @@ public interface Persistence
 	String PERSISTENCE_UNITS_LIST = "persistenceUnits"; //$NON-NLS-1$
 	
 	/**
-	 * Return an iterator on the list of persistence units.
-	 * This will not be null.
+	 * Return the persistence element's persistence units.
 	 */
 	ListIterator<PersistenceUnit> persistenceUnits();
 	
 	/**
-	 * Return the size of the persistence unit list.
-	 * @return
+	 * Return the number of persistence units.
 	 */
 	int persistenceUnitsSize();
 	
 	/**
-	 * Add a persistence unit to the persistence node and return the object 
-	 * representing it.
+	 * Add a persistence unit and return it.
 	 */
 	PersistenceUnit addPersistenceUnit();
 	
 	/**
-	 * Add a persistence unit to the persistence node at the specified index and 
-	 * return the object representing it.
+	 * Add a persistence unit at the specified index and return it.
 	 */
 	PersistenceUnit addPersistenceUnit(int index);
 	
 	/**
-	 * Remove the persistence unit from the persistence node.
+	 * Remove the specified persistence unit from the persistence node.
 	 */
 	void removePersistenceUnit(PersistenceUnit persistenceUnit);
 	
@@ -82,20 +81,11 @@ public interface Persistence
 	void removePersistenceUnit(int index);
 	
 	
-	// **************** updating ***********************************************
-		
-	/**
-	 * Update the Persistence context model object to match the XmlPersistence 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlPersistence persistence);
-	
-	
 	// **************** text range *********************************************
 	
 	/**
 	 * Return whether the text representation of this persistence contains
-	 * the given text offset
+	 * the specified text offset.
 	 */
 	boolean containsOffset(int textOffset);
 	

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,8 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -38,9 +38,9 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 	implements MappingResourceUiDefinition
 {
 	
-	private OrmTypeMappingUiDefinition<? extends TypeMapping>[] ormTypeMappingUiDefintions;
+	private OrmTypeMappingUiDefinition<? extends TypeMapping>[] ormTypeMappingUiDefinitions;
 
-	private OrmAttributeMappingUiDefinition<? extends AttributeMapping>[] ormAttributeMappingUiDefintions;
+	private OrmAttributeMappingUiDefinition<? extends AttributeMapping>[] ormAttributeMappingUiDefinitions;
 	
 	private final OrmXmlUiFactory factory;
 	
@@ -91,10 +91,10 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 	}
 	
 	protected synchronized OrmTypeMappingUiDefinition<? extends TypeMapping>[] getOrmTypeMappingUiDefinitions() {
-		if (this.ormTypeMappingUiDefintions == null) {
-			this.ormTypeMappingUiDefintions = this.buildOrmTypeMappingUiDefinitions();
+		if (this.ormTypeMappingUiDefinitions == null) {
+			this.ormTypeMappingUiDefinitions = this.buildOrmTypeMappingUiDefinitions();
 		}
-		return this.ormTypeMappingUiDefintions;
+		return this.ormTypeMappingUiDefinitions;
 	}
 	
 	
@@ -141,16 +141,16 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 		return UnsupportedOrmMappingUiDefinition.instance();
 	}
 	
-	public ListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions() {
-		return new ArrayListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>>(
+	public ListIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions() {
+		return new ArrayListIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>(
 				getOrmAttributeMappingUiDefinitions());
 	}
 	
 	protected synchronized OrmAttributeMappingUiDefinition<? extends AttributeMapping>[] getOrmAttributeMappingUiDefinitions() {
-		if (this.ormAttributeMappingUiDefintions == null) {
-			this.ormAttributeMappingUiDefintions = this.buildOrmAttributeMappingUiDefinitions();
+		if (this.ormAttributeMappingUiDefinitions == null) {
+			this.ormAttributeMappingUiDefinitions = this.buildOrmAttributeMappingUiDefinitions();
 		}
-		return this.ormAttributeMappingUiDefintions;
+		return this.ormAttributeMappingUiDefinitions;
 	}
 	
 	/**
@@ -168,7 +168,7 @@ public abstract class AbstractOrmXmlResourceUiDefinition
 	protected abstract void addOrmAttributeMappingUiDefinitionsTo(
 			List<OrmAttributeMappingUiDefinition<? extends AttributeMapping>> definitions);
 	
-	public DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key) {
+	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(String key) {
 		return null;
 	}
 }

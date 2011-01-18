@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,6 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -34,6 +33,8 @@ import org.eclipse.swt.widgets.Text;
  * @since 2.1
  */
 public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject> {
+	public static final String SEQUENCE_GENERATOR = "sequenceGenerator"; //$NON-NLS-1$
+	public static final String TABLE_GENERATOR = "tableGenerator"; //$NON-NLS-1$
 
 	
 	// ********** constructors **********
@@ -132,8 +133,8 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 
 		protected ListValueModel<String> buildGeneratorTypeListHolder() {
 			List<String> generatorTypes = new ArrayList<String>();
-			generatorTypes.add(Generator.TABLE_GENERATOR);
-			generatorTypes.add(Generator.SEQUENCE_GENERATOR);
+			generatorTypes.add(TABLE_GENERATOR);
+			generatorTypes.add(SEQUENCE_GENERATOR);
 			
 			return new StaticListValueModel<String>(generatorTypes);
 		}
@@ -141,10 +142,10 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 		private StringConverter<String> buildStringConverter() {
 			return new StringConverter<String>() {
 				public String convertToString(String value) {
-					if (value == Generator.TABLE_GENERATOR) {
+					if (value == TABLE_GENERATOR) {
 						return JptUiDetailsOrmMessages.AddGeneratorDialog_tableGenerator;
 					}
-					if (value == Generator.SEQUENCE_GENERATOR) {
+					if (value == SEQUENCE_GENERATOR) {
 						return JptUiDetailsOrmMessages.AddGeneratorDialog_sequenceGenerator;
 					}
 					return value;

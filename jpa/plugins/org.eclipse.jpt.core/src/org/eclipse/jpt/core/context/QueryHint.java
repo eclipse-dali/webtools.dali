@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
+ * query hint
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,13 +24,11 @@ package org.eclipse.jpt.core.context;
 public interface QueryHint
 	extends JpaContextNode
 {
-
 	String getName();
-	void setName(String value);
+	void setName(String name);
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 
 	String getValue();
 	void setValue(String value);
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
-	
 }

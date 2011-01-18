@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -18,8 +18,8 @@ import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
- * Context model corresponding to the 
- * XML resource model {@link XmlJarRef},
+ * Context model corresponding to the
+ * XML resource model {@link XmlJarFileRef},
  * which corresponds to the <code>jar-file</code>
  * element in the <code>persistence.xml</code> file.
  * <p>
@@ -35,47 +35,38 @@ import org.eclipse.text.edits.ReplaceEdit;
 public interface JarFileRef
 	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
-	// **************** file name **********************************************
-	
+	// ********** file name **********
+
 	/**
 	 * String constant associated with changes to the file name.
 	 */
 	String FILE_NAME_PROPERTY = "fileName"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the file name of the jar file ref.
 	 */
 	String getFileName();
-	
+
 	/**
 	 * Set the file name of the jar file ref.
 	 */
 	void setFileName(String fileName);
-	
-	
-	// **************** JAR file ***********************************************
-	
+
+
+	// ********** JAR file **********
+
 	/**
 	 * String constant associated with changes to the JAR file.
 	 */
 	String JAR_FILE_PROPERTY = "jarFile"; //$NON-NLS-1$
-	
+
 	/**
 	 * Return the JAR file ref's JAR file corresponding to the file name.
 	 */
 	JarFile getJarFile();
-	
-	
-	// **************** updating ***********************************************
-	
-	/**
-	 * Update the context JAR file ref to match the specified XML JAR file ref.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(XmlJarFileRef xmlJarFileRef);
 
 
-	// **************** refactoring *********************************************
+	// ********** refactoring **********
 
 	/**
 	 * Create ReplaceEdits for renaming any references to the originalFolder to the newName.
@@ -84,14 +75,16 @@ public interface JarFileRef
 	Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName);
 
 
-	// **************** queries ************************************************
+	// ********** queries **********
+
+	XmlJarFileRef getXmlJarFileRef();
 
 	/**
 	 * Return the persistent type, as listed in the JAR file,
 	 * with the specified name. Return null if it does not exists.
 	 */
 	PersistentType getPersistentType(String typeName);
-	
+
 	/**
 	 * Return whether the text representation of the JAR file ref contains
 	 * the specified text offset.

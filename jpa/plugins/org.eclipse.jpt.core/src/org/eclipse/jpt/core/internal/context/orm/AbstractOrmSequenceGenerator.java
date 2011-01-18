@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,33 +9,49 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlSequenceGenerator;
 
 /**
- * 
+ * <code>orm.xml</code> sequence generator
  */
 public abstract class AbstractOrmSequenceGenerator
 	extends AbstractOrmGenerator<XmlSequenceGenerator>
 	implements OrmSequenceGenerator
 {
-
 	protected String specifiedSequenceName;
 	protected String defaultSequenceName;
 
 
-	protected AbstractOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator resourceSequenceGenerator) {
-		super(parent);
-		this.initialize(resourceSequenceGenerator);
+	protected AbstractOrmSequenceGenerator(XmlContextNode parent, XmlSequenceGenerator xmlSequenceGenerator) {
+		super(parent, xmlSequenceGenerator);
+		this.specifiedSequenceName = xmlSequenceGenerator.getSequenceName();
 	}
 
+
+	// ********** synchronize/update **********
 
 	@Override
-	public int getDefaultInitialValue() {
-		return SequenceGenerator.DEFAULT_INITIAL_VALUE;
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedSequenceName_(this.xmlGenerator.getSequenceName());
 	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultSequenceName(this.buildDefaultSequenceName());
+	}
+
+
+	// ********** initial value **********
+
+	@Override
+	protected int buildDefaultInitialValue() {
+		return DEFAULT_INITIAL_VALUE;
+	}
+	
 
 	// ********** sequence name **********
 
@@ -48,10 +64,8 @@ public abstract class AbstractOrmSequenceGenerator
 	}
 
 	public void setSpecifiedSequenceName(String specifiedSequenceName) {
-		String old = this.specifiedSequenceName;
-		this.specifiedSequenceName = specifiedSequenceName;
-		this.getResourceGenerator().setSequenceName(specifiedSequenceName);
-		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, specifiedSequenceName);
+		this.setSpecifiedSequenceName_(specifiedSequenceName);
+		this.xmlGenerator.setSequenceName(specifiedSequenceName);
 	}
 	
 	protected void setSpecifiedSequenceName_(String specifiedSequenceName) {
@@ -70,21 +84,8 @@ public abstract class AbstractOrmSequenceGenerator
 		this.firePropertyChanged(DEFAULT_SEQUENCE_NAME_PROPERTY, old, defaultSequenceName);
 	}
 
-
-	// ********** resource => context **********
-
-	@Override
-	protected void initialize(XmlSequenceGenerator sequenceGenerator) {
-		super.initialize(sequenceGenerator);
-		this.specifiedSequenceName = sequenceGenerator.getSequenceName();
-		//TODO default sequence name
+	protected String buildDefaultSequenceName() {
+		return null; // TODO the default sequence name is determined by the runtime provider...
 	}
 	
-	@Override
-	public void update(XmlSequenceGenerator sequenceGenerator) {
-		super.update(sequenceGenerator);
-		this.setSpecifiedSequenceName_(sequenceGenerator.getSequenceName());
-		//TODO default sequence name
-	}
-
 }

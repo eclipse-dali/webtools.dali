@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
-
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
@@ -35,6 +35,7 @@ public interface JavaPersistentType
 	
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaPersistentAttribute> attributes();
+		String ATTRIBUTES_LIST = "attributes"; //$NON-NLS-1$
 	
 	JavaPersistentAttribute getAttributeNamed(String attributeName);
 	
@@ -50,20 +51,6 @@ public interface JavaPersistentType
 	 * Return the Java resource persistent type.
 	 */
 	JavaResourcePersistentType getResourcePersistentType();
-
-
-	// ********** updating **********
-
-	/**
-	 * Synchronize the Java persistent type with the specified resource type.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(JavaResourcePersistentType jrpt);
-
-	/**
-	 * Re-synchronize the Java persistent type with its resource type.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update();
-
+	
+	JavaPersistentAttribute getAttributeFor(JavaResourcePersistentAttribute javaResourcePersistentAttribute);
 }

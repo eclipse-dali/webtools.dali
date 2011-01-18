@@ -18,10 +18,10 @@ import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
- * javax.persistence.CollectionTable
+ * <code>javax.persistence.CollectionTable</code>
  */
-public class NullCollectionTable2_0Annotation
-	extends NullBaseTableAnnotation
+public final class NullCollectionTable2_0Annotation
+	extends NullBaseTableAnnotation<CollectionTable2_0Annotation>
 	implements CollectionTable2_0Annotation
 {
 	public NullCollectionTable2_0Annotation(JavaResourceNode parent) {
@@ -30,11 +30,6 @@ public class NullCollectionTable2_0Annotation
 	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-	
-	@Override
-	protected CollectionTable2_0Annotation addAnnotation() {
-		return (CollectionTable2_0Annotation) super.addAnnotation();
 	}
 	
 	// ***** join columns
@@ -66,5 +61,4 @@ public class NullCollectionTable2_0Annotation
 	public void removeJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
-	
 }

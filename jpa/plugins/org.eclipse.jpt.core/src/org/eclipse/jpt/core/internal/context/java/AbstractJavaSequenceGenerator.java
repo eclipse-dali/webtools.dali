@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
@@ -23,59 +22,80 @@ import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 
 /**
- * 
+ * Java sequence generator
  */
-public abstract class AbstractJavaSequenceGenerator extends AbstractJavaGenerator
+public abstract class AbstractJavaSequenceGenerator<A extends SequenceGeneratorAnnotation>
+	extends AbstractJavaGenerator<A>
 	implements JavaSequenceGenerator
 {
 	protected String specifiedSequenceName;
+	protected String defaultSequenceName;
 
 
-	protected AbstractJavaSequenceGenerator(JavaJpaContextNode parent) {
-		super(parent);
+	protected AbstractJavaSequenceGenerator(JavaJpaContextNode parent, A generatorAnnotation) {
+		super(parent, generatorAnnotation);
+		this.specifiedSequenceName = generatorAnnotation.getSequenceName();
 	}
 
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedSequenceName_(this.generatorAnnotation.getSequenceName());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultSequenceName(this.buildDefaultSequenceName());
+	}
+
+
+	// ********** initial value **********
+
+	@Override
+	protected int buildDefaultInitialValue() {
+		return DEFAULT_INITIAL_VALUE;
+	}
+	
 
 	// ********** sequence name **********
 
 	public String getSequenceName() {
-		return (this.specifiedSequenceName != null) ? this.specifiedSequenceName : this.getDefaultSequenceName();
+		return (this.specifiedSequenceName != null) ? this.specifiedSequenceName : this.defaultSequenceName;
 	}
 
 	public String getSpecifiedSequenceName() {
 		return this.specifiedSequenceName;
 	}
 
-	public void setSpecifiedSequenceName(String specifiedSequenceName) {
-		String old = this.specifiedSequenceName;
-		this.specifiedSequenceName = specifiedSequenceName;
-		this.getResourceGenerator().setSequenceName(specifiedSequenceName);
-		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, specifiedSequenceName);
+	public void setSpecifiedSequenceName(String name) {
+		this.generatorAnnotation.setSequenceName(name);
+		this.setSpecifiedSequenceName_(name);
 	}
 
-	protected void setSpecifiedSequenceName_(String specifiedSequenceName) {
+	protected void setSpecifiedSequenceName_(String name) {
 		String old = this.specifiedSequenceName;
-		this.specifiedSequenceName = specifiedSequenceName;
-		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, specifiedSequenceName);
+		this.specifiedSequenceName = name;
+		this.firePropertyChanged(SPECIFIED_SEQUENCE_NAME_PROPERTY, old, name);
 	}
 
 	public String getDefaultSequenceName() {
-		return null;
-	}
-
-
-	// ********** resource => context **********
-
-	public void initialize(SequenceGeneratorAnnotation resourceSequenceGenerator) {
-		super.initialize(resourceSequenceGenerator);
-		this.specifiedSequenceName = resourceSequenceGenerator.getSequenceName();
+		return this.defaultSequenceName;
 	}
 	
-	public void update(SequenceGeneratorAnnotation resourceSequenceGenerator) {
-		super.update(resourceSequenceGenerator);
-		this.setSpecifiedSequenceName_(resourceSequenceGenerator.getSequenceName()); 
+	protected void setDefaultSequenceName(String name) {
+		String old = this.defaultSequenceName;
+		this.defaultSequenceName = name;
+		this.firePropertyChanged(DEFAULT_SEQUENCE_NAME_PROPERTY, old, name);
 	}
 
+	protected String buildDefaultSequenceName() {
+		return null; // TODO the default sequence name is determined by the runtime provider...
+	}
+	
 
 	// ********** Java completion proposals **********
 
@@ -96,7 +116,7 @@ public abstract class AbstractJavaSequenceGenerator extends AbstractJavaGenerato
 	}
 
 	protected boolean sequenceNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().sequenceNameTouches(pos, astRoot);
+		return this.generatorAnnotation.sequenceNameTouches(pos, astRoot);
 	}
 
 	protected Iterable<String> getJavaCandidateSequences(Filter<String> filter) {
@@ -110,18 +130,6 @@ public abstract class AbstractJavaSequenceGenerator extends AbstractJavaGenerato
 	protected Iterable<String> getCandidateSequences() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema != null) ? dbSchema.getSortedSequenceIdentifiers() : EmptyIterable.<String> instance();
-	}
-
-
-	// ********** misc **********
-
-	public int getDefaultInitialValue() {
-		return SequenceGenerator.DEFAULT_INITIAL_VALUE;
-	}
-	
-	@Override
-	protected SequenceGeneratorAnnotation getResourceGenerator() {
-		return (SequenceGeneratorAnnotation) super.getResourceGenerator();
 	}
 
 }

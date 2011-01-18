@@ -137,7 +137,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		table.setName(null);
 		assertNull(table.getName());
 		
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 
 	public void testGetCatalog() throws Exception {
@@ -173,7 +173,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		table.setCatalog(null);
 		assertNull(table.getCatalog());
 		
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 	
 	public void testGetSchema() throws Exception {
@@ -209,7 +209,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		table.setSchema(null);
 		assertNull(table.getSchema());
 		
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 	
 	public void testUniqueConstraints() throws Exception {
@@ -284,7 +284,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = {\"BAZ\"}))", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 	
 	public void testRemoveUniqueConstraint2() throws Exception {
@@ -303,7 +303,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = \"BAZ\"))", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 	
 	public void testRemoveUniqueConstraint3() throws Exception {
@@ -322,7 +322,7 @@ public class TableTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@Table(uniqueConstraints = @UniqueConstraint(columnNames = \"FOO\"))", cu);
 		
 		table.removeUniqueConstraint(0);
-		assertSourceDoesNotContain("@Table", cu);
+		assertSourceDoesNotContain("@Table(", cu);
 	}
 	
 	public void testMoveUniqueConstraint() throws Exception {

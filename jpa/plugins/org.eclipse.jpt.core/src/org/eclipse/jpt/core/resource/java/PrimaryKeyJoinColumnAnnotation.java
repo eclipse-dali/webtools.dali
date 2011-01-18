@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.PrimaryKeyJoinColumn
- * 
+ * <code>javax.persistence.PrimaryKeyJoinColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,6 +29,9 @@ public interface PrimaryKeyJoinColumnAnnotation
 	extends NamedColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA.PRIMARY_KEY_JOIN_COLUMN;
+
+
+	// ********** referenced column name **********
 
 	/**
 	 * Corresponds to the 'referencedColumnName' element of the PrimaryKeyJoinColumn annotation.

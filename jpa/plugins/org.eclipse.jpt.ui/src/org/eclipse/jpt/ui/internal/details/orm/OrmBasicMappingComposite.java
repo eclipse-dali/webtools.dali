@@ -9,17 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractBasicMappingComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
-import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmBasicMappingComposite extends AbstractBasicMappingComposite<OrmBasicMapping>
+public class OrmBasicMappingComposite extends AbstractBasicMappingComposite<BasicMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
@@ -28,7 +27,7 @@ public class OrmBasicMappingComposite extends AbstractBasicMappingComposite<OrmB
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmBasicMappingComposite(PropertyValueModel<? extends OrmBasicMapping> subjectHolder,
+	public OrmBasicMappingComposite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 

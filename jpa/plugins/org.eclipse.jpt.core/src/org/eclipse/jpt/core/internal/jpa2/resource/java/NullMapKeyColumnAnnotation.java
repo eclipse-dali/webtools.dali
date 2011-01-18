@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.MapKeyColumn
+ * <code>javax.persistence.MapKeyColumn</code>
  */
-public class NullMapKeyColumnAnnotation
-	extends NullBaseColumnAnnotation
+public final class NullMapKeyColumnAnnotation
+	extends NullBaseColumnAnnotation<MapKeyColumn2_0Annotation>
 	implements MapKeyColumn2_0Annotation
 {
 	public NullMapKeyColumnAnnotation(JavaResourceNode parent) {
@@ -28,11 +28,6 @@ public class NullMapKeyColumnAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected MapKeyColumn2_0Annotation addAnnotation() {
-		return (MapKeyColumn2_0Annotation) super.addAnnotation();
 	}
 
 	// ***** length

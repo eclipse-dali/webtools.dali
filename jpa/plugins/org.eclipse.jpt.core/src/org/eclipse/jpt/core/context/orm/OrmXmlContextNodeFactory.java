@@ -9,27 +9,20 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.Orderable;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaBasicMapping;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
-import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
-import org.eclipse.jpt.core.context.java.JavaTransientMapping;
-import org.eclipse.jpt.core.context.java.JavaVersionMapping;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlBasic;
-import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddedId;
@@ -60,6 +53,8 @@ import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlVersion;
 
 /**
+ * <code>orm.xml</code> context node factory
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -75,9 +70,9 @@ public interface OrmXmlContextNodeFactory
 
 	EntityMappings buildEntityMappings(OrmXml parent, XmlEntityMappings entityMappings);
 	
-	PersistenceUnitMetadata buildPersistenceUnitMetadata(EntityMappings parent);
+	OrmPersistenceUnitMetadata buildOrmPersistenceUnitMetadata(EntityMappings parent);
 	
-	OrmPersistenceUnitDefaults buildPersistenceUnitDefaults(PersistenceUnitMetadata parent);
+	OrmPersistenceUnitDefaults buildOrmPersistenceUnitDefaults(OrmPersistenceUnitMetadata parent);
 	
 	OrmPersistentType buildOrmPersistentType(EntityMappings parent, XmlTypeMapping resourceMapping);
 	
@@ -87,31 +82,49 @@ public interface OrmXmlContextNodeFactory
 	
 	OrmEmbeddable buildOrmEmbeddable(OrmPersistentType parent, XmlEmbeddable resourceMapping);
 	
-	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, OrmPersistentAttribute.Owner owner, XmlAttributeMapping resourceMapping);
+	OrmPersistentAttribute buildOrmPersistentAttribute(OrmPersistentType parent, XmlAttributeMapping xmlMapping);
+	
+	OrmReadOnlyPersistentAttribute buildVirtualOrmPersistentAttribute(OrmPersistentType parent, JavaResourcePersistentAttribute javaResourcePersistentAttribute);
 	
 	OrmTable buildOrmTable(OrmEntity parent, Table.Owner owner);
 	
 	OrmSecondaryTable buildOrmSecondaryTable(OrmEntity parent, Table.Owner owner, XmlSecondaryTable xmlSecondaryTable);
 	
-	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePkJoinColumn);
+	OrmVirtualSecondaryTable buildOrmVirtualSecondaryTable(OrmEntity parent, JavaSecondaryTable javaSecondaryTable);
 	
-	OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, Table.Owner owner, XmlJoinTable resourceJoinTable);
+	OrmPrimaryKeyJoinColumn buildOrmPrimaryKeyJoinColumn(XmlContextNode parent, OrmBaseJoinColumn.Owner owner, XmlPrimaryKeyJoinColumn resourcePrimaryKeyJoinColumn);
+	
+	OrmVirtualPrimaryKeyJoinColumn buildOrmVirtualPrimaryKeyJoinColumn(XmlContextNode parent, ReadOnlyBaseJoinColumn.Owner owner, JavaPrimaryKeyJoinColumn javaPrimaryKeyJoinColumn);
+	
+	OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, Table.Owner owner);
+	
+	OrmVirtualJoinTable buildOrmVirtualJoinTable(OrmVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable);
 	
 	OrmJoinColumn buildOrmJoinColumn(XmlContextNode parent, OrmJoinColumn.Owner owner, XmlJoinColumn resourceJoinColumn);
+	
+	OrmVirtualJoinColumn buildOrmVirtualJoinColumn(XmlContextNode parent, ReadOnlyJoinColumn.Owner owner, JoinColumn joinColumn);
 	
 	OrmAttributeOverrideContainer buildOrmAttributeOverrideContainer(XmlContextNode parent, OrmAttributeOverrideContainer.Owner owner);
 
 	OrmAssociationOverrideContainer buildOrmAssociationOverrideContainer(XmlContextNode parent, OrmAssociationOverrideContainer.Owner owner);
 
-	OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, OrmAttributeOverride.Owner owner, XmlAttributeOverride xmlAttributeOverride);
+	OrmAttributeOverride buildOrmAttributeOverride(OrmAttributeOverrideContainer parent, XmlAttributeOverride xmlOverride);
 	
-	OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, OrmAssociationOverride.Owner owner, XmlAssociationOverride associationOverride);
+	OrmVirtualAttributeOverride buildOrmVirtualAttributeOverride(OrmAttributeOverrideContainer parent, String name);
 	
-	OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent, XmlAssociationOverride associationOverride);
+	OrmAssociationOverride buildOrmAssociationOverride(OrmAssociationOverrideContainer parent, XmlAssociationOverride xmlOverride);
+	
+	OrmVirtualAssociationOverride buildOrmVirtualAssociationOverride(OrmAssociationOverrideContainer parent, String name);
+	
+	OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent);
+
+	OrmVirtualAssociationOverrideRelationshipReference buildOrmVirtualAssociationOverrideRelationshipReference(OrmVirtualAssociationOverride parent);
 
 	OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner);
 	
 	OrmColumn buildOrmColumn(XmlContextNode parent, OrmColumn.Owner owner);
+	
+	OrmVirtualColumn buildOrmVirtualColumn(XmlContextNode parent, OrmVirtualColumn.Owner owner);
 	
 	OrmGeneratedValue buildOrmGeneratedValue(XmlContextNode parent, XmlGeneratedValue resourceGeneratedValue);
 	
@@ -155,40 +168,16 @@ public interface OrmXmlContextNodeFactory
 
 	OrmUniqueConstraint buildOrmUniqueConstraint(XmlContextNode parent, UniqueConstraint.Owner owner, XmlUniqueConstraint resourceUniqueConstraint);
 	
-	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping);
+	OrmVirtualUniqueConstraint buildOrmVirtualUniqueConstraint(XmlContextNode parent, UniqueConstraint overriddenUniqueConstraint);
 	
-	OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping);
+	OrmConverter buildOrmEnumeratedConverter(OrmAttributeMapping parent);
 	
-	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent, XmlConvertibleMapping resourceMapping);
+	OrmConverter buildOrmTemporalConverter(OrmAttributeMapping parent);
+	
+	OrmConverter buildOrmLobConverter(OrmAttributeMapping parent);
 
-	OrmConverter buildOrmNullConverter(OrmAttributeMapping parent);
-	
-	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent, Orderable.Owner owner);
-	
-	// ********** ORM Virtual Resource Model **********
-	
-	XmlAssociationOverride buildVirtualXmlAssociationOverride(String name, OrmTypeMapping parent, JoiningStrategy joiningStrategy);
-	
-	XmlBasic buildVirtualXmlBasic(OrmTypeMapping ormTypeMapping, JavaBasicMapping javaBasicMapping);
-	
-	XmlEmbeddedId buildVirtualXmlEmbeddedId(OrmTypeMapping ormTypeMapping, JavaEmbeddedIdMapping javaEmbeddedIdMapping);
-	
-	XmlEmbedded buildVirtualXmlEmbedded(OrmTypeMapping ormTypeMapping, JavaEmbeddedMapping javaEmbeddedMapping);
-	
-	XmlId buildVirtualXmlId(OrmTypeMapping ormTypeMapping, JavaIdMapping javaIdMapping);
-	
-	XmlManyToOne buildVirtualXmlManyToOne(OrmTypeMapping ormTypeMapping, JavaManyToOneMapping javaManyToOneMapping);
-	
-	XmlManyToMany buildVirtualXmlManyToMany(OrmTypeMapping ormTypeMapping, JavaManyToManyMapping javaManyToManyMapping);
-	
-	XmlOneToMany buildVirtualXmlOneToMany(OrmTypeMapping ormTypeMapping, JavaOneToManyMapping javaOneToManyMapping);
-	
-	XmlOneToOne buildVirtualXmlOneToOne(OrmTypeMapping ormTypeMapping, JavaOneToOneMapping javaOneToOneMapping);
-	
-	XmlTransient buildVirtualXmlTransient(OrmTypeMapping ormTypeMapping, JavaTransientMapping javaTransientMapping);
-	
-	XmlVersion buildVirtualXmlVersion(OrmTypeMapping ormTypeMapping, JavaVersionMapping javaVersionMapping);
-	
-	XmlNullAttributeMapping buildVirtualXmlNullAttributeMapping(OrmTypeMapping ormTypeMapping, JavaAttributeMapping javaAttributeMapping);
-
+	/**
+	 * JPA 1.0 only
+	 */
+	OrmOrderable buildOrmOrderable(OrmAttributeMapping parent);
 }

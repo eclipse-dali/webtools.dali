@@ -11,7 +11,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEntityAdvancedComposite;
@@ -69,18 +69,18 @@ public abstract class AbstractOrmEclipseLinkEntityComposite extends AbstractOrmE
 		container = addCollapsibleSection(
 				container,
 				EclipseLinkUiDetailsMessages.EclipseLinkTypeMappingComposite_converters);
-		this.initializeConvertersSection(container, buildConverterHolder());
+		this.initializeConvertersSection(container, buildConverterContainerModel());
 	}
 	
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<EclipseLinkConverterHolder> converterHolder) {
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<OrmEclipseLinkConverterContainer> converterHolder) {
 		new OrmEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
-	private PropertyValueModel<EclipseLinkConverterHolder> buildConverterHolder() {
-		return new PropertyAspectAdapter<OrmEntity, EclipseLinkConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<OrmEclipseLinkConverterContainer> buildConverterContainerModel() {
+		return new PropertyAspectAdapter<OrmEntity, OrmEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
-			protected EclipseLinkConverterHolder buildValue_() {
-				return ((OrmEclipseLinkEntity) this.subject).getConverterHolder();
+			protected OrmEclipseLinkConverterContainer buildValue_() {
+				return ((OrmEclipseLinkEntity) this.subject).getConverterContainer();
 			}
 		};
 	}

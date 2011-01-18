@@ -30,15 +30,17 @@ import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * A JPA project is associated with an Eclipse project (and its corresponding
- * Java project). It holds the "resource" model that corresponds to the various
- * JPA-related resources (the <code>persistence.xml</code> file, its mapping files
- * [<code>orm.xml</code>],
- * and the Java source files). It also holds the "context" model that represents
+ * Java project). It holds the <em>resource</em> model that corresponds to the 
+ * various JPA-related resources (the <code>persistence.xml</code> file, its
+ * mapping files [<code>orm.xml</code>], and the Java source files). It also
+ * holds the <em>context</em> model that represents
  * the JPA metadata, as derived from spec-defined defaults, Java source code
  * annotations, and XML descriptors.
  * <p>
@@ -178,13 +180,15 @@ public interface JpaProject
 
 	/**
 	 * Return the names of the JPA project's annotated Java classes
-	 * (ignoring classes in JARs referenced in the persistence.xml).
+	 * (ignoring classes in JARs referenced in the <code>persistence.xml</code>).
 	 */
 	Iterator<String> annotatedJavaSourceClassNames();
 	
 	/**
-	 * Return the names of the JPA project's mapped (i.e. annotated with @Entity, etc.) Java 
-	 * classes (ignoring classes in JARs referenced in the persistence.xml).
+	 * Return only the names of those valid <em>mapped</em> (i.e. annotated with
+	 * <code>@Entity</code>, <code>@Embeddable</code>, etc.) Java resource
+	 * persistent types that are directly part of the JPA project, ignoring
+	 * those in JARs referenced in <code>persistence.xml</code>.
 	 */
 	Iterable<String> getMappedJavaSourceClassNames();
 
@@ -212,8 +216,13 @@ public interface JpaProject
 	 */
 	JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName);
 
+	/**
+	 * Return the JPA project's JPA files for jars.
+	 */
+	Iterable<JpaFile> getJarJpaFiles();
 
-	// ********** model synchronization **********
+
+	// ********** external events **********
 
 	/**
 	 * Synchronize the JPA project with the specified project resource
@@ -229,104 +238,87 @@ public interface JpaProject
 
 	// ********** synchronize context model with resource model **********
 
+	/**
+	 * Return the synchronizer that will synchronize the context model with
+	 * the resource model whenever the resource model changes.
+	 */
+	Synchronizer getContextModelSynchronizer();
+
+	/**
+	 * Set the synchronizer that will keep the context model synchronized with
+	 * the resource model whenever the resource model changes.
+	 * Before setting the synchronizer, clients should save the current
+	 * synchronizer so it can be restored later.
+	 * 
+	 * @see #getContextModelSynchronizer()
+	 */
+	void setContextModelSynchronizer(Synchronizer synchronizer);
+
+	/**
+	 * The JPA project's resource model has changed; synchronize the JPA
+	 * project's context model with it. This method is typically called when the
+	 * resource model state has changed when it is synchronized with its
+	 * underlying Eclipse resource as the result of an Eclipse resource change
+	 * event. This method can also be called when a client (e.g. a JUnit test
+	 * case) has manipulated the resource model via its API (as opposed to
+	 * modifying the underlying Eclipse resource directly) and needs the context
+	 * model to be synchronized accordingly (since manipulating the resource
+	 * model via its API will not trigger this method). Whether the context
+	 * model is synchronously (or asynchronously) depends on the current context
+	 * model synchronizer.
+	 * 
+	 * @see #synchronizeContextModelAndWait()
+	 */
 	void synchronizeContextModel();
+
+	/**
+	 * Force the JPA project's context model to synchronize with it resource
+	 * model <em>synchronously</em>.
+	 * 
+	 * @see #synchronizeContextModel()
+	 * @see #updateAndWait()
+	 */
+	void synchronizeContextModelAndWait();
+
+	/**
+	 * This is the callback used by the context model synchronizer to perform
+	 * the actual "synchronize".
+	 */
+	IStatus synchronizeContextModel(IProgressMonitor monitor);
 
 
 	// ********** project "update" **********
 
 	/**
-	 * Return the implementation of the Updater
-	 * interface that will be used to "update" the JPA project.
+	 * Return the synchronizer that will update the context model whenever
+	 * it has any changes. This allows any intra-JPA project dependencies to
+	 * be updated.
 	 */
-	Updater getUpdater();
+	CallbackSynchronizer getUpdateSynchronizer();
 
 	/**
-	 * Set the implementation of the Updater
-	 * interface that will be used to "update" the JPA project.
-	 * Before setting the updater, clients should save the current updater so
-	 * it can be restored later.
+	 * Set the synchronizer that will update the context model whenever
+	 * it has any changes. This allows any intra-JPA project dependencies to
+	 * be updated.
+	 * Before setting the update synchronizer, clients should save the current
+	 * synchronizer so it can be restored later.
+	 * 
+	 * @see #getUpdateSynchronizer()
 	 */
-	void setUpdater(Updater updater);
+	void setUpdateSynchronizer(CallbackSynchronizer synchronizer);
 
 	/**
-	 * The JPA project's state has changed, "update" those parts of the
-	 * JPA project that are dependent on other parts of the JPA project.
-	 * This is called when<ul>
-	 * <li>(almost) any state in the JPA project changes
-	 * <li>the JPA project's database connection is changed, opened, or closed
-	 * </ul>
+	 * Force the JPA project to "update" <em>synchronously</em>.
+	 * 
+	 * @see #synchronizeContextModelAndWait()
 	 */
-	void update();
+	void updateAndWait();
 
 	/**
-	 * This is the callback used by the updater to perform the actual
-	 * "update", which most likely will happen asynchronously.
+	 * This is the callback used by the update synchronizer to perform the
+	 * actual "update".
 	 */
 	IStatus update(IProgressMonitor monitor);
-
-	/**
-	 * This is the callback used by the updater to notify the JPA project that
-	 * the "update" has quiesced (i.e. the "update" has completed and there
-	 * are no outstanding requests for further "updates").
-	 */
-	void updateQuiesced();
-
-
-	/**
-	 * Define a strategy that can be used to "update" a JPA project whenever
-	 * something changes.
-	 */
-	interface Updater {
-
-		/**
-		 * The updater has just been assigned to its JPA project.
-		 */
-		void start();
-
-		/**
-		 * Update the JPA project.
-		 * <p>
-		 * {@link JpaProject#update()} will call {@link Updater#update()},
-		 * from which the updater is to call {@link JpaProject#update(IProgressMonitor)}
-		 * as appropriate (typically from an asynchronously executing job).
-		 * Once the updating has quiesced (i.e. there are no outstanding requests
-		 * for another update), the updater is to call {@link JpaProject#updateQuiesced()}.
-		 */
-		void update();
-
-		/**
-		 * The JPA project is disposed; stop the updater.
-		 */
-		void stop();
-
-		/**
-		 * This updater does nothing. Useful for testing.
-		 */
-		final class Null implements Updater {
-			private static final Updater INSTANCE = new Null();
-			public static Updater instance() {
-				return INSTANCE;
-			}
-			// ensure single instance
-			private Null() {
-				super();
-			}
-			public void start() {
-				// do nothing
-			}
-			public void update() {
-				// do nothing
-			}
-			public void stop() {
-				// do nothing
-			}
-			@Override
-			public String toString() {
-				return "JpaProject.Updater.Null"; //$NON-NLS-1$
-			}
-		}
-
-	}
 
 
 	// ********** utility **********
@@ -459,9 +451,15 @@ public interface JpaProject
 	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses"; //$NON-NLS-1$
 
 	/**
-	 * Return whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes to be listed in the
-	 * persistence.xml or one of its mapping files.
+	 * Return whether the JPA project will not generate error messages for any
+	 * annotated classes that are not listed in the <code>persistence.xml</code>
+	 * file or one of its mapping files. If this flag is set to
+	 * <code>false</code>, error messages will be generated for all of the
+	 * annotated classes that are not explicitly listed. The JPA project
+	 * <em>always</em> "discovers" annotated classes and allows the user to
+	 * reference them throughout the model; this flag simply controls whether
+	 * the error messages are generated during validation.
+	 * <p>
 	 * This is a user-specified preference that is probably
 	 * only helpful when deploying to a JavaSE environment. The JPA spec
 	 * says annotated classes are to be discovered automatically in a JavaEE
@@ -472,16 +470,15 @@ public interface JpaProject
 	 * implementation, which may allow "discovery" in a JavaSE environment
 	 * (e.g. EclipseLink). This setting can also be used when the user wants
 	 * to explicitly list classes, even when the classes are "discovered"
-	 * by the JPA implementation. If this flag is set to false, error messages
-	 * will be generated for all of the annotated classes that are not
-	 * explicitly listed.
+	 * by the JPA implementation.
 	 */
 	boolean discoversAnnotatedClasses();
 
 	/**
-	 * Set whether the JPA project will "discover" annotated classes
-	 * automatically, as opposed to requiring the classes to be listed in the
-	 * persistence.xml.
+	 * Set whether the JPA project will not generate error messages for any
+	 * annotated classes that are not listed in the <code>persistence.xml</code>
+	 * file or one of its mapping files.
+	 * @see #discoversAnnotatedClasses()
 	 */
 	void setDiscoversAnnotatedClasses(boolean discoversAnnotatedClasses);
 
@@ -492,7 +489,7 @@ public interface JpaProject
 	 * Set a thread-specific implementation of the {@link CommandExecutor}
 	 * interface that will be used to execute a command to modify a shared
 	 * document. If necessary, the command executor can be cleared by
-	 * setting it to null.
+	 * setting it to <code>null</code>.
 	 * This allows background clients to modify documents that are
 	 * already present in the UI. See implementations of {@link CommandExecutor}.
 	 */
@@ -510,8 +507,8 @@ public interface JpaProject
 	/**
 	 * The settings used to construct a JPA project.
 	 */
-	interface Config {
-
+	interface Config
+	{
 		/**
 		 * Return the Eclipse project to be associated with the new JPA project.
 		 */
@@ -548,7 +545,5 @@ public interface JpaProject
 		 * classes.
 		 */
 		boolean discoverAnnotatedClasses();
-
 	}
-
 }

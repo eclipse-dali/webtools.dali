@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.CompleteColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
@@ -19,35 +20,36 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * Abstract implementation of ColumnAnnotation to be used for JPA annotations:
- * javax.persistence.Column
- * javax.persistence.MapKeyColumn
+ * <ul>
+ * <li><code>javax.persistence.Column</code>
+ * <li><code>javax.persistence.MapKeyColumn</code>
+ * </ul>
  */
 public abstract class SourceCompleteColumnAnnotation
 	extends SourceBaseColumnAnnotation
-	implements ColumnAnnotation
+	implements CompleteColumnAnnotation
 {
-	protected final DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
-	protected final AnnotationElementAdapter<Integer> lengthAdapter;
+	protected DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
+	protected AnnotationElementAdapter<Integer> lengthAdapter;
 	protected Integer length;
 
-	protected final DeclarationAnnotationElementAdapter<Integer> precisionDeclarationAdapter;
-	protected final AnnotationElementAdapter<Integer> precisionAdapter;
+	protected DeclarationAnnotationElementAdapter<Integer> precisionDeclarationAdapter;
+	protected AnnotationElementAdapter<Integer> precisionAdapter;
 	protected Integer precision;
 
-	protected final DeclarationAnnotationElementAdapter<Integer> scaleDeclarationAdapter;
-	protected final AnnotationElementAdapter<Integer> scaleAdapter;
+	protected DeclarationAnnotationElementAdapter<Integer> scaleDeclarationAdapter;
+	protected AnnotationElementAdapter<Integer> scaleAdapter;
 	protected Integer scale;
 
 
 	protected SourceCompleteColumnAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
-		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(this.getLengthElementName());
-		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);
-		this.precisionDeclarationAdapter = this.buildIntegerElementAdapter(this.getPrecisionElementName());
-		this.precisionAdapter = this.buildShortCircuitIntegerElementAdapter(this.precisionDeclarationAdapter);
-		this.scaleDeclarationAdapter = this.buildIntegerElementAdapter(this.getScaleElementName());
-		this.scaleAdapter = this.buildShortCircuitIntegerElementAdapter(this.scaleDeclarationAdapter);
+		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
+		this.lengthAdapter = this.buildLengthAdapter();
+		this.precisionDeclarationAdapter = this.buildPrecisionDeclarationAdapter();
+		this.precisionAdapter = this.buildPrecisionAdapter();
+		this.scaleDeclarationAdapter = this.buildScaleDeclarationAdapter();
+		this.scaleAdapter = this.buildScaleAdapter();
 	}
 
 	@Override
@@ -95,6 +97,14 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.getElementTextRange(this.lengthDeclarationAdapter, astRoot);
 	}
 	
+	protected DeclarationAnnotationElementAdapter<Integer> buildLengthDeclarationAdapter() {
+		return this.buildIntegerElementAdapter(this.getLengthElementName());
+	}
+
+	protected AnnotationElementAdapter<Integer> buildLengthAdapter() {
+		return this.buildIntegerElementAdapter(this.lengthDeclarationAdapter);
+	}
+
 	protected abstract String getLengthElementName();
 
 	// ***** precision
@@ -123,6 +133,14 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.getElementTextRange(this.precisionDeclarationAdapter, astRoot);
 	}
 	
+	protected DeclarationAnnotationElementAdapter<Integer> buildPrecisionDeclarationAdapter() {
+		return this.buildIntegerElementAdapter(this.getPrecisionElementName());
+	}
+
+	protected AnnotationElementAdapter<Integer> buildPrecisionAdapter() {
+		return this.buildIntegerElementAdapter(this.precisionDeclarationAdapter);
+	}
+
 	protected abstract String getPrecisionElementName();
 
 	// ***** scale
@@ -151,5 +169,54 @@ public abstract class SourceCompleteColumnAnnotation
 		return this.getElementTextRange(this.scaleDeclarationAdapter, astRoot);
 	}
 	
+	protected DeclarationAnnotationElementAdapter<Integer> buildScaleDeclarationAdapter() {
+		return this.buildIntegerElementAdapter(this.getScaleElementName());
+	}
+
+	protected AnnotationElementAdapter<Integer> buildScaleAdapter() {
+		return this.buildIntegerElementAdapter(this.scaleDeclarationAdapter);
+	}
+
 	protected abstract String getScaleElementName();
+
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.length == null) &&
+				(this.precision == null) &&
+				(this.scale == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
+		this.lengthAdapter = this.buildLengthAdapter();
+		this.precisionDeclarationAdapter = this.buildPrecisionDeclarationAdapter();
+		this.precisionAdapter = this.buildPrecisionAdapter();
+		this.scaleDeclarationAdapter = this.buildScaleDeclarationAdapter();
+		this.scaleAdapter = this.buildScaleAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(LENGTH_PROPERTY, this.length);
+		this.length = null;
+		map.put(PRECISION_PROPERTY, this.precision);
+		this.precision = null;
+		map.put(SCALE_PROPERTY, this.scale);
+		this.scale = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setLength((Integer) map.get(LENGTH_PROPERTY));
+		this.setPrecision((Integer) map.get(PRECISION_PROPERTY));
+		this.setScale((Integer) map.get(SCALE_PROPERTY));
+	}
 }

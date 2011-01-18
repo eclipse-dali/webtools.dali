@@ -12,6 +12,8 @@ package org.eclipse.jpt.core.jpa2.context;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 
 /**
+ * JPA 2.0 Persistence unit defaults held by a mapping file.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,5 +26,9 @@ import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
 public interface MappingFilePersistenceUnitDefaults2_0
 	extends MappingFilePersistenceUnitDefaults
 {
+	/**
+	 * Return whether all the database identifiers in the
+	 * persistence unit are to be considered delimited.
+	 */
 	boolean isDelimitedIdentifiers();
 }

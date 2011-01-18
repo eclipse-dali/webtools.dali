@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
@@ -21,13 +20,14 @@ import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumn2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
- * javax.persistence.MapKeyJoinColumns
+ * <code>javax.persistence.MapKeyJoinColumns</code>
  */
 public final class SourceMapKeyJoinColumns2_0Annotation
 	extends SourceAnnotation<Attribute>
@@ -55,6 +55,12 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.mapKeyJoinColumns.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.mapKeyJoinColumns);
 	}
@@ -78,13 +84,29 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 		return this.mapKeyJoinColumns.size();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.mapKeyJoinColumns.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.mapKeyJoinColumns.add(index, (NestableMapKeyJoinColumnAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.mapKeyJoinColumns.remove(0).convertToStandAlone();
+	}
+
 	public NestableMapKeyJoinColumnAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.mapKeyJoinColumns.size());
 	}
 
 	private NestableMapKeyJoinColumnAnnotation addNestedAnnotation(int index) {
 		NestableMapKeyJoinColumnAnnotation joinColumn = this.buildMapKeyJoinColumn(index);
-		this.mapKeyJoinColumns.add(joinColumn);
+		this.mapKeyJoinColumns.add(index, joinColumn);
 		return joinColumn;
 	}
 
@@ -96,7 +118,9 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 	}
 
 	private NestableMapKeyJoinColumnAnnotation buildMapKeyJoinColumn(int index) {
-		return SourceMapKeyJoinColumn2_0Annotation.createNestedMapKeyJoinColumn(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceMapKeyJoinColumn2_0Annotation.createNestedMapKeyJoinColumn(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableMapKeyJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
@@ -110,5 +134,4 @@ public final class SourceMapKeyJoinColumns2_0Annotation
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.mapKeyJoinColumns, MAP_KEY_JOIN_COLUMNS_LIST);
 	}
-
 }

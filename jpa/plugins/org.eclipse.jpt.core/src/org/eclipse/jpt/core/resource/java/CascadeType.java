@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Corresponds to the JPA 1.0/2.0 enum
@@ -84,11 +85,11 @@ public enum CascadeType {
 
 	public static String[] toJavaAnnotationValues(CascadeType[] cascadeTypes) {
 		if (cascadeTypes == null) {
-			return EMPTY_STRING_ARRAY;
+			return StringTools.EMPTY_STRING_ARRAY;
 		}
 		int len = cascadeTypes.length;
 		if (len == 0) {
-			return EMPTY_STRING_ARRAY;
+			return StringTools.EMPTY_STRING_ARRAY;
 		}
 
 		String[] javaAnnotationValues = new String[len];
@@ -97,7 +98,6 @@ public enum CascadeType {
 		}
 		return javaAnnotationValues;
 	}
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	public static String toJavaAnnotationValue(CascadeType cascadeType) {
 		return (cascadeType == null) ? null : cascadeType.getJavaAnnotationValue();

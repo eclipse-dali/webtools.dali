@@ -63,7 +63,7 @@ public class GenericEntityPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ENTITY_NO_PK,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						entity(),
 						textRangeResolver().getTypeMappingTextRange()));
 		}
@@ -86,7 +86,7 @@ public class GenericEntityPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ENTITY_NON_ROOT_ID_CLASS_SPECIFIED,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						entity(),
 						textRangeResolver().getIdClassTextRange()));
 		}
@@ -98,7 +98,7 @@ public class GenericEntityPrimaryKeyValidator
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ENTITY_NON_ROOT_ID_ATTRIBUTE_SPECIFIED,
-						new String[0],
+						EMPTY_STRING_ARRAY,
 						each,
 						textRangeResolver().getAttributeMappingTextRange(each.getName())));
 		}

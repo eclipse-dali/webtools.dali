@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.resource.java.BaseJoinColumnAnnotation;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.MapKeyJoinColumn
- * 
+ * <code>javax.persistence.MapKeyJoinColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,5 +28,4 @@ public interface MapKeyJoinColumn2_0Annotation
 	extends BaseJoinColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_JOIN_COLUMN;
-
 }

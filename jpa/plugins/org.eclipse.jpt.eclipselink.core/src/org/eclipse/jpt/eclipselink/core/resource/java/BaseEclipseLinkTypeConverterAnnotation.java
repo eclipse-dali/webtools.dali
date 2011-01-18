@@ -46,15 +46,15 @@ public interface BaseEclipseLinkTypeConverterAnnotation
 	TextRange getDataTypeTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified data type name as resolved by the AST's bindings.
+	 * Return the fully-qualified data type name as resolved by the
+	 * AST's bindings.
 	 * <pre>
-	 *     &#64;*TypeConverter(dataType = MyDataType.class)
+	 *     &#64;TypeConverter(dataType = MyDataType.class)
 	 * </pre>
-	 * will return "model.MyDataType" if there is an import for model.MyDataType.
-	 * @return
+	 * will return <code>"model.MyDataType"</code> if there is an import for
+	 * <code>model.MyDataType</code>.
 	 */
 	String getFullyQualifiedDataType();
-		String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
 
 	/**
 	 * Corresponds to the 'objectType' element of the TypeConverter annotation.
@@ -76,14 +76,13 @@ public interface BaseEclipseLinkTypeConverterAnnotation
 	TextRange getObjectTypeTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified object type name as resolved by the AST's bindings.
+	 * Return the fully-qualified object type name as resolved by the
+	 * AST's bindings.
 	 * <pre>
-	 *     &#64;*TypeConverter(dataType = MyObjectType.class)
+	 *     &#64;TypeConverter(dataType = MyObjectType.class)
 	 * </pre>
-	 * will return "model.MyObjectType" if there is an import for model.MyObjectType.
-	 * @return
+	 * will return <code>"model.MyObjectType"</code> if there is an import for
+	 * <code>model.MyObjectType</code>.
 	 */
 	String getFullyQualifiedObjectType();
-		String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
-
 }

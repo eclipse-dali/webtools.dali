@@ -86,10 +86,7 @@ public class MapKeyClass2_0AnnotationTests extends JavaResourceModel2_0TestCase 
 		
 		mapKeyClass.setValue(null);
 		
-		assertSourceDoesNotContain("@MapKeyClass", cu);
-				
-		mapKeyClass = (MapKeyClass2_0Annotation) resourceAttribute.getAnnotation(JPA2_0.MAP_KEY_CLASS);
-		assertNull(mapKeyClass);
+		assertSourceDoesNotContain("@MapKeyClass(", cu);
 	}
 	
 	public void testGetFullyQualifiedClass() throws Exception {

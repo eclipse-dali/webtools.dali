@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.NamedColumn;
+import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -28,49 +28,93 @@ import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation>
+/**
+ * Java<ul>
+ * <li>column
+ * <li>join column
+ * <li>discriminator column
+ * <li>order column
+ * <li>primary key join column
+ * </ul>
+ * <strong>NB:</strong> any subclass that directly holds its column annotation
+ * must:<ul>
+ * <li>call the "super" constructor that takes a column annotation
+ *     {@link #AbstractJavaNamedColumn(JavaJpaContextNode, JavaNamedColumn.Owner, NamedColumnAnnotation)}
+ * <li>override {@link #setColumnAnnotation(NamedColumnAnnotation)} to set the column annotation
+ *     so it is in place before the column's state (e.g. {@link #specifiedName})
+ *     is initialized
+ * </ul>
+ */
+public abstract class AbstractJavaNamedColumn<A extends NamedColumnAnnotation, O extends JavaNamedColumn.Owner>
 	extends AbstractJavaJpaContextNode
 	implements JavaNamedColumn
 {
+	protected final O owner;
 
-	protected Owner owner;
-	
 	protected String specifiedName;
-
 	protected String defaultName;
 
 	protected String columnDefinition;
 
-	protected T resourceColumn;
 
-	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, Owner owner) {
+	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, O owner) {
+		this(parent, owner, null);
+	}
+
+	protected AbstractJavaNamedColumn(JavaJpaContextNode parent, O owner, A columnAnnotation) {
 		super(parent);
 		this.owner = owner;
+		this.setColumnAnnotation(columnAnnotation);
+		this.specifiedName = this.buildSpecifiedName();
+		this.columnDefinition = this.buildColumnDefinition();
 	}
 
-	// ******************* initialization from java resource model ********************
-	
-	protected void initialize(T column) {
-		this.resourceColumn = column;
-		this.specifiedName = column.getName();
-		this.defaultName = this.buildDefaultName();
-		this.columnDefinition = column.getColumnDefinition();	
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedName_(this.buildSpecifiedName());
+		this.setColumnDefinition_(this.buildColumnDefinition());
 	}
 
-	protected void update(T column) {
-		this.resourceColumn = column;
-		this.setSpecifiedName_(column.getName());
+	@Override
+	public void update() {
+		super.update();
 		this.setDefaultName(this.buildDefaultName());
-		this.setColumnDefinition_(column.getColumnDefinition());
-	}	
-
-	protected T getResourceColumn() {
-		return this.resourceColumn;
 	}
 
-	
-	//************** NamedColumn implementation *****************
+
+	// ********** column annotation **********
+
+	/**
+	 * Return the Java column annotation. Do not return <code>null</code> if the
+	 * Java annotation does not exist; return a <em>null</em> column annotation
+	 * instead.
+	 */
+	public abstract A getColumnAnnotation();
+
+	/**
+	 * see class comment... ({@link AbstractJavaNamedColumn})
+	 */
+	protected void setColumnAnnotation(A columnAnnotation) {
+		if (columnAnnotation != null) {
+			throw new IllegalArgumentException("this method must be overridden if the column annotation is not null: " + columnAnnotation); //$NON-NLS-1$
+		}
+	}
+
+	protected void removeColumnAnnotationIfUnset() {
+		if (this.getColumnAnnotation().isUnset()) {
+			this.removeColumnAnnotation();
+		}
+	}
+
+	protected abstract void removeColumnAnnotation();
+
+
+	// ********** name **********
+
 	public String getName() {
 		return (this.specifiedName != null) ? this.specifiedName : this.defaultName;
 	}
@@ -79,98 +123,89 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation>
 		return this.specifiedName;
 	}
 
-	public void setSpecifiedName(String newSpecifiedName) {
-		String oldSpecifiedName = this.specifiedName;
-		this.specifiedName = newSpecifiedName;
-		getResourceColumn().setName(newSpecifiedName);
-		firePropertyChanged(NamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+	public void setSpecifiedName(String name) {
+		if (this.valuesAreDifferent(this.specifiedName, name)) {
+			this.getColumnAnnotation().setName(name);
+			this.removeColumnAnnotationIfUnset();
+			this.setSpecifiedName_(name);
+		}
 	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setSpecifiedName_(String newSpecifiedName) {
-		String oldSpecifiedName = this.specifiedName;
-		this.specifiedName = newSpecifiedName;
-		firePropertyChanged(NamedColumn.SPECIFIED_NAME_PROPERTY, oldSpecifiedName, newSpecifiedName);
+
+	protected void setSpecifiedName_(String name) {
+		String old = this.specifiedName;
+		this.specifiedName = name;
+		this.firePropertyChanged(SPECIFIED_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildSpecifiedName() {
+		return this.getColumnAnnotation().getName();
 	}
 
 	public String getDefaultName() {
 		return this.defaultName;
 	}
 
-	protected void setDefaultName(String newDefaultName) {
-		String oldDefaultName = this.defaultName;
-		this.defaultName = newDefaultName;
-		firePropertyChanged(NamedColumn.DEFAULT_NAME_PROPERTY, oldDefaultName, newDefaultName);
+	protected void setDefaultName(String name) {
+		String old = this.defaultName;
+		this.defaultName = name;
+		this.firePropertyChanged(DEFAULT_NAME_PROPERTY, old, name);
 	}
-	
-	/**
-	 * Return the default column name.
-	 */
+
 	protected String buildDefaultName() {
-		return this.getOwner().getDefaultColumnName();
+		return this.owner.getDefaultColumnName();
 	}
+
+
+	// ********** column definition **********
 
 	public String getColumnDefinition() {
 		return this.columnDefinition;
 	}
-	
-	public void setColumnDefinition(String newColumnDefinition) {
-		String oldColumnDefinition = this.columnDefinition;
-		this.columnDefinition = newColumnDefinition;
-		getResourceColumn().setColumnDefinition(newColumnDefinition);
-		firePropertyChanged(NamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setColumnDefinition_(String newColumnDefinition) {
-		String oldColumnDefinition = this.columnDefinition;
-		this.columnDefinition = newColumnDefinition;
-		firePropertyChanged(NamedColumn.COLUMN_DEFINITION_PROPERTY, oldColumnDefinition, newColumnDefinition);
+
+	public void setColumnDefinition(String columnDefinition) {
+		if (this.valuesAreDifferent(this.columnDefinition, columnDefinition)) {
+			this.getColumnAnnotation().setColumnDefinition(columnDefinition);
+			this.removeColumnAnnotationIfUnset();
+			this.setColumnDefinition_(columnDefinition);
+		}
 	}
 
-	public Owner getOwner() {
-		return this.owner;
+	protected void setColumnDefinition_(String columnDefinition) {
+		String old = this.columnDefinition;
+		this.columnDefinition = columnDefinition;
+		this.firePropertyChanged(COLUMN_DEFINITION_PROPERTY, old, columnDefinition);
 	}
 
-	public TextRange getNameTextRange(CompilationUnit astRoot) {
-		TextRange textRange = this.getResourceColumn().getNameTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);
+	public String buildColumnDefinition() {
+		return this.getColumnAnnotation().getColumnDefinition();
 	}
 
-	public boolean nameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceColumn().nameTouches(pos, astRoot);
-	}
-	
-	public Column getDbColumn() {
+
+	// ********** database stuff **********
+
+	protected Column getDbColumn() {
 		Table table = this.getDbTable();
 		return (table == null) ? null : table.getColumnForIdentifier(this.getName());
 	}
 
 	public Table getDbTable() {
-		return getOwner().getDbTable(this.getTable());
+		return this.owner.resolveDbTable(this.getTable());
 	}
 
 	/**
 	 * Return the name of the column's table. This is overridden
-	 * in AbstractJavaBaseColumn where a table can be defined.
+	 * in {@link AbstractJavaBaseColumn} where a table can be defined.
 	 */
 	public String getTable() {
-		return this.getOwner().getTypeMapping().getPrimaryTableName();
+		return this.owner.getTypeMapping().getPrimaryTableName();
 	}
 
 	public boolean isResolved() {
 		return this.getDbColumn() != null;
 	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> connectedJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -184,31 +219,25 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation>
 		return null;
 	}
 
-	private Iterable<String> getJavaCandidateNames(Filter<String> filter) {
+	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
+		return this.getColumnAnnotation().nameTouches(pos, astRoot);
+	}
+
+	protected Iterable<String> getJavaCandidateNames(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(this.getCandidateNames(filter));
 	}
 
-	private Iterable<String> getCandidateNames(Filter<String> filter) {
+	protected Iterable<String> getCandidateNames(Filter<String> filter) {
 		return new FilteringIterable<String>(this.getCandidateNames(), filter);
 	}
 
-	private Iterable<String> getCandidateNames() {
+	protected Iterable<String> getCandidateNames() {
 		Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers() : EmptyIterable.<String> instance();
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getName());
-	}
 
-
-	// ****************** validation ****************
-
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		TextRange textRange = getResourceColumn().getTextRange(astRoot);
-		return (textRange != null) ? textRange : this.getOwner().getValidationTextRange(astRoot);	
-	}
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
@@ -217,10 +246,47 @@ public abstract class AbstractJavaNamedColumn<T extends NamedColumnAnnotation>
 	}
 
 	protected JptValidator buildColumnValidator(CompilationUnit astRoot) {
-		return this.getOwner().buildColumnValidator(this, buildTextRangeResolver(astRoot));
+		return this.owner.buildColumnValidator(this, buildTextRangeResolver(astRoot));
 	}
 
 	protected NamedColumnTextRangeResolver buildTextRangeResolver(CompilationUnit astRoot) {
 		return new JavaNamedColumnTextRangeResolver(this, astRoot);
+	}
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getColumnAnnotation().getTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
+	}
+
+	public TextRange getNameTextRange(CompilationUnit astRoot) {
+		TextRange textRange = this.getColumnAnnotation().getNameTextRange(astRoot);
+		return (textRange != null) ? textRange : this.owner.getValidationTextRange(astRoot);
+	}
+
+
+	// ********** misc **********
+
+	public boolean isVirtual() {
+		return false;
+	}
+
+	protected void initializeFrom(ReadOnlyNamedColumn oldColumn) {
+		this.setSpecifiedName(oldColumn.getSpecifiedName());
+		this.setColumnDefinition(oldColumn.getColumnDefinition());
+	}
+
+	protected void initializeFromVirtual(ReadOnlyNamedColumn virtualColumn) {
+		this.setSpecifiedName(virtualColumn.getName());
+		this.setColumnDefinition(virtualColumn.getColumnDefinition());
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		String table = this.getTable();
+		if (table != null) {
+			sb.append(table);
+			sb.append('.');
+		}
+		sb.append(this.getName());
 	}
 }

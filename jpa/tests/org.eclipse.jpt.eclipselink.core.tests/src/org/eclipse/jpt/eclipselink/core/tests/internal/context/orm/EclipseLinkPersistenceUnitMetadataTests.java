@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -33,7 +33,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 		getPersistenceXmlResource().save(null);
 	}
 
-	protected PersistenceUnitMetadata persistenceUnitMetadata() {
+	protected OrmPersistenceUnitMetadata persistenceUnitMetadata() {
 		return getEntityMappings().getPersistenceUnitMetadata();
 	}
 	
@@ -53,7 +53,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 	}
 	
 	public void testUpdateXmlMappingMetadataComplete() throws Exception {
-		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
+		OrmPersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
@@ -70,7 +70,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 	}
 	
 	public void testModifyXmlMappingMetadataComplete() throws Exception {		
-		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
+		OrmPersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		
@@ -86,7 +86,7 @@ public class EclipseLinkPersistenceUnitMetadataTests extends EclipseLinkOrmConte
 	}
 	
 	public void testModifyXmlMappingMetadataComplete2() throws Exception {
-		PersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
+		OrmPersistenceUnitMetadata persistenceUnitMetadata = getEntityMappings().getPersistenceUnitMetadata();
 		assertFalse(persistenceUnitMetadata.isXmlMappingMetadataComplete());
 		assertNull(getXmlEntityMappings().getPersistenceUnitMetadata());
 		

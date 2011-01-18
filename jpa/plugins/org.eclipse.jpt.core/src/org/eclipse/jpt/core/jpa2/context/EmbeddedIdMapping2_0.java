@@ -1,18 +1,19 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 
 /**
+ * JPA 2.0 embedded ID mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,16 +24,7 @@ import org.eclipse.jpt.core.context.EmbeddedIdMapping;
  * @since 2.3
  */
 public interface EmbeddedIdMapping2_0
-	extends EmbeddedIdMapping
+	extends EmbeddedIdMapping, MappedByRelationshipMapping2_0
 {
-	/**
-	 * Property string associated with changes to the mapped by relationship
-	 */
-	final String MAPPED_BY_RELATIONSHIP_PROPERTY = "mappedByRelationship";
-	
-	/**
-	 * Return whether this id is mapped by a relationship (i.e. a relationship maps this embedded id)
-	 * N.B. - This might be several relationships (erroneously, of course)
-	 */
-	boolean isMappedByRelationship();
+	// combine various interfaces
 }

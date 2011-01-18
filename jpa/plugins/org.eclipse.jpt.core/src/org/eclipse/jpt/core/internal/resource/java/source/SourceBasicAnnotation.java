@@ -64,6 +64,13 @@ public final class SourceBasicAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.optional == null) &&
+				(this.fetch == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.fetch);
 	}
@@ -127,11 +134,11 @@ public final class SourceBasicAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__OPTIONAL, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.BASIC__FETCH);
 	}
 
 }

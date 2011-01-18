@@ -62,7 +62,6 @@ public class BinaryElementCollection2_0Annotation
 		String old = this.targetClass;
 		this.targetClass = targetClass;
 		this.firePropertyChanged(TARGET_CLASS_PROPERTY, old, targetClass);
-		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_CLASS_NAME_PROPERTY, old, targetClass);
 	}
 
 	private String buildTargetClass() {

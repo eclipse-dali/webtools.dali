@@ -1,12 +1,12 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.orm;
 
 import java.util.Iterator;
@@ -14,19 +14,24 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.FetchType;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.OneToOneRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmDerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToOneMapping2_0;
@@ -75,8 +80,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
-			each.makeSpecified();
+		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.convertToSpecified();
 		}
 	}
 	
@@ -100,8 +105,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
-			each.makeSpecified();
+		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.convertToSpecified();
 		}
 	}
 	
@@ -236,11 +241,11 @@ public class GenericOrmOneToOneMapping2_0Tests
 			}
 		});
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		for (OrmPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
-			each.makeSpecified();
+		for (OrmReadOnlyPersistentAttribute each : CollectionTools.iterable(ormPersistentType.attributes())) {
+			each.convertToSpecified();
 		}
 	}
-
+	
 	private ICompilationUnit createTestEntityOneToOneMapping() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
@@ -269,9 +274,9 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testUpdateId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
@@ -293,9 +298,9 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testSetId() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlDerivedId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getId());
@@ -313,9 +318,9 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testUpdateMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
@@ -341,9 +346,9 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testSetMapsId() throws Exception {
 		createTestEntityWithMapsIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlMapsId_2_0 resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
@@ -369,10 +374,10 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testUpdatePredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		OrmDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
@@ -413,10 +418,10 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testSetPredominantDerivedIdentityStrategy() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
 		OrmDerivedIdentity2_0 derivedIdentity = contextMapping.getDerivedIdentity();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 		
 		assertNull(resourceMapping.getMapsId());
@@ -450,8 +455,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testMorphMapping() throws Exception {
 		createTestEntityWithIdDerivedIdentity();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("oneToOne");
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		OrmPersistentAttribute contextAttribute = (OrmPersistentAttribute) contextType.getAttributeNamed("oneToOne");
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		
 		XmlOneToOne resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
 		resourceOneToOne.setId(Boolean.TRUE);
@@ -462,7 +467,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertNull(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		XmlManyToOne resourceManyToOne = resourceEntity.getAttributes().getManyToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceManyToOne.getId());
 		assertTrue(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
@@ -471,7 +476,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertNull(((OrmManyToOneMapping2_0) contextAttribute.getMapping()).
 				getDerivedIdentity().getMapsIdDerivedIdentityStrategy().getSpecifiedValue());
 		
-		contextAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		contextAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		resourceOneToOne = resourceEntity.getAttributes().getOneToOnes().get(0);
 		assertEquals(Boolean.TRUE, resourceOneToOne.getId());
 		assertTrue(((OrmOneToOneMapping2_0) contextAttribute.getMapping()).
@@ -495,7 +500,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
@@ -541,11 +546,10 @@ public class GenericOrmOneToOneMapping2_0Tests
 		addXmlClassRef(PACKAGE_NAME + ".Address");
 		addXmlClassRef(PACKAGE_NAME + ".State");
 		
-		PersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
+		ReadOnlyPersistentAttribute persistentAttribute = ormPersistentType.attributes().next();
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
-		Iterator<String> attributeNames = 
-			oneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+		Iterator<String> attributeNames = oneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -622,33 +626,34 @@ public class GenericOrmOneToOneMapping2_0Tests
 		
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmReadOnlyPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 		JavaOneToOneMapping2_0 javaOneToOneMapping = ((JavaOneToOneMapping2_0) ormPersistentAttribute.getJavaPersistentAttribute().getMapping());
-		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
-		javaOneToOneMapping.getRelationshipReference().setJoinTableJoiningStrategy();
-		OrmJoinTable ormJoinTable = ormOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaOneToOneMapping2_0 virtualOneToOneMapping = (JavaOneToOneMapping2_0) ormPersistentAttribute.getMapping();
+		((OneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).setJoinTableJoiningStrategy();
+		JoinTable virtualJoinTable = ((OneToOneRelationshipReference2_0) virtualOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
 
 		assertTrue(ormPersistentAttribute.isVirtual());
-		assertEquals(null, ormJoinTable.getSpecifiedName());
+		assertEquals(null, virtualJoinTable.getSpecifiedName());
 
 		createTestTargetEntityAddress();
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 
-		assertEquals(TYPE_NAME + "_Address", ormJoinTable.getSpecifiedName());
-		assertNull(ormJoinTable.getSpecifiedCatalog());
-		assertNull(ormJoinTable.getSpecifiedSchema());
-		assertEquals(0, ormJoinTable.specifiedJoinColumnsSize());
-		assertEquals(0, ormJoinTable.specifiedInverseJoinColumnsSize());
-		OrmJoinColumn ormJoinColumn = ormJoinTable.getDefaultJoinColumn();
+		assertNull(virtualJoinTable.getSpecifiedName());
+		assertEquals(TYPE_NAME + "_Address", virtualJoinTable.getDefaultName());
+		assertNull(virtualJoinTable.getSpecifiedCatalog());
+		assertNull(virtualJoinTable.getSpecifiedSchema());
+		assertEquals(0, virtualJoinTable.specifiedJoinColumnsSize());
+		assertEquals(0, virtualJoinTable.specifiedInverseJoinColumnsSize());
+		JoinColumn ormJoinColumn = virtualJoinTable.getDefaultJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", ormJoinColumn.getDefaultTable());
 		assertEquals(TYPE_NAME + "_id", ormJoinColumn.getDefaultName());
 		assertEquals("id", ormJoinColumn.getDefaultReferencedColumnName());
-		OrmJoinColumn inverseOrmJoinColumn = ormJoinTable.getDefaultInverseJoinColumn();
+		JoinColumn inverseOrmJoinColumn = virtualJoinTable.getDefaultInverseJoinColumn();
 		assertEquals(TYPE_NAME + "_Address", inverseOrmJoinColumn.getDefaultTable());
 		assertEquals("address_id", inverseOrmJoinColumn.getDefaultName());
 		assertEquals("id", inverseOrmJoinColumn.getDefaultReferencedColumnName());
 
-		JavaJoinTable javaJoinTable = javaOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable javaJoinTable = ((JavaOneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
 		javaJoinTable.setSpecifiedName("FOO");
 		javaJoinTable.setSpecifiedCatalog("CATALOG");
 		javaJoinTable.setSpecifiedSchema("SCHEMA");
@@ -659,15 +664,15 @@ public class GenericOrmOneToOneMapping2_0Tests
 		inverseJavaJoinColumn.setSpecifiedName("INVERSE_NAME");
 		inverseJavaJoinColumn.setSpecifiedReferencedColumnName("INVERSE_REFERENCED_NAME");
 
-		assertEquals("FOO", ormJoinTable.getSpecifiedName());
-		assertEquals("CATALOG", ormJoinTable.getSpecifiedCatalog());
-		assertEquals("SCHEMA", ormJoinTable.getSpecifiedSchema());
-		assertEquals(1, ormJoinTable.specifiedJoinColumnsSize());
-		assertEquals(1, ormJoinTable.specifiedInverseJoinColumnsSize());
-		ormJoinColumn = ormJoinTable.specifiedJoinColumns().next();
+		assertEquals("FOO", virtualJoinTable.getSpecifiedName());
+		assertEquals("CATALOG", virtualJoinTable.getSpecifiedCatalog());
+		assertEquals("SCHEMA", virtualJoinTable.getSpecifiedSchema());
+		assertEquals(1, virtualJoinTable.specifiedJoinColumnsSize());
+		assertEquals(1, virtualJoinTable.specifiedInverseJoinColumnsSize());
+		ormJoinColumn = virtualJoinTable.specifiedJoinColumns().next();
 		assertEquals("NAME", ormJoinColumn.getSpecifiedName());
 		assertEquals("REFERENCED_NAME", ormJoinColumn.getSpecifiedReferencedColumnName());
-		inverseOrmJoinColumn = ormJoinTable.specifiedInverseJoinColumns().next();
+		inverseOrmJoinColumn = virtualJoinTable.specifiedInverseJoinColumns().next();
 		assertEquals("INVERSE_NAME", inverseOrmJoinColumn.getSpecifiedName());
 		assertEquals("INVERSE_REFERENCED_NAME", inverseOrmJoinColumn.getSpecifiedReferencedColumnName());
 	}
@@ -679,8 +684,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, "address");
 		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
-		ormOneToOneMapping.getRelationshipReference().setJoinTableJoiningStrategy();
-		OrmJoinTable ormJoinTable = ormOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		((OneToOneRelationshipReference2_0) ormOneToOneMapping.getRelationshipReference()).setJoinTableJoiningStrategy();
+		OrmJoinTable ormJoinTable = ((OrmOneToOneRelationshipReference2_0) ormOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals(null, ormJoinTable.getDefaultName());
 
 		createTestTargetEntityAddress();
@@ -695,8 +700,8 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
 
 		JavaOneToOneMapping2_0 javaOneToOneMapping = (JavaOneToOneMapping2_0) ormPersistentType.getJavaPersistentType().getAttributeNamed("address").getMapping();
-		javaOneToOneMapping.getRelationshipReference().setJoinTableJoiningStrategy();
-		javaOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("JAVA_JOIN_TABLE");
+		((OneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).setJoinTableJoiningStrategy();
+		((OneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("JAVA_JOIN_TABLE");
 
 		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
 
@@ -709,36 +714,37 @@ public class GenericOrmOneToOneMapping2_0Tests
 
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		//remove m-m mapping from the orm.xml file
-		ormPersistentAttribute.makeVirtual();
+		ormPersistentAttribute.convertToVirtual();
 		//ormPersistentType.getMapping().setSpecifiedMetadataComplete(null);
-		ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
-		ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();
-		ormJoinTable = ormOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
-		assertTrue(ormPersistentAttribute.isVirtual());
-		assertEquals("JAVA_JOIN_TABLE", ormJoinTable.getSpecifiedName());//specifiedName since this is a virtual mapping now
+		OrmReadOnlyPersistentAttribute virtualAttribute = ormPersistentType.getAttributeNamed("address");
+		OneToOneMapping2_0 virtualOneToOneMapping = (OneToOneMapping2_0) virtualAttribute.getMapping();
+		JoinTable virtualJoinTable = ((OneToOneRelationshipReference2_0) virtualOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		assertTrue(virtualAttribute.isVirtual());
+		assertEquals("JAVA_JOIN_TABLE", virtualJoinTable.getSpecifiedName());//specifiedName since this is a virtual mapping now
 
-		javaOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName(null);
-		ormJoinTable = ormOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
-		assertNull(ormJoinTable);
-		javaOneToOneMapping.getRelationshipReference().setJoinTableJoiningStrategy();
-		ormJoinTable = ormOneToOneMapping.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
-		assertEquals("BAR_FOO", ormJoinTable.getSpecifiedName());
-		assertEquals("BAR_FOO", ormJoinTable.getDefaultName());
+		((OneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().removeStrategy();
+		virtualJoinTable = ((OneToOneRelationshipReference2_0) virtualOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		assertNull(virtualJoinTable);
+		((OneToOneRelationshipReference2_0) javaOneToOneMapping.getRelationshipReference()).setJoinTableJoiningStrategy();
+		virtualJoinTable = ((OneToOneRelationshipReference2_0) virtualOneToOneMapping.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		assertEquals("BAR_FOO", virtualJoinTable.getName());
+		assertNull(virtualJoinTable.getSpecifiedName());
+		assertEquals("BAR_FOO", virtualJoinTable.getDefaultName());
 
 		((OrmEntity) ormPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TABLE_NAME");
-		assertEquals("ORM_TABLE_NAME_FOO", ormJoinTable.getDefaultName());
+		assertEquals("ORM_TABLE_NAME_FOO", virtualJoinTable.getDefaultName());
 
 		((OrmEntity) targetPersistentType.getMapping()).getTable().setSpecifiedName("ORM_TARGET");
-		assertEquals("ORM_TABLE_NAME_ORM_TARGET", ormJoinTable.getDefaultName());
+		assertEquals("ORM_TABLE_NAME_ORM_TARGET", virtualJoinTable.getDefaultName());
 	}
 
 	public void testModifyPredominantJoiningStrategy() throws Exception {
 		createTestEntityWithOneToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		OrmOneToOneRelationshipReference2_0 relationshipReference = contextMapping.getRelationshipReference();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		OrmOneToOneRelationshipReference2_0 relationshipReference = (OrmOneToOneRelationshipReference2_0) contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
@@ -794,10 +800,10 @@ public class GenericOrmOneToOneMapping2_0Tests
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
 		createTestEntityWithOneToOneMapping();
 		OrmPersistentType contextType = getEntityMappings().getPersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		OrmPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
+		OrmReadOnlyPersistentAttribute contextAttribute = contextType.getAttributeNamed("id");
 		OrmOneToOneMapping2_0 contextMapping = (OrmOneToOneMapping2_0) contextAttribute.getMapping();
-		OrmOneToOneRelationshipReference2_0 relationshipReference = contextMapping.getRelationshipReference();
-		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getResourceTypeMapping();
+		OrmOneToOneRelationshipReference2_0 relationshipReference = (OrmOneToOneRelationshipReference2_0) contextMapping.getRelationshipReference();
+		XmlEntity resourceEntity = (XmlEntity) contextType.getMapping().getXmlTypeMapping();
 		XmlOneToOne resourceMapping = resourceEntity.getAttributes().getOneToOnes().get(0);
 
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
@@ -905,28 +911,28 @@ public class GenericOrmOneToOneMapping2_0Tests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.virtualAttributes().next();
 
-		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
-		assertEquals("address", ormOneToOneMapping.getName());
-		assertEquals(FetchType.LAZY, ormOneToOneMapping.getSpecifiedFetch());
-		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOptional());
-		assertEquals("Address", ormOneToOneMapping.getSpecifiedTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationshipReference().
+		OneToOneMapping2_0 virtualOneToOneMapping = (OneToOneMapping2_0) virtualPersistentAttribute.getMapping();	
+		assertEquals("address", virtualOneToOneMapping.getName());
+		assertEquals(FetchType.LAZY, virtualOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.FALSE, virtualOneToOneMapping.getSpecifiedOptional());
+		assertEquals("Address", virtualOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(virtualOneToOneMapping.getRelationshipReference().
 			getMappedByJoiningStrategy().getMappedByAttribute());
 
-		OrmJoinColumn ormJoinColumn = 
-			ormOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
-		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
-		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
-		assertEquals("COLUMN_DEFINITION", ormJoinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", ormJoinColumn.getSpecifiedTable());
+		JoinColumn virtualJoinColumn = 
+			virtualOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", virtualJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTable());
 
-		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		Cascade2_0 cascade = (Cascade2_0) virtualOneToOneMapping.getCascade();
 		assertTrue(cascade.isAll());
 		assertTrue(cascade.isMerge());
 		assertTrue(cascade.isPersist());
@@ -934,7 +940,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 		assertTrue(cascade.isRefresh());
 		assertTrue(cascade.isDetach());
 
-		assertTrue(((OrmOrphanRemovalHolder2_0) ormOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
+		assertTrue(((OrphanRemovalHolder2_0) virtualOneToOneMapping).getOrphanRemoval().isOrphanRemoval());
 	}
 
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -945,15 +951,15 @@ public class GenericOrmOneToOneMapping2_0Tests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
-		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
-		assertTrue(ormPersistentAttribute.isVirtual());
+		assertEquals(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
+		assertTrue(virtualPersistentAttribute.isVirtual());
 
-		ormPersistentAttribute.makeSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
-		ormPersistentAttribute= ormPersistentType.specifiedAttributes().next();
+		virtualPersistentAttribute.convertToSpecified(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.specifiedAttributes().next();
 
-		OrmOneToOneMapping2_0 ormOneToOneMapping = (OrmOneToOneMapping2_0) ormPersistentAttribute.getMapping();	
+		OneToOneMapping2_0 ormOneToOneMapping = (OneToOneMapping2_0) ormPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());
@@ -972,7 +978,7 @@ public class GenericOrmOneToOneMapping2_0Tests
 //		assertNull(ormJoinColumn.getColumnDefinition());
 //		assertEquals(TYPE_NAME, ormJoinColumn.getSpecifiedTable());
 
-		Cascade2_0 cascade = ormOneToOneMapping.getCascade();
+		Cascade2_0 cascade = (Cascade2_0) ormOneToOneMapping.getCascade();
 		assertFalse(cascade.isAll());
 		assertFalse(cascade.isMerge());
 		assertFalse(cascade.isPersist());

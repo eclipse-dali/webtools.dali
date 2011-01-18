@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -17,38 +17,50 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
-
-public abstract class AbstractOrmManyToOneMapping<T extends XmlManyToOne>
-	extends AbstractOrmSingleRelationshipMapping<T>
+/**
+ * <code>orm.xml</code> 1:1 mapping
+ */
+public abstract class AbstractOrmManyToOneMapping<X extends XmlManyToOne>
+	extends AbstractOrmSingleRelationshipMapping<X>
 	implements OrmManyToOneMapping2_0
 {
-	protected AbstractOrmManyToOneMapping(OrmPersistentAttribute parent, T resourceMapping) {
-		super(parent, resourceMapping);
+	protected AbstractOrmManyToOneMapping(OrmPersistentAttribute parent, X xmlMapping) {
+		super(parent, xmlMapping);
 	}
-	
-	
-	public int getXmlSequence() {
-		return 40;
+
+
+	// ********** relationship **********
+
+	@Override
+	protected OrmManyToOneRelationshipReference2_0 buildRelationshipReference() {
+		return new GenericOrmManyToOneRelationshipReference(this);
 	}
-	
-	public String getKey() {
-		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
-	}
-	
-	public void initializeOn(OrmAttributeMapping newMapping) {
-		newMapping.initializeFromOrmManyToOneMapping(this);
-	}
-	
-	public void addToResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getManyToOnes().add(this.resourceAttributeMapping);
-	}
-	
-	public void removeFromResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getManyToOnes().remove(this.resourceAttributeMapping);
-	}
-	
+
 	@Override
 	public OrmManyToOneRelationshipReference2_0 getRelationshipReference() {
 		return (OrmManyToOneRelationshipReference2_0) super.getRelationshipReference();
+	}
+
+
+	// ********** misc **********
+
+	public String getKey() {
+		return MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	}
+
+	public int getXmlSequence() {
+		return 40;
+	}
+
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmManyToOneMapping(this);
+	}
+
+	public void addXmlAttributeMappingTo(Attributes resourceAttributes) {
+		resourceAttributes.getManyToOnes().add(this.xmlAttributeMapping);
+	}
+
+	public void removeXmlAttributeMappingFrom(Attributes resourceAttributes) {
+		resourceAttributes.getManyToOnes().remove(this.xmlAttributeMapping);
 	}
 }

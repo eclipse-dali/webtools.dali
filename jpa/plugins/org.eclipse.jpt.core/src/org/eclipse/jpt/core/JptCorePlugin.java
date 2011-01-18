@@ -66,8 +66,9 @@ import org.osgi.util.tracker.ServiceTracker;
  * @version 3.0
  * @since 2.0
  */
-public class JptCorePlugin extends Plugin {
-
+public class JptCorePlugin
+	extends Plugin
+{
 	private volatile GenericJpaProjectManager jpaProjectManager;
 	private volatile ServiceTracker parserTracker;
 	private static volatile boolean flushPreferences = true;
@@ -586,10 +587,12 @@ public class JptCorePlugin extends Plugin {
 
 	/**
 	 * This method is called (via reflection) when the test plug-in is loaded.
-	 * The prefs end up getting flushed after the test case has deleted the
-	 * project, resulting resource exceptions in the log, e.g.
+	 * The preferences end up getting flushed after the test case has deleted
+	 * its project, resulting in resource exceptions in the log, e.g.
+	 * <pre>
 	 *     Resource '/JpaProjectManagerTests' is not open.
-	 * @see JptCoreTestsPlugin#start(BundleContext)
+	 * </pre>
+	 * See <code>JptCoreTestsPlugin.start(BundleContext)</code>
 	 */
 	@SuppressWarnings("unused")
 	private static void doNotFlushPreferences() {

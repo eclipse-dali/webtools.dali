@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
 
 /**
- * The java representation of a {@link ManyToOneMapping}
- * 
+ * Java m:1 mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.ManyToOneAnnotation;
  * @since 2.0
  */
 public interface JavaManyToOneMapping
-	extends JavaSingleRelationshipMapping, ManyToOneMapping
+	extends ManyToOneMapping, JavaSingleRelationshipMapping
 {
 	ManyToOneAnnotation getMappingAnnotation();
 	

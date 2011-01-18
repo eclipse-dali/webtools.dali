@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -13,14 +13,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.Iterator;
-
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 
 /**
  * Convenience methods related to the java.lang.String class.
- * 
+ *
  * As of jdk 1.5, it's tempting to convert all of these methods to use
  * java.lang.Appendable (instead of StringBuffer, StringBuilder, and Writer);
  * but all the Appendable methods throw java.io.IOException (yech) and we
@@ -56,6 +55,9 @@ public final class StringTools {
 
 	/** empty char array */
 	public static final char[] EMPTY_CHAR_ARRAY = new char[0];
+
+	/** empty string array */
+	public static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 
 
@@ -1101,7 +1103,7 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the 
+	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
 	 * String#frontPadOrTruncate(int, char)
 	 */
@@ -1122,7 +1124,7 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the 
+	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
 	 * String#frontPadOrTruncateOn(int, char, Writer)
 	 */
@@ -1141,7 +1143,7 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the 
+	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
 	 * String#frontPadOrTruncateOn(int, char, StringBuffer)
 	 */
@@ -1160,7 +1162,7 @@ public final class StringTools {
 	 * Pad or truncate the specified string to the specified length.
 	 * If the string is already the specified length, it is returned unchanged.
 	 * If it is longer than the specified length, only the last part of the string is returned.
-	 * If it is shorter than the specified length, it is padded with the 
+	 * If it is shorter than the specified length, it is padded with the
 	 * specified character at the front.
 	 * String#frontPadOrTruncateOn(int, char, StringBuilder)
 	 */
@@ -1240,6 +1242,206 @@ public final class StringTools {
 	private static void frontPadOn_(char[] string, int length, char c, StringBuilder sb) {
 		fill_(string, length, c, sb);
 		sb.append(string);
+	}
+
+
+	// ********** separating **********
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static String separate(String string, char separator, int segmentSize) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		int len = string.length();
+		return (len <= segmentSize) ? string : new String(separate(string.toCharArray(), separator, segmentSize, len));
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(String string, char separator, int segmentSize, Writer writer) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length() <= segmentSize) {
+			writeStringOn(string, writer);
+		} else {
+			separateOn_(string.toCharArray(), separator, segmentSize, writer);
+		}
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(String string, char separator, int segmentSize, StringBuffer sb) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length() <= segmentSize) {
+			sb.append(string);
+		} else {
+			separateOn_(string.toCharArray(), separator, segmentSize, sb);
+		}
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(String string, char separator, int segmentSize, StringBuilder sb) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length() <= segmentSize) {
+			sb.append(string);
+		} else {
+			separateOn_(string.toCharArray(), separator, segmentSize, sb);
+		}
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static char[] separate(char[] string, char separator, int segmentSize) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		int len = string.length;
+		return (len <= segmentSize) ? string : separate(string, separator, segmentSize, len);
+	}
+
+	/**
+	 * pre-conditions: string is longer than segment size; segment size is positive
+	 */
+	private static char[] separate(char[] string, char separator, int segmentSize, int len) {
+		int resultLen = len + (len / segmentSize);
+		if ((len % segmentSize) == 0) {
+			resultLen--;  // no separator after the final segment if nothing following it
+		}
+		char[] result = new char[resultLen];
+		int j = 0;
+		int segCount = 0;
+		for (char c : string) {
+			if (segCount == segmentSize) {
+				result[j++] = separator;
+				segCount = 0;
+			}
+			segCount++;
+			result[j++] = c;
+		}
+		return result;
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(char[] string, char separator, int segmentSize, Writer writer) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length <= segmentSize) {
+			writeStringOn(string, writer);
+		} else {
+			separateOn_(string, separator, segmentSize, writer);
+		}
+	}
+
+	/**
+	 * pre-conditions: string is longer than segment size; segment size is positive
+	 */
+	private static void separateOn_(char[] string, char separator, int segmentSize, Writer writer) {
+		int segCount = 0;
+		for (char c : string) {
+			if (segCount == segmentSize) {
+				writeCharOn(separator, writer);
+				segCount = 0;
+			}
+			segCount++;
+			writeCharOn(c, writer);
+		}
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(char[] string, char separator, int segmentSize, StringBuffer sb) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length <= segmentSize) {
+			sb.append(string);
+		} else {
+			separateOn_(string, separator, segmentSize, sb);
+		}
+	}
+
+	/**
+	 * pre-conditions: string is longer than segment size; segment size is positive
+	 */
+	private static void separateOn_(char[] string, char separator, int segmentSize, StringBuffer sb) {
+		int segCount = 0;
+		for (char c : string) {
+			if (segCount == segmentSize) {
+				sb.append(separator);
+				segCount = 0;
+			}
+			segCount++;
+			sb.append(c);
+		}
+	}
+
+	/**
+	 * Separate the segments of the specified string with the specified
+	 * separator:<pre>
+	 *     separate("012345", '-', 2) => "01-23-45"
+	 * </pre>
+	 */
+	public static void separateOn(char[] string, char separator, int segmentSize, StringBuilder sb) {
+		if (segmentSize <= 0) {
+			throw new IllegalArgumentException("segment size must be positive: " + segmentSize); //$NON-NLS-1$
+		}
+		if (string.length <= segmentSize) {
+			sb.append(string);
+		} else {
+			separateOn_(string, separator, segmentSize, sb);
+		}
+	}
+
+	/**
+	 * pre-conditions: string is longer than segment size; segment size is positive
+	 */
+	private static void separateOn_(char[] string, char separator, int segmentSize, StringBuilder sb) {
+		int segCount = 0;
+		for (char c : string) {
+			if (segCount == segmentSize) {
+				sb.append(separator);
+				segCount = 0;
+			}
+			segCount++;
+			sb.append(c);
+		}
 	}
 
 
@@ -3360,9 +3562,10 @@ public final class StringTools {
 	// ********** #toString() helper methods **********
 
 	/**
-	 * Build a "standard" #toString() result for the specified object
-	 * and additional information:
-	 * 	ClassName[00F3EE42] (add'l info)
+	 * Build a "standard" {@link Object#toString() toString()} result for the
+	 * specified object and additional information:<pre>
+	 *     ClassName[00-F3-EE-42](add'l info)
+	 * </pre>
 	 */
 	public static String buildToStringFor(Object o, Object additionalInfo) {
 		StringBuilder sb = new StringBuilder();
@@ -3374,8 +3577,10 @@ public final class StringTools {
 	}
 
 	/**
-	 * Build a "standard" simple #toString() result for the specified object:
-	 * 	ClassName[00F3EE42]
+	 * Build a "standard" {@link Object#toString() toString()} result for the
+	 * specified object:<pre>
+	 *     ClassName[00-F3-EE-42]
+	 * </pre>
 	 */
 	public static String buildToStringFor(Object o) {
 		StringBuilder sb = new StringBuilder();
@@ -3384,33 +3589,38 @@ public final class StringTools {
 	}
 
 	/**
-	 * Append a "standard" simple #toString() for the specified object to
-	 * the specified string buffer:
-	 * 	ClassName[00F3EE42]
+	 * Append a "standard" {@link Object#toString() toString()} result for the
+	 * specified object to the specified buffer:<pre>
+	 *     ClassName[00-F3-EE-42]
+	 * </pre>
 	 */
 	public static void buildSimpleToStringOn(Object o, StringBuffer sb) {
 		sb.append(buildToStringClassName(o.getClass()));
 		sb.append('[');
-		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
-		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
+		separateOn(buildHashCode(o), '-', 2, sb);
 		sb.append(']');
 	}
 
+	private static String buildHashCode(Object o) {
+		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
+		return zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8);
+	}
+
 	/**
-	 * Append a "standard" simple #toString() for the specified object to
-	 * the specified string builder:
-	 * 	ClassName[00F3EE42]
+	 * Append a "standard" {@link Object#toString() toString()} result for the
+	 * specified object to the specified string builder:<pre>
+	 *     ClassName[00-F3-EE-42]
+	 * </pre>
 	 */
 	public static void buildSimpleToStringOn(Object o, StringBuilder sb) {
 		sb.append(buildToStringClassName(o.getClass()));
 		sb.append('[');
-		// use System#identityHashCode(Object), since Object#hashCode() may be overridden
-		sb.append(zeroPad(Integer.toHexString(System.identityHashCode(o)).toUpperCase(), 8));
+		separateOn(buildHashCode(o), '-', 2, sb);
 		sb.append(']');
 	}
 
 	/**
-	 * Return a name suitable for a <code>#toString()</code> implementation.
+	 * Return a name suitable for a {@link Object#toString() toString()} implementation.
 	 * {@link Class#getSimpleName()} isn't quite good enough for anonymous
 	 * classes; since it returns an empty string. This method will return the
 	 * name of the anonymous class's super class, which is a bit more helpful.
@@ -3422,14 +3632,32 @@ public final class StringTools {
 				simpleName;
 	}
 
+	/**
+	 * Append the string representations of the objects in the specified array
+	 * to the specified string builder:<pre>
+	 *     ["foo", "bar", "baz"]
+	 * </pre>
+	 */
 	public static <T> String append(StringBuilder sb, T[] array) {
 		return append(sb, new ArrayListIterator<T>(array));
 	}
 
+	/**
+	 * Append the string representations of the objects in the specified iterable
+	 * to the specified string builder:<pre>
+	 *     ["foo", "bar", "baz"]
+	 * </pre>
+	 */
 	public static <T> String append(StringBuilder sb, Iterable<T> iterable) {
 		return append(sb, iterable.iterator());
 	}
 
+	/**
+	 * Append the string representations of the objects in the specified iterator
+	 * to the specified string builder:<pre>
+	 *     ["foo", "bar", "baz"]
+	 * </pre>
+	 */
 	public static <T> String append(StringBuilder sb, Iterator<T> iterator) {
 		sb.append('[');
 		while (iterator.hasNext()) {
@@ -3499,32 +3727,29 @@ public final class StringTools {
 	public static boolean stringIsNotEmpty(char[] string) {
 		return ! stringIsEmpty(string);
 	}
-	
+
 	/**
 	 * Return whether the specified strings are equal.
-	 * Check for nulls.
+	 * Check for <code>null</code>s.
 	 */
 	public static boolean stringsAreEqual(String s1, String s2) {
-		if ((s1 == null) && (s2 == null)) {
-			return true;  // both are null
-		}
-		if ((s1 == null) || (s2 == null)) {
-			return false;  // one is null but the other is not
-		}
-		return s1.equals(s2);
+		return Tools.valuesAreEqual(s1, s2);
 	}
-	
+
 	/**
 	 * Return whether the specified strings are equal.
-	 * Check for nulls.
+	 * Check for <code>null</code>s.
 	 */
 	public static boolean stringsAreEqual(char[] s1, char[] s2) {
-		if ((s1 == null) && (s2 == null)) {
-			return true;  // both are null
-		}
-		if ((s1 == null) || (s2 == null)) {
-			return false;  // one is null but the other is not
-		}
+		return (s1 == null) ?
+				(s2 == null) :
+				((s2 != null) && stringsAreEqual_(s1, s2));
+	}
+
+	/**
+	 * no <code>null</code> checks
+	 */
+	private static boolean stringsAreEqual_(char[] s1, char[] s2) {
 		int len = s1.length;
 		if (len != s2.length) {
 			return false;
@@ -3536,32 +3761,31 @@ public final class StringTools {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Return whether the specified strings are equal, ignoring case.
-	 * Check for nulls.
+	 * Check for <code>null</code>s.
 	 */
 	public static boolean stringsAreEqualIgnoreCase(String s1, String s2) {
-		if ((s1 == null) && (s2 == null)) {
-			return true;  // both are null
-		}
-		if ((s1 == null) || (s2 == null)) {
-			return false;  // one is null but the other is not
-		}
-		return s1.equalsIgnoreCase(s2);
+		return (s1 == null) ?
+				(s2 == null) :
+				((s2 != null) && s1.equalsIgnoreCase(s2));
 	}
-	
+
 	/**
 	 * Return whether the specified strings are equal, ignoring case.
-	 * Check for nulls.
+	 * Check for <code>null</code>s.
 	 */
 	public static boolean stringsAreEqualIgnoreCase(char[] s1, char[] s2) {
-		if ((s1 == null) && (s2 == null)) {
-			return true;  // both are null
-		}
-		if ((s1 == null) || (s2 == null)) {
-			return false;  // one is null but the other is not
-		}
+		return (s1 == null) ?
+				(s2 == null) :
+				((s2 != null) && stringsAreEqualIgnoreCase_(s1, s2));
+	}
+
+	/**
+	 * no <code>null</code> checks
+	 */
+	private static boolean stringsAreEqualIgnoreCase_(char[] s1, char[] s2) {
 		int len = s1.length;
 		if (len != s2.length) {
 			return false;
@@ -3590,7 +3814,7 @@ public final class StringTools {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Return whether the specified string starts with the specified prefix,
 	 * ignoring case.
@@ -4481,5 +4705,4 @@ public final class StringTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -75,6 +75,13 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 		AnnotationContainerTools.synchronize(this.conversionValuesContainer, astRoot);
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.defaultObjectValue == null) &&
+				this.conversionValues.isEmpty();
+	}
+
 
 	// ********** SourceNamedConverterAnnotation implementation **********
 
@@ -156,7 +163,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 
 	private NestableEclipseLinkConversionValueAnnotation addConversionValue_(int index) {
 		NestableEclipseLinkConversionValueAnnotation conversionValue = this.buildConversionValue(index);
-		this.conversionValues.add(conversionValue);
+		this.conversionValues.add(index, conversionValue);
 		return conversionValue;
 	}
 
@@ -199,7 +206,7 @@ public final class SourceEclipseLinkObjectTypeConverterAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildDefaultObjectValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, false, StringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.OBJECT_TYPE_CONVERTER__DEFAULT_OBJECT_VALUE, StringExpressionConverter.instance());
 	}
 
 

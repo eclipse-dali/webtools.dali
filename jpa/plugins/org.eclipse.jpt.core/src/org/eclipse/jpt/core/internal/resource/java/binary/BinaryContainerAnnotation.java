@@ -55,4 +55,19 @@ public abstract class BinaryContainerAnnotation<T extends NestableAnnotation>
 		throw new UnsupportedOperationException();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		throw new UnsupportedOperationException();
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		throw new UnsupportedOperationException();
+	}
+
+	public void removeLastNestedAnnotation() {
+		throw new UnsupportedOperationException();
+	}
 }

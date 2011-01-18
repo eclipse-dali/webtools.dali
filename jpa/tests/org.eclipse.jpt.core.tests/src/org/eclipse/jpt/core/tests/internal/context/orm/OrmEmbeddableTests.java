@@ -165,18 +165,18 @@ public class OrmEmbeddableTests extends ContextModelTestCase
 		OrmEmbeddable ormEmbeddable = (OrmEmbeddable) ormPersistentType.getMapping();
 		XmlEmbeddable embeddableResource = getXmlEntityMappings().getEmbeddables().get(0);
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(ormEmbeddable.isDefaultMetadataComplete());
+		assertFalse(ormEmbeddable.isOverrideMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		getXmlEntityMappings().setPersistenceUnitMetadata(OrmFactory.eINSTANCE.createXmlPersistenceUnitMetadata());
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		assertTrue(ormEmbeddable.isDefaultMetadataComplete());
+		assertTrue(ormEmbeddable.isOverrideMetadataComplete());
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 		
 		getXmlEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
 		assertNull(ormEmbeddable.getSpecifiedMetadataComplete());
-		assertFalse(ormEmbeddable.isDefaultMetadataComplete());
+		assertFalse(ormEmbeddable.isOverrideMetadataComplete());
 		assertNull(embeddableResource.getMetadataComplete());
 	}
 	

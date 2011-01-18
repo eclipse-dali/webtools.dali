@@ -18,7 +18,10 @@ import org.eclipse.swt.widgets.Display;
  * UI thread, asynchronously if necessary. If the event arrived on the UI
  * thread that is probably because it was initiated by a UI widget; as a
  * result, we want to loop back synchronously so the events can be
- * short-circuited.
+ * short-circuited. (Typically, the adapter(s) between a <em>property</em> and
+ * its corresponding UI widget are read-write; as opposed to the adapter(s)
+ * between a <em>collection</em> (or <em>list</em>) and its UI widget, which
+ * is read-only.)
  */
 public class SWTPropertyChangeListenerWrapper
 	implements PropertyChangeListener
@@ -45,6 +48,10 @@ public class SWTPropertyChangeListenerWrapper
 		return new Runnable() {
 			public void run() {
 				SWTPropertyChangeListenerWrapper.this.propertyChanged_(event);
+			}
+			@Override
+			public String toString() {
+				return "property changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

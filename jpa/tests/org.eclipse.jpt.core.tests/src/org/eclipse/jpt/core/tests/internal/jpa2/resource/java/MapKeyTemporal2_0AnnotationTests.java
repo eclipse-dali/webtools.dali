@@ -83,7 +83,7 @@ public class MapKeyTemporal2_0AnnotationTests extends JavaResourceModel2_0TestCa
 		
 		temporal.setValue(null);
 		
-		assertSourceDoesNotContain("@MapKeyTemporal", cu);
+		assertSourceDoesNotContain("@MapKeyTemporal(", cu);
 	}
 
 }

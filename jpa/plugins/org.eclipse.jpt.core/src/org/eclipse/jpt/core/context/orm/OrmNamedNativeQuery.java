@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
-import java.util.ListIterator;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> named native query
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,12 +28,8 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 public interface OrmNamedNativeQuery
 	extends OrmQuery, NamedNativeQuery
 {
-	ListIterator<OrmQueryHint> hints();
+	XmlNamedNativeQuery getXmlQuery();
 
-	/**
-	 * Update the OrmNamedNativeQuery context model object to match the XmlNamedNativeQuery 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlNamedNativeQuery resourceQuery);
-
+	// required to resolve ambiguity
+	ListIterable<OrmQueryHint> getHints();
 }

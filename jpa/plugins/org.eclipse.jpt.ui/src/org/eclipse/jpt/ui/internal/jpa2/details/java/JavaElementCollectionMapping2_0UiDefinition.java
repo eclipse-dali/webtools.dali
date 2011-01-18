@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaElementCollectionMapping2_0UiDefinition
-	extends AbstractElementCollectionMapping2_0UiDefinition<PersistentAttribute, JavaElementCollectionMapping2_0>
+	extends AbstractElementCollectionMapping2_0UiDefinition<ReadOnlyPersistentAttribute, JavaElementCollectionMapping2_0>
 	implements JavaAttributeMappingUiDefinition<JavaElementCollectionMapping2_0>
 {
 	// singleton

@@ -38,7 +38,13 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	private final AnnotationElementAdapter<String> valueAdapter;
 	private String value;
 
+	/**
+	 * @see org.eclipse.jpt.core.internal.resource.java.source.SourceIdClassAnnotation#fullyQualifiedClassName
+	 */
 	private String fullyQualifiedCustomizerClassName;
+	// we need a flag since the f-q name can be null
+	private boolean fqCustomizerClassNameStale = true;
+
 
 	public SourceEclipseLinkCustomizerAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
@@ -51,12 +57,16 @@ public final class SourceEclipseLinkCustomizerAnnotation
 
 	public void initialize(CompilationUnit astRoot) {
 		this.value = this.buildValue(astRoot);
-		this.fullyQualifiedCustomizerClassName = this.buildFullyQualifiedCustomizerClassName(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncValue(this.buildValue(astRoot));
-		this.syncFullyQualifiedCustomizerClassName(this.buildFullyQualifiedCustomizerClassName(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
 	}
 
 	@Override
@@ -75,13 +85,21 @@ public final class SourceEclipseLinkCustomizerAnnotation
 	public void setValue(String value) {
 		if (this.attributeValueHasChanged(this.value, value)) {
 			this.value = value;
+			this.fqCustomizerClassNameStale = true;
 			this.valueAdapter.setValue(value);
 		}
 	}
 
 	private void syncValue(String astValue) {
+		if (this.attributeValueHasChanged(this.value, astValue)) {
+			this.syncValue_(astValue);
+		}
+	}
+
+	private void syncValue_(String astValue) {
 		String old = this.value;
 		this.value = astValue;
+		this.fqCustomizerClassNameStale = true;
 		this.firePropertyChanged(VALUE_PROPERTY, old, astValue);
 	}
 
@@ -101,24 +119,26 @@ public final class SourceEclipseLinkCustomizerAnnotation
 
 	// ***** fully-qualified customizer class name
 	public String getFullyQualifiedCustomizerClassName() {
+		if (this.fqCustomizerClassNameStale) {
+			this.fullyQualifiedCustomizerClassName = this.buildFullyQualifiedCustomizerClassName();
+			this.fqCustomizerClassNameStale = false;
+		}
 		return this.fullyQualifiedCustomizerClassName;
 	}
 
-	private void syncFullyQualifiedCustomizerClassName(String name) {
-		String old = this.fullyQualifiedCustomizerClassName;
-		this.fullyQualifiedCustomizerClassName = name;
-		this.firePropertyChanged(FULLY_QUALIFIED_CUSTOMIZER_CLASS_NAME_PROPERTY, old, name);
+	private String buildFullyQualifiedCustomizerClassName() {
+		return (this.value == null) ? null : this.buildFullyQualifiedCustomizerClassName_();
 	}
 
-	private String buildFullyQualifiedCustomizerClassName(CompilationUnit astRoot) {
-		return (this.value == null) ? null : ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(astRoot));
+	private String buildFullyQualifiedCustomizerClassName_() {
+		return ASTTools.resolveFullyQualifiedName(this.valueAdapter.getExpression(this.buildASTRoot()));
 	}
 
 
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<String> buildValueAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CUSTOMIZER__VALUE, false, SimpleTypeStringExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<String>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.CUSTOMIZER__VALUE, SimpleTypeStringExpressionConverter.instance());
 	}
 
 }

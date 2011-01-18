@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.details.orm;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface OrmAttributeMappingUiDefinition<T extends AttributeMapping>
-	extends MappingUiDefinition<PersistentAttribute, T>
+	extends MappingUiDefinition<ReadOnlyPersistentAttribute, T>
 {
 	/**
 	 * Creates <code>JpaComposite</code> that corresponds to this mapping type.

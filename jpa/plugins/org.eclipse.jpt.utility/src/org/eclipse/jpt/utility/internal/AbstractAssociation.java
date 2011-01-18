@@ -16,7 +16,6 @@ package org.eclipse.jpt.utility.internal;
 public abstract class AbstractAssociation<K, V>
 	implements Association<K, V>
 {
-
 	/**
 	 * Default constructor.
 	 */
@@ -30,21 +29,41 @@ public abstract class AbstractAssociation<K, V>
 			return false;
 		}
 		Association<?, ?> other = (Association<?, ?>) o;
-		return (this.key() == null ?
-					other.key() == null : this.key().equals(other.key()))
-			&& (this.value() == null ?
-					other.value() == null : this.value().equals(other.value()));
+		return this.keyEquals(other) && this.valueEquals(other);
+	}
+
+	protected boolean keyEquals(Association<?, ?> other) {
+		Object key = this.getKey();
+		return (key == null) ?
+				(other.getKey() == null) :
+				key.equals(other.getKey());
+	}
+
+	protected boolean valueEquals(Association<?, ?> other) {
+		Object value = this.getValue();
+		return (value == null) ?
+				(other.getValue() == null) :
+				value.equals(other.getValue());
 	}
 
 	@Override
 	public synchronized int hashCode() {
-		return (this.key() == null ? 0 : this.key().hashCode())
-			^ (this.value() == null ? 0 : this.value().hashCode());
+		return this.keyHashCode() ^ this.valueHashCode();
+	}
+
+	protected int keyHashCode() {
+		Object key = this.getKey();
+		return (key == null) ? 0 : key.hashCode();
+	}
+
+	protected int valueHashCode() {
+		Object value = this.getValue();
+		return (value == null) ? 0 : value.hashCode();
 	}
 
 	@Override
 	public synchronized String toString() {
-		return this.key() + " => " + this.value(); //$NON-NLS-1$
+		return this.getKey() + " => " + this.getValue(); //$NON-NLS-1$
 	}
 
 }

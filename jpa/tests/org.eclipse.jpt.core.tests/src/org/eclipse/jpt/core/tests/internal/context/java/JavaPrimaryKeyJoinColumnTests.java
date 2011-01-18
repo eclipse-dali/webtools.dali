@@ -18,8 +18,10 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
+import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 {
 	private static final String PRIMARY_KEY_JOIN_COLUMN_NAME = "MY_PRIMARY_KEY_JOIN_COLUMN";
@@ -103,7 +105,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		
 		//remove @Id annotation
 		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
-		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(specifiedPkJoinColumn.getDefaultName());
 	}
@@ -126,14 +128,14 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("foo", specifiedPkJoinColumn.getSpecifiedName());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumn = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
+		PrimaryKeyJoinColumnAnnotation columnAnnotation = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
-		assertEquals("foo", pkJoinColumn.getName());
+		assertEquals("foo", columnAnnotation.getName());
 		
 		specifiedPkJoinColumn.setSpecifiedName(null);
 		assertNull(specifiedPkJoinColumn.getSpecifiedName());
-		pkJoinColumn = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
-		assertNull(pkJoinColumn);
+		columnAnnotation = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
+		assertNull(columnAnnotation.getName());
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -214,7 +216,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		
 		//remove @Id annotation
 		PersistentAttribute idAttribute = getJavaPersistentType().getAttributeNamed("id");
-		idAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
+		idAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 
 		assertNull(specifiedPkJoinColumn.getDefaultReferencedColumnName());
 	}
@@ -243,15 +245,15 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		assertEquals("foo", specifiedPkJoinColumn.getSpecifiedReferencedColumnName());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		PrimaryKeyJoinColumnAnnotation pkJoinColumn = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
+		PrimaryKeyJoinColumnAnnotation columnAnnotation = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		
-		assertEquals("foo", pkJoinColumn.getReferencedColumnName());
+		assertEquals("foo", columnAnnotation.getReferencedColumnName());
 		
 		specifiedPkJoinColumn.setSpecifiedName(null);
 		specifiedPkJoinColumn.setSpecifiedReferencedColumnName(null);
 		assertNull(specifiedPkJoinColumn.getSpecifiedReferencedColumnName());
-		pkJoinColumn = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
-		assertNull(pkJoinColumn);
+		columnAnnotation = (PrimaryKeyJoinColumnAnnotation) typeResource.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
+		assertNull(columnAnnotation.getReferencedColumnName());
 	}
 	
 	public void testIsVirtual() throws Exception {
@@ -259,11 +261,11 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertFalse(specifiedPkJoinColumn.isVirtual());
+		assertFalse(specifiedPkJoinColumn.isDefault());
 		
 		assertNull(getJavaEntity().getDefaultPrimaryKeyJoinColumn());
 		getJavaEntity().removeSpecifiedPrimaryKeyJoinColumn(0);
-		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isVirtual());
+		assertTrue(getJavaEntity().getDefaultPrimaryKeyJoinColumn().isDefault());
 	}
 	
 	public void testIsReferencedColumnResolved() throws Exception {
@@ -271,7 +273,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertFalse(specifiedPkJoinColumn.isReferencedColumnResolved());
+		assertFalse(((Boolean) ReflectionTools.executeMethod(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
 	}
 	
 	public void testDbColumn() throws Exception {
@@ -279,7 +281,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertNull(specifiedPkJoinColumn.getDbColumn());
+		assertFalse(specifiedPkJoinColumn.isResolved());
 	}
 	
 	public void testDbReferencedColumn() throws Exception {
@@ -287,7 +289,7 @@ public class JavaPrimaryKeyJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		PrimaryKeyJoinColumn specifiedPkJoinColumn = getJavaEntity().specifiedPrimaryKeyJoinColumns().next();
-		assertNull(specifiedPkJoinColumn.getReferencedDbColumn());
+		assertFalse(((Boolean) ReflectionTools.executeMethod(specifiedPkJoinColumn, "referencedColumnIsResolved")).booleanValue());
 	}
 	
 	public void testDbTable() throws Exception {

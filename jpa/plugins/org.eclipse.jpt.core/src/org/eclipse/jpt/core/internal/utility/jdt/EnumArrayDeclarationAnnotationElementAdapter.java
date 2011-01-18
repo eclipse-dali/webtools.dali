@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Wrap a declaration annotation element adapter and simply
@@ -30,36 +31,26 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	 */
 	private final ConversionDeclarationAnnotationElementAdapter<String[]> adapter;
 
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
 
 	// ********** constructors **********
 
 	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed.
+	 * The default element name is <code>value</code>.
+	 * The default behavior is to remove the array initializer if it is empty.
 	 */
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
 		this(annotationAdapter, VALUE);
 	}
 
 	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed and remove the array initializer if it is empty.
+	 * The default behavior is to remove the array initializer if it is empty.
 	 */
 	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
 		this(annotationAdapter, elementName, true);
 	}
 
-	/**
-	 * The default behavior is to remove the array initializer if it is empty.
-	 */
-	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(annotationAdapter, elementName, removeAnnotationWhenEmpty, true);
-	}
-
-	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty, boolean removeArrayInitializerWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, removeAnnotationWhenEmpty, buildExpressionConverter(removeArrayInitializerWhenEmpty)));
+	public EnumArrayDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeArrayInitializerWhenEmpty) {
+		this(new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, buildExpressionConverter(removeArrayInitializerWhenEmpty)));
 	}
 
 	private static ExpressionConverter<String[]> buildExpressionConverter(boolean removeArrayInitializerWhenEmpty) {
@@ -104,7 +95,7 @@ public class EnumArrayDeclarationAnnotationElementAdapter
 	 */
 	protected String[] resolve(Expression expression, ModifiedDeclaration declaration) {
 		if (expression == null) {
-			return EMPTY_STRING_ARRAY;
+			return StringTools.EMPTY_STRING_ARRAY;
 		} else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
 			return this.resolveArray((ArrayInitializer) expression, declaration);
 		} else {

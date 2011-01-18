@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
- * This program and the accompanying materials are made available under the terms of
- * the Eclipse Public License v1.0, which accompanies this distribution and is available at
- * http://www.eclipse.org/legal/epl-v10.html.
- * 
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -18,41 +18,41 @@ import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.orm.Attributes;
 import org.eclipse.jpt.core.resource.orm.XmlTransient;
 
-
+/**
+ * <code>orm.xml</code> transient mapping
+ */
 public class GenericOrmTransientMapping
-	extends AbstractOrmAttributeMapping<XmlTransient> 
+	extends AbstractOrmAttributeMapping<XmlTransient>
 	implements OrmTransientMapping
 {
-	
-	public GenericOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient resourceMapping) {
-		super(parent, resourceMapping);
-	}
-
-	public void initializeOn(OrmAttributeMapping newMapping) {
-		newMapping.initializeFromOrmTransientMapping(this);
-	}
-
-	public int getXmlSequence() {
-		return 90;
+	public GenericOrmTransientMapping(OrmPersistentAttribute parent, XmlTransient xmlMapping) {
+		super(parent, xmlMapping);
 	}
 
 	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	public void addToResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getTransients().add(this.resourceAttributeMapping);
-	}
-	
-	public void removeFromResourceModel(Attributes resourceAttributes) {
-		resourceAttributes.getTransients().remove(this.resourceAttributeMapping);
+	public int getXmlSequence() {
+		return 90;
 	}
 
-	// ********** metamodel **********  
+	public void initializeOn(OrmAttributeMapping newMapping) {
+		newMapping.initializeFromOrmTransientMapping(this);
+	}
+
+	public void addXmlAttributeMappingTo(Attributes resourceAttributes) {
+		resourceAttributes.getTransients().add(this.xmlAttributeMapping);
+	}
+
+	public void removeXmlAttributeMappingFrom(Attributes resourceAttributes) {
+		resourceAttributes.getTransients().remove(this.xmlAttributeMapping);
+	}
+
+	// ********** metamodel **********
 
 	@Override
 	public MetamodelField getMetamodelField() {
 		return null;
 	}
-
 }

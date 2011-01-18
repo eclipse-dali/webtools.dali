@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -42,16 +44,16 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinTableJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<JoinTableEnabledRelationshipReference, JoinTableJoiningStrategy>
+		<ReadOnlyJoinTableEnabledRelationshipReference, ReadOnlyJoinTableJoiningStrategy>
 {
 	public JoinTableJoiningStrategyPane(
-			Pane<? extends JoinTableEnabledRelationshipReference> parentPane, 
+			Pane<? extends ReadOnlyJoinTableEnabledRelationshipReference> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
 
 	public JoinTableJoiningStrategyPane(Pane<?> parentPane,
-		PropertyValueModel<? extends JoinTableEnabledRelationshipReference> subjectHolder,
+		PropertyValueModel<? extends ReadOnlyJoinTableEnabledRelationshipReference> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -67,40 +69,43 @@ public class JoinTableJoiningStrategyPane
 		return buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<JoinTableJoiningStrategy> buildJoinTableJoiningStrategyHolder() {
+	protected PropertyValueModel<ReadOnlyJoinTableJoiningStrategy> buildJoinTableJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<JoinTableEnabledRelationshipReference, JoinTableJoiningStrategy>(
+				<ReadOnlyJoinTableEnabledRelationshipReference, ReadOnlyJoinTableJoiningStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected JoinTableJoiningStrategy buildValue_() {
+			protected ReadOnlyJoinTableJoiningStrategy buildValue_() {
 				return this.subject.getJoinTableJoiningStrategy();
 			}
 		};
 	}
 
-	protected PropertyValueModel<JoinTable> buildJoinTableHolder() {
-		return new PropertyAspectAdapter<JoinTableJoiningStrategy, JoinTable>(
-				this.buildJoinTableJoiningStrategyHolder(), JoinTableJoiningStrategy.JOIN_TABLE_PROPERTY) {
+	protected PropertyValueModel<ReadOnlyJoinTable> buildJoinTableHolder() {
+		return new PropertyAspectAdapter<ReadOnlyJoinTableJoiningStrategy, ReadOnlyJoinTable>(
+				this.buildJoinTableJoiningStrategyHolder(), ReadOnlyJoinTableJoiningStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
-			protected JoinTable buildValue_() {
+			protected ReadOnlyJoinTable buildValue_() {
 				return this.subject.getJoinTable();
 			}
 		};
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends JoinTableEnabledRelationshipReference> subjectHolder) {
-		return new PropertyAspectAdapter<JoinTableEnabledRelationshipReference, Boolean>(
-			subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+	public static WritablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinTableEnabledRelationshipReference> subjectHolder) {
+		return new PropertyAspectAdapter<ReadOnlyJoinTableEnabledRelationshipReference, Boolean>(
+			subjectHolder, ReadOnlyRelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
-				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.usesJoinTableJoiningStrategy());
+				return Boolean.valueOf(this.buildBooleanValue());
+			}
+			
+			protected boolean buildBooleanValue() {
+				return (this.subject != null) && this.subject.usesJoinTableJoiningStrategy();
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setJoinTableJoiningStrategy();
+					((JoinTableEnabledRelationshipReference) this.subject).setJoinTableJoiningStrategy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

@@ -396,9 +396,8 @@ public class JavaResourcePersistentAttributeTests extends JpaJavaResourceModelTe
 		assertSourceContains("@Column(name = \"FOO\")", cu);
 
 		columnResource.setName(null);
-		assertSourceDoesNotContain("@Column", cu);
-		
-		assertNull(typeResource.getAnnotation(JPA.TABLE));
+		assertSourceDoesNotContain("(name", cu);
+		assertSourceDoesNotContain("@Column(", cu);
 	}
 	
 	public void testMultipleAttributeMappings() throws Exception {

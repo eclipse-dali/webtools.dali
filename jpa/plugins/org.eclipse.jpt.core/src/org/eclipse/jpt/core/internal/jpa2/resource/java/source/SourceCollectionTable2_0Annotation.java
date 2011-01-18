@@ -9,9 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.AnnotationContainerTools;
@@ -37,7 +39,7 @@ import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
- * javax.persistence.CollectionTable
+ * <code>javax.persistence.CollectionTable</code>
  */
 public final class SourceCollectionTable2_0Annotation
 	extends SourceBaseTableAnnotation
@@ -80,20 +82,17 @@ public final class SourceCollectionTable2_0Annotation
 	// ********** SourceBaseTableAnnotation implementation **********
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getNameAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @CollectionTable is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
 		return NAME_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getSchemaAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @CollectionTable is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildSchemaDeclarationAdapter() {
 		return SCHEMA_ADAPTER;
 	}
 
 	@Override
-	protected DeclarationAnnotationElementAdapter<String> getCatalogAdapter(DeclarationAnnotationAdapter declarationAnnotationAdapter) {
-		// ignore the daa passed in, @CollectionTable is never nested
+	protected DeclarationAnnotationElementAdapter<String> buildCatalogDeclarationAdapter() {
 		return CATALOG_ADAPTER;
 	}
 
@@ -125,6 +124,10 @@ public final class SourceCollectionTable2_0Annotation
 		return this.joinColumns.indexOf(joinColumn);
 	}
 
+	private NestableJoinColumnAnnotation addJoinColumn() {
+		return this.addJoinColumn(this.joinColumns.size());
+	}
+
 	public NestableJoinColumnAnnotation addJoinColumn(int index) {
 		return (NestableJoinColumnAnnotation) AnnotationContainerTools.addNestedAnnotation(index, this.joinColumnsContainer);
 	}
@@ -135,7 +138,7 @@ public final class SourceCollectionTable2_0Annotation
 
 	private NestableJoinColumnAnnotation addJoinColumn_(int index) {
 		NestableJoinColumnAnnotation joinColumn = this.buildJoinColumn(index);
-		this.joinColumns.add(joinColumn);
+		this.joinColumns.add(index, joinColumn);
 		return joinColumn;
 	}
 
@@ -179,13 +182,47 @@ public final class SourceCollectionTable2_0Annotation
 	}
 
 
-	// ********** annotation containers **********
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.joinColumns.isEmpty();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+
+		List<Map<String, Object>> joinColumnsState = this.buildStateList(this.joinColumns.size());
+		for (NestableJoinColumnAnnotation joinColumn : this.getNestableJoinColumns()) {
+			Map<String, Object> joinColumnState = new HashMap<String, Object>();
+			joinColumn.storeOn(joinColumnState);
+			joinColumnsState.add(joinColumnState);
+		}
+		map.put(JOIN_COLUMNS_LIST, joinColumnsState);
+		this.joinColumns.clear();
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+
+		@SuppressWarnings("unchecked")
+		List<Map<String, Object>> joinColumnsState = (List<Map<String, Object>>) map.get(JOIN_COLUMNS_LIST);
+		for (Map<String, Object> joinColumnState : joinColumnsState) {
+			this.addJoinColumn().restoreFrom(joinColumnState);
+		}
+	}
+
+
+	// ********** join column container **********
 
 	/**
 	 * adapt the AnnotationContainer interface to the collection table's join columns
 	 */
 	class JoinColumnsAnnotationContainer
-	implements AnnotationContainer<NestableJoinColumnAnnotation>
+		implements AnnotationContainer<NestableJoinColumnAnnotation>
 	{
 		public org.eclipse.jdt.core.dom.Annotation getAstAnnotation(CompilationUnit astRoot) {
 			return SourceCollectionTable2_0Annotation.this.getAstAnnotation(astRoot);

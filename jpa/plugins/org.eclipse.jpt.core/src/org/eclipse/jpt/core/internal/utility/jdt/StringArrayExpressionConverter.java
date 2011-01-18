@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
+import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Convert an array initializer to/from an array of strings (e.g. {"text0", "text1"}).
@@ -34,8 +35,6 @@ public class StringArrayExpressionConverter
 	private final ExpressionConverter<String> elementConverter;
 	private final boolean removeArrayInitializerWhenEmpty;
 
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
-
 
 	/**
 	 * The default behavior is to remove the array initializer if it is empty.
@@ -50,11 +49,11 @@ public class StringArrayExpressionConverter
 		this.removeArrayInitializerWhenEmpty = removeArrayInitializerWhenEmpty;
 	}
 
-	@Override
 	/*
 	 * this method is 'public' so it can be called by
 	 * AnnotationStringArrayExpressionConverter
 	 */
+	@Override
 	public ArrayInitializer convertObject(String[] strings, AST ast) {
 		if ((strings.length == 0) && this.removeArrayInitializerWhenEmpty) {
 			return null;
@@ -78,15 +77,14 @@ public class StringArrayExpressionConverter
 	 */
 	@Override
 	public String[] convertNull() {
-		return EMPTY_STRING_ARRAY;
+		return StringTools.EMPTY_STRING_ARRAY;
 	}
 
 	@Override
 	protected String[] convertExpression(Expression expression) {
 		return (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) ?
-				this.convertArrayInitializer((ArrayInitializer) expression)
-			:
-				EMPTY_STRING_ARRAY;
+				this.convertArrayInitializer((ArrayInitializer) expression) :
+				StringTools.EMPTY_STRING_ARRAY;
 	}
 
 	/*

@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -22,75 +22,96 @@ public class JavaEclipseLinkPrivateOwned
 	implements EclipseLinkPrivateOwned
 {
 	protected boolean privateOwned;
-	
-	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
-	
+
+
 	public JavaEclipseLinkPrivateOwned(JavaAttributeMapping parent) {
 		super(parent);
+		this.privateOwned = this.buildPrivateOwned();
 	}
-	
-	protected String getPrivateOwnedAnnotationName() {
-		return EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME;
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setPrivateOwned_(this.buildPrivateOwned());
 	}
-	
-	protected EclipseLinkPrivateOwnedAnnotation getResourcePrivateOwned() {
-		return (EclipseLinkPrivateOwnedAnnotation) this.resourcePersistentAttribute.getAnnotation(getPrivateOwnedAnnotationName());
-	}
-	
-	protected void addResourcePrivateOwned() {
-		this.resourcePersistentAttribute.addAnnotation(getPrivateOwnedAnnotationName());
-	}
-	
-	protected void removeResourcePrivateOwned() {
-		this.resourcePersistentAttribute.removeAnnotation(getPrivateOwnedAnnotationName());
-	}
+
+
+	// ********** private owned **********
 
 	public boolean isPrivateOwned() {
 		return this.privateOwned;
 	}
-	
-	public void setPrivateOwned(boolean newPrivateOwned) {
-		if (this.privateOwned == newPrivateOwned) {
-			return;
-		}
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
 
-		if (newPrivateOwned) {
-			addResourcePrivateOwned();
-		}
-		else {
-			//have to check if annotation exists in case the change is from false to null or vice versa
-			if (getResourcePrivateOwned() != null) {
-				removeResourcePrivateOwned();
+	public void setPrivateOwned(boolean privateOwned) {
+		if (privateOwned != this.privateOwned) {
+			EclipseLinkPrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
+			if (privateOwned) {
+				if (annotation == null) {
+					this.addPrivateOwnedAnnotation();
+				}
+			} else {
+				if (annotation != null) {
+					this.removePrivateOwnedAnnotation();
+				}
 			}
+
+			this.setPrivateOwned_(privateOwned);
 		}
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
-	}
-	
-	protected void setPrivateOwned_(boolean newPrivateOwned) {
-		boolean oldPrivateOwned = this.privateOwned;
-		this.privateOwned = newPrivateOwned;
-		firePropertyChanged(PRIVATE_OWNED_PROPERTY, oldPrivateOwned, newPrivateOwned);
-	}
-	
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		this.privateOwned = privateOwned();
-	}
-	
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		this.setPrivateOwned_(privateOwned());
-	}
-	
-	private boolean privateOwned() {
-		return getResourcePrivateOwned() != null;
-	}
-	
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		EclipseLinkPrivateOwnedAnnotation resourcePrivateOwned = this.getResourcePrivateOwned();
-		return resourcePrivateOwned == null ? null : resourcePrivateOwned.getTextRange(astRoot);
 	}
 
+	protected void setPrivateOwned_(boolean privateOwned) {
+		boolean old = this.privateOwned;
+		this.privateOwned = privateOwned;
+		this.firePropertyChanged(PRIVATE_OWNED_PROPERTY, old, privateOwned);
+	}
+
+	protected boolean buildPrivateOwned() {
+		return this.getPrivateOwnedAnnotation() != null;
+	}
+
+
+	// ********** private owned annotation **********
+
+	protected EclipseLinkPrivateOwnedAnnotation getPrivateOwnedAnnotation() {
+		return (EclipseLinkPrivateOwnedAnnotation) this.getResourcePersistentAttribute().getAnnotation(this.getPrivateOwnedAnnotationName());
+	}
+
+	protected EclipseLinkPrivateOwnedAnnotation addPrivateOwnedAnnotation() {
+		return (EclipseLinkPrivateOwnedAnnotation) this.getResourcePersistentAttribute().addAnnotation(this.getPrivateOwnedAnnotationName());
+	}
+
+	protected void removePrivateOwnedAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(this.getPrivateOwnedAnnotationName());
+	}
+
+	protected String getPrivateOwnedAnnotationName() {
+		return EclipseLinkPrivateOwnedAnnotation.ANNOTATION_NAME;
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public JavaAttributeMapping getParent() {
+		return (JavaAttributeMapping) super.getParent();
+	}
+
+	protected JavaAttributeMapping getAttributeMapping() {
+		return this.getParent();
+	}
+
+	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
+		return this.getAttributeMapping().getResourcePersistentAttribute();
+	}
+
+
+	// ********** validation **********
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		EclipseLinkPrivateOwnedAnnotation annotation = this.getPrivateOwnedAnnotation();
+		return (annotation == null) ? null : annotation.getTextRange(astRoot);
+	}
 }

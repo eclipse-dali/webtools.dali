@@ -16,13 +16,11 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.NamedQuery
+ * <code>javax.persistence.NamedQuery</code>
  */
 public final class SourceNamedQuery1_0Annotation
 	extends SourceNamedQueryAnnotation
 {
-
-	// ********** constructors **********
 	public SourceNamedQuery1_0Annotation(JavaResourceNode parent, Type type) {
 		super(parent, type);
 	}

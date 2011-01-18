@@ -48,7 +48,7 @@ public final class BasicAnnotationDefinition
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
-		return new NullBasicAnnotation((JavaResourcePersistentAttribute) parent);
+		throw new UnsupportedOperationException();
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {

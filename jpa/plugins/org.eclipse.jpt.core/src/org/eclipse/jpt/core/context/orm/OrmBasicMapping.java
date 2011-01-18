@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.BasicMapping;
+import org.eclipse.jpt.core.resource.orm.XmlBasic;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> basic mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,10 +25,7 @@ import org.eclipse.jpt.core.context.BasicMapping;
  * @since 2.0
  */
 public interface OrmBasicMapping
-	extends BasicMapping, OrmAttributeMapping, OrmColumnMapping
+	extends BasicMapping, OrmColumnMapping, OrmConvertibleMapping
 {
-	
-	//********* covariant overrides **********
-	OrmConverter getConverter();
-
+	XmlBasic getXmlAttributeMapping();
 }

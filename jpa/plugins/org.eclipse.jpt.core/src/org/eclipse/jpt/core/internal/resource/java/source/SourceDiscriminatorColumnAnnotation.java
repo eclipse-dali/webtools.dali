@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.EnumDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
@@ -17,14 +18,13 @@ import org.eclipse.jpt.core.resource.java.DiscriminatorColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
- * javax.persistence.DiscriminatorColumn
+ * <code>javax.persistence.DiscriminatorColumn</code>
  */
 public final class SourceDiscriminatorColumnAnnotation
 	extends SourceNamedColumnAnnotation
@@ -32,20 +32,20 @@ public final class SourceDiscriminatorColumnAnnotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_ADAPTER = buildDiscriminatorTypeAdapter();
-	private final AnnotationElementAdapter<String> discriminatorTypeAdapter;
+	private static final DeclarationAnnotationElementAdapter<String> DISCRIMINATOR_TYPE_DECLARATION_ADAPTER = buildDiscriminatorTypeDeclarationAdapter();
+	private AnnotationElementAdapter<String> discriminatorTypeAdapter;
 	private DiscriminatorType discriminatorType;
 
-	private final DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
-	private final AnnotationElementAdapter<Integer> lengthAdapter;
+	private DeclarationAnnotationElementAdapter<Integer> lengthDeclarationAdapter;
+	private AnnotationElementAdapter<Integer> lengthAdapter;
 	private Integer length;
 
 
 	public SourceDiscriminatorColumnAnnotation(JavaResourcePersistentType parent, Type type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
-		this.discriminatorTypeAdapter = new AnnotatedElementAnnotationElementAdapter<String>(type, DISCRIMINATOR_TYPE_ADAPTER);
-		this.lengthDeclarationAdapter = this.buildIntegerElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
-		this.lengthAdapter = this.buildShortCircuitIntegerElementAdapter(this.lengthDeclarationAdapter);
+		this.discriminatorTypeAdapter = this.buildDiscriminatorTypeAdapter();
+		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
+		this.lengthAdapter = this.buildLengthAdapter();
 	}
 
 	public String getAnnotationName() {
@@ -104,6 +104,10 @@ public final class SourceDiscriminatorColumnAnnotation
 		return DiscriminatorType.fromJavaAnnotationValue(this.discriminatorTypeAdapter.getValue(astRoot));
 	}
 
+	private AnnotationElementAdapter<String> buildDiscriminatorTypeAdapter() {
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, DISCRIMINATOR_TYPE_DECLARATION_ADAPTER);
+	}
+
 	// ***** length
 	public Integer getLength() {
 		return this.length;
@@ -126,19 +130,52 @@ public final class SourceDiscriminatorColumnAnnotation
 		return this.lengthAdapter.getValue(astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<Integer> buildLengthDeclarationAdapter() {
+		return this.buildIntegerElementAdapter(JPA.DISCRIMINATOR_COLUMN__LENGTH);
+	}
 
-	// ********** NestableAnnotation implementation **********
+	private AnnotationElementAdapter<Integer> buildLengthAdapter() {
+		return this.buildIntegerElementAdapter(this.lengthDeclarationAdapter);
+	}
+
+
+	// ********** misc **********
 
 	@Override
-	public void initializeFrom(NestableAnnotation oldAnnotation) {
-		throw new UnsupportedOperationException("DiscriminatorColumn is not a nestable annotation"); //$NON-NLS-1$
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.discriminatorType == null) &&
+				(this.length == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.discriminatorTypeAdapter = this.buildDiscriminatorTypeAdapter();
+		this.lengthDeclarationAdapter = this.buildLengthDeclarationAdapter();
+		this.lengthAdapter = this.buildLengthAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(DISCRIMINATOR_TYPE_PROPERTY, this.discriminatorType);
+		this.discriminatorType = null;
+		map.put(LENGTH_PROPERTY, this.length);
+		this.length = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setDiscriminatorType((DiscriminatorType) map.get(DISCRIMINATOR_TYPE_PROPERTY));
+		this.setLength((Integer) map.get(LENGTH_PROPERTY));
 	}
 
 
 	// ********** static methods **********
 
-	private static DeclarationAnnotationElementAdapter<String> buildDiscriminatorTypeAdapter() {
+	private static DeclarationAnnotationElementAdapter<String> buildDiscriminatorTypeDeclarationAdapter() {
 		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JPA.DISCRIMINATOR_COLUMN__DISCRIMINATOR_TYPE);
 	}
-
 }

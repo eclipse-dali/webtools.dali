@@ -15,7 +15,7 @@ import junit.framework.TestSuite;
 public class JavaResource2_0Tests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JavaResource2_0Tests.class.getName());
+		TestSuite suite = new TestSuite(JavaResource2_0Tests.class.getPackage().getName());
 		
 		suite.addTestSuite(Access2_0AnnotationTests.class);
 		suite.addTestSuite(AssociationOverride2_0Tests.class);

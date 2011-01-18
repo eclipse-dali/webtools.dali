@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 
 /**
- * orm.xml join column
- * 
+ * <code>orm.xml</code> join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,21 +27,15 @@ import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 public interface OrmJoinColumn
 	extends JoinColumn, OrmBaseJoinColumn, OrmBaseColumn
 {
-	/**
-	 * Initialize the join column from the specified old join column.
-	 */
-	void initializeFrom(JoinColumn oldJoinColumn);
-	
-	/**
-	 * Update the join column from the specified XML.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(XmlJoinColumn xmlJoinColumn);
+	XmlJoinColumn getXmlColumn();
+
+
+	// ********** owner **********
 
 	interface Owner
 		extends JoinColumn.Owner, OrmBaseJoinColumn.Owner, OrmBaseColumn.Owner
 	{
-		// nothing?
+		// combine interfaces
 	}
 
 }

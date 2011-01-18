@@ -11,19 +11,12 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmManyToOneMapping;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmManyToOneRelationshipReference;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationshipReference2_0;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
 
 public class GenericOrmManyToOneMapping 
 	extends AbstractOrmManyToOneMapping<XmlManyToOne>
 {
-	public GenericOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne resourceMapping) {
-		super(parent, resourceMapping);
-	}
-	
-	@Override
-	protected OrmManyToOneRelationshipReference2_0 buildRelationshipReference() {
-		return new GenericOrmManyToOneRelationshipReference(this, this.resourceAttributeMapping);
+	public GenericOrmManyToOneMapping(OrmPersistentAttribute parent, XmlManyToOne xmlMapping) {
+		super(parent, xmlMapping);
 	}
 }

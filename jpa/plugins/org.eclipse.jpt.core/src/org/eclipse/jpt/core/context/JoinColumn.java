@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * join column
- * 
+ * Specified join column
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,32 +22,26 @@ package org.eclipse.jpt.core.context;
  * @since 2.0
  */
 public interface JoinColumn
-	extends BaseColumn, BaseJoinColumn
+	extends BaseJoinColumn, BaseColumn, ReadOnlyJoinColumn
 {
+	/**
+	 * Initialize the join column from the specified old join column.
+	 */
+	void initializeFrom(ReadOnlyJoinColumn oldJoinColumn);
+	
+	/**
+	 * Initialize the join column from the specified old virtual join column.
+	 */
+	void initializeFromVirtual(ReadOnlyJoinColumn virtualJoinColumn);
+	
 
 	/**
 	 * interface allowing join columns to be used in multiple places
 	 * (e.g. 1:1 mappings and join tables)
 	 */
 	interface Owner
-		extends BaseJoinColumn.Owner, BaseColumn.Owner
+		extends ReadOnlyJoinColumn.Owner, BaseJoinColumn.Owner, BaseColumn.Owner
 	{
-
-		/**
-		 * The target of the relationship will usually be the target entity.
-		 * In the case of a target foreign key relationship the source and target
-		 * are swapped.
-		 */
-		Entity getRelationshipTarget();
-
-		/**
-		 * return the join column's attribute name
-		 */
-		String getAttributeName();
-
-		/**
-		 * return the persistent attribute for this join column
-		 */
-		PersistentAttribute getPersistentAttribute();
+		// combine interfaces
 	}
 }

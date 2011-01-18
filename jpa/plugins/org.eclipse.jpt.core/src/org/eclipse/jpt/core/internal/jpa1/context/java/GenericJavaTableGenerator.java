@@ -3,22 +3,20 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-
+import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaTableGenerator;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
@@ -31,60 +29,100 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
- * 
+ * Java table generator
  */
 public class GenericJavaTableGenerator
-	extends AbstractJavaGenerator
+	extends AbstractJavaGenerator<TableGeneratorAnnotation>
 	implements JavaTableGenerator, UniqueConstraint.Owner
 {
 	protected String specifiedTable;
 	protected String defaultTable;
-	
+
 	protected String specifiedSchema;
 	protected String defaultSchema;
-	
+
 	protected String specifiedCatalog;
 	protected String defaultCatalog;
-	
+
 	protected String specifiedPkColumnName;
 	protected String defaultPkColumnName;
-	
+
 	protected String specifiedValueColumnName;
 	protected String defaultValueColumnName;
-	
+
 	protected String specifiedPkColumnValue;
 	protected String defaultPkColumnValue;
-	
-	protected final List<JavaUniqueConstraint> uniqueConstraints;
+
+	protected final Vector<JavaUniqueConstraint> uniqueConstraints = new Vector<JavaUniqueConstraint>();
+	protected final UniqueConstraintContainerAdapter uniqueConstraintContainerAdapter = new UniqueConstraintContainerAdapter();
 
 
 	// ********** constructor **********
 
-	public GenericJavaTableGenerator(JavaJpaContextNode parent) {
-		super(parent);
-		this.uniqueConstraints = new ArrayList<JavaUniqueConstraint>();
+	public GenericJavaTableGenerator(JavaJpaContextNode parent, TableGeneratorAnnotation generatorAnnotation) {
+		super(parent, generatorAnnotation);
+		this.specifiedTable = generatorAnnotation.getTable();
+		this.specifiedSchema = generatorAnnotation.getSchema();
+		this.specifiedCatalog = generatorAnnotation.getCatalog();
+		this.specifiedPkColumnName = generatorAnnotation.getPkColumnName();
+		this.specifiedValueColumnName = generatorAnnotation.getValueColumnName();
+		this.specifiedPkColumnValue = generatorAnnotation.getPkColumnValue();
+		this.initializeUniqueConstraints();
 	}
 
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedTable_(this.generatorAnnotation.getTable());
+		this.setSpecifiedSchema_(this.generatorAnnotation.getSchema());
+		this.setSpecifiedCatalog_(this.generatorAnnotation.getCatalog());
+		this.setSpecifiedPkColumnName_(this.generatorAnnotation.getPkColumnName());
+		this.setSpecifiedValueColumnName_(this.generatorAnnotation.getValueColumnName());
+		this.setSpecifiedPkColumnValue_(this.generatorAnnotation.getPkColumnValue());
+		this.syncUniqueConstraints();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultTable(this.buildDefaultTable());
+		this.setDefaultSchema(this.buildDefaultSchema());
+		this.setDefaultCatalog(this.buildDefaultCatalog());
+		this.setDefaultPkColumnName(this.buildDefaultPkColumnName());
+		this.setDefaultValueColumnName(this.buildDefaultValueColumnName());
+		this.setDefaultPkColumnValue(this.buildDefaultPkColumnValue());
+		this.updateNodes(this.getUniqueConstraints());
+	}
+
+
+	// ********** initial value **********
+
+	@Override
+	protected int buildDefaultInitialValue() {
+		return DEFAULT_INITIAL_VALUE;
+	}
+	
 
 	// ********** table **********
 
 	public String getTable() {
 		return (this.specifiedTable != null) ? this.specifiedTable : this.defaultTable;
 	}
-	
+
 	public String getSpecifiedTable() {
 		return this.specifiedTable;
 	}
 
 	public void setSpecifiedTable(String table) {
-		String old = this.specifiedTable;
-		this.specifiedTable = table;
-		this.getResourceGenerator().setTable(table);
-		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
+		this.generatorAnnotation.setTable(table);
+		this.setSpecifiedTable_(table);
 	}
 
 	protected void setSpecifiedTable_(String table) {
@@ -93,11 +131,23 @@ public class GenericJavaTableGenerator
 		this.firePropertyChanged(SPECIFIED_TABLE_PROPERTY, old, table);
 	}
 
-	/**
-	 * The default table is determined by the JPA implementation.
-	 */
 	public String getDefaultTable() {
 		return this.defaultTable;
+	}
+
+	protected void setDefaultTable(String table) {
+		String old = this.defaultTable;
+		this.defaultTable = table;
+		this.firePropertyChanged(DEFAULT_TABLE_PROPERTY, old, table);
+	}
+
+	protected String buildDefaultTable() {
+		return null; // TODO the default table is determined by the runtime provider...
+	}
+
+	public Table getDbTable() {
+		Schema dbSchema = this.getDbSchema();
+		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTable());
 	}
 
 
@@ -113,10 +163,8 @@ public class GenericJavaTableGenerator
 	}
 
 	public void setSpecifiedSchema(String schema) {
-		String old = this.specifiedSchema;
-		this.specifiedSchema = schema;
-		this.getResourceGenerator().setSchema(schema);
-		this.firePropertyChanged(SPECIFIED_SCHEMA_PROPERTY, old, schema);
+		this.generatorAnnotation.setSchema(schema);
+		this.setSpecifiedSchema_(schema);
 	}
 
 	protected void setSpecifiedSchema_(String schema) {
@@ -135,6 +183,10 @@ public class GenericJavaTableGenerator
 		this.firePropertyChanged(DEFAULT_SCHEMA_PROPERTY, old, schema);
 	}
 
+	protected String buildDefaultSchema() {
+		return this.getContextDefaultSchema();
+	}
+
 
 	// ********** catalog **********
 
@@ -148,12 +200,10 @@ public class GenericJavaTableGenerator
 	}
 
 	public void setSpecifiedCatalog(String catalog) {
-		String old = this.specifiedCatalog;
-		this.specifiedCatalog = catalog;
-		this.getResourceGenerator().setCatalog(catalog);
-		this.firePropertyChanged(SPECIFIED_CATALOG_PROPERTY, old, catalog);
+		this.generatorAnnotation.setCatalog(catalog);
+		this.setSpecifiedCatalog_(catalog);
 	}
-	
+
 	protected void setSpecifiedCatalog_(String catalog) {
 		String old = this.specifiedCatalog;
 		this.specifiedCatalog = catalog;
@@ -167,7 +217,11 @@ public class GenericJavaTableGenerator
 	protected void setDefaultCatalog(String catalog) {
 		String old = this.defaultCatalog;
 		this.defaultCatalog = catalog;
-		firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+		this.firePropertyChanged(DEFAULT_CATALOG_PROPERTY, old, catalog);
+	}
+
+	protected String buildDefaultCatalog() {
+		return this.getContextDefaultCatalog();
 	}
 
 
@@ -182,10 +236,8 @@ public class GenericJavaTableGenerator
 	}
 
 	public void setSpecifiedPkColumnName(String name) {
-		String old = this.specifiedPkColumnName;
-		this.specifiedPkColumnName = name;
-		this.getResourceGenerator().setPkColumnName(name);
-		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, name);
+		this.generatorAnnotation.setPkColumnName(name);
+		this.setSpecifiedPkColumnName_(name);
 	}
 
 	protected void setSpecifiedPkColumnName_(String name) {
@@ -194,12 +246,18 @@ public class GenericJavaTableGenerator
 		this.firePropertyChanged(SPECIFIED_PK_COLUMN_NAME_PROPERTY, old, name);
 	}
 
-	/**
-	 * The default primary key column name is determined by the JPA
-	 * implementation.
-	 */
 	public String getDefaultPkColumnName() {
 		return this.defaultPkColumnName;
+	}
+
+	protected void setDefaultPkColumnName(String name) {
+		String old = this.defaultPkColumnName;
+		this.defaultPkColumnName = name;
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildDefaultPkColumnName() {
+		return null; // TODO the default pk column name is determined by the runtime provider...
 	}
 
 
@@ -214,10 +272,8 @@ public class GenericJavaTableGenerator
 	}
 
 	public void setSpecifiedValueColumnName(String name) {
-		String old = this.specifiedValueColumnName;
-		this.specifiedValueColumnName = name;
-		this.getResourceGenerator().setValueColumnName(name);
-		this.firePropertyChanged(SPECIFIED_VALUE_COLUMN_NAME_PROPERTY, old, name);
+		this.generatorAnnotation.setValueColumnName(name);
+		this.setSpecifiedValueColumnName_(name);
 	}
 
 	protected void setSpecifiedValueColumnName_(String name) {
@@ -228,6 +284,16 @@ public class GenericJavaTableGenerator
 
 	public String getDefaultValueColumnName() {
 		return this.defaultValueColumnName;
+	}
+
+	protected void setDefaultValueColumnName(String name) {
+		String old = this.defaultValueColumnName;
+		this.defaultValueColumnName = name;
+		this.firePropertyChanged(DEFAULT_VALUE_COLUMN_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildDefaultValueColumnName() {
+		return null; // TODO the default value column name is determined by the runtime provider...
 	}
 
 
@@ -242,10 +308,8 @@ public class GenericJavaTableGenerator
 	}
 
 	public void setSpecifiedPkColumnValue(String value) {
-		String old = this.specifiedPkColumnValue;
-		this.specifiedPkColumnValue = value;
-		this.getResourceGenerator().setPkColumnValue(value);
-		this.firePropertyChanged(SPECIFIED_PK_COLUMN_VALUE_PROPERTY, old, value);
+		this.generatorAnnotation.setPkColumnValue(value);
+		this.setSpecifiedPkColumnValue_(value);
 	}
 
 	protected void setSpecifiedPkColumnValue_(String value) {
@@ -258,136 +322,118 @@ public class GenericJavaTableGenerator
 		return this.defaultPkColumnValue;
 	}
 
+	protected void setDefaultPkColumnValue(String value) {
+		String old = this.defaultPkColumnValue;
+		this.defaultPkColumnValue = value;
+		this.firePropertyChanged(DEFAULT_PK_COLUMN_VALUE_PROPERTY, old, value);
+	}
+
+	protected String buildDefaultPkColumnValue() {
+		return null; // TODO the default pk column value is determined by the runtime provider...
+	}
+
 
 	// ********** unique constraints **********
-	
-	public ListIterator<JavaUniqueConstraint> uniqueConstraints() {
-		return new CloneListIterator<JavaUniqueConstraint>(this.uniqueConstraints);
+
+	public Iterable<JavaUniqueConstraint> getUniqueConstraints() {
+		return new LiveCloneIterable<JavaUniqueConstraint>(this.uniqueConstraints);
 	}
-	
-	public int uniqueConstraintsSize() {
+
+	public int getUniqueConstraintsSize() {
 		return this.uniqueConstraints.size();
 	}
-	
-	public JavaUniqueConstraint addUniqueConstraint(int index) {
-		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
-		this.uniqueConstraints.add(index, uniqueConstraint);
-		UniqueConstraintAnnotation uniqueConstraintAnnotation = this.getResourceGenerator().addUniqueConstraint(index);
-		uniqueConstraint.initialize(uniqueConstraintAnnotation);
-		this.fireItemAdded(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
-		return uniqueConstraint;
+
+	public JavaUniqueConstraint addUniqueConstraint() {
+		return this.addUniqueConstraint(this.uniqueConstraints.size());
 	}
-		
+
+	public JavaUniqueConstraint addUniqueConstraint(int index) {
+		UniqueConstraintAnnotation constraintAnnotation = this.generatorAnnotation.addUniqueConstraint(index);
+		return this.addUniqueConstraint_(index, constraintAnnotation);
+	}
+
 	public void removeUniqueConstraint(UniqueConstraint uniqueConstraint) {
 		this.removeUniqueConstraint(this.uniqueConstraints.indexOf(uniqueConstraint));
 	}
 
 	public void removeUniqueConstraint(int index) {
-		JavaUniqueConstraint uniqueConstraint = this.uniqueConstraints.remove(index);
-		this.getResourceGenerator().removeUniqueConstraint(index);
-		this.fireItemRemoved(UNIQUE_CONSTRAINTS_LIST, index, uniqueConstraint);
+		this.generatorAnnotation.removeUniqueConstraint(index);
+		this.removeUniqueConstraint_(index);
 	}
-	
+
+	protected void removeUniqueConstraint_(int index) {
+		this.removeItemFromList(index, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	}
+
 	public void moveUniqueConstraint(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.uniqueConstraints, targetIndex, sourceIndex);
-		this.getResourceGenerator().moveUniqueConstraint(targetIndex, sourceIndex);
-		this.fireItemMoved(UNIQUE_CONSTRAINTS_LIST, targetIndex, sourceIndex);		
-	}
-	
-	protected void addUniqueConstraint(int index, JavaUniqueConstraint uniqueConstraint) {
-		this.addItemToList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
-	}
-	
-	protected void addUniqueConstraint(JavaUniqueConstraint uniqueConstraint) {
-		this.addUniqueConstraint(this.uniqueConstraints.size(), uniqueConstraint);
-	}
-	
-	protected void removeUniqueConstraint_(JavaUniqueConstraint uniqueConstraint) {
-		this.removeItemFromList(uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		this.generatorAnnotation.moveUniqueConstraint(targetIndex, sourceIndex);
+		this.moveItemInList(targetIndex, sourceIndex, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
 	}
 
-
-	//******************* UniqueConstraint.Owner implementation ******************
-
-	public Iterator<String> candidateUniqueConstraintColumnNames() {
-		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
-		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
-	}
-
-
-	// ********** resource => context **********
-
-	public void initialize(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		super.initialize(tableGeneratorAnnotation);
-		this.specifiedTable = tableGeneratorAnnotation.getTable();
-		this.defaultSchema = this.buildDefaultSchema();
-		this.specifiedSchema = tableGeneratorAnnotation.getSchema();
-		this.defaultCatalog = this.buildDefaultCatalog();
-		this.specifiedCatalog = tableGeneratorAnnotation.getCatalog();
-		this.specifiedPkColumnName = tableGeneratorAnnotation.getPkColumnName();
-		this.specifiedValueColumnName = tableGeneratorAnnotation.getValueColumnName();
-		this.specifiedPkColumnValue = tableGeneratorAnnotation.getPkColumnValue();
-		this.initializeUniqueConstraints(tableGeneratorAnnotation);
-	}
-
-	protected void initializeUniqueConstraints(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		for (Iterator<UniqueConstraintAnnotation> stream = tableGeneratorAnnotation.uniqueConstraints(); stream.hasNext(); ) {
+	protected void initializeUniqueConstraints() {
+		for (Iterator<UniqueConstraintAnnotation> stream = this.generatorAnnotation.uniqueConstraints(); stream.hasNext(); ) {
 			this.uniqueConstraints.add(this.buildUniqueConstraint(stream.next()));
 		}
 	}
 
-	public void update(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		super.update(tableGeneratorAnnotation);
-		this.setSpecifiedTable_(tableGeneratorAnnotation.getTable());
-		this.setDefaultSchema(this.buildDefaultSchema());
-		this.setSpecifiedSchema_(tableGeneratorAnnotation.getSchema());
-		this.setDefaultCatalog(this.buildDefaultCatalog());
-		this.setSpecifiedCatalog_(tableGeneratorAnnotation.getCatalog());
-		this.setSpecifiedPkColumnName_(tableGeneratorAnnotation.getPkColumnName());
-		this.setSpecifiedValueColumnName_(tableGeneratorAnnotation.getValueColumnName());
-		this.setSpecifiedPkColumnValue_(tableGeneratorAnnotation.getPkColumnValue());
-		this.updateUniqueConstraints(tableGeneratorAnnotation);
-	}
-	
-	protected String buildDefaultSchema() {
-		return this.getContextDefaultSchema();
+	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation constraintAnnotation) {
+		return this.getJpaFactory().buildJavaUniqueConstraint(this, this, constraintAnnotation);
 	}
 
-	protected String buildDefaultCatalog() {
-		return this.getContextDefaultCatalog();
+	protected void syncUniqueConstraints() {
+		ContextContainerTools.synchronizeWithResourceModel(this.uniqueConstraintContainerAdapter);
 	}
 
-	protected void updateUniqueConstraints(TableGeneratorAnnotation tableGeneratorAnnotation) {
-		ListIterator<JavaUniqueConstraint> contextConstraints = this.uniqueConstraints();
-		ListIterator<UniqueConstraintAnnotation> resourceConstraints = tableGeneratorAnnotation.uniqueConstraints();
-		
-		while (contextConstraints.hasNext()) {
-			JavaUniqueConstraint uniqueConstraint = contextConstraints.next();
-			if (resourceConstraints.hasNext()) {
-				uniqueConstraint.update(resourceConstraints.next());
-			}
-			else {
-				removeUniqueConstraint_(uniqueConstraint);
-			}
+	protected Iterable<UniqueConstraintAnnotation> getUniqueConstraintAnnotations() {
+		return CollectionTools.iterable(this.generatorAnnotation.uniqueConstraints());
+	}
+
+	protected void moveUniqueConstraint_(int index, JavaUniqueConstraint uniqueConstraint) {
+		this.moveItemInList(index, uniqueConstraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+	}
+
+	protected JavaUniqueConstraint addUniqueConstraint_(int index, UniqueConstraintAnnotation constraintAnnotation) {
+		JavaUniqueConstraint constraint = this.buildUniqueConstraint(constraintAnnotation);
+		this.addItemToList(index, constraint, this.uniqueConstraints, UNIQUE_CONSTRAINTS_LIST);
+		return constraint;
+	}
+
+	protected void removeUniqueConstraint_(JavaUniqueConstraint uniqueConstraint) {
+		this.removeUniqueConstraint_(this.uniqueConstraints.indexOf(uniqueConstraint));
+	}
+
+	/**
+	 * unique constraint container adapter
+	 */
+	protected class UniqueConstraintContainerAdapter
+		implements ContextContainerTools.Adapter<JavaUniqueConstraint, UniqueConstraintAnnotation>
+	{
+		public Iterable<JavaUniqueConstraint> getContextElements() {
+			return GenericJavaTableGenerator.this.getUniqueConstraints();
 		}
-		
-		while (resourceConstraints.hasNext()) {
-			addUniqueConstraint(buildUniqueConstraint(resourceConstraints.next()));
+		public Iterable<UniqueConstraintAnnotation> getResourceElements() {
+			return GenericJavaTableGenerator.this.getUniqueConstraintAnnotations();
+		}
+		public UniqueConstraintAnnotation getResourceElement(JavaUniqueConstraint contextElement) {
+			return contextElement.getUniqueConstraintAnnotation();
+		}
+		public void moveContextElement(int index, JavaUniqueConstraint element) {
+			GenericJavaTableGenerator.this.moveUniqueConstraint_(index, element);
+		}
+		public void addContextElement(int index, UniqueConstraintAnnotation resourceElement) {
+			GenericJavaTableGenerator.this.addUniqueConstraint_(index, resourceElement);
+		}
+		public void removeContextElement(JavaUniqueConstraint element) {
+			GenericJavaTableGenerator.this.removeUniqueConstraint_(element);
 		}
 	}
 
-	protected JavaUniqueConstraint buildUniqueConstraint(UniqueConstraintAnnotation uniqueConstraintAnnotation) {
-		JavaUniqueConstraint uniqueConstraint = getJpaFactory().buildJavaUniqueConstraint(this, this);
-		uniqueConstraint.initialize(uniqueConstraintAnnotation);
-		return uniqueConstraint;
-	}
 
+	// ********** UniqueConstraint.Owner implementation **********
 
-	// ********** database stuff **********
-
-	public Table getDbTable() {
-		Schema dbSchema = this.getDbSchema();
-		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getTable());
+	public Iterator<String> candidateUniqueConstraintColumnNames() {
+		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
+		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 
 
@@ -399,7 +445,7 @@ public class GenericJavaTableGenerator
 		if (result != null) {
 			return result;
 		}
-		for (JavaUniqueConstraint constraint : CollectionTools.iterable(this.uniqueConstraints())) {
+		for (JavaUniqueConstraint constraint : this.getUniqueConstraints()) {
 			result = constraint.javaCompletionProposals(pos, filter, astRoot);
 			if (result != null) {
 				return result;
@@ -437,9 +483,9 @@ public class GenericJavaTableGenerator
 	}
 
 	// ********** code assist: table
-	
+
 	protected boolean tableTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().tableTouches(pos, astRoot);
+		return this.generatorAnnotation.tableTouches(pos, astRoot);
 	}
 
 	protected Iterable<String> getJavaCandidateTables(Filter<String> filter) {
@@ -456,9 +502,9 @@ public class GenericJavaTableGenerator
 	}
 
 	// ********** code assist: schema
-	
+
 	protected boolean schemaTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().schemaTouches(pos, astRoot);
+		return this.generatorAnnotation.schemaTouches(pos, astRoot);
 	}
 
 	protected Iterable<String> getJavaCandidateSchemata(Filter<String> filter) {
@@ -477,7 +523,7 @@ public class GenericJavaTableGenerator
 	// ********** code assist: catalog
 
 	protected boolean catalogTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().catalogTouches(pos, astRoot);
+		return this.generatorAnnotation.catalogTouches(pos, astRoot);
 	}
 
 	protected Iterable<String> getJavaCandidateCatalogs(Filter<String> filter) {
@@ -496,7 +542,7 @@ public class GenericJavaTableGenerator
 	// ********** code assist: pkColumnName
 
 	protected boolean pkColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().pkColumnNameTouches(pos, astRoot);
+		return this.generatorAnnotation.pkColumnNameTouches(pos, astRoot);
 	}
 
 	protected Iterable<String> getJavaCandidateColumnNames(Filter<String> filter) {
@@ -515,19 +561,7 @@ public class GenericJavaTableGenerator
 	// ********** code assist: valueColumnName
 
 	protected boolean valueColumnNameTouches(int pos, CompilationUnit astRoot) {
-		return this.getResourceGenerator().valueColumnNameTouches(pos, astRoot);
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	protected TableGeneratorAnnotation getResourceGenerator() {
-		return (TableGeneratorAnnotation) super.getResourceGenerator();
-	}
-
-	public int getDefaultInitialValue() {
-		return DEFAULT_INITIAL_VALUE;
+		return this.generatorAnnotation.valueColumnNameTouches(pos, astRoot);
 	}
 
 }

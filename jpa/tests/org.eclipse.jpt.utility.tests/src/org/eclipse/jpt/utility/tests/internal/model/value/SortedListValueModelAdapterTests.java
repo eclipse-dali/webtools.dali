@@ -189,7 +189,9 @@ public class SortedListValueModelAdapterTests extends TestCase {
 		this.wrappedCollectionHolder.add("fred");
 		this.adapter.addListChangeListener(ListValueModel.LIST_VALUES, new TestListChangeListener() {
 			@Override
-			public void listChanged(ListChangeEvent e) {/* OK */}
+			public void itemsAdded(ListAddEvent e) {/* OK */}
+			@Override
+			public void itemsReplaced(ListReplaceEvent e) {/* OK */}
 		});
 		this.wrappedCollectionHolder.setValues(Arrays.asList(new String[] {"foo", "bar", "baz"}));
 		assertEquals(3, this.adapter.size());

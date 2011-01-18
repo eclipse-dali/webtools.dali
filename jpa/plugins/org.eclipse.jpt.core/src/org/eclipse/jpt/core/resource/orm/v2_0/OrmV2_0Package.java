@@ -1,14 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2009, 2010 Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
-
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
 import org.eclipse.emf.ecore.EAttribute;
@@ -94,22 +92,22 @@ public class OrmV2_0Package extends EPackageImpl
 	public static final int XML_ASSOCIATION_OVERRIDE_20 = 0;
 
 	/**
-	 * The feature id for the '<em><b>Description</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	public static final int XML_ASSOCIATION_OVERRIDE_20__DESCRIPTION = 0;
-
-	/**
 	 * The feature id for the '<em><b>Join Table</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE_20__JOIN_TABLE = 1;
+	public static final int XML_ASSOCIATION_OVERRIDE_20__JOIN_TABLE = OrmPackage.XML_JOIN_TABLE_CONTAINER__JOIN_TABLE;
+
+	/**
+	 * The feature id for the '<em><b>Description</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	public static final int XML_ASSOCIATION_OVERRIDE_20__DESCRIPTION = OrmPackage.XML_JOIN_TABLE_CONTAINER_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Xml Association Override 20</em>' class.
@@ -118,7 +116,7 @@ public class OrmV2_0Package extends EPackageImpl
 	 * @generated
 	 * @ordered
 	 */
-	public static final int XML_ASSOCIATION_OVERRIDE_20_FEATURE_COUNT = 2;
+	public static final int XML_ASSOCIATION_OVERRIDE_20_FEATURE_COUNT = OrmPackage.XML_JOIN_TABLE_CONTAINER_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Access</b></em>' attribute.
@@ -1741,21 +1739,6 @@ public class OrmV2_0Package extends EPackageImpl
 
 
 	/**
-	 * Returns the meta object for the containment reference '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0#getJoinTable <em>Join Table</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the containment reference '<em>Join Table</em>'.
-	 * @see org.eclipse.jpt.core.resource.orm.v2_0.XmlAssociationOverride_2_0#getJoinTable()
-	 * @see #getXmlAssociationOverride_2_0()
-	 * @generated
-	 */
-	public EReference getXmlAssociationOverride_2_0_JoinTable()
-	{
-		return (EReference)xmlAssociationOverride_2_0EClass.getEStructuralFeatures().get(1);
-	}
-
-
-	/**
 	 * Returns the meta object for class '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAttributeOverride_2_0 <em>Xml Attribute Override 20</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2836,7 +2819,6 @@ public class OrmV2_0Package extends EPackageImpl
 		// Create classes and their features
 		xmlAssociationOverride_2_0EClass = createEClass(XML_ASSOCIATION_OVERRIDE_20);
 		createEAttribute(xmlAssociationOverride_2_0EClass, XML_ASSOCIATION_OVERRIDE_20__DESCRIPTION);
-		createEReference(xmlAssociationOverride_2_0EClass, XML_ASSOCIATION_OVERRIDE_20__JOIN_TABLE);
 
 		xmlAttributeMapping_2_0EClass = createEClass(XML_ATTRIBUTE_MAPPING_20);
 
@@ -2970,14 +2952,15 @@ public class OrmV2_0Package extends EPackageImpl
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 		OrmPackage theOrmPackage = (OrmPackage)EPackage.Registry.INSTANCE.getEPackage(OrmPackage.eNS_URI);
+		XMLTypePackage theXMLTypePackage = (XMLTypePackage)EPackage.Registry.INSTANCE.getEPackage(XMLTypePackage.eNS_URI);
 
 		// Create type parameters
 
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		xmlAssociationOverride_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlJoinTableContainer());
 		xmlAttributeMapping_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlAccessHolder());
 		xmlCollectionTable_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlReferenceTable());
 		xmlElementCollection_2_0EClass.getESuperTypes().add(theOrmPackage.getXmlConvertibleMapping());
@@ -3000,7 +2983,6 @@ public class OrmV2_0Package extends EPackageImpl
 		// Initialize classes and features; add operations and parameters
 		initEClass(xmlAssociationOverride_2_0EClass, XmlAssociationOverride_2_0.class, "XmlAssociationOverride_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getXmlAssociationOverride_2_0_Description(), theXMLTypePackage.getString(), "description", null, 0, 1, XmlAssociationOverride_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getXmlAssociationOverride_2_0_JoinTable(), theOrmPackage.getXmlJoinTable(), null, "joinTable", null, 0, 1, XmlAssociationOverride_2_0.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(xmlAttributeMapping_2_0EClass, XmlAttributeMapping_2_0.class, "XmlAttributeMapping_2_0", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3158,14 +3140,6 @@ public class OrmV2_0Package extends EPackageImpl
 		 * @generated
 		 */
 		public static final EAttribute XML_ASSOCIATION_OVERRIDE_20__DESCRIPTION = eINSTANCE.getXmlAssociationOverride_2_0_Description();
-
-		/**
-		 * The meta object literal for the '<em><b>Join Table</b></em>' containment reference feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		public static final EReference XML_ASSOCIATION_OVERRIDE_20__JOIN_TABLE = eINSTANCE.getXmlAssociationOverride_2_0_JoinTable();
 
 		/**
 		 * The meta object literal for the '{@link org.eclipse.jpt.core.resource.orm.v2_0.XmlAttributeOverride_2_0 <em>Xml Attribute Override 20</em>}' class.

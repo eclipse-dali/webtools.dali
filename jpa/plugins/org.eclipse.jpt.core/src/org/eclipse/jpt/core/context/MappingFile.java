@@ -26,19 +26,20 @@ import org.eclipse.text.edits.ReplaceEdit;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.1
  */
 public interface MappingFile
 	extends XmlFile, PersistentTypeContainer
 {
 	/**
-	 * covariant override
+	 * Covariant override.
 	 */
 	MappingFileRef getParent();
 
 	/**
 	 * Return the mapping file's root.
+	 * This can be null.
 	 */
 	MappingFileRoot getRoot();
 
@@ -49,18 +50,12 @@ public interface MappingFile
 	PersistentType getPersistentType(String name);
 
 	/**
-	 * Update the context mapping file to match its resource mapping file.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update();
-
-	/**
 	 * Return true if this mapping file exists in the given folder
 	 */
 	boolean isIn(IFolder folder);
 
 
-	// **************** refactoring *********************************************
+	// ********** refactoring **********
 
 	/**
 	 * Create DeleteEdits for deleting references (if any) to the type about to be deleted.
@@ -85,5 +80,4 @@ public interface MappingFile
 	 * The originalPackage has not yet been renamed.
 	 */
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
-
 }

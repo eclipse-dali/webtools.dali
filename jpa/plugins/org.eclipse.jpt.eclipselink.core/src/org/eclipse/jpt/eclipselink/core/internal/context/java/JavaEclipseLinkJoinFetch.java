@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -17,104 +17,115 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkJoinFetchAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.JoinFetchType;
 
-public class JavaEclipseLinkJoinFetch 
-	extends AbstractJavaJpaContextNode 
+public class JavaEclipseLinkJoinFetch
+	extends AbstractJavaJpaContextNode
 	implements EclipseLinkJoinFetch
 {
-	protected EclipseLinkJoinFetchType joinFetchValue;	
-	
-	protected JavaResourcePersistentAttribute resourcePersistentAttribute;
-	
-	
+	protected EclipseLinkJoinFetchType value;
+
+
 	public JavaEclipseLinkJoinFetch(JavaAttributeMapping parent) {
 		super(parent);
+		this.value = this.buildValue();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setValue_(this.buildValue());
+	}
+
+
+	// ********** value **********
+
+	public EclipseLinkJoinFetchType getValue() {
+		return this.value;
+	}
+
+	public void setValue(EclipseLinkJoinFetchType value) {
+		if (this.valuesAreDifferent(value, this.value)) {
+			EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+			if (value == null) {
+				if (annotation != null) {
+					this.removeJoinFetchAnnotation();
+				}
+			} else {
+				if (annotation == null) {
+					annotation = this.addJoinFetchAnnotation();
+				}
+				annotation.setValue(EclipseLinkJoinFetchType.toJavaResourceModel(value));
+			}
+
+			this.setValue_(value);
+		}
+	}
+
+	protected void setValue_(EclipseLinkJoinFetchType value) {
+		EclipseLinkJoinFetchType old = this.value;
+		this.value = value;
+		this.firePropertyChanged(VALUE_PROPERTY, old, value);
+	}
+
+	private EclipseLinkJoinFetchType buildValue() {
+		EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+		if (annotation == null) {
+			return null;
+		}
+		JoinFetchType annotationValue = annotation.getValue();
+		return (annotationValue != null) ?
+				EclipseLinkJoinFetchType.fromJavaResourceModel(annotationValue) :
+				this.getDefaultValue(); // @JoinFetch is equivalent to @JoinFetch(JoinFetch.INNER)
+	}
+
+	protected EclipseLinkJoinFetchType getDefaultValue() {
+		return DEFAULT_VALUE;
+	}
+
+
+	// ********** join fetch annotation **********
+
+	protected EclipseLinkJoinFetchAnnotation getJoinFetchAnnotation() {
+		return (EclipseLinkJoinFetchAnnotation) this.getResourcePersistentAttribute().getAnnotation(this.getJoinFetchAnnotationName());
+	}
+
+	protected EclipseLinkJoinFetchAnnotation addJoinFetchAnnotation() {
+		return (EclipseLinkJoinFetchAnnotation) this.getResourcePersistentAttribute().addAnnotation(this.getJoinFetchAnnotationName());
+	}
+
+	protected void removeJoinFetchAnnotation() {
+		this.getResourcePersistentAttribute().removeAnnotation(this.getJoinFetchAnnotationName());
+	}
+
 	protected String getJoinFetchAnnotationName() {
 		return EclipseLinkJoinFetchAnnotation.ANNOTATION_NAME;
 	}
-	
-	protected EclipseLinkJoinFetchAnnotation getResourceJoinFetch() {
-		return (EclipseLinkJoinFetchAnnotation) this.resourcePersistentAttribute.getAnnotation(getJoinFetchAnnotationName());
+
+
+	// ********** misc **********
+
+	@Override
+	public JavaAttributeMapping getParent() {
+		return (JavaAttributeMapping) super.getParent();
 	}
-	
-	protected void addResourceJoinFetch() {
-		this.resourcePersistentAttribute.addAnnotation(getJoinFetchAnnotationName());
+
+	protected JavaAttributeMapping getAttributeMapping() {
+		return this.getParent();
 	}
-	
-	protected void removeResourceJoinFetch() {
-		this.resourcePersistentAttribute.removeAnnotation(getJoinFetchAnnotationName());
+
+	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
+		return this.getAttributeMapping().getResourcePersistentAttribute();
 	}
-	
-	public EclipseLinkJoinFetchType getValue() {
-		return this.joinFetchValue;
-	}
-	
-	protected EclipseLinkJoinFetchType getDefaultValue() {
-		return EclipseLinkJoinFetch.DEFAULT_VALUE;
-	}
-	
-	public void setValue(EclipseLinkJoinFetchType newJoinFetchValue) {
-		if (this.joinFetchValue == newJoinFetchValue) {
-			return;
-		}
-				
-		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
-		this.joinFetchValue = newJoinFetchValue;
-		
-		if (newJoinFetchValue != null) {
-			if (getResourceJoinFetch() == null) {
-				addResourceJoinFetch();
-			}
-			getResourceJoinFetch().setValue(EclipseLinkJoinFetchType.toJavaResourceModel(newJoinFetchValue));		
-		}
-		else {
-			if (getResourceJoinFetch() != null) {
-				removeResourceJoinFetch();
-			}
-		}
-		firePropertyChanged(EclipseLinkJoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
-	}
-	
-	/**
-	 * internal setter used only for updating from the resource model.
-	 * There were problems with InvalidThreadAccess exceptions in the UI
-	 * when you set a value from the UI and the annotation doesn't exist yet.
-	 * Adding the annotation causes an update to occur and then the exception.
-	 */
-	protected void setValue_(EclipseLinkJoinFetchType newJoinFetchValue) {
-		EclipseLinkJoinFetchType oldJoinFetchValue = this.joinFetchValue;
-		this.joinFetchValue = newJoinFetchValue;
-		firePropertyChanged(EclipseLinkJoinFetch.VALUE_PROPERTY, oldJoinFetchValue, newJoinFetchValue);
-	}
-	
-	public void initialize(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
-		this.joinFetchValue = this.joinFetch(resourceJoinFetch);
-	}
-	
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
-		setValue_(joinFetch(resourceJoinFetch));
-	}
-	
-	private EclipseLinkJoinFetchType joinFetch(EclipseLinkJoinFetchAnnotation resourceJoinFetch) {
-		if (resourceJoinFetch == null) {
-			return null;
-		}
-		if (resourceJoinFetch.getValue() == null) { 
-			// @JoinFetch is equivalent to @JoinFetch(JoinFetch.INNER)
-			return getDefaultValue();
-		}
-		return EclipseLinkJoinFetchType.fromJavaResourceModel(resourceJoinFetch.getValue());
-	}
-	
+
+
+	// ********** validation **********
+
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		EclipseLinkJoinFetchAnnotation resourceJoinFetch = this.getResourceJoinFetch();
-		return resourceJoinFetch == null ? null : resourceJoinFetch.getTextRange(astRoot);
+		EclipseLinkJoinFetchAnnotation annotation = this.getJoinFetchAnnotation();
+		return (annotation == null) ? null : annotation.getTextRange(astRoot);
 	}
 }

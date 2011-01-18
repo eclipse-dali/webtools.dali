@@ -86,7 +86,6 @@ abstract class BinaryRelationshipMappingAnnotation
 		String old = this.targetEntity;
 		this.targetEntity = targetEntity;
 		this.firePropertyChanged(TARGET_ENTITY_PROPERTY, old, targetEntity);
-		this.firePropertyChanged(FULLY_QUALIFIED_TARGET_ENTITY_CLASS_NAME_PROPERTY, old, targetEntity);
 	}
 
 	private String buildTargetEntity() {

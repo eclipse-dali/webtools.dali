@@ -22,6 +22,7 @@ import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.Eclip
 import org.eclipse.jpt.utility.model.event.ListAddEvent;
 import org.eclipse.jpt.utility.model.event.ListChangeEvent;
 import org.eclipse.jpt.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.utility.model.event.ListEvent;
 import org.eclipse.jpt.utility.model.event.ListMoveEvent;
 import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
 import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
@@ -36,8 +37,8 @@ import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Customization customization;
-	private ListChangeEvent entitiesEvent;
-	private ListChangeEvent sessionCustomizersEvent;
+	private ListEvent entitiesEvent;
+	private ListEvent sessionCustomizersEvent;
 
 	public static final String ENTITY_TEST = "Employee";
 	public static final String ENTITY_TEST_2 = "Address";
@@ -161,11 +162,11 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	private ListChangeListener buildEntitiesChangeListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.entityAdded(e);
 			}
 
 			public void itemsRemoved(ListRemoveEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.entityRemoved(e);
 			}
 
 			public void itemsReplaced(ListReplaceEvent e) {
@@ -181,7 +182,7 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 			}
 
 			public void listChanged(ListChangeEvent e) {
-				EclipseLinkCustomizationTests.this.entityChanged(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 		};
 	}
@@ -189,15 +190,15 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 	private ListChangeListener buildSessionCustomizersChangeListener() {
 		return new ListChangeListener() {
 			public void itemsAdded(ListAddEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.sessionCustomizerAdded(e);
 			}
 
 			public void itemsRemoved(ListRemoveEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.sessionCustomizerRemoved(e);
 			}
 
 			public void itemsReplaced(ListReplaceEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.sessionCustomizerReplaced(e);
 			}
 
 			public void itemsMoved(ListMoveEvent e) {
@@ -205,11 +206,11 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 			}
 
 			public void listCleared(ListClearEvent e) {
-				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
+				EclipseLinkCustomizationTests.this.sessionCustomizerListCleared(e);
 			}
 
 			public void listChanged(ListChangeEvent e) {
-				EclipseLinkCustomizationTests.this.sessionCustomizerChanged(e);
+				EclipseLinkCustomizationTests.this.throwUnsupportedOperationException(e);
 			}
 		};
 	}
@@ -221,11 +222,27 @@ public class EclipseLinkCustomizationTests extends EclipseLinkPersistenceUnitTes
 		this.sessionCustomizersEvent = null;
 	}
 
-	void entityChanged(ListChangeEvent e) {
+	void entityAdded(ListAddEvent e) {
 		this.entitiesEvent = e;
 	}
 
-	void sessionCustomizerChanged(ListChangeEvent e) {
+	void entityRemoved(ListRemoveEvent e) {
+		this.entitiesEvent = e;
+	}
+
+	void sessionCustomizerAdded(ListAddEvent e) {
+		this.sessionCustomizersEvent = e;
+	}
+
+	void sessionCustomizerRemoved(ListRemoveEvent e) {
+		this.sessionCustomizersEvent = e;
+	}
+
+	void sessionCustomizerReplaced(ListReplaceEvent e) {
+		this.sessionCustomizersEvent = e;
+	}
+
+	void sessionCustomizerListCleared(ListClearEvent e) {
 		this.sessionCustomizersEvent = e;
 	}
 

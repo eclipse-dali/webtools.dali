@@ -60,20 +60,20 @@ public class GenericJavaCascade2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		JavaOneToOneMapping2_0 mapping = (JavaOneToOneMapping2_0) persistentAttribute.getMapping();
-		JavaCascade2_0 cascade = mapping.getCascade();
+		JavaCascade2_0 cascade = (JavaCascade2_0) mapping.getCascade();
 		
 		assertFalse(cascade.isDetach());
 		assertFalse(annotation.isCascadeDetach());
 		
 		//set detach in the resource model, verify context model updated
 		annotation.setCascadeDetach(true);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertTrue(annotation.isCascadeDetach());
 		assertTrue(cascade.isDetach());
 		
 		//set detach to false in the resource model
 		annotation.setCascadeDetach(false);
-		getJpaProject().update();
+		getJpaProject().synchronizeContextModel();
 		assertFalse(annotation.isCascadeDetach());
 		assertFalse(cascade.isDetach());
 	}
@@ -88,7 +88,7 @@ public class GenericJavaCascade2_0Tests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		JavaOneToOneMapping2_0 mapping = (JavaOneToOneMapping2_0) persistentAttribute.getMapping();
-		JavaCascade2_0 cascade = mapping.getCascade();
+		JavaCascade2_0 cascade = (JavaCascade2_0) mapping.getCascade();
 		
 		assertFalse(cascade.isDetach());
 		assertFalse(annotation.isCascadeDetach());

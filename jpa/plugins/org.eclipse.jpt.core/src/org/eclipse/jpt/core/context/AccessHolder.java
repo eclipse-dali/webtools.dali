@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-
 /**
- * 
- * 
+ * Common interface that can be used by clients interested only in a type
+ * or attribute's access setting (e.g. a UI composite).
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,24 +23,8 @@ package org.eclipse.jpt.core.context;
  * @since 2.2
  */
 public interface AccessHolder
-	extends JpaContextNode
+	extends ReadOnlyAccessHolder
 {
-	/**
-	 * Return the access type, whether specified or defaulted.
-	 * This should never return null since at least the default will be set
-	 */
-	AccessType getAccess();
-	
-	/**
-	 * Return the default access type, never null
-	 */
-	AccessType getDefaultAccess();
-
-	/**
-	 * String constant associated with changes to the default access type
-	 */
-	String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
-
 	/**
 	 * Return the specified access type;
 	 */
@@ -56,4 +40,13 @@ public interface AccessHolder
 	 */
 	String SPECIFIED_ACCESS_PROPERTY = "specifiedAccess"; //$NON-NLS-1$
 
+	/**
+	 * Return the default access type, never null
+	 */
+	AccessType getDefaultAccess();
+
+	/**
+	 * String constant associated with changes to the default access type
+	 */
+	String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 }

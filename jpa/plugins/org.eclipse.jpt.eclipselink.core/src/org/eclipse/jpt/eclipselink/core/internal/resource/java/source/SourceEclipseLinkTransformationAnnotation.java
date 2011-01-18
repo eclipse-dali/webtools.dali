@@ -55,13 +55,20 @@ public final class SourceEclipseLinkTransformationAnnotation
 	}
 
 	public void initialize(CompilationUnit astRoot) {
-		this.optional = this.buildOptional(astRoot);
 		this.fetch = this.buildFetch(astRoot);
+		this.optional = this.buildOptional(astRoot);
 	}
 
 	public void synchronizeWith(CompilationUnit astRoot) {
-		this.syncOptional(this.buildOptional(astRoot));
 		this.syncFetch(this.buildFetch(astRoot));
+		this.syncOptional(this.buildOptional(astRoot));
+	}
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.fetch == null) &&
+				(this.optional == null);
 	}
 
 	@Override
@@ -128,11 +135,11 @@ public final class SourceEclipseLinkTransformationAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Boolean> buildOptionalAdapter() {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__OPTIONAL, false, BooleanExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__OPTIONAL, BooleanExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<String> buildFetchAdapter() {
-		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__FETCH, false);
+		return new EnumDeclarationAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, EclipseLink.TRANSFORMATION__FETCH);
 	}
 
 }

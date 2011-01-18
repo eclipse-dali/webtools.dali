@@ -3,216 +3,198 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.BaseColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
+import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderColumn2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
-import org.eclipse.jpt.core.resource.orm.v2_0.XmlOrderable_2_0;
 
-
+/**
+ * <code>orm.xml</code> order column
+ */
 public class GenericOrmOrderColumn2_0
-	extends AbstractOrmNamedColumn<XmlOrderColumn>
+	extends AbstractOrmNamedColumn<XmlOrderColumn, OrmOrderColumn2_0.Owner>
 	implements OrmOrderColumn2_0
 {
+	// TODO defaults from java for all of these settings
 	protected Boolean specifiedNullable;
-		
+
 	protected Boolean specifiedInsertable;
-		
+
 	protected Boolean specifiedUpdatable;
 
-	protected XmlOrderable_2_0 xmlOrderable;	
-	
-	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmNamedColumn.Owner owner) {
+
+	public GenericOrmOrderColumn2_0(OrmOrderable2_0 parent, OrmOrderColumn2_0.Owner owner) {
 		super(parent, owner);
+		this.specifiedNullable = this.buildSpecifiedNullable();
+		this.specifiedInsertable = this.buildSpecifiedInsertable();
+		this.specifiedUpdatable = this.buildSpecifiedUpdatable();
 	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedNullable_(this.buildSpecifiedNullable());
+		this.setSpecifiedInsertable_(this.buildSpecifiedInsertable());
+		this.setSpecifiedUpdatable_(this.buildSpecifiedUpdatable());
+	}
+
+
+	// ********** XML column **********
+
+	@Override
+	public XmlOrderColumn getXmlColumn() {
+		return this.owner.getXmlColumn();
+	}
+
+	@Override
+	protected XmlOrderColumn buildXmlColumn() {
+		return this.owner.buildXmlColumn();
+	}
+
+	@Override
+	protected void removeXmlColumn() {
+		this.owner.removeXmlColumn();
+	}
+
+
+	// ********** nullable **********
+
+	public boolean isNullable() {
+		return (this.specifiedNullable != null) ? this.specifiedNullable.booleanValue() : this.isDefaultNullable();
+	}
+
+	public Boolean getSpecifiedNullable() {
+		return this.specifiedNullable;
+	}
+
+	public void setSpecifiedNullable(Boolean nullable) {
+		if (this.valuesAreDifferent(this.specifiedNullable, nullable)) {
+			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedNullable_(nullable);
+			xmlColumn.setNullable(nullable);
+			this.removeXmlColumnIfUnset();
+		}
+	}
+
+	protected void setSpecifiedNullable_(Boolean nullable) {
+		Boolean old = this.specifiedNullable;
+		this.specifiedNullable = nullable;
+		this.firePropertyChanged(SPECIFIED_NULLABLE_PROPERTY, old, nullable);
+	}
+
+	protected Boolean buildSpecifiedNullable() {
+		XmlOrderColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getNullable();
+	}
+
+	public boolean isDefaultNullable() {
+		return DEFAULT_NULLABLE;
+	}
+
+
+	// ********** insertable **********
+
+	public boolean isInsertable() {
+		return (this.specifiedInsertable != null) ? this.specifiedInsertable.booleanValue() : this.isDefaultInsertable();
+	}
+
+	public Boolean getSpecifiedInsertable() {
+		return this.specifiedInsertable;
+	}
+
+	public void setSpecifiedInsertable(Boolean insertable) {
+		if (this.valuesAreDifferent(this.specifiedInsertable, insertable)) {
+			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedInsertable_(insertable);
+			xmlColumn.setInsertable(insertable);
+			this.removeXmlColumnIfUnset();
+		}
+	}
+
+	protected void setSpecifiedInsertable_(Boolean insertable) {
+		Boolean old = this.specifiedInsertable;
+		this.specifiedInsertable = insertable;
+		this.firePropertyChanged(SPECIFIED_INSERTABLE_PROPERTY, old, insertable);
+	}
+
+	protected Boolean buildSpecifiedInsertable() {
+		XmlOrderColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getInsertable();
+	}
+
+	public boolean isDefaultInsertable() {
+		return DEFAULT_INSERTABLE;
+	}
+
+
+	// ********** updatable **********
+
+	public boolean isUpdatable() {
+		return (this.specifiedUpdatable != null) ? this.specifiedUpdatable.booleanValue() : this.isDefaultUpdatable();
+	}
+
+	public Boolean getSpecifiedUpdatable() {
+		return this.specifiedUpdatable;
+	}
+
+	public void setSpecifiedUpdatable(Boolean updatable) {
+		if (this.valuesAreDifferent(this.specifiedUpdatable, updatable)) {
+			XmlOrderColumn xmlColumn = this.getXmlColumnForUpdate();
+			this.setSpecifiedUpdatable_(updatable);
+			xmlColumn.setUpdatable(updatable);
+			this.removeXmlColumnIfUnset();
+		}
+	}
+
+	protected void setSpecifiedUpdatable_(Boolean updatable) {
+		Boolean old = this.specifiedUpdatable;
+		this.specifiedUpdatable = updatable;
+		this.firePropertyChanged(SPECIFIED_UPDATABLE_PROPERTY, old, updatable);
+	}
+
+	protected Boolean buildSpecifiedUpdatable() {
+		XmlOrderColumn xmlColumn = this.getXmlColumn();
+		return (xmlColumn == null) ? null : xmlColumn.getUpdatable();
+	}
+
+	public boolean isDefaultUpdatable() {
+		return DEFAULT_UPDATABLE;
+	}
+
+
+	// ********** misc **********
 
 	@Override
 	public OrmOrderable2_0 getParent() {
 		return (OrmOrderable2_0) super.getParent();
 	}
 
+	protected OrmOrderable2_0 getOrderable() {
+		return this.getParent();
+	}
+
+	protected OrmAttributeMapping getAttributeMapping() {
+		return this.getOrderable().getParent();
+	}
+
 	protected PersistentAttribute getPersistentAttribute() {
-		return getParent().getParent().getPersistentAttribute();
+		return this.getAttributeMapping().getPersistentAttribute();
 	}
 
 	@Override
 	public String getTable() {
-		return getParent().getDefaultTableName();
-	}
-	
-	@Override
-	public XmlOrderColumn getResourceColumn() {
-		return this.xmlOrderable.getOrderColumn();
-	}
-	
-	@Override
-	protected void addResourceColumn() {
-		this.xmlOrderable.setOrderColumn(OrmFactory.eINSTANCE.createXmlOrderColumn());		
-	}
-	
-	@Override
-	protected void removeResourceColumn() {
-		this.xmlOrderable.setOrderColumn(null);
-	}
-	
-	public boolean isResourceSpecified() {
-		return getResourceColumn() != null;
-	}
-	
-	@Override
-	protected void removeResourceColumnIfFeaturesUnset() {
-		//override to do nothing
-		//don't want to remove the order-column element if it's features are all set to null
+		return this.getParent().getDefaultTableName();
 	}
 
-	public boolean isNullable() {
-		return (this.getSpecifiedNullable() == null) ? this.isDefaultNullable() : this.getSpecifiedNullable().booleanValue();
-	}
-	
-	public boolean isDefaultNullable() {
-		return BaseColumn.DEFAULT_NULLABLE;
-	}
-	
-	public Boolean getSpecifiedNullable() {
-		return this.specifiedNullable;
-	}
-	
-	public void setSpecifiedNullable(Boolean newSpecifiedNullable) {
-		Boolean oldSpecifiedNullable = this.specifiedNullable;
-		this.specifiedNullable = newSpecifiedNullable;
-		if (this.valuesAreDifferent(oldSpecifiedNullable, newSpecifiedNullable)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setNullable(newSpecifiedNullable);						
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedNullable != null) {
-				addResourceColumn();
-				getResourceColumn().setNullable(newSpecifiedNullable);
-			}
-		}
-		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
-	}
-
-	protected void setSpecifiedNullable_(Boolean newSpecifiedNullable) {
-		Boolean oldSpecifiedNullable = this.specifiedNullable;
-		this.specifiedNullable = newSpecifiedNullable;
-		firePropertyChanged(BaseColumn.SPECIFIED_NULLABLE_PROPERTY, oldSpecifiedNullable, newSpecifiedNullable);
-	}
-
-	public boolean isInsertable() {
-		return (this.getSpecifiedInsertable() == null) ? this.isDefaultInsertable() : this.getSpecifiedInsertable().booleanValue();
-	}
-	
-	public boolean isDefaultInsertable() {
-		return BaseColumn.DEFAULT_INSERTABLE;
-	}
-	
-	public Boolean getSpecifiedInsertable() {
-		return this.specifiedInsertable;
-	}
-	
-	public void setSpecifiedInsertable(Boolean newSpecifiedInsertable) {
-		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
-		this.specifiedInsertable = newSpecifiedInsertable;
-		if (this.valuesAreDifferent(oldSpecifiedInsertable, newSpecifiedInsertable)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setInsertable(newSpecifiedInsertable);						
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedInsertable != null) {
-				addResourceColumn();
-				getResourceColumn().setInsertable(newSpecifiedInsertable);
-			}
-		}
-		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
-	}
-	
-	protected void setSpecifiedInsertable_(Boolean newSpecifiedInsertable) {
-		Boolean oldSpecifiedInsertable = this.specifiedInsertable;
-		this.specifiedInsertable = newSpecifiedInsertable;
-		firePropertyChanged(BaseColumn.SPECIFIED_INSERTABLE_PROPERTY, oldSpecifiedInsertable, newSpecifiedInsertable);
-	}
-
-	public boolean isUpdatable() {
-		return (this.getSpecifiedUpdatable() == null) ? this.isDefaultUpdatable() : this.getSpecifiedUpdatable().booleanValue();
-	}
-	
-	public boolean isDefaultUpdatable() {
-		return BaseColumn.DEFAULT_UPDATABLE;
-	}
-	
-	public Boolean getSpecifiedUpdatable() {
-		return this.specifiedUpdatable;
-	}
-	
-	public void setSpecifiedUpdatable(Boolean newSpecifiedUpdatable) {
-		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
-		this.specifiedUpdatable = newSpecifiedUpdatable;
-		if (this.valuesAreDifferent(oldSpecifiedUpdatable, newSpecifiedUpdatable)) {
-			if (this.getResourceColumn() != null) {
-				this.getResourceColumn().setUpdatable(newSpecifiedUpdatable);						
-				this.removeResourceColumnIfFeaturesUnset();
-			}
-			else if (newSpecifiedUpdatable != null) {
-				addResourceColumn();
-				getResourceColumn().setUpdatable(newSpecifiedUpdatable);
-			}
-		}
-		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
-	}
-	
-	protected void setSpecifiedUpdatable_(Boolean newSpecifiedUpdatable) {
-		Boolean oldSpecifiedUpdatable = this.specifiedUpdatable;
-		this.specifiedUpdatable = newSpecifiedUpdatable;
-		firePropertyChanged(BaseColumn.SPECIFIED_UPDATABLE_PROPERTY, oldSpecifiedUpdatable, newSpecifiedUpdatable);
-	}
-	
-	public void initialize(XmlOrderable_2_0 xmlOrderable) {
-		this.xmlOrderable = xmlOrderable;
-		this.initialize(this.getResourceColumn());
-	}
-	
-	public void update(XmlOrderable_2_0 xmlOrderable) {
-		this.xmlOrderable = xmlOrderable;
-		this.update(this.getResourceColumn());
-	}
-	
-	@Override
-	protected void initialize(XmlOrderColumn column) {
-		super.initialize(column);
-		this.specifiedNullable = this.getResourceNullable(column);
-		this.specifiedUpdatable = this.getResourceUpdatable(column);
-		this.specifiedInsertable = this.getResourceInsertable(column);
-	}
-	
-	@Override
-	protected void update(XmlOrderColumn column) {
-		super.update(column);
-		setSpecifiedNullable_(this.getResourceNullable(column));
-		setSpecifiedUpdatable_(this.getResourceUpdatable(column));
-		setSpecifiedInsertable_(this.getResourceInsertable(column));
-	}
-		
-	protected Boolean getResourceNullable(XmlOrderColumn column) {
-		return column == null ? null : column.getNullable();
-	}
-	
-	protected Boolean getResourceUpdatable(XmlOrderColumn column) {
-		return column == null ? null : column.getUpdatable();
-	}
-	
-	
-	protected Boolean getResourceInsertable(XmlOrderColumn column) {
-		return column == null ? null : column.getInsertable();
-	}
 }

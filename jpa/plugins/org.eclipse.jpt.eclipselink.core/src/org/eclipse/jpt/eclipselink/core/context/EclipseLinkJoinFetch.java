@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,11 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkJoinFetch extends JpaContextNode
+public interface EclipseLinkJoinFetch
+	extends JpaContextNode
 {
 	EclipseLinkJoinFetchType getValue();
-	void setValue(EclipseLinkJoinFetchType newJoinFetchValue);
+	void setValue(EclipseLinkJoinFetchType value);
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
 		EclipseLinkJoinFetchType DEFAULT_VALUE = EclipseLinkJoinFetchType.INNER;
 }

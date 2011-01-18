@@ -13,7 +13,8 @@ import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 
 /**
- * JPA 2.0 context Java persistent attribute (field or property)
+ * JPA 2.0
+ * Context Java persistent <em>attribute</em> (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,5 +28,5 @@ import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 public interface JavaPersistentAttribute2_0
 	extends JavaPersistentAttribute, PersistentAttribute2_0
 {
-	// nothing yet...
+	// combine two interfaces
 }

@@ -13,10 +13,10 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Common protocol among
- *     javax.persistence.JoinColumn
- *     javax.persistence.MapKeyJoinColumn
- * 
+ * Corresponds to the JPA annotations:<ul>
+ * <li><code>javax.persistence.JoinColumn<code>
+ * <li><code>javax.persistence.MapKeyJoinColumn<code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,6 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface BaseJoinColumnAnnotation
 	extends BaseColumnAnnotation
 {
+	// ********** referenced column name **********
 
 	/**
 	 * Corresponds to the 'referencedColumnName' element of the JoinColumn annotation.

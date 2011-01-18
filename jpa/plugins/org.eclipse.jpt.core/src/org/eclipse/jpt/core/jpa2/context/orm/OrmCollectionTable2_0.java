@@ -9,15 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
-import java.util.ListIterator;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmReferenceTable;
-import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 
 /**
- * orm.xml collection table
- * 
+ * <code>orm.xml</code> collection table
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -30,22 +27,5 @@ import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 public interface OrmCollectionTable2_0
 	extends CollectionTable2_0, OrmReferenceTable
 {
-	void update();
-		
 	void initializeFrom(CollectionTable2_0 oldCollectionTable);
-
-	// ********** covariant overrides **********
-	
-	ListIterator<OrmJoinColumn> joinColumns();
-
-	OrmJoinColumn getDefaultJoinColumn();
-	
-	ListIterator<OrmJoinColumn> specifiedJoinColumns();
-
-	OrmJoinColumn addSpecifiedJoinColumn(int index);
-	
-	ListIterator<OrmUniqueConstraint> uniqueConstraints();
-	
-	OrmUniqueConstraint addUniqueConstraint(int index);
-
 }

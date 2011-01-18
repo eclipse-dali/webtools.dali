@@ -134,7 +134,7 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@DiscriminatorColumn", cu);
+		assertSourceDoesNotContain("(name", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -159,7 +159,7 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@DiscriminatorColumn", cu);
+		assertSourceDoesNotContain("(columnDefinition", cu);
 	}
 
 	public void testGetLength() throws Exception {
@@ -184,7 +184,7 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@DiscriminatorColumn(length = 5)", cu);
 		
 		column.setLength(null);
-		assertSourceDoesNotContain("@DiscriminatorColumn", cu);
+		assertSourceDoesNotContain("(length", cu);
 	}
 	
 	public void testGetDiscriminatorType() throws Exception {
@@ -207,6 +207,6 @@ public class DiscriminatorColumnTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@DiscriminatorColumn(discriminatorType = INTEGER)", cu);
 		
 		column.setDiscriminatorType(null);
-		assertSourceDoesNotContain("@DiscriminatorColumn", cu);
+		assertSourceDoesNotContain("(discriminatorType", cu);
 	}
 }

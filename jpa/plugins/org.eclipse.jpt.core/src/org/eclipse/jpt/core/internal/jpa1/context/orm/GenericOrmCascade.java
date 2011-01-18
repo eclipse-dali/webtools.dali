@@ -3,13 +3,15 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.Cascade2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmCascade2_0;
@@ -17,7 +19,6 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.CascadeType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.utility.TextRange;
-
 
 public class GenericOrmCascade
 	extends AbstractOrmXmlContextNode
@@ -32,250 +33,271 @@ public class GenericOrmCascade
 	protected boolean remove;
 
 	protected boolean refresh;
-	
+
 	/* JPA 2.0 */
 	protected boolean detach;
-	
-	protected final AbstractXmlRelationshipMapping relationshipMapping;
-	
-	
-	public GenericOrmCascade(OrmRelationshipMapping parent, AbstractXmlRelationshipMapping relationshipMapping) {
+
+
+	/**
+	 * This is built directly by the mapping implementation; as opposed to via
+	 * a platform-specific factory.
+	 * @see AbstractOrmRelationshipMapping#buildCascade()
+	 */
+	public GenericOrmCascade(OrmRelationshipMapping parent) {
 		super(parent);
-		this.relationshipMapping = relationshipMapping;
-		CascadeType cascade = getResourceCascade();
-		this.all = this.getResourceAll(cascade);
-		this.persist = this.getResourcePersist(cascade);
-		this.merge = this.getResourceMerge(cascade);
-		this.remove = this.getResourceRemove(cascade);
-		this.refresh = this.getResourceRefresh(cascade);
-		this.detach = this.getResourceDetach(cascade);
+		this.all = this.buildAll();
+		this.persist = this.buildPersist();
+		this.merge = this.buildMerge();
+		this.remove = this.buildRemove();
+		this.refresh = this.buildRefresh();
+		this.detach = this.buildDetach();
 	}
-	
-	
-	public void initializeFrom(Cascade2_0 oldCascade) {
-		setAll(oldCascade.isAll());
-		setPersist(oldCascade.isPersist());
-		setMerge(oldCascade.isMerge());
-		setRemove(oldCascade.isRemove());
-		setRefresh(oldCascade.isRefresh());
-		setDetach(oldCascade.isDetach());
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setAll_(this.buildAll());
+		this.setPersist_(this.buildPersist());
+		this.setMerge_(this.buildMerge());
+		this.setRemove_(this.buildRemove());
+		this.setRefresh_(this.buildRefresh());
+		this.setDetach_(this.buildDetach());
 	}
-	
+
+
+	// ********** all **********
+
 	public boolean isAll() {
 		return this.all;
 	}
-	
-	public void setAll(boolean newAll) {
-		boolean oldAll = this.all;
-		this.all = newAll;
-		if (oldAll != newAll) {
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadeAll(newAll);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newAll != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadeAll(newAll);
-			}
+
+	public void setAll(boolean all) {
+		if (this.all != all) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setAll_(all);
+			xmlCascade.setCascadeAll(all);
+			this.removeXmlCascadeIfUnset();
 		}
-		firePropertyChanged(ALL_PROPERTY, oldAll, newAll);
 	}
-	
-	protected void setAll_(boolean newAll) {
-		boolean oldAll = this.all;
-		this.all = newAll;
-		firePropertyChanged(ALL_PROPERTY, oldAll, newAll);
+
+	protected void setAll_(boolean all) {
+		boolean old = this.all;
+		this.all = all;
+		this.firePropertyChanged(ALL_PROPERTY, old, all);
 	}
-	
+
+	protected boolean buildAll() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadeAll();
+	}
+
+
+	// ********** persist **********
+
 	public boolean isPersist() {
 		return this.persist;
 	}
-	
-	public void setPersist(boolean newPersist) {
-		boolean oldPersist = this.persist;
-		this.persist = newPersist;
-		if (oldPersist != newPersist) {
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadePersist(newPersist);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newPersist != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadePersist(newPersist);
-			}
-		}		
-		firePropertyChanged(PERSIST_PROPERTY, oldPersist, newPersist);
+
+	public void setPersist(boolean persist) {
+		if (this.persist != persist) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setPersist_(persist);
+			xmlCascade.setCascadePersist(persist);
+			this.removeXmlCascadeIfUnset();
+		}
 	}
-	
-	protected void setPersist_(boolean newPersist) {
-		boolean oldPersist = this.persist;
-		this.persist = newPersist;		
-		firePropertyChanged(PERSIST_PROPERTY, oldPersist, newPersist);
+
+	protected boolean setPersist_(boolean persist) {
+		boolean old = this.persist;
+		this.persist = persist;
+		return this.firePropertyChanged(PERSIST_PROPERTY, old, persist);
 	}
-	
+
+	protected boolean buildPersist() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadePersist();
+	}
+
+
+	// ********** merge **********
+
 	public boolean isMerge() {
 		return this.merge;
 	}
-	
-	public void setMerge(boolean newMerge) {
-		boolean oldMerge = this.merge;
-		this.merge = newMerge;
-		if (oldMerge != newMerge) {
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadeMerge(newMerge);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newMerge != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadeMerge(newMerge);
-			}
-		}		
-		firePropertyChanged(MERGE_PROPERTY, oldMerge, newMerge);
+
+	public void setMerge(boolean merge) {
+		if (this.merge != merge) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setMerge_(merge);
+			xmlCascade.setCascadeMerge(merge);
+			this.removeXmlCascadeIfUnset();
+		}
 	}
-	
-	protected void setMerge_(boolean newMerge) {
-		boolean oldMerge = this.merge;
-		this.merge = newMerge;
-		firePropertyChanged(MERGE_PROPERTY, oldMerge, newMerge);
+
+	protected boolean setMerge_(boolean merge) {
+		boolean old = this.merge;
+		this.merge = merge;
+		return this.firePropertyChanged(MERGE_PROPERTY, old, merge);
 	}
-	
+
+	protected boolean buildMerge() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadeMerge();
+	}
+
+
+	// ********** remove **********
+
 	public boolean isRemove() {
 		return this.remove;
 	}
-	
-	public void setRemove(boolean newRemove) {
-		boolean oldRemove = this.remove;
-		if (oldRemove != newRemove) {
-			this.remove = newRemove;
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadeRemove(newRemove);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newRemove != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadeRemove(newRemove);
-			}
-		}		
-		firePropertyChanged(REMOVE_PROPERTY, oldRemove, newRemove);
+
+	public void setRemove(boolean remove) {
+		if (this.remove != remove) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setRemove_(remove);
+			xmlCascade.setCascadeRemove(remove);
+			this.removeXmlCascadeIfUnset();
+		}
 	}
-	
-	protected void setRemove_(boolean newRemove) {
-		boolean oldRemove = this.remove;
-		this.remove = newRemove;		
-		firePropertyChanged(REMOVE_PROPERTY, oldRemove, newRemove);
+
+	protected boolean setRemove_(boolean remove) {
+		boolean old = this.remove;
+		this.remove = remove;
+		return this.firePropertyChanged(REMOVE_PROPERTY, old, remove);
 	}
-	
+
+	protected boolean buildRemove() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadeRemove();
+	}
+
+
+	// ********** refresh **********
+
 	public boolean isRefresh() {
 		return this.refresh;
 	}
-	
-	public void setRefresh(boolean newRefresh) {
-		boolean oldRefresh = this.refresh;
-		this.refresh = newRefresh;	
-		if (oldRefresh != newRefresh) {
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadeRefresh(newRefresh);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newRefresh != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadeRefresh(newRefresh);
-			}
+
+	public void setRefresh(boolean refresh) {
+		if (this.refresh != refresh) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setRefresh_(refresh);
+			xmlCascade.setCascadeRefresh(refresh);
+			this.removeXmlCascadeIfUnset();
 		}
-		firePropertyChanged(REFRESH_PROPERTY, oldRefresh, newRefresh);
 	}
-	
-	protected void setRefresh_(boolean newRefresh) {
-		boolean oldRefresh = this.refresh;
-		this.refresh = newRefresh;
-		firePropertyChanged(REFRESH_PROPERTY, oldRefresh, newRefresh);
+
+	protected boolean setRefresh_(boolean refresh) {
+		boolean old = this.refresh;
+		this.refresh = refresh;
+		return this.firePropertyChanged(REFRESH_PROPERTY, old, refresh);
 	}
-	
+
+	protected boolean buildRefresh() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadeRefresh();
+	}
+
+
+	// ********** detach **********
+
 	public boolean isDetach() {
 		return this.detach;
 	}
-	
-	public void setDetach(boolean newDetach) {
-		boolean oldDetach = this.detach;
-		this.detach = newDetach;	
-		if (oldDetach != newDetach) {
-			if (this.getResourceCascade() != null) {
-				this.getResourceCascade().setCascadeDetach(newDetach);						
-				if (this.getResourceCascade().isUnset()) {
-					removeResourceCascade();
-				}
-			}
-			else if (newDetach != false) {
-				addResourceCascade();
-				getResourceCascade().setCascadeDetach(newDetach);
-			}
+
+	public void setDetach(boolean detach) {
+		if (this.detach != detach) {
+			CascadeType xmlCascade = this.getXmlCascadeForUpdate();
+			this.setDetach_(detach);
+			xmlCascade.setCascadeDetach(detach);
+			this.removeXmlCascadeIfUnset();
 		}
-		firePropertyChanged(DETACH_PROPERTY, oldDetach, newDetach);
 	}
-	
-	protected void setDetach_(boolean newDetach) {
-		boolean oldDetach = this.detach;
-		this.detach = newDetach;
-		firePropertyChanged(DETACH_PROPERTY, oldDetach, newDetach);
+
+	protected boolean setDetach_(boolean detach) {
+		boolean old = this.detach;
+		this.detach = detach;
+		return this.firePropertyChanged(DETACH_PROPERTY, old, detach);
 	}
-	
-	protected CascadeType getResourceCascade() {
-		return this.relationshipMapping.getCascade();
+
+	protected boolean buildDetach() {
+		return this.isJpa2_0Compatible() && this.buildDetach_();
 	}
-	
-	protected void removeResourceCascade() {
-		this.relationshipMapping.setCascade(null);		
+
+	protected boolean buildDetach_() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) && xmlCascade.isCascadeDetach();
 	}
-	
-	protected void addResourceCascade() {
-		this.relationshipMapping.setCascade(OrmFactory.eINSTANCE.createCascadeType());			
+
+
+	// ********** XML cascade **********
+
+	/**
+	 * Return <code>null</code> if XML cascade does not exists.
+	 */
+	protected CascadeType getXmlCascade() {
+		return this.getXmlRelationshipMapping().getCascade();
 	}
-	
-	public void update() {
-		CascadeType cascade = getResourceCascade();
-		this.setAll_(this.getResourceAll(cascade));
-		this.setPersist_(this.getResourcePersist(cascade));
-		this.setMerge_(this.getResourceMerge(cascade));
-		this.setRemove_(this.getResourceRemove(cascade));
-		this.setRefresh_(this.getResourceRefresh(cascade));
-		this.setDetach_(this.getResourceDetach(cascade));
+
+	/**
+	 * Build the XML cascade if it does not exist.
+	 */
+	protected CascadeType getXmlCascadeForUpdate() {
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) ? xmlCascade : this.buildXmlCascade();
 	}
-	
-	protected boolean getResourceAll(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadeAll();
+
+	protected CascadeType buildXmlCascade() {
+		CascadeType xmlCascade = OrmFactory.eINSTANCE.createCascadeType();
+		this.getXmlRelationshipMapping().setCascade(xmlCascade);
+		return xmlCascade;
 	}
-	
-	protected boolean getResourcePersist(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadePersist();
+
+	protected void removeXmlCascadeIfUnset() {
+		if (this.getXmlCascade().isUnset()) {
+			this.removeXmlCascade();
+		}
 	}
-	
-	protected boolean getResourceMerge(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadeMerge();
+
+	protected void removeXmlCascade() {
+		this.getXmlRelationshipMapping().setCascade(null);
 	}
-	
-	protected boolean getResourceRemove(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadeRemove();
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmRelationshipMapping getParent() {
+		return (OrmRelationshipMapping) super.getParent();
 	}
-	
-	protected boolean getResourceRefresh(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadeRefresh();
+
+	protected OrmRelationshipMapping getRelationshipMapping() {
+		return this.getParent();
 	}
-	
-	protected boolean getResourceDetach(CascadeType cascade) {
-		return cascade == null ? false : cascade.isCascadeDetach();
+
+	protected AbstractXmlRelationshipMapping getXmlRelationshipMapping() {
+		return this.getRelationshipMapping().getXmlAttributeMapping();
 	}
-	
+
+	public void initializeFrom(Cascade oldCascade) {
+		this.setAll(oldCascade.isAll());
+		this.setPersist(oldCascade.isPersist());
+		this.setMerge(oldCascade.isMerge());
+		this.setRemove(oldCascade.isRemove());
+		this.setRefresh(oldCascade.isRefresh());
+		if (this.isJpa2_0Compatible()) {
+			this.setDetach(((Cascade2_0) oldCascade).isDetach());
+		}
+	}
+
 	public TextRange getValidationTextRange() {
-		return this.getResourceCascade().getValidationTextRange();
+		CascadeType xmlCascade = this.getXmlCascade();
+		return (xmlCascade != null) ?
+				xmlCascade.getValidationTextRange() :
+				this.getRelationshipMapping().getValidationTextRange();
 	}
 }

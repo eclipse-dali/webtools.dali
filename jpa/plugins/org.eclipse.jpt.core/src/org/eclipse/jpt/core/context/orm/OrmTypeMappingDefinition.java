@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 
 /**
- * Part of mechanism to extend the types of ORM type mappings.
- * 
+ * Part of mechanism to extend the types of <code>orm.xml</code> type mappings.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -28,18 +28,19 @@ import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 public interface OrmTypeMappingDefinition
 {
 	/**
-	 * Return the mapping key associated with this provider
-	 * @see {@link MappingKeys}
+	 * Return the definition's mapping key.
+	 * @see MappingKeys
 	 */
 	String getKey();
 	
 	/**
-	 * Build a resource mapping
+	 * Build a resource mapping using the specifed factory.
 	 */
 	XmlTypeMapping buildResourceMapping(EFactory factory);
 	
 	/**
-	 * Build a context mapping
+	 * Build a context mapping for the specified parent and resource mapping,
+	 * using the specified factory.
 	 */
 	OrmTypeMapping buildContextMapping(
 			OrmPersistentType parent, 

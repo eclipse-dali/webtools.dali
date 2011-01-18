@@ -11,7 +11,6 @@ package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
-import org.eclipse.jpt.core.context.orm.OrmOneToOneMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
@@ -63,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class OrmOneToOneMappingComposite 
-	extends AbstractOneToOneMappingComposite<OrmOneToOneMapping, OneToOneRelationshipReference>
+	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationshipReference>
 {
 	/**
 	 * Creates a new <code>OneToOneMappingComposite</code>.
@@ -72,7 +71,7 @@ public class OrmOneToOneMappingComposite
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmOneToOneMappingComposite(PropertyValueModel<? extends OrmOneToOneMapping> subjectHolder,
+	public OrmOneToOneMappingComposite(PropertyValueModel<? extends OneToOneMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 

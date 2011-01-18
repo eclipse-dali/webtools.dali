@@ -14,8 +14,8 @@ import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 
 /**
- * 
- * 
+ * Association override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,29 +26,13 @@ import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
  * @since 2.0
  */
 public interface AssociationOverride
-	extends BaseOverride
+	extends Override_, ReadOnlyAssociationOverride
 {
+	VirtualAssociationOverride convertToVirtual();
+
 	AssociationOverrideRelationshipReference getRelationshipReference();
-	
-	AssociationOverride.Owner getOwner();
-	
-	AssociationOverride setVirtual(boolean virtual);
-	
-	void initializeFrom(AssociationOverride oldAssociationOverride);
 
-	interface Owner extends BaseOverride.Owner
-	{
-		/**
-		 * Return the relationship mapping with the given attribute name.
-		 * Return null if it does not exist.  This relationship mapping
-		 * will be found in the mapped superclass, not in the owning entity
-		 */
-		RelationshipMapping getRelationshipMapping(String attributeName);
+	void initializeFrom(ReadOnlyAssociationOverride oldOverride);
 
-		JptValidator buildJoinTableJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-		JptValidator buildJoinTableInverseJoinColumnValidator(AssociationOverride override, JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
-
-		JptValidator buildTableValidator(AssociationOverride override, Table table, TableTextRangeResolver textRangeResolver);
-	}
+	void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride);
 }

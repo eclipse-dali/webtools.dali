@@ -139,7 +139,7 @@ public class CompositeIterator<E>
 	}
 
 	/**
-	 * Load {@link currentIterator} with the first iterator that {@link Iterator#hasNext()}
+	 * Load {@link #currentIterator} with the first iterator that {@link Iterator#hasNext()}
 	 * or the final iterator if all the elements have already been retrieved.
 	 */
 	private void loadCurrentIterator() {

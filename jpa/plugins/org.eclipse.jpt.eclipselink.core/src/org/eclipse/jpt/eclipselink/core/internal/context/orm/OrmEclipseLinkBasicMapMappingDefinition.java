@@ -10,16 +10,13 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
 import org.eclipse.jpt.core.resource.xml.EmfTools;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmPackage;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlBasicMap;
 
@@ -64,13 +61,5 @@ public class OrmEclipseLinkBasicMapMappingDefinition
 			OrmXmlContextNodeFactory factory) {
 		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
 				buildOrmEclipseLinkBasicMapMapping(parent, (XmlBasicMap) resourceMapping);
-	}
-	
-	public XmlAttributeMapping buildVirtualResourceMapping(
-			OrmTypeMapping ormTypeMapping, 
-			JavaAttributeMapping javaAttributeMapping, 
-			OrmXmlContextNodeFactory factory) {
-		return ((EclipseLinkOrmXmlContextNodeFactory) factory).
-				buildVirtualEclipseLinkXmlBasicMap(ormTypeMapping, (JavaEclipseLinkBasicMapMapping) javaAttributeMapping);
 	}
 }

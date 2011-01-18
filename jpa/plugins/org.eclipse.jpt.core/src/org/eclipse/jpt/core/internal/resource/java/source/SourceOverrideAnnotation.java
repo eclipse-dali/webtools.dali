@@ -9,40 +9,36 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.OverrideAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
- * Common behavior for
- *     javax.persistence.AttributeOverride
- *     javax.persistence.AssociationOverride
+ * <ul>
+ * <li><code>javax.persistence.AttributeOverride</code>
+ * <li><code>javax.persistence.AssociationOverride</code>
+ * </ul>
  */
-abstract class SourceOverrideAnnotation 
+abstract class SourceOverrideAnnotation
 	extends SourceAnnotation<Member>  
 	implements OverrideAnnotation
 {		
-	final DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
-	final AnnotationElementAdapter<String> nameAdapter;
+	DeclarationAnnotationElementAdapter<String> nameDeclarationAdapter;
+	AnnotationElementAdapter<String> nameAdapter;
 	String name;
 		
 
-	// ********** construction/initialization **********
-
 	SourceOverrideAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa, AnnotationAdapter annotationAdapter) {
 		super(parent, member, daa, annotationAdapter);
-		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getNameElementName(), false); // false = do not remove annotation when empty
-		this.nameAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -51,11 +47,6 @@ abstract class SourceOverrideAnnotation
 	
 	public void synchronizeWith(CompilationUnit astRoot) {
 		this.syncName(this.buildName(astRoot));
-	}
-	
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.name);
 	}
 	
 
@@ -91,26 +82,59 @@ abstract class SourceOverrideAnnotation
 		return this.elementTouches(this.nameDeclarationAdapter, pos, astRoot);
 	}
 
+	private DeclarationAnnotationElementAdapter<String> buildNameDeclarationAdapter() {
+		return this.buildStringElementAdapter(this.getNameElementName());
+	}
+
+	private AnnotationElementAdapter<String> buildNameAdapter() {
+		return this.buildStringElementAdapter(this.nameDeclarationAdapter);
+	}
+
 	protected abstract String getNameElementName();
 
 
 	// ********** NestableAnnotation implementation **********
 
-	void initializeFrom(NestableAnnotation oldAnnotation) {
-		OverrideAnnotation oldOverride = (OverrideAnnotation) oldAnnotation;
-		this.setName(oldOverride.getName());
-	}
-	
 	/**
-	 * convenience implementation of method from NestableAnnotation interface
-	 * for subclasses
+	 * Convenience implementation of
+	 * {@link org.eclipse.jpt.core.resource.java.NestableAnnotation#moveAnnotation(int)}
+	 * used by subclasses.
 	 */
 	public void moveAnnotation(int index) {
 		this.getIndexedAnnotationAdapter().moveAnnotation(index);
 	}
 	
-	private IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null);
 	}
-			
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nameDeclarationAdapter = this.buildNameDeclarationAdapter();
+		this.nameAdapter = this.buildNameAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(NAME_PROPERTY, this.name);
+		this.name = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setName((String) map.get(NAME_PROPERTY));
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
 }

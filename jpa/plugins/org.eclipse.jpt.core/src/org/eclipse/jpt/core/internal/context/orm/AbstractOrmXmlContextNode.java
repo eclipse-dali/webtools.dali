@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.internal.context.AbstractXmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
@@ -24,8 +25,6 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmXml2_0ContextNodeFactory;
 public abstract class AbstractOrmXmlContextNode
 	extends AbstractXmlContextNode
 {
-	// ********** constructor **********
-
 	protected AbstractOrmXmlContextNode(JpaContextNode parent) {
 		super(parent);
 	}
@@ -41,7 +40,14 @@ public abstract class AbstractOrmXmlContextNode
 		return this.getMappingFileDefinition().getResourceNodeFactory();
 	}
 
-	protected OrmXml2_0ContextNodeFactory getXmlContextNodeFactory() {
-		return (OrmXml2_0ContextNodeFactory) this.getMappingFileDefinition().getContextNodeFactory();
+	/**
+	 * Call {@link #isJpa2_0Compatible()} before calling this method.
+	 */
+	protected OrmXml2_0ContextNodeFactory getContextNodeFactory2_0() {
+		return (OrmXml2_0ContextNodeFactory) this.getContextNodeFactory();
+	}
+
+	protected OrmXmlContextNodeFactory getContextNodeFactory() {
+		return this.getMappingFileDefinition().getContextNodeFactory();
 	}
 }

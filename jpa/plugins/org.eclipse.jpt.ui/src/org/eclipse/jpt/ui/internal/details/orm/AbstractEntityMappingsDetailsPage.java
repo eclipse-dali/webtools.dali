@@ -13,7 +13,7 @@ import java.util.Collection;
 
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.PersistenceUnitMetadata;
+import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitMetadata;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -212,10 +212,10 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 		};
 	}
 
-	protected PropertyValueModel<PersistenceUnitMetadata> buildPersistentUnitMetadataHolder() {
-		return new TransformationPropertyValueModel<EntityMappings, PersistenceUnitMetadata>(getSubjectHolder()) {
+	protected PropertyValueModel<OrmPersistenceUnitMetadata> buildPersistentUnitMetadataHolder() {
+		return new TransformationPropertyValueModel<EntityMappings, OrmPersistenceUnitMetadata>(getSubjectHolder()) {
 			@Override
-			protected PersistenceUnitMetadata transform_(EntityMappings value) {
+			protected OrmPersistenceUnitMetadata transform_(EntityMappings value) {
 				return value.getPersistenceUnitMetadata();
 			}
 		};

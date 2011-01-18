@@ -33,7 +33,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
@@ -819,20 +819,20 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		JavaEclipseLinkCaching javaContextCaching = ((JavaEclipseLinkMappedSuperclass) ormPersistentType.getJavaPersistentType().getMapping()).getCaching();
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
 		EclipseLinkCaching ormContextCaching = ormContextMappedSuperclass.getCaching();
-		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
+		XmlMappedSuperclass xmlMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 
 
 		// check defaults
 		
-		assertEquals(null, resourceMappedSuperclass.getCache());
+		assertEquals(null, xmlMappedSuperclass.getCache());
 		assertEquals(100, javaContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getDefaultSize());
 		assertEquals(null, ormContextCaching.getSpecifiedSize());
 		
 		// set xml cache, check defaults
-		resourceMappedSuperclass.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
-		assertEquals(null, resourceMappedSuperclass.getCache().getSize());
+		xmlMappedSuperclass.setCache(EclipseLinkOrmFactory.eINSTANCE.createXmlCache());
+		assertEquals(null, xmlMappedSuperclass.getCache().getSize());
 		assertEquals(100, javaContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getDefaultSize());
@@ -840,8 +840,8 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 
 		
 		// set xml cache size, check settings
-		resourceMappedSuperclass.getCache().setSize(new Integer(105));
-		assertEquals(new Integer(105), resourceMappedSuperclass.getCache().getSize());
+		xmlMappedSuperclass.getCache().setSize(new Integer(105));
+		assertEquals(new Integer(105), xmlMappedSuperclass.getCache().getSize());
 		assertEquals(100, javaContextCaching.getSize());
 		assertEquals(105, ormContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getDefaultSize());
@@ -852,26 +852,26 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		
 		javaContextCaching.setSpecifiedSize(new Integer(50));
 		
-		assertEquals(new Integer(105), resourceMappedSuperclass.getCache().getSize());
+		assertEquals(new Integer(105), xmlMappedSuperclass.getCache().getSize());
 		assertEquals(50, javaContextCaching.getSize());
 		assertEquals(105, ormContextCaching.getSize());
-		assertEquals(50, ormContextCaching.getDefaultSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
 		assertEquals(new Integer(105), ormContextCaching.getSpecifiedSize());
 
 		// clear xml cache size, check defaults
-		resourceMappedSuperclass.getCache().setSize(null);
+		xmlMappedSuperclass.getCache().setSize(null);
 
-		assertEquals(null, resourceMappedSuperclass.getCache().getSize());
+		assertEquals(null, xmlMappedSuperclass.getCache().getSize());
 		assertEquals(50, javaContextCaching.getSize());
-		assertEquals(50, ormContextCaching.getSize());
-		assertEquals(50, ormContextCaching.getDefaultSize());
+		assertEquals(100, ormContextCaching.getSize());
+		assertEquals(100, ormContextCaching.getDefaultSize());
 		assertEquals(null, ormContextCaching.getSpecifiedSize());
 	
 		
 		// clear xml cache, check defaults
-		resourceMappedSuperclass.setCache(null);
+		xmlMappedSuperclass.setCache(null);
 
-		assertEquals(null, resourceMappedSuperclass.getCache());
+		assertEquals(null, xmlMappedSuperclass.getCache());
 		assertEquals(50, javaContextCaching.getSize());
 		assertEquals(50, ormContextCaching.getSize());
 		assertEquals(50, ormContextCaching.getDefaultSize());
@@ -882,7 +882,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 
 		ormContextMappedSuperclass.setSpecifiedMetadataComplete(Boolean.TRUE);
 		
-		assertEquals(null, resourceMappedSuperclass.getCache());
+		assertEquals(null, xmlMappedSuperclass.getCache());
 		assertEquals(50, javaContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getSize());
 		assertEquals(100, ormContextCaching.getDefaultSize());
@@ -1521,7 +1521,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
@@ -1598,7 +1598,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.customConvertersSize());
@@ -1685,7 +1685,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
@@ -1762,7 +1762,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.typeConvertersSize());
@@ -1849,7 +1849,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
@@ -1926,7 +1926,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.objectTypeConvertersSize());
@@ -2013,7 +2013,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());
@@ -2090,7 +2090,7 @@ public class EclipseLink2_0OrmMappedSuperclassTests extends EclipseLink2_0OrmCon
 		EclipseLinkPersistenceUnit persistenceUnit = getPersistenceUnit();
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEclipseLinkMappedSuperclass ormContextMappedSuperclass = (OrmEclipseLinkMappedSuperclass) ormPersistentType.getMapping();
-		EclipseLinkConverterHolder ormContextConverterHolder = ormContextMappedSuperclass.getConverterHolder();
+		OrmEclipseLinkConverterContainer ormContextConverterHolder = ormContextMappedSuperclass.getConverterContainer();
 		XmlMappedSuperclass resourceMappedSuperclass = (XmlMappedSuperclass) getXmlEntityMappings().getMappedSuperclasses().get(0);
 		
 		assertEquals(0, ormContextConverterHolder.structConvertersSize());

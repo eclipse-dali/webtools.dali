@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,90 +12,64 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
-public class NullJavaJoinColumnJoiningStrategy 
+/**
+ * Used by
+ * {@link org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyRelationship#buildJoinColumnStrategy()}
+ * in a JPA 1.0 project.
+ */
+public class NullJavaJoinColumnJoiningStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaJoinColumnJoiningStrategy
-{	
-	
-	protected NullJavaJoinColumnJoiningStrategy(JoinColumnEnabledRelationshipReference parent) {
+{
+	public NullJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
 		super(parent);
 	}
-	
-	public void initializeFrom(JoinColumnJoiningStrategy oldStrategy) {
-		throw new UnsupportedOperationException();
-	}
 
-	@Override
-	public JoinColumnEnabledRelationshipReference getParent() {
-		return (JoinColumnEnabledRelationshipReference) super.getParent();
-	}
-	
-	public JoinColumnEnabledRelationshipReference getRelationshipReference() {
-		return this.getParent();
-	}
-	
-	public RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getRelationshipMapping();
-	}
-	
-	public void addStrategy() {
-		throw new UnsupportedOperationException();
-	}
-	
-	public void removeStrategy() {
-		//do nothing, no join column to remove
-	}
-	
-	public boolean isTargetForeignKeyRelationship() {
-		return false;
-	}
 
-	public TypeMapping getRelationshipTarget() {
-		return null;
-	}
+	// ********** join columns **********
 
-	// **************** join columns *******************************************
-	
 	public ListIterator<JavaJoinColumn> joinColumns() {
-		throw new UnsupportedOperationException();
+		return EmptyListIterator.<JavaJoinColumn>instance();
+	}
 
-	}
-	
 	public int joinColumnsSize() {
-		throw new UnsupportedOperationException();
+		return 0;
 	}
-	
-	
-	// **************** default join column ************************************
-	
-	public JavaJoinColumn getDefaultJoinColumn() {
-		throw new UnsupportedOperationException();
-	}	
-	
-	// **************** specified join columns *********************************
-	
+
+
+	// ********** specified join columns **********
+
 	public ListIterator<JavaJoinColumn> specifiedJoinColumns() {
-		throw new UnsupportedOperationException();
+		return EmptyListIterator.<JavaJoinColumn>instance();
 	}
-	
+
 	public int specifiedJoinColumnsSize() {
-		throw new UnsupportedOperationException();
+		return 0;
 	}
-	
+
 	public boolean hasSpecifiedJoinColumns() {
 		return false;
 	}
-	
+
+	public JavaJoinColumn getSpecifiedJoinColumn(int index) {
+		throw new UnsupportedOperationException();
+	}
+
+	public JavaJoinColumn addSpecifiedJoinColumn() {
+		throw new UnsupportedOperationException();
+	}
+
 	public JavaJoinColumn addSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
@@ -103,56 +77,90 @@ public class NullJavaJoinColumnJoiningStrategy
 	public void removeSpecifiedJoinColumn(JoinColumn joinColumn) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public void removeSpecifiedJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
-	
+
 	public void moveSpecifiedJoinColumn(int targetIndex, int sourceIndex) {
 		throw new UnsupportedOperationException();
 	}
 
 
-	// **************** resource => context ************************************
+	// ********** default join column **********
 
-	public void initialize() {
-		//no-op
-	}
-	
-	
-	public void update() {
-		//no-op
+	public JavaJoinColumn getDefaultJoinColumn() {
+		return null;
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		throw new UnsupportedOperationException();
+
+	// ********** misc **********
+
+	@Override
+	public JavaJoinColumnEnabledRelationshipReference getParent() {
+		return (JavaJoinColumnEnabledRelationshipReference) super.getParent();
 	}
 
-	public String getColumnTableNotValidDescription() {
-		throw new UnsupportedOperationException();
+	public JavaJoinColumnEnabledRelationshipReference getRelationshipReference() {
+		return this.getParent();
 	}
 
-	public Table getDbTable(String tableName) {
-		throw new UnsupportedOperationException();
-	}
-
-	public Table getReferencedColumnDbTable() {
-		throw new UnsupportedOperationException();
+	protected RelationshipMapping getRelationshipMapping() {
+		return this.getRelationshipReference().getMapping();
 	}
 
 	public String getTableName() {
 		return null;
 	}
 
-	public boolean isOverridableAssociation() {
+	public TypeMapping getRelationshipSource() {
+		return this.getRelationshipMapping().getTypeMapping();
+	}
+
+	public TypeMapping getRelationshipTarget() {
+		return null;
+	}
+
+	public boolean isTargetForeignKey() {
+		return false;
+	}
+
+	public void initializeFrom(ReadOnlyJoinColumnJoiningStrategy oldStrategy) {
+		// NOP
+	}
+
+	public void initializeFromVirtual(ReadOnlyJoinColumnJoiningStrategy oldStrategy) {
+		// NOP
+	}
+
+	public void addStrategy() {
+		// NOP
+	}
+
+	public void removeStrategy() {
+		// NOP
+	}
+
+	public boolean isOverridable() {
 		return false;
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		throw new UnsupportedOperationException();
+		return true;
 	}
 
-	public TypeMapping getRelationshipSource() {
-		return getRelationshipMapping().getTypeMapping();
+	public Table resolveDbTable(String tableName) {
+		return null;
+	}
+
+
+	// ********** validation **********
+
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return null;
+	}
+
+	public String getColumnTableNotValidDescription() {
+		return null;
 	}
 }

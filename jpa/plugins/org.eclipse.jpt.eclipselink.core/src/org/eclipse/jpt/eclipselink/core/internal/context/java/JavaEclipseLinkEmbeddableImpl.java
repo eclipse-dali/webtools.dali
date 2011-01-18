@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -14,79 +14,109 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * EclipseLink
+ * Java embeddable type mapping
+ */
 public class JavaEclipseLinkEmbeddableImpl
 	extends AbstractJavaEmbeddable
 	implements JavaEclipseLinkEmbeddable
 {
-	protected final JavaEclipseLinkConverterHolder converterHolder;
-	
-	protected final JavaEclipseLinkCustomizer customizer;
-	
+	protected final JavaEclipseLinkConverterContainer converterContainer;
+
 	protected final JavaEclipseLinkChangeTracking changeTracking;
-	
-	
-	public JavaEclipseLinkEmbeddableImpl(JavaPersistentType parent) {
-		super(parent);
-		this.converterHolder = new JavaEclipseLinkConverterHolderImpl(this);
-		this.customizer = new JavaEclipseLinkCustomizer(this);
-		this.changeTracking = new JavaEclipseLinkChangeTracking(this);
+
+	protected final JavaEclipseLinkCustomizer customizer;
+
+
+	public JavaEclipseLinkEmbeddableImpl(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
+		super(parent, mappingAnnotation);
+		this.converterContainer = this.buildConverterContainer();
+		this.changeTracking = this.buildChangeTracking();
+		this.customizer = this.buildCustomizer();
 	}
-	
-	
-	public boolean usesPrimaryKeyColumns() {
-		return false;
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
+		this.changeTracking.synchronizeWithResourceModel();
+		this.customizer.synchronizeWithResourceModel();
 	}
-	
-	public JavaEclipseLinkConverterHolder getConverterHolder() {
-		return this.converterHolder;
+
+	@Override
+	public void update() {
+		super.update();
+		this.converterContainer.update();
+		this.changeTracking.update();
+		this.customizer.update();
 	}
-	
+
+
+	// ********** converter container **********
+
+	public JavaEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected JavaEclipseLinkConverterContainer buildConverterContainer() {
+		return new JavaEclipseLinkConverterContainerImpl(this);
+	}
+
+
+	// ********** change tracking **********
+
+	public EclipseLinkChangeTracking getChangeTracking() {
+		return this.changeTracking;
+	}
+
+	protected JavaEclipseLinkChangeTracking buildChangeTracking() {
+		return new JavaEclipseLinkChangeTracking(this);
+	}
+
+
+	// ********** customizer **********
+
 	public EclipseLinkCustomizer getCustomizer() {
 		return this.customizer;
 	}
-	
-	public EclipseLinkChangeTracking getChangeTracking() {
-		return this.changeTracking;
-	}	
-	
-	@Override
-	public void initialize(JavaResourcePersistentType jrpt) {
-		super.initialize(jrpt);
-		this.converterHolder.initialize(jrpt);
-		this.customizer.initialize(jrpt);
-		this.changeTracking.initialize(jrpt);
+
+	protected JavaEclipseLinkCustomizer buildCustomizer() {
+		return new JavaEclipseLinkCustomizer(this);
 	}
-	
-	@Override
-	public void update(JavaResourcePersistentType jrpt) {
-		super.update(jrpt);
-		this.converterHolder.update(jrpt);
-		this.customizer.update(jrpt);
-		this.changeTracking.update(jrpt);
+
+
+	// ********** misc **********
+
+	public boolean usesPrimaryKeyColumns() {
+		return false;
 	}
-	
-	
-	//********** Validation ********************************************
-	
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.converterHolder.validate(messages, reporter, astRoot);
-		this.customizer.validate(messages, reporter, astRoot);
+		this.converterContainer.validate(messages, reporter, astRoot);
 		this.changeTracking.validate(messages, reporter, astRoot);
+		this.customizer.validate(messages, reporter, astRoot);
 	}
 
 	@Override
 	protected JptValidator buildTypeMappingValidator(CompilationUnit astRoot) {
-		return new EclipseLinkTypeMappingValidator(this, this.javaResourcePersistentType, this.buildTextRangeResolver(astRoot));
+		return new EclipseLinkTypeMappingValidator(this, this.getResourcePersistentType(), this.buildTextRangeResolver(astRoot));
 	}
 }

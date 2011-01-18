@@ -14,14 +14,17 @@ import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.Cascade;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchMapping;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkOneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntity;
@@ -294,12 +297,12 @@ public class EclipseLinkOrmOneToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Employee");
 		
 		OrmPersistentType departmentPersistentType = getEntityMappings().getPersistentTypes().iterator().next();
-		OrmEclipseLinkOneToOneMapping oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		EclipseLinkOneToOneMapping oneToOne = (EclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 
 		assertNull(oneToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(true);
-		oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		oneToOne = (EclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 		assertNull(oneToOne.getJoinFetch().getValue());		
 		
 		EclipseLinkRelationshipMapping javaRelationshipMapping = (EclipseLinkRelationshipMapping) departmentPersistentType.getJavaPersistentType().getAttributeNamed("employee").getMapping();
@@ -307,7 +310,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertNull(oneToOne.getJoinFetch().getValue());
 		
 		getEntityMappings().getPersistenceUnitMetadata().setXmlMappingMetadataComplete(false);
-		oneToOne = (OrmEclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
+		oneToOne = (EclipseLinkOneToOneMapping) departmentPersistentType.getAttributeNamed("employee").getMapping();
 		assertEquals(EclipseLinkJoinFetchType.OUTER, oneToOne.getJoinFetch().getValue());
 	}
 
@@ -318,36 +321,36 @@ public class EclipseLinkOrmOneToOneMappingTests
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.virtualAttributes().next();
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.virtualAttributes().next();
 
-		OrmEclipseLinkOneToOneMapping ormOneToOneMapping = (OrmEclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();	
-		assertEquals("address", ormOneToOneMapping.getName());
-		assertEquals(FetchType.LAZY, ormOneToOneMapping.getSpecifiedFetch());
-		assertEquals(Boolean.FALSE, ormOneToOneMapping.getSpecifiedOptional());
-		assertEquals("Address", ormOneToOneMapping.getSpecifiedTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationshipReference().
+		OneToOneMapping virtualOneToOneMapping = (OneToOneMapping) virtualPersistentAttribute.getMapping();	
+		assertEquals("address", virtualOneToOneMapping.getName());
+		assertEquals(FetchType.LAZY, virtualOneToOneMapping.getSpecifiedFetch());
+		assertEquals(Boolean.FALSE, virtualOneToOneMapping.getSpecifiedOptional());
+		assertEquals("Address", virtualOneToOneMapping.getSpecifiedTargetEntity());
+		assertNull(virtualOneToOneMapping.getRelationshipReference().
 			getMappedByJoiningStrategy().getMappedByAttribute());
 
-		OrmJoinColumn ormJoinColumn = 
-			ormOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
-		assertEquals("MY_COLUMN", ormJoinColumn.getSpecifiedName());
-		assertEquals("MY_REFERENCED_COLUMN", ormJoinColumn.getSpecifiedReferencedColumnName());
-		assertEquals(Boolean.TRUE, ormJoinColumn.getSpecifiedUnique());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedNullable());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedInsertable());
-		assertEquals(Boolean.FALSE, ormJoinColumn.getSpecifiedUpdatable());
-		assertEquals("COLUMN_DEFINITION", ormJoinColumn.getColumnDefinition());
-		assertEquals("MY_TABLE", ormJoinColumn.getSpecifiedTable());
+		JoinColumn virtualJoinColumn = 
+			virtualOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
+		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
+		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedNullable());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedInsertable());
+		assertEquals(Boolean.FALSE, virtualJoinColumn.getSpecifiedUpdatable());
+		assertEquals("COLUMN_DEFINITION", virtualJoinColumn.getColumnDefinition());
+		assertEquals("MY_TABLE", virtualJoinColumn.getSpecifiedTable());
 
-		Cascade cascade = ormOneToOneMapping.getCascade();
+		Cascade cascade = virtualOneToOneMapping.getCascade();
 		assertTrue(cascade.isAll());
 		assertTrue(cascade.isMerge());
 		assertTrue(cascade.isPersist());
 		assertTrue(cascade.isRemove());
 		assertTrue(cascade.isRefresh());
 
-		assertEquals(EclipseLinkJoinFetchType.INNER, ormOneToOneMapping.getJoinFetch().getValue());
-		assertTrue(ormOneToOneMapping.getPrivateOwned().isPrivateOwned());
+		assertEquals(EclipseLinkJoinFetchType.INNER, ((EclipseLinkJoinFetchMapping) virtualOneToOneMapping).getJoinFetch().getValue());
+		assertTrue(((EclipseLinkOneToOneMapping) virtualOneToOneMapping).getPrivateOwned().isPrivateOwned());
 	}
 
 	public void testVirtualMappingMetadataCompleteTrue() throws Exception {
@@ -358,12 +361,12 @@ public class EclipseLinkOrmOneToOneMappingTests
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, PACKAGE_NAME + ".Address");
 		ormPersistentType.getMapping().setSpecifiedMetadataComplete(Boolean.TRUE);
 		assertEquals(3, ormPersistentType.virtualAttributesSize());		
-		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.getAttributeNamed("address");
+		OrmReadOnlyPersistentAttribute virtualPersistentAttribute = ormPersistentType.getAttributeNamed("address");
 
-		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, ormPersistentAttribute.getMappingKey());
-		assertTrue(ormPersistentAttribute.isVirtual());
+		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, virtualPersistentAttribute.getMappingKey());
+		assertTrue(virtualPersistentAttribute.isVirtual());
 
-		OrmEclipseLinkOneToOneMapping ormOneToOneMapping = (OrmEclipseLinkOneToOneMapping) ormPersistentAttribute.getMapping();	
+		EclipseLinkOneToOneMapping ormOneToOneMapping = (EclipseLinkOneToOneMapping) virtualPersistentAttribute.getMapping();	
 		assertEquals("address", ormOneToOneMapping.getName());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());

@@ -76,7 +76,7 @@ public final class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added"; //$NON-NLS-1$
+				return "items added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -88,7 +88,7 @@ public final class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed"; //$NON-NLS-1$
+				return "items removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -100,7 +100,7 @@ public final class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection cleared"; //$NON-NLS-1$
+				return "collection cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -112,7 +112,7 @@ public final class AWTCollectionChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection changed"; //$NON-NLS-1$
+				return "collection changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

@@ -13,6 +13,8 @@ package org.eclipse.jpt.core.context.java;
 import org.eclipse.jpt.core.context.IdClassReference;
 
 /**
+ * Java ID class reference
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,14 +27,9 @@ import org.eclipse.jpt.core.context.IdClassReference;
 public interface JavaIdClassReference
 	extends IdClassReference, JavaJpaContextNode
 {
-	void initialize();
-	
-	void update();
-
 	/**
 	 * Return the fully qualified name of the id class, taking into consideration the default value if applicable
 	 */
 	String getFullyQualifiedIdClassName();
 		String FULLY_QUALIFIED_ID_CLASS_PROPERTY = "fullyQualifiedIdClass"; //$NON-NLS-1$
-
 }

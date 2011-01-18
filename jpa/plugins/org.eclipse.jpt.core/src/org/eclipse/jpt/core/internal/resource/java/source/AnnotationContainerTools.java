@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.ArrayInitializer;
@@ -133,47 +133,70 @@ public final class AnnotationContainerTools {
 	/**
 	 * Return a list of the nested AST annotations.
 	 */
-	private static <T extends NestableAnnotation> ArrayList<Annotation> getNestedAstAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
-		ArrayList<Annotation> result = new ArrayList<Annotation>();
+	private static <T extends NestableAnnotation> List<Annotation> getNestedAstAnnotations(CompilationUnit astRoot, AnnotationContainer<T> annotationContainer) {
 		Annotation astContainerAnnotation = annotationContainer.getAstAnnotation(astRoot);
-		if (astContainerAnnotation == null || astContainerAnnotation.isMarkerAnnotation()) {
-			// no nested annotations
+		if (astContainerAnnotation == null) {
+			// seems unlikely the AST container annotation would be null,
+			// since the resource container annotation is only created and
+			// initialized (or synchronized) when the AST container annotation
+			// is discovered
+			return Collections.emptyList();
 		}
-		else if (astContainerAnnotation.isSingleMemberAnnotation()) {
-			if (annotationContainer.getElementName().equals("value")) { //$NON-NLS-1$
-				Expression ex = ((SingleMemberAnnotation) astContainerAnnotation).getValue();
-				addAstAnnotationsTo(ex, annotationContainer.getNestedAnnotationName(), result);
-			} else {
-				// no nested annotations
-			}
+
+		if (astContainerAnnotation.isMarkerAnnotation()) {
+			return Collections.emptyList();  // no nested annotations
 		}
-		else if (astContainerAnnotation.isNormalAnnotation()) {
-			MemberValuePair pair = getMemberValuePair((NormalAnnotation) astContainerAnnotation, annotationContainer.getElementName());
-			if (pair == null) {
-				// no nested annotations
-			} else {
-				addAstAnnotationsTo(pair.getValue(), annotationContainer.getNestedAnnotationName(), result);
-			}
+
+		if (astContainerAnnotation.isSingleMemberAnnotation()) {
+			return getNestedAstAnnotations((SingleMemberAnnotation) astContainerAnnotation, annotationContainer);
 		}
+
+		if (astContainerAnnotation.isNormalAnnotation()) {
+			return getNestedAstAnnotations((NormalAnnotation) astContainerAnnotation, annotationContainer);
+		}
+
+		throw new IllegalStateException("unknown annotation type: " + astContainerAnnotation); //$NON-NLS-1$
+	}
+
+	private static <T extends NestableAnnotation> List<Annotation> getNestedAstAnnotations(SingleMemberAnnotation astContainerAnnotation, AnnotationContainer<T> annotationContainer) {
+		return annotationContainer.getElementName().equals("value") ? //$NON-NLS-1$
+				getAstAnnotations(astContainerAnnotation.getValue(), annotationContainer) :
+				Collections.<Annotation>emptyList();
+	}
+
+	private static <T extends NestableAnnotation> List<Annotation> getNestedAstAnnotations(NormalAnnotation astContainerAnnotation, AnnotationContainer<T> annotationContainer) {
+		MemberValuePair pair = getMemberValuePair(astContainerAnnotation, annotationContainer.getElementName());
+		return (pair != null) ?
+				getAstAnnotations(pair.getValue(), annotationContainer) :
+				Collections.<Annotation>emptyList();
+	}
+
+	private static <T extends NestableAnnotation> List<Annotation> getAstAnnotations(Expression expression, AnnotationContainer<T> annotationContainer) {
+		return (expression != null) ?
+				getAstAnnotations_(expression, annotationContainer.getNestedAnnotationName()) :
+				Collections.<Annotation>emptyList();
+	}
+
+	/**
+	 * pre-condition: expression is not null
+	 */
+	private static <T extends NestableAnnotation> List<Annotation> getAstAnnotations_(Expression expression, String annotationName) {
+		ArrayList<Annotation> result = new ArrayList<Annotation>();
+		addAstAnnotationsTo(expression, annotationName, result);
 		return result;
 	}
 
 	/**
+	 * pre-condition: expression is not null
+	 * <p>
 	 * Add whatever annotations are represented by the specified expression to
-	 * the specified list. Do not add null to the list for any non-annotation expression.
+	 * the specified list. Skip any non-annotation expressions.
 	 */
 	private static void addAstAnnotationsTo(Expression expression, String annotationName, ArrayList<Annotation> astAnnotations) {
-		if (expression == null) {
-			//do not add null to the list, not sure how we would get here...
-		}
-		else if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
 			addAstAnnotationsTo((ArrayInitializer) expression, annotationName, astAnnotations);
-		}
-		else {
-			Annotation astAnnotation = getAstAnnotation_(expression, annotationName);
-			if (astAnnotation != null) {
-				astAnnotations.add(astAnnotation);
-			}
+		} else {
+			addAstAnnotationTo(expression, annotationName, astAnnotations);
 		}
 	}
 
@@ -181,37 +204,24 @@ public final class AnnotationContainerTools {
 		@SuppressWarnings("unchecked")
 		List<Expression> expressions = arrayInitializer.expressions();
 		for (Expression expression : expressions) {
-			Annotation astAnnotation = getAstAnnotation(expression, annotationName);
-			if (astAnnotation != null) {
-				astAnnotations.add(astAnnotation);
+			if (expression != null) {
+				addAstAnnotationTo(expression, annotationName, astAnnotations);
 			}
 		}
 	}
 
-	/**
-	 * If the specified expression is an annotation with the specified name, return it;
-	 * otherwise return null.
-	 */
-	private static Annotation getAstAnnotation(Expression expression, String annotationName) {
-		// not sure how the expression could be null...
-		return (expression == null) ? null : getAstAnnotation_(expression, annotationName);
-	}
-
-	/**
-	 * pre-condition: expression is not null
-	 */
-	private static Annotation getAstAnnotation_(Expression expression, String annotationName) {
+	private static void addAstAnnotationTo(Expression expression, String annotationName, ArrayList<Annotation> astAnnotations) {
 		switch (expression.getNodeType()) {
 			case ASTNode.NORMAL_ANNOTATION:
 			case ASTNode.SINGLE_MEMBER_ANNOTATION:
 			case ASTNode.MARKER_ANNOTATION:
 				Annotation astAnnotation = (Annotation) expression;
 				if (getQualifiedName(astAnnotation).equals(annotationName)) {
-					return astAnnotation;
+					astAnnotations.add(astAnnotation);
 				}
-				return null;
+				break;
 			default:
-				return null;
+				break;
 		}
 	}
 
@@ -243,7 +253,7 @@ public final class AnnotationContainerTools {
 	 * notification.
 	 */
 	public static <T extends NestableAnnotation> void synchronize(AnnotationContainer<T> annotationContainer, CompilationUnit astRoot) {
-		ArrayList<Annotation> astAnnotations = getNestedAstAnnotations(astRoot, annotationContainer);
+		List<Annotation> astAnnotations = getNestedAstAnnotations(astRoot, annotationContainer);
 		Iterator<Annotation> astAnnotationStream = astAnnotations.iterator();
 
 		for (T nestedAnnotation : annotationContainer.getNestedAnnotations()) {
@@ -268,5 +278,4 @@ public final class AnnotationContainerTools {
 		super();
 		throw new UnsupportedOperationException();
 	}
-
 }

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 
@@ -18,13 +19,13 @@ import org.eclipse.jpt.core.resource.java.JavaResourceNode;
  */
 public final class BinaryColumnAnnotation
 	extends BinaryCompleteColumnAnnotation
+	implements ColumnAnnotation
 {
 
 	public BinaryColumnAnnotation(JavaResourceNode parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 	}
 
-	@Override
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}

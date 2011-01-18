@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
-import org.eclipse.jpt.core.context.MappingFilePersistenceUnitDefaults;
+import org.eclipse.jpt.core.context.MappingFilePersistenceUnitMetadata;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
@@ -41,6 +41,12 @@ import org.eclipse.text.edits.ReplaceEdit;
 public interface MappingFileRef
 	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
+	/**
+	 * Covariant override.
+	 */
+	PersistenceUnit getParent();
+
+
 	// ********** file name **********
 
 	/**
@@ -63,6 +69,7 @@ public interface MappingFileRef
 	 */
 	boolean isFor(IFile file);
 
+
 	// ********** mapping file (orm.xml) **********
 
 	/**
@@ -76,35 +83,31 @@ public interface MappingFileRef
 	MappingFile getMappingFile();
 
 
-	// ********** updating **********
+	// ********** persistence unit metadata **********
 
 	/**
-	 * Update the mapping file ref context model to match the specified
-	 * resource model. The refs are ordered within the <code>persistence.xml</code>
-	 * file, so they are updated sequentially, in place, not matched up by name
-	 * (i.e. the resource model can change).
-	 * @see org.eclipse.jpt.core.JpaProject#update()
+	 * Return the mapping file's persistence unit metadata.
 	 */
-	void update(XmlMappingFileRef mappingFileRef);
+	MappingFilePersistenceUnitMetadata getPersistenceUnitMetadata();
+
+	/**
+	 * Return whether the mapping file's persistence unit metadata exist.
+	 */
+	boolean persistenceUnitMetadataExists();
 
 
-	// ********** queries **********
+	// ********** misc **********
+
+	/**
+	 * Return the mapping file ref's corresponding resource mapping file ref.
+	 */
+	XmlMappingFileRef getXmlMappingFileRef();
 
 	/**
 	 * Return whether the mapping file ref is "implied" by, or explicitly
 	 * specified in, the <code>persistence.xml</code>.
 	 */
 	boolean isImplied();
-
-	/**
-	 * Return the mapping file's persistence unit defaults.
-	 */
-	MappingFilePersistenceUnitDefaults getPersistenceUnitDefaults();
-
-	/**
-	 * Return whether the mapping file's persistence unit defaults exist.
-	 */
-	boolean persistenceUnitDefaultsExists();
 
 	/**
 	 * Return the persistent type, as listed in the mapping file,
@@ -119,7 +122,7 @@ public interface MappingFileRef
 	boolean containsOffset(int textOffset);
 
 
-	// **************** refactoring *********************************************
+	// ********** refactoring **********
 
 	/**
 	 * Create DeleteEdits for deleting any references to the given type 
@@ -129,7 +132,7 @@ public interface MappingFileRef
 	Iterable<DeleteEdit> createDeleteTypeEdits(IType type);
 
 	/**
-	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
+	 * If this {@link #isFor(IFile)} the given IFile, create a text 
 	 * DeleteEdit for deleting the mapping file element and any text that precedes it
 	 * from the persistence.xml.
 	 * Otherwise return an EmptyIterable.
@@ -163,7 +166,7 @@ public interface MappingFileRef
 	Iterable<ReplaceEdit> createRenameFolderEdits(IFolder originalFolder, String newName);
 
 	/**
-	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile, create a text 
+	 * If this {@link #isFor(IFile)} the given IFile, create a text 
 	 * ReplaceEdit for renaming the mapping file element to the new name.
 	 * Otherwise return an EmptyIterable.
 	 * Though this will contain 1 or 0 ReplaceEdits, using an Iterable
@@ -172,7 +175,7 @@ public interface MappingFileRef
 	Iterable<ReplaceEdit> createRenameMappingFileEdits(IFile originalFile, String newName);
 
 	/**
-	 * If this {@link MappingFileRef#isFor(IFile)} the given IFile create a text
+	 * If this {@link #isFor(IFile)} the given IFile create a text
 	 * ReplaceEdit for moving the originalFile to the destination.
 	 * Otherwise return an EmptyIterable.
 	 * The originalFile has not been moved yet.
@@ -184,5 +187,4 @@ public interface MappingFileRef
 	 * The runtimeDestination already includes the original folder name.
 	 */
 	Iterable<ReplaceEdit> createMoveFolderEdits(IFolder originalFolder, IPath runtimeDestination);
-
 }

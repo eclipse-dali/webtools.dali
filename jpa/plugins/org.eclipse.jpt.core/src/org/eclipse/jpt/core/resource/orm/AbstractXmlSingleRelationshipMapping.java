@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -49,7 +49,7 @@ import org.eclipse.wst.common.internal.emf.resource.Translator;
  * @model kind="class" abstract="true"
  * @generated
  */
-public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlJoinTableMapping, XmlJoinColumnsMapping, XmlSingleRelationshipMapping_2_0
+public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRelationshipMapping implements XmlJoinTableContainer, XmlJoinColumnContainer, XmlSingleRelationshipMapping_2_0
 {
 	/**
 	 * The cached value of the '{@link #getJoinTable() <em>Join Table</em>}' containment reference.
@@ -155,7 +155,7 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Table</em>' containment reference.
 	 * @see #setJoinTable(XmlJoinTable)
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableMapping_JoinTable()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinTableContainer_JoinTable()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -215,7 +215,7 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Join Columns</em>' containment reference list.
-	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnsMapping_JoinColumns()
+	 * @see org.eclipse.jpt.core.resource.orm.OrmPackage#getXmlJoinColumnContainer_JoinColumns()
 	 * @model containment="true"
 	 * @generated
 	 */
@@ -465,19 +465,19 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlJoinTableMapping.class)
+		if (baseClass == XmlJoinTableContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE;
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE: return OrmPackage.XML_JOIN_TABLE_CONTAINER__JOIN_TABLE;
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlJoinColumnsMapping.class)
+		if (baseClass == XmlJoinColumnContainer.class)
 		{
 			switch (derivedFeatureID)
 			{
-				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS;
+				case OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS: return OrmPackage.XML_JOIN_COLUMN_CONTAINER__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -515,19 +515,19 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass)
 	{
-		if (baseClass == XmlJoinTableMapping.class)
+		if (baseClass == XmlJoinTableContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_TABLE_MAPPING__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE;
+				case OrmPackage.XML_JOIN_TABLE_CONTAINER__JOIN_TABLE: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_TABLE;
 				default: return -1;
 			}
 		}
-		if (baseClass == XmlJoinColumnsMapping.class)
+		if (baseClass == XmlJoinColumnContainer.class)
 		{
 			switch (baseFeatureID)
 			{
-				case OrmPackage.XML_JOIN_COLUMNS_MAPPING__JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
+				case OrmPackage.XML_JOIN_COLUMN_CONTAINER__JOIN_COLUMNS: return OrmPackage.ABSTRACT_XML_SINGLE_RELATIONSHIP_MAPPING__JOIN_COLUMNS;
 				default: return -1;
 			}
 		}
@@ -605,10 +605,10 @@ public abstract class AbstractXmlSingleRelationshipMapping extends AbstractXmlRe
 	}
 	
 	protected static Translator buildJoinColumnTranslator() {
-		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnsMapping_JoinColumns());
+		return XmlJoinColumn.buildTranslator(JPA.JOIN_COLUMN, OrmPackage.eINSTANCE.getXmlJoinColumnContainer_JoinColumns());
 	}
 	
 	protected static Translator buildJoinTableTranslator() {
-		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableMapping_JoinTable());
+		return XmlJoinTable.buildTranslator(JPA.JOIN_TABLE, OrmPackage.eINSTANCE.getXmlJoinTableContainer_JoinTable());
 	}
 }

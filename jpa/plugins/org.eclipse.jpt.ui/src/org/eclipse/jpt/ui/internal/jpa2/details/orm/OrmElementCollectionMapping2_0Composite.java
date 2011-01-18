@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
+import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -22,7 +22,8 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmElementCollectionMapping2_0Composite extends AbstractElementCollectionMapping2_0Composite<OrmElementCollectionMapping2_0>
+public class OrmElementCollectionMapping2_0Composite
+	extends AbstractElementCollectionMapping2_0Composite<ElementCollectionMapping2_0>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
@@ -31,7 +32,7 @@ public class OrmElementCollectionMapping2_0Composite extends AbstractElementColl
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmElementCollectionMapping2_0Composite(PropertyValueModel<? extends OrmElementCollectionMapping2_0> subjectHolder,
+	public OrmElementCollectionMapping2_0Composite(PropertyValueModel<? extends ElementCollectionMapping2_0> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
@@ -48,7 +49,7 @@ public class OrmElementCollectionMapping2_0Composite extends AbstractElementColl
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmElementCollectionMapping2_0, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<ElementCollectionMapping2_0, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

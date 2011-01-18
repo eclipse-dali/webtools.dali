@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,10 @@ import org.eclipse.jpt.core.resource.java.DiscriminatorType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * javax.persistence.DiscriminatorColumn
+ * <code>javax.persistence.DiscriminatorColumn</code>
  */
 public final class NullDiscriminatorColumnAnnotation
-	extends NullNamedColumnAnnotation
+	extends NullNamedColumnAnnotation<DiscriminatorColumnAnnotation>
 	implements DiscriminatorColumnAnnotation
 {	
 	public NullDiscriminatorColumnAnnotation(JavaResourcePersistentType parent) {
@@ -26,11 +26,6 @@ public final class NullDiscriminatorColumnAnnotation
 	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected DiscriminatorColumnAnnotation addAnnotation() {
-		return (DiscriminatorColumnAnnotation) super.addAnnotation();
 	}
 
 	// ***** discriminator type
@@ -54,5 +49,4 @@ public final class NullDiscriminatorColumnAnnotation
 			this.addAnnotation().setLength(length);
 		}
 	}
-
 }

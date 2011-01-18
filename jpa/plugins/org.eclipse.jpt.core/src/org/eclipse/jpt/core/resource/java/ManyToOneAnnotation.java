@@ -9,13 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.ManyToOne
- * 
+ * <code>javax.persistence.ManyToOne</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,27 +23,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 2.0
  */
 public interface ManyToOneAnnotation
-	extends RelationshipMappingAnnotation
+	extends SingleRelationshipMappingAnnotation
 {
 	String ANNOTATION_NAME = JPA.MANY_TO_ONE;
-	
-	/**
-	 * Corresponds to the optional element of the ManyToOne annotation.
-	 * Returns null if the optional element does not exist in java.
-	 */
-	Boolean getOptional();
-	
-	/**
-	 * Corresponds to the optional element of the ManyToOne annotation.
-	 * Set to null to remove the optional element.
-	 */
-	void setOptional(Boolean optional);
-		String OPTIONAL_PROPERTY = "optional"; //$NON-NLS-1$
-
-	/**
-	 * Return the {@link TextRange} for the optional element.  If the optional element 
-	 * does not exist return the {@link TextRange} for the ManyToOne annotation.
-	 */
-	TextRange getOptionalTextRange(CompilationUnit astRoot);
-
 }

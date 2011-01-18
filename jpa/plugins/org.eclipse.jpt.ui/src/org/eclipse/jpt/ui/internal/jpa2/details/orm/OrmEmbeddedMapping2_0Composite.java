@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
+import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
+import org.eclipse.jpt.ui.internal.details.java.BaseJavaUiFactory;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedMapping2_0OverridesComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -38,8 +38,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.2
  */
-public class OrmEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingComposite<OrmEmbeddedMapping>
-                                      implements JpaComposite
+public class OrmEmbeddedMapping2_0Composite
+	extends AbstractEmbeddedMappingComposite<EmbeddedMapping>
 {
 	/**
 	 * Creates a new <code>EmbeddedMappingComposite</code>.
@@ -48,7 +48,7 @@ public class OrmEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingCompo
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEmbeddedMapping2_0Composite(PropertyValueModel<? extends OrmEmbeddedMapping> subjectHolder,
+	public OrmEmbeddedMapping2_0Composite(PropertyValueModel<? extends EmbeddedMapping> subjectHolder,
 	                                Composite parent,
 	                                WidgetFactory widgetFactory) {
 
@@ -67,7 +67,7 @@ public class OrmEmbeddedMapping2_0Composite extends AbstractEmbeddedMappingCompo
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddedMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EmbeddedMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

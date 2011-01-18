@@ -13,7 +13,7 @@ import org.eclipse.jpt.core.context.MultiRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
 
 /**
- * ORM multi-valued (1:m, m:m) relationship mapping.
+ * <code>orm.xml</code> multi-valued (1:m, m:m) relationship mapping.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,10 +25,7 @@ import org.eclipse.jpt.core.resource.orm.AbstractXmlMultiRelationshipMapping;
  * @since 2.0
  */
 public interface OrmMultiRelationshipMapping 
-	extends OrmRelationshipMapping, MultiRelationshipMapping
+	extends MultiRelationshipMapping, OrmRelationshipMapping, OrmCollectionMapping
 {
-	AbstractXmlMultiRelationshipMapping getResourceAttributeMapping();
-	
-	
-	// nothing yet
+	AbstractXmlMultiRelationshipMapping getXmlAttributeMapping();
 }

@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableSecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTablesAnnotation;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
- * javax.persistence.SecondaryTables
+ * <code>javax.persistence.SecondaryTables</code>
  */
 public final class SourceSecondaryTablesAnnotation
 	extends SourceAnnotation<Member>
@@ -53,6 +53,12 @@ public final class SourceSecondaryTablesAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.secondaryTables.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.secondaryTables);
 	}
@@ -76,13 +82,29 @@ public final class SourceSecondaryTablesAnnotation
 		return this.secondaryTables.size();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.secondaryTables.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.secondaryTables.add(index, (NestableSecondaryTableAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.secondaryTables.remove(0).convertToStandAlone();
+	}
+
 	public NestableSecondaryTableAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.secondaryTables.size());
 	}
 
 	private NestableSecondaryTableAnnotation addNestedAnnotation(int index) {
 		NestableSecondaryTableAnnotation secondaryTable = this.buildSecondaryTable(index);
-		this.secondaryTables.add(secondaryTable);
+		this.secondaryTables.add(index, secondaryTable);
 		return secondaryTable;
 	}
 
@@ -94,7 +116,9 @@ public final class SourceSecondaryTablesAnnotation
 	}
 
 	private NestableSecondaryTableAnnotation buildSecondaryTable(int index) {
-		return SourceSecondaryTableAnnotation.createNestedSecondaryTable(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceSecondaryTableAnnotation.createNestedSecondaryTable(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableSecondaryTableAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
@@ -108,5 +132,4 @@ public final class SourceSecondaryTablesAnnotation
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.secondaryTables, SECONDARY_TABLES_LIST);
 	}
-
 }

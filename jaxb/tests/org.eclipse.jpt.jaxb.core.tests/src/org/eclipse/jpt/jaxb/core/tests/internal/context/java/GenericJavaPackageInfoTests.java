@@ -79,7 +79,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		
 		contextPackageInfo.setSpecifiedAccessType(null);
 		accessorTypeAnnotation = (XmlAccessorTypeAnnotation) resourcePackage.getAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
-		assertNull(accessorTypeAnnotation);
+		assertNull(accessorTypeAnnotation.getValue());
 		assertNull(contextPackageInfo.getSpecifiedAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getAccessType());
 		assertEquals(XmlAccessType.PUBLIC_MEMBER, contextPackageInfo.getDefaultAccessType());
@@ -145,7 +145,7 @@ public class GenericJavaPackageInfoTests extends JaxbContextModelTestCase
 		
 		contextPackageInfo.setSpecifiedAccessOrder(null);
 		accessorOrderAnnotation = (XmlAccessorOrderAnnotation) resourcePackage.getAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
-		assertNull(accessorOrderAnnotation);
+		assertNull(accessorOrderAnnotation.getValue());
 		assertNull(contextPackageInfo.getSpecifiedAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getAccessOrder());
 		assertEquals(XmlAccessOrder.UNDEFINED, contextPackageInfo.getDefaultAccessOrder());

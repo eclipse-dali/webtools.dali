@@ -9,7 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
+import java.util.ListIterator;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 
 /**
@@ -27,5 +29,6 @@ import org.eclipse.jpt.core.jpa2.context.PersistentType2_0;
 public interface OrmPersistentType2_0
 	extends OrmPersistentType, PersistentType2_0
 {
-	// nothing yet
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmReadOnlyPersistentAttribute> attributes();
 }

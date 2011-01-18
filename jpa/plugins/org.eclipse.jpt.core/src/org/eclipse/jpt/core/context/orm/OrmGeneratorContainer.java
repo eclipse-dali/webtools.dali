@@ -13,6 +13,8 @@ import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
+ * <code>orm.xml</code> generator container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,13 +27,17 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmGeneratorContainer
 	extends GeneratorContainer, XmlContextNode
 {
+	// ********** sequence generator **********
+	
 	OrmSequenceGenerator getSequenceGenerator();
 
 	OrmSequenceGenerator addSequenceGenerator();
 
+
+	// ********** table generator **********
+	
 	OrmTableGenerator getTableGenerator();
 
 	OrmTableGenerator addTableGenerator();
-	
-	void update();
+
 }

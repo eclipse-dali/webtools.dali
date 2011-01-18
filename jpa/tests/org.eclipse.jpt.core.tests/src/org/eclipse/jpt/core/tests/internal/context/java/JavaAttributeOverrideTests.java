@@ -16,7 +16,10 @@ import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -88,7 +91,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		
 		
@@ -97,7 +100,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		
 		attributeOverrideResource.setName("FOO");
 		getJpaProject().synchronizeContextModel();
-		specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
 		assertEquals("FOO", specifiedAttributeOverride.getName());
 	}
 	
@@ -106,7 +109,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
 		assertEquals(ATTRIBUTE_OVERRIDE_NAME, specifiedAttributeOverride.getName());
 		
 		specifiedAttributeOverride.setName("FOO");
@@ -122,7 +125,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
 		Column column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
@@ -134,7 +137,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		getJpaProject().synchronizeContextModel();
 		
 		
-		column = overrideContainer.specifiedAttributeOverrides().next().getColumn();
+		column = overrideContainer.specifiedOverrides().next().getColumn();
 		assertEquals("FOO", column.getName());
 	}
 	
@@ -143,7 +146,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedAttributeOverrides().next();
+		AttributeOverride specifiedAttributeOverride = overrideContainer.specifiedOverrides().next();
 		Column column = specifiedAttributeOverride.getColumn();
 		assertEquals(ATTRIBUTE_OVERRIDE_COLUMN_NAME, column.getName());
 		
@@ -170,9 +173,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();
 		AttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualOverridesSize());
 		
-		AttributeOverride attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		ReadOnlyAttributeOverride attributeOverride = overrideContainer.virtualOverrides().next();
 		assertEquals("id", attributeOverride.getColumn().getDefaultName());
 		
 		
@@ -180,7 +183,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedName("FOO");
 	
-		attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		attributeOverride = overrideContainer.virtualOverrides().next();
 		assertEquals("FOO", attributeOverride.getColumn().getDefaultName());
 	}
 	
@@ -193,9 +196,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();
 		AttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualOverridesSize());
 		
-		AttributeOverride attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		ReadOnlyAttributeOverride attributeOverride = overrideContainer.virtualOverrides().next();
 		assertEquals("AnnotationTestTypeChild", attributeOverride.getColumn().getDefaultTable());
 
 		
@@ -203,7 +206,7 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		BasicMapping basicMapping = (BasicMapping) mappedSuperclass.getAttributeNamed("id").getMapping();
 		basicMapping.getColumn().setSpecifiedTable("BAR");
 	
-		attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		attributeOverride = overrideContainer.virtualOverrides().next();
 		assertEquals("BAR", attributeOverride.getColumn().getDefaultTable());
 	}
 	
@@ -216,9 +219,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();	
 		AttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualOverridesSize());
 		
-		AttributeOverride attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		ReadOnlyAttributeOverride attributeOverride = overrideContainer.virtualOverrides().next();
 		assertEquals("id", attributeOverride.getName());
 	}
 	
@@ -231,9 +234,9 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();	
 		AttributeOverrideContainer overrideContainer = entity.getAttributeOverrideContainer();
 		assertEquals("AnnotationTestTypeChild", entity.getName());
-		assertEquals(2, overrideContainer.virtualAttributeOverridesSize());
+		assertEquals(2, overrideContainer.virtualOverridesSize());
 		
-		AttributeOverride attributeOverride = overrideContainer.virtualAttributeOverrides().next();
+		ReadOnlyAttributeOverride attributeOverride = overrideContainer.virtualOverrides().next();
 		assertTrue(attributeOverride.isVirtual());
 	}
 	
@@ -243,16 +246,15 @@ public class JavaAttributeOverrideTests extends ContextModelTestCase
 		addXmlClassRef(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
-		AttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
-		AttributeOverride attributeOverride = overrideContainer.virtualAttributeOverrides().next();
-		attributeOverride = attributeOverride.setVirtual(false);
-		attributeOverride.getColumn().setSpecifiedName("FOO");
+		JavaAttributeOverrideContainer overrideContainer = getJavaEntity().getAttributeOverrideContainer();
+		JavaVirtualAttributeOverride attributeOverride = overrideContainer.virtualOverrides().next();
+		attributeOverride.convertToSpecified().getColumn().setSpecifiedName("FOO");
 		
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(PACKAGE_NAME + ".AnnotationTestTypeChild");
 		AttributeOverrideAnnotation attributeOverrideResource = (AttributeOverrideAnnotation) typeResource.getAnnotation(JPA.ATTRIBUTE_OVERRIDE);
 	
 		assertEquals("FOO", attributeOverrideResource.getColumn().getName());
-		assertEquals("FOO", overrideContainer.specifiedAttributeOverrides().next().getColumn().getSpecifiedName());
+		assertEquals("FOO", overrideContainer.specifiedOverrides().next().getColumn().getSpecifiedName());
 	}
 }

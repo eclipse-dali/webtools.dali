@@ -10,38 +10,66 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaPersistentAttribute;
-import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkPersistentAttributeValidator;
+import org.eclipse.jpt.utility.internal.Tools;
 
 /**
  * EclipseLink Java persistent attribute
  */
 public class JavaEclipseLinkPersistentAttribute
 	extends AbstractJavaPersistentAttribute
-	implements JavaPersistentAttribute2_0
 {
 	public JavaEclipseLinkPersistentAttribute(PersistentType parent, JavaResourcePersistentAttribute jrpa) {
 		super(parent, jrpa);
 	}
 
 
-	// ********** AccessHolder implementation **********
+	// ********** access **********
 
+	@Override
 	public AccessType getSpecifiedAccess() {
 		return null;
 	}
 
-	public void setSpecifiedAccess(AccessType specifiedAccess) {
+	public void setSpecifiedAccess(AccessType access) {
 		throw new UnsupportedOperationException();
 	}
 
+
+	// ********** mapping **********
+
+	@Override
+	protected JavaAttributeMappingDefinition getSpecifiedMappingDefinition(String key) {
+		if (this.specifiedKeyIsInvalid(key)) {
+			throw new IllegalArgumentException("invalid mapping: " + key); //$NON-NLS-1$
+		}
+		return super.getSpecifiedMappingDefinition(key);
+	}
+
 	/**
-	 * Return whether the specified type is a subclass of java.util.Date or java.util.Calendar.
+	 * EclipseLink does not support setting an attribute with a default 1:1
+	 * mapping to a specified mapping of ID; because the resulting ID annotation
+	 * indicates a primary key derived from the 1:1 mapping, <em>not</em> an ID
+	 * mapping.
+	 */
+	protected boolean specifiedKeyIsInvalid(String key) {
+		return Tools.valuesAreEqual(key, MappingKeys.ID_ATTRIBUTE_MAPPING_KEY) &&
+			Tools.valuesAreEqual(this.getDefaultMappingKey(), MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+	}
+
+
+	// ********** type **********
+
+	/**
+	 * Return whether the attribute's type is a subclass of
+	 * <code>java.util.Date</code> or <code>java.util.Calendar</code>.
 	 */
 	public boolean typeIsDateOrCalendar() {
 		return this.resourcePersistentAttribute.typeIsSubTypeOf(DATE_TYPE_NAME)

@@ -21,15 +21,14 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class OrmEclipseLinkBasicMapMapping2_1
 	extends AbstractOrmEclipseLinkBasicMapMapping
 {
-
-	public OrmEclipseLinkBasicMapMapping2_1(OrmPersistentAttribute parent, XmlBasicMap resourceMapping) {
-		super(parent, resourceMapping);
+	public OrmEclipseLinkBasicMapMapping2_1(OrmPersistentAttribute parent, XmlBasicMap xmlMapping) {
+		super(parent, xmlMapping);
 	}
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		if (!isVirtual()) { //if virtual the underlying java BasicMap annotation will have a java deprecation warning
+		if ( ! this.isVirtual()) { //if virtual the underlying java annotation will have a java deprecation warning
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.NORMAL_SEVERITY,

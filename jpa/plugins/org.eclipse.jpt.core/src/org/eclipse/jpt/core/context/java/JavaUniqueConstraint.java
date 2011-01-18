@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 
 /**
- * 
- * 
+ * Java unique constraint
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,13 +25,7 @@ import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
  * @since 2.0
  */
 public interface JavaUniqueConstraint
-	extends UniqueConstraint, JavaJpaContextNode
+	extends UniqueConstraint, JavaReadOnlyUniqueConstraint
 {
-	void initialize(UniqueConstraintAnnotation uniqueConstraintAnnotation);
-	
-	/**
-	 * Update the JavaUniqueConstraint context model object to match the UniqueConstraintAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(UniqueConstraintAnnotation uniqueConstraintAnnotation);
+	UniqueConstraintAnnotation getUniqueConstraintAnnotation();
 }

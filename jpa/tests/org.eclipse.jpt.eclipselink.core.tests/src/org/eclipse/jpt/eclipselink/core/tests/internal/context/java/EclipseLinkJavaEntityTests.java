@@ -351,7 +351,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		assertNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
-		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
+		assertNull(readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 
 		readOnly.setSpecifiedReadOnly(Boolean.TRUE);
 		assertNotNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
@@ -359,7 +359,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 
 		readOnly.setSpecifiedReadOnly(null);
 		assertNull(typeResource.getAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME));
-		assertEquals(null, readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
+		assertNull(readOnly.getSpecifiedReadOnly());//Boolean.FALSE and null really mean the same thing since there are only 2 states in the java resource model
 	}
 	
 	public void testSpecifiedReadOnlyUpdatesFromResourceModelChange() throws Exception {
@@ -375,7 +375,7 @@ public class EclipseLinkJavaEntityTests extends EclipseLinkContextModelTestCase
 		typeResource.removeAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);
 		getJpaProject().synchronizeContextModel();
 		
-		assertEquals(null, readOnly.getSpecifiedReadOnly());
+		assertNull(readOnly.getSpecifiedReadOnly());
 		assertEquals(false, readOnly.isDefaultReadOnly());
 		
 		typeResource.addAnnotation(EclipseLinkReadOnlyAnnotation.ANNOTATION_NAME);

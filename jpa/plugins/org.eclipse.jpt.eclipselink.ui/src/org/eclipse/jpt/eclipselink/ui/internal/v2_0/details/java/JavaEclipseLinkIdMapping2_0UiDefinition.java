@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaIdMappingUiDefinition;
@@ -41,7 +41,7 @@ public class JavaEclipseLinkIdMapping2_0UiDefinition
 	
 	
 	@Override
-	public boolean isEnabledFor(PersistentAttribute mappableObject) {
+	public boolean isEnabledFor(ReadOnlyPersistentAttribute mappableObject) {
 		// a default eclipselink 1-1 mapping can not be mapped as an id, as mapping it
 		// that way will actually result in a default 1-1 with an id derived identity
 		return Tools.valuesAreDifferent(

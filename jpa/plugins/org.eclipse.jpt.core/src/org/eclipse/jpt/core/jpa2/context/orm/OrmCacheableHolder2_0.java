@@ -11,10 +11,11 @@ package org.eclipse.jpt.core.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
+import org.eclipse.jpt.core.resource.orm.v2_0.XmlCacheable_2_0;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> cacheable holder/parent
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,5 +28,6 @@ import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 public interface OrmCacheableHolder2_0
 	extends CacheableHolder2_0, XmlContextNode
 {
+	XmlCacheable_2_0 getXmlCacheable();
 	OrmCacheable2_0 getCacheable();
 }

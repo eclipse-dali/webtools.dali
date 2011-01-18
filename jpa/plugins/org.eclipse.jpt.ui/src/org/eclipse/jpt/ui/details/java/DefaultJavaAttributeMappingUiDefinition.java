@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.details.java;
 
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 
 /**
@@ -21,7 +21,7 @@ import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
 public interface DefaultJavaAttributeMappingUiDefinition<T extends AttributeMapping> 
-	extends JavaAttributeMappingUiDefinition<T>, DefaultMappingUiDefinition<PersistentAttribute, T>
+	extends JavaAttributeMappingUiDefinition<T>, DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, T>
 {
 	
 }

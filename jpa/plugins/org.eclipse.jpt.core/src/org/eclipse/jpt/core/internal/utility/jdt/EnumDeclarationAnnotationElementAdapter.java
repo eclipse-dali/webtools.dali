@@ -31,23 +31,14 @@ public class EnumDeclarationAnnotationElementAdapter
 	// ********** constructors **********
 
 	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed.
+	 * The default element name is <code>value</code>.
 	 */
 	public EnumDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
 		this(annotationAdapter, VALUE);
 	}
 
-	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed.
-	 */
 	public EnumDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		this(annotationAdapter, elementName, true);
-	}
-
-	public EnumDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		this(new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, removeAnnotationWhenEmpty, NameStringExpressionConverter.instance()));
+		this(new ConversionDeclarationAnnotationElementAdapter<String>(annotationAdapter, elementName, NameStringExpressionConverter.instance()));
 	}
 
 	protected EnumDeclarationAnnotationElementAdapter(ConversionDeclarationAnnotationElementAdapter<String> adapter) {

@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jpt.core.context.IdMapping;
+import org.eclipse.jpt.core.resource.java.IdAnnotation;
 
 /**
- * 
- * 
+ * Java ID mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,12 +25,11 @@ import org.eclipse.jpt.core.context.IdMapping;
  * @since 2.0
  */
 public interface JavaIdMapping
-	extends JavaAttributeMapping, IdMapping, JavaColumnMapping
+	extends IdMapping, JavaColumnMapping, JavaConvertibleMapping, JavaGeneratorContainer.Owner
 {
-	//********* covariant overrides **********
+	IdAnnotation getMappingAnnotation();
+
 	JavaGeneratorContainer getGeneratorContainer();
-	
-	JavaConverter getConverter();
 
 	JavaGeneratedValue getGeneratedValue();
 	JavaGeneratedValue addGeneratedValue();

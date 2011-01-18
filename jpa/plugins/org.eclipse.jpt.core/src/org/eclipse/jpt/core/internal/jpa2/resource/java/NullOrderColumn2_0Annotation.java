@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.OrderColumn
+ * <code>javax.persistence.OrderColumn</code>
  */
 public final class NullOrderColumn2_0Annotation
-	extends NullNamedColumnAnnotation
+	extends NullNamedColumnAnnotation<OrderColumn2_0Annotation>
 	implements OrderColumn2_0Annotation
 {	
 	public NullOrderColumn2_0Annotation(JavaResourcePersistentAttribute parent) {
@@ -28,11 +28,6 @@ public final class NullOrderColumn2_0Annotation
 	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected OrderColumn2_0Annotation addAnnotation() {
-		return (OrderColumn2_0Annotation) super.addAnnotation();
 	}
 
 	// ***** updatable

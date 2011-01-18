@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
@@ -18,6 +18,7 @@ import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.jdt.Member;
+import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 
@@ -28,7 +29,11 @@ abstract class SourcePersistentMember<M extends Member>
 	extends SourceAnnotatedElement<M>
 	implements JavaResourcePersistentMember
 {
-
+	/**
+	 * We can cache this setting because its value is not affected by any API
+	 * calls - it can only be affected by changes to the Java source.
+	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 */
 	boolean persistable;
 
 	boolean final_;  // 'final' is a reserved word
@@ -60,13 +65,12 @@ abstract class SourcePersistentMember<M extends Member>
 	// ********** annotations **********
 
 	public Annotation setPrimaryAnnotation(String primaryAnnotationName, Iterable<String> supportingAnnotationNames) {
-		ArrayList<String> annotationNames = new ArrayList<String>();
-		CollectionTools.addAll(annotationNames, supportingAnnotationNames);
+		HashSet<String> annotationNames = CollectionTools.set(supportingAnnotationNames);
 		if (primaryAnnotationName != null) {
 			annotationNames.add(primaryAnnotationName);
 		}
 		for (Annotation annotation : this.getAnnotations()) {
-			if ( ! CollectionTools.contains(annotationNames, annotation.getAnnotationName())) {
+			if ( ! annotationNames.contains(annotation.getAnnotationName())) {
 				this.annotations.remove(annotation);
 				annotation.removeAnnotation();
 			}
@@ -77,8 +81,6 @@ abstract class SourcePersistentMember<M extends Member>
 			this.annotations.add(newPrimaryAnnotation);
 			newPrimaryAnnotation.newAnnotation();
 		}
-		// fire collection change event after all annotation changes are done
-		this.fireCollectionChanged(ANNOTATIONS_COLLECTION, this.annotations);
 		return newPrimaryAnnotation;
 	}
 
@@ -129,11 +131,8 @@ abstract class SourcePersistentMember<M extends Member>
 	 * convenience method
 	 */
 	<T extends JavaResourcePersistentMember> Iterator<T> persistableMembers(Iterator<T> members) {
-		return new FilteringIterator<T>(members) {
-			@Override
-			protected boolean accept(T m) {
-				return m.isPersistable();
-			}
-		};
+		@SuppressWarnings("unchecked")
+		Filter<T> filter = (Filter<T>) PERSISTABLE_MEMBER_FILTER;
+		return new FilteringIterator<T>(members, filter);
 	}
 }

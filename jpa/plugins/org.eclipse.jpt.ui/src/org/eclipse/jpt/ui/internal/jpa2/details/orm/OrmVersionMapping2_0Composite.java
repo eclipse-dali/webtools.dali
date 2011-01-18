@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
+import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractVersionMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -20,7 +20,8 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmVersionMapping2_0Composite extends AbstractVersionMappingComposite<OrmVersionMapping>
+public class OrmVersionMapping2_0Composite
+	extends AbstractVersionMappingComposite<VersionMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLinkOrmVersionMappingComposite</code>.
@@ -29,7 +30,7 @@ public class OrmVersionMapping2_0Composite extends AbstractVersionMappingComposi
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmVersionMapping2_0Composite(PropertyValueModel<? extends OrmVersionMapping> subjectHolder,
+	public OrmVersionMapping2_0Composite(PropertyValueModel<? extends VersionMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 
@@ -44,7 +45,7 @@ public class OrmVersionMapping2_0Composite extends AbstractVersionMappingComposi
 	}
 
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmVersionMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<VersionMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

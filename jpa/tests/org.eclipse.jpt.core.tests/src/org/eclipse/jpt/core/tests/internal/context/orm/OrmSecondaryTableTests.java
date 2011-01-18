@@ -10,11 +10,14 @@
 package org.eclipse.jpt.core.tests.internal.context.orm;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.InheritanceType;
+import org.eclipse.jpt.core.context.ReadOnlySecondaryTable;
+import org.eclipse.jpt.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
@@ -23,6 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
+import org.eclipse.jpt.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
@@ -32,6 +36,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -135,15 +140,15 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
-		ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
+		ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0).setSpecifiedName("FOO");
 
-		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		ReadOnlySecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
 		assertEquals("FOO", ormSecondaryTable.getSpecifiedName());
 		
-		ormEntity.getJavaEntity().specifiedSecondaryTables().next().setSpecifiedName("BAZ");
+		ormEntity.getJavaTypeMapping().specifiedSecondaryTables().next().setSpecifiedName("BAZ");
 		assertEquals("BAZ", ormSecondaryTable.getSpecifiedName());
 		
-		ormEntity.setSecondaryTablesDefinedInXml(true);
+		ormEntity.setSecondaryTablesAreDefinedInXml(true);
 		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultName());
 		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedName());
 
@@ -200,18 +205,18 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("BAR");
 		
-		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		OrmVirtualSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
 		assertEquals("BAR", ormSecondaryTable.getSpecifiedSchema());
 		
 		javaSecondaryTable.setSpecifiedSchema("BAZ");
 		assertEquals("BAZ", ormSecondaryTable.getSpecifiedSchema());
 
 		
-		ormEntity.setSecondaryTablesDefinedInXml(true);
+		ormEntity.setSecondaryTablesAreDefinedInXml(true);
 		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultSchema());
 		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedSchema());
 	}
@@ -246,13 +251,13 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultSchema());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 		
 		getEntityMappings().setSpecifiedSchema("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedSchema("JAVA_SCHEMA");
 		assertEquals("BAR", ormSecondaryTable.getDefaultSchema()); //schema is not defaulted from underlying java
@@ -260,7 +265,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedSchema(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultSchema());
 
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);
 		assertNull(ormSecondaryTable.getDefaultSchema());
 	}
 	
@@ -315,17 +320,17 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		assertEquals(TYPE_NAME, ormEntity.getTable().getDefaultName());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("BAR");
 		
-		OrmSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
+		OrmVirtualSecondaryTable ormSecondaryTable = ormEntity.virtualSecondaryTables().next();
 		assertEquals("BAR", ormSecondaryTable.getSpecifiedCatalog());
 		
 		javaSecondaryTable.setSpecifiedCatalog("BAZ");
 		assertEquals("BAZ", ormSecondaryTable.getSpecifiedCatalog());
 		
-		ormEntity.setSecondaryTablesDefinedInXml(true);
+		ormEntity.setSecondaryTablesAreDefinedInXml(true);
 		assertNull(ormEntity.specifiedSecondaryTables().next().getDefaultCatalog());
 		assertEquals("BAZ", ormEntity.specifiedSecondaryTables().next().getSpecifiedCatalog());
 	}
@@ -339,13 +344,13 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		ormSecondaryTable.setSpecifiedName("FOO");
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 		
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 		
 		getEntityMappings().setSpecifiedCatalog("BAR");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog());
 		
-		SecondaryTable javaSecondaryTable = ormEntity.getJavaEntity().addSpecifiedSecondaryTable(0);
+		SecondaryTable javaSecondaryTable = ormEntity.getJavaTypeMapping().addSpecifiedSecondaryTable(0);
 		javaSecondaryTable.setSpecifiedName("FOO");
 		javaSecondaryTable.setSpecifiedCatalog("JAVA_CATALOG");
 		assertEquals("BAR", ormSecondaryTable.getDefaultCatalog()); //schema is not defaulted from underlying java
@@ -353,7 +358,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		getEntityMappings().setSpecifiedCatalog(null);
 		assertEquals("FOO", ormSecondaryTable.getDefaultCatalog());
 
-		getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
+		getEntityMappings().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);
 		assertNull(ormSecondaryTable.getDefaultCatalog());
 	}
 	
@@ -526,8 +531,8 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
 		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("bar", uniqueConstraints.next().columnNames().next());
-		assertEquals("foo", uniqueConstraints.next().columnNames().next());
+		assertEquals("bar", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("foo", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	}
 	
@@ -610,8 +615,8 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraintResources.hasNext());
 		
 		Iterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		
@@ -621,7 +626,7 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		assertFalse(uniqueConstraintResources.hasNext());
 
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());		
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());		
 		assertFalse(uniqueConstraints.hasNext());
 
 		
@@ -648,9 +653,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		
 		ormSecondaryTable.moveUniqueConstraint(2, 0);
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		ListIterator<XmlUniqueConstraint> uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
 		assertEquals("BAR", uniqueConstraintResources.next().getColumnNames().get(0));
@@ -660,9 +665,9 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 
 		ormSecondaryTable.moveUniqueConstraint(0, 1);
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 
 		uniqueConstraintResources = secondaryTableResource.getUniqueConstraints().listIterator();
 		assertEquals("BAZ", uniqueConstraintResources.next().getColumnNames().get(0));
@@ -691,34 +696,34 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 
 		
 		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableResource.getUniqueConstraints().move(2, 0);
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableResource.getUniqueConstraints().move(0, 1);
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableResource.getUniqueConstraints().remove(1);
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
+		assertEquals("FOO", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 	
 		secondaryTableResource.getUniqueConstraints().remove(1);
 		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
+		assertEquals("BAZ", uniqueConstraints.next().getColumnNames().iterator().next());
 		assertFalse(uniqueConstraints.hasNext());
 		
 		secondaryTableResource.getUniqueConstraints().remove(0);
@@ -733,32 +738,30 @@ public class OrmSecondaryTableTests extends ContextModelTestCase
 		OrmEntity ormEntity = (OrmEntity) ormPersistentType.getMapping();
 		
 		JavaEntity javaEntity = (JavaEntity) ormPersistentType.getJavaPersistentType().getMapping();
-		JavaSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable(0);
+		JavaSecondaryTable javaSecondaryTable = javaEntity.addSpecifiedSecondaryTable();
 		javaSecondaryTable.setSpecifiedName("SECONDARY");
 		
-		OrmSecondaryTable ormSecondaryTable = ormEntity.secondaryTables().next();
+		ReadOnlySecondaryTable ormSecondaryTable = ormEntity.secondaryTables().next();
 		assertTrue(ormSecondaryTable.isVirtual());
-		ListIterator<OrmUniqueConstraint> uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertFalse(uniqueConstraints.hasNext());
+		assertFalse(ormSecondaryTable.uniqueConstraints().hasNext());
 
 		
-		javaSecondaryTable.addUniqueConstraint(0).addColumnName(0, "FOO");
-		javaSecondaryTable.addUniqueConstraint(1).addColumnName(0, "BAR");
-		javaSecondaryTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
+		javaSecondaryTable.addUniqueConstraint().addColumnName("FOO");
+		javaSecondaryTable.addUniqueConstraint().addColumnName("BAR");
+		javaSecondaryTable.addUniqueConstraint().addColumnName("BAZ");
 
-		uniqueConstraints = ormSecondaryTable.uniqueConstraints();
-		assertTrue(uniqueConstraints.hasNext());
-		assertEquals("FOO", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAR", uniqueConstraints.next().columnNames().next());
-		assertEquals("BAZ", uniqueConstraints.next().columnNames().next());
-		assertFalse(uniqueConstraints.hasNext());
+		List<ReadOnlyUniqueConstraint> uniqueConstraints = CollectionTools.list(ormSecondaryTable.uniqueConstraints());
+		assertEquals(3, uniqueConstraints.size());
+		assertEquals("FOO", uniqueConstraints.get(0).getColumnNames().iterator().next());
+		assertEquals("BAR", uniqueConstraints.get(1).getColumnNames().iterator().next());
+		assertEquals("BAZ", uniqueConstraints.get(2).getColumnNames().iterator().next());
 		
-		ormEntity.setSecondaryTablesDefinedInXml(true);
-		OrmSecondaryTable ormSecondaryTable2 = ormEntity.secondaryTables().next();
+		ormEntity.setSecondaryTablesAreDefinedInXml(true);
+		OrmSecondaryTable ormSecondaryTable2 = ormEntity.specifiedSecondaryTables().next();
 		ormSecondaryTable2.setSpecifiedName("SECONDARY");
 		
 		assertEquals("SECONDARY", ormSecondaryTable.getSpecifiedName());
 		assertFalse(ormSecondaryTable2.isVirtual());
-		assertEquals(0, ormSecondaryTable2.uniqueConstraintsSize());
+		assertEquals(3, ormSecondaryTable2.uniqueConstraintsSize());
 	}
 }

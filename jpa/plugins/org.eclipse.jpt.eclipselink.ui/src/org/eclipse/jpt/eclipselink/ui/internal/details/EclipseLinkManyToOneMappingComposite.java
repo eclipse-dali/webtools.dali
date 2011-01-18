@@ -68,7 +68,6 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class EclipseLinkManyToOneMappingComposite<T extends ManyToOneMapping> 
 	extends AbstractManyToOneMappingComposite<T, ManyToOneRelationshipReference>
-	implements JpaComposite
 {
 	/**
 	 * Creates a new <code>EclipseLinkManyToOneMappingComposite</code>.

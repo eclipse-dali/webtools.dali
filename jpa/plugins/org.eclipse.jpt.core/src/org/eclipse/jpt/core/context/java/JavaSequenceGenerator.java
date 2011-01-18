@@ -13,27 +13,19 @@ import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 
 /**
- * 
- * 
+ * Java sequence generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 2.31
+ * @version 2.1
  * @since 2.0
  */
 public interface JavaSequenceGenerator
 	extends JavaGenerator, SequenceGenerator
 {
-
-	void initialize(SequenceGeneratorAnnotation generatorResource);
-	
-	/**
-	 * Update the JavaSequenceGenerator context model object to match the SequenceGeneratorAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(SequenceGeneratorAnnotation generatorResource);
-
+	SequenceGeneratorAnnotation getGeneratorAnnotation();
 }

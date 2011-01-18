@@ -41,7 +41,7 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 
 	SourceEclipseLinkNamedConverterAnnotation(JavaResourceNode parent, Member member, DeclarationAnnotationAdapter daa) {
 		super(parent, member, daa);
-		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getNameElementName(), false); // false = do not remove annotation when empty
+		this.nameDeclarationAdapter = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, this.getNameElementName());
 		this.nameAdapter = new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, this.nameDeclarationAdapter);
 	}
 
@@ -53,6 +53,12 @@ abstract class SourceEclipseLinkNamedConverterAnnotation
 		this.syncName(this.buildName(astRoot));
 	}
 	
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.context.persistence;
 
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
  * Interface used by persistence unit to gather up persistent types.
@@ -30,4 +31,15 @@ public interface PersistentTypeContainer {
 	 */
 	Iterable<? extends PersistentType> getPersistentTypes();
 
+
+	Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>> TRANSFORMER =
+		new Transformer<PersistentTypeContainer, Iterable<? extends PersistentType>>() {
+			public Iterable<? extends PersistentType> transform(PersistentTypeContainer container) {
+				return container.getPersistentTypes();
+			}
+			@Override
+			public String toString() {
+				return "PersistentTypeContainer.TRANSFORMER"; //$NON-NLS-1$
+			}
+		};
 }

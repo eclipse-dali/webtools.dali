@@ -185,7 +185,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof BasicMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -206,8 +206,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
-		assertNull(persistentAttribute.getSpecifiedMapping());
+		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping().isDefault());
 	
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -226,7 +225,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof VersionMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -247,7 +246,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof IdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -268,7 +267,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -289,7 +288,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof EmbeddedIdMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -310,7 +309,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof TransientMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -331,7 +330,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToOneMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -352,7 +351,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof OneToManyMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -373,7 +372,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
-		persistentAttribute.setSpecifiedMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
+		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		assertTrue(persistentAttribute.getMapping() instanceof ManyToManyMapping);
 		assertFalse(persistentAttribute.getMapping().isDefault());
 		
@@ -400,11 +399,13 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 				
 		//set target entity in the resource model, verify context model updated
 		manyToOne.setTargetEntity("newTargetEntity");
+		this.getJpaProject().synchronizeContextModel();
 		assertEquals("newTargetEntity", manyToOneMapping.getSpecifiedTargetEntity());
 		assertEquals("newTargetEntity", manyToOne.getTargetEntity());
 	
 		//set target entity to null in the resource model
 		manyToOne.setTargetEntity(null);
+		this.getJpaProject().synchronizeContextModel();
 		assertNull(manyToOneMapping.getSpecifiedTargetEntity());
 		assertNull(manyToOne.getTargetEntity());
 	}
@@ -804,11 +805,11 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
 		JoinColumnJoiningStrategy joinColumns = manyToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy();
 		
-		assertTrue(joinColumns.getDefaultJoinColumn().isVirtual());
+		assertTrue(joinColumns.getDefaultJoinColumn().isDefault());
 		
 		joinColumns.addSpecifiedJoinColumn(0);
 		JoinColumn specifiedJoinColumn = joinColumns.specifiedJoinColumns().next();
-		assertFalse(specifiedJoinColumn.isVirtual());
+		assertFalse(specifiedJoinColumn.isDefault());
 		
 		assertNull(joinColumns.getDefaultJoinColumn());
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,44 +41,19 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	 */
 	private final String elementName;
 
-	/**
-	 * Flag to indicate whether the element's annotation is to be
-	 * completely removed if, when the element itself is removed,
-	 * the annotation has no remaining elements.
-	 */
-	private final boolean removeAnnotationWhenEmpty;
-
 
 	// ********** constructors **********
 
 	/**
-	 * The default element name is "value"; the default behavior is to
-	 * remove the annotation when the last element is removed.
+	 * The default element name is <code>value</code>.
 	 */
 	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter) {
 		this(annotationAdapter, VALUE);
 	}
 
-	/**
-	 * The default element name is "value".
-	 */
-	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, boolean removeAnnotationWhenEmpty) {
-		this(annotationAdapter, VALUE, removeAnnotationWhenEmpty);
-	}
-
-	/**
-	 * The default behavior is to remove the annotation when the last
-	 * element is removed.
-	 */
 	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName) {
-		this(annotationAdapter, elementName, true);
-	}
-
-	public ExpressionDeclarationAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, boolean removeAnnotationWhenEmpty) {
-		super();
 		this.annotationAdapter = annotationAdapter;
 		this.elementName = elementName;
-		this.removeAnnotationWhenEmpty = removeAnnotationWhenEmpty;
 	}
 
 
@@ -284,13 +259,8 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 
 	protected void removeElementSingleMemberAnnotation(@SuppressWarnings("unused") SingleMemberAnnotation annotation, ModifiedDeclaration declaration) {
 		if (this.elementName.equals(VALUE)) {
-			if (this.removeAnnotationWhenEmpty) {
-				// @Foo("xxx") => 
-				this.annotationAdapter.removeAnnotation(declaration);
-			} else {
-				// @Foo("xxx") => @Foo
-				this.annotationAdapter.newMarkerAnnotation(declaration);
-			}
+			// @Foo("xxx") => @Foo
+			this.annotationAdapter.newMarkerAnnotation(declaration);
 		} else {
 			// the [non-'value'] element is already gone (?)
 		}
@@ -299,13 +269,8 @@ public class ExpressionDeclarationAnnotationElementAdapter<E extends Expression>
 	protected void removeElementNormalAnnotation(NormalAnnotation annotation, ModifiedDeclaration declaration) {
 		List<MemberValuePair> values = this.values(annotation);
 		if ((values.size() == 1) && values.get(0).getName().getFullyQualifiedName().equals(this.elementName)) {
-			if (this.removeAnnotationWhenEmpty) {
-				// @Foo(bar="xxx") => 
-				this.annotationAdapter.removeAnnotation(declaration);
-			} else {
-				// @Foo(bar="xxx") => @Foo
-				this.annotationAdapter.newMarkerAnnotation(declaration);
-			}
+			// @Foo(bar="xxx") => @Foo
+			this.annotationAdapter.newMarkerAnnotation(declaration);
 		} else {
 			this.removeElement(annotation);
 			if (values.size() == 1) {

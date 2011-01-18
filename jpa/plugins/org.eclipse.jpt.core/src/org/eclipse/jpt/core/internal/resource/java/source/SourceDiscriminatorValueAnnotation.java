@@ -54,6 +54,12 @@ public final class SourceDiscriminatorValueAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);
 	}

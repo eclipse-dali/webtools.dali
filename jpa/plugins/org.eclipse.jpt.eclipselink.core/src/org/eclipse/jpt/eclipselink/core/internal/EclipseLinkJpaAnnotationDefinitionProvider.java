@@ -3,15 +3,15 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal;
 
-import java.util.List;
+import java.util.ArrayList;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
-import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefintionProvider;
+import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicCollectionAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkBasicMapAnnotationDefinition;
@@ -33,63 +33,79 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTransf
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Provides annotations for 1.0 EclipseLink platform
  */
 public class EclipseLinkJpaAnnotationDefinitionProvider
-	extends AbstractJpaAnnotationDefintionProvider
+	extends AbstractJpaAnnotationDefinitionProvider
 {
 	// singleton
-	private static final JpaAnnotationDefinitionProvider INSTANCE = 
-			new EclipseLinkJpaAnnotationDefinitionProvider();
-	
-	
+	private static final JpaAnnotationDefinitionProvider INSTANCE = new EclipseLinkJpaAnnotationDefinitionProvider();
+
 	/**
 	 * Return the singleton
 	 */
 	public static JpaAnnotationDefinitionProvider instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private EclipseLinkJpaAnnotationDefinitionProvider() {
 		super();
 	}
-	
-	
+
 	@Override
-	protected void addTypeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(EclipseLinkCacheAnnotationDefinition.instance());
-		definitions.add(EclipseLinkChangeTrackingAnnotationDefinition.instance());
-		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
-		definitions.add(EclipseLinkCustomizerAnnotationDefinition.instance());
-		definitions.add(EclipseLinkExistenceCheckingAnnotationDefinition.instance());
-		definitions.add(EclipseLinkObjectTypeConverterAnnotationDefinition.instance());
-		definitions.add(EclipseLinkPrimaryKeyAnnotationDefinition.instance());
-		definitions.add(EclipseLinkReadOnlyAnnotationDefinition.instance());
-		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
-		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
+	protected void addTypeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, TYPE_ANNOTATION_DEFINITIONS);
 	}
-	
+
+	protected static final AnnotationDefinition[] TYPE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		EclipseLinkCacheAnnotationDefinition.instance(),
+		EclipseLinkChangeTrackingAnnotationDefinition.instance(),
+		EclipseLinkConverterAnnotationDefinition.instance(),
+		EclipseLinkCustomizerAnnotationDefinition.instance(),
+		EclipseLinkExistenceCheckingAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkPrimaryKeyAnnotationDefinition.instance(),
+		EclipseLinkReadOnlyAnnotationDefinition.instance(),
+		EclipseLinkStructConverterAnnotationDefinition.instance(),
+		EclipseLinkTypeConverterAnnotationDefinition.instance()
+	};
+
 	@Override
-	protected void addAttributeAnnotationDefinitionsTo(List<AnnotationDefinition> definitions) {
-		definitions.add(EclipseLinkBasicCollectionAnnotationDefinition.instance());
-		definitions.add(EclipseLinkBasicMapAnnotationDefinition.instance());
-		definitions.add(EclipseLinkConvertAnnotationDefinition.instance());
-		definitions.add(EclipseLinkConverterAnnotationDefinition.instance());
-		definitions.add(EclipseLinkJoinFetchAnnotationDefinition.instance());
-		definitions.add(EclipseLinkMutableAnnotationDefinition.instance());
-		definitions.add(EclipseLinkObjectTypeConverterAnnotationDefinition.instance());
-		definitions.add(EclipseLinkPrivateOwnedAnnotationDefinition.instance());
-		definitions.add(EclipseLinkReadTransformerAnnotationDefinition.instance());		
-		definitions.add(EclipseLinkStructConverterAnnotationDefinition.instance());		
-		definitions.add(EclipseLinkTransformationAnnotationDefinition.instance());
-		definitions.add(EclipseLinkTypeConverterAnnotationDefinition.instance());		
-		definitions.add(EclipseLinkVariableOneToOneAnnotationDefinition.instance());
-		definitions.add(EclipseLinkWriteTransformerAnnotationDefinition.instance());		
+	protected void addTypeMappingAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		// nothing new for EclipseLink
+	}
+
+	@Override
+	protected void addAttributeAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		CollectionTools.addAll(definitions, ATTRIBUTE_ANNOTATION_DEFINITIONS);
+	}
+
+	protected static final AnnotationDefinition[] ATTRIBUTE_ANNOTATION_DEFINITIONS = new AnnotationDefinition[] {
+		EclipseLinkBasicCollectionAnnotationDefinition.instance(),
+		EclipseLinkBasicMapAnnotationDefinition.instance(),
+		EclipseLinkConvertAnnotationDefinition.instance(),
+		EclipseLinkConverterAnnotationDefinition.instance(),
+		EclipseLinkJoinFetchAnnotationDefinition.instance(),
+		EclipseLinkMutableAnnotationDefinition.instance(),
+		EclipseLinkObjectTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkPrivateOwnedAnnotationDefinition.instance(),
+		EclipseLinkReadTransformerAnnotationDefinition.instance(),
+		EclipseLinkStructConverterAnnotationDefinition.instance(),
+		EclipseLinkTransformationAnnotationDefinition.instance(),
+		EclipseLinkTypeConverterAnnotationDefinition.instance(),
+		EclipseLinkVariableOneToOneAnnotationDefinition.instance(),
+		EclipseLinkWriteTransformerAnnotationDefinition.instance()
+	};
+
+	@Override
+	protected void addPackageAnnotationDefinitionsTo(ArrayList<AnnotationDefinition> definitions) {
+		// no package annotations
 	}
 }

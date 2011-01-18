@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -37,56 +37,192 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * Context persistence.xml class reference
+ * <code>persistence.xml</code> file
+ * <br>
+ * <code>class</code> element
  */
 public class GenericClassRef
 	extends AbstractPersistenceXmlContextNode
 	implements ClassRef
 {
-	// this is null for an "implied" class ref
+	/**
+	 * This is <code>null</code> for a <em>virtual</em> class ref.
+	 */
 	protected final XmlJavaClassRef xmlJavaClassRef;
 
 	protected String className;
 
+	/**
+	 * The Java persistent type corresponding to the ref's class name;
+	 * this can be <code>null</code> if the name is invalid.
+	 */
 	protected JavaPersistentType javaPersistentType;
 
 
-	// ********** construction/initialization **********
+	// ********** constructors **********
 
 	/**
-	 * Construct an "specified" class ref; i.e. a class ref with
-	 * an explicit entry in the persistence.xml.
+	 * Construct a <em>specified</em> class ref; i.e. a class ref with
+	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
-	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef) {
-		this(parent, classRef, classRef.getJavaClass());
+	public GenericClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef) {
+		this(parent, xmlJavaClassRef, xmlJavaClassRef.getJavaClass());
 	}
 
 	/**
-	 * Construct an "implied" class ref; i.e. a class ref without
-	 * an explicit entry in the persistence.xml.
+	 * Construct an <em>virtual</em> class ref; i.e. a class ref without
+	 * an explicit entry in the <code>persistence.xml</code>.
 	 */
 	public GenericClassRef(PersistenceUnit parent, String className) {
 		this(parent, null, className);
 	}
 
-	protected GenericClassRef(PersistenceUnit parent, XmlJavaClassRef classRef, String className) {
+	protected GenericClassRef(PersistenceUnit parent, XmlJavaClassRef xmlJavaClassRef, String className) {
 		super(parent);
-		this.xmlJavaClassRef = classRef;
-		this.initialize(className);
+		this.xmlJavaClassRef = xmlJavaClassRef;
+		this.className = className;
+		// 'javaPersistentType' is resolved in the update
 	}
 
-	protected void initialize(String typeName) {
-		this.className = typeName;
-		this.javaPersistentType = this.buildJavaPersistentType();
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		// virtual class refs are matched by name in the persistence unit
+		// so no need to sync it here (also, 'xmlJavaClassRef' is null...)
+		if (this.isNotVirtual()) {
+			// the name probably never changes...
+			this.setClassName_(this.xmlJavaClassRef.getJavaClass());
+		}
+		if (this.javaPersistentType != null) {
+			this.javaPersistentType.synchronizeWithResourceModel();
+		}
 	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.updateJavaPersistentType();
+	}
+
+
+	// ********** class name **********
+
+	public String getClassName() {
+		return this.className;
+	}
+
+	public void setClassName(String className) {
+		if (this.isVirtual()) {
+			throw new IllegalStateException("The name of a virtual class ref cannot be changed: " + this); //$NON-NLS-1$
+		}
+		this.setClassName_(className);
+		this.xmlJavaClassRef.setJavaClass(className);
+	}
+
+	protected void setClassName_(String className) {
+		String old = this.className;
+		this.className = className;
+		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, className);
+	}
+
+	/**
+	 * Nested classes will be qualified with a '$'; the Java name is qualified
+	 * with a '.'. Like <code>className</code>, this can be <code>null</code>.
+	 */
+	protected String getJavaClassName() {
+		return StringTools.stringIsEmpty(this.className) ? null : this.className.replace('$', '.');
+	}
+
+
+	// ********** java persistent type **********
+
+	public JavaPersistentType getJavaPersistentType() {
+		return this.javaPersistentType;
+	}
+
+	protected void setJavaPersistentType(JavaPersistentType javaPersistentType) {
+		JavaPersistentType old = this.javaPersistentType;
+		this.javaPersistentType = javaPersistentType;
+		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
+	}
+
+	protected void updateJavaPersistentType() {
+		JavaResourcePersistentType resourceType = this.resolveJavaResourcePersistentType();
+		if (resourceType == null) {
+			if (this.javaPersistentType != null) {
+				this.javaPersistentType.dispose();
+				this.setJavaPersistentType(null);
+			}
+		} else {
+			if (this.javaPersistentType == null) {
+				this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
+			} else {
+				if (this.javaPersistentType.getResourcePersistentType() == resourceType) {
+					this.javaPersistentType.update();
+				} else {
+					this.javaPersistentType.dispose();
+					this.setJavaPersistentType(this.buildJavaPersistentType(resourceType));
+				}
+			}
+		}
+	}
+
+	protected JavaResourcePersistentType resolveJavaResourcePersistentType() {
+		String javaClassName = this.getJavaClassName();
+		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourcePersistentType(javaClassName);
+	}
+
+	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
+		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
+	}
+
+
+	// ********** misc **********
 
 	@Override
 	public PersistenceUnit getParent() {
 		return (PersistenceUnit) super.getParent();
 	}
-	
-	public XmlJavaClassRef getResourceClassRef() {
+
+	public XmlJavaClassRef getXmlClassRef() {
 		return this.xmlJavaClassRef;
+	}
+
+	protected boolean isFor(IType type) {
+		return this.isFor(type.getFullyQualifiedName('.'));
+	}
+
+	public boolean isFor(String typeName) {
+		return Tools.valuesAreEqual(typeName, this.getJavaClassName());
+	}
+
+	protected boolean isInPackage(IPackageFragment packageFragment) {
+		return Tools.valuesAreEqual(this.getPackageName(), packageFragment.getElementName());
+	}
+
+	protected String getPackageName() {
+		int lastPeriod = this.className.lastIndexOf('.');
+		return (lastPeriod == -1) ? null : this.className.substring(0, lastPeriod);
+	}
+
+	public boolean isVirtual() {
+		return this.xmlJavaClassRef == null;
+	}
+
+	protected boolean isNotVirtual() {
+		return ! this.isVirtual();
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return this.isNotVirtual() && this.xmlJavaClassRef.containsOffset(textOffset);
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.getJavaClassName());
 	}
 
 
@@ -95,7 +231,7 @@ public class GenericClassRef
 	public String getId() {
 		return PersistenceStructureNodes.CLASS_REF_ID;
 	}
-	
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
@@ -123,136 +259,54 @@ public class GenericClassRef
 	}
 
 
-	// ********** queries **********
+	//*********** refactoring ***********
 
-	public boolean isFor(String typeName) {
-		return Tools.valuesAreEqual(typeName, this.getJavaClassName());
-	}
-
-	protected boolean isFor(IType type) {
-		return this.isFor(type.getFullyQualifiedName('.'));
-	}
-
-	protected boolean isInPackage(IPackageFragment packageFragment) {
-		String packageName = this.getPackageName();
-		return packageName == null ? false : packageName.equals(packageFragment.getElementName());
-	}
-
-	protected String getPackageName() {
-		int packageEnd = this.className.lastIndexOf('.');
-		if (packageEnd == -1 ) {
-			return null;
+	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
+		if (this.isVirtual()) {
+			throw new IllegalStateException();
 		}
-		return this.className.substring(0, packageEnd);
+		return this.isFor(type) ?
+				new SingleElementIterable<DeleteEdit>(this.createDeleteEdit()) :
+				EmptyIterable.<DeleteEdit>instance();
 	}
 
-	public boolean isVirtual() {
-		return this.xmlJavaClassRef == null;
+	protected DeleteEdit createDeleteEdit() {
+		return this.xmlJavaClassRef.createDeleteEdit();
 	}
 
-	public boolean containsOffset(int textOffset) {
-		return this.isNotVirtual() && this.xmlJavaClassRef.containsOffset(textOffset);
-	}
-
-	protected boolean isNotVirtual() {
-		return ! this.isVirtual();
-	}
-
-
-	// ********** class name **********
-
-	public String getClassName() {
-		return this.className;
-	}
-
-	public void setClassName(String className) {
-		String old = this.className;
-		this.className = className;
-		this.xmlJavaClassRef.setJavaClass(className);
-		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, className);
-	}
-
-	protected void setClassName_(String newClassName) {
-		String old = this.className;
-		this.className = newClassName;
-		this.firePropertyChanged(CLASS_NAME_PROPERTY, old, newClassName);
-	}
-
-	/**
-	 * Nested classes will be qualified with a '$'; the Java name is qualified
-	 * with a '.'. Like <code>className</code>, this can be <code>null</code>.
-	 */
-	protected String getJavaClassName() {
-		return StringTools.stringIsEmpty(this.className) ? null : this.className.replace('$', '.');
-	}
-
-
-	// ********** java persistent type **********
-
-	public JavaPersistentType getJavaPersistentType() {
-		return this.javaPersistentType;
-	}
-
-	protected void setJavaPersistentType(JavaPersistentType javaPersistentType) {
-		JavaPersistentType old = this.javaPersistentType;
-		this.javaPersistentType = javaPersistentType;
-		this.firePropertyChanged(JAVA_PERSISTENT_TYPE_PROPERTY, old, javaPersistentType);
-	}
-
-	protected JavaPersistentType buildJavaPersistentType() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		return (jrpt == null) ? null : this.buildJavaPersistentType(jrpt);
-	}
-
-	protected JavaPersistentType buildJavaPersistentType(JavaResourcePersistentType jrpt) {
-		return this.getJpaFactory().buildJavaPersistentType(this, jrpt);
-	}
-
-	protected void updateJavaPersistentType() {
-		JavaResourcePersistentType jrpt = this.getJavaResourcePersistentType();
-		if (jrpt == null) {
-			if (this.javaPersistentType != null) {
-				this.javaPersistentType.dispose();
-				this.setJavaPersistentType(null);
-			}
-		} else { 
-			if (this.javaPersistentType == null) {
-				this.setJavaPersistentType(this.buildJavaPersistentType(jrpt));
-			} else {
-				this.javaPersistentType.update(jrpt);
-			}
+	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
+		if (this.isVirtual()) {
+			throw new IllegalStateException();
 		}
+		return this.isFor(originalType) ?
+				new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
-	protected JavaResourcePersistentType getJavaResourcePersistentType() {
-		String javaClassName = this.getJavaClassName();
-		return (javaClassName == null) ? null : this.getJpaProject().getJavaResourcePersistentType(javaClassName);
+	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
+		return this.xmlJavaClassRef.createRenameEdit(originalType, newName);
 	}
 
-
-	// ********** updating **********
-
-	public void update() {
-		this.update(this.xmlJavaClassRef.getJavaClass());
-	}
-
-	public void update(String typeName) {
-		this.setClassName_(typeName);
-		this.updateJavaPersistentType();
-	}
-
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.javaPersistentType != null) {
-			this.javaPersistentType.postUpdate();
+	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
+		if (this.isVirtual()) {
+			throw new IllegalStateException();
 		}
+		return this.isFor(originalType) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
-	
-	// ********** XmlContextNode implementation **********
 
-	public TextRange getValidationTextRange() {
-		return this.isVirtual() ? null : this.xmlJavaClassRef.getValidationTextRange();
+	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
+		if (this.isVirtual()) {
+			throw new IllegalStateException();
+		}
+		return this.isInPackage(originalPackage) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
+	}
+
+	protected ReplaceEdit createRenamePackageEdit(String newName) {
+		return this.xmlJavaClassRef.createRenamePackageEdit(newName);
 	}
 
 
@@ -279,15 +333,15 @@ public class GenericClassRef
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_CLASS,
-					new String[] {this.getJavaClassName()}, 
-					this, 
+					new String[] {this.getJavaClassName()},
+					this,
 					this.getValidationTextRange()
 				)
 			);
 			return;
 		}
 
-		// 190062 validate Java class only if this is the only reference to it;
+		// 190062 validate Java class only if this is the only reference to it
 		// i.e. the persistence.xml ref is the only ref - none of the mapping
 		// files reference the same class
 		boolean validateJavaPersistentType = true;
@@ -318,67 +372,7 @@ public class GenericClassRef
 		}
 	}
 
-
-	//*********** refactoring ***********
-
-	public Iterable<DeleteEdit> createDeleteTypeEdits(final IType type) {
-		if (isVirtual()) {
-			throw new IllegalStateException();
-		}
-		if (this.isFor(type)) {
-			return new SingleElementIterable<DeleteEdit>(this.createDeleteEdit());
-		}
-		return EmptyIterable.instance();
+	public TextRange getValidationTextRange() {
+		return this.isVirtual() ? null : this.xmlJavaClassRef.getValidationTextRange();
 	}
-
-	protected DeleteEdit createDeleteEdit() {
-		return this.xmlJavaClassRef.createDeleteEdit();
-	}
-
-	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (isVirtual()) {
-			throw new IllegalStateException();
-		}
-		if (this.isFor(originalType)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceEdit(originalType, newName));
-		}
-		return EmptyIterable.instance();
-	}
-
-	protected ReplaceEdit createReplaceEdit(IType originalType, String newName) {
-		return this.xmlJavaClassRef.createRenameEdit(originalType, newName);
-	}
-
-	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (isVirtual()) {
-			throw new IllegalStateException();
-		}
-		if (this.isFor(originalType)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
-		}
-		return EmptyIterable.instance();
-	}
-
-	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (isVirtual()) {
-			throw new IllegalStateException();
-		}
-		if (this.isInPackage(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
-	}
-
-	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return this.xmlJavaClassRef.createRenamePackageEdit(newName);
-	}
-
-
-	// ********** misc **********
-
-	@Override
-	public void toString(StringBuilder sb) {
-		sb.append(this.getJavaClassName());
-	}
-
 }

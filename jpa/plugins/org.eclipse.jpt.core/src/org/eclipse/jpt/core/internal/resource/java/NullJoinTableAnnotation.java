@@ -17,10 +17,10 @@ import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
- * javax.persistence.JoinTable
+ * <code>javax.persistence.JoinTable</code>
  */
 public class NullJoinTableAnnotation
-	extends NullBaseTableAnnotation
+	extends NullBaseTableAnnotation<JoinTableAnnotation>
 	implements JoinTableAnnotation
 {	
 	public NullJoinTableAnnotation(JavaResourceNode parent) {
@@ -29,11 +29,6 @@ public class NullJoinTableAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected JoinTableAnnotation addAnnotation() {
-		return (JoinTableAnnotation) super.addAnnotation();
 	}
 
 	// ***** join columns
@@ -95,5 +90,4 @@ public class NullJoinTableAnnotation
 	public void removeInverseJoinColumn(int index) {
 		throw new UnsupportedOperationException();
 	}
-
 }

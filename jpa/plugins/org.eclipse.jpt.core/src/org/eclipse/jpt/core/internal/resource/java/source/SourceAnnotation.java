@@ -9,18 +9,34 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTNodeTextRange;
+import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.AnnotatedElementAnnotationElementAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 
 /**
  * some common state and behavior for Java source annotations;
@@ -32,9 +48,11 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 {
 	protected final A annotatedElement;
 
-	protected final DeclarationAnnotationAdapter daa;
+	// TODO - make 'final' if we start using combination annotation adapters(?)
+	protected DeclarationAnnotationAdapter daa;
 
-	protected final AnnotationAdapter annotationAdapter;
+	// TODO - make 'final' if we start using combination annotation adapters(?)
+	protected AnnotationAdapter annotationAdapter;
 
 
 	/**
@@ -76,8 +94,45 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 		this.annotationAdapter.removeAnnotation();
 	}
 
+	public boolean isUnset() {
+		return true;
+	}
+
 
 	// ********** convenience methods **********
+
+	@Override
+	public JavaResourcePersistentMember getParent() {
+		return (JavaResourcePersistentMember) super.getParent();
+	}
+
+	protected IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
+		return (IndexedAnnotationAdapter) this.annotationAdapter;
+	}
+
+	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName);
+	}
+
+	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forBooleans(this.daa, elementName);
+	}
+
+	protected DeclarationAnnotationElementAdapter<Integer> buildIntegerElementAdapter(String elementName) {
+		return ConversionDeclarationAnnotationElementAdapter.forNumbers(this.daa, elementName);
+	}
+
+	protected AnnotationElementAdapter<String> buildStringElementAdapter(DeclarationAnnotationElementAdapter<String> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<String>(this.annotatedElement, daea);
+	}
+
+	protected AnnotationElementAdapter<Boolean> buildBooleanElementAdapter(DeclarationAnnotationElementAdapter<Boolean> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<Boolean>(this.annotatedElement, daea);
+	}
+
+	protected AnnotationElementAdapter<Integer> buildIntegerElementAdapter(DeclarationAnnotationElementAdapter<Integer> daea) {
+		return new AnnotatedElementAnnotationElementAdapter<Integer>(this.annotatedElement, daea);
+	}
 
 	/**
 	 * Return the text range corresponding to the annotation.
@@ -143,4 +198,68 @@ public abstract class SourceAnnotation<A extends AnnotatedElement>
 		return (astNode == null) ? null : new ASTNodeTextRange(astNode);
 	}
 
+	/**
+	 * Convenience implementation of
+	 * {@link org.eclipse.jpt.core.resource.java.NestableAnnotation#convertToNested(ContainerAnnotation, DeclarationAnnotationAdapter, int)}
+	 * used by subclasses.
+	 */
+	public void convertToNested(ContainerAnnotation<? extends NestableAnnotation> containerAnnotation, DeclarationAnnotationAdapter containerAnnotationAdapter, int index) {
+		Map<String, Object> map = this.buildState();
+		this.removeAnnotation();  // this annotation has already been removed from the model
+		IndexedDeclarationAnnotationAdapter idaa = this.buildNestedDeclarationAnnotationAdapter(containerAnnotationAdapter, index);
+		this.daa = idaa;
+		this.annotationAdapter = new ElementIndexedAnnotationAdapter(this.annotatedElement, idaa);
+		this.rebuildAdapters();
+		containerAnnotation.addNestedAnnotation(index, (NestableAnnotation) this);
+		this.newAnnotation();
+		this.restoreFrom(map);
+	}
+
+	/**
+	 * Convenience implementation of
+	 * {@link org.eclipse.jpt.core.resource.java.NestableAnnotation#convertToStandAlone()}
+	 * used by subclasses.
+	 */
+	public void convertToStandAlone() {
+		Map<String, Object> map = this.buildState();
+		this.removeAnnotation();  // this annotation has already been removed from the model
+		this.daa = new SimpleDeclarationAnnotationAdapter(this.getAnnotationName());
+		this.annotationAdapter = new ElementAnnotationAdapter(this.annotatedElement, this.daa);
+		this.rebuildAdapters();
+		this.getParent().addStandAloneAnnotation((NestableAnnotation) this);
+		this.newAnnotation();
+		this.restoreFrom(map);
+	}
+
+	private Map<String, Object> buildState() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		this.storeOn(map);
+		return map;
+	}
+
+	protected void rebuildAdapters() {
+		// this is only needed by nestable annotations
+	}
+
+	public void storeOn(Map<String, Object> map) {
+		// this is only needed by nestable annotations
+	}
+
+	public void restoreFrom(Map<String, Object> map) {
+		// this is only needed by nestable annotations
+	}
+
+	protected List<Map<String, Object>> buildStateList(int initialCapacity) {
+		return (initialCapacity == 0) ?
+				Collections.<Map<String, Object>>emptyList() :
+				new ArrayList<Map<String, Object>>(initialCapacity);
+	}
+
+	protected IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter containerAnnotationAdapter, int index) {
+		return buildNestedDeclarationAnnotationAdapter(index, containerAnnotationAdapter, this.getAnnotationName());
+	}
+
+	protected static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter containerAnnotationAdapter, String annotationName) {
+		return new NestedIndexedDeclarationAnnotationAdapter(containerAnnotationAdapter, index, annotationName);
+	}
 }

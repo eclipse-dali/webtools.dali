@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 
 /**
- * 
+ * JPA 2.0 <code>orm.xml</code> ordering
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,8 +27,5 @@ import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 public interface OrmOrderable2_0
 	extends Orderable2_0, OrmOrderable
 {
-	OrmAttributeMapping getParent();
-
 	OrmOrderColumn2_0 getOrderColumn();
-
 }

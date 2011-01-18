@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
@@ -44,7 +43,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.jdt.Type;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.IntReference;
+import org.eclipse.jpt.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -78,13 +77,11 @@ final class SourcePersistentType
 
 	private boolean hasNoArgConstructor;
 
-	private final Vector<JavaResourcePersistentType> types;
+	private final Vector<JavaResourcePersistentType> types = new Vector<JavaResourcePersistentType>();
 
-	private final Vector<JavaResourcePersistentAttribute> fields;
+	private final Vector<JavaResourcePersistentAttribute> fields = new Vector<JavaResourcePersistentAttribute>();
 
-	private final Vector<JavaResourcePersistentAttribute> methods;
-
-	private AccessType access;
+	private final Vector<JavaResourcePersistentAttribute> methods = new Vector<JavaResourcePersistentAttribute>();
 
 	private StaticMetamodelAnnotation staticMetamodelAnnotation;
 		//TODO move to interface after maintenance
@@ -141,9 +138,6 @@ final class SourcePersistentType
 
 	private SourcePersistentType(JavaResourceCompilationUnit javaResourceCompilationUnit, Type type) {
 		super(javaResourceCompilationUnit, type);
-		this.types = new Vector<JavaResourcePersistentType>();
-		this.fields = new Vector<JavaResourcePersistentAttribute>();
-		this.methods = new Vector<JavaResourcePersistentAttribute>();
 	}
 
 	@Override
@@ -163,8 +157,6 @@ final class SourcePersistentType
 		this.initializeTypes(astRoot);
 		this.initializeFields(astRoot);
 		this.initializeMethods(astRoot);
-		// need to wait until everything is built to calculate 'access'
-		this.access = this.buildAccess();
 	}
 
 	/**
@@ -173,19 +165,13 @@ final class SourcePersistentType
 	 * annotations....
 	 */
 	@Override
-	void addInitialAnnotation(String jdtAnnotationName, CompilationUnit astRoot) {
-		if (jdtAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
-			if (this.staticMetamodelAnnotation == null) { // ignore duplicates
-				this.staticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
-				this.staticMetamodelAnnotation.initialize(astRoot);
-			}
-		} else if (jdtAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
-			if (this.generatedAnnotation == null) { // ignore duplicates
-				this.generatedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
-				this.generatedAnnotation.initialize(astRoot);
-			}
+	void addInitialAnnotation(String astAnnotationName, CompilationUnit astRoot) {
+		if (astAnnotationName.equals(STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName())) {
+			this.addInitialStaticMetamodelAnnotation(astRoot);
+		} else if (astAnnotationName.equals(GENERATED_ANNOTATION_DEFINITION.getAnnotationName())) {
+			this.addInitialGeneratedAnnotation(astRoot);
 		} else {
-			super.addInitialAnnotation(jdtAnnotationName, astRoot);
+			super.addInitialAnnotation(astAnnotationName, astRoot);
 		}
 	}
 
@@ -200,7 +186,7 @@ final class SourcePersistentType
 		this.syncQualifiedName(this.buildQualifiedName(binding));
 		this.syncPackageName(this.buildPackageName(binding));
 		this.syncSuperclassQualifiedName(this.buildSuperclassQualifiedName(binding));
-		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));		
+		this.syncDeclaringTypeName(this.buildDeclaringTypeName(binding));
 		this.syncAbstract(this.buildAbstract(binding));
 		this.syncStatic(this.buildStatic(binding));
 		this.syncMemberType(this.buildMemberType(binding));
@@ -210,8 +196,6 @@ final class SourcePersistentType
 		this.syncFields(astRoot);
 		this.syncMethods(astRoot);
 		this.syncMetamodelAnnotations(astRoot);
-		// need to wait until everything is built to calculate 'access'
-		this.syncAccess(this.buildAccess());
 	}
 
 	/**
@@ -222,59 +206,12 @@ final class SourcePersistentType
 	 */
 	private void syncMetamodelAnnotations(CompilationUnit astRoot) {
 		ITypeBinding binding = this.annotatedElement.getBinding(astRoot);
-		this.syncStaticMetamodelAnnotation(astRoot, binding);
-		this.syncGeneratedAnnotation(astRoot, binding);
-	}
-
-	private void syncStaticMetamodelAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
-		if (binding != null && this.containsStaticMetamodelAnnotation(binding)) {
-			if (this.staticMetamodelAnnotation != null) {
-				this.staticMetamodelAnnotation.synchronizeWith(astRoot);				
-			}
-			else {
-				StaticMetamodelAnnotation newStaticMetamodelAnnotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
-				newStaticMetamodelAnnotation.initialize(astRoot);				
-				this.setStaticMetamodelAnnotation(newStaticMetamodelAnnotation);
-			}
-		}
-		else {
-			this.setStaticMetamodelAnnotation(null);
+		if (binding != null) {
+			this.syncStaticMetamodelAnnotation(astRoot, binding);
+			this.syncGeneratedAnnotation(astRoot, binding);
 		}
 	}
 
-	private void syncGeneratedAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
-		if (binding != null && this.containsGeneratedAnnotation(binding)) {
-			if (this.generatedAnnotation != null) {
-				this.generatedAnnotation.synchronizeWith(astRoot);				
-			}
-			else {
-				GeneratedAnnotation newGeneratedAnnotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
-				newGeneratedAnnotation.initialize(astRoot);
-				this.setGeneratedAnnotation(newGeneratedAnnotation);
-			}
-		}
-		else {
-			this.setGeneratedAnnotation(null);
-		}
-	}
-
-	private boolean containsStaticMetamodelAnnotation(ITypeBinding binding) {
-		return this.containsAnnotation(binding, STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName());
-	}
-
-	private boolean containsGeneratedAnnotation(ITypeBinding binding) {
-		return this.containsAnnotation(binding, GENERATED_ANNOTATION_DEFINITION.getAnnotationName());
-	}
-
-	private boolean containsAnnotation(ITypeBinding binding, String annotationName) {
-		for (IAnnotationBinding annotationBinding : binding.getAnnotations()) {
-			ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
-			if (annotationTypeBinding != null && annotationTypeBinding.getQualifiedName().equals(annotationName)) {
-				return true;
-			}
-		}
-		return false;
-	}
 
 	// ********** SourcePersistentMember implementation **********
 
@@ -433,10 +370,10 @@ final class SourcePersistentType
 		return this.static_;
 	}
 
-	private void syncStatic(boolean static_) {
+	private void syncStatic(boolean astStatic_) {
 		boolean old = this.static_;
-		this.static_ = static_;
-		this.firePropertyChanged(STATIC_PROPERTY, old, static_);
+		this.static_ = astStatic_;
+		this.firePropertyChanged(STATIC_PROPERTY, old, astStatic_);
 	}
 
 	private boolean buildStatic(ITypeBinding binding) {
@@ -448,10 +385,10 @@ final class SourcePersistentType
 		return this.memberType;
 	}
 
-	private void syncMemberType(boolean memberType) {
+	private void syncMemberType(boolean astMemberType) {
 		boolean old = this.memberType;
-		this.memberType = memberType;
-		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, memberType);
+		this.memberType = astMemberType;
+		this.firePropertyChanged(MEMBER_TYPE_PROPERTY, old, astMemberType);
 	}
 
 	private boolean buildMemberType(ITypeBinding binding) {
@@ -463,10 +400,10 @@ final class SourcePersistentType
 		return this.hasNoArgConstructor;
 	}
 
-	private void syncHasNoArgConstructor(boolean hasNoArgConstructor) {
+	private void syncHasNoArgConstructor(boolean astHasNoArgConstructor) {
 		boolean old = this.hasNoArgConstructor;
-		this.hasNoArgConstructor = hasNoArgConstructor;
-		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, hasNoArgConstructor);
+		this.hasNoArgConstructor = astHasNoArgConstructor;
+		this.firePropertyChanged(NO_ARG_CONSTRUCTOR_PROPERTY, old, astHasNoArgConstructor);
 	}
 
 	private boolean buildHasNoArgConstructor(ITypeBinding binding) {
@@ -476,7 +413,7 @@ final class SourcePersistentType
 	protected static boolean typeHasNoArgConstructor(ITypeBinding binding) {
 		return findNoArgConstructor(binding) != null;
 	}
-	
+
 	protected static IMethodBinding findNoArgConstructor(ITypeBinding binding) {
 		for (IMethodBinding method : binding.getDeclaredMethods()) {
 			if (method.isConstructor()) {
@@ -493,10 +430,10 @@ final class SourcePersistentType
 		return this.hasPrivateNoArgConstructor;
 	}
 
-	private void syncHasPrivateNoArgConstructor(boolean hasPrivateNoArgConstructor) {
+	private void syncHasPrivateNoArgConstructor(boolean astHasPrivateNoArgConstructor) {
 		boolean old = this.hasPrivateNoArgConstructor;
-		this.hasPrivateNoArgConstructor = hasPrivateNoArgConstructor;
-		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, hasPrivateNoArgConstructor);
+		this.hasPrivateNoArgConstructor = astHasPrivateNoArgConstructor;
+		this.firePropertyChanged(PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY, old, astHasPrivateNoArgConstructor);
 	}
 
 	private boolean buildHasPrivateNoArgConstructor(ITypeBinding binding) {
@@ -505,28 +442,13 @@ final class SourcePersistentType
 
 	protected static boolean typeHasPrivateNoArgConstructor(ITypeBinding binding) {
 		IMethodBinding method = findNoArgConstructor(binding);
-		return method != null && Modifier.isPrivate(method.getModifiers());
+		return (method != null) && Modifier.isPrivate(method.getModifiers());
 	}
 
-	// ***** access
+
+	// ********** misc **********
+
 	public AccessType getAccess() {
-		return this.access;
-	}
-
-	// TODO
-	//seems we could have a public changeAccess() api which would
-	//move all annotations from fields to their corresponding methods or vice versa
-	//though of course it's more complicated than that since what if the
-	//corresponding field/method does not exist?
-	//making this internal since it should only be set based on changes in the source, the
-	//context model should not need to set this
-	private void syncAccess(AccessType astAccess) {
-		AccessType old = this.access;
-		this.access = astAccess;
-		this.firePropertyChanged(ACCESS_PROPERTY, old, astAccess);
-	}
-
-	private AccessType buildAccess() {
 		return JPTTools.buildAccess(this);
 	}
 
@@ -649,12 +571,10 @@ final class SourcePersistentType
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableFieldsWithSpecifiedFieldAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableFields()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
-				return resourceAttribute.getSpecifiedAccess() == AccessType.FIELD;
-			}
-		};
+		return new FilteringIterator<JavaResourcePersistentAttribute>(
+				this.persistableFields(),
+				FIELD_ACCESS_TYPE_FILTER
+			);
 	}
 
 	private void addField(JavaResourcePersistentAttribute field) {
@@ -733,12 +653,10 @@ final class SourcePersistentType
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistablePropertiesWithSpecifiedPropertyAccess() {
-		return new FilteringIterator<JavaResourcePersistentAttribute>(this.persistableProperties()) {
-			@Override
-			protected boolean accept(JavaResourcePersistentAttribute resourceAttribute) {
-				return resourceAttribute.getSpecifiedAccess() == AccessType.PROPERTY;
-			}
-		};
+		return new FilteringIterator<JavaResourcePersistentAttribute>(
+				this.persistableProperties(),
+				PROPERTY_ACCESS_TYPE_FILTER
+			);
 	}
 
 	private JavaResourcePersistentAttribute getMethod(MethodSignature signature, int occurrence) {
@@ -803,12 +721,14 @@ final class SourcePersistentType
 	}
 
 	public Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess) {
-		if (specifiedAccess == null) {
-			throw new IllegalArgumentException("specified access is null"); //$NON-NLS-1$
+		switch (specifiedAccess) {
+			case FIELD :
+				return this.persistableAttributesForFieldAccessType();
+			case PROPERTY :
+				return this.persistableAttributesForPropertyAccessType();
+			default :
+				throw new IllegalArgumentException("unknown access: " + specifiedAccess); //$NON-NLS-1$
 		}
-		return (specifiedAccess == AccessType.FIELD) ?
-					this.persistableAttributesForFieldAccessType() :
-					this.persistableAttributesForPropertyAccessType();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -830,6 +750,42 @@ final class SourcePersistentType
 
 	// ********** metamodel **********
 
+	// ***** StaticMetamodel
+	private void setStaticMetamodelAnnotation(StaticMetamodelAnnotation staticMetamodelAnnotation) {
+		StaticMetamodelAnnotation old = this.staticMetamodelAnnotation;
+		this.staticMetamodelAnnotation = staticMetamodelAnnotation;
+		this.firePropertyChanged(STATIC_METAMODEL_ANNOTATION_PROPERTY, old, this.staticMetamodelAnnotation);
+	}
+
+	private void addInitialStaticMetamodelAnnotation(CompilationUnit astRoot) {
+		if (this.staticMetamodelAnnotation == null) { // ignore duplicates
+			this.staticMetamodelAnnotation = this.buildStaticMetamodelAnnotation(astRoot);
+		}
+	}
+
+	private StaticMetamodelAnnotation buildStaticMetamodelAnnotation(CompilationUnit astRoot) {
+		StaticMetamodelAnnotation annotation = STATIC_METAMODEL_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
+		annotation.initialize(astRoot);
+		return annotation;
+	}
+
+	private void syncStaticMetamodelAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
+		if (this.bindingContainsStaticMetamodelAnnotation(binding)) {
+			if (this.staticMetamodelAnnotation != null) {
+				this.staticMetamodelAnnotation.synchronizeWith(astRoot);
+			} else {
+				this.setStaticMetamodelAnnotation(this.buildStaticMetamodelAnnotation(astRoot));
+			}
+		} else {
+			this.setStaticMetamodelAnnotation(null);
+		}
+	}
+
+	private boolean bindingContainsStaticMetamodelAnnotation(ITypeBinding binding) {
+		return this.bindingContainsAnnotation(binding, STATIC_METAMODEL_ANNOTATION_DEFINITION.getAnnotationName());
+	}
+
+	// ***** Generated
 	public GeneratedAnnotation getGeneratedAnnotation() {
 		return this.generatedAnnotation;
 	}
@@ -837,13 +793,45 @@ final class SourcePersistentType
 	private void setGeneratedAnnotation(GeneratedAnnotation generatedAnnotation) {
 		GeneratedAnnotation old = this.generatedAnnotation;
 		this.generatedAnnotation = generatedAnnotation;
-		firePropertyChanged(GENERATED_ANNOTATION_PROPERTY, old, this.generatedAnnotation);
+		this.firePropertyChanged(GENERATED_ANNOTATION_PROPERTY, old, this.generatedAnnotation);
 	}
 
-	private void setStaticMetamodelAnnotation(StaticMetamodelAnnotation staticMetamodelAnnotation) {
-		StaticMetamodelAnnotation old = this.staticMetamodelAnnotation;
-		this.staticMetamodelAnnotation = staticMetamodelAnnotation;
-		firePropertyChanged(STATIC_METAMODEL_ANNOTATION_PROPERTY, old, this.staticMetamodelAnnotation);
+	private void addInitialGeneratedAnnotation(CompilationUnit astRoot) {
+		if (this.generatedAnnotation == null) { // ignore duplicates
+			this.generatedAnnotation = this.buildGeneratedAnnotation(astRoot);
+		}
+	}
+
+	private GeneratedAnnotation buildGeneratedAnnotation(CompilationUnit astRoot) {
+		GeneratedAnnotation annotation = GENERATED_ANNOTATION_DEFINITION.buildAnnotation(this, this.annotatedElement);
+		annotation.initialize(astRoot);
+		return annotation;
+	}
+
+	private void syncGeneratedAnnotation(CompilationUnit astRoot, ITypeBinding binding) {
+		if (this.bindingContainsGeneratedAnnotation(binding)) {
+			if (this.generatedAnnotation != null) {
+				this.generatedAnnotation.synchronizeWith(astRoot);
+			} else {
+				this.setGeneratedAnnotation(this.buildGeneratedAnnotation(astRoot));
+			}
+		} else {
+			this.setGeneratedAnnotation(null);
+		}
+	}
+
+	private boolean bindingContainsGeneratedAnnotation(ITypeBinding binding) {
+		return this.bindingContainsAnnotation(binding, GENERATED_ANNOTATION_DEFINITION.getAnnotationName());
+	}
+
+	private boolean bindingContainsAnnotation(ITypeBinding binding, String annotationName) {
+		for (IAnnotationBinding annotationBinding : binding.getAnnotations()) {
+			ITypeBinding annotationTypeBinding = annotationBinding.getAnnotationType();
+			if ((annotationTypeBinding != null) && annotationTypeBinding.getQualifiedName().equals(annotationName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -873,7 +861,7 @@ final class SourcePersistentType
 	 * </ul>
 	 */
 	public boolean isGeneratedMetamodelTopLevelType() {
-		if ( !  this.isGenerated()) {
+		if ( ! this.isGenerated()) {
 			return false;
 		}
 		// if we get here we know we have a top-level type, since only top-level
@@ -892,7 +880,7 @@ final class SourcePersistentType
 	 * <code>&#64;javax.annotation.Generated</code> with the appropriate
 	 * <code>value</code> and <code>date</code>.
 	 */
-	protected boolean isGenerated() {
+	private boolean isGenerated() {
 		if (this.generatedAnnotation == null) {
 			return false;
 		}
@@ -924,25 +912,24 @@ final class SourcePersistentType
 	// ********** CounterMap **********
 
 	private static class CounterMap {
-		private final HashMap<Object, IntReference> counters;
+		private final HashMap<Object, SimpleIntReference> counters;
 
 		protected CounterMap(int initialCapacity) {
 			super();
-			this.counters = new HashMap<Object, IntReference>(initialCapacity);
+			this.counters = new HashMap<Object, SimpleIntReference>(initialCapacity);
 		}
 
 		/**
 		 * Return the incremented count for the specified object.
 		 */
 		int increment(Object o) {
-			IntReference counter = this.counters.get(o);
+			SimpleIntReference counter = this.counters.get(o);
 			if (counter == null) {
-				counter = new IntReference();
+				counter = new SimpleIntReference();
 				this.counters.put(o, counter);
 			}
 			counter.increment();
 			return counter.getValue();
 		}
 	}
-
 }

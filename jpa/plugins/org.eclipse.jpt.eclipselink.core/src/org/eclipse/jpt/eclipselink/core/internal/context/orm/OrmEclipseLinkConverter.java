@@ -1,95 +1,100 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.text.edits.ReplaceEdit;
 
-public abstract class OrmEclipseLinkConverter<T extends XmlNamedConverter>
-	extends AbstractOrmXmlContextNode implements EclipseLinkConverter
+public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
+	extends AbstractOrmXmlContextNode
+	implements EclipseLinkConverter
 {
-	protected T resourceConverter;
-	
+	protected final X xmlConverter;
+
 	protected String name;
-	
-	
-	protected OrmEclipseLinkConverter(XmlContextNode parent) {
+
+
+	protected OrmEclipseLinkConverter(XmlContextNode parent, X xmlConverter) {
 		super(parent);
-	}
-		
-	@Override
-	public EclipseLinkPersistenceUnit getPersistenceUnit() {
-		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
-	}
-	
-	
-	protected T getXmlResource() {
-		return this.resourceConverter;
-	}
-	
-	public char getEnclosingTypeSeparator() {
-		return '$';
+		this.xmlConverter = xmlConverter;
+		this.name = xmlConverter.getName();
 	}
 
-	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) getMappingFileRoot();
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName_(this.xmlConverter.getName());
 	}
-	
-	// **************** name ***************************************************
-	
+
+	@Override
+	public void update() {
+		super.update();
+		this.getPersistenceUnit().addConverter(this);
+	}
+
+
+	// ********** name **********
+
 	public String getName() {
 		return this.name;
 	}
 
-	public void setName(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		this.resourceConverter.setName(newName);
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	public void setName(String name) {
+		this.setName_(name);
+		this.xmlConverter.setName(name);
 	}
 
-	protected void setName_(String newName) {
-		String oldName = this.name;
-		this.name = newName;
-		firePropertyChanged(NAME_PROPERTY, oldName, newName);
+	protected void setName_(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
 	}
-	
-	
-	// **************** resource interaction ***********************************
-	
-	protected void initialize(T resource) {
-		this.resourceConverter = resource;
-		this.name = getResourceName();
+
+
+	// ********** misc **********
+
+	public X getXmlConverter() {
+		return this.xmlConverter;
 	}
-	
-	public void update() {
-		this.setName_(getResourceName());
-		getPersistenceUnit().addConverter(this);
+
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit() {
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
 	}
-	
-	protected String getResourceName() {
-		return this.resourceConverter.getName();
+
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) this.getMappingFileRoot();
 	}
-	
+
+	public char getEnclosingTypeSeparator() {
+		return '$';
+	}
+
+
+	// ********** refactoring **********
+
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return EmptyIterable.instance();
 	}
@@ -102,26 +107,118 @@ public abstract class OrmEclipseLinkConverter<T extends XmlNamedConverter>
 		return EmptyIterable.instance();
 	}
 
+	// ********** validation **********
 
-	// **************** validation *********************************************
-	
 	public boolean overrides(EclipseLinkConverter converter) {
-		if (getName() == null) {
+		if (this.name == null) {
 			return false;
 		}
 		// this isn't ideal, but it will have to do until we have further adopter input
-		return this.getName().equals(converter.getName()) && converter instanceof JavaEclipseLinkConverter;
+		return this.name.equals(converter.getName()) &&
+				(converter instanceof JavaEclipseLinkConverter);
 	}
-	
+
 	public boolean duplicates(EclipseLinkConverter converter) {
-		return (this != converter)
-				&& ! StringTools.stringIsEmpty(this.name)
-				&& this.name.equals(converter.getName())
-				&& ! this.overrides(converter)
-				&& ! converter.overrides(this);
+		return (this != converter) &&
+				! StringTools.stringIsEmpty(this.name) &&
+				this.name.equals(converter.getName()) &&
+				! this.overrides(converter) &&
+				! converter.overrides(this);
 	}
-	
+
 	public TextRange getValidationTextRange() {
-		return this.resourceConverter.getValidationTextRange();
+		return this.xmlConverter.getValidationTextRange();
+	}
+
+
+	// ********** adapter **********
+
+	/**
+	 * This interface allows a client to interact with various
+	 * EclipseLink <code>orm.xml</code> converters via the same protocol.
+	 */
+	public interface Adapter
+	{
+		/**
+		 * Return the type of converter handled by the adapter.
+		 */
+		Class<? extends EclipseLinkConverter> getConverterType();
+
+		/**
+		 * Build a converter corresponding to the specified XML converter
+		 * container if the container holds the adapter's XML converter. Return
+		 * <code>null</code> otherwise.
+		 * This is used to build a converter during construction of the
+		 * converter's parent.
+		 */
+		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlConverterHolder xmlConverterContainer, XmlContextNode parent);
+
+		/**
+		 * Return the adapter's XML converter for the specified XML converter
+		 * container. Return <code>null</code> if the container does not hold
+		 * the adapter's XML converter.
+		 * The returned XML converter is compared to the parent's
+		 * converter's XML converter while the context model is synchronized
+		 * with the resource model. If it has changed, the parent will build
+		 * a new converter (via the adapter).
+		 * 
+		 * @see #buildConverter(XmlNamedConverter, XmlContextNode)
+		 */
+		XmlNamedConverter getXmlConverter(XmlConverterHolder xmlConverterContainer);
+
+		/**
+		 * Build a converter using the specified XML converter.
+		 * This is used when the context model is synchronized with the
+		 * resource model (and the resource model has changed).
+		 * 
+		 * @see #getXmlConverter(XmlConverterHolder)
+		 */
+		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlNamedConverter xmlConverter, XmlContextNode parent);
+
+		/**
+		 * Build a new converter and its corresponding XML converter.
+		 * The XML converter will be added to the XML converter container once
+		 * the context converter has been added to the context model.
+		 * 
+		 * @see #addXmlConverter(XmlConverterHolder, XmlNamedConverter)
+		 */
+		OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlContextNode parent);
+
+		/**
+		 * Remove the adapter's XML converter from the specified XML converter
+		 * container.
+		 */
+		void removeXmlConverter(XmlConverterHolder xmlConverterContainer);
+
+		/**
+		 * Add the specified XML converter to the specified XML converter
+		 * container.
+		 */
+		void addXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter);
+	}
+
+	public abstract static class AbstractAdapter
+		implements Adapter
+	{
+		public OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlConverterHolder xmlConverterContainer, XmlContextNode parent) {
+			XmlNamedConverter xmlConverter = this.getXmlConverter(xmlConverterContainer);
+			return (xmlConverter == null) ? null : this.buildConverter(xmlConverter, parent);
+		}
+
+		public OrmEclipseLinkConverter<? extends XmlNamedConverter> buildConverter(XmlContextNode parent) {
+			return this.buildConverter(this.buildXmlConverter(), parent);
+		}
+
+		protected abstract XmlNamedConverter buildXmlConverter();
+
+		public void removeXmlConverter(XmlConverterHolder xmlConverterContainer) {
+			this.setXmlConverter(xmlConverterContainer, null);
+		}
+
+		public void addXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter) {
+			this.setXmlConverter(xmlConverterContainer, xmlConverter);
+		}
+
+		protected abstract void setXmlConverter(XmlConverterHolder xmlConverterContainer, XmlNamedConverter xmlConverter);
 	}
 }

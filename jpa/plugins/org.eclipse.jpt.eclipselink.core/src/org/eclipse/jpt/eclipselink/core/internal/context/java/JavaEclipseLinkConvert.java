@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,217 +12,239 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.JpaFactory;
+import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaConverter;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
+import org.eclipse.jpt.core.internal.jpa1.context.java.AbstractJavaConverter;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
-import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTypeConverterAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Association;
+import org.eclipse.jpt.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implements EclipseLinkConvert, JavaConverter
+public class JavaEclipseLinkConvert
+	extends AbstractJavaConverter
+	implements EclipseLinkConvert
 {
+	private final EclipseLinkConvertAnnotation convertAnnotation;
+
 	private String specifiedConverterName;
-	
-	private JavaResourcePersistentAttribute resourcePersistentAttribute;
-	
-	private JavaEclipseLinkConverter converter;
-	
-	public JavaEclipseLinkConvert(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
+	private String defaultConverterName;
+
+	private JavaEclipseLinkConverter<?> converter;
+
+
+	protected static final JavaEclipseLinkConverter.Adapter[] CONVERTER_ADAPTER_ARRAY = new JavaEclipseLinkConverter.Adapter[] {
+		JavaEclipseLinkCustomConverter.Adapter.instance(),
+		JavaEclipseLinkTypeConverter.Adapter.instance(),
+		JavaEclipseLinkObjectTypeConverter.Adapter.instance(),
+		JavaEclipseLinkStructConverter.Adapter.instance()
+	};
+	protected static final Iterable<JavaEclipseLinkConverter.Adapter> CONVERTER_ADAPTERS = new ArrayIterable<JavaEclipseLinkConverter.Adapter>(CONVERTER_ADAPTER_ARRAY);
+                                                                                                                      
+
+	public JavaEclipseLinkConvert(JavaAttributeMapping parent, EclipseLinkConvertAnnotation convertAnnotation) {
 		super(parent);
-		this.initialize(jrpa);
+		this.convertAnnotation = convertAnnotation;
+		this.specifiedConverterName = convertAnnotation.getValue();
+		this.converter = this.buildConverter();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedConverterName_(this.convertAnnotation.getValue());
+		this.syncConverter();
 	}
 
 	@Override
-	public JavaAttributeMapping getParent() {
-		return (JavaAttributeMapping) super.getParent();
-	}
-
-	public String getType() {
-		return EclipseLinkConvert.ECLIPSE_LINK_CONVERTER;
-	}
-
-	protected String getAnnotationName() {
-		return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
-	}
-		
-	public void addToResourceModel() {
-		this.resourcePersistentAttribute.addAnnotation(getAnnotationName());
-	}
-	
-	public void removeFromResourceModel() {
-		this.resourcePersistentAttribute.removeAnnotation(getAnnotationName());
-		if (getConverter() != null) {
-			this.resourcePersistentAttribute.removeAnnotation(getConverter().getAnnotationName());
+	public void update() {
+		super.update();
+		this.setDefaultConverterName(this.buildDefaultConverterName());
+		if (this.converter != null) {
+			this.converter.update();
 		}
 	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return getResourceConvert().getTextRange(astRoot);
-	}
 
-	protected EclipseLinkConvertAnnotation getResourceConvert() {
-		return (EclipseLinkConvertAnnotation) this.resourcePersistentAttribute.getAnnotation(getAnnotationName());
-	}
-	
+	// ********** converter name **********
+
 	public String getConverterName() {
-		return getSpecifiedConverterName() == null ? getDefaultConverterName() : getSpecifiedConverterName();
-	}
-
-	public String getDefaultConverterName() {
-		return DEFAULT_CONVERTER_NAME;
+		return (this.specifiedConverterName != null) ? this.specifiedConverterName : this.defaultConverterName;
 	}
 
 	public String getSpecifiedConverterName() {
 		return this.specifiedConverterName;
 	}
 
-	public void setSpecifiedConverterName(String newSpecifiedConverterName) {
-		String oldSpecifiedConverterName = this.specifiedConverterName;
-		this.specifiedConverterName = newSpecifiedConverterName;
-		getResourceConvert().setValue(newSpecifiedConverterName);
-		firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, oldSpecifiedConverterName, newSpecifiedConverterName);
-	}
-	
-	protected void setSpecifiedConverterName_(String newSpecifiedConverterName) {
-		String oldSpecifiedConverterName = this.specifiedConverterName;
-		this.specifiedConverterName = newSpecifiedConverterName;
-		firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, oldSpecifiedConverterName, newSpecifiedConverterName);
+	public void setSpecifiedConverterName(String name) {
+		this.convertAnnotation.setValue(name);
+		this.setSpecifiedConverterName_(name);
 	}
 
-	public JavaEclipseLinkConverter getConverter() {
+	protected void setSpecifiedConverterName_(String name) {
+		String old = this.specifiedConverterName;
+		this.specifiedConverterName = name;
+		this.firePropertyChanged(SPECIFIED_CONVERTER_NAME_PROPERTY, old, name);
+	}
+
+	public String getDefaultConverterName() {
+		return this.defaultConverterName;
+	}
+
+	protected void setDefaultConverterName(String name) {
+		String old = this.defaultConverterName;
+		this.defaultConverterName = name;
+		this.firePropertyChanged(DEFAULT_CONVERTER_NAME_PROPERTY, old, name);
+	}
+
+	protected String buildDefaultConverterName() {
+		return DEFAULT_CONVERTER_NAME;
+	}
+
+
+	// ********** converter **********
+
+	public JavaEclipseLinkConverter<?> getConverter() {
 		return this.converter;
 	}
-	
-	protected String getConverterType() {
-		if (this.converter == null) {
-			return EclipseLinkConverter.NO_CONVERTER;
+
+	public void setConverter(Class<? extends EclipseLinkConverter> converterType) {
+		if (converterType == null) {
+			if (this.converter != null) {
+				this.setConverter_(null);
+				this.retainConverterAnnotation(null);
+			}
+		} else {
+			if ((this.converter == null) || (this.converter.getType() != converterType)) {
+				JavaEclipseLinkConverter.Adapter converterAdapter = this.getConverterAdapter(converterType);
+				this.retainConverterAnnotation(converterAdapter);
+				this.setConverter_(converterAdapter.buildNewConverter(this.getResourcePersistentAttribute(), this));
+			}
 		}
-		return this.converter.getType();
 	}
 
-	public void setConverter(String converterType) {
-		if (getConverterType() == converterType) {
-			return;
-		}
-		JavaEclipseLinkConverter oldConverter = this.converter;
-		JavaEclipseLinkConverter newConverter = buildConverter(converterType);
-		this.converter = null;
-		if (oldConverter != null) {
-			this.resourcePersistentAttribute.removeAnnotation(oldConverter.getAnnotationName());
-		}
-		this.converter = newConverter;
-		if (newConverter != null) {
-			this.resourcePersistentAttribute.addAnnotation(newConverter.getAnnotationName());
-		}
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}
-	
-	protected void setConverter(JavaEclipseLinkConverter newConverter) {
-		JavaEclipseLinkConverter oldConverter = this.converter;
-		this.converter = newConverter;
-		firePropertyChanged(CONVERTER_PROPERTY, oldConverter, newConverter);
-	}
-	
-	protected void initialize(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		this.specifiedConverterName = this.getResourceConverterName();
-		this.converter = this.buildConverter(this.getResourceConverterType());
-	}
-	
-	public void update(JavaResourcePersistentAttribute jrpa) {
-		this.resourcePersistentAttribute = jrpa;
-		this.setSpecifiedConverterName_(this.getResourceConverterName());
-		if (getResourceConverterType() == getConverterType()) {
-			getConverter().update(this.resourcePersistentAttribute);
-		}
-		else {
-			JavaEclipseLinkConverter javaConverter = buildConverter(getResourceConverterType());
-			setConverter(javaConverter);
-		}
-	}
-	
-	protected String getResourceConverterName() {
-		EclipseLinkConvertAnnotation resourceConvert = getResourceConvert();
-		return resourceConvert == null ? null : resourceConvert.getValue();
+	protected void setConverter_(JavaEclipseLinkConverter<?> converter) {
+		JavaEclipseLinkConverter<?> old = this.converter;
+		this.converter = converter;
+		this.firePropertyChanged(CONVERTER_PROPERTY, old, converter);
 	}
 
-	
-	protected JavaEclipseLinkConverter buildConverter(String converterType) {
-		if (converterType == EclipseLinkConverter.NO_CONVERTER) {
-			return null;
-		}
-		if (converterType == EclipseLinkConverter.CUSTOM_CONVERTER) {
-			return buildCustomConverter();
-		}
-		else if (converterType == EclipseLinkConverter.TYPE_CONVERTER) {
-			return buildTypeConverter();
-		}
-		else if (converterType == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) {
-			return buildObjectTypeConverter();
-		}
-		else if (converterType == EclipseLinkConverter.STRUCT_CONVERTER) {
-			return buildStructConverter();
+	protected JavaEclipseLinkConverter<?> buildConverter() {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
+			JavaEclipseLinkConverter<?> javaConverter = adapter.buildConverter(resourceAttribute, this);
+			if (javaConverter != null) {
+				return javaConverter;
+			}
 		}
 		return null;
 	}
-	
-	protected JavaEclipseLinkCustomConverter buildCustomConverter() {
-		JavaEclipseLinkCustomConverter contextConverter = new JavaEclipseLinkCustomConverter(this);
-		contextConverter.initialize(this.resourcePersistentAttribute);
-		return contextConverter;
+
+	/**
+	 * Clear all the converter annotations <em>except</em> for the annotation
+	 * corresponding to the specified adapter. If the specified adapter is
+	 * <code>null</code>, remove <em>all</em> the converter annotations.
+	 */
+	protected void retainConverterAnnotation(JavaEclipseLinkConverter.Adapter converterAdapter) {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter != converterAdapter) {
+				adapter.removeConverterAnnotation(resourceAttribute);
+			}
+		}
 	}
 
-	protected JavaEclipseLinkTypeConverter buildTypeConverter() {
-		JavaEclipseLinkTypeConverter contextConverter = new JavaEclipseLinkTypeConverter(this);
-		contextConverter.initialize(this.resourcePersistentAttribute);
-		return contextConverter;
+	protected void syncConverter() {
+		Association<JavaEclipseLinkConverter.Adapter, EclipseLinkNamedConverterAnnotation> assoc = this.getEclipseLinkConverterAnnotation();
+		if (assoc == null) {
+			if (this.converter != null) {
+				this.setConverter_(null);
+			}
+		} else {
+			JavaEclipseLinkConverter.Adapter adapter = assoc.getKey();
+			EclipseLinkNamedConverterAnnotation annotation = assoc.getValue();
+			if ((this.converter != null) &&
+					(this.converter.getType() == adapter.getConverterType()) &&
+					(this.converter.getConverterAnnotation() == annotation)) {
+				this.converter.synchronizeWithResourceModel();
+			} else {
+				this.setConverter_(adapter.buildConverter(annotation, this));
+			}
+		}
 	}
 
-	protected JavaEclipseLinkObjectTypeConverter buildObjectTypeConverter() {
-		JavaEclipseLinkObjectTypeConverter contextConverter = new JavaEclipseLinkObjectTypeConverter(this);
-		contextConverter.initialize(this.resourcePersistentAttribute);
-		return contextConverter;
-	}
-
-	protected JavaEclipseLinkStructConverter buildStructConverter() {
-		JavaEclipseLinkStructConverter contextConverter = new JavaEclipseLinkStructConverter(this);
-		contextConverter.initialize(this.resourcePersistentAttribute);
-		return contextConverter;
-	}
-
-	protected String getResourceConverterType() {
-		if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkConverterAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConverter.CUSTOM_CONVERTER;
+	/**
+	 * Return the first EclipseLink converter annotation we find along with its
+	 * corresponding adapter. Return <code>null</code> if there are no
+	 * converter annotations.
+	 */
+	protected Association<JavaEclipseLinkConverter.Adapter, EclipseLinkNamedConverterAnnotation> getEclipseLinkConverterAnnotation() {
+		JavaResourcePersistentAttribute resourceAttribute = this.getResourcePersistentAttribute();
+		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
+			EclipseLinkNamedConverterAnnotation annotation = adapter.getConverterAnnotation(resourceAttribute);
+			if (annotation != null) {
+				return new SimpleAssociation<JavaEclipseLinkConverter.Adapter, EclipseLinkNamedConverterAnnotation>(adapter, annotation);
+			}
 		}
-		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkTypeConverterAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConverter.TYPE_CONVERTER;
-		}
-		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
-		}
-		else if (this.resourcePersistentAttribute.getAnnotation(EclipseLinkStructConverterAnnotation.ANNOTATION_NAME) != null) {
-			return EclipseLinkConverter.STRUCT_CONVERTER;
-		}
-		
 		return null;
 	}
 
-	//*************** code assist ******************
-	
+
+	// ********** converter adapters **********
+
+	/**
+	 * Return the converter adapter for the specified converter type.
+	 */
+	protected JavaEclipseLinkConverter.Adapter getConverterAdapter(Class<? extends EclipseLinkConverter> converterType) {
+		for (JavaEclipseLinkConverter.Adapter adapter : this.getConverterAdapters()) {
+			if (adapter.getConverterType() == converterType) {
+				return adapter;
+			}
+		}
+		throw new IllegalArgumentException("unknown converter type: " + converterType.getName()); //$NON-NLS-1$
+	}
+
+	protected Iterable<JavaEclipseLinkConverter.Adapter> getConverterAdapters() {
+		return CONVERTER_ADAPTERS;
+	}
+
+
+	// ********** misc **********
+
+	public Class<? extends Converter> getType() {
+		return EclipseLinkConvert.class;
+	}
+
+	@Override
+	protected String getAnnotationName() {
+		return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
+	}
+
+	@Override
+	public void dispose() {
+		super.dispose();
+		this.setConverter(null);
+	}
+
+
+	// ********** Java completion proposals **********
+
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
@@ -230,47 +252,75 @@ public class JavaEclipseLinkConvert extends AbstractJavaJpaContextNode implement
 			return result;
 		}
 		if (this.convertValueTouches(pos, astRoot)) {
-			result = this.persistenceConvertersNames(filter);
+			result = this.javaCandidateConverterNames(filter);
 			if (result != null) {
 				return result;
 			}
 		}
 		return null;
 	}
-	
+
 	protected boolean convertValueTouches(int pos, CompilationUnit astRoot) {
-		if (getResourceConvert() != null) {
-			return this.getResourceConvert().valueTouches(pos, astRoot);
-		}
-		return false;
+		return this.convertAnnotation.valueTouches(pos, astRoot);
 	}
 
-	protected Iterator<String> persistenceConvertersNames() {
-		if(this.getEclipseLinkPersistenceUnit().convertersSize() == 0) {
-			return EmptyIterator.<String> instance();
-		}
-		return CollectionTools.iterator(this.getEclipseLinkPersistenceUnit().uniqueConverterNames());
+	protected Iterator<String> javaCandidateConverterNames(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(this.candidateConverterNames(filter));
 	}
 
-	private Iterator<String> convertersNames(Filter<String> filter) {
-		return new FilteringIterator<String>(this.persistenceConvertersNames(), filter);
+	protected Iterator<String> candidateConverterNames(Filter<String> filter) {
+		return new FilteringIterator<String>(this.converterNames(), filter);
 	}
 
-	protected Iterator<String> persistenceConvertersNames(Filter<String> filter) {
-		return StringTools.convertToJavaStringLiterals(this.convertersNames(filter));
+	protected Iterator<String> converterNames() {
+		return this.getEclipseLinkPersistenceUnit().getUniqueConverterNames().iterator();
 	}
 
 	protected EclipseLinkPersistenceUnit getEclipseLinkPersistenceUnit() {
 		return (EclipseLinkPersistenceUnit) this.getPersistenceUnit();
 	}
-	
-	//****************** validation ********************
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (getConverter() != null) {
-			getConverter().validate(messages, reporter, astRoot);
+		if (this.converter != null) {
+			this.converter.validate(messages, reporter, astRoot);
 		}
 	}
 
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.convertAnnotation.getTextRange(astRoot);
+	}
+
+
+	// ********** adapter **********
+
+	public static class Adapter
+		extends JavaConverter.AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new Adapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+
+		private Adapter() {
+			super();
+		}
+
+		public Class<? extends Converter> getConverterType() {
+			return EclipseLinkConvert.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return EclipseLinkConvertAnnotation.ANNOTATION_NAME;
+		}
+
+		public JavaConverter buildConverter(Annotation converterAnnotation, JavaAttributeMapping parent, JpaFactory factory) {
+			return new JavaEclipseLinkConvert(parent, (EclipseLinkConvertAnnotation) converterAnnotation);
+		}
+	}
 }

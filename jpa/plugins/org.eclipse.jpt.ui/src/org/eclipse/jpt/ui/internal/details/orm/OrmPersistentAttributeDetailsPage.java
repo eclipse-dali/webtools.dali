@@ -10,8 +10,9 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.ArrayList;
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
@@ -47,7 +48,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.3
  * @since 2.0
  */
-public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<OrmPersistentAttribute>
+public class OrmPersistentAttributeDetailsPage
+	extends PersistentAttributeDetailsPage<OrmReadOnlyPersistentAttribute>
 {
 	/**
 	 * Creates a new <code>OrmPersistentAttributeDetailsPage</code>.
@@ -75,7 +77,7 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 		installPaneEnabler(panes);
 	}
 	
-	protected Pane<PersistentAttribute> buildMapAsPane(Composite parent) {
+	protected Pane<ReadOnlyPersistentAttribute> buildMapAsPane(Composite parent) {
 		return new PersistentAttributeMapAsComposite(this, parent);		
 	}
 	
@@ -84,9 +86,9 @@ public class OrmPersistentAttributeDetailsPage extends PersistentAttributeDetail
 	}
 	
 	private PropertyValueModel<Boolean> buildPaneEnablerHolder() {
-		return new TransformationPropertyValueModel<OrmPersistentAttribute, Boolean>(getSubjectHolder()) {
+		return new TransformationPropertyValueModel<OrmReadOnlyPersistentAttribute, Boolean>(getSubjectHolder()) {
 			@Override
-			protected Boolean transform_(OrmPersistentAttribute value) {
+			protected Boolean transform_(OrmReadOnlyPersistentAttribute value) {
 				return Boolean.valueOf(!value.isVirtual());
 			}
 		};

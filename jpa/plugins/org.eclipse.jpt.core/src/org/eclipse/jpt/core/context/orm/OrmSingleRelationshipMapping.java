@@ -10,8 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.SingleRelationshipMapping;
+import org.eclipse.jpt.core.resource.orm.AbstractXmlSingleRelationshipMapping;
 
 /**
+ * <code>orm.xml</code> single (1:1, m:1) mapping.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,7 +25,7 @@ import org.eclipse.jpt.core.context.SingleRelationshipMapping;
  * @since 2.0
  */
 public interface OrmSingleRelationshipMapping 
-	extends OrmRelationshipMapping, SingleRelationshipMapping
+	extends SingleRelationshipMapping, OrmRelationshipMapping
 {
-	
+	AbstractXmlSingleRelationshipMapping getXmlAttributeMapping();
 }

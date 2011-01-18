@@ -9,7 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.context.persistence;
 
-import java.io.IOException;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -38,6 +37,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlProperty;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -500,7 +500,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(2, xmlPersistenceUnit.getMappingFiles().size());
 		
 		// add another, testing order
-		persistenceUnit.addSpecifiedMappingFileRef("baz", 0);
+		persistenceUnit.addSpecifiedMappingFileRef(0, "baz");
 		assertEquals(3, xmlPersistenceUnit.getMappingFiles().size());
 		assertEquals("baz", xmlPersistenceUnit.getMappingFiles().get(0).getFileName());
 		assertEquals("foo", xmlPersistenceUnit.getMappingFiles().get(1).getFileName());
@@ -584,7 +584,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals(0, persistenceUnit.specifiedClassRefsSize());
 	}
 	
-	public void testModifyClassRefs1() {
+	public void testModifyClassRefs1() throws Exception {
 		XmlPersistenceUnit xmlPersistenceUnit = getXmlPersistenceUnit();
 		PersistenceUnit persistenceUnit = getPersistenceUnit();
 		
@@ -595,13 +595,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		// add class ref, test that it's added to context
 		persistenceUnit.addSpecifiedClassRef("Foo");
 		
-		try {
-			getPersistenceXmlResource().save(null);
-		}
-		catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		getPersistenceXmlResource().save(null);
 		assertEquals(1, xmlPersistenceUnit.getClasses().size());
 		assertEquals("Foo", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
 	
@@ -613,7 +607,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		assertEquals("Bar", xmlPersistenceUnit.getClasses().get(1).getJavaClass());
 	
 		
-		persistenceUnit.addSpecifiedClassRef("Baz", 0);
+		persistenceUnit.addSpecifiedClassRef(0, "Baz");
 		
 		assertEquals(3, xmlPersistenceUnit.getClasses().size());
 		assertEquals("Baz", xmlPersistenceUnit.getClasses().get(0).getJavaClass());
@@ -651,43 +645,53 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		createTestEntityWithPersistentInnerClass();
 		
 		getJpaProject().setDiscoversAnnotatedClasses(false);
-		getPersistenceUnit().setSpecifiedExcludeUnlistedClasses(true);
-		Iterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
-		assertFalse(classRefs.hasNext());
+		getPersistenceUnit().setSpecifiedExcludeUnlistedClasses(Boolean.TRUE);
+		assertEquals(0, getPersistenceUnit().impliedClassRefsSize());
 		
 		getJpaProject().setDiscoversAnnotatedClasses(true);
-		getPersistenceUnit().setSpecifiedExcludeUnlistedClasses(false);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
-		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
+		getPersistenceUnit().setSpecifiedExcludeUnlistedClasses(Boolean.FALSE);
+		assertEquals(2, getPersistenceUnit().impliedClassRefsSize());
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
 		
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
-		assertFalse(classRefs.hasNext());
+		assertEquals(1, getPersistenceUnit().impliedClassRefsSize());
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
 		
 		removeXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, classRefs.next().getClassName());
-		
+		assertEquals(2, getPersistenceUnit().impliedClassRefsSize());
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
+
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_TYPE_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
-		assertFalse(classRefs.hasNext());
+		assertEquals(1, getPersistenceUnit().impliedClassRefsSize());
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
 		
 		addXmlClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertFalse(classRefs.hasNext());
+		assertEquals(0, getPersistenceUnit().impliedClassRefsSize());
 		
 		removeXmlClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertEquals(FULLY_QUALIFIED_INNER_CLASS_NAME, classRefs.next().getClassName());
-		assertFalse(classRefs.hasNext());
+		assertEquals(1, getPersistenceUnit().impliedClassRefsSize());
+		this.verifyVirtualClassRef(FULLY_QUALIFIED_INNER_CLASS_NAME);
 
 		getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, FULLY_QUALIFIED_INNER_CLASS_NAME);
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		assertFalse(classRefs.hasNext());
+		assertEquals(0, getPersistenceUnit().impliedClassRefsSize());
+	}
+
+	protected void verifyVirtualClassRef(String className) {
+		if (this.getVirtualClassRef(className) == null) {
+			fail("missing virtual class ref: " + className);
+		}
+	}
+	
+	protected ClassRef getVirtualClassRef(String className) {
+		for (Iterator<ClassRef> stream = this.getPersistenceUnit().impliedClassRefs(); stream.hasNext(); ) {
+			ClassRef ref = stream.next();
+			if (Tools.valuesAreEqual(ref.getClassName(), className)) {
+				return ref;
+			}
+		}
+		return null;
 	}
 	
 	public void testImpliedClassRefs2() throws Exception {
@@ -721,24 +725,22 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		@SuppressWarnings("unused")
 		ICompilationUnit otherTestType = this.createTestOtherTypeEntity();
 		
-		Iterator<ClassRef> classRefs = getPersistenceUnit().impliedClassRefs();
-		ClassRef testTypeClassRef = classRefs.next();
-		ClassRef otherTestTypeClassRef = classRefs.next();
+		ClassRef testTypeClassRef = this.getVirtualClassRef(FULLY_QUALIFIED_TYPE_NAME);
+		ClassRef otherTestTypeClassRef = this.getVirtualClassRef(FULLY_QUALIFIED_OTHER_TYPE_NAME);
 		
-		assertEquals(FULLY_QUALIFIED_TYPE_NAME, testTypeClassRef.getClassName());
-		assertEquals(FULLY_QUALIFIED_OTHER_TYPE_NAME, otherTestTypeClassRef.getClassName());
+		assertNotNull(testTypeClassRef);
+		assertNotNull(otherTestTypeClassRef);
 		
 		JavaPersistentType testJavaPersistentType = testTypeClassRef.getJavaPersistentType();
 		JavaPersistentType otherTestJavaPersistentType = otherTestTypeClassRef.getJavaPersistentType();
 		
 		testType.findPrimaryType().rename("TestType2", false, null);
 		
-		classRefs = getPersistenceUnit().impliedClassRefs();
-		otherTestTypeClassRef = classRefs.next();
-		testTypeClassRef = classRefs.next();
+		testTypeClassRef = this.getVirtualClassRef("test.TestType2");
+		otherTestTypeClassRef = this.getVirtualClassRef(FULLY_QUALIFIED_OTHER_TYPE_NAME);
 		
-		assertEquals(FULLY_QUALIFIED_OTHER_TYPE_NAME, otherTestTypeClassRef.getClassName());
-		assertEquals("test.TestType2", testTypeClassRef.getClassName());
+		assertNotNull(testTypeClassRef);
+		assertNotNull(otherTestTypeClassRef);
 		
 		assertEquals(otherTestJavaPersistentType, otherTestTypeClassRef.getJavaPersistentType());
 		assertNotSame(testJavaPersistentType, testTypeClassRef.getJavaPersistentType());
@@ -1090,17 +1092,17 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.PROPERTY);		
 		assertEquals(AccessType.PROPERTY, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(null);	
+		assertFalse(ormMappingFile.getRoot().getPersistenceUnitMetadata().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultAccess());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
+		orm2MappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setAccess(AccessType.FIELD);	
 		assertEquals(AccessType.FIELD, persistenceUnit.getDefaultAccess());
 	}
 	
@@ -1114,14 +1116,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultSchema());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");		
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("FOO");		
 		assertEquals("FOO", persistenceUnit.getDefaultSchema());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema(null);	
+		assertFalse(ormMappingFile.getRoot().getPersistenceUnitMetadata().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultSchema());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedSchema("BAR");	
+		orm2MappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedSchema("BAR");	
 		assertEquals("BAR", persistenceUnit.getDefaultSchema());
 	}
 	
@@ -1135,14 +1137,14 @@ public class PersistenceUnitTests extends ContextModelTestCase
 		
 		assertEquals(null, persistenceUnit.getDefaultCatalog());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");		
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("FOO");		
 		assertEquals("FOO", persistenceUnit.getDefaultCatalog());
 		
-		ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog(null);	
-		assertFalse(ormMappingFile.getEntityMappings().getPersistenceUnitDefaults().resourceExists());
+		ormMappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog(null);	
+		assertFalse(ormMappingFile.getRoot().getPersistenceUnitMetadata().resourceExists());
 		assertEquals(null, persistenceUnit.getDefaultCatalog());
 				
-		orm2MappingFile.getEntityMappings().getPersistenceUnitDefaults().setSpecifiedCatalog("BAR");	
+		orm2MappingFile.getRoot().getPersistenceUnitMetadata().getPersistenceUnitDefaults().setSpecifiedCatalog("BAR");	
 		assertEquals("BAR", persistenceUnit.getDefaultCatalog());
 	}
 	

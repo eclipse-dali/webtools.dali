@@ -11,11 +11,10 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * 
- * 
+ * Java cacheable
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,16 +25,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
  * @since 2.3
  */
 public interface JavaCacheable2_0
-	extends JavaJpaContextNode, Cacheable2_0
-
+	extends Cacheable2_0, JavaJpaContextNode
 {
-	/**
-	 * Initialize model without throwing any events
-	 */
-	void initialize(JavaResourcePersistentType jrpt);
-	
-	/**
-	 * Update model, throwing events as necessary
-	 */
-	void update(JavaResourcePersistentType jrpt);
+	// combine two interfaces
 }

@@ -11,9 +11,12 @@ package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.resource.java.GeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
+ * Java sequence and table generators
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,5 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface JavaGenerator 
 	extends Generator, JavaJpaContextNode
 {
+	GeneratorAnnotation getGeneratorAnnotation();
+
 	TextRange getNameTextRange(CompilationUnit astRoot);
 }

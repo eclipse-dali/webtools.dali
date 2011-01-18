@@ -20,10 +20,7 @@ import org.eclipse.swt.widgets.Display;
 
 /**
  * Wrap another list change listener and forward events to it on the SWT
- * UI thread, asynchronously if necessary. If the event arrived on the UI
- * thread that is probably because it was initiated by a UI widget; as a
- * result, we want to loop back synchronously so the events can be
- * short-circuited.
+ * UI thread, asynchronously if necessary.
  */
 public class SWTListChangeListenerWrapper
 	implements ListChangeListener
@@ -93,7 +90,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added"; //$NON-NLS-1$
+				return "items added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -105,7 +102,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed"; //$NON-NLS-1$
+				return "items removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -117,7 +114,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items moved"; //$NON-NLS-1$
+				return "items moved runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -129,7 +126,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items replaced"; //$NON-NLS-1$
+				return "items replaced runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -141,7 +138,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list cleared"; //$NON-NLS-1$
+				return "list cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -153,7 +150,7 @@ public class SWTListChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list changed"; //$NON-NLS-1$
+				return "list changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

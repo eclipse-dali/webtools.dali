@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2008 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,13 +23,15 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
 
 /**
- * Pull together some of the behavior common to NestedDeclarationAnnotationAdapter
- * and IndexedNestedDeclarationAnnotationAdapter
+ * Pull together some of the behavior common to
+ * {@link NestedDeclarationAnnotationAdapter}
+ * and {@link NestedIndexedDeclarationAnnotationAdapter}
  */
-public abstract class AbstractNestedDeclarationAnnotationAdapter extends AbstractDeclarationAnnotationAdapter {
+public abstract class AbstractNestedDeclarationAnnotationAdapter
+	extends AbstractDeclarationAnnotationAdapter
+{
 	private final DeclarationAnnotationAdapter outerAnnotationAdapter;
 	private final String elementName;
-	private final boolean removeOuterAnnotationWhenEmpty;
 
 	// reduce NLS checks
 	protected static final String VALUE = "value"; //$NON-NLS-1$
@@ -38,25 +40,16 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	// ********** constructors **********
 
 	/**
-	 * default element name is "value";
-	 * default behavior is to remove the outer annotation when it is empty
+	 * The default element name is <code>value</code>.
 	 */
 	protected AbstractNestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String annotationName) {
 		this(outerAnnotationAdapter, VALUE, annotationName);
 	}
 
-	/**
-	 * default behavior is to remove the outer annotation when it is empty
-	 */
 	protected AbstractNestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String elementName, String annotationName) {
-		this(outerAnnotationAdapter, elementName, annotationName, true);
-	}
-
-	protected AbstractNestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String elementName, String annotationName, boolean removeOuterAnnotationWhenEmpty) {
 		super(annotationName);
 		this.outerAnnotationAdapter = outerAnnotationAdapter;
 		this.elementName = elementName;
-		this.removeOuterAnnotationWhenEmpty = removeOuterAnnotationWhenEmpty;
 	}
 
 
@@ -182,7 +175,7 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	}
 
 	/**
-	 * Remove the *first* annotation element with the specified name
+	 * Remove the <em>first</em> annotation element with the specified name
 	 * from the specified annotation, converting the annotation as appropriate.
 	 */
 	protected void removeElementAndNormalize(ModifiedDeclaration declaration, Annotation outer) {
@@ -198,8 +191,8 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 	}
 
 	/**
-	 * Remove the *first* annotation element with the adapter's element name
-	 * from the specified annotation. Convert the annotation to
+	 * Remove the <em>first</em> annotation element with the adapter's element
+	 * name from the specified annotation. Convert the annotation to
 	 * a marker annotation or single member annotation if appropriate.
 	 * <pre>
 	 * &#64;Outer(name="Fred", foo=&#64;Inner) => &#64;Outer(name="Fred")
@@ -233,13 +226,8 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 		List<MemberValuePair> values = this.values(outer);
 		switch (values.size()) {
 			case 0:
-				// if the elements are all gone, remove the annotation or convert it to a marker annotation
-				if (this.removeOuterAnnotationWhenEmpty) {
-					this.outerAnnotationAdapter.removeAnnotation(declaration);
-				} else {
-					// convert the annotation to a marker annotation
-					this.outerAnnotationAdapter.newMarkerAnnotation(declaration);
-				}
+				// if the elements are all gone, convert the annotation to a marker annotation
+				this.outerAnnotationAdapter.newMarkerAnnotation(declaration);
 				break;
 			case 1:
 				MemberValuePair pair = values.get(0);
@@ -258,23 +246,16 @@ public abstract class AbstractNestedDeclarationAnnotationAdapter extends Abstrac
 
 	/**
 	 * Convert the specified single member annotation to a marker annotation
-	 * if the adapter's element name is "value".
+	 * if the adapter's element name is <code>value</code>.
 	 */
 	protected void removeElementAndNormalize(ModifiedDeclaration declaration, @SuppressWarnings("unused") SingleMemberAnnotation outer) {
 		if (this.elementName.equals(VALUE)) {
-			if (this.removeOuterAnnotationWhenEmpty) {
-				this.outerAnnotationAdapter.removeAnnotation(declaration);
-			} else {
-				// convert the annotation to a marker annotation
-				this.outerAnnotationAdapter.newMarkerAnnotation(declaration);
-			}
+			this.outerAnnotationAdapter.newMarkerAnnotation(declaration);
 		}
 	}
 
-	protected void removeElementAndNormalize(ModifiedDeclaration declaration, @SuppressWarnings("unused") MarkerAnnotation outer) {
-		if (this.removeOuterAnnotationWhenEmpty) {
-			this.outerAnnotationAdapter.removeAnnotation(declaration);
-		}
+	protected void removeElementAndNormalize(@SuppressWarnings("unused") ModifiedDeclaration declaration, @SuppressWarnings("unused") MarkerAnnotation outer) {
+		// NOP
 	}
 
 	/**

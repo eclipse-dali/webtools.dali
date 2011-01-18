@@ -140,7 +140,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		
 		this.updatePersistenceXmlCheckBox = new Button(composite, SWT.CHECK);
 		this.updatePersistenceXmlCheckBox.setText(JptUiEntityGenMessages.GenerateEntitiesWizard_tableSelectPage_updatePersistenceXml );
-		this.updatePersistenceXmlCheckBox.setSelection(shouldUpdatePersistenceXml());
+		this.updatePersistenceXmlCheckBox.setSelection(updatePersistenceXml());
 		this.updatePersistenceXmlCheckBox.addSelectionListener(new SelectionListener() {
 			public void widgetDefaultSelected(SelectionEvent e) {}
 
@@ -232,7 +232,7 @@ class TablesSelectorWizardPage extends WizardPage{
 		return dbGroup;
 	}
 
-	private boolean shouldUpdatePersistenceXml() {
+	private boolean updatePersistenceXml() {
 		return this.updatePersistenceXml;
 	}
 
@@ -426,7 +426,7 @@ class TablesSelectorWizardPage extends WizardPage{
 						}
 						customizer.setSchema(schema);
 						customizer.setTableNames(tableNames);
-						customizer.setShouldUpdatePersistenceXml(updatePersistenceXml);
+						customizer.setUpdatePersistenceXml(updatePersistenceXml);
 						monitor.done();
 				    }
 				});
@@ -504,7 +504,7 @@ class TablesSelectorWizardPage extends WizardPage{
 
 	private boolean restoreWizardState(){
 		boolean pageComplete = false;
-		this.updatePersistenceXmlCheckBox.setSelection(this.customizer.shouldUpdatePersistenceXml());
+		this.updatePersistenceXmlCheckBox.setSelection(this.customizer.updatePersistenceXml());
 		List<String> preSelectedTableNames = this.customizer.getTableNames();
 		if(preSelectedTableNames!=null && preSelectedTableNames.size()>0) {
 			Set<String> set = new HashSet<String>();

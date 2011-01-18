@@ -57,22 +57,25 @@ import org.eclipse.jpt.utility.tests.internal.TestTools;
 
 /**
  * Provide an easy(?) way to build an annotated source file.
- * The type must be created by calling one of the #createType() methods
- * before calling any of the various helper methods (i.e. the type is *not*
- * created during #setUp()).
+ * The type must be created by calling one of the {@link #createTestType()}
+ * methods before calling any of the various helper methods (i.e. the type is
+ * <em>not</em> created during {@link #setUp()}).
  */
 @SuppressWarnings("nls")
-public abstract class AnnotationTestCase extends TestCase {
+public abstract class AnnotationTestCase
+	extends TestCase
+{
 	protected TestJavaProject javaProject;
 
 	public static final String CR = System.getProperty("line.separator");
 	public static final String SEP = File.separator;
 	public static final String PROJECT_NAME = "AnnotationTestProject";
 	public static final String PACKAGE_NAME = "test";
+	public static final String PACKAGE_NAME_ = PACKAGE_NAME + '.';
 	public static final String PACKAGE_INFO_FILE_NAME = "package-info.java";
 	public static final IPath PACKAGE_INFO_FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + PACKAGE_INFO_FILE_NAME);
 	public static final String TYPE_NAME = "AnnotationTestType";
-	public static final String FULLY_QUALIFIED_TYPE_NAME = PACKAGE_NAME + "." + TYPE_NAME;
+	public static final String FULLY_QUALIFIED_TYPE_NAME = PACKAGE_NAME_ + TYPE_NAME;
 	public static final String FILE_NAME = TYPE_NAME + ".java";
 	public static final IPath FILE_PATH = new Path("src" + SEP + PACKAGE_NAME + SEP + FILE_NAME);
 

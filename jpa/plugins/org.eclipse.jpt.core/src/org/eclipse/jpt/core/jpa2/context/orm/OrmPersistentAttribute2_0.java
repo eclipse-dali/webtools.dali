@@ -13,7 +13,9 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 
 /**
- * JPA 2.0 context orm persistent attribute (field or property)
+ * JPA 2.0
+ * Context <code>orm.xml</code> persistent <em>attribute</em>
+ * (field or property).
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,5 +29,5 @@ import org.eclipse.jpt.core.jpa2.context.PersistentAttribute2_0;
 public interface OrmPersistentAttribute2_0
 	extends OrmPersistentAttribute, PersistentAttribute2_0
 {
-	// nothing yet...
+	// combine two interfaces
 }

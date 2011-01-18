@@ -127,7 +127,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain(na, cu);
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("nestedAnnotation", cu);
 	}
 
 	public void testRemoveAnnotation1a() throws Exception {
@@ -138,7 +138,7 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(
-				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar", false);
+				new SimpleDeclarationAnnotationAdapter("annot.Foo"), "nestedAnnotation", "annot.Bar");
 		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
@@ -216,8 +216,6 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 
 		aa.removeAnnotation();
 		this.assertSourceDoesNotContain(na, cu);
-		this.assertSourceDoesNotContain("Foo", cu);
-		this.assertSourceDoesNotContain("Bar", cu);
 		this.assertSourceDoesNotContain("Baz", cu);
 	}
 
@@ -230,8 +228,8 @@ public class NestedDeclarationAnnotationAdapterTests extends AnnotationTestCase 
 		this.assertSourceContains(na, cu);
 
 		DeclarationAnnotationAdapter daaFoo = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar", false);
-		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz", false);
+		DeclarationAnnotationAdapter daaBar = new NestedDeclarationAnnotationAdapter(daaFoo, "nestedAnnotation1", "annot.Bar");
+		DeclarationAnnotationAdapter daa = new NestedDeclarationAnnotationAdapter(daaBar, "nestedAnnotation2", "annot.Baz");
 		AnnotationAdapter aa = new ElementAnnotationAdapter(this.idField(cu), daa);
 		Annotation annotation = aa.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);

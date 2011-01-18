@@ -27,7 +27,8 @@ import org.eclipse.swt.widgets.Composite;
  *  - default value
  *  - value choices
  */
-public abstract class ComboPane<T extends Model> extends Pane<T>
+public abstract class ComboPane<T extends Model>
+	extends Pane<T>
 {
 	/**
 	 * The main (only) widget of this pane.

@@ -74,8 +74,8 @@ import org.eclipse.ui.part.PageBook;
 public class QueriesComposite extends Pane<QueryContainer>
 {
 	private AddRemoveListPane<QueryContainer> listPane;
-	private NamedNativeQueryPropertyComposite namedNativeQueryPane;
-	private NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
+	NamedNativeQueryPropertyComposite namedNativeQueryPane;
+	NamedQueryPropertyComposite<? extends NamedQuery> namedQueryPane;
 	private WritablePropertyValueModel<Query> queryHolder;
 
 
@@ -86,11 +86,11 @@ public class QueriesComposite extends Pane<QueryContainer>
 
 			super(parentPane, subjectHolder, parent, false);
 	}
-	
-	private void addQuery() {
+
+	void addQuery() {
 		addQueryFromDialog(buildAddQueryDialog());
 	}
-	
+
 	protected AddQueryDialog buildAddQueryDialog() {
 		return new AddQueryDialog(getShell());
 	}
@@ -101,11 +101,11 @@ public class QueriesComposite extends Pane<QueryContainer>
 		}
 		String queryType = dialog.getQueryType();
 		Query query;
-		if (queryType == Query.NAMED_QUERY) {
-			query = this.getSubject().addNamedQuery(getSubject().namedQueriesSize());
+		if (queryType == AddQueryDialog.NAMED_QUERY) {
+			query = this.getSubject().addNamedQuery();
 		}
-		else if (queryType == Query.NAMED_NATIVE_QUERY) {
-			query = this.getSubject().addNamedNativeQuery(getSubject().namedNativeQueriesSize());
+		else if (queryType == AddQueryDialog.NAMED_NATIVE_QUERY) {
+			query = this.getSubject().addNamedNativeQuery();
 		}
 		else {
 			throw new IllegalArgumentException();
@@ -248,7 +248,7 @@ public class QueriesComposite extends Pane<QueryContainer>
 						index = CollectionTools.indexOf(getSubject().namedNativeQueries(), query);
 					}
 
-					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, index);
+					name = NLS.bind(JptUiDetailsMessages.QueriesComposite_displayString, Integer.valueOf(index));
 				}
 
 				return name;

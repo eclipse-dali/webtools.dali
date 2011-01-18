@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmIdMapping;
+import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -23,10 +23,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmIdMapping2_0Composite
-	extends AbstractIdMappingComposite<OrmIdMapping>
+	extends AbstractIdMappingComposite<IdMapping>
 {
 	public OrmIdMapping2_0Composite(
-			PropertyValueModel<? extends OrmIdMapping> subjectHolder,
+			PropertyValueModel<? extends IdMapping> subjectHolder,
 	        Composite parent,
 	        WidgetFactory widgetFactory) {
 		
@@ -48,7 +48,7 @@ public class OrmIdMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmIdMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<IdMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

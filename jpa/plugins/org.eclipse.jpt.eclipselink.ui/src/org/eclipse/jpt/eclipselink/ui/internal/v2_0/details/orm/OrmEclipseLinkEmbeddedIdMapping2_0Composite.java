@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkEmbeddedIdMapping1_1Composite;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
@@ -24,7 +24,7 @@ public class OrmEclipseLinkEmbeddedIdMapping2_0Composite
 	extends OrmEclipseLinkEmbeddedIdMapping1_1Composite
 {
 	public OrmEclipseLinkEmbeddedIdMapping2_0Composite(
-			PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		

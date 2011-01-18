@@ -11,13 +11,12 @@ package org.eclipse.jpt.core.context;
 
 import java.util.List;
 
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * Root of the Dali context model.
+ * Root of the Dali JPA context model.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -46,14 +45,6 @@ public interface JpaRootContextNode
 	 * This may be null. 
 	 */
 	PersistenceXml getPersistenceXml();
-
-
-	// ********** updating **********
-
-	/**
-	 * Update the context model with the content of the JPA resource model.
-	 */
-	void update(IProgressMonitor monitor);
 
 
 	// ********** validation **********

@@ -9,10 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
+import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedColumnAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.BooleanExpressionConverter;
-import org.eclipse.jpt.core.internal.utility.jdt.ConversionDeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
@@ -24,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationElementAdapter;
 
 /**
- * javax.persistence.OrderColumn
+ * <code>javax.persistence.OrderColumn</code>
  */
 public final class SourceOrderColumn2_0Annotation
 	extends SourceNamedColumnAnnotation
@@ -32,26 +31,27 @@ public final class SourceOrderColumn2_0Annotation
 {
 	private static final DeclarationAnnotationAdapter DECLARATION_ANNOTATION_ADAPTER = new SimpleDeclarationAnnotationAdapter(ANNOTATION_NAME);
 
-	private final DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> nullableAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> nullableDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> nullableAdapter;
 	private Boolean nullable;
 
-	private final DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> insertableAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> insertableDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> insertableAdapter;
 	private Boolean insertable;
 
-	private final DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
-	private final AnnotationElementAdapter<Boolean> updatableAdapter;
+	private DeclarationAnnotationElementAdapter<Boolean> updatableDeclarationAdapter;
+	private AnnotationElementAdapter<Boolean> updatableAdapter;
 	private Boolean updatable;
+
 
 	public SourceOrderColumn2_0Annotation(JavaResourcePersistentAttribute parent, Attribute attribute) {
 		super(parent, attribute, DECLARATION_ANNOTATION_ADAPTER);
-		this.nullableDeclarationAdapter = this.buildBooleanElementAdapter(this.getNullableElementName());
-		this.nullableAdapter = this.buildShortCircuitBooleanElementAdapter(this.nullableDeclarationAdapter);
-		this.insertableDeclarationAdapter = this.buildBooleanElementAdapter(this.getInsertableElementName());
-		this.insertableAdapter = this.buildShortCircuitBooleanElementAdapter(this.insertableDeclarationAdapter);
-		this.updatableDeclarationAdapter = this.buildBooleanElementAdapter(this.getUpdatableElementName());
-		this.updatableAdapter = this.buildShortCircuitBooleanElementAdapter(this.updatableDeclarationAdapter);
+		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
+		this.nullableAdapter = this.buildNullableAdapter();
+		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
+		this.insertableAdapter = this.buildInsertableAdapter();
+		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
+		this.updatableAdapter = this.buildUpdatableAdapter();
 	}
 	
 	@Override
@@ -70,16 +70,6 @@ public final class SourceOrderColumn2_0Annotation
 		this.syncUpdatable(this.buildUpdatable(astRoot));
 	}
 	
-	@Override
-	protected DeclarationAnnotationElementAdapter<String> buildStringElementAdapter(String elementName) {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(this.daa, elementName, false);
-	}
-	
-	@Override
-	protected DeclarationAnnotationElementAdapter<Boolean> buildBooleanElementAdapter(String elementName) {
-		return new ConversionDeclarationAnnotationElementAdapter<Boolean>(this.daa, elementName, false, BooleanExpressionConverter.instance());
-	}
-	
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
@@ -93,6 +83,8 @@ public final class SourceOrderColumn2_0Annotation
 	protected String getColumnDefinitionElementName() {
 		return JPA2_0.ORDER_COLUMN__COLUMN_DEFINITION;
 	}
+
+
 	//************* OrderColumn2_0Annotation implementation *************
 
 	// ***** nullable
@@ -121,6 +113,14 @@ public final class SourceOrderColumn2_0Annotation
 		return this.getElementTextRange(this.nullableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildNullableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getNullableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildNullableAdapter() {
+		return this.buildBooleanElementAdapter(this.nullableDeclarationAdapter);
+	}
+
 	String getNullableElementName() {
 		return JPA2_0.ORDER_COLUMN__NULLABLE;
 	}
@@ -151,6 +151,14 @@ public final class SourceOrderColumn2_0Annotation
 		return this.getElementTextRange(this.insertableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildInsertableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getInsertableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildInsertableAdapter() {
+		return this.buildBooleanElementAdapter(this.insertableDeclarationAdapter);
+	}
+
 	String getInsertableElementName() {
 		return JPA2_0.ORDER_COLUMN__INSERTABLE;
 	}
@@ -181,7 +189,56 @@ public final class SourceOrderColumn2_0Annotation
 		return this.getElementTextRange(this.updatableDeclarationAdapter, astRoot);
 	}
 	
+	private DeclarationAnnotationElementAdapter<Boolean> buildUpdatableDeclarationAdapter() {
+		return this.buildBooleanElementAdapter(this.getUpdatableElementName());
+	}
+
+	private AnnotationElementAdapter<Boolean> buildUpdatableAdapter() {
+		return this.buildBooleanElementAdapter(this.updatableDeclarationAdapter);
+	}
+
 	String getUpdatableElementName() {
 		return JPA2_0.ORDER_COLUMN__UPDATABLE;
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.nullable == null) &&
+				(this.insertable == null) &&
+				(this.updatable == null);
+	}
+
+	@Override
+	protected void rebuildAdapters() {
+		super.rebuildAdapters();
+		this.nullableDeclarationAdapter = this.buildNullableDeclarationAdapter();
+		this.nullableAdapter = this.buildNullableAdapter();
+		this.insertableDeclarationAdapter = this.buildInsertableDeclarationAdapter();
+		this.insertableAdapter = this.buildInsertableAdapter();
+		this.updatableDeclarationAdapter = this.buildUpdatableDeclarationAdapter();
+		this.updatableAdapter = this.buildUpdatableAdapter();
+	}
+
+	@Override
+	public void storeOn(Map<String, Object> map) {
+		super.storeOn(map);
+		map.put(NULLABLE_PROPERTY, this.nullable);
+		this.nullable = null;
+		map.put(INSERTABLE_PROPERTY, this.insertable);
+		this.insertable = null;
+		map.put(UPDATABLE_PROPERTY, this.updatable);
+		this.updatable = null;
+	}
+
+	@Override
+	public void restoreFrom(Map<String, Object> map) {
+		super.restoreFrom(map);
+		this.setNullable((Boolean) map.get(NULLABLE_PROPERTY));
+		this.setInsertable((Boolean) map.get(INSERTABLE_PROPERTY));
+		this.setUpdatable((Boolean) map.get(UPDATABLE_PROPERTY));
 	}
 }

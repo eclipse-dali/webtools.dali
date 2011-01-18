@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
+ * Attribute override.
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -20,19 +22,13 @@ package org.eclipse.jpt.core.context;
  * @since 2.0
  */
 public interface AttributeOverride
-	extends BaseOverride, Column.Owner
+	extends Override_, ReadOnlyAttributeOverride
 {
+	VirtualAttributeOverride convertToVirtual();
+
 	Column getColumn();
-	
-	AttributeOverride setVirtual(boolean virtual);
-	
-	interface Owner extends BaseOverride.Owner
-	{
-		/**
-		 * Return the column of the mapping or attribute override with the given attribute name.
-		 * Return null if it does not exist.  This column mapping
-		 * will be found in the mapped superclass (or embeddable), not in the owning entity
-		 */
-		Column resolveOverriddenColumn(String attributeName);
-	}
+
+	void initializeFrom(ReadOnlyAttributeOverride oldOverride);
+
+	void initializeFromVirtual(ReadOnlyAttributeOverride oldOverride);
 }

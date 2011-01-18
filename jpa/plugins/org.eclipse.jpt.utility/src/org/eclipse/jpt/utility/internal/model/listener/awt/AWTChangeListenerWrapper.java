@@ -201,7 +201,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added"; //$NON-NLS-1$
+				return "items added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -213,7 +213,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed"; //$NON-NLS-1$
+				return "items removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -225,7 +225,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection cleared"; //$NON-NLS-1$
+				return "collection cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -237,7 +237,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "collection changed"; //$NON-NLS-1$
+				return "collection changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -249,7 +249,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items added"; //$NON-NLS-1$
+				return "items added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -261,7 +261,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items removed"; //$NON-NLS-1$
+				return "items removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -273,7 +273,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items moved"; //$NON-NLS-1$
+				return "items moved runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -285,7 +285,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "items replaced"; //$NON-NLS-1$
+				return "items replaced runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -297,7 +297,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list cleared"; //$NON-NLS-1$
+				return "list cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -309,7 +309,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "list changed"; //$NON-NLS-1$
+				return "list changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -321,7 +321,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node added"; //$NON-NLS-1$
+				return "node added runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -333,7 +333,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "node removed"; //$NON-NLS-1$
+				return "node removed runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -345,7 +345,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree cleared"; //$NON-NLS-1$
+				return "tree cleared runnable"; //$NON-NLS-1$
 			}
 		};
 	}
@@ -357,7 +357,7 @@ public final class AWTChangeListenerWrapper
 			}
 			@Override
 			public String toString() {
-				return "tree changed"; //$NON-NLS-1$
+				return "tree changed runnable"; //$NON-NLS-1$
 			}
 		};
 	}

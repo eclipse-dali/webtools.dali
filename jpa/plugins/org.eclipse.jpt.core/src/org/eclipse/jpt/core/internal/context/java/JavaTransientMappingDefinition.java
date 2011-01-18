@@ -1,9 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -15,40 +15,51 @@ import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.resource.java.TransientAnnotation;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 public class JavaTransientMappingDefinition
-	extends AbstractJavaAttributeMappingDefinition
+	implements JavaAttributeMappingDefinition
 {
 	// singleton
-	private static final JavaTransientMappingDefinition INSTANCE = 
-		new JavaTransientMappingDefinition();
-	
-	
+	private static final JavaAttributeMappingDefinition INSTANCE = new JavaTransientMappingDefinition();
+
 	/**
 	 * Return the singleton.
 	 */
 	public static JavaAttributeMappingDefinition instance() {
 		return INSTANCE;
 	}
-	
-	
+
+
 	/**
 	 * Enforce singleton usage
 	 */
 	private JavaTransientMappingDefinition() {
 		super();
 	}
-	
-	
+
 	public String getKey() {
 		return MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY;
 	}
-	
+
 	public String getAnnotationName() {
 		return TransientAnnotation.ANNOTATION_NAME;
 	}
 
-	public JavaAttributeMapping buildMapping(JavaPersistentAttribute parent, JpaFactory factory) {
-		return factory.buildJavaTransientMapping(parent);
+	public boolean isSpecified(JavaPersistentAttribute persistentAttribute) {
+		return persistentAttribute.getResourcePersistentAttribute().getAnnotation(this.getAnnotationName()) != null;
+	}
+
+	public Iterable<String> getSupportingAnnotationNames() {
+		return EmptyIterable.instance();
+	}
+
+	public JavaAttributeMapping buildMapping(JavaPersistentAttribute persistentAttribute, JpaFactory factory) {
+		return factory.buildJavaTransientMapping(persistentAttribute);
+	}
+
+	@Override
+	public String toString() {
+		return this.getClass().getSimpleName();
 	}
 }

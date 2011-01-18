@@ -15,8 +15,8 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JPA 2.0 annotation
- * javax.persistence.OrderColumn
- * 
+ * <code>javax.persistence.OrderColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,9 +29,11 @@ import org.eclipse.jpt.core.utility.TextRange;
 public interface OrderColumn2_0Annotation
 	extends NamedColumnAnnotation
 {
-	
 	String ANNOTATION_NAME = JPA2_0.ORDER_COLUMN;
 	
+
+	// ********** nullable **********
+
 	/**
 	 * Corresponds to the 'nullable' element of the OrderColumn annotation.
 	 * Return null if the element does not exist in Java.
@@ -52,6 +54,8 @@ public interface OrderColumn2_0Annotation
 	TextRange getNullableTextRange(CompilationUnit astRoot);
 
 
+	// ********** insertable **********
+
 	/**
 	 * Corresponds to the 'insertable' element of the OrderColumn annotation.
 	 * Return null if the element does not exist in Java.
@@ -71,6 +75,8 @@ public interface OrderColumn2_0Annotation
 	 */
 	TextRange getInsertableTextRange(CompilationUnit astRoot);
 
+
+	// ********** updatable **********
 
 	/**
 	 * Corresponds to the 'updatable' element of the OrderColumn annotation.

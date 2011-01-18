@@ -36,7 +36,7 @@ public interface JavaResourceAnnotatedElement
 	String ANNOTATIONS_COLLECTION = "annotations"; //$NON-NLS-1$
 	
 	/**
-	 * Return the member's annotations in the order that they appear.
+	 * Return the member's annotations in the order they appear.
 	 * Do not return duplicate annotations as this error is handled by the Java
 	 * compiler.
 	 */
@@ -50,19 +50,22 @@ public interface JavaResourceAnnotatedElement
 	/**
 	 * Return the annotation with the specified name.
 	 * Return the first if there are duplicates in the source code.
+	 * Return <code>null</code> if the member does not have an annotation
+	 * with the specified name.
 	 */
 	Annotation getAnnotation(String annotationName);
 	
 	/**
-	 * Return the specified annotation.
+	 * Return the annotation with the specified name.
 	 * Return the first if there are duplicates in the source code.
-	 * Do not return null, but a Null Object instead if no annotation
-	 * with the specified name exists in the source code.
+	 * Do not return <code>null</code>; instead, return but a <em>null</em>
+	 * annotation (i.e. an implementation that provides only default behavior)
+	 * if the member does not have an annotation with the specified name.
 	 */
 	Annotation getNonNullAnnotation(String annotationName);
 	
 	/**
-	 * Return the nestable annotations with the specified name in the order that
+	 * Return the nestable annotations with the specified name in the order
 	 * they appear.
 	 * If nestable and container annotations are both specified on the
 	 * member directly, return only the nestable annotations specified within
@@ -110,8 +113,15 @@ public interface JavaResourceAnnotatedElement
 	 * {@link #removeAnnotation(String)}
 	 */
 	void removeAnnotation(int index, String nestableAnnotationName, String containerAnnotationName);
-	
-	
+
+	/**
+	 * In preparation for a just-unnested annotation being written to the source
+	 * file, add the just-unnested annotation to the member without firing
+	 * change notification.
+	 */
+	void addStandAloneAnnotation(NestableAnnotation standAloneAnnotation);
+
+
 	// ********** queries **********
 		
 	/**

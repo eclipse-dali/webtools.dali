@@ -12,9 +12,13 @@ package org.eclipse.jpt.core.context.orm;
 import java.util.ListIterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jpt.core.context.AssociationOverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
+import org.eclipse.jpt.core.context.VirtualOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 
 /**
+ * <code>orm.xml</code> association override container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -27,21 +31,22 @@ import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 public interface OrmAssociationOverrideContainer
 	extends AssociationOverrideContainer, OrmOverrideContainer
 {
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> associationOverrides();
+	ListIterator<OrmReadOnlyAssociationOverride> overrides();
+	OrmReadOnlyAssociationOverride getOverrideNamed(String name);
+	ListIterator<OrmAssociationOverride> specifiedOverrides();
+	OrmAssociationOverride getSpecifiedOverride(int index);
+	OrmAssociationOverride getSpecifiedOverrideNamed(String name);
+	ListIterator<OrmVirtualAssociationOverride> virtualOverrides();
+	OrmVirtualAssociationOverride convertOverrideToVirtual(Override_ specifiedOverride);
+	OrmAssociationOverride convertOverrideToSpecified(VirtualOverride virtualOverride);
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> specifiedAssociationOverrides();
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmAssociationOverride> virtualAssociationOverrides();
-	
-	OrmAssociationOverride getAssociationOverrideNamed(String name);
-	
-	void update();
-	
-	interface Owner extends AssociationOverrideContainer.Owner, OrmOverrideContainer.Owner
+	// ********** owner **********
+
+	interface Owner
+		extends AssociationOverrideContainer.Owner, OrmOverrideContainer.Owner
 	{				
-		EList<XmlAssociationOverride> getResourceAssociationOverrides();
+		@SuppressWarnings("unchecked")
+		EList<XmlAssociationOverride> getXmlOverrides();
 	}
 }

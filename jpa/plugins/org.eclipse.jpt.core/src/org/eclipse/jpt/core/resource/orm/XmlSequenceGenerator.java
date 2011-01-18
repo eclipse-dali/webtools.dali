@@ -648,11 +648,8 @@ public class XmlSequenceGenerator extends AbstractJpaEObject implements XmlGener
 	public TextRange getNameTextRange() {
 		return getAttributeTextRange(JPA.NAME);
 	}
-	
-	public boolean isVirtual() {
-		return false;
-	}
-	
+
+
 	// ********** translators **********
 
 	public static Translator buildTranslator(String elementName, EStructuralFeature structuralFeature) {

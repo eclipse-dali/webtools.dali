@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,43 +16,40 @@ import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
-public class JavaNullTypeMapping extends AbstractJavaTypeMapping
+/**
+ * Java null type mapping
+ */
+public class JavaNullTypeMapping
+	extends AbstractJavaTypeMapping<Annotation>
 {
 	public JavaNullTypeMapping(JavaPersistentType parent) {
-		super(parent);
+		super(parent, null);
 	}
 
-	public String getAnnotationName() {
-		return null;
-	}
-	
 	public String getKey() {
 		return MappingKeys.NULL_TYPE_MAPPING_KEY;
+	}
+
+	public JavaPersistentType getIdClass() {
+		return null;
 	}
 	
 	public boolean isMapped() {
 		return false;
 	}
 	
-	public Iterable<String> getSupportingAnnotationNames() {
-		return EmptyIterable.instance();
-	}
-
 	public boolean tableNameIsInvalid(String tableName) {
 		return false;
 	}
 	
-	@Override
-	public boolean shouldValidateAgainstDatabase() {
-		return false;
-	}
-	
+
+	// ********** validation **********
+
 	/**
 	 * We added this message here because the most likely solution is to add
 	 * an annotation to the .java file.
@@ -75,6 +72,11 @@ public class JavaNullTypeMapping extends AbstractJavaTypeMapping
 		);
 	}
 	
+	@Override
+	public boolean validatesAgainstDatabase() {
+		return false;
+	}
+
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.getPersistentType().getValidationTextRange(astRoot);

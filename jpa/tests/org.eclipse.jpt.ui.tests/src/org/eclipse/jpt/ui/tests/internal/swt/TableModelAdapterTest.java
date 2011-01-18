@@ -1010,10 +1010,8 @@ public class TableModelAdapterTest {
 			return addEmployee(employee);
 		}
 
-		void changeEmployees(List<Employee> employees) {
-			this.employees.clear();
-			this.employees.addAll(employees);
-			fireListChanged(EMPLOYEES_LIST, employees);
+		void changeEmployees(List<Employee> newEmployees) {
+			this.synchronizeList(newEmployees, this.employees, EMPLOYEES_LIST);
 		}
 
 		ListIterator<Employee> employees() {

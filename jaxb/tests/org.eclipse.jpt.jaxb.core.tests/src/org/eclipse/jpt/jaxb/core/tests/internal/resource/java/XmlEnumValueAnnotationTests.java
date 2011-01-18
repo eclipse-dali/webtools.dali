@@ -104,6 +104,6 @@ public class XmlEnumValueAnnotationTests extends JaxbJavaResourceModelTestCase {
 		xmlEnumValueAnnotation.setValue(null);
 		assertNull(xmlEnumValueAnnotation.getValue());
 
-		assertSourceDoesNotContain("@XmlEnumValue", cu);
+		assertSourceDoesNotContain("@XmlEnumValue(", cu);
 	}
 }

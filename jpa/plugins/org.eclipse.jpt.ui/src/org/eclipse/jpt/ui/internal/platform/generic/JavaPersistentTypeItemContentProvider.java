@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,6 @@
 package org.eclipse.jpt.ui.internal.platform.generic;
 
 import java.util.ListIterator;
-
-import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
@@ -40,7 +38,7 @@ public class JavaPersistentTypeItemContentProvider extends AbstractTreeItemConte
 	@Override
 	protected CollectionValueModel<JavaPersistentAttribute> buildChildrenModel() {
 		return new ListCollectionValueModelAdapter<JavaPersistentAttribute>(
-		new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(PersistentType.ATTRIBUTES_LIST, getModel()) {
+		new ListAspectAdapter<JavaPersistentType, JavaPersistentAttribute>(JavaPersistentType.ATTRIBUTES_LIST, getModel()) {
 			@Override
 			protected ListIterator<JavaPersistentAttribute> listIterator_() {
 				return subject.attributes();

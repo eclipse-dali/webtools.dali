@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
+ * sequence generator
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -29,10 +29,14 @@ public interface SequenceGenerator
 
 	// ********** sequence name **********
 
+	/**
+	 * Return the specified sequence name if present, otherwise return the
+	 * default sequence name.
+	 */
+	String getSequenceName();
 	String getSpecifiedSequenceName();
 	void setSpecifiedSequenceName(String value);
 		String SPECIFIED_SEQUENCE_NAME_PROPERTY = "specifiedSequenceName"; //$NON-NLS-1$
-	String getSequenceName();
 	String getDefaultSequenceName();
 		String DEFAULT_SEQUENCE_NAME_PROPERTY = "defaultSequenceName"; //$NON-NLS-1$
 

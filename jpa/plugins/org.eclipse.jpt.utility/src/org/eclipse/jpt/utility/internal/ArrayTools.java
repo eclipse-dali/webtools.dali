@@ -1085,7 +1085,7 @@ public final class ArrayTools {
 	 * If the arrays are identical, return -1.
 	 * If the arrays are different sizes, return the index of the
 	 * last element in the longer array.
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 */
 	public static int diffEnd(Object[] array1, Object[] array2) {
@@ -1113,7 +1113,7 @@ public final class ArrayTools {
 	 * Return the range of elements in the specified
 	 * arrays that are different.
 	 * If the arrays are identical, return [size, -1].
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 * @see #diffStart(Object[], Object[])
 	 * @see #diffEnd(Object[], Object[])
@@ -1136,7 +1136,7 @@ public final class ArrayTools {
 	 * the shorter array match their corresponding elements in
 	 * the longer array, return the size of the shorter array
 	 * (i.e. one past the last index of the shorter array).
-	 * Use the elements' {@link Object#equals()} method to compare the
+	 * Use the elements' {@link Object#equals(Object)} method to compare the
 	 * elements.
 	 */
 	public static int diffStart(Object[] array1, Object[] array2) {

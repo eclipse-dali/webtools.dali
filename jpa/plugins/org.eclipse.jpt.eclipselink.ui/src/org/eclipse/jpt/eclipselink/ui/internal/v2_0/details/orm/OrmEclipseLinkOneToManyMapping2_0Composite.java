@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
@@ -31,10 +30,10 @@ import org.eclipse.swt.widgets.Composite;
 
 
 public class OrmEclipseLinkOneToManyMapping2_0Composite
-	extends EclipseLinkOneToManyMappingComposite<OrmOneToManyMapping>
+	extends EclipseLinkOneToManyMappingComposite<OneToManyMapping>
 {
 	public OrmEclipseLinkOneToManyMapping2_0Composite(
-			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<? extends OneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -69,7 +68,7 @@ public class OrmEclipseLinkOneToManyMapping2_0Composite
 	}
 	
 	protected PropertyValueModel<OrphanRemovable2_0> buildOrphanRemovableHolder() {
-		return new PropertyAspectAdapter<OrmOneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToManyMapping, OrphanRemovable2_0>(this.getSubjectHolder()) {
 			@Override
 			protected OrphanRemovable2_0 buildValue_() {
 				return ((OrphanRemovalHolder2_0) this.subject).getOrphanRemoval();

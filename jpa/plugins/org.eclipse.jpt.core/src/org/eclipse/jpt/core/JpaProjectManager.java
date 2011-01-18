@@ -26,8 +26,8 @@ import org.eclipse.jpt.utility.model.Model;
  * @since 2.3
  */
 public interface JpaProjectManager
-	extends Model {
-
+	extends Model
+{
 	/**
 	 * Return the JPA model's JPA projects.
 	 */
@@ -41,14 +41,15 @@ public interface JpaProjectManager
 
 	/**
 	 * Return the JPA project corresponding to the specified Eclipse project.
-	 * Return null if unable to associate the specified Eclipse project
-	 * with a JPA project.
+	 * Return <code>null</code> if unable to associate the specified Eclipse
+	 * project with a JPA project.
 	 */
 	JpaProject getJpaProject(IProject project);
 
 	/**
 	 * Return the JPA file corresponding to the specified Eclipse file,
-	 * or null if unable to associate the specified file with a JPA file.
+	 * or <code>null</code> if unable to associate the specified file with a
+	 * JPA file.
 	 */
 	JpaFile getJpaFile(IFile file);
 

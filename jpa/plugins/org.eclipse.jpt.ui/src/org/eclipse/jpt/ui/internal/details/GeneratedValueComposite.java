@@ -9,21 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.ListIterator;
+import java.util.Comparator;
+import java.util.Iterator;
+
 import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
+import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -77,7 +79,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		addLabeledEditableCombo(
 			container,
 			JptUiDetailsMessages.GeneratedValueComposite_generatorName,
-			buildGeneratorNameListHolder(),
+			buildGeneratorNamesModel(),
 			buildGeneratorNameHolder(),
 			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
 		);
@@ -163,29 +165,39 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		};
 	}
 
-	/**
-	 * Use the CompositeListValueModel even though it only contains 1 list value model
-	 * This prevents the combo items from being reset when the list of generators
-	 * hasn't really changed.  This keeps the cursor from going back to the beginning
-	 * of the list every time the generator name is edited in the combo.
-	 * AbstractComboModelAdapter.listChanged() does not handle this case well, 
-	 * the CompositeListValueModel does handle listChanged events well.
-	 */
-	protected ListValueModel<String> buildGeneratorNameListHolder() {
-		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
-		list.add(new ListAspectAdapter<PersistenceUnit, String>(
-			buildPersistenceUnitHolder(),
-			PersistenceUnit.GENERATORS_LIST)
-		{
+	protected ListValueModel<String> buildGeneratorNamesModel() {
+		return new TransformationListValueModel<Generator, String>(this.buildSortedGeneratorsModel()) {
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return CollectionTools.listIterator(ArrayTools.sort(this.subject.uniqueGeneratorNames()));
+			protected String transformItem_(Generator item) {
+				return item.getName();
 			}
-		});
-		return new CompositeListValueModel<ListValueModel<String>, String>(list);
+		};
 	}
 
-	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitHolder() {
+	protected ListValueModel<Generator> buildSortedGeneratorsModel() {
+		return new SortedListValueModelAdapter<Generator>(this.buildGeneratorsModel(), GENERATOR_COMPARATOR);
+	}
+
+	protected static final Comparator<Generator> GENERATOR_COMPARATOR = new Comparator<Generator>() {
+		public int compare(Generator generator1, Generator generator2) {
+			return generator1.getName().compareTo(generator2.getName());
+		}
+	};
+
+	protected CollectionValueModel<Generator> buildGeneratorsModel() {
+		return new CollectionAspectAdapter<PersistenceUnit, Generator>(this.buildPersistenceUnitModel(), PersistenceUnit.GENERATORS_COLLECTION) {
+			@Override
+			protected Iterator<Generator> iterator_() {
+				return this.subject.generators();
+			}
+			@Override
+			protected int size_() {
+				return this.subject.generatorsSize();
+			}
+		};
+	}
+
+	protected PropertyValueModel<PersistenceUnit> buildPersistenceUnitModel() {
 		return new PropertyAspectAdapter<IdMapping, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {

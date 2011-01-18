@@ -28,7 +28,8 @@ public class JavaEclipseLinkTransformationMapping
 		return EclipseLinkMappingKeys.TRANSFORMATION_ATTRIBUTE_MAPPING_KEY;
 	}
 	
-	public String getAnnotationName() {
+	@Override
+	protected String getAnnotationName() {
 		return EclipseLinkTransformationAnnotation.ANNOTATION_NAME;
 	}
 }

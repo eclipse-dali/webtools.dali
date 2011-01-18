@@ -78,6 +78,16 @@ public class JpaXmlResource
 		return (root == null) ? null : root.getVersion();
 	}
 
+	/**
+	 * Build a new resource type every time(?).
+	 */
+	public JpaResourceType getResourceType() {
+		String version = this.getVersion();
+		return ((this.contentType == null) || (version == null)) ?
+			null :
+			new JpaResourceType(this.contentType, version);
+	}
+	
 	
 	// ********** BasicNotifierImpl override **********
 	
@@ -250,14 +260,6 @@ public class JpaXmlResource
 	
 	
 	// ********** JpaResourceModel implementation **********
-	
-	public JpaResourceType getResourceType() {
-		if (this.contentType == null) {
-			return null;
-		}
-		String version = this.getVersion();
-		return (version == null) ? null : new JpaResourceType(this.contentType, version);
-	}
 	
 	public void addResourceModelListener(JpaResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);

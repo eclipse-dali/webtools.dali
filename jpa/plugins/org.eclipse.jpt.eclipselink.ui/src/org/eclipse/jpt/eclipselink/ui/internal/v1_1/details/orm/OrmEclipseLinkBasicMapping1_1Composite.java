@@ -11,7 +11,6 @@ package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.BasicMapping;
-import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -24,7 +23,7 @@ import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
-public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMappingComposite<OrmBasicMapping>
+public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMappingComposite<BasicMapping>
 {
 	/**
 	 * Creates a new <code>EclipseLink1_1OrmBasicMappingComposite</code>.
@@ -33,7 +32,7 @@ public class OrmEclipseLinkBasicMapping1_1Composite extends EclipseLinkBasicMapp
 	 * @param parent The parent container
 	 * @param widgetFactory The factory used to create various common widgets
 	 */
-	public OrmEclipseLinkBasicMapping1_1Composite(PropertyValueModel<? extends OrmBasicMapping> subjectHolder,
+	public OrmEclipseLinkBasicMapping1_1Composite(PropertyValueModel<? extends BasicMapping> subjectHolder,
 	                               Composite parent,
 	                               WidgetFactory widgetFactory) {
 

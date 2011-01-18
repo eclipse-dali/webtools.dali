@@ -20,8 +20,8 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
@@ -42,11 +42,11 @@ import com.ibm.icu.text.Collator;
 
 public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 {
-	private OrmPersistentAttribute unmappedPersistentAttribute;
+	private OrmReadOnlyPersistentAttribute unmappedPersistentAttribute;
 	private Text attributeText;
 	private ComboViewer mappingCombo;
 
-	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmPersistentAttribute unmappedPersistentAttribute) {
+	public AddPersistentAttributeToXmlAndMapDialog(Shell parentShell, OrmReadOnlyPersistentAttribute unmappedPersistentAttribute) {
 		super(parentShell);
 		this.unmappedPersistentAttribute = unmappedPersistentAttribute;
 		setTitle(JptUiMessages.AddPersistentAttributeDialog_title);
@@ -84,10 +84,10 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 				public Object[] getElements(Object inputElement) {
 					return ArrayTools.array(
 						CollectionTools.sort(
-							new FilteringIterator<MappingUiDefinition<PersistentAttribute, ?>>(
+							new FilteringIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ?>>(
 									((JpaPlatformUi) inputElement).attributeMappingUiDefinitions(unmappedPersistentAttribute.getResourceType())) {
 								@Override
-								protected boolean accept(MappingUiDefinition<PersistentAttribute, ?> o) {
+								protected boolean accept(MappingUiDefinition<ReadOnlyPersistentAttribute, ?> o) {
 									return o.isEnabledFor(AddPersistentAttributeToXmlAndMapDialog.this.unmappedPersistentAttribute);
 								}
 							},
@@ -191,7 +191,7 @@ public class AddPersistentAttributeToXmlAndMapDialog extends StatusDialog
 
 	@Override
 	protected void okPressed() {
-		unmappedPersistentAttribute.makeSpecified(getMappingKey());
+		unmappedPersistentAttribute.convertToSpecified(getMappingKey());
 		super.okPressed();
 	}
 }

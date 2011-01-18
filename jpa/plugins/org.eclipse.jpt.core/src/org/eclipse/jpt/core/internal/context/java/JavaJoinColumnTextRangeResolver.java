@@ -12,17 +12,13 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaJoinColumnTextRangeResolver
 	extends JavaNamedColumnTextRangeResolver
-	implements 
-		BaseColumnTextRangeResolver,
-		JoinColumnTextRangeResolver
+	implements JoinColumnTextRangeResolver
 {
-
 	public JavaJoinColumnTextRangeResolver(JavaJoinColumn column, CompilationUnit astRoot) {
 		super(column, astRoot);
 	}

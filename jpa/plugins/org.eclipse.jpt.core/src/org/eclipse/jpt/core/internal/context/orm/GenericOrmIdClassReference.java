@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.List;
@@ -25,7 +24,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlClassReference;
 import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
-import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -33,245 +31,293 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * <code>orm.xml</code> ID class reference
+ */
 public class GenericOrmIdClassReference
 	extends AbstractXmlContextNode
 	implements OrmIdClassReference
 {
-	protected String specifiedIdClassName;
-	
-	protected String defaultIdClassName;
+	protected final Owner owner;
 
+	protected String specifiedIdClassName;
+	protected String defaultIdClassName;
 	protected JavaPersistentType idClass;
-	
-	
-	public GenericOrmIdClassReference(OrmTypeMapping parent, JavaIdClassReference javaIdClassReference) {
+
+
+	public GenericOrmIdClassReference(OrmTypeMapping parent, Owner owner) {
 		super(parent);
-		this.specifiedIdClassName = buildSpecifiedIdClassName();
-		this.defaultIdClassName = buildDefaultIdClassName(javaIdClassReference);
-		this.idClass = buildIdClass();
+		this.owner = owner;
+		this.specifiedIdClassName = this.buildSpecifiedIdClassName();
 	}
-	
-	
-	protected OrmTypeMapping getTypeMapping() {
-		return (OrmTypeMapping) getParent();
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedIdClassName_(this.buildSpecifiedIdClassName());
+		// sync the id class *after* we have the specified name
+		this.syncIdClass();
 	}
-	
-	protected OrmPersistentType getPersistentType() {
-		return getTypeMapping().getPersistentType();
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultIdClassName(this.buildDefaultIdClassName());
+		this.updateIdClass();
 	}
-	
-	
-	// **************** PersistentType.Owner impl *****************************
-	
-	public AccessType getOverridePersistentTypeAccess() {
-		return getPersistentType().getAccess();
+
+
+	// ********** id class name **********
+
+	public String getIdClassName() {
+		return (this.specifiedIdClassName != null) ? this.specifiedIdClassName : this.defaultIdClassName;
 	}
-	
-	public AccessType getDefaultPersistentTypeAccess() {
-		// this shouldn't be needed, since we've specified an override access, but just to be safe ...
-		return getPersistentType().getAccess();
-	}
-	
-	
-	// **************** IdClassReference impl *********************************
-	
+
 	public String getSpecifiedIdClassName() {
 		return this.specifiedIdClassName;
 	}
-	
-	public void setSpecifiedIdClassName(String newClassName) {
-		String oldClassName = this.specifiedIdClassName;
-		this.specifiedIdClassName = newClassName;
-		if (valuesAreDifferent(oldClassName, newClassName)) {
-			if (getIdXmlClassRef() != null) {
-				getIdXmlClassRef().setClassName(newClassName);
-				if (getIdXmlClassRef().isUnset()) {
-					removeIdClassElement();
-				}
-			}
-			else if (newClassName != null) {
-				addIdClassElement();
-				getIdXmlClassRef().setClassName(newClassName);
+
+	public void setSpecifiedIdClassName(String name) {
+		if (this.valuesAreDifferent(this.specifiedIdClassName, name)) {
+			XmlClassReference xmlClassRef = this.getXmlIdClassRefForUpdate();
+			this.setSpecifiedIdClassName_(name);
+			xmlClassRef.setClassName(name);
+			this.removeXmlIdClassRefIfUnset();
+		}
+	}
+
+	/**
+	 * We clear out {@link #idClass} here because we cannot compare its name
+	 * to the specified name, since it may have been prefixed by the entity
+	 * mappings package.
+	 */
+	protected void setSpecifiedIdClassName_(String name) {
+		String old = this.specifiedIdClassName;
+		this.specifiedIdClassName = name;
+		if (this.firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, old, name)) {
+			// clear out the Java type here, it will be rebuilt during "update"
+			if (this.idClass != null) {
+				this.idClass.dispose();
+				this.setIdClass(null);
 			}
 		}
-		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
 	}
-	
-	protected void setSpecifiedIdClassName_(String newClassName) {
-		String oldClassName = this.specifiedIdClassName;
-		this.specifiedIdClassName = newClassName;
-		firePropertyChanged(SPECIFIED_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
-	}
-	
+
 	protected String buildSpecifiedIdClassName() {
-		XmlClassReference idXmlClassRef = this.getIdXmlClassRef();
-		return (idXmlClassRef == null) ? null : idXmlClassRef.getClassName();
+		XmlClassReference xmlIdClassRef = this.getXmlIdClassRef();
+		return (xmlIdClassRef == null) ? null : xmlIdClassRef.getClassName();
 	}
-	
+
 	public String getDefaultIdClassName() {
 		return this.defaultIdClassName;
 	}
-	
-	protected void setDefaultIdClassName_(String newClassName) {
-		String oldClassName = this.defaultIdClassName;
-		this.defaultIdClassName = newClassName;
-		firePropertyChanged(DEFAULT_ID_CLASS_NAME_PROPERTY, oldClassName, newClassName);
+
+	protected void setDefaultIdClassName(String name) {
+		String old = this.defaultIdClassName;
+		this.defaultIdClassName = name;
+		this.firePropertyChanged(DEFAULT_ID_CLASS_NAME_PROPERTY, old, name);
 	}
-	
-	protected String buildDefaultIdClassName(JavaIdClassReference javaIdClassReference) {
-		return (javaIdClassReference == null) ? null : javaIdClassReference.getFullyQualifiedIdClassName();
+
+	protected String buildDefaultIdClassName() {
+		JavaIdClassReference javaRef = this.owner.getJavaIdClassReferenceForDefaults();
+		return (javaRef == null) ? null : javaRef.getFullyQualifiedIdClassName();
 	}
-	
-	public String getIdClassName() {
-		return (this.specifiedIdClassName == null) ? this.defaultIdClassName : this.specifiedIdClassName;
-	}
-	
+
 	public boolean isSpecified() {
-		return getIdClassName() != null;
+		return this.getIdClassName() != null;
 	}
-	
+
+
+	// ********** xml id class ref **********
+
+	/**
+	 * Return null if the XML class ref does not exists.
+	 */
+	protected XmlClassReference getXmlIdClassRef() {
+		return this.getXmlIdClassContainer().getIdClass();
+	}
+
+	/**
+	 * Build the XML class ref if it does not exist.
+	 */
+	protected XmlClassReference getXmlIdClassRefForUpdate() {
+		XmlClassReference xmlClassRef = this.getXmlIdClassRef();
+		return (xmlClassRef != null) ? xmlClassRef : this.buildXmlIdClassRef();
+	}
+
+	protected XmlClassReference buildXmlIdClassRef() {
+		XmlClassReference ref = OrmFactory.eINSTANCE.createXmlClassReference();
+		this.getXmlIdClassContainer().setIdClass(ref);
+		return ref;
+	}
+
+	protected void removeXmlIdClassRefIfUnset() {
+		if (this.getXmlIdClassRef().isUnset()) {
+			this.removeXmlIdClassRef();
+		}
+	}
+
+	protected void removeXmlIdClassRef() {
+		this.getXmlIdClassContainer().setIdClass(null);
+	}
+
+
+	// ********** id class **********
+
 	public JavaPersistentType getIdClass() {
 		return this.idClass;
 	}
-	
-	protected void setIdClass_(JavaPersistentType newIdClass) {
-		JavaPersistentType oldIdClass = this.idClass;
-		this.idClass = newIdClass;
-		firePropertyChanged(ID_CLASS_PROPERTY, oldIdClass, newIdClass);
-	}
-	
-	protected JavaPersistentType buildIdClass() {
-		JavaResourcePersistentType resourceIdClass = getResourceIdClass();
-		return (resourceIdClass == null) ? 
-				null : this.buildIdClass(resourceIdClass);
-	}
-	
-	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceClass) {
-		return getJpaFactory().buildJavaPersistentType(this, resourceClass);
-	}
-	
-	protected XmlTypeMapping getResourceTypeMapping() {
-		return getTypeMapping().getResourceTypeMapping();
-	}
-	
-	protected XmlIdClassContainer getResourceIdClassContainer() {
-		return (XmlIdClassContainer) getResourceTypeMapping();
-	}
-	
-	protected XmlClassReference getIdXmlClassRef() {
-		return this.getResourceIdClassContainer().getIdClass();
-	}
-	
-	protected void addIdClassElement() {
-		getResourceIdClassContainer().setIdClass(OrmFactory.eINSTANCE.createXmlClassReference());		
-	}
-	
-	protected void removeIdClassElement() {
-		getResourceIdClassContainer().setIdClass(null);
-	}
-	
-	protected JavaResourcePersistentType getResourceIdClass() {
-		XmlClassReference idXmlClassRef = this.getIdXmlClassRef();
-		if (idXmlClassRef == null) {
-			return null;
-		}
 
-		String className = idXmlClassRef.getClassName();
-		if (className == null) {
-			return null;
-		}
-		
-		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
+	protected void setIdClass(JavaPersistentType idClass) {
+		JavaPersistentType old = this.idClass;
+		this.idClass = idClass;
+		this.firePropertyChanged(ID_CLASS_PROPERTY, old, idClass);
 	}
-	
-	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) getMappingFileRoot();
+
+	/**
+	 * If the specified ID class name changes during
+	 * <em>sync</em>, the ID class will be cleared out in
+	 * {@link #setSpecifiedIdClassName_(String)}. If we get here and
+	 * the ID class is still present, we can
+	 * <code>sync</code> it. Of course, it might be still obsolete if the
+	 * entity mappings's package has changed....
+	 *
+	 * @see #updateIdClass()
+	 */
+	protected void syncIdClass() {
+		if (this.idClass != null) {
+			this.idClass.synchronizeWithResourceModel();
+		}
+	}
+
+	/**
+	 * @see #syncIdClass()
+	 */
+	protected void updateIdClass() {
+		JavaResourcePersistentType resourceIdClass = this.resolveJavaResourceIdClass();
+		if (resourceIdClass == null) {
+			if (this.idClass != null) {
+				this.idClass.dispose();
+				this.setIdClass(null);
+			}
+		} else {
+			if (this.idClass == null) {
+				this.setIdClass(this.buildIdClass(resourceIdClass));
+			} else {
+				if (this.idClass.getResourcePersistentType() == resourceIdClass) {
+					this.idClass.update();
+				} else {
+					this.idClass.dispose();
+					this.setIdClass(this.buildIdClass(resourceIdClass));
+				}
+			}
+		}
+	}
+
+	// TODO I'm not sure we should be go to the entity mappings to resolve
+	// our name if it is taken from the Java ID class reference...
+	protected JavaResourcePersistentType resolveJavaResourceIdClass() {
+		String idClassName = this.getIdClassName();
+		return (idClassName == null) ? null : this.getEntityMappings().resolveJavaResourcePersistentType(idClassName);
+	}
+
+	protected JavaPersistentType buildIdClass(JavaResourcePersistentType resourceIdClass) {
+		return this.getJpaFactory().buildJavaPersistentType(this, resourceIdClass);
 	}
 
 	public char getIdClassEnclosingTypeSeparator() {
 		return '$';
 	}
-	
-	public void update(JavaIdClassReference javaIdClassReference) {
-		setDefaultIdClassName_(buildDefaultIdClassName(javaIdClassReference));
-		setSpecifiedIdClassName_(buildSpecifiedIdClassName());
-		updateIdClass();
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmTypeMapping getParent() {
+		return (OrmTypeMapping) super.getParent();
 	}
-	
-	protected void updateIdClass() {
-		JavaResourcePersistentType resourceIdClass = getResourceIdClass();
-		if (resourceIdClass == null) {
-			setIdClass_(null);
-		}
-		else { 
-			if (this.idClass == null || this.idClass.getResourcePersistentType() != resourceIdClass) {
-				setIdClass_(buildIdClass(resourceIdClass));
-			}
-			else {
-				this.idClass.update(resourceIdClass);
-			}
-		}
+
+	protected OrmTypeMapping getTypeMapping() {
+		return this.getParent();
+	}
+
+	protected OrmPersistentType getPersistentType() {
+		return this.getTypeMapping().getPersistentType();
+	}
+
+	protected XmlIdClassContainer getXmlIdClassContainer() {
+		return this.owner.getXmlIdClassContainer();
+	}
+
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) this.getMappingFileRoot();
 	}
 
 
-	//************************* refactoring ************************
+	// ********** PersistentType.Owner implementation **********
+
+	public AccessType getOverridePersistentTypeAccess() {
+		return this.getPersistentType().getAccess();
+	}
+
+	public AccessType getDefaultPersistentTypeAccess() {
+		// this shouldn't be needed, since we've specified an override access, but just to be safe ...
+		return this.getPersistentType().getAccess();
+	}
+
+
+	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
-		return getIdXmlClassRef().createRenameEdit(originalType, newName);
+		return this.getXmlIdClassRef().createRenameEdit(originalType, newName);
 	}
 
 	protected boolean isFor(String typeName) {
-		if (this.idClass != null && this.idClass.isFor(typeName)) {
-			return true;
-		}
-		return false;
+		return (this.idClass != null) && this.idClass.isFor(typeName);
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (this.isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
+		return this.isIn(originalPackage) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return getIdXmlClassRef().createRenamePackageEdit(newName);
+		return this.getXmlIdClassRef().createRenamePackageEdit(newName);
 	}
 
 	protected boolean isIn(IPackageFragment originalPackage) {
-		if (this.idClass != null && this.idClass.isIn(originalPackage)) {
-			return true;
-		}
-		return false;
+		return (this.idClass != null) && this.idClass.isIn(originalPackage);
 	}
 
 
-	// **************** validation ********************************************
-	
-	public TextRange getValidationTextRange() {
-		XmlClassReference idXmlClassRef = getIdXmlClassRef();
-		return (idXmlClassRef == null) ?
-				this.getTypeMapping().getValidationTextRange() :
-				idXmlClassRef.getClassNameTextRange();
-	}
-	
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		// most validation is done "holistically" from the type mapping level
+	}
+
+	public TextRange getValidationTextRange() {
+		XmlClassReference xmlIdClassRef = this.getXmlIdClassRef();
+		return (xmlIdClassRef == null) ?
+				this.getTypeMapping().getValidationTextRange() :
+				xmlIdClassRef.getClassNameTextRange();
 	}
 }

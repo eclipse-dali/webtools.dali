@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMappedSuperclassAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -88,16 +88,16 @@ public abstract class AbstractJavaEclipseLinkMappedSuperclassComposite
 		this.initializeConvertersSection(container, buildConverterHolderValueModel());
 	}
 	
-	private PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaMappedSuperclass, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
-			protected JavaEclipseLinkConverterHolder buildValue_() {
-				return ((JavaEclipseLinkMappedSuperclass) this.subject).getConverterHolder();
+			protected JavaEclipseLinkConverterContainer buildValue_() {
+				return ((JavaEclipseLinkMappedSuperclass) this.subject).getConverterContainer();
 			}	
 		};
 	}
 
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterHolder> converterHolder) {
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterContainer> converterHolder) {
 		new JavaEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 

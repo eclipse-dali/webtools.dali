@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmPersistentType;
+import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.internal.selection.DefaultJpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
@@ -31,20 +31,14 @@ public class AddPersistentAttributeToXmlHandler extends AbstractHandler
 		final IWorkbenchWindow window = 
 			HandlerUtil.getActiveWorkbenchWindowChecked(executionEvent);
 		
-		final List<OrmPersistentAttribute> newAttributes = new ArrayList<OrmPersistentAttribute>();
+		final List<OrmReadOnlyPersistentAttribute> newAttributes = new ArrayList<OrmReadOnlyPersistentAttribute>();
 		
 		IStructuredSelection selection = 
 			(IStructuredSelection) HandlerUtil.getCurrentSelectionChecked(executionEvent);
 		
-		// only applies for multiply selected OrmPersistentAttribute objects in a tree
-		for (OrmPersistentAttribute attribute : (Iterable<OrmPersistentAttribute>) CollectionTools.iterable(selection.iterator())) {
-			OrmPersistentType type = attribute.getOwningPersistentType();
-			String attributeName = attribute.getName();
-			attribute.makeSpecified();
-			OrmPersistentAttribute newAttribute = type.getAttributeNamed(attributeName);
-			if (newAttribute != null) {
-				newAttributes.add(newAttribute);
-			}
+		// only applies for multiply selected OrmReadOnlyPersistentAttribute objects in a tree
+		for (OrmReadOnlyPersistentAttribute attribute : (Iterable<OrmReadOnlyPersistentAttribute>) CollectionTools.iterable(selection.iterator())) {
+			newAttributes.add(attribute.convertToSpecified());
 		}
 		
 		if (newAttributes.size() == 1) {

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -14,34 +14,41 @@ import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 
 /**
+ * Java query container
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
- * @version 3.0
+ *
+ * @version 2.3
  * @since 2.3
  */
 public interface JavaQueryContainer
 	extends QueryContainer, JavaJpaContextNode
 {
+	// ********** named queries **********
+
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedQuery> namedQueries();
 
+	JavaNamedQuery addNamedQuery();
+
 	JavaNamedQuery addNamedQuery(int index);
+
+
+	// ********** named native queries **********
 
 	@SuppressWarnings("unchecked")
 	ListIterator<JavaNamedNativeQuery> namedNativeQueries();
 
-	JavaNamedNativeQuery addNamedNativeQuery(int index);
-	
-	void initialize(JavaResourceAnnotatedElement jrae);
-	
-	/**
-	 * Update the JavaQueryContainer context model object to match the JavaResourceAnnotatedElement 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(JavaResourceAnnotatedElement jrae);
+	JavaNamedNativeQuery addNamedNativeQuery();
 
+	JavaNamedNativeQuery addNamedNativeQuery(int index);
+
+	interface Owner
+	{
+		JavaResourceAnnotatedElement getResourceAnnotatedElement();
+	}
 }

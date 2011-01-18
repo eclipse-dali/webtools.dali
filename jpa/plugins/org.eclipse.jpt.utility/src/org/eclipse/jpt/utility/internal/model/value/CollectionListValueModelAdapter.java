@@ -200,11 +200,13 @@ public class CollectionListValueModelAdapter<E>
 				this.buildList(size);
 				this.fireItemsAdded(LIST_VALUES, 0, this.list);
 			} else {
-				this.list.clear();
-				this.buildList(size);
-				this.fireListChanged(LIST_VALUES, this.list);
+				this.synchronizeList(this.buildSyncList(), this.list, LIST_VALUES);
 			}
 		}
+	}
+
+	protected Iterable<? extends E> buildSyncList() {
+		return this.collectionHolder;
 	}
 
 	@Override

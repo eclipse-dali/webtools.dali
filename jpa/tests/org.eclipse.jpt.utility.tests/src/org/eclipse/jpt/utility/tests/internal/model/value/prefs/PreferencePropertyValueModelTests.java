@@ -389,7 +389,7 @@ public class PreferencePropertyValueModelTests extends PreferencesTestCase {
 		}
 
 		@Override
-		protected boolean shouldSetPreference(Object oldValue, Object newValue) {
+		protected boolean preferenceIsToBeSet(Object oldValue, Object newValue) {
 			return true;
 		}
 

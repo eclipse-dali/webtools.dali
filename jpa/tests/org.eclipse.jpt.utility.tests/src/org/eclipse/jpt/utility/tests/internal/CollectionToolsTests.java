@@ -991,7 +991,7 @@ public class CollectionToolsTests extends TestCase {
 
 	// ********** insertion index of **********
 
-	public void testInsertionIndexOfListComparable() {
+	public void testInsertionIndexOfListComparableRandomAccess() {
 		List<String> list = Arrays.asList(new String[] { "A", "C", "D" });
 		assertEquals(1, CollectionTools.insertionIndexOf(list, "B"));
 
@@ -1011,7 +1011,27 @@ public class CollectionToolsTests extends TestCase {
 		assertEquals(2, CollectionTools.insertionIndexOf(list, "A"));
 	}
 
-	public void testInsertionIndexOfListObjectComparator() {
+	public void testInsertionIndexOfListComparableNonRandomAccess() {
+		List<String> list = new LinkedList<String>(Arrays.asList(new String[] { "A", "C", "D" }));
+		assertEquals(1, CollectionTools.insertionIndexOf(list, "B"));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "A", "B", "C", "D" }));
+		assertEquals(1, CollectionTools.insertionIndexOf(list, "B"));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "A", "B", "B", "B", "C", "D" }));
+		assertEquals(1, CollectionTools.insertionIndexOf(list, "B"));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "A", "B", "B", "B", "C", "D" }));
+		assertEquals(6, CollectionTools.insertionIndexOf(list, "E"));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "B", "B", "B", "C", "D" }));
+		assertEquals(0, CollectionTools.insertionIndexOf(list, "A"));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "A", "A", "B", "B", "C", "D" }));
+		assertEquals(0, CollectionTools.insertionIndexOf(list, "A"));
+	}
+
+	public void testInsertionIndexOfListObjectComparatorRandomAccess() {
 		Comparator<String> c = new ReverseComparator<String>();
 		List<String> list = Arrays.asList(new String[] { "D", "C", "A" });
 		assertEquals(2, CollectionTools.insertionIndexOf(list, "B", c));
@@ -1030,6 +1050,27 @@ public class CollectionToolsTests extends TestCase {
 
 		list = Arrays.asList(new String[] { "D", "C", "B", "B", "A", "A" });
 		assertEquals(6, CollectionTools.insertionIndexOf(list, "A", c));
+	}
+
+	public void testInsertionIndexOfListObjectComparatorNonRandomAccess() {
+		Comparator<String> c = new ReverseComparator<String>();
+		List<String> list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "A" }));
+		assertEquals(2, CollectionTools.insertionIndexOf(list, "B", c));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "A" }));
+		assertEquals(2, CollectionTools.insertionIndexOf(list, "B", c));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "B", "B", "A" }));
+		assertEquals(2, CollectionTools.insertionIndexOf(list, "B", c));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "B", "B", "A" }));
+		assertEquals(0, CollectionTools.insertionIndexOf(list, "E", c));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "B", "B" }));
+		assertEquals(5, CollectionTools.insertionIndexOf(list, "A", c));
+
+		list = new LinkedList<String>(Arrays.asList(new String[] { "D", "C", "B", "B", "A", "A" }));
+		assertEquals(4, CollectionTools.insertionIndexOf(list, "A", c));
 	}
 
 

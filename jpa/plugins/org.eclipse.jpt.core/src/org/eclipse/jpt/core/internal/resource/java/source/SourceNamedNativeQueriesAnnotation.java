@@ -10,7 +10,6 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
@@ -18,6 +17,7 @@ import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueriesAnnotation;
 import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableNamedNativeQueryAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Type;
@@ -25,7 +25,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
- * javax.persistence.NamedNativeQueries
+ * <code>javax.persistence.NamedNativeQueries</code>
  */
 public final class SourceNamedNativeQueriesAnnotation
 	extends SourceAnnotation<Type>
@@ -53,6 +53,12 @@ public final class SourceNamedNativeQueriesAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.namedNativeQueries.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.namedNativeQueries);
 	}
@@ -76,13 +82,29 @@ public final class SourceNamedNativeQueriesAnnotation
 		return this.namedNativeQueries.size();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.namedNativeQueries.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.namedNativeQueries.add(index, (NestableNamedNativeQueryAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.namedNativeQueries.remove(0).convertToStandAlone();
+	}
+
 	public NestableNamedNativeQueryAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.namedNativeQueries.size());
 	}
 
 	private NestableNamedNativeQueryAnnotation addNestedAnnotation(int index) {
 		NestableNamedNativeQueryAnnotation namedNativeQuery = this.buildNamedNativeQuery(index);
-		this.namedNativeQueries.add(namedNativeQuery);
+		this.namedNativeQueries.add(index, namedNativeQuery);
 		return namedNativeQuery;
 	}
 
@@ -94,7 +116,9 @@ public final class SourceNamedNativeQueriesAnnotation
 	}
 
 	private NestableNamedNativeQueryAnnotation buildNamedNativeQuery(int index) {
-		return SourceNamedNativeQueryAnnotation.createNestedNamedNativeQuery(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceNamedNativeQueryAnnotation.createNestedNamedNativeQuery(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableNamedNativeQueryAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
@@ -108,5 +132,4 @@ public final class SourceNamedNativeQueriesAnnotation
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.namedNativeQueries, NAMED_NATIVE_QUERIES_LIST);
 	}
-
 }

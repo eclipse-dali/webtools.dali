@@ -12,10 +12,11 @@ package org.eclipse.jpt.core.context.java;
 import java.util.Iterator;
 
 import org.eclipse.jpt.core.context.TypeMapping;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 
 /**
- * Java type mapping (Entity, MappedSuperclass, Embeddable).
+ * Java type mapping
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -29,17 +30,9 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 public interface JavaTypeMapping
 	extends TypeMapping, JavaJpaContextNode
 {
-	void initialize(JavaResourcePersistentType jrpt);
+	JavaResourcePersistentType getResourcePersistentType();
 
-	/**
-	 * Update the context Java type mapping to match the resource model.
-	 * @see org.eclipse.jpt.core.JpaProject#update()
-	 */
-	void update(JavaResourcePersistentType jrpt);
-
-	String getAnnotationName();
-
-	Iterable<String> getSupportingAnnotationNames();
+	Annotation getMappingAnnotation();
 
 
 	// ********** covariant overrides **********
@@ -49,4 +42,6 @@ public interface JavaTypeMapping
 	@SuppressWarnings("unchecked")
 	Iterator<JavaAttributeMapping> attributeMappings();
 
+	@SuppressWarnings("unchecked")
+	Iterable<JavaAttributeMapping> getAttributeMappings(String mappingKey);
 }

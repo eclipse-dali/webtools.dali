@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * |                ---------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see Fetchable
+ * @see FetchableMapping
  * @see BasicMappingComposite - A container of this widget
  * @see JavaManyToManyMapping2_0Composite - A container of this widget
  * @see OrmManyToOneMappingComposite - A container of this widget

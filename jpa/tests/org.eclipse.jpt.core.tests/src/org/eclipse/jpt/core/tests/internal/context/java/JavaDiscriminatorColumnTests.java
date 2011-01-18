@@ -312,7 +312,6 @@ public class JavaDiscriminatorColumnTests extends ContextModelTestCase
 		discriminatorColumn.setLength(null);
 		getJpaProject().synchronizeContextModel();
 		
-		assertNull(typeResource.getAnnotation(JPA.DISCRIMINATOR_COLUMN));
 		assertNull(getJavaEntity().getDiscriminatorColumn().getSpecifiedLength());	
 	}	
 	

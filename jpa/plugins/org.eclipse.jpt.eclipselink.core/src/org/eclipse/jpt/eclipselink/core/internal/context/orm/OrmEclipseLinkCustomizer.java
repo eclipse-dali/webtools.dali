@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,89 +12,131 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
-import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.core.resource.orm.XmlClassReference;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
+import org.eclipse.jpt.core.resource.orm.OrmFactory;
+import org.eclipse.jpt.core.resource.orm.XmlClassReference;
+import org.eclipse.jpt.core.resource.orm.XmlTypeMapping;
+import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.context.java.EclipseLinkJavaTypeMapping;
+import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkOrmTypeMapping;
+import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
+import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 
-public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
+public class OrmEclipseLinkCustomizer
+	extends AbstractOrmXmlContextNode
 	implements EclipseLinkCustomizer
 {
-	protected final XmlCustomizerHolder resource;
-	
 	protected String specifiedCustomizerClass;
-	
 	protected String defaultCustomizerClass;
-	
-	protected JavaResourcePersistentType customizerPersistentType;
 
-	public OrmEclipseLinkCustomizer(OrmTypeMapping parent, XmlCustomizerHolder resource, JavaEclipseLinkCustomizer javaCustomizer) {
+
+	public OrmEclipseLinkCustomizer(EclipseLinkOrmTypeMapping parent) {
 		super(parent);
-		this.resource = resource;
-		this.defaultCustomizerClass = getJavaCustomizerClass(javaCustomizer);
-		this.specifiedCustomizerClass = getResourceCustomizerClass();
-		this.customizerPersistentType = getResourceCustomizerPersistentType();
+		this.specifiedCustomizerClass = this.buildSpecifiedCustomizerClass();
 	}
 
-	
-	// **************** EclipseLinkCustomizer impl *********************************
 
-	public char getCustomizerClassEnclosingTypeSeparator() {
-		return '$';
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedCustomizerClass_(this.buildSpecifiedCustomizerClass());
 	}
-	
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultCustomizerClass(this.buildDefaultCustomizerClass());
+	}
+
+
+	// ********** customizer class **********
+
 	public String getCustomizerClass() {
-		return this.specifiedCustomizerClass == null ? this.defaultCustomizerClass : this.specifiedCustomizerClass;
+		return (this.specifiedCustomizerClass != null) ? this.specifiedCustomizerClass : this.defaultCustomizerClass;
 	}
-	
-	public String getDefaultCustomizerClass() {
-		return this.defaultCustomizerClass;
-	}
-	
-	protected void setDefaultCustomizerClass(String newDefaultCustomizerClass) {
-		String oldDefaultCustomizerClass = this.defaultCustomizerClass;
-		this.defaultCustomizerClass = newDefaultCustomizerClass;
-		firePropertyChanged(DEFAULT_CUSTOMIZER_CLASS_PROPERTY, oldDefaultCustomizerClass, newDefaultCustomizerClass);
-	}
-	
+
 	public String getSpecifiedCustomizerClass() {
 		return this.specifiedCustomizerClass;
 	}
-	
-	public void setSpecifiedCustomizerClass(String newCustomizerClass) {
-		String oldCustomizerClass = this.specifiedCustomizerClass;
-		this.specifiedCustomizerClass = newCustomizerClass;
-		if (oldCustomizerClass != newCustomizerClass) {
-			if (this.getResourceCustomizer() != null) {
-				this.getResourceCustomizer().setClassName(newCustomizerClass);						
-				if (this.getResourceCustomizer().isUnset()) {
-					removeResourceCustomizer();
-				}
-			}
-			else if (newCustomizerClass != null) {
-				addResourceCustomizer();
-				getResourceCustomizer().setClassName(newCustomizerClass);
-			}
+
+	public void setSpecifiedCustomizerClass(String customizerClass) {
+		if (this.valuesAreDifferent(this.specifiedCustomizerClass, customizerClass)) {
+			XmlClassReference xmlClassRef = this.getXmlCustomizerClassRefForUpdate();
+			this.setSpecifiedCustomizerClass_(customizerClass);
+			xmlClassRef.setClassName(customizerClass);
+			this.removeXmlCustomizerClassRefIfUnset();
 		}
-		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
 	}
-	
-	protected void setSpecifiedCustomizerClass_(String newCustomizerClass) {
-		String oldCustomizerClass = this.specifiedCustomizerClass;
-		this.specifiedCustomizerClass = newCustomizerClass;
-		firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, oldCustomizerClass, newCustomizerClass);
+
+	protected void setSpecifiedCustomizerClass_(String customizerClass) {
+		String old = this.specifiedCustomizerClass;
+		this.specifiedCustomizerClass = customizerClass;
+		this.firePropertyChanged(SPECIFIED_CUSTOMIZER_CLASS_PROPERTY, old, customizerClass);
+	}
+
+	protected String buildSpecifiedCustomizerClass() {
+		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
+		return (xmlClassRef == null) ? null : xmlClassRef.getClassName();
+	}
+
+	public String getDefaultCustomizerClass() {
+		return this.defaultCustomizerClass;
+	}
+
+	protected void setDefaultCustomizerClass(String customizerClass) {
+		String old = this.defaultCustomizerClass;
+		this.defaultCustomizerClass = customizerClass;
+		this.firePropertyChanged(DEFAULT_CUSTOMIZER_CLASS_PROPERTY, old, customizerClass);
+	}
+
+	protected String buildDefaultCustomizerClass() {
+		JavaEclipseLinkCustomizer javaCustomizer = this.getJavaCustomizerForDefaults();
+		return (javaCustomizer == null) ? null : javaCustomizer.getFullyQualifiedCustomizerClass();
+	}
+
+
+	// ********** xml customizer class ref **********
+
+	/**
+	 * Return null if the XML class ref does not exists.
+	 */
+	protected XmlClassReference getXmlCustomizerClassRef() {
+		return this.getXmlCustomizerHolder().getCustomizer();
+	}
+
+	/**
+	 * Build the XML class ref if it does not exist.
+	 */
+	protected XmlClassReference getXmlCustomizerClassRefForUpdate() {
+		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
+		return (xmlClassRef != null) ? xmlClassRef : this.buildXmlCustomizerClassRef();
+	}
+
+	protected XmlClassReference buildXmlCustomizerClassRef() {
+		XmlClassReference ref = OrmFactory.eINSTANCE.createXmlClassReference();
+		this.getXmlCustomizerHolder().setCustomizer(ref);
+		return ref;
+	}
+
+	protected void removeXmlCustomizerClassRefIfUnset() {
+		if (this.getXmlCustomizerClassRef().isUnset()) {
+			this.removeXmlCustomizerClassRef();
+		}
+	}
+
+	protected void removeXmlCustomizerClassRef() {
+		this.getXmlCustomizerHolder().setCustomizer(null);
 	}
 
 	protected JavaResourcePersistentType getResourceCustomizerPersistentType() {
-		XmlClassReference customizerClassRef = this.getResourceCustomizer();
+		XmlClassReference customizerClassRef = this.getXmlCustomizerClassRef();
 		if (customizerClassRef == null) {
 			return null;
 		}
@@ -107,96 +149,87 @@ public class OrmEclipseLinkCustomizer extends AbstractOrmXmlContextNode
 		return this.getEntityMappings().resolveJavaResourcePersistentType(className);
 	}
 
-	protected EntityMappings getEntityMappings() {
-		return (EntityMappings) getMappingFileRoot();
-	}
-	
-	protected XmlClassReference getResourceCustomizer() {
-		return this.resource.getCustomizer();
-	}
-	
-	protected void addResourceCustomizer() {
-		this.resource.setCustomizer(OrmFactory.eINSTANCE.createXmlClassReference());		
-	}
-	
-	protected void removeResourceCustomizer() {
-		this.resource.setCustomizer(null);
+
+	// ********** misc **********
+
+	@Override
+	public EclipseLinkOrmTypeMapping getParent() {
+		return (EclipseLinkOrmTypeMapping) super.getParent();
 	}
 
+	protected EclipseLinkOrmTypeMapping getTypeMapping() {
+		return this.getParent();
+	}
+
+	protected XmlTypeMapping getXmlTypeMapping() {
+		return this.getTypeMapping().getXmlTypeMapping();
+	}
+
+	protected XmlCustomizerHolder getXmlCustomizerHolder() {
+		return (XmlCustomizerHolder) this.getXmlTypeMapping();
+	}
+
+	protected EclipseLinkJavaTypeMapping getJavaTypeMappingForDefaults() {
+		return this.getTypeMapping().getJavaTypeMappingForDefaults();
+	}
+
+	protected JavaEclipseLinkCustomizer getJavaCustomizerForDefaults() {
+		EclipseLinkJavaTypeMapping javaTypeMapping = this.getJavaTypeMappingForDefaults();
+		return (javaTypeMapping == null) ? null : (JavaEclipseLinkCustomizer) javaTypeMapping.getCustomizer();
+	}
+
+	protected EntityMappings getEntityMappings() {
+		return (EntityMappings) this.getMappingFileRoot();
+	}
+	
 	protected boolean isFor(String typeName) {
-		if (this.customizerPersistentType != null && this.customizerPersistentType.getQualifiedName().equals(typeName)) {
-			return true;
-		}
-		return false;
+		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
+		return (customizerType != null) && customizerType.getQualifiedName().equals(typeName);
 	}
 	
 	protected boolean isIn(IPackageFragment packageFragment) {
-		if (this.customizerPersistentType != null) {
-			return this.customizerPersistentType.isIn(packageFragment);
-		}
-		return false;
+		JavaResourcePersistentType customizerType = this.getResourceCustomizerPersistentType();
+		return (customizerType != null) && customizerType.isIn(packageFragment);
+	}
+
+	public char getCustomizerClassEnclosingTypeSeparator() {
+		return '$';
 	}
 
 
-	// **************** updating **************************************
-	
-	protected void update(JavaEclipseLinkCustomizer javaCustomizer) {
-		setDefaultCustomizerClass(getJavaCustomizerClass(javaCustomizer));
-		setSpecifiedCustomizerClass_(getResourceCustomizerClass());
-		updateCustomizerPersistentType();
-	}
-	
-	protected String getJavaCustomizerClass(JavaEclipseLinkCustomizer javaCustomizer) {
-		return (javaCustomizer == null) ? null : javaCustomizer.getFullyQualifiedCustomizerClass();
-	}
-	
-	protected String getResourceCustomizerClass() {
-		XmlClassReference resource = getResourceCustomizer();
-		return (resource == null) ? null : resource.getClassName();
-	}
-	
-	protected void updateCustomizerPersistentType() {
-		this.customizerPersistentType = this.getResourceCustomizerPersistentType();
-	}
-
-
-	//************************* refactoring ************************
+	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenameTypeEdit(originalType, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenameTypeEdit(IType originalType, String newName) {
-		return getResourceCustomizer().createRenameEdit(originalType, newName);
+		return this.getXmlCustomizerClassRef().createRenameEdit(originalType, newName);
 	}
 
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		if (this.isFor(originalType.getFullyQualifiedName('.'))) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName()));
-		}
-		return EmptyIterable.instance();
+		return this.isFor(originalType.getFullyQualifiedName('.')) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newPackage.getElementName())) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		if (this.isIn(originalPackage)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName));
-		}
-		return EmptyIterable.instance();
+		return this.isIn(originalPackage) ?
+				new SingleElementIterable<ReplaceEdit>(this.createRenamePackageEdit(newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
-		return getResourceCustomizer().createRenamePackageEdit(newName);
+		return this.getXmlCustomizerClassRef().createRenamePackageEdit(newName);
 	}
 
 
-	// **************** validation **************************************
-	
+	// ********** validation **********
+
 	public TextRange getValidationTextRange() {
-		XmlClassReference resource = getResourceCustomizer();
-		return resource == null ? null : resource.getClassNameTextRange();
+		XmlClassReference xmlClassRef = this.getXmlCustomizerClassRef();
+		return (xmlClassRef == null) ? null : xmlClassRef.getClassNameTextRange();
 	}
-
 }

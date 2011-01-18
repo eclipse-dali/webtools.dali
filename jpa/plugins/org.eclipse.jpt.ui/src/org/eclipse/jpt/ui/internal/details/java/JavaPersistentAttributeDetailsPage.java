@@ -40,7 +40,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.2
  * @since 2.0
  */
-public class JavaPersistentAttributeDetailsPage extends PersistentAttributeDetailsPage<JavaPersistentAttribute>
+public class JavaPersistentAttributeDetailsPage
+	extends PersistentAttributeDetailsPage<JavaPersistentAttribute>
 {
 	/**
 	 * Creates a new <code>JavaPersistentAttributeDetailsPage</code>.

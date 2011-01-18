@@ -17,7 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IField;
 import org.eclipse.jdt.core.IJavaProject;
@@ -35,6 +34,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.utility.MethodSignature;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.NameTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
@@ -129,6 +129,15 @@ final class BinaryPersistentAttribute
 	
 	// ********** JavaResourcePersistentAttribute implementation **********
 	
+	@Override
+	public JavaResourcePersistentType getParent() {
+		return (JavaResourcePersistentType) super.getParent();
+	}
+
+	public JavaResourcePersistentType getResourcePersistentType() {
+		return this.getParent();
+	}
+
 	public String getName() {
 		return this.getAdapter().getAttributeName();
 	}
@@ -381,10 +390,9 @@ final class BinaryPersistentAttribute
 			return type.getSuperInterfaceTypeSignatures();
 		} catch (JavaModelException ex) {
 			JptCorePlugin.log(ex);
-			return EMPTY_STRING_ARRAY;
+			return StringTools.EMPTY_STRING_ARRAY;
 		}
 	}
-	private static final String[] EMPTY_STRING_ARRAY = new String[0];
 
 	private IType findTypeBySignature(String typeSignature) {
 		return (typeSignature == null) ? null : this.findType(convertTypeSignatureToTypeName_(typeSignature));

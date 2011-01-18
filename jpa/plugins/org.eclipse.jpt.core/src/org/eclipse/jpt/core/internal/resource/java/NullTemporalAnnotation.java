@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.TemporalType;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Temporal
+ * <code>javax.persistence.Temporal</code>
  */
 public final class NullTemporalAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<TemporalAnnotation>
 	implements TemporalAnnotation
 {
 	protected NullTemporalAnnotation(JavaResourcePersistentAttribute parent) {
@@ -29,14 +29,6 @@ public final class NullTemporalAnnotation
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
 	}
-
-	@Override
-	protected TemporalAnnotation addAnnotation() {
-		return (TemporalAnnotation) super.addAnnotation();
-	}
-
-
-	// ********** TemporalAnnotation implementation **********
 
 	// ***** value
 	public TemporalType getValue() {
@@ -52,5 +44,4 @@ public final class NullTemporalAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

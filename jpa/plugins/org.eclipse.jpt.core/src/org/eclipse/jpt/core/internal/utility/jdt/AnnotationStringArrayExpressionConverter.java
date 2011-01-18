@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.utility.jdt.ExpressionConverter;
 /**
  * Convert an array initializer or single expression to/from an array of
  * strings (e.g. {"text0", "text1"}).
- * E is the type of the expressions to be found either standalone or
+ * E is the type of the expressions to be found either stand-alone or
  * as elements in the array initializer.
  */
 public class AnnotationStringArrayExpressionConverter

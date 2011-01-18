@@ -117,6 +117,4 @@ public interface XmlGenerator extends XmlGenerator_2_0
 	void setAllocationSize(Integer value);
 	
 	public TextRange getNameTextRange();
-	
-	boolean isVirtual();
 }

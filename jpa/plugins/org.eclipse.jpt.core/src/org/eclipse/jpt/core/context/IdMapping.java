@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
+ * JPA ID mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -22,7 +22,7 @@ package org.eclipse.jpt.core.context;
  * @since 2.0
  */
 public interface IdMapping
-	extends AttributeMapping, ColumnMapping, ConvertibleMapping
+	extends ColumnMapping, ConvertibleMapping
 {
 	GeneratorContainer getGeneratorContainer();
 
@@ -30,6 +30,4 @@ public interface IdMapping
 	GeneratedValue addGeneratedValue();
 	void removeGeneratedValue();
 		String GENERATED_VALUE_PROPERTY = "generatedValue"; //$NON-NLS-1$
-	
-	
 }

@@ -329,7 +329,7 @@ public class GenericMetamodelSynchronizer
 	}
 	/**
 	 * Recommended date format is ISO 8601.
-	 * @see javax.annotation.Generated
+	 * See javax.annotation.Generated
 	 */
 	private static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 

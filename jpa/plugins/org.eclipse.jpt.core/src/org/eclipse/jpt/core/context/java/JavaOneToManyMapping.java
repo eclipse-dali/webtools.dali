@@ -13,8 +13,8 @@ import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 
 /**
- * The java representation of a {@link OneToManyMapping}
- * 
+ * Java 1:m mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,9 +25,11 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
  * @since 2.0
  */
 public interface JavaOneToManyMapping
-	extends JavaMultiRelationshipMapping, OneToManyMapping
+	extends OneToManyMapping, JavaMultiRelationshipMapping
 {
 	OneToManyAnnotation getMappingAnnotation();
+	
+	OneToManyAnnotation getAnnotationForUpdate();
 	
 	JavaOneToManyRelationshipReference getRelationshipReference();
 }

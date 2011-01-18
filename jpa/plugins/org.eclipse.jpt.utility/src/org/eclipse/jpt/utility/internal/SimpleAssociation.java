@@ -12,7 +12,7 @@ package org.eclipse.jpt.utility.internal;
 import java.io.Serializable;
 
 /**
- * Straightforward implementation of {@ link Association}.
+ * Straightforward implementation of {@link Association}.
  */
 public class SimpleAssociation<K, V>
 	extends AbstractAssociation<K, V>
@@ -42,11 +42,11 @@ public class SimpleAssociation<K, V>
 	}
 
 
-	public K key() {
+	public K getKey() {
 		return this.key;
 	}
 
-	public synchronized V value() {
+	public synchronized V getValue() {
 		return this.value;
 	}
 

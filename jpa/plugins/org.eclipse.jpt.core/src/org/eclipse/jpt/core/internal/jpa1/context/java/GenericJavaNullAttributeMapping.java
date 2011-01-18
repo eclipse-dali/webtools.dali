@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,17 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
-import java.util.List;
-import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaAttributeMapping;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.wst.validation.internal.provisional.core.IMessage;
-import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * null mapping used when an attribute's default mapping cannot be determined
+ */
 public class GenericJavaNullAttributeMapping
 	extends AbstractJavaAttributeMapping<Annotation>
 {
@@ -30,16 +28,12 @@ public class GenericJavaNullAttributeMapping
 	public String getKey() {
 		return MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY;
 	}
-	
-	public String getAnnotationName() {
+
+	@Override
+	protected String getAnnotationName() {
 		return null;
 	}
 	
-	@Override
-	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		super.validate(messages, reporter, astRoot);
-	}
-
 
 	// ********** metamodel **********  
 
@@ -47,5 +41,4 @@ public class GenericJavaNullAttributeMapping
 	public MetamodelField getMetamodelField() {
 		return null;
 	}
-
 }

@@ -13,31 +13,23 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeOverride;
 
 /**
+ * <code>orm.xml</code> attribute override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  * 
- * @version 3.0
+ * @version 2.3
  * @since 2.0
  */
 public interface OrmAttributeOverride
-	extends AttributeOverride, OrmOverride
+	extends OrmReadOnlyAttributeOverride, AttributeOverride, OrmOverride
 {
+	OrmVirtualAttributeOverride convertToVirtual();
+
+	XmlAttributeOverride getXmlOverride();
+
 	OrmColumn getColumn();
-
-	OrmAttributeOverride setVirtual(boolean virtual);
-
-	/**
-	 * Update the OrmAttributeOverride context model object to match the XmlAttributeOverride 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlAttributeOverride attributeOverride);
-
-	interface Owner
-		extends AttributeOverride.Owner, OrmOverride.Owner
-	{
-		//nothing yet
-	}
 }

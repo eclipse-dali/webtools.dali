@@ -54,6 +54,12 @@ public final class SourceEntityAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.name == null);
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.name);
 	}
@@ -91,7 +97,7 @@ public final class SourceEntityAnnotation
 	//*********** static methods ****************
 
 	private static DeclarationAnnotationElementAdapter<String> buildNameAdapter() {
-		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME, false); // false = do not remove annotation when empty
+		return ConversionDeclarationAnnotationElementAdapter.forStrings(DECLARATION_ANNOTATION_ADAPTER, JPA.ENTITY__NAME);
 	}
 
 }

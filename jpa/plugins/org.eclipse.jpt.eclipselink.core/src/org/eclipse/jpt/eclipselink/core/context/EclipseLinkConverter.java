@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,15 @@
 package org.eclipse.jpt.eclipselink.core.context;
 
 import org.eclipse.jpt.core.context.JpaContextNode;
+import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
- * Corresponds to a *CustomConverter resource model object
- * 
+ * EclipseLink converter:<ul>
+ * <li>Type ({@link EclipseLinkTypeConverter})
+ * <li>Object Type ({@link EclipseLinkObjectTypeConverter})
+ * <li>Struct ({@link EclipseLinkStructConverter})
+ * <li>Custom ({@link EclipseLinkCustomConverter})
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,42 +28,45 @@ import org.eclipse.jpt.core.context.JpaContextNode;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkConverter extends JpaContextNode
+public interface EclipseLinkConverter
+	extends JpaContextNode
 {
 	/**
-	 * Return a string that represents the type of converter.
-	 * Possibilities are below, NO_CONVERTER, CUSTOM_CONVERTER, 
-	 * OBJECT_TYPE_CONVERTER, STRUCT_CONVERTER, TYPE_CONVERTER
+	 * Return the converter's type.
 	 */
-	String getType();
-		String NO_CONVERTER = "noConverter"; //$NON-NLS-1$
-		String CUSTOM_CONVERTER = "customConverter"; //$NON-NLS-1$
-		String OBJECT_TYPE_CONVERTER = "objectTypeConverter"; //$NON-NLS-1$
-		String STRUCT_CONVERTER = "structConverter"; //$NON-NLS-1$
-		String TYPE_CONVERTER = "typeConverter"; //$NON-NLS-1$
-	
+	Class<? extends EclipseLinkConverter> getType();
+		@SuppressWarnings("unchecked")
+		Iterable<Class<? extends EclipseLinkConverter>> TYPES = new ArrayIterable<Class<? extends EclipseLinkConverter>>(
+			EclipseLinkCustomConverter.class,
+			EclipseLinkObjectTypeConverter.class,
+			EclipseLinkStructConverter.class,
+			EclipseLinkTypeConverter.class
+		);
+		
+
 	String getName();	
 	void setName(String name);
 		String NAME_PROPERTY = "name"; //$NON-NLS-1$
 	
 	/**
-	 * Return the char to be used for browsing or creating the converter class IType.
+	 * Return the character to be used for browsing or creating the converter
+	 * class {@link org.eclipse.jdt.core.IType IType}.
 	 * @see org.eclipse.jdt.core.IType#getFullyQualifiedName(char)
 	 */
 	char getEnclosingTypeSeparator();
 
 	/**
-	 * Return whether the converter definition overrides the definition of the 
-	 * given converter
-	 * (e.g. a converter defined in orm.xml overrides one defined in java).
+	 * Return whether the converter "overrides" the specified converter
+	 * (e.g. a converter defined in <code>orm.xml</code> overrides one
+	 * defined in Java).
 	 */
 	boolean overrides(EclipseLinkConverter converter);
 	
 	/**
-	 * Return whether the converter is a duplicate of the given converter.
-	 * A converter is not a duplicate of another converter if is the same exact converter,
-	 * if it is a nameless converter (which is an error condition), or if it overrides 
-	 * or is overridden by the other converter. 
+	 * Return whether the converter is a duplicate of the specified converter.
+	 * A converter is not a duplicate of another converter if is the exact
+	 * same converter, if it is a nameless converter (which is an error
+	 * condition), or if it overrides or is overridden by the other converter.
 	 */
 	boolean duplicates(EclipseLinkConverter converter);
 }

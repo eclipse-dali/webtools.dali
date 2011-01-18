@@ -13,7 +13,6 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -51,78 +50,26 @@ public class GenericRootContextNode
 
 	public GenericRootContextNode(JpaProject jpaProject) {
 		super(null);  // the JPA project is not really a "parent"...
+
 		if (jpaProject == null) {
 			throw new NullPointerException();
 		}
 		this.jpaProject = jpaProject;
-		this.initialize();
 	}
 
+
+	// ********** synchronize/update **********
 
 	@Override
-	protected boolean requiresParent() {
-		return false;
-	}
-
-	protected void initialize() {
-		JpaXmlResource resource = this.resolvePersistenceXmlResource();
-		if (resource != null) {
-			this.persistenceXml = this.buildPersistenceXml(resource);
-		}
-	}
-
-	public void update(IProgressMonitor monitor) {
-		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
-		if (xmlResource == null) {
-			if (this.persistenceXml != null) {
-				this.persistenceXml.dispose();
-				this.setPersistenceXml(null);
-			}
-		} else {
-			if (this.persistenceXml == null) {
-				this.setPersistenceXml(this.buildPersistenceXml(xmlResource));
-			} else {
-				this.persistenceXml.update();
-			}
-		}
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.syncPersistenceXml();
 	}
 
 	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.persistenceXml != null) {
-			this.persistenceXml.postUpdate();
-		}
-	}
-
-
-	// ********** AbstractJpaNode overrides **********
-
-	@Override
-	public JpaProject getJpaProject() {
-		return this.jpaProject;
-	}
-
-	@Override
-	public IResource getResource() {
-		return this.getProject();
-	}
-
-	protected IProject getProject() {
-		return this.jpaProject.getProject();
-	}
-
-
-	// ********** AbstractJpaContextNode overrides **********
-
-	@Override
-	public PersistenceUnit getPersistenceUnit() {
-		return null;
-	}
-
-	@Override
-	public MappingFileRoot getMappingFileRoot() {
-		return null;
+	public void update() {
+		super.update();
+		this.updatePersistenceXml();
 	}
 
 
@@ -136,6 +83,32 @@ public class GenericRootContextNode
 		PersistenceXml old = this.persistenceXml;
 		this.persistenceXml = persistenceXml;
 		this.firePropertyChanged(PERSISTENCE_XML_PROPERTY, old, persistenceXml);
+	}
+
+	protected void syncPersistenceXml() {
+		if (this.persistenceXml != null) {
+			this.persistenceXml.synchronizeWithResourceModel();
+		}
+	}
+
+	/**
+	 * Check whether the XML resource has either appeared or disappeared.
+	 * If it is still present, it will be the same instance.
+	 */
+	protected void updatePersistenceXml() {
+		JpaXmlResource xmlResource = this.resolvePersistenceXmlResource();
+		if (xmlResource == null) {
+			if (this.persistenceXml != null) {
+				this.persistenceXml.dispose();
+				this.setPersistenceXml(null);
+			}
+		} else {
+			if (this.persistenceXml == null) {
+				this.setPersistenceXml(this.buildPersistenceXml(xmlResource));
+			} else {
+				this.persistenceXml.update();
+			}
+		}
 	}
 
 	protected JpaXmlResource resolvePersistenceXmlResource() {
@@ -158,8 +131,47 @@ public class GenericRootContextNode
 		return xmlResource;
 	}
 
-	protected PersistenceXml buildPersistenceXml(JpaXmlResource resource) {
-		return this.getJpaFactory().buildPersistenceXml(this, resource);
+	protected PersistenceXml buildPersistenceXml(JpaXmlResource xmlResource) {
+		return this.getJpaFactory().buildPersistenceXml(this, xmlResource);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	protected boolean requiresParent() {
+		return false;
+	}
+
+	@Override
+	public void stateChanged() {
+		super.stateChanged();
+		// forward to JPA project
+		this.jpaProject.stateChanged();
+	}
+
+	@Override
+	public JpaProject getJpaProject() {
+		return this.jpaProject;
+	}
+
+	@Override
+	public IResource getResource() {
+		return this.getProject();
+	}
+
+	protected IProject getProject() {
+		return this.jpaProject.getProject();
+	}
+
+	@Override
+	public PersistenceUnit getPersistenceUnit() {
+		return null;
+	}
+
+	@Override
+	public MappingFileRoot getMappingFileRoot() {
+		return null;
 	}
 
 

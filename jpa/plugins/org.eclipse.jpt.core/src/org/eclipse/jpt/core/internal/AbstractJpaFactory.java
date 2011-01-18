@@ -12,13 +12,15 @@ package org.eclipse.jpt.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.core.JpaDataSource;
+import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
-import org.eclipse.jpt.core.context.Orderable;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -27,11 +29,9 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipRefe
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaColumn;
-import org.eclipse.jpt.core.context.java.JavaConverter;
 import org.eclipse.jpt.core.context.java.JavaDiscriminatorColumn;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
@@ -49,11 +49,11 @@ import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToOneMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
-import org.eclipse.jpt.core.context.java.JavaNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaNamedNativeQuery;
 import org.eclipse.jpt.core.context.java.JavaNamedQuery;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
+import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -69,10 +69,18 @@ import org.eclipse.jpt.core.context.java.JavaTransientMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn.Owner;
+import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
+import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
+import org.eclipse.jpt.core.context.java.JavaVirtualColumn;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTable;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaVirtualJoinTable;
 import org.eclipse.jpt.core.internal.context.java.JavaNullTypeMapping;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaDataSource;
 import org.eclipse.jpt.core.internal.jpa1.GenericJpaFile;
@@ -103,7 +111,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappedSupercla
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNamedNativeQuery;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNamedQuery;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNullAttributeMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaNullConverter;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOneToOneMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOrderable;
@@ -120,36 +127,42 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTemporalConver
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTransientMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.java.VirtualAssociationOverride1_0Annotation;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAssociationOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAttributeOverride;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualColumn;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualJoinColumn;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml;
 import org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml;
-import org.eclipse.jpt.core.internal.jpa2.GenericJpaDatabaseIdentifierAdapter;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
-import org.eclipse.jpt.core.jpa2.context.MetamodelSourceType;
-import org.eclipse.jpt.core.jpa2.context.java.JavaCacheable2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaCacheableHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionTable2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaDerivedIdentity2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaEmbeddedMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrderColumn2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
+import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
+import org.eclipse.jpt.core.resource.java.GeneratedValueAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.LobAnnotation;
+import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedNativeQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
+import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
+import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
+import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
+import org.eclipse.jpt.core.resource.java.TemporalAnnotation;
+import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 
 /**
  * Central class that allows extenders to easily replace implementations of
  * various Dali interfaces.
  */
 public abstract class AbstractJpaFactory
-	implements JpaFactory2_0
+	implements JpaFactory
 {
 	protected AbstractJpaFactory() {
 		super();
@@ -162,16 +175,8 @@ public abstract class AbstractJpaFactory
 		return new GenericJpaProject(config);
 	}
 	
-	public MetamodelSourceType.Synchronizer buildMetamodelSynchronizer(MetamodelSourceType sourceType) {
-		return null;
-	}
-	
 	public JpaDataSource buildJpaDataSource(JpaProject jpaProject, String connectionProfileName) {
 		return new GenericJpaDataSource(jpaProject, connectionProfileName);
-	}
-	
-	public DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter(JpaDataSource dataSource) {
-		return new GenericJpaDatabaseIdentifierAdapter(dataSource);
 	}
 	
 	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
@@ -211,40 +216,52 @@ public abstract class AbstractJpaFactory
 		return new JavaNullTypeMapping(parent);
 	}
 	
-	public JavaEntity buildJavaEntity(JavaPersistentType parent) {
-		return new GenericJavaEntity(parent);
+	public JavaEntity buildJavaEntity(JavaPersistentType parent, EntityAnnotation entityAnnotation) {
+		return new GenericJavaEntity(parent, entityAnnotation);
 	}
 
-	public JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent) {
-		return new GenericJavaMappedSuperclass(parent);
+	public JavaMappedSuperclass buildJavaMappedSuperclass(JavaPersistentType parent, MappedSuperclassAnnotation mappedSuperclassAnnotation) {
+		return new GenericJavaMappedSuperclass(parent, mappedSuperclassAnnotation);
 	}
 
-	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent) {
-		return new GenericJavaEmbeddable(parent);
+	public JavaEmbeddable buildJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation embeddableAnnotation) {
+		return new GenericJavaEmbeddable(parent, embeddableAnnotation);
 	}
 	
 	public JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner) {
 		return new GenericJavaTable(parent, owner);
 	}
 	
-	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaBaseColumn.Owner owner) {
+	public JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner) {
 		return new GenericJavaColumn(parent, owner);
+	}
+	
+	public JavaVirtualColumn buildJavaVirtualColumn(JavaJpaContextNode parent, JavaVirtualColumn.Owner owner) {
+		return new GenericJavaVirtualColumn(parent, owner);
 	}
 	
 	public JavaDiscriminatorColumn buildJavaDiscriminatorColumn(JavaEntity parent, JavaDiscriminatorColumn.Owner owner) {
 		return new GenericJavaDiscriminatorColumn(parent, owner);
 	}
 	
-	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner) {
-		return new GenericJavaJoinColumn(parent, owner);
+	public JavaJoinColumn buildJavaJoinColumn(JavaJpaContextNode parent, JavaJoinColumn.Owner owner, JoinColumnAnnotation joinColumnAnnotation) {
+		return new GenericJavaJoinColumn(parent, owner, joinColumnAnnotation);
+	}
+
+	public JavaVirtualJoinColumn buildJavaVirtualJoinColumn(JavaJpaContextNode parent, ReadOnlyJoinColumn.Owner owner, JoinColumn joinColumn) {
+		return new GenericJavaVirtualJoinColumn(parent, owner, joinColumn);
 	}
 	
 	public JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent, Table.Owner owner) {
 		return new GenericJavaJoinTable(parent, owner);
 	}
 	
-	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner) {
-		return new GenericJavaSecondaryTable(parent, owner);
+	public JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable) {
+		return new GenericJavaVirtualJoinTable(parent, overriddenTable);
+	}
+	
+	public JavaSecondaryTable buildJavaSecondaryTable(JavaEntity parent, Table.Owner owner, SecondaryTableAnnotation tableAnnotation) {
+		return new GenericJavaSecondaryTable(parent, owner, tableAnnotation);
 	}
 	
 	public JavaBasicMapping buildJavaBasicMapping(JavaPersistentAttribute parent) {
@@ -291,24 +308,24 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaNullAttributeMapping(parent);
 	}
 	
-	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent) {
-		return new GenericJavaGeneratorContainer(parent);
+	public JavaGeneratorContainer buildJavaGeneratorContainer(JavaJpaContextNode parent, JavaGeneratorContainer.Owner owner) {
+		return new GenericJavaGeneratorContainer(parent, owner);
 	}
 	
-	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent) {
-		return new GenericJavaSequenceGenerator(parent);
+	public JavaSequenceGenerator buildJavaSequenceGenerator(JavaJpaContextNode parent, SequenceGeneratorAnnotation sequenceGeneratorAnnotation) {
+		return new GenericJavaSequenceGenerator(parent, sequenceGeneratorAnnotation);
 	}
 	
-	public JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent) {
-		return new GenericJavaTableGenerator(parent);
+	public JavaTableGenerator buildJavaTableGenerator(JavaJpaContextNode parent, TableGeneratorAnnotation tableGeneratorAnnotation) {
+		return new GenericJavaTableGenerator(parent, tableGeneratorAnnotation);
 	}
 	
-	public JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent) {
-		return new GenericJavaGeneratedValue(parent);
+	public JavaGeneratedValue buildJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
+		return new GenericJavaGeneratedValue(parent, generatedValueAnnotation);
 	}
 	
-	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner) {
-		return new GenericJavaPrimaryKeyJoinColumn(parent, owner);
+	public JavaPrimaryKeyJoinColumn buildJavaPrimaryKeyJoinColumn(JavaJpaContextNode parent, JavaBaseJoinColumn.Owner owner, PrimaryKeyJoinColumnAnnotation pkJoinColumnAnnotation) {
+		return new GenericJavaPrimaryKeyJoinColumn(parent, owner, pkJoinColumnAnnotation);
 	}
 	
 	public JavaAttributeOverrideContainer buildJavaAttributeOverrideContainer(JavaJpaContextNode parent, JavaAttributeOverrideContainer.Owner owner) {
@@ -319,91 +336,67 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaAssociationOverrideContainer(parent, owner);
 	}
 	
-	public JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, JavaAttributeOverride.Owner owner) {
-		return new GenericJavaAttributeOverride(parent, owner);
+	public JavaAttributeOverride buildJavaAttributeOverride(JavaAttributeOverrideContainer parent, AttributeOverrideAnnotation annotation) {
+		return new GenericJavaAttributeOverride(parent, annotation);
 	}
 	
-	public JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, JavaAssociationOverride.Owner owner) {
-		return new GenericJavaAssociationOverride(parent, owner);
+	public JavaVirtualAttributeOverride buildJavaVirtualAttributeOverride(JavaAttributeOverrideContainer parent, String name) {
+		return new GenericJavaVirtualAttributeOverride(parent, name);
+	}
+	
+	public JavaAssociationOverride buildJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
+		return new GenericJavaAssociationOverride(parent, annotation);
+	}
+	
+	public JavaVirtualAssociationOverride buildJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name) {
+		return new GenericJavaVirtualAssociationOverride(parent, name);
 	}
 	
 	public JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
 		return new GenericJavaAssociationOverrideRelationshipReference(parent);
 	}
 	
-	public AssociationOverrideAnnotation buildJavaVirtualAssociationOverrideAnnotation(JavaResourcePersistentMember jrpm, String name, JoiningStrategy joiningStrategy) {
-		return new VirtualAssociationOverride1_0Annotation(jrpm, name, joiningStrategy);
+	public JavaVirtualAssociationOverrideRelationshipReference buildJavaVirtualAssociationOverrideRelationshipReference(JavaVirtualAssociationOverride parent) {
+		return new GenericJavaVirtualAssociationOverrideRelationshipReference(parent);
 	}
 	
-	public JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent) {
-		return new GenericJavaQueryContainer(parent);
+	public JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent, JavaQueryContainer.Owner owner) {
+		return new GenericJavaQueryContainer(parent, owner);
 	}
 	
-	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent) {
-		return new GenericJavaNamedQuery(parent);
+	public JavaNamedQuery buildJavaNamedQuery(JavaJpaContextNode parent, NamedQueryAnnotation namedQueryAnnotation) {
+		return new GenericJavaNamedQuery(parent, namedQueryAnnotation);
 	}
 	
-	public JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent) {
-		return new GenericJavaNamedNativeQuery(parent);
+	public JavaNamedNativeQuery buildJavaNamedNativeQuery(JavaJpaContextNode parent, NamedNativeQueryAnnotation namedNativeQueryAnnotation) {
+		return new GenericJavaNamedNativeQuery(parent, namedNativeQueryAnnotation);
 	}
 	
-	public JavaQueryHint buildJavaQueryHint(JavaQuery parent) {
-		return new GenericJavaQueryHint(parent);
+	public JavaQueryHint buildJavaQueryHint(JavaQuery parent, QueryHintAnnotation queryHintAnnotation) {
+		return new GenericJavaQueryHint(parent, queryHintAnnotation);
 	}
 	
-	public JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner) {
-		return new GenericJavaUniqueConstraint(parent, owner);
+	public JavaUniqueConstraint buildJavaUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint.Owner owner, UniqueConstraintAnnotation constraintAnnotation) {
+		return new GenericJavaUniqueConstraint(parent, owner, constraintAnnotation);
 	}
 	
-	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaEnumeratedConverter(parent, jrpa);
+	public JavaVirtualUniqueConstraint buildJavaVirtualUniqueConstraint(JavaJpaContextNode parent, UniqueConstraint uniqueConstraint) {
+		return new GenericJavaVirtualUniqueConstraint(parent, uniqueConstraint);
 	}
 	
-	public JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaTemporalConverter(parent, jrpa);
+	public JavaEnumeratedConverter buildJavaEnumeratedConverter(JavaAttributeMapping parent, EnumeratedAnnotation annotation) {
+		return new GenericJavaEnumeratedConverter(parent, annotation);
 	}
 	
-	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, JavaResourcePersistentAttribute jrpa) {
-		return new GenericJavaLobConverter(parent, jrpa);
+	public JavaTemporalConverter buildJavaTemporalConverter(JavaAttributeMapping parent, TemporalAnnotation annotation) {
+		return new GenericJavaTemporalConverter(parent, annotation);
 	}
 	
-	public JavaConverter buildJavaNullConverter(JavaAttributeMapping parent) {
-		return new GenericJavaNullConverter(parent);
+	public JavaLobConverter buildJavaLobConverter(JavaAttributeMapping parent, LobAnnotation annotation) {
+		return new GenericJavaLobConverter(parent, annotation);
 	}
 	
-	public JavaOrderable2_0 buildJavaOrderable(JavaAttributeMapping parent, Orderable.Owner owner) {
-		return new GenericJavaOrderable(parent, owner);
-	}
-	
-	public JavaAssociationOverrideContainer buildJavaAssociationOverrideContainer(JavaEmbeddedMapping2_0 parent, JavaAssociationOverrideContainer.Owner owner) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaDerivedIdentity2_0 buildJavaDerivedIdentity(JavaSingleRelationshipMapping2_0 parent) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaElementCollectionMapping2_0 buildJavaElementCollectionMapping2_0(JavaPersistentAttribute parent) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaCacheable2_0 buildJavaCacheable(JavaCacheableHolder2_0 parent) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaOrphanRemovable2_0 buildJavaOrphanRemoval(JavaOrphanRemovalHolder2_0 parent) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaOrderColumn2_0 buildJavaOrderColumn(JavaOrderable2_0 parent, JavaNamedColumn.Owner owner) {
-		throw new UnsupportedOperationException();
-	}
-	
-	public JavaCollectionTable2_0 buildJavaCollectionTable(JavaElementCollectionMapping2_0 parent, Table.Owner owner) {
-		throw new UnsupportedOperationException();
-	}
-
-	public JavaColumn buildJavaMapKeyColumn(JavaJpaContextNode parent, Owner owner) {
-		throw new UnsupportedOperationException();
+	public JavaOrderable buildJavaOrderable(JavaAttributeMapping parent) {
+		return new GenericJavaOrderable(parent);
 	}
 }

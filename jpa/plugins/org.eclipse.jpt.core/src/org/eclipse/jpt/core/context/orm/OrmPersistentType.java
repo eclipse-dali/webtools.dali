@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -19,14 +19,14 @@ import org.eclipse.text.edits.DeleteEdit;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**
- * Context <code>orm.xml</code> persistent type.
+ * <code>orm.xml</code> persistent type
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
- * 
+ *
  * @version 3.0
  * @since 2.0
  */
@@ -37,91 +37,110 @@ public interface OrmPersistentType
 
 	EntityMappings getParent();
 
-	@SuppressWarnings("unchecked")
-	ListIterator<OrmPersistentAttribute> attributes();
-	
-	OrmPersistentAttribute getAttributeNamed(String attributeName);
-
 	OrmTypeMapping getMapping();
-	
-	
-	//***************** specified attributes ***********************************
-	
+
 	/**
-	 * Return a read only iterator of the specified {@link OrmPersistentAttribute}s.
+	 * Return a combination of the persistent type's <em>specified</em> and
+	 * <em>virtual</em> attributes. The <em>specified</em> attributes are those
+	 * explicitly listed in the <code>orm.xml</code> file; while the
+	 * <em>virtual</em> attributes are those derived from the corresponding
+	 * Java persistent type.
+	 */
+	@SuppressWarnings("unchecked")
+	ListIterator<OrmReadOnlyPersistentAttribute> attributes();
+
+	OrmReadOnlyPersistentAttribute getAttributeNamed(String attributeName);
+
+
+	// ********** specified attributes **********
+
+	String SPECIFIED_ATTRIBUTES_LIST = "specifiedAttributes"; //$NON-NLS-1$
+
+	/**
+	 * Return the persistent type's specified attributes.
 	 */
 	ListIterator<OrmPersistentAttribute> specifiedAttributes();
-	
+
 	/**
-	 * Return the number of specified {@link OrmPersistentAttribute}s.
+	 * Return the number of the persistent type's specified attributes.
 	 */
 	int specifiedAttributesSize();
-	
-	//TODO these are currently only used by tests, possibly remove them.  OrmPersistenAttributes.setVirtual(boolean) is used by the UI
+
+	// TODO this is currently only used by tests; remove it and change tests to use
+	// OrmReadOnlyPersistenAttribute.convertToSpecified(String mappingKey)
 	OrmPersistentAttribute addSpecifiedAttribute(String mappingKey, String attributeName);
 
-	void removeSpecifiedAttribute(OrmPersistentAttribute specifiedAttribute);
-	
-	
-	//***************** virtual attributes *************************************
-	
+
+	// ********** virtual attributes **********
+
 	String VIRTUAL_ATTRIBUTES_LIST = "virtualAttributes"; //$NON-NLS-1$
 
 	/**
-	 * Return a read only iterator of the virtual orm persistent attributes.  These
-	 * are attributes that exist in the underyling java class, but are not specified
-	 * in the orm.xml
+	 * Return virtual <code>orm.xml</code> persistent attributes. These
+	 * are attributes that exist in the corresponding Java class, but are not
+	 * specified in the <code>orm.xml</code>.
 	 */
-	ListIterator<OrmPersistentAttribute> virtualAttributes();
-	
+	ListIterator<OrmReadOnlyPersistentAttribute> virtualAttributes();
+
 	/**
-	 * Return the number of virtual orm persistent attributes.  These are attributes that 
-	 * exist in the underyling java class, but are not specified in the orm.xml
+	 * Return the number of virtual <code>orm.xml</code> persistent attributes.
+	 * @see #virtualAttributes()
 	 */
 	int virtualAttributesSize();
-	
-	/**
-	 * Return whether this persistent type contains the given virtual persistent attribute.
-	 */
-	boolean containsVirtualAttribute(OrmPersistentAttribute ormPersistentAttribute);
-	
-	/**
-	 * Remove the given specified orm persistent attribute from the orm.xml. The attribute 
-	 * will be removed from the orm.xml and moved from the list of specified attributes 
-	 * to the list of virtual attributes.
-	 */
-	void makeAttributeVirtual(OrmPersistentAttribute ormPersistentAttribute);
-		
-	/**
-	 * Add the given virtual orm persistent attribute to the orm.xml. The attribute will
-	 * be added to the orm.xml and moved from the list of virtual attributes to the list
-	 * of specified attributes
-	 */
-	void makeAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute);
 
 	/**
-	 * Add the given virtual orm persistent attribute to the orm.xml with a mapping of 
-	 * type mappingKey. The attribute will be added to the orm.xml and moved from 
-	 * the list of virtual attributes to the list of specified attributes
+	 * Convert the specified attribute to a virtual attribute. Remove the
+	 * attribute from the type's list of specified attributes
+	 * and remove it from the <code>orm.xml</code> file. Return the new
+	 * (virtual) attribute.
+	 * Return <code>null</code> if the specified attribute does not correspond
+	 * to an attribute in the Java persistent type.
+	 * <p>
+	 * Throw an {@link IllegalArgumentException} if the attribute is already
+	 * virtual.
+	 *
+	 * @see OrmPersistentAttribute#convertToVirtual()
 	 */
-	void makeAttributeSpecified(OrmPersistentAttribute ormPersistentAttribute, String mappingKey);
+	OrmReadOnlyPersistentAttribute convertAttributeToVirtual(OrmPersistentAttribute specifiedAttribute);
+
+	/**
+	 * Add the specified persistent attribute to the <code>orm.xml</code>.
+	 * The attribute will be added to the <code>orm.xml</code> and moved
+	 * from the list of virtual attributes to the list
+	 * of specified attributes. It will keep the same mapping it had, either
+	 * specified in a Java annotation or the default.
+	 * <p>
+	 * Throw an {@link IllegalArgumentException} if the attribute is already
+	 * specified.
+	 *
+	 * @see OrmPersistentAttribute#convertToSpecified()
+	 */
+	OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute);
+
+	/**
+	 * Add the specified persistent attribute to the <code>orm.xml</code> with
+	 * the specified mapping. The attribute will be added to the
+	 * <code>orm.xml</code> and moved from the list of virtual attributes to
+	 * the list of specified attributes.
+	 * <p>
+	 * Throw an {@link IllegalArgumentException} if the attribute is already
+	 * specified.
+	 *
+	 * @see OrmPersistentAttribute#convertToSpecified(String)
+	 */
+	OrmPersistentAttribute convertAttributeToSpecified(OrmReadOnlyPersistentAttribute virtualAttribute, String mappingKey);
 
 
-	//******************* mapping morphing *******************
+	// ********** mapping morphing **********
 
+	/**
+	 * This is called whenever the specified persistent attribute's mapping is
+	 * changed as specified.
+	 */
 	void changeMapping(OrmPersistentAttribute ormPersistentAttribute, OrmAttributeMapping oldMapping, OrmAttributeMapping newMapping);
-	
-	
-	//******************* updating *******************
 
-	/**
-	 * Update the OrmPersistentType context model object to match the 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update();
-	
 
-	//******************* refactoring *******************
+	// ********** refactoring **********
 
 	/**
 	 * If this {@link OrmPersistentType#isFor(String)} the given IType, create a text 
@@ -151,15 +170,20 @@ public interface OrmPersistentType
 	Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 
 
-	//******************* misc *******************
+	// ********** misc **********
 
 	boolean contains(int textOffset);
-	
-	void classChanged(String oldClass, String newClass);
-	
+
 	/**
-	 * Return the Java persistent type that is referred to by this orm.xml persistent type.
-	 * If there is no underlying java persistent type, then null is returned.
+	 * This is called by the persistent type's mapping when its class
+	 * (name) changes.
+	 */
+	void mappingClassChanged(String oldClass, String newClass);
+
+	/**
+	 * Return the Java persistent type that is referred to by the
+	 * <code>orm.xml</code> persistent type.
+	 * Return <code>null</code> if it is missing.
 	 */
 	JavaPersistentType getJavaPersistentType();
 		String JAVA_PERSISTENT_TYPE_PROPERTY = "javaPersistentType"; //$NON-NLS-1$
@@ -168,10 +192,4 @@ public interface OrmPersistentType
 	 * Return the persistent type's default package.
 	 */
 	String getDefaultPackage();
-
-	/**
-	 * Return whether the persistent type is default metadata complete.
-	 */
-	boolean isDefaultMetadataComplete();
-
 }

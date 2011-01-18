@@ -17,9 +17,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 
 public class OrmJoinColumnTextRangeResolver
 	extends OrmNamedColumnTextRangeResolver
-	implements 
-		BaseColumnTextRangeResolver,
-		JoinColumnTextRangeResolver
+	implements JoinColumnTextRangeResolver
 {
 
 	public OrmJoinColumnTextRangeResolver(OrmJoinColumn column) {

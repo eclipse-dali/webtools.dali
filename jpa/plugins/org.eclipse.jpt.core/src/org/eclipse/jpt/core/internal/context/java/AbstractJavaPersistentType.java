@@ -9,14 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
@@ -25,27 +23,32 @@ import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.HashBag;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
-import org.eclipse.jpt.utility.internal.iterators.ChainIterator;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
+import org.eclipse.jpt.utility.internal.Tools;
+import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -63,77 +66,467 @@ public abstract class AbstractJavaPersistentType
 	extends AbstractJavaJpaContextNode
 	implements JavaPersistentType
 {
-	protected JavaResourcePersistentType resourcePersistentType;
+	protected final JavaResourcePersistentType resourcePersistentType;
 
 	protected String name;
 
-	protected AccessType defaultAccess;
-
-	protected AccessType specifiedAccess;
-
-	protected JavaTypeMapping mapping;
-
-	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
-
 	protected PersistentType superPersistentType;
 
+	protected AccessType specifiedAccess;
+	protected AccessType defaultAccess;  // never null
 
-	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType jrpt) {
+	protected JavaTypeMapping mapping;  // never null
+
+	protected final Vector<JavaPersistentAttribute> attributes = new Vector<JavaPersistentAttribute>();
+	protected final AttributeContainerAdapter attributeContainerAdapter = new AttributeContainerAdapter();
+
+
+	protected AbstractJavaPersistentType(PersistentType.Owner parent, JavaResourcePersistentType resourcePersistentType) {
 		super(parent);
-		this.initialize(jrpt);
-	}
+		this.resourcePersistentType = resourcePersistentType;
+		this.name = resourcePersistentType.getQualifiedName();
+		this.specifiedAccess = this.buildSpecifiedAccess();
 
-	protected void initialize(JavaResourcePersistentType jrpt) {
-		this.resourcePersistentType = jrpt;
-		this.superPersistentType = this.buildSuperPersistentType();
-		this.name = this.buildName();
-		this.defaultAccess = buildDefaultAccess();
-		this.specifiedAccess = buildSpecifiedAccess();
-		this.mapping = buildMapping();
-		this.initializeAttributes();
+		// keep this non-null
+		this.defaultAccess = AccessType.FIELD;
+
+		this.mapping = this.buildMapping();
 	}
 
 
-	// ********** update **********
+	// ********** synchronize/update **********
 
-	public void update(JavaResourcePersistentType jrpt) {
-		this.resourcePersistentType = jrpt;
-		this.update();
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setName(this.resourcePersistentType.getQualifiedName());
+		this.setSpecifiedAccess_(this.buildSpecifiedAccess());
+		this.syncMapping();
+		this.synchronizeNodesWithResourceModel(this.getAttributes());
 	}
 
+	@Override
 	public void update() {
-		JpaFile jpaFile = this.getJpaFile();
-		if (jpaFile != null) {
-			// the JPA file can be null if the resource type is "external"
-			jpaFile.addRootStructureNode(this.resourcePersistentType.getQualifiedName(), this);
-		}
+		super.update();
 		this.setSuperPersistentType(this.buildSuperPersistentType());
-		this.setName(this.buildName());
-		this.updateAccess();
-		this.updateMapping();
+		this.setDefaultAccess(this.buildDefaultAccess());
+		this.mapping.update();
 		this.updateAttributes();
+		this.registerRootStructureNode();
 	}
 
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		this.mapping.postUpdate();
-		for (PersistentAttribute attribute : this.getAttributes()) {
-			attribute.postUpdate();
+
+	// ********** name **********
+
+	public String getName() {
+		return this.name;
+	}
+
+	public String getSimpleName(){
+		return ClassName.getSimpleName(this.name);
+	}
+
+	protected void setName(String name) {
+		String old = this.name;
+		this.name = name;
+		this.firePropertyChanged(NAME_PROPERTY, old, name);
+	}
+
+
+	// ********** super persistent type **********
+
+	public PersistentType getSuperPersistentType() {
+		return this.superPersistentType;
+	}
+
+	protected void setSuperPersistentType(PersistentType superPersistentType) {
+		PersistentType old = this.superPersistentType;
+		this.superPersistentType = superPersistentType;
+		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
+	}
+
+	protected PersistentType buildSuperPersistentType() {
+		HashSet<JavaResourcePersistentType> visited = new HashSet<JavaResourcePersistentType>();
+		visited.add(this.resourcePersistentType);
+		PersistentType spt = this.resolveSuperPersistentType(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
+		if (spt == null) {
+			return null;
+		}
+		if (CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
+			return null;  // short-circuit in this case, we have circular inheritance
+		}
+		return spt.isMapped() ? spt : spt.getSuperPersistentType();
+	}
+
+	/**
+	 * The JPA spec allows non-persistent types in a persistent type's
+	 * inheritance hierarchy. We check for a persistent type with the
+	 * specified name in the persistence unit. If it is not found we use
+	 * resource persistent type and look for <em>its</em> super type.
+	 * <p>
+	 * The <code>visited</code> collection is used to detect a cycle in the
+	 * <em>resource</em> type inheritance hierarchy and prevent the resulting
+	 * stack overflow. Any cycles in the <em>context</em> type inheritance
+	 * hierarchy are handled in {@link #buildSuperPersistentType()}.
+	 */
+	protected PersistentType resolveSuperPersistentType(String typeName, Collection<JavaResourcePersistentType> visited) {
+		if (typeName == null) {
+			return null;
+		}
+		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
+		if ((resourceType == null) || visited.contains(resourceType)) {
+			return null;
+		}
+		visited.add(resourceType);
+		PersistentType spt = this.resolvePersistentType(typeName);
+		return (spt != null) ? spt : this.resolveSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
+	}
+
+	protected PersistentType resolvePersistentType(String typeName) {
+		return this.getPersistenceUnit().getPersistentType(typeName);
+	}
+
+
+	// ********** access **********
+
+	public AccessType getAccess() {
+		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
+	}
+
+	public AccessType getSpecifiedAccess() {
+		return this.specifiedAccess;
+	}
+
+	protected void setSpecifiedAccess_(AccessType access) {
+		AccessType old = this.specifiedAccess;
+		this.specifiedAccess = access;
+		this.firePropertyChanged(SPECIFIED_ACCESS_PROPERTY, old, access);
+	}
+	
+	/**
+	 * Build an access type based on annotations from the resource model.
+	 * (This is JPA platform-dependent.)
+	 */
+	protected abstract AccessType buildSpecifiedAccess();
+
+	public AccessType getDefaultAccess() {
+		return this.defaultAccess;
+	}
+
+	protected void setDefaultAccess(AccessType access) {
+		AccessType old = this.defaultAccess;
+		this.defaultAccess = access;
+		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, access);
+	}
+
+	/**
+	 * Check the access "specified" by the Java resource model:<ul>
+	 * <li>Check Java annotations first
+	 * <li>If <code>null</code>, check XML mapping specified access
+	 * <li>If still <code>null</code>, check {@link #superPersistentType} access
+	 * <li>If still <code>null</code>, check <code>entity-mappings</code>
+	 *     specified access setting if the corresponding <code>persistent-type</code>
+	 *     is listed in a mapping (<code>orm.xml</code>) file
+	 * <li>If still <code>null</code>, check the <code>persistence-unit</code>
+	 *     default Access
+	 * <li>Default to {@link AccessType#FIELD FIELD} if all else fails.
+	 * </ul>
+	 */
+	protected AccessType buildDefaultAccess() {
+		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
+		if (accessType != null) {
+			return accessType;
+		}
+		accessType = this.getOwnerOverrideAccess();
+		if (accessType != null) {
+			return accessType;
+		}
+
+		if (this.superPersistentType != null) {
+			accessType = this.superPersistentType.getAccess();
+			if (accessType != null) {
+				return accessType;
+			}
+		}
+
+		accessType = this.getOwnerDefaultAccess();
+		if (accessType != null) {
+			return accessType;
+		}
+
+		// last ditch attempt to allow the user to annotate *something*
+		return AccessType.FIELD;
+	}
+
+
+	// ********** mapping **********
+
+	public JavaTypeMapping getMapping() {
+		return this.mapping;
+	}
+
+	public String getMappingKey() {
+		return this.mapping.getKey();
+	}
+
+	public void setMappingKey(String key) {
+		if (this.valuesAreDifferent(key, this.getMappingKey())) {
+			this.setMapping(this.buildMapping(key));
+		}
+	}
+
+	protected JavaTypeMapping buildMapping(String key) {
+		for (JavaTypeMappingDefinition definition : this.getMappingDefinitions()) {
+			if (Tools.valuesAreEqual(definition.getKey(), key)) {
+				Annotation annotation = this.resourcePersistentType.setPrimaryAnnotation(definition.getAnnotationName(), definition.getSupportingAnnotationNames());
+				return definition.buildMapping(this, annotation, this.getJpaFactory());
+			}
+		}
+		this.resourcePersistentType.setPrimaryAnnotation(null, EmptyIterable.<String>instance());
+		return this.buildNullMapping();
+	}
+
+	/**
+	 * Clients do not set the mapping directly.
+	 * @see #setMappingKey(String)
+	 */
+	protected void setMapping(JavaTypeMapping mapping) {
+		JavaTypeMapping old = this.mapping;
+		this.mapping = mapping;
+		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
+	}
+
+	protected JavaTypeMapping buildMapping() {
+		for (JavaTypeMappingDefinition definition : this.getMappingDefinitions()) {
+			Annotation annotation = this.resourcePersistentType.getAnnotation(definition.getAnnotationName());
+			if (annotation != null) {
+				return definition.buildMapping(this, annotation, this.getJpaFactory());
+			}
+		}
+		return this.buildNullMapping();
+	}
+
+	protected void syncMapping() {
+		JavaTypeMappingDefinition definition = null;
+		Annotation annotation = null;
+		for (Iterator<JavaTypeMappingDefinition> stream = this.mappingDefinitions(); stream.hasNext(); ) {
+			definition = stream.next();
+			annotation = this.resourcePersistentType.getAnnotation(definition.getAnnotationName());
+			if (annotation != null) {
+				break;
+			}
+		}
+		// 'annotation' can still be null when we get here
+		if (this.mapping.getMappingAnnotation() == annotation) {
+			this.mapping.synchronizeWithResourceModel();
+		} else {
+			this.setMapping(this.buildMapping(annotation, definition));
+		}
+	}
+
+	protected JavaTypeMapping buildMapping(Annotation annotation, JavaTypeMappingDefinition definition) {
+		return (annotation != null) ?
+				definition.buildMapping(this, annotation, this.getJpaFactory()) :
+				this.buildNullMapping();
+	}
+
+	protected Iterator<JavaTypeMappingDefinition> mappingDefinitions() {
+		return this.getMappingDefinitions().iterator();
+	}
+
+	protected Iterable<JavaTypeMappingDefinition> getMappingDefinitions() {
+		return this.getJpaPlatform().getJavaTypeMappingDefinitions();
+	}
+
+	protected JavaTypeMapping buildNullMapping() {
+		return this.getJpaFactory().buildJavaNullTypeMapping(this);
+	}
+
+	public boolean isMapped() {
+		return this.mapping.isMapped();
+	}
+
+
+	// ********** attributes **********
+
+	public ListIterator<JavaPersistentAttribute> attributes() {
+		return this.getAttributes().iterator();
+	}
+
+	protected ListIterable<JavaPersistentAttribute> getAttributes() {
+		return new LiveCloneListIterable<JavaPersistentAttribute>(this.attributes);
+	}
+
+	public int attributesSize() {
+		return this.attributes.size();
+	}
+
+	public Iterator<String> attributeNames() {
+		return this.getAttributeNames().iterator();
+	}
+
+	protected Iterable<String> getAttributeNames() {
+		return this.convertToNames(this.getAttributes());
+	}
+
+	public JavaPersistentAttribute getAttributeNamed(String attributeName) {
+		Iterator<JavaPersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
+		return stream.hasNext() ? stream.next() : null;
+	}
+
+	public JavaPersistentAttribute getAttributeFor(JavaResourcePersistentAttribute javaResourceAttribute) {
+		for (JavaPersistentAttribute javaAttribute : this.getAttributes()) {
+			if (javaAttribute.getResourcePersistentAttribute() == javaResourceAttribute) {
+				return javaAttribute;
+			}
+		}
+		return null;
+	}
+
+	public Iterator<ReadOnlyPersistentAttribute> allAttributes() {
+		return this.getAllAttributes().iterator();
+	}
+
+	protected Iterable<ReadOnlyPersistentAttribute> getAllAttributes() {
+		return new CompositeIterable<ReadOnlyPersistentAttribute>(
+				new TransformationIterable<PersistentType, Iterable<ReadOnlyPersistentAttribute>>(this.getInheritanceHierarchy()) {
+					@Override
+					protected Iterable<ReadOnlyPersistentAttribute> transform(PersistentType pt) {
+						return new SnapshotCloneIterable<ReadOnlyPersistentAttribute>(pt.attributes());
+					}
+				}
+			);
+	}
+
+	public Iterator<String> allAttributeNames() {
+		return this.getAllAttributeNames().iterator();
+	}
+
+	protected Iterable<String> getAllAttributeNames() {
+		return this.convertToNames(this.getAllAttributes());
+	}
+
+	protected Iterable<JavaPersistentAttribute> getAttributesNamed(final String attributeName) {
+		return new FilteringIterable<JavaPersistentAttribute>(this.getAttributes()) {
+			@Override
+			protected boolean accept(JavaPersistentAttribute attribute) {
+				return Tools.valuesAreEqual(attributeName, attribute.getName());
+			}
+		};
+	}
+
+	public ReadOnlyPersistentAttribute resolveAttribute(String attributeName) {
+		Iterator<JavaPersistentAttribute> stream = this.getAttributesNamed(attributeName).iterator();
+		if (stream.hasNext()) {
+			JavaPersistentAttribute attribute = stream.next();
+			// return null if we have more than one
+			return stream.hasNext() ? null : attribute;
+		}
+		// recurse
+		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
+	}
+
+	protected Iterable<String> convertToNames(Iterable<? extends ReadOnlyPersistentAttribute> attrs) {
+		return new TransformationIterable<ReadOnlyPersistentAttribute, String>(attrs) {
+			@Override
+			protected String transform(ReadOnlyPersistentAttribute attribute) {
+				return attribute.getName();
+			}
+		};
+	}
+
+	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
+		return (this.getAccess() == AccessType.PROPERTY) ?
+				this.resourcePersistentType.persistableProperties() :
+				this.resourcePersistentType.persistableFields();
+	}
+
+	protected Iterable<JavaResourcePersistentAttribute> getResourceAttributes() {
+		return CollectionTools.iterable(this.resourceAttributes());
+	}
+
+	protected JavaPersistentAttribute buildAttribute(JavaResourcePersistentAttribute resourceAttribute) {
+		return this.getJpaFactory().buildJavaPersistentAttribute(this, resourceAttribute);
+	}
+
+	public boolean hasAnyAnnotatedAttributes() {
+		return this.resourcePersistentType.hasAnyAnnotatedAttributes();
+	}
+
+	/**
+	 * The attributes are synchronized during the <em>update</em> because
+	 * the list of resource attributes is determined by the access type
+	 * which can be controlled in a number of different places....
+	 */
+	protected void updateAttributes() {
+		ContextContainerTools.update(this.attributeContainerAdapter);
+	}
+
+	protected void moveAttribute(int index, JavaPersistentAttribute attribute) {
+		this.moveItemInList(index, attribute, this.attributes, ATTRIBUTES_LIST);
+	}
+
+	protected void addAttribute(int index, JavaResourcePersistentAttribute resourceAttribute) {
+		this.addItemToList(index, this.buildAttribute(resourceAttribute), this.attributes, ATTRIBUTES_LIST);
+	}
+
+	protected void removeAttribute(JavaPersistentAttribute attribute) {
+		this.removeItemFromList(attribute, this.attributes, ATTRIBUTES_LIST);
+	}
+
+	/**
+	 * attribute container adapter
+	 */
+	protected class AttributeContainerAdapter
+		implements ContextContainerTools.Adapter<JavaPersistentAttribute, JavaResourcePersistentAttribute>
+	{
+		public Iterable<JavaPersistentAttribute> getContextElements() {
+			return AbstractJavaPersistentType.this.getAttributes();
+		}
+		public Iterable<JavaResourcePersistentAttribute> getResourceElements() {
+			return AbstractJavaPersistentType.this.getResourceAttributes();
+		}
+		public JavaResourcePersistentAttribute getResourceElement(JavaPersistentAttribute contextElement) {
+			return contextElement.getResourcePersistentAttribute();
+		}
+		public void moveContextElement(int index, JavaPersistentAttribute element) {
+			AbstractJavaPersistentType.this.moveAttribute(index, element);
+		}
+		public void addContextElement(int index, JavaResourcePersistentAttribute resourceElement) {
+			AbstractJavaPersistentType.this.addAttribute(index, resourceElement);
+		}
+		public void removeContextElement(JavaPersistentAttribute element) {
+			AbstractJavaPersistentType.this.removeAttribute(element);
 		}
 	}
 
 
-	// ********** AbstractJpaNode overrides **********
+	// ********** inheritance **********
 
-	@Override
-	public PersistentType.Owner getParent() {
-		return (PersistentType.Owner) super.getParent();
+	public Iterator<PersistentType> inheritanceHierarchy() {
+		return this.getInheritanceHierarchy().iterator();
 	}
 
-	@Override
-	public IResource getResource() {
-		return this.resourcePersistentType.getFile();
+	public Iterable<PersistentType> getInheritanceHierarchy() {
+		return this.getInheritanceHierarchyOf(this);
+	}
+
+	public Iterator<PersistentType> ancestors() {
+		return this.getAncestors().iterator();
+	}
+
+	public Iterable<PersistentType> getAncestors() {
+		return this.getInheritanceHierarchyOf(this.superPersistentType);
+	}
+
+	protected Iterable<PersistentType> getInheritanceHierarchyOf(PersistentType start) {
+		// using a chain iterable to traverse up the inheritance tree
+		return new ChainIterable<PersistentType>(start) {
+			@Override
+			protected PersistentType nextLink(PersistentType persistentType) {
+				return persistentType.getSuperPersistentType();
+			}
+		};
 	}
 
 
@@ -146,7 +539,7 @@ public abstract class AbstractJavaPersistentType
 	// it would be nice if the we passed in an astRoot here, but then we
 	// would need to pass it to the XML structure nodes too...
 	public JpaStructureNode getStructureNode(int offset) {
-		CompilationUnit astRoot = this.buildASTRoot(); 
+		CompilationUnit astRoot = this.buildASTRoot();
 
 		if (this.contains(offset, astRoot)) {
 			for (JavaPersistentAttribute persistentAttribute : this.getAttributes()) {
@@ -181,381 +574,28 @@ public abstract class AbstractJavaPersistentType
 	}
 
 	public void dispose() {
+		this.unregisterRootStructureNode();
+	}
+
+	protected void registerRootStructureNode() {
 		JpaFile jpaFile = this.getJpaFile();
+		// the JPA file can be null if the resource type is "external"
 		if (jpaFile != null) {
-			// the JPA file can be null if the .java file was deleted
-			// or the resource type is "external"
-			jpaFile.removeRootStructureNode(this.resourcePersistentType.getQualifiedName());
+			jpaFile.addRootStructureNode(this.name, this);
+		}
+	}
+
+	protected void unregisterRootStructureNode() {
+		JpaFile jpaFile = this.getJpaFile();
+		// the JPA file can be null if the .java file was deleted
+		// or the resource type is "external"
+		if (jpaFile != null) {
+			jpaFile.removeRootStructureNode(this.name, this);
 		}
 	}
 
 
-	// ********** PersistentType implementation **********
-
-	public JavaResourcePersistentType getResourcePersistentType() {
-		return this.resourcePersistentType;
-	}
-
-
-	// ********** name **********
-
-	public String getName() {
-		return this.name;
-	}
-
-	public String getShortName(){
-		return this.name.substring(this.name.lastIndexOf('.') + 1);
-	}
-
-	protected void setName(String name) {
-		String old = this.name;
-		this.name = name;
-		this.firePropertyChanged(NAME_PROPERTY, old, name);
-	}
-
-	protected String buildName() {
-		return this.resourcePersistentType.getQualifiedName();
-	}
-
-
-	// ********** access **********
-
-	public AccessType getAccess() {
-		return (this.specifiedAccess != null) ? this.specifiedAccess : this.defaultAccess;
-	}
-
-	public AccessType getDefaultAccess() {
-		return this.defaultAccess;
-	}
-
-	protected void setDefaultAccess(AccessType defaultAccess) {
-		AccessType old = this.defaultAccess;
-		this.defaultAccess = defaultAccess;
-		this.firePropertyChanged(DEFAULT_ACCESS_PROPERTY, old, defaultAccess);
-	}
-
-	public AccessType getSpecifiedAccess() {
-		return this.specifiedAccess;
-	}
-
-	/**
-	 * Check the access "specified" by the Java resource model:<ul>
-	 * <li>Check Java annotations first
-	 * <li>If <code>null</code>, check XML mapping specified access
-	 *	<li>If still <code>null</code>, check {@link #superPersistentType} access
-	 * <li>If still <code>null</code>, check <code>entity-mappings</code>
-	 *     specified access setting if the corresponding <code>persistent-type</code>
-	 *     is listed in a mapping (<code>orm.xml</code>) file
-	 * <li>If still <code>null</code>, check the <code>persistence-unit</code>
-	 *     default Access
-	 * <li>Default to <code>FIELD</code> if all else fails.
-	 * </ul>
-	 */
-	protected AccessType buildDefaultAccess() {
-		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
-		if (accessType != null) {
-			return accessType;
-		}
-		accessType = this.getOwnerOverrideAccess();
-		if (accessType != null) {
-			return accessType;
-		}
-
-		if (this.superPersistentType != null) {
-			accessType = this.superPersistentType.getAccess();
-			if (accessType != null) {
-				return accessType;
-			}
-		}
-
-		accessType = this.getOwnerDefaultAccess();
-		if (accessType != null) {
-			return accessType;
-		}
-
-		// last ditch attempt to allow the user to annotate *something*
-		return AccessType.FIELD;
-	}
-
-	protected void updateAccess() {
-		this.setDefaultAccess(this.buildDefaultAccess());
-	}
-
-	/**
-	 * Build an access type based on annotations from the resource model.
-	 * (This is JPA platform-dependent.)
-	 */
-	protected abstract AccessType buildSpecifiedAccess();
-
-
-	// ********** mapping **********
-
-	public JavaTypeMapping getMapping() {
-		return this.mapping;
-	}
-
-	public String getMappingKey() {
-		return this.mapping.getKey();
-	}
-
-	public void setMappingKey(String key) {
-		if (this.valuesAreEqual(key, this.mapping.getKey())) {
-			return;
-		}
-		JavaTypeMapping oldMapping = this.mapping;
-		JavaTypeMapping newMapping = this.buildMappingFromMappingKey(key);
-
-		this.mapping = newMapping;
-		this.resourcePersistentType.setPrimaryAnnotation(newMapping.getAnnotationName(), newMapping.getSupportingAnnotationNames());
-		this.firePropertyChanged(MAPPING_PROPERTY, oldMapping, newMapping);
-	}
-
-	protected void setMapping(JavaTypeMapping mapping) {
-		JavaTypeMapping old = this.mapping;
-		this.mapping = mapping;
-		this.firePropertyChanged(MAPPING_PROPERTY, old, mapping);
-	}
-
-	protected JavaTypeMapping buildMapping() {
-		JavaTypeMappingDefinition mappingDefinition = this.getJpaPlatform().getJavaTypeMappingDefinition(this);
-		return this.buildMapping(mappingDefinition);
-	}
-
-	protected JavaTypeMapping buildMapping(JavaTypeMappingDefinition mappingDefinition) {
-		JavaTypeMapping jtMapping = mappingDefinition.buildMapping(this, this.getJpaFactory());
-		// mapping may be null
-		if (jtMapping != null) {
-			jtMapping.initialize(this.resourcePersistentType);
-		}
-		return jtMapping;
-	}
-
-	protected JavaTypeMapping buildMappingFromMappingKey(String key) {
-		JavaTypeMappingDefinition mappingDefinition = this.getJpaPlatform().getJavaTypeMappingDefinition(key);
-		JavaTypeMapping jtMapping = mappingDefinition.buildMapping(this, this.getJpaFactory());
-		//no mapping.initialize(JavaResourcePersistentType) call here
-		//we do not yet have a mapping annotation so we can't call initialize
-		return jtMapping;
-	}
-
-	protected void updateMapping() {
-		// There will always be a mapping definition, even if it is a "null" mapping definition ...
-		JavaTypeMappingDefinition mappingDefinition = this.getJpaPlatform().getJavaTypeMappingDefinition(this);
-		if ((this.mapping != null) && this.valuesAreEqual(this.mapping.getKey(), mappingDefinition.getKey())) {
-			this.mapping.update(this.resourcePersistentType);
-		}  else {
-			this.setMapping(this.buildMapping(mappingDefinition));
-		}
-	}
-
-
-	// ********** attributes **********
-
-	public ListIterator<JavaPersistentAttribute> attributes() {
-		return new CloneListIterator<JavaPersistentAttribute>(this.attributes);
-	}
-
-	protected Iterable<JavaPersistentAttribute> getAttributes() {
-		return new LiveCloneIterable<JavaPersistentAttribute>(this.attributes);
-	}
-
-	public int attributesSize() {
-		return this.attributes.size();
-	}
-
-	private void addAttribute(int index, JavaPersistentAttribute attribute) {
-		this.addItemToList(index, attribute, this.attributes, ATTRIBUTES_LIST);
-	}
-
-	private void removeAttribute(JavaPersistentAttribute attribute) {
-		this.removeItemFromList(attribute, this.attributes, ATTRIBUTES_LIST);
-	}
-
-	private void moveAttribute(int index, JavaPersistentAttribute attribute) {
-		this.moveItemInList(index, this.attributes.indexOf(attribute), this.attributes, ATTRIBUTES_LIST);
-	}
-
-	public Iterator<String> attributeNames() {
-		return this.attributeNames(this.attributes());
-	}
-
-	protected Iterator<String> attributeNames(Iterator<? extends PersistentAttribute> attrs) {
-		return new TransformationIterator<PersistentAttribute, String>(attrs) {
-			@Override
-			protected String transform(PersistentAttribute attribute) {
-				return attribute.getName();
-			}
-		};
-	}
-
-	public JavaPersistentAttribute getAttributeNamed(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = this.attributesNamed(attributeName);
-		return stream.hasNext() ? stream.next() : null;
-	}
-
-	public PersistentAttribute resolveAttribute(String attributeName) {
-		Iterator<JavaPersistentAttribute> stream = this.attributesNamed(attributeName);
-		if (stream.hasNext()) {
-			JavaPersistentAttribute attribute = stream.next();
-			return stream.hasNext() ? null /*more than one*/: attribute;
-		}
-		return (this.superPersistentType == null) ? null : this.superPersistentType.resolveAttribute(attributeName);
-	}
-
-	protected Iterator<JavaPersistentAttribute> attributesNamed(final String attributeName) {
-		return new FilteringIterator<JavaPersistentAttribute>(this.attributes()) {
-			@Override
-			protected boolean accept(JavaPersistentAttribute o) {
-				return attributeName.equals(o.getName());
-			}
-		};
-	}
-
-	public Iterator<PersistentAttribute> allAttributes() {
-		return new CompositeIterator<PersistentAttribute>(
-				new TransformationIterator<PersistentType, Iterator<PersistentAttribute>>(this.inheritanceHierarchy()) {
-					@Override
-					protected Iterator<PersistentAttribute> transform(PersistentType pt) {
-						return pt.attributes();
-					}
-				}
-			);
-	}
-
-	public Iterator<String> allAttributeNames() {
-		return this.attributeNames(this.allAttributes());
-	}
-
-	protected void initializeAttributes() {
-		for (Iterator<JavaResourcePersistentAttribute> stream = this.resourceAttributes(); stream.hasNext(); ) {
-			this.attributes.add(this.createAttribute(stream.next()));
-		}
-	}
-
-	protected Iterator<JavaResourcePersistentAttribute> resourceAttributes() {
-		return (this.getAccess() == AccessType.PROPERTY) ?
-				this.resourcePersistentType.persistableProperties() :
-				this.resourcePersistentType.persistableFields();
-	}
-
-	protected void updateAttributes() {
-		HashBag<JavaPersistentAttribute> contextAttributesToRemove = CollectionTools.bag(this.attributes(), this.attributesSize());
-		ArrayList<JavaPersistentAttribute> contextAttributesToUpdate = new ArrayList<JavaPersistentAttribute>(this.attributesSize());
-		int resourceIndex = 0;
-
-		for (Iterator<JavaResourcePersistentAttribute> resourceAttributes = this.resourceAttributes(); resourceAttributes.hasNext(); ) {
-			JavaResourcePersistentAttribute resourceAttribute = resourceAttributes.next();
-			boolean match = false;
-			for (Iterator<JavaPersistentAttribute> contextAttributes = contextAttributesToRemove.iterator(); contextAttributes.hasNext(); ) {
-				JavaPersistentAttribute contextAttribute = contextAttributes.next();
-				if (contextAttribute.getResourcePersistentAttribute() == resourceAttribute) {
-					this.moveAttribute(resourceIndex, contextAttribute);
-					contextAttributes.remove();
-					contextAttributesToUpdate.add(contextAttribute);
-					match = true;
-					break;
-				}
-			}
-			if ( ! match) {
-				this.addAttribute(resourceIndex, this.createAttribute(resourceAttribute));
-			}
-			resourceIndex++;
-		}
-		for (JavaPersistentAttribute contextAttribute : contextAttributesToRemove) {
-			this.removeAttribute(contextAttribute);
-		}
-		// handle adding and removing attributes first, update the
-		// remaining attributes last; this reduces the churn during "update"
-		for (JavaPersistentAttribute contextAttribute : contextAttributesToUpdate) {
-			contextAttribute.update();
-		}
-	}
-
-	protected JavaPersistentAttribute createAttribute(JavaResourcePersistentAttribute jrpa) {
-		return this.getJpaFactory().buildJavaPersistentAttribute(this, jrpa);
-	}
-
-	public boolean hasAnyAnnotatedAttributes() {
-		return this.resourcePersistentType.hasAnyAnnotatedAttributes();
-	}
-
-
-	// ********** super persistent type **********
-
-	public PersistentType getSuperPersistentType() {
-		return this.superPersistentType;
-	}
-
-	protected void setSuperPersistentType(PersistentType superPersistentType) {
-		PersistentType old = this.superPersistentType;
-		this.superPersistentType = superPersistentType;
-		this.firePropertyChanged(SUPER_PERSISTENT_TYPE_PROPERTY, old, superPersistentType);
-	}
-
-	protected PersistentType buildSuperPersistentType() {
-		HashSet<JavaResourcePersistentType> visited = new HashSet<JavaResourcePersistentType>();
-		visited.add(this.resourcePersistentType);
-		PersistentType spt = this.getSuperPersistentType(this.resourcePersistentType.getSuperclassQualifiedName(), visited);
-		if (spt == null) {
-			return null;
-		}
-		if (CollectionTools.contains(spt.inheritanceHierarchy(), this)) {
-			return null;  // short-circuit in this case, we have circular inheritance
-		}
-		return spt.isMapped() ? spt : spt.getSuperPersistentType();
-	}
-
-	/**
-	 * The JPA spec allows non-persistent types in a persistent type's
-	 * inheritance hierarchy. We check for a persistent type with the
-	 * specified name in the persistence unit. If it is not found we use
-	 * resource persistent type and look for *its* super type.
-	 * 
-	 * The 'visited' collection is used to detect a cycle in the *resource* type
-	 * inheritance hierarchy and prevent the resulting stack overflow.
-	 * Any cycles in the *context* type inheritance hierarchy are handled in
-	 * #buildSuperPersistentType().
-	 */
-	protected PersistentType getSuperPersistentType(String typeName, Collection<JavaResourcePersistentType> visited) {
-		if (typeName == null) {
-			return null;
-		}
-		JavaResourcePersistentType resourceType = this.getJpaProject().getJavaResourcePersistentType(typeName);
-		if ((resourceType == null) || visited.contains(resourceType)) {
-			return null;
-		}
-		visited.add(resourceType);
-		PersistentType spt = this.getPersistentType(typeName);
-		return (spt != null) ? spt : this.getSuperPersistentType(resourceType.getSuperclassQualifiedName(), visited);  // recurse
-	}
-
-	protected PersistentType getPersistentType(String typeName) {
-		return this.getPersistenceUnit().getPersistentType(typeName);
-	}
-
-
-	// ********** inheritance **********
-
-	public Iterator<PersistentType> inheritanceHierarchy() {
-		return this.inheritanceHierarchyOf(this);
-	}
-
-	public Iterator<PersistentType> ancestors() {
-		return this.inheritanceHierarchyOf(this.superPersistentType);
-	}
-
-	protected Iterator<PersistentType> inheritanceHierarchyOf(PersistentType start) {
-		// using a chain iterator to traverse up the inheritance tree
-		return new ChainIterator<PersistentType>(start) {
-			@Override
-			protected PersistentType nextLink(PersistentType persistentType) {
-				return persistentType.getSuperPersistentType();
-			}
-		};
-	}
-
-
-	// ********** code completion  **********
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -633,25 +673,18 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** misc **********
 
-	public boolean isFor(String typeName) {
-		String className = this.getName();
-		return className != null && className.equals(typeName);
+	@Override
+	public PersistentType.Owner getParent() {
+		return (PersistentType.Owner) super.getParent();
 	}
 
-	public boolean isIn(IPackageFragment packageFragment) {
-		String packageName = this.getPackageName();
-		if (packageName != null && packageName.equals(packageFragment.getElementName())) {
-			return true;
-		}
-		return false;
+	@Override
+	public IResource getResource() {
+		return this.resourcePersistentType.getFile();
 	}
 
-	protected String getPackageName() {
-		return getResourcePersistentType().getPackageName();
-	}
-
-	public boolean isMapped() {
-		return this.mapping.isMapped();
+	public JavaResourcePersistentType getResourcePersistentType() {
+		return this.resourcePersistentType;
 	}
 
 	public AccessType getOwnerOverrideAccess() {
@@ -662,12 +695,6 @@ public abstract class AbstractJavaPersistentType
 		return this.getParent().getDefaultPersistentTypeAccess();
 	}
 
-	@Override
-	public void toString(StringBuilder sb) {
-		super.toString(sb);
-		sb.append(this.name);
-	}
-
 	protected CompilationUnit buildASTRoot() {
 		return this.resourcePersistentType.getJavaResourceCompilationUnit().buildASTRoot();
 	}
@@ -676,4 +703,20 @@ public abstract class AbstractJavaPersistentType
 		return this.getJpaFile(this.resourcePersistentType.getFile());
 	}
 
+	public boolean isFor(String typeName) {
+		return Tools.valuesAreEqual(typeName, this.getName());
+	}
+
+	public boolean isIn(IPackageFragment packageFragment) {
+		return Tools.valuesAreEqual(packageFragment.getElementName(), this.getPackageName());
+	}
+
+	protected String getPackageName() {
+		return this.getResourcePersistentType().getPackageName();
+	}
+
+	@Override
+	public void toString(StringBuilder sb) {
+		sb.append(this.name);
+	}
 }

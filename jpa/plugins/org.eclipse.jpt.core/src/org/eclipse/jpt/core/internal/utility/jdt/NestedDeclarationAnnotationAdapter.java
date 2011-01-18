@@ -27,14 +27,13 @@ import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
  *         annotationName = "Inner"
  * </pre>
  */
-public class NestedDeclarationAnnotationAdapter extends AbstractNestedDeclarationAnnotationAdapter {
-
-
+public class NestedDeclarationAnnotationAdapter
+	extends AbstractNestedDeclarationAnnotationAdapter
+{
 	// ********** constructors **********
 
 	/**
-	 * default element name is "value";
-	 * default behavior is to remove the outer annotation when it is empty
+	 * The default element name is <code>value</code>.
 	 */
 	public NestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String annotationName) {
 		super(outerAnnotationAdapter, annotationName);
@@ -45,10 +44,6 @@ public class NestedDeclarationAnnotationAdapter extends AbstractNestedDeclaratio
 	 */
 	public NestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String elementName, String annotationName) {
 		super(outerAnnotationAdapter, elementName, annotationName);
-	}
-
-	public NestedDeclarationAnnotationAdapter(DeclarationAnnotationAdapter outerAnnotationAdapter, String elementName, String annotationName, boolean removeOuterAnnotationWhenEmpty) {
-		super(outerAnnotationAdapter, elementName, annotationName, removeOuterAnnotationWhenEmpty);
 	}
 
 

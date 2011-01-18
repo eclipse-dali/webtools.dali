@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Vector;
-
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinColumnsAnnotation;
+import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.Member;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
- * javax.persistence.JoinColumns
+ * <code>javax.persistence.JoinColumns</code>
  */
 public final class SourceJoinColumnsAnnotation
 	extends SourceAnnotation<Member>
@@ -52,6 +52,12 @@ public final class SourceJoinColumnsAnnotation
 	}
 
 	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.joinColumns.isEmpty();
+	}
+
+	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.joinColumns);
 	}
@@ -75,13 +81,29 @@ public final class SourceJoinColumnsAnnotation
 		return this.joinColumns.size();
 	}
 
+	public void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation) {
+		this.nestStandAloneAnnotation(standAloneAnnotation, this.joinColumns.size());
+	}
+
+	private void nestStandAloneAnnotation(NestableAnnotation standAloneAnnotation, int index) {
+		standAloneAnnotation.convertToNested(this, this.daa, index);
+	}
+
+	public void addNestedAnnotation(int index, NestableAnnotation annotation) {
+		this.joinColumns.add(index, (NestableJoinColumnAnnotation) annotation);
+	}
+
+	public void convertLastNestedAnnotationToStandAlone() {
+		this.joinColumns.remove(0).convertToStandAlone();
+	}
+
 	public NestableJoinColumnAnnotation addNestedAnnotation() {
 		return this.addNestedAnnotation(this.joinColumns.size());
 	}
 
 	private NestableJoinColumnAnnotation addNestedAnnotation(int index) {
 		NestableJoinColumnAnnotation joinColumn = this.buildJoinColumn(index);
-		this.joinColumns.add(joinColumn);
+		this.joinColumns.add(index, joinColumn);
 		return joinColumn;
 	}
 
@@ -93,7 +115,9 @@ public final class SourceJoinColumnsAnnotation
 	}
 
 	private NestableJoinColumnAnnotation buildJoinColumn(int index) {
-		return SourceJoinColumnAnnotation.createNestedJoinColumn(this, this.annotatedElement, index, this.daa);
+		// pass the Java resource persistent member as the nested annotation's parent
+		// since the nested annotation can be converted to stand-alone
+		return SourceJoinColumnAnnotation.createNestedJoinColumn(this.parent, this.annotatedElement, index, this.daa);
 	}
 
 	public NestableJoinColumnAnnotation moveNestedAnnotation(int targetIndex, int sourceIndex) {
@@ -107,5 +131,4 @@ public final class SourceJoinColumnsAnnotation
 	public void syncRemoveNestedAnnotations(int index) {
 		this.removeItemsFromList(index, this.joinColumns, JOIN_COLUMNS_LIST);
 	}
-
 }

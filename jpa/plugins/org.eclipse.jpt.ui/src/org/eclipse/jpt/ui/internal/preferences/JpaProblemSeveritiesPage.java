@@ -186,7 +186,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_VALUE_DEFINED, JpaValidationPreferences.WARNING);
 		 defaultSeverities.put(JpaValidationMessages.ENTITY_TABLE_PER_CLASS_NOT_PORTABLE_ON_PLATFORM, JpaValidationPreferences.WARNING);
 		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING, JpaValidationPreferences.WARNING);
-		 defaultSeverities.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS, JpaValidationPreferences.WARNING);
+		 defaultSeverities.put(JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA, JpaValidationPreferences.WARNING);
 		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_TYPE_ANNOTATED_BUT_NOT_INCLUDED_IN_PERSISTENCE_UNIT, JpaValidationPreferences.WARNING);
 		 defaultSeverities.put(JpaValidationMessages.PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED, JpaValidationPreferences.WARNING);
 		 defaultSeverities.put(JpaValidationMessages.PERSISTENCE_MULTIPLE_PERSISTENCE_UNITS, JpaValidationPreferences.WARNING);
@@ -296,7 +296,7 @@ public class JpaProblemSeveritiesPage extends PropertyAndPreferencePage {
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,                          JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,              JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING);
 		addLabeledCombo(parent, JptUiValidationPreferenceMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE,                          JpaValidationMessages.PERSISTENCE_UNIT_NONEXISTENT_JAR_FILE);
-		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS,              JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_DEFAULTS);
+		addLabeledCombo(parent, JptUiValidationPreferenceMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA,              JpaValidationMessages.MAPPING_FILE_EXTRANEOUS_PERSISTENCE_UNIT_METADATA);
 	}
 
 	private void addTypeLevelCategory(Composite parent) {

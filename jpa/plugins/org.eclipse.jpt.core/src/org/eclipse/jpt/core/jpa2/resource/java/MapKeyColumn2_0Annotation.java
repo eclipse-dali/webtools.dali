@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.resource.java;
 
-import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.core.resource.java.CompleteColumnAnnotation;
 
 /**
  * Corresponds to the JPA 2.0 annotation
- * javax.persistence.MapKeyColumn
+ * <code>javax.persistence.MapKeyColumn</code>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
  * @since 2.3
  */
 public interface MapKeyColumn2_0Annotation 
-	extends ColumnAnnotation
+	extends CompleteColumnAnnotation
 {
 	String ANNOTATION_NAME = JPA2_0.MAP_KEY_COLUMN;
 }

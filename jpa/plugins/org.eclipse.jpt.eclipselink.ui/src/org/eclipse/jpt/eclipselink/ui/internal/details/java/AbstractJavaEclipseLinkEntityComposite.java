@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
-import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEntity;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEntityAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -91,15 +91,15 @@ public abstract class AbstractJavaEclipseLinkEntityComposite<T extends JavaEntit
 		this.initializeConvertersSection(container, buildConverterHolderValueModel());
 	}
 	
-	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterHolder> converterHolder) {
+	protected void initializeConvertersSection(Composite container, PropertyValueModel<JavaEclipseLinkConverterContainer> converterHolder) {
 		new JavaEclipseLinkConvertersComposite(this, converterHolder, container);
 	}
 	
-	private PropertyValueModel<JavaEclipseLinkConverterHolder> buildConverterHolderValueModel() {
-		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkConverterHolder>(getSubjectHolder()) {
+	private PropertyValueModel<JavaEclipseLinkConverterContainer> buildConverterHolderValueModel() {
+		return new PropertyAspectAdapter<JavaEntity, JavaEclipseLinkConverterContainer>(getSubjectHolder()) {
 			@Override
-			protected JavaEclipseLinkConverterHolder buildValue_() {
-				return ((JavaEclipseLinkEntity) this.subject).getConverterHolder();
+			protected JavaEclipseLinkConverterContainer buildValue_() {
+				return ((JavaEclipseLinkEntity) this.subject).getConverterContainer();
 			}	
 		};
 	}

@@ -124,7 +124,7 @@ public abstract class AbstractJpaEObject
 	 * override this method. If class-based calculation is sufficient,
 	 * override #addInsignificantXmlFeatureIdsTo(Set).
 	 * 
-	 * @see isAllFeaturesUnset()
+	 * @see #isUnset()
 	 */
 	protected Set<Integer> insignificantFeatureIds() {
 		synchronized (insignificantFeatureIdSets) {
@@ -164,13 +164,13 @@ public abstract class AbstractJpaEObject
 	}
 	
 	protected IDOMNode getTextNode() {
-		if (this.node == null) return null; // virtual objects have no node
-		return getTextNode(this.node);
+		// virtual objects have no node
+		return (this.node == null) ? null : getTextNode(this.node);
 	}
 
 	protected static IDOMNode getTextNode(IDOMNode node) {
 		NodeList children = node.getChildNodes();
-		for (int i = 0; i < children.getLength(); i ++) {
+		for (int i = 0; i < children.getLength(); i++) {
 			IDOMNode child = (IDOMNode) children.item(i);
 			if (child.getNodeType() == Node.TEXT_NODE) {
 				return child;

@@ -45,14 +45,15 @@ public interface EclipseLinkCustomizerAnnotation
 	void setValue(String value);
 
 	/**
-	 * Return the fully-qualified customizer class name as resolved by the AST's bindings.
+	 * Return the fully-qualified customizer class name as resolved by the
+	 * AST's bindings.
 	 * <pre>
 	 *     &#64;Customizer(EmployeeCustomizer.class)
 	 * </pre>
-	 * will return "model.EmployeeCustomizer" if there is an import for model.EmployeeCustomizer.
+	 * will return <code>"model.EmployeeCustomizer"</code> if there is an
+	 * import for <code>model.EmployeeCustomizer</code>.
 	 */
 	String getFullyQualifiedCustomizerClassName();
-		String FULLY_QUALIFIED_CUSTOMIZER_CLASS_NAME_PROPERTY = "fullyQualifiedCustomizerClassName"; //$NON-NLS-1$
 
 	/**
 	 * Return the {@link TextRange} for the 'value' element. If the element 

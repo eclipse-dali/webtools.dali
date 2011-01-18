@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.Nullable;
+import org.eclipse.jpt.core.context.OptionalMapping;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * @version 1.0
  * @since 2.0
  */
-public class OptionalComposite extends Pane<Nullable>
+public class OptionalComposite extends Pane<OptionalMapping>
 {
 	/**
 	 * Creates a new <code>OptionalComposite</code>.
@@ -38,7 +38,7 @@ public class OptionalComposite extends Pane<Nullable>
 	 * @param parentPane The parent container of this one
 	 * @param parent The parent container
 	 */
-	public OptionalComposite(Pane<? extends Nullable> parentPane,
+	public OptionalComposite(Pane<? extends OptionalMapping> parentPane,
 	                         Composite parent)
 	{
 		super(parentPane, parent);
@@ -56,7 +56,7 @@ public class OptionalComposite extends Pane<Nullable>
 		);
 	}
 	private WritablePropertyValueModel<Boolean> buildOptionalHolder() {
-		return new PropertyAspectAdapter<Nullable, Boolean>(getSubjectHolder(), Nullable.SPECIFIED_OPTIONAL_PROPERTY) {
+		return new PropertyAspectAdapter<OptionalMapping, Boolean>(getSubjectHolder(), OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				return this.subject.getSpecifiedOptional();
@@ -84,10 +84,10 @@ public class OptionalComposite extends Pane<Nullable>
 	
 	
 	private PropertyValueModel<Boolean> buildDefaultOptionalHolder() {
-		return new PropertyAspectAdapter<Nullable, Boolean>(
+		return new PropertyAspectAdapter<OptionalMapping, Boolean>(
 			getSubjectHolder(),
-			Nullable.SPECIFIED_OPTIONAL_PROPERTY,
-			Nullable.DEFAULT_OPTIONAL_PROPERTY)
+			OptionalMapping.SPECIFIED_OPTIONAL_PROPERTY,
+			OptionalMapping.DEFAULT_OPTIONAL_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {

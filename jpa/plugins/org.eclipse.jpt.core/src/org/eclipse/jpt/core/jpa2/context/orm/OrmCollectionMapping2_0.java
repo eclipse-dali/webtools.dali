@@ -9,11 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context.orm;
 
-import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
+import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
+import org.eclipse.jpt.core.context.orm.OrmCollectionMapping;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
 
 /**
- * 1:m, m:m, element collection are all collection mappings.
+ * <code>orm.xml</code> collection mapping (e.g. 1:m, m:m, element collection)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,8 +26,7 @@ import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
  * @since 2.3
  */
 public interface OrmCollectionMapping2_0
-	extends CollectionMapping2_0, OrmAttributeMapping
+	extends CollectionMapping2_0, OrmCollectionMapping
 {
-
-
+	OrmAttributeOverrideContainer getMapKeyAttributeOverrideContainer();
 }

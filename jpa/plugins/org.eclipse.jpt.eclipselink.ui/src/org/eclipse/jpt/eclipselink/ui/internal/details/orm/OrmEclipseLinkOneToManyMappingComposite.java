@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
+import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkOneToManyMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkPrivateOwnedComposite;
@@ -25,10 +25,10 @@ import org.eclipse.swt.widgets.Composite;
 
 
 public class OrmEclipseLinkOneToManyMappingComposite
-	extends EclipseLinkOneToManyMappingComposite<OrmOneToManyMapping>
+	extends EclipseLinkOneToManyMappingComposite<OneToManyMapping>
 {
 	public OrmEclipseLinkOneToManyMappingComposite(
-			PropertyValueModel<? extends OrmOneToManyMapping> subjectHolder,
+			PropertyValueModel<? extends OneToManyMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		super(subjectHolder, parent, widgetFactory);
@@ -45,7 +45,7 @@ public class OrmEclipseLinkOneToManyMappingComposite
 	}
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmOneToManyMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<OneToManyMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

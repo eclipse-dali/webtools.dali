@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaResourceType;
@@ -29,189 +30,206 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * context model persistence.xml
+ * context model <code>persistence.xml</code> file
  */
 public class GenericPersistenceXml
 	extends AbstractPersistenceXmlContextNode
 	implements PersistenceXml2_0
 {
 	/**
-	 * If the XML resource's content type changes a new instance of this object will be built 
+	 * If the XML resource's content type changes, the root context
+	 * node will throw out its current persistence XML.
 	 */
-	protected JpaXmlResource xmlResource;  // never null
-	
+	protected final JpaXmlResource xmlResource;  // never null
+
 	/**
-	 * The resouce type will only change if the XML file's version changes
+	 * The resource type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
 	protected JpaResourceType resourceType;
-	
+
+	/**
+	 * The root element of the <code>persistence.xml</code> file.
+	 */
 	protected Persistence persistence;
-	
-	
-	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource resource) {
+
+
+	public GenericPersistenceXml(JpaRootContextNode parent, JpaXmlResource xmlResource) {
 		super(parent);
-		if ( ! resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
-			throw new IllegalArgumentException("Resource " + resource + " must have persistence xml content type"); //$NON-NLS-1$ //$NON-NLS-2$
+		this.checkXmlResource(xmlResource);
+		this.xmlResource = xmlResource;
+		this.resourceType = xmlResource.getResourceType();
+
+		XmlPersistence xmlPersistence = (XmlPersistence) xmlResource.getRootObject();
+		if (xmlPersistence != null) {
+			this.persistence = this.buildPersistence(xmlPersistence);
 		}
-		this.xmlResource = resource;
-		if (resource.getRootObject() != null) {
-			this.persistence = this.buildPersistence((XmlPersistence) resource.getRootObject());
-			this.resourceType = resource.getResourceType();
+	}
+
+
+	// ********** synchronize/update **********
+
+	/**
+	 * @see org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmXml#synchronizeWithResourceModel()
+	 */
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		XmlPersistence oldXmlPersistence = (this.persistence == null) ? null : this.persistence.getXmlPersistence();
+		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
+		JpaResourceType newResourceType = this.xmlResource.getResourceType();
+
+		// If the old and new XML persistences are different instances,
+		// we scrap the old context persistence and rebuild.
+		// (This can happen when the resource model changes drastically,
+		// such as a CVS checkout or an edit reversion.)
+		if ((oldXmlPersistence != newXmlPersistence) ||
+				(newXmlPersistence == null) || 
+				this.valuesAreDifferent(this.resourceType, newResourceType)
+		) {
+			if (this.persistence != null) {
+				this.unregisterRootStructureNode();
+				this.persistence.dispose();
+				this.setPersistence(null);
+			}
+		}
+
+		this.resourceType = newResourceType;
+
+		if (newXmlPersistence != null) {
+			if (this.persistence == null) {
+				this.setPersistence(this.buildPersistence(newXmlPersistence));
+			} else {
+				// the context persistence already holds the XML persistence
+				this.persistence.synchronizeWithResourceModel();
+			}
 		}
 	}
-	
-	
-	// ********** XmlFile implementation **********
-	
-	public JpaXmlResource getXmlResource() {
-		return this.xmlResource;
-	}
-	
-	
-	// ********** AbstractJpaNode overrides **********
-	
+
 	@Override
-	public IResource getResource() {
-		return this.xmlResource.getFile();
+	public void update() {
+		super.update();
+		if (this.persistence != null) {
+			this.persistence.update();
+			// this will happen redundantly - need to hold JpaFile?
+			this.registerRootStructureNode();
+		}
 	}
-	
-	
-	// ********** AbstractJpaContextNode overrides **********
-	
-	@Override
-	public JpaResourceType getResourceType() {
-		return this.xmlResource.getResourceType();
-	}
-	
-	
+
+
 	// ********** persistence **********
-	
+
 	public Persistence getPersistence() {
 		return this.persistence;
 	}
-	
+
 	protected void setPersistence(Persistence persistence) {
 		Persistence old = this.persistence;
 		this.persistence = persistence;
 		this.firePropertyChanged(PERSISTENCE_PROPERTY, old, persistence);
 	}
-	
+
 	protected Persistence buildPersistence(XmlPersistence xmlPersistence) {
 		return this.getContextNodeFactory().buildPersistence(this, xmlPersistence);
 	}
-	
-	
+
+
+	// ********** misc **********
+
+	protected void checkXmlResource(JpaXmlResource resource) {
+		if (resource == null) {
+			throw new NullPointerException();
+		}
+		if ( ! resource.getContentType().isKindOf(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
+			throw new IllegalArgumentException("Content type is not 'persistence': " + resource); //$NON-NLS-1$
+		}
+	}
+
+	public JpaXmlResource getXmlResource() {
+		return this.xmlResource;
+	}
+
+	@Override
+	public IResource getResource() {
+		return this.xmlResource.getFile();
+	}
+
+	@Override
+	public JpaResourceType getResourceType() {
+		return this.xmlResource.getResourceType();
+	}
+
+	protected JpaFile getJpaFile() {
+		return this.getJpaFile(this.xmlResource.getFile());
+	}
+
+
 	// ********** metamodel **********
-	
+
 	public void initializeMetamodel() {
 		if (this.persistence != null) {
 			((Persistence2_0) this.persistence).initializeMetamodel();
 		}
 	}
-	
+
 	public void synchronizeMetamodel() {
 		if (this.persistence != null) {
 			((Persistence2_0) this.persistence).synchronizeMetamodel();
 		}
 	}
-	
+
 	public void disposeMetamodel() {
 		if (this.persistence != null) {
 			((Persistence2_0) this.persistence).disposeMetamodel();
 		}
 	}
-	
-	
-	// ********** updating **********
-	
-	public void update() {
-		XmlPersistence oldXmlPersistence = (this.persistence == null) ? null : this.persistence.getXmlPersistence();
-		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
-		JpaResourceType newResourceType = this.xmlResource.getResourceType();
-		
-		// if the old and new xml persistences are different instances,
-		// we scrap the old and rebuild.  this can happen when the resource
-		// model drastically changes, such as a cvs checkout or an edit reversion
-		if ((oldXmlPersistence != newXmlPersistence) 
-				|| (newXmlPersistence == null) 
-				|| this.valuesAreDifferent(this.resourceType, newResourceType)) {
-			
-			if (this.persistence != null) {
-				getJpaFile().removeRootStructureNode(this.xmlResource);
-				this.persistence.dispose();
-				setPersistence(null);
-			}
-		}
-		
-		this.resourceType = newResourceType;
-		
-		if (newXmlPersistence != null) {
-			if (this.persistence != null) {
-				this.persistence.update(newXmlPersistence);
-			}
-			else {
-				setPersistence(buildPersistence(newXmlPersistence));
-			}
-			
-			this.getJpaFile().addRootStructureNode(this.xmlResource, this.persistence);
-		}
-	}
-	
-	@Override
-	public void postUpdate() {
-		super.postUpdate();
-		if (this.persistence != null) {
-			this.persistence.postUpdate();
-		}
-	}
-	
-	
+
+
 	// ********** JpaStructureNode implementation **********
-	
+
 	public String getId() {
 		// isn't actually displayed, so needs no details page
 		return null;
 	}
-	
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		if (this.persistence.containsOffset(textOffset)) {
 			return this.persistence.getStructureNode(textOffset);
 		}
 		return this;
 	}
-	
+
 	// never actually selected
 	public TextRange getSelectionTextRange() {
 		return TextRange.Empty.instance();
 	}
-	
+
 	public void dispose() {
 		if (this.persistence != null) {
+			JpaFile jpaFile = this.getJpaFile();
+			if (jpaFile != null) {
+				this.unregisterRootStructureNode();
+			}
 			this.persistence.dispose();
 		}
-		JpaFile jpaFile = getJpaFile();
-		if (jpaFile != null) {
-			jpaFile.removeRootStructureNode(this.xmlResource);
-		}
 	}
-	
-	protected JpaFile getJpaFile() {
-		return this.getJpaFile(this.xmlResource.getFile());
+
+	// TODO hold the JpaFile?
+	protected void registerRootStructureNode() {
+		this.getJpaFile().addRootStructureNode(this.xmlResource, this.persistence);
 	}
-	
-	
+
+	protected void unregisterRootStructureNode() {
+		this.getJpaFile().removeRootStructureNode(this.xmlResource, this.persistence);
+	}
+
+
 	// ********** validation **********
-	
-	// never actually selected
-	public TextRange getValidationTextRange() {
-		return TextRange.Empty.instance();
-	}
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		
+
 		if (this.persistence == null) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
@@ -222,7 +240,12 @@ public class GenericPersistenceXml
 			);
 			return;
 		}
-		
+
 		this.persistence.validate(messages, reporter);
+	}
+
+	// never actually selected
+	public TextRange getValidationTextRange() {
+		return TextRange.Empty.instance();
 	}
 }

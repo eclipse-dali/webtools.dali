@@ -11,10 +11,11 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 
 /**
- * 
- * 
+ * Java entity
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,34 +26,39 @@ import org.eclipse.jpt.core.context.Entity;
  * @since 2.0
  */
 public interface JavaEntity
-	extends JavaTypeMapping, Entity
+	extends Entity, JavaTypeMapping
 {
+	EntityAnnotation getMappingAnnotation();
+
 	JavaTable getTable();
 	
 	JavaIdClassReference getIdClassReference();
 	
 	JavaDiscriminatorColumn getDiscriminatorColumn();
 	
-	@SuppressWarnings("unchecked")
+
+	// ********** secondary tables **********
+
 	ListIterator<JavaSecondaryTable> secondaryTables();	
-	@SuppressWarnings("unchecked")
 	ListIterator<JavaSecondaryTable> specifiedSecondaryTables();
-	JavaSecondaryTable addSpecifiedSecondaryTable(int index);
 	JavaSecondaryTable addSpecifiedSecondaryTable();
+	JavaSecondaryTable addSpecifiedSecondaryTable(int index);
 	
-	@SuppressWarnings("unchecked")
+
+	// ********** primary key join columns **********
+
 	ListIterator<JavaPrimaryKeyJoinColumn> primaryKeyJoinColumns();
-	JavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
-	@SuppressWarnings("unchecked")
 	ListIterator<JavaPrimaryKeyJoinColumn> specifiedPrimaryKeyJoinColumns();
 	JavaPrimaryKeyJoinColumn addSpecifiedPrimaryKeyJoinColumn(int index);
 	
+	JavaPrimaryKeyJoinColumn getDefaultPrimaryKeyJoinColumn();
+		String DEFAULT_PRIMARY_KEY_JOIN_COLUMN_PROPERTY = "defaultPrimaryKeyJoinColumn"; //$NON-NLS-1$
+
+
+	// ********** containers **********
 
 	JavaAttributeOverrideContainer getAttributeOverrideContainer();
-	
 	JavaAssociationOverrideContainer getAssociationOverrideContainer();
-	
 	JavaQueryContainer getQueryContainer();
-	
 	JavaGeneratorContainer getGeneratorContainer();
 }

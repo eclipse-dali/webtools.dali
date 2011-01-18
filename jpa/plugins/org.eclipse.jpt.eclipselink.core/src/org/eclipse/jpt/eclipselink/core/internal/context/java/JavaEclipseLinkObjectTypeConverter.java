@@ -3,85 +3,97 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
+import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConversionValue;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConversionValueAnnotation;
+import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkObjectTypeConverterAnnotation;
 import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationListIterator;
+import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class JavaEclipseLinkObjectTypeConverter extends JavaEclipseLinkConverter
+public class JavaEclipseLinkObjectTypeConverter
+	extends JavaEclipseLinkConverter<EclipseLinkObjectTypeConverterAnnotation>
 	implements EclipseLinkObjectTypeConverter
-{	
+{
 	private String dataType;
 	private String fullyQualifiedDataType;
 		public static final String FULLY_QUALIFIED_DATA_TYPE_PROPERTY = "fullyQualifiedDataType"; //$NON-NLS-1$
-	
+
 	private String objectType;
 	private String fullyQualifiedObjectType;
 		public static final String FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY = "fullyQualifiedObjectType"; //$NON-NLS-1$
-	
+
+	private final Vector<JavaEclipseLinkConversionValue> conversionValues = new Vector<JavaEclipseLinkConversionValue>();
+	private final ConversionValueContainerAdapter conversionValueContainerAdapter = new ConversionValueContainerAdapter();
+
 	private String defaultObjectValue;
-	
-	private final List<JavaEclipseLinkConversionValue> conversionValues;
-	
-	
-	public JavaEclipseLinkObjectTypeConverter(JavaJpaContextNode parent) {
-		super(parent);
-		this.conversionValues = new ArrayList<JavaEclipseLinkConversionValue>();
+
+
+	public JavaEclipseLinkObjectTypeConverter(JavaJpaContextNode parent, EclipseLinkObjectTypeConverterAnnotation converterAnnotation) {
+		super(parent, converterAnnotation);
+		this.dataType = converterAnnotation.getDataType();
+		this.objectType = converterAnnotation.getObjectType();
+		this.initializeConversionValues();
+		this.defaultObjectValue = converterAnnotation.getDefaultObjectValue();
 	}
-	
-	
-	public String getType() {
-		return EclipseLinkConverter.OBJECT_TYPE_CONVERTER;
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setDataType_(this.converterAnnotation.getDataType());
+		this.setObjectType_(this.converterAnnotation.getObjectType());
+		this.syncConversionValues();
+		this.setDefaultObjectValue_(this.converterAnnotation.getDefaultObjectValue());
 	}
 
 	@Override
-	public String getAnnotationName() {
-		return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
+	public void update() {
+		super.update();
+		this.setFullyQualifiedDataType(this.converterAnnotation.getFullyQualifiedDataType());
+		this.setFullyQualifiedObjectType(this.converterAnnotation.getFullyQualifiedObjectType());
+		this.updateNodes(this.getConversionValues());
 	}
-	
-	@Override
-	protected EclipseLinkObjectTypeConverterAnnotation getAnnotation() {
-		return (EclipseLinkObjectTypeConverterAnnotation) super.getAnnotation();
-	}
-	
-	
-	// **************** data type **********************************************
-	
+
+
+	// ********** data type **********
+
 	public String getDataType() {
 		return this.dataType;
 	}
-	
-	public void setDataType(String newDataType) {
-		String oldDataType = this.dataType;
-		this.dataType = newDataType;
-		getAnnotation().setDataType(newDataType);
-		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
+
+	public void setDataType(String dataType) {
+		this.converterAnnotation.setDataType(dataType);
+		this.setDataType_(dataType);
 	}
-	
-	protected void setDataType_(String newDataType) {
-		String oldDataType = this.dataType;
-		this.dataType = newDataType;
-		firePropertyChanged(DATA_TYPE_PROPERTY, oldDataType, newDataType);
+
+	protected void setDataType_(String dataType) {
+		String old = this.dataType;
+		this.dataType = dataType;
+		this.firePropertyChanged(DATA_TYPE_PROPERTY, old, dataType);
 	}
+
+
+	// ********** fully qualified data type **********
 
 	public String getFullyQualifiedDataType() {
 		return this.fullyQualifiedDataType;
@@ -93,31 +105,26 @@ public class JavaEclipseLinkObjectTypeConverter extends JavaEclipseLinkConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_DATA_TYPE_PROPERTY, old, dataType);
 	}
 
-	protected String buildFullyQualifiedDataType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ?
-				null :
-					resourceConverter.getFullyQualifiedDataType();
-	}
-	
-	
-	// **************** object type ********************************************
-	
+
+	// ********** object type **********
+
 	public String getObjectType() {
 		return this.objectType;
 	}
-	
-	public void setObjectType(String newObjectType) {
-		String oldObjectType = this.objectType;
-		this.objectType = newObjectType;
-		getAnnotation().setObjectType(newObjectType);
-		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
+
+	public void setObjectType(String objectType) {
+		this.converterAnnotation.setObjectType(objectType);
+		this.setObjectType_(objectType);
 	}
-	
-	protected void setObjectType_(String newObjectType) {
-		String oldObjectType = this.objectType;
-		this.objectType = newObjectType;
-		firePropertyChanged(OBJECT_TYPE_PROPERTY, oldObjectType, newObjectType);
+
+	protected void setObjectType_(String objectType) {
+		String old = this.objectType;
+		this.objectType = objectType;
+		this.firePropertyChanged(OBJECT_TYPE_PROPERTY, old, objectType);
 	}
+
+
+	// ********** fully qualified object type **********
 
 	public String getFullyQualifiedObjectType() {
 		return this.fullyQualifiedObjectType;
@@ -129,175 +136,185 @@ public class JavaEclipseLinkObjectTypeConverter extends JavaEclipseLinkConverter
 		this.firePropertyChanged(FULLY_QUALIFIED_OBJECT_TYPE_PROPERTY, old, objectType);
 	}
 
-	protected String buildFullyQualifiedObjectType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ?
-				null :
-					resourceConverter.getFullyQualifiedObjectType();
-	}
-	
-	
-	// **************** conversion values **************************************
-	
+
+	// ********** conversion values **********
+
+	@SuppressWarnings("unchecked")
 	public ListIterator<JavaEclipseLinkConversionValue> conversionValues() {
-		return new CloneListIterator<JavaEclipseLinkConversionValue>(this.conversionValues);
+		return this.getConversionValues().iterator();
 	}
-	
+
+	public ListIterable<JavaEclipseLinkConversionValue> getConversionValues() {
+		return new LiveCloneListIterable<JavaEclipseLinkConversionValue>(this.conversionValues);
+	}
+
 	public int conversionValuesSize() {
 		return this.conversionValues.size();
 	}
-	
-	public JavaEclipseLinkConversionValue addConversionValue(int index) {
-		JavaEclipseLinkConversionValue conversionValue = new JavaEclipseLinkConversionValue(this);
-		this.conversionValues.add(index, conversionValue);
-		EclipseLinkConversionValueAnnotation resourceConversionValue = getAnnotation().addConversionValue(index);
-		conversionValue.initialize(resourceConversionValue);
-		fireItemAdded(CONVERSION_VALUES_LIST, index, conversionValue);
-		return conversionValue;
-	}
-	
+
 	public JavaEclipseLinkConversionValue addConversionValue() {
 		return this.addConversionValue(this.conversionValues.size());
 	}
-	
-	protected void addConversionValue(int index, JavaEclipseLinkConversionValue conversionValue) {
-		addItemToList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
+
+	public JavaEclipseLinkConversionValue addConversionValue(int index) {
+		EclipseLinkConversionValueAnnotation annotation = this.converterAnnotation.addConversionValue(index);
+		return this.addConversionValue_(index, annotation);
 	}
-	
-	protected void addConversionValue(JavaEclipseLinkConversionValue conversionValue) {
-		this.addConversionValue(this.conversionValues.size(), conversionValue);
-	}
-	
+
 	public void removeConversionValue(EclipseLinkConversionValue conversionValue) {
 		this.removeConversionValue(this.conversionValues.indexOf(conversionValue));
 	}
-	
+
 	public void removeConversionValue(int index) {
-		JavaEclipseLinkConversionValue removedConversionValue = this.conversionValues.remove(index);
-		getAnnotation().removeConversionValue(index);
-		fireItemRemoved(CONVERSION_VALUES_LIST, index, removedConversionValue);
+		this.converterAnnotation.removeConversionValue(index);
+		this.removeConversionValue_(index);
 	}
-	
-	protected void removeConversionValue_(JavaEclipseLinkConversionValue conversionValue) {
-		removeItemFromList(conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
+
+	protected void removeConversionValue_(int index) {
+		this.removeItemFromList(index, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
-	
+
 	public void moveConversionValue(int targetIndex, int sourceIndex) {
-		CollectionTools.move(this.conversionValues, targetIndex, sourceIndex);
-		getAnnotation().moveConversionValue(targetIndex, sourceIndex);
-		fireItemMoved(CONVERSION_VALUES_LIST, targetIndex, sourceIndex);		
+		this.converterAnnotation.moveConversionValue(targetIndex, sourceIndex);
+		this.moveItemInList(targetIndex, sourceIndex, this.conversionValues, CONVERSION_VALUES_LIST);
 	}
-	
-	public ListIterator<String> dataValues() {
-		return new TransformationListIterator<JavaEclipseLinkConversionValue, String>(conversionValues()) {
-			@Override
-			protected String transform(JavaEclipseLinkConversionValue next) {
-				return next.getDataValue();
-			}
-		};
-	}
-	
-	
-	// **************** default object value ***********************************
-	
-	public String getDefaultObjectValue() {
-		return this.defaultObjectValue;
-	}
-	
-	public void setDefaultObjectValue(String newDefaultObjectValue) {
-		String oldDefaultObjectValue = this.defaultObjectValue;
-		this.defaultObjectValue = newDefaultObjectValue;
-		getAnnotation().setDefaultObjectValue(newDefaultObjectValue);
-		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
-	}
-	
-	protected void setDefaultObjectValue_(String newDefaultObjectValue) {
-		String oldDefaultObjectValue = this.defaultObjectValue;
-		this.defaultObjectValue = newDefaultObjectValue;
-		firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, oldDefaultObjectValue, newDefaultObjectValue);
-	}
-	
-	
-	// **************** resource interaction ***********************************
-	
-	@Override
-	protected void initialize(JavaResourcePersistentMember jrpm) {
-		super.initialize(jrpm);
-		EclipseLinkObjectTypeConverterAnnotation resourceConverter = getAnnotation();
-		this.dataType = this.dataType(resourceConverter);
-		this.fullyQualifiedDataType = this.buildFullyQualifiedDataType(resourceConverter);
-		this.objectType = this.objectType(resourceConverter);
-		this.fullyQualifiedObjectType = this.buildFullyQualifiedObjectType(resourceConverter);
-		this.defaultObjectValue = this.defaultObjectValue(resourceConverter);
-		this.initializeConversionValues(resourceConverter);
-	}
-	
-	protected void initializeConversionValues(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		if (resourceConverter == null) {
-			return;
-		}
-		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
-		
-		while(resourceConversionValues.hasNext()) {
-			this.conversionValues.add(buildConversionValue(resourceConversionValues.next()));
+
+	protected void initializeConversionValues() {
+		for (Iterator<EclipseLinkConversionValueAnnotation> stream = this.converterAnnotation.conversionValues(); stream.hasNext(); ) {
+			this.conversionValues.add(this.buildConversionValue(stream.next()));
 		}
 	}
 
-	protected JavaEclipseLinkConversionValue buildConversionValue(EclipseLinkConversionValueAnnotation resourceConversionValue) {
-		JavaEclipseLinkConversionValue conversionValue = new JavaEclipseLinkConversionValue(this);
-		conversionValue.initialize(resourceConversionValue);
+	protected JavaEclipseLinkConversionValue buildConversionValue(EclipseLinkConversionValueAnnotation conversionValueAnnotation) {
+		return new JavaEclipseLinkConversionValue(this, conversionValueAnnotation);
+	}
+	
+	protected void syncConversionValues() {
+		ContextContainerTools.synchronizeWithResourceModel(this.conversionValueContainerAdapter);
+	}
+
+	protected Iterable<EclipseLinkConversionValueAnnotation> getConversionValueAnnotations() {
+		return CollectionTools.iterable(this.converterAnnotation.conversionValues());
+	}
+
+	protected void moveConversionValue_(int index, JavaEclipseLinkConversionValue conversionValue) {
+		this.moveItemInList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
+	}
+
+	protected JavaEclipseLinkConversionValue addConversionValue_(int index, EclipseLinkConversionValueAnnotation conversionValueAnnotation) {
+		JavaEclipseLinkConversionValue conversionValue = this.buildConversionValue(conversionValueAnnotation);
+		this.addItemToList(index, conversionValue, this.conversionValues, CONVERSION_VALUES_LIST);
 		return conversionValue;
 	}
-	
-	@Override
-	public void update(JavaResourcePersistentMember jrpm) {
-		super.update(jrpm);
-		EclipseLinkObjectTypeConverterAnnotation resourceConverter = getAnnotation();
-		this.setDataType_(this.dataType(resourceConverter));
-		this.setFullyQualifiedDataType(this.buildFullyQualifiedDataType(resourceConverter));
-		this.setObjectType_(this.objectType(resourceConverter));
-		this.setFullyQualifiedObjectType(this.buildFullyQualifiedObjectType(resourceConverter));
-		this.setDefaultObjectValue_(this.defaultObjectValue(resourceConverter));
-		this.updateConversionValues(resourceConverter);
+
+	protected void removeConversionValue_(JavaEclipseLinkConversionValue conversionValue) {
+		this.removeConversionValue_(this.conversionValues.indexOf(conversionValue));
 	}
-	
-	protected void updateConversionValues(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		ListIterator<JavaEclipseLinkConversionValue> contextConversionValues = conversionValues();
-		ListIterator<EclipseLinkConversionValueAnnotation> resourceConversionValues = resourceConverter.conversionValues();
-		while (contextConversionValues.hasNext()) {
-			JavaEclipseLinkConversionValue conversionValues = contextConversionValues.next();
-			if (resourceConversionValues.hasNext()) {
-				conversionValues.update(resourceConversionValues.next());
-			}
-			else {
-				removeConversionValue_(conversionValues);
-			}
+
+	/**
+	 * conversion value container adapter
+	 */
+	protected class ConversionValueContainerAdapter
+		implements ContextContainerTools.Adapter<JavaEclipseLinkConversionValue, EclipseLinkConversionValueAnnotation>
+	{
+		public Iterable<JavaEclipseLinkConversionValue> getContextElements() {
+			return JavaEclipseLinkObjectTypeConverter.this.getConversionValues();
 		}
-		
-		while (resourceConversionValues.hasNext()) {
-			addConversionValue(buildConversionValue(resourceConversionValues.next()));
+		public Iterable<EclipseLinkConversionValueAnnotation> getResourceElements() {
+			return JavaEclipseLinkObjectTypeConverter.this.getConversionValueAnnotations();
+		}
+		public EclipseLinkConversionValueAnnotation getResourceElement(JavaEclipseLinkConversionValue contextElement) {
+			return contextElement.getConversionValueAnnotation();
+		}
+		public void moveContextElement(int index, JavaEclipseLinkConversionValue element) {
+			JavaEclipseLinkObjectTypeConverter.this.moveConversionValue_(index, element);
+		}
+		public void addContextElement(int index, EclipseLinkConversionValueAnnotation resourceElement) {
+			JavaEclipseLinkObjectTypeConverter.this.addConversionValue_(index, resourceElement);
+		}
+		public void removeContextElement(JavaEclipseLinkConversionValue element) {
+			JavaEclipseLinkObjectTypeConverter.this.removeConversionValue_(element);
 		}
 	}
-	
-	protected String dataType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getDataType();
+
+
+	// ********** data values **********
+
+	public Iterable<String> getDataValues() {
+		return new TransformationIterable<JavaEclipseLinkConversionValue, String>(this.getConversionValues()) {
+			@Override
+			protected String transform(JavaEclipseLinkConversionValue conversionValue) {
+				return conversionValue.getDataValue();
+			}
+		};
 	}
-	
-	protected String objectType(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getObjectType();
+
+	public int getDataValuesSize() {
+		return this.conversionValuesSize();
 	}
-	
-	protected String defaultObjectValue(EclipseLinkObjectTypeConverterAnnotation resourceConverter) {
-		return resourceConverter == null ? null : resourceConverter.getDefaultObjectValue();
+
+
+	// ********** default object value **********
+
+	public String getDefaultObjectValue() {
+		return this.defaultObjectValue;
 	}
-	
-	
-	// **************** validation *********************************************
-	
+
+	public void setDefaultObjectValue(String value) {
+		this.converterAnnotation.setDefaultObjectValue(value);
+		this.setDefaultObjectValue_(value);
+	}
+
+	protected void setDefaultObjectValue_(String value) {
+		String old = this.defaultObjectValue;
+		this.defaultObjectValue = value;
+		this.firePropertyChanged(DEFAULT_OBJECT_VALUE_PROPERTY, old, value);
+	}
+
+
+	// ********** misc **********
+
+	public Class<EclipseLinkObjectTypeConverter> getType() {
+		return EclipseLinkObjectTypeConverter.class;
+	}
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		for (Iterator<JavaEclipseLinkConversionValue> stream = conversionValues(); stream.hasNext();) {
-			stream.next().validate(messages, reporter, astRoot);
+		for (JavaEclipseLinkConversionValue conversionValue : this.getConversionValues()) {
+			conversionValue.validate(messages, reporter, astRoot);
+		}
+	}
+
+
+	// ********** adapter **********
+
+	public static class Adapter
+		extends AbstractAdapter
+	{
+		private static final Adapter INSTANCE = new Adapter();
+		public static Adapter instance() {
+			return INSTANCE;
+		}
+
+		private Adapter() {
+			super();
+		}
+
+		public Class<EclipseLinkObjectTypeConverter> getConverterType() {
+			return EclipseLinkObjectTypeConverter.class;
+		}
+
+		@Override
+		protected String getAnnotationName() {
+			return EclipseLinkObjectTypeConverterAnnotation.ANNOTATION_NAME;
+		}
+
+		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
+			return new JavaEclipseLinkObjectTypeConverter(parent, (EclipseLinkObjectTypeConverterAnnotation) converterAnnotation);
 		}
 	}
 }

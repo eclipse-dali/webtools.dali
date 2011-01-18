@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -47,7 +47,7 @@ public class JavaPersistentAttributeDetailsProvider
 	
 	
 	public boolean providesDetails(JpaStructureNode structureNode) {
-			return StringTools.stringsAreEqual(structureNode.getId(), JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID)
+			return Tools.valuesAreEqual(structureNode.getId(), JavaStructureNodes.PERSISTENT_ATTRIBUTE_ID)
 				&& structureNode.getResourceType().getContentType().equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 	

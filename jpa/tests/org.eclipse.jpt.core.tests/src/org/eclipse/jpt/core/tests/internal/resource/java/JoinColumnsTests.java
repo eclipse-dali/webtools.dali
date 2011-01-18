@@ -173,7 +173,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 		column.setName(null);
 		assertNull(column.getName());
 		
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 	
 	public void testGetTable() throws Exception {
@@ -200,7 +200,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setTable(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 	
 	public void testGetReferencedColumnName() throws Exception {
@@ -227,7 +227,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setReferencedColumnName(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 
 	public void testGetColumnDefinition() throws Exception {
@@ -254,7 +254,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 
 		
 		column.setColumnDefinition(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 
 	public void testGetUnique() throws Exception {
@@ -281,7 +281,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@JoinColumns(@JoinColumn(unique = false))", cu);
 		
 		column.setUnique(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 	
 	public void testGetNullable() throws Exception {
@@ -308,7 +308,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@JoinColumns(@JoinColumn(nullable = false))", cu);
 		
 		column.setNullable(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 
 	public void testGetInsertable() throws Exception {
@@ -335,7 +335,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@JoinColumns(@JoinColumn(insertable = false))", cu);
 		
 		column.setInsertable(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 	
 	public void testGetUpdatable() throws Exception {
@@ -362,8 +362,7 @@ public class JoinColumnsTests extends JpaJavaResourceModelTestCase {
 		assertSourceContains("@JoinColumns(@JoinColumn(updatable = false))", cu);
 		
 		column.setUpdatable(null);
-		assertSourceDoesNotContain("@JoinColumn", cu);
-		assertSourceDoesNotContain("@JoinColumns", cu);
+		assertSourceDoesNotContain("@JoinColumn(", cu);
 	}
 	
 	

@@ -3,19 +3,20 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.context.orm.OrmXml;
 import org.eclipse.jpt.core.internal.context.orm.AbstractEntityMappings;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
@@ -27,25 +28,46 @@ public class EclipseLinkEntityMappingsImpl
 	extends AbstractEntityMappings
 	implements EclipseLinkEntityMappings
 {
+	protected final OrmEclipseLinkConverterContainer converterContainer;
 
-	protected final OrmEclipseLinkConverterHolder converterHolder;
-	
+
 	public EclipseLinkEntityMappingsImpl(OrmXml parent, XmlEntityMappings resource) {
 		super(parent, resource);
-		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlEntityMappings) this.xmlEntityMappings);
+		this.converterContainer = this.buildConverterContainer();
 	}
-	
-	// **************** EclipseLinkEntityMappings impl **********************************
 
-	public EclipseLinkConverterHolder getConverterHolder() {
-		return this.converterHolder;
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
 	}
-	
-	
+
 	@Override
 	public void update() {
 		super.update();
-		this.converterHolder.update();
+		this.converterContainer.update();
+	}
+
+
+	// ********** converter container **********
+
+	public OrmEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
+		return new OrmEclipseLinkConverterContainerImpl(this, (XmlEntityMappings) this.xmlEntityMappings);
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	protected IContentType getContentType() {
+		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE;
 	}
 
 
@@ -60,7 +82,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterRenameTypeEdits(IType originalType, String newName) {
-		return this.converterHolder.createRenameTypeEdits(originalType, newName);
+		return this.converterContainer.createRenameTypeEdits(originalType, newName);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,7 +94,7 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.converterHolder.createMoveTypeEdits(originalType, newPackage);
+		return this.converterContainer.createMoveTypeEdits(originalType, newPackage);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -84,21 +106,16 @@ public class EclipseLinkEntityMappingsImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.converterHolder.createRenamePackageEdits(originalPackage, newName);
+		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
 	}
 
-	
-	// **************** validation *********************************************
-	
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
-		this.converterHolder.validate(messages, reporter);
-	}
-	
-	@Override
-	protected String latestDocumentVersion() {
-		return getJpaPlatform().getMostRecentSupportedResourceType(
-				JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE).getVersion();
+		this.converterContainer.validate(messages, reporter);
 	}
 }

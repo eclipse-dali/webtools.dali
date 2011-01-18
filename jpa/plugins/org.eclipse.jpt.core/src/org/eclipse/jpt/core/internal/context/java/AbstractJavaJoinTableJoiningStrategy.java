@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,56 +12,138 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
+import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class AbstractJavaJoinTableJoiningStrategy 
+public abstract class AbstractJavaJoinTableJoiningStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaJoinTableJoiningStrategy, Table.Owner
 {
 	protected JavaJoinTable joinTable;
-	
-	
-	protected AbstractJavaJoinTableJoiningStrategy(JoinTableEnabledRelationshipReference parent) {
+
+
+	protected AbstractJavaJoinTableJoiningStrategy(JavaJoinTableEnabledRelationshipReference parent) {
 		super(parent);
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public JoinTableEnabledRelationshipReference getParent() {
-		return (JoinTableEnabledRelationshipReference) super.getParent();
-	}
-	
-	public JoinTableEnabledRelationshipReference getRelationshipReference() {
-		return this.getParent();
-	}
-	
-	public RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getRelationshipMapping();
-	}
-	
-	public String getTableName() {
-		return getJoinTable().getName();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		if (this.joinTable != null) {
+			this.joinTable.synchronizeWithResourceModel();
+		}
 	}
 
-	public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-		return getJoinTable().getDbTable();
+	@Override
+	public void update() {
+		super.update();
+		this.updateJoinTable();
+	}
+
+
+	// ********** join table **********
+
+	public JavaJoinTable getJoinTable() {
+		return this.joinTable;
+	}
+
+	protected void setJoinTable(JavaJoinTable joinTable) {
+		JavaJoinTable old = this.joinTable;
+		this.joinTable = joinTable;
+		this.firePropertyChanged(JOIN_TABLE_PROPERTY, old, joinTable);
+	}
+
+	protected void updateJoinTable() {
+		if (this.buildsJoinTable()) {
+			if (this.joinTable == null) {
+				this.setJoinTable(this.buildJoinTable());
+			} else {
+				this.joinTable.update();
+			}
+		} else {
+			if (this.joinTable != null) {
+				this.setJoinTable(null);
+			}
+		}
+	}
+
+	/**
+	 * The strategy can have a join table if either the table annotation is present
+	 * or the [mapping] relationship supports a default join table.
+	 */
+	protected boolean buildsJoinTable() {
+		return this.getJoinTableAnnotation().isSpecified()
+			|| this.getRelationshipReference().mayHaveDefaultJoinTable();
+	}
+
+	protected JavaJoinTable buildJoinTable() {
+		return this.getJpaFactory().buildJavaJoinTable(this, this);
+	}
+
+
+	// ********** join table annotation **********
+
+	protected abstract JoinTableAnnotation addJoinTableAnnotation();
+
+	protected abstract void removeJoinTableAnnotation();
+
+
+	// ********** misc **********
+
+	@Override
+	public JavaJoinTableEnabledRelationshipReference getParent() {
+		return (JavaJoinTableEnabledRelationshipReference) super.getParent();
+	}
+
+	public JavaJoinTableEnabledRelationshipReference getRelationshipReference() {
+		return this.getParent();
+	}
+
+	public RelationshipMapping getRelationshipMapping() {
+		return this.getRelationshipReference().getMapping();
+	}
+
+	public void initializeFrom(ReadOnlyJoinTableJoiningStrategy oldStrategy) {
+		ReadOnlyJoinTable oldJoinTable = oldStrategy.getJoinTable();
+		if (oldJoinTable != null) {
+			this.addStrategy();
+			this.joinTable.initializeFrom(oldJoinTable);
+		}
+	}
+
+	public void initializeFromVirtual(ReadOnlyJoinTableJoiningStrategy virtualStrategy) {
+		ReadOnlyJoinTable oldJoinTable = virtualStrategy.getJoinTable();
+		if (oldJoinTable != null) {
+			this.addStrategy();
+			this.joinTable.initializeFromVirtual(oldJoinTable);
+		}
+	}
+
+	public String getTableName() {
+		return (this.joinTable == null) ? null : this.joinTable.getName();
+	}
+
+	public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		return (this.joinTable == null) ? null : this.joinTable.getDbTable();
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
-		return !StringTools.stringsAreEqual(getTableName(), tableName);
+		return Tools.valuesAreDifferent(this.getTableName(), tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
@@ -74,99 +156,36 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 
 	public void addStrategy() {
 		if (this.joinTable == null) {
-			this.joinTable = this.buildJavaJoinTable();
-			addAnnotation();
-			this.firePropertyChanged(JOIN_TABLE_PROPERTY, null, this.joinTable);
+			this.addJoinTableAnnotation();
+			this.setJoinTable(this.buildJoinTable());
 		}
 	}
-	
+
 	public void removeStrategy() {
 		if (this.joinTable != null) {
-			JavaJoinTable oldJoinTable = this.joinTable;
-			this.joinTable = null;
-			removeAnnotation();
-			this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, null);
-		}
-	}
-			
-	public void initializeFrom(JoinTableJoiningStrategy oldStrategy) {
-		JoinTable oldJoinTable = oldStrategy.getJoinTable();
-		if (oldJoinTable != null) {
-			this.addStrategy();
-			this.getJoinTable().setSpecifiedCatalog(oldJoinTable.getSpecifiedCatalog());
-			this.getJoinTable().setSpecifiedSchema(oldJoinTable.getSpecifiedSchema());
-			this.getJoinTable().setSpecifiedName(oldJoinTable.getSpecifiedName());
-		}
-	}
-	
-	
-	// **************** join table *********************************************
-	
-	public JavaJoinTable getJoinTable() {
-		return this.joinTable;
-	}
-	
-	protected void setJoinTable_(JavaJoinTable newJoinTable) {
-		JavaJoinTable oldJoinTable = this.joinTable;
-		this.joinTable = newJoinTable;
-		this.firePropertyChanged(JOIN_TABLE_PROPERTY, oldJoinTable, newJoinTable);
-	}
-	
-	protected abstract JoinTableAnnotation addAnnotation();
-	
-	protected abstract void removeAnnotation();
-	
-	protected boolean mayHaveJoinTable() {
-		return getAnnotation().isSpecified() 
-			|| getRelationshipReference().mayHaveDefaultJoinTable();
-	}
-
-
-	// **************** resource => context ************************************
-
-	public void initialize() {
-		JoinTableAnnotation annotation = getAnnotation();
-		if (mayHaveJoinTable()) {
-			this.joinTable = this.buildJavaJoinTable();
-			this.joinTable.initialize(annotation);
-		}
-	}
-	
-	public void update() {
-		JoinTableAnnotation annotation = getAnnotation();
-		if (mayHaveJoinTable()) {
-			if (this.joinTable == null) {
-				setJoinTable_(this.buildJavaJoinTable());
-			}
-			this.joinTable.update(annotation);
-		}
-		else {
-			if (this.joinTable != null) {
-				// no annotation, so no clean up
-				setJoinTable_(null);
-			}
+			this.removeJoinTableAnnotation();
+			this.setJoinTable(null);
 		}
 	}
 
-	protected JavaJoinTable buildJavaJoinTable() {
-		return getJpaFactory().buildJavaJoinTable(this, this);
-	}
 
+	// ********** Java completion proposals **********
 
-	// **************** Java completion proposals ******************************
-	
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterator<String> result = super.javaCompletionProposals(pos, filter, astRoot);
-		if (result == null && this.joinTable != null) {
+		if (result != null) {
+			return result;
+		}
+		if (this.joinTable != null) {
 			result = this.joinTable.javaCompletionProposals(pos, filter, astRoot);
 		}
 		return result;
 	}
-	
-	
-	// **************** validation *********************************************
-	
+
+
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

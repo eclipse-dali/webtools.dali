@@ -11,12 +11,9 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
-import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
-import org.eclipse.jpt.core.context.orm.OrmTypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
 import org.eclipse.jpt.core.resource.orm.XmlAttributeMapping;
@@ -63,12 +60,5 @@ public class OrmIdMappingDefinition
 			XmlAttributeMapping resourceMapping, 
 			OrmXmlContextNodeFactory factory) {
 		return factory.buildOrmIdMapping(parent, (XmlId) resourceMapping);
-	}
-	
-	public XmlAttributeMapping buildVirtualResourceMapping(
-			OrmTypeMapping ormTypeMapping, 
-			JavaAttributeMapping javaAttributeMapping, 
-			OrmXmlContextNodeFactory factory) {
-		return factory.buildVirtualXmlId(ormTypeMapping, (JavaIdMapping) javaAttributeMapping);
 	}
 }

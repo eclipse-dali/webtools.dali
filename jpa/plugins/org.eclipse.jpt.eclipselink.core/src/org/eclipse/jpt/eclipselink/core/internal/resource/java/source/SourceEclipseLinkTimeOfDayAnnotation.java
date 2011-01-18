@@ -77,6 +77,15 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 		this.syncMillisecond(this.buildMillisecond(astRoot));
 	}
 
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.hour == null) &&
+				(this.minute == null) &&
+				(this.second == null) &&
+				(this.millisecond == null);
+	}
+
 
 	// ********** TimeOfDayAnnotation implementation **********
 
@@ -188,19 +197,19 @@ public final class SourceEclipseLinkTimeOfDayAnnotation
 	// ********** static methods **********
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildHourAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__HOUR, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__HOUR, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildMinuteAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MINUTE, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MINUTE, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildSecondAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__SECOND, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__SECOND, NumberIntegerExpressionConverter.instance());
 	}
 
 	private static DeclarationAnnotationElementAdapter<Integer> buildMillisecondAdapter(DeclarationAnnotationAdapter daa) {
-		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MILLISECOND, false, NumberIntegerExpressionConverter.instance());
+		return new ConversionDeclarationAnnotationElementAdapter<Integer>(daa, EclipseLink.TIME_OF_DAY__MILLISECOND, NumberIntegerExpressionConverter.instance());
 	}
 
 }

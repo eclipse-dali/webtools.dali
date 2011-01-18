@@ -13,7 +13,8 @@ import org.eclipse.jpt.core.context.orm.OrmSequenceGenerator;
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
 
 /**
- * JPA 2.0 context <code>orm.xml</code> sequence generator.
+ * JPA 2.0
+ * <code>orm.xml</code> sequence generator
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -27,5 +28,5 @@ import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
 public interface OrmSequenceGenerator2_0
 	extends SequenceGenerator2_0, OrmSequenceGenerator
 {
-
+	// nothing
 }

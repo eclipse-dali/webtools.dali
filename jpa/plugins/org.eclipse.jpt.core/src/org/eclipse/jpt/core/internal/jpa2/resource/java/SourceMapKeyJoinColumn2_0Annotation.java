@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceBaseJoinColumnAnnotation;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.NestedIndexedDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
@@ -24,7 +23,7 @@ import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
 import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
 
 /**
- * javax.persistence.MapKeyJoinColumn
+ * <code>javax.persistence.MapKeyJoinColumn</code>
  */
 public final class SourceMapKeyJoinColumn2_0Annotation
 	extends SourceBaseJoinColumnAnnotation
@@ -105,12 +104,8 @@ public final class SourceMapKeyJoinColumn2_0Annotation
 	}
 
 	static SourceMapKeyJoinColumn2_0Annotation createNestedMapKeyJoinColumn(JavaResourceNode parent, Attribute attribute, int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
-		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter);
+		IndexedDeclarationAnnotationAdapter idaa = buildNestedDeclarationAnnotationAdapter(index, joinColumnsAdapter, ANNOTATION_NAME);
 		IndexedAnnotationAdapter annotationAdapter = new ElementIndexedAnnotationAdapter(attribute, idaa);
 		return new SourceMapKeyJoinColumn2_0Annotation(parent, attribute, idaa, annotationAdapter);
-	}
-
-	private static IndexedDeclarationAnnotationAdapter buildNestedDeclarationAnnotationAdapter(int index, DeclarationAnnotationAdapter joinColumnsAdapter) {
-		return new NestedIndexedDeclarationAnnotationAdapter(joinColumnsAdapter, index, JPA2_0.MAP_KEY_JOIN_COLUMN);
 	}
 }

@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,7 +12,6 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.GeneratedValue;
 import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.java.JavaGeneratedValue;
@@ -25,63 +24,87 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
- * 
+ * Java generated value
  */
 public class GenericJavaGeneratedValue
 	extends AbstractJavaJpaContextNode
 	implements JavaGeneratedValue
 {
-	protected GeneratedValueAnnotation resourceGeneratedValue;
+	protected final GeneratedValueAnnotation generatedValueAnnotation;
 
 	protected GenerationType specifiedStrategy;
+	protected GenerationType defaultStrategy;
 
 	protected String specifiedGenerator;
+	protected String defaultGenerator;
 
-	// always null?
-	protected String defaultGenerator = null;
-	
 
-	public GenericJavaGeneratedValue(JavaIdMapping parent) {
+	public GenericJavaGeneratedValue(JavaIdMapping parent, GeneratedValueAnnotation generatedValueAnnotation) {
 		super(parent);
-	}
-
-	public void initialize(GeneratedValueAnnotation generatedValueAnnotation) {
-		this.resourceGeneratedValue = generatedValueAnnotation;
+		this.generatedValueAnnotation = generatedValueAnnotation;
 		this.specifiedStrategy = this.buildSpecifiedStrategy();
 		this.specifiedGenerator = generatedValueAnnotation.getGenerator();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setSpecifiedStrategy_(this.buildSpecifiedStrategy());
+		this.setSpecifiedGenerator_(this.generatedValueAnnotation.getGenerator());
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.setDefaultStrategy(this.buildDefaultStrategy());
+		this.setDefaultGenerator(this.buildDefaultGenerator());
 	}
 
 
 	// ********** strategy **********
 
 	public GenerationType getStrategy() {
-		return (this.specifiedStrategy != null) ? this.specifiedStrategy : this.getDefaultStrategy();
+		return (this.specifiedStrategy != null) ? this.specifiedStrategy : this.defaultStrategy;
 	}
 
-	public GenerationType getDefaultStrategy() {
-		return GeneratedValue.DEFAULT_STRATEGY;
-	}
-	
 	public GenerationType getSpecifiedStrategy() {
 		return this.specifiedStrategy;
 	}
 
 	public void setSpecifiedStrategy(GenerationType strategy) {
-		GenerationType old = this.specifiedStrategy;
-		this.specifiedStrategy = strategy;
-		this.resourceGeneratedValue.setStrategy(GenerationType.toJavaResourceModel(strategy));
-		this.firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, old, strategy);
+		this.generatedValueAnnotation.setStrategy(GenerationType.toJavaResourceModel(strategy));
+		this.setSpecifiedStrategy_(strategy);
 	}
 
 	protected void setSpecifiedStrategy_(GenerationType strategy) {
 		GenerationType old = this.specifiedStrategy;
 		this.specifiedStrategy = strategy;
 		this.firePropertyChanged(SPECIFIED_STRATEGY_PROPERTY, old, strategy);
+	}
+
+	protected GenerationType buildSpecifiedStrategy() {
+		return GenerationType.fromJavaResourceModel(this.generatedValueAnnotation.getStrategy());
+	}
+
+	public GenerationType getDefaultStrategy() {
+		return this.defaultStrategy;
+	}
+
+	protected void setDefaultStrategy(GenerationType strategy) {
+		GenerationType old = this.defaultStrategy;
+		this.defaultStrategy = strategy;
+		this.firePropertyChanged(DEFAULT_STRATEGY_PROPERTY, old, strategy);
+	}
+
+	protected GenerationType buildDefaultStrategy() {
+		return DEFAULT_STRATEGY;
 	}
 
 
@@ -91,19 +114,13 @@ public class GenericJavaGeneratedValue
 		return (this.specifiedGenerator != null) ? this.specifiedGenerator : this.defaultGenerator;
 	}
 
-	public String getDefaultGenerator() {
-		return this.defaultGenerator;
-	}
-	
 	public String getSpecifiedGenerator() {
 		return this.specifiedGenerator;
 	}
 
 	public void setSpecifiedGenerator(String generator) {
-		String old = this.specifiedGenerator;
-		this.specifiedGenerator = generator;
-		this.resourceGeneratedValue.setGenerator(generator);
-		this.firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, old, generator);
+		this.generatedValueAnnotation.setGenerator(generator);
+		this.setSpecifiedGenerator_(generator);
 	}
 
 	protected void setSpecifiedGenerator_(String generator) {
@@ -111,20 +128,34 @@ public class GenericJavaGeneratedValue
 		this.specifiedGenerator = generator;
 		this.firePropertyChanged(SPECIFIED_GENERATOR_PROPERTY, old, generator);
 	}
-	
 
-	// ********** text ranges **********
+	public String getDefaultGenerator() {
+		return this.defaultGenerator;
+	}
 
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourceGeneratedValue.getTextRange(astRoot);
+	protected void setDefaultGenerator(String generator) {
+		String old = this.defaultGenerator;
+		this.defaultGenerator = generator;
+		this.firePropertyChanged(DEFAULT_GENERATOR_PROPERTY, old, generator);
+	}
+
+	protected String buildDefaultGenerator() {
+		return null;
 	}
 
 	public TextRange getGeneratorTextRange(CompilationUnit astRoot) {
-		return this.resourceGeneratedValue.getGeneratorTextRange(astRoot);
+		return this.generatedValueAnnotation.getGeneratorTextRange(astRoot);
 	}
 
 
-	// ********** completion proposals **********
+	// ********** misc **********
+
+	public GeneratedValueAnnotation getGeneratedValueAnnotation() {
+		return this.generatedValueAnnotation;
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -139,7 +170,7 @@ public class GenericJavaGeneratedValue
 	}
 
 	protected boolean generatorTouches(int pos, CompilationUnit astRoot) {
-		return this.resourceGeneratedValue.generatorTouches(pos, astRoot);
+		return this.generatedValueAnnotation.generatorTouches(pos, astRoot);
 	}
 
 	protected Iterator<String> javaCandidateGeneratorNames(Filter<String> filter) {
@@ -151,16 +182,7 @@ public class GenericJavaGeneratedValue
 	}
 
 	protected Iterator<String> candidateGeneratorNames() {
-		return new TransformationIterator<Generator, String>(this.candidateGenerators()) {
-			@Override
-			protected String transform(Generator generator) {
-				return generator.getName();
-			}
-		};
-	}
-
-	protected Iterator<Generator> candidateGenerators() {
-		return this.getPersistenceUnit().generators();
+		return this.getPersistenceUnit().getUniqueGeneratorNames().iterator();
 	}
 
 
@@ -192,17 +214,7 @@ public class GenericJavaGeneratedValue
 		);
 	}
 
-
-	// ********** update from resource model **********
-
-	public void update(GeneratedValueAnnotation generatedValueAnnotation) {
-		this.resourceGeneratedValue = generatedValueAnnotation;
-		this.setSpecifiedStrategy_(this.buildSpecifiedStrategy());
-		this.setSpecifiedGenerator_(generatedValueAnnotation.getGenerator());
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.generatedValueAnnotation.getTextRange(astRoot);
 	}
-
-	protected GenerationType buildSpecifiedStrategy() {
-		return GenerationType.fromJavaResourceModel(this.resourceGeneratedValue.getStrategy());
-	}
-
 }

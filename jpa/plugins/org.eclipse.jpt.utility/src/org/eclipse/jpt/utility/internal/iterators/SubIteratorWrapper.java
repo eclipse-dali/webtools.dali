@@ -15,8 +15,8 @@ import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Wrap an iterator on elements of type <code>E1</code>, converting it into an
- * iterator on elements of type <code>E2</code>. Assume the wrapped iterator
- * returns only elements of type <code>E2</code>.
+ * iterator on elements of type <code>E2</code>. <em>Assume</em> the wrapped
+ * iterator returns only elements of type <code>E2</code>.
  * 
  * @param <E1> input: the type of elements returned by the wrapped iterator
  * @param <E2> output: the type of elements returned by the iterator

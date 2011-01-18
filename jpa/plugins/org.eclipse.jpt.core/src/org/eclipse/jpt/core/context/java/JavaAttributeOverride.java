@@ -13,6 +13,8 @@ import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 
 /**
+ * Java attribute override
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -23,25 +25,11 @@ import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
  * @since 2.0
  */
 public interface JavaAttributeOverride
-	extends AttributeOverride, JavaOverride, JavaBaseColumn.Owner
+	extends JavaReadOnlyAttributeOverride, AttributeOverride, JavaOverride
 {
-	JavaColumn getColumn();
-	
-	JavaAttributeOverride setVirtual(boolean virtual);
-	
+	JavaVirtualAttributeOverride convertToVirtual();
+
 	AttributeOverrideAnnotation getOverrideAnnotation();
-	
-	void initialize(AttributeOverrideAnnotation attributeOverride);
-	
-	/**
-	 * Update the JavaAttributeOverride context model object to match the AttributeOverrideAnnotation 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(AttributeOverrideAnnotation attributeOverride);
-	
-	interface Owner
-		extends AttributeOverride.Owner, JavaOverride.Owner
-	{
-		//nothing yet
-	}
+
+	JavaColumn getColumn();
 }

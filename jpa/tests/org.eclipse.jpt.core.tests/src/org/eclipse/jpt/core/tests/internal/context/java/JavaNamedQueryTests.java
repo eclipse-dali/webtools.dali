@@ -174,12 +174,12 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		assertEquals("BAZ", javaNamedQuery.hintAt(1).getName());
 		assertEquals("FOO", javaNamedQuery.hintAt(2).getName());
 		
-		ListIterator<QueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.getHints().iterator();
 		assertEquals(queryHint2, hints.next());
 		assertEquals(queryHint3, hints.next());
 		assertEquals(queryHint, hints.next());
 		
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -230,7 +230,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		
 		
 		namedQuery.moveHint(2, 0);
-		ListIterator<QueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.getHints().iterator();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -241,7 +241,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 
 
 		namedQuery.moveHint(0, 1);
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
@@ -257,56 +257,52 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();
 		NamedQuery namedQuery = entity.getQueryContainer().namedQueries().next();
 				
-		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
-		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME);
+		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
+		NamedQueryAnnotation namedQueryAnnotation = (NamedQueryAnnotation) resourceType.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME);
 		
-		javaNamedQuery.addHint(0);
-		javaNamedQuery.addHint(1);
-		javaNamedQuery.addHint(2);
-		
-		javaNamedQuery.hintAt(0).setName("FOO");
-		javaNamedQuery.hintAt(1).setName("BAR");
-		javaNamedQuery.hintAt(2).setName("BAZ");
+		namedQueryAnnotation.addHint(0).setName("FOO");
+		namedQueryAnnotation.addHint(1).setName("BAR");
+		namedQueryAnnotation.addHint(2).setName("BAZ");
 		getJpaProject().synchronizeContextModel();
 
-		ListIterator<QueryHint> hints = namedQuery.hints();
+		ListIterator<QueryHint> hints = namedQuery.getHints().iterator();
 		assertEquals("FOO", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
-		javaNamedQuery.moveHint(2, 0);
+		namedQueryAnnotation.moveHint(2, 0);
 		getJpaProject().synchronizeContextModel();
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 	
-		javaNamedQuery.moveHint(0, 1);
+		namedQueryAnnotation.moveHint(0, 1);
 		getJpaProject().synchronizeContextModel();
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("BAR", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 	
-		javaNamedQuery.removeHint(1);
+		namedQueryAnnotation.removeHint(1);
 		getJpaProject().synchronizeContextModel();
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertEquals("FOO", hints.next().getName());
 		assertFalse(hints.hasNext());
 	
-		javaNamedQuery.removeHint(1);
+		namedQueryAnnotation.removeHint(1);
 		getJpaProject().synchronizeContextModel();
-		hints = namedQuery.hints();
+		hints = namedQuery.getHints().iterator();
 		assertEquals("BAZ", hints.next().getName());
 		assertFalse(hints.hasNext());
 		
-		javaNamedQuery.removeHint(0);
+		namedQueryAnnotation.removeHint(0);
 		getJpaProject().synchronizeContextModel();
-		assertFalse(namedQuery.hints().hasNext());
+		assertFalse(namedQuery.getHints().iterator().hasNext());
 	}
 	
 	public void testHintsSize() throws Exception {
@@ -315,7 +311,7 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		Entity entity = getJavaEntity();
 		
 		NamedQuery namedQuery = entity.getQueryContainer().namedQueries().next();
-		assertEquals(0, namedQuery.hintsSize());
+		assertEquals(0, namedQuery.getHintsSize());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		NamedQueryAnnotation javaNamedQuery = (NamedQueryAnnotation) typeResource.getAnnotation(NamedQueryAnnotation.ANNOTATION_NAME);
@@ -323,15 +319,15 @@ public class JavaNamedQueryTests extends ContextModelTestCase
 		
 		javaNamedQuery.addHint(0);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(1, namedQuery.hintsSize());
+		assertEquals(1, namedQuery.getHintsSize());
 		
 		javaNamedQuery.addHint(0);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(2, namedQuery.hintsSize());
+		assertEquals(2, namedQuery.getHintsSize());
 		
 		javaNamedQuery.removeHint(0);
 		javaNamedQuery.removeHint(0);
 		getJpaProject().synchronizeContextModel();
-		assertEquals(0, namedQuery.hintsSize());
+		assertEquals(0, namedQuery.getHintsSize());
 	}
 }

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkMappingKeys;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
@@ -26,7 +26,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
-	extends AbstractMappingUiDefinition<PersistentAttribute, JavaEclipseLinkVariableOneToOneMapping>
+	extends AbstractMappingUiDefinition<ReadOnlyPersistentAttribute, JavaEclipseLinkVariableOneToOneMapping>
 	implements DefaultJavaAttributeMappingUiDefinition<JavaEclipseLinkVariableOneToOneMapping>
 {
 	// singleton

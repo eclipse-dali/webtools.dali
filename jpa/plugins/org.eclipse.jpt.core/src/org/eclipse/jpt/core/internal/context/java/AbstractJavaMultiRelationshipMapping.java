@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,26 +12,24 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.AttributeOverride;
+import org.eclipse.jpt.core.context.AttributeOverrideContainer;
 import org.eclipse.jpt.core.context.BaseColumn;
-import org.eclipse.jpt.core.context.BaseOverride;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
 import org.eclipse.jpt.core.context.JoiningStrategy;
 import org.eclipse.jpt.core.context.NamedColumn;
-import org.eclipse.jpt.core.context.Orderable;
-import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.OverrideContainer;
+import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaBaseColumn;
 import org.eclipse.jpt.core.context.java.JavaColumn;
+import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
-import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -44,20 +42,19 @@ import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnV
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaMapKeyColumn2_0;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.Orderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaPersistentAttribute2_0;
-import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
-import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JPA;
+import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.MapKeyAnnotation;
+import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -66,16 +63,11 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 /**
  * Java multi-relationship (m:m, 1:m) mapping
  */
-public abstract class AbstractJavaMultiRelationshipMapping<T extends RelationshipMapping2_0Annotation>
-	extends AbstractJavaRelationshipMapping<T> 
+public abstract class AbstractJavaMultiRelationshipMapping<A extends RelationshipMappingAnnotation>
+	extends AbstractJavaRelationshipMapping<A>
 	implements JavaMultiRelationshipMapping, JavaCollectionMapping2_0
 {
 	protected final JavaOrderable orderable;
-
-	protected Embeddable resolvedTargetEmbeddable;
-
-	protected Type valueType;
-	protected Type keyType;
 
 	protected String specifiedMapKey;
 	protected boolean noMapKey = false;
@@ -85,235 +77,100 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	protected String specifiedMapKeyClass;
 	protected String defaultMapKeyClass;
 	protected String fullyQualifiedMapKeyClass;
-	protected PersistentType resolvedMapKeyType;
-	protected Embeddable resolvedMapKeyEmbeddable;
-	protected Entity resolvedMapKeyEntity;
+
+	protected Type valueType;
+	protected Type keyType;
 
 	protected final JavaColumn mapKeyColumn;
 
 	protected final JavaAttributeOverrideContainer mapKeyAttributeOverrideContainer;
 
+
 	protected AbstractJavaMultiRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.orderable = this.buildOrderable();
+
+		this.specifiedMapKey = this.buildSpecifiedMapKey();
+		this.noMapKey = this.buildNoMapKey();
+		this.pkMapKey = this.buildPkMapKey();
+		this.customMapKey = this.buildCustomMapKey();
+
+		this.specifiedMapKeyClass = this.buildSpecifiedMapKeyClass();
+
 		this.mapKeyColumn = this.buildMapKeyColumn();
-		this.mapKeyAttributeOverrideContainer = this.getJpaFactory().buildJavaAttributeOverrideContainer(this, new MapKeyAttributeOverrideContainerOwner());
+		this.mapKeyAttributeOverrideContainer = this.buildMapKeyAttributeOverrideContainer();
+	}
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.orderable.synchronizeWithResourceModel();
+
+		this.setSpecifiedMapKey_(this.buildSpecifiedMapKey());
+		this.setNoMapKey_(this.buildNoMapKey());
+		this.setPkMapKey_(this.buildPkMapKey());
+		this.setCustomMapKey_(this.buildCustomMapKey());
+
+		this.setSpecifiedMapKeyClass_(this.buildSpecifiedMapKeyClass());
+
+		this.mapKeyColumn.synchronizeWithResourceModel();
+
+		this.mapKeyAttributeOverrideContainer.synchronizeWithResourceModel();
 	}
 
 	@Override
-	protected void initialize() {
-		super.initialize();
-		this.orderable.initialize();
-		this.resolvedTargetType = this.resolveTargetType();
-		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
-		this.initializeValueType();
-		this.defaultMapKeyClass = this.buildDefaultMapKeyClass();
-		this.specifiedMapKeyClass = this.getResourceMapKeyClass();
-		this.fullyQualifiedMapKeyClass = this.buildFullyQualifiedMapKeyClass();
-		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.resolvedMapKeyEmbeddable = this.resolveMapKeyEmbeddable();
-		this.resolvedMapKeyEntity = this.resolveMapKeyEntity();
-		this.initializeKeyType();
-		this.initializeMapKey();
-		this.initializeMapKeyColumn();
-		this.mapKeyAttributeOverrideContainer.initialize(getResourcePersistentAttribute());
-	}
-
-	@Override
-	protected void update() {
+	public void update() {
 		super.update();
+
 		this.orderable.update();
-		this.resolvedTargetType = this.resolveTargetType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.resolvedTargetEmbeddable = this.resolveTargetEmbeddable();
-		this.updateValueType();
+
 		this.setDefaultMapKeyClass(this.buildDefaultMapKeyClass());
-		this.setSpecifiedMapKeyClass_(this.getResourceMapKeyClass());
 		this.setFullyQualifiedMapKeyClass(this.buildFullyQualifiedMapKeyClass());
-		this.resolvedMapKeyType = this.resolveMapKeyType();//no need for change notification, use resolved target embeddable change notification instead?
-		this.setResolvedMapKeyEmbeddable(this.resolveMapKeyEmbeddable());
-		this.setResolvedMapKeyEntity(this.resolveMapKeyEntity());
-		this.updateKeyType();
-		this.updateMapKey();
-		this.updateMapKeyColumn();
-		this.mapKeyAttributeOverrideContainer.update(getResourcePersistentAttribute());
-	}
 
-	// ********** AbstractJavaAttributeMapping implementation **********  
+		this.setValueType(this.buildValueType());
+		this.setKeyType(this.buildKeyType());
 
-	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(JPA.JOIN_TABLE);
-		names.add(JPA.MAP_KEY);
-		names.add(JPA.ORDER_BY);
-		if (this.isJpa2_0Compatible()) {
-			names.add(JPA.ATTRIBUTE_OVERRIDE);
-			names.add(JPA.ATTRIBUTE_OVERRIDES);
-			names.add(JPA2_0.MAP_KEY_CLASS);
-			names.add(JPA2_0.MAP_KEY_COLUMN);
-			names.add(JPA2_0.MAP_KEY_ENUMERATED);
-			names.add(JPA2_0.MAP_KEY_JOIN_COLUMN);
-			names.add(JPA2_0.MAP_KEY_JOIN_COLUMNS);
-			names.add(JPA2_0.MAP_KEY_TEMPORAL);
-			names.add(JPA2_0.ORDER_COLUMN);
-		}
-	}
+		this.mapKeyColumn.update();
 
-	// ********** AbstractJavaRelationshipMapping implementation **********  
-
-	@Override
-	protected String buildDefaultTargetEntity() {
-		return this.getPersistentAttribute().getMultiReferenceTargetTypeName();
+		this.mapKeyAttributeOverrideContainer.update();
 	}
 
 
-	// ********** ordering **********  
-	
-	protected JavaOrderable buildOrderable() {
-		return this.isJpa2_0Compatible() ? 
-			this.getJpaFactory().buildJavaOrderable(this, this.buildOrderableOwner()) : 
-			this.getJpaFactory().buildJavaOrderable(this, new Orderable.Owner() {/*nothing*/});
-	}
+	// ********** orderable **********
 
 	public JavaOrderable getOrderable() {
 		return this.orderable;
 	}
 
+	protected JavaOrderable buildOrderable() {
+		return this.isJpa2_0Compatible() ?
+				this.getJpaFactory2_0().buildJavaOrderable(this, this.buildOrderableOwner()) :
+				this.getJpaFactory().buildJavaOrderable(this);
+	}
+
 	protected Orderable2_0.Owner buildOrderableOwner() {
-		return new Orderable2_0.Owner() {
-			public String getTableName() {
-				return getRelationshipReference().getPredominantJoiningStrategy().getTableName();
-			}
-			public Table getDbTable(String tableName) {
-				return getRelationshipReference().getPredominantJoiningStrategy().getDbTable(tableName);
-			}
-		};
-	}
-	
-	// ********** Fetchable implementation **********  
-
-	public FetchType getDefaultFetch() {
-		return DEFAULT_FETCH_TYPE;
+		return new OrderableOwner();
 	}
 
-
-	// ********** CollectionMapping implementation **********  
-
-	protected Embeddable resolveTargetEmbeddable() {
-		if (this.resolvedTargetType == null) {
-			return null;
+	protected class OrderableOwner
+		implements Orderable2_0.Owner
+	{
+		public String getTableName() {
+			return this.getJoinStrategy().getTableName();
 		}
-		TypeMapping typeMapping = this.resolvedTargetType.getMapping();
-		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
-	}
-
-	public Type getValueType() {
-		return this.valueType;
-	}
-
-	protected void setValueType(Type newValueType) {
-		Type old = this.valueType;
-		this.valueType = newValueType;
-		firePropertyChanged(VALUE_TYPE_PROPERTY, old, newValueType);
-	}
-
-	protected void initializeValueType() {
-		this.valueType = this.buildValueType();
-	}
-
-	protected void updateValueType() {
-		this.setValueType(this.buildValueType()); 
-	}
-
-	protected Type buildValueType() {
-		if (this.getResolvedTargetEntity() != null) {
-			return Type.ENTITY_TYPE;
+		public Table resolveDbTable(String tableName) {
+			return this.getJoinStrategy().resolveDbTable(tableName);
 		}
-		else if (this.resolvedTargetEmbeddable != null) {
-			return Type.EMBEDDABLE_TYPE; 
+		protected JavaJoiningStrategy getJoinStrategy() {
+			return AbstractJavaMultiRelationshipMapping.this.getRelationshipReference().getPredominantJoiningStrategy();
 		}
-		else if (getTargetEntity() == null) {
-			return Type.NO_TYPE;
-		}
-		return Type.BASIC_TYPE;
 	}
 
-	public Type getKeyType() {
-		return this.keyType;
-	}
 
-	protected void setKeyType(Type newKeyType) {
-		Type old = this.keyType;
-		this.keyType = newKeyType;
-		firePropertyChanged(KEY_TYPE_PROPERTY, old, newKeyType);
-	}
-
-	protected void initializeKeyType() {
-		this.keyType = this.buildKeyType();
-	}
-
-	protected void updateKeyType() {
-		this.setKeyType(this.buildKeyType());
-	}
-
-	protected Type buildKeyType() {
-		if (getResolvedMapKeyEmbeddable() != null) {
-			return Type.EMBEDDABLE_TYPE; 
-		}
-		if (getResolvedMapKeyEntity() != null) {
-			return Type.ENTITY_TYPE; 
-		}
-		else if (getMapKeyClass() == null) {
-			return Type.NO_TYPE;
-		}
-		return Type.BASIC_TYPE;
-	}
-
-	public Embeddable getResolvedMapKeyEmbeddable() {
-		return this.resolvedMapKeyEmbeddable;
-	}
-
-	protected void setResolvedMapKeyEmbeddable(Embeddable embeddable) {
-		Embeddable old = this.resolvedMapKeyEmbeddable;
-		this.resolvedMapKeyEmbeddable = embeddable;
-		this.firePropertyChanged(RESOLVED_MAP_KEY_EMBEDDABLE_PROPERTY, old, embeddable);
-	}
-
-	public Entity getResolvedMapKeyEntity() {
-		return this.resolvedMapKeyEntity;
-	}
-
-	protected void setResolvedMapKeyEntity(Entity entity) {
-		Entity old = this.resolvedMapKeyEntity;
-		this.resolvedMapKeyEntity = entity;
-		this.firePropertyChanged(RESOLVED_MAP_KEY_ENTITY_PROPERTY, old, entity);
-	}
-
-	public PersistentType getResolvedMapKeyType() {
-		return getResolvedMapKeyEmbeddable() == null ? null : getResolvedMapKeyEmbeddable().getPersistentType();
-	}
-
-	protected PersistentType resolveMapKeyType() {
-		return (this.fullyQualifiedMapKeyClass == null) ? null : this.getPersistenceUnit().getPersistentType(this.fullyQualifiedMapKeyClass);
-	}
-
-	protected Embeddable resolveMapKeyEmbeddable() {
-		if (this.resolvedMapKeyType == null) {
-			return null;
-		}
-		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
-		return (typeMapping instanceof Embeddable) ? (Embeddable) typeMapping : null;
-	}
-
-	protected Entity resolveMapKeyEntity() {
-		if (this.resolvedMapKeyType == null) {
-			return null;
-		}
-		TypeMapping typeMapping = this.resolvedMapKeyType.getMapping();
-		return (typeMapping instanceof Entity) ? (Entity) typeMapping : null;
-	}
-
-	// ********** map key **********  
+	// ********** map key **********
 
 	public String getMapKey() {
 		if (this.noMapKey) {
@@ -328,25 +185,24 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		throw new IllegalStateException("unknown map key"); //$NON-NLS-1$
 	}
 
+
+	// ********** specified map key **********
+
 	public String getSpecifiedMapKey() {
 		return this.specifiedMapKey;
 	}
 
 	public void setSpecifiedMapKey(String mapKey) {
-		String old = this.specifiedMapKey;
-		this.specifiedMapKey = mapKey;
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		if (mapKey == null) {
-			if (mapKeyAnnotation != null) {
-				this.removeMapKeyAnnotation();
-			}
+		if (mapKey != null) {
+			this.getMapKeyAnnotationForUpdate().setName(mapKey);
+
+			this.setSpecifiedMapKey_(mapKey);
+			this.setNoMapKey_(false);
+			this.setPkMapKey_(false);
+			this.setCustomMapKey_(true);
 		} else {
-			if (mapKeyAnnotation == null) {
-				mapKeyAnnotation = this.addMapKeyAnnotation();
-			}
-			mapKeyAnnotation.setName(mapKey);
+			this.setPkMapKey(true);  // hmmm...
 		}
-		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
 	}
 
 	protected void setSpecifiedMapKey_(String mapKey) {
@@ -355,38 +211,115 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.firePropertyChanged(SPECIFIED_MAP_KEY_PROPERTY, old, mapKey);
 	}
 
-	protected void initializeMapKey() {
+	protected String buildSpecifiedMapKey() {
 		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		if (mapKeyAnnotation == null) {
-			this.noMapKey = true;
-		} else {
-			this.specifiedMapKey = mapKeyAnnotation.getName();
-			if (this.specifiedMapKey == null) {
-				this.pkMapKey = true;
-			} else {
-				this.customMapKey = true;
-			}
-		}
+		return (mapKeyAnnotation == null) ? null : mapKeyAnnotation.getName();
 	}
 
-	protected void updateMapKey() {
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		if (mapKeyAnnotation == null) {
+
+	// ********** no map key **********
+
+	public boolean isNoMapKey() {
+		return this.noMapKey;
+	}
+
+	public void setNoMapKey(boolean noMapKey) {
+		if (noMapKey) {
+			if (this.getMapKeyAnnotation() != null) {
+				this.removeMapKeyAnnotation();
+			}
+
 			this.setSpecifiedMapKey_(null);
 			this.setNoMapKey_(true);
 			this.setPkMapKey_(false);
 			this.setCustomMapKey_(false);
 		} else {
-			String mk = mapKeyAnnotation.getName();
-			this.setSpecifiedMapKey_(mk);
-			this.setNoMapKey_(false);
-			this.setPkMapKey_(mk == null);
-			this.setCustomMapKey_(mk != null);
+			this.setPkMapKey(true);  // hmmm...
 		}
 	}
 
+	protected void setNoMapKey_(boolean noMapKey) {
+		boolean old = this.noMapKey;
+		this.noMapKey = noMapKey;
+		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);
+	}
+
+	protected boolean buildNoMapKey() {
+		return this.getMapKeyAnnotation() == null;
+	}
+
+
+	// ********** pk map key **********
+
+	public boolean isPkMapKey() {
+		return this.pkMapKey;
+	}
+
+	public void setPkMapKey(boolean pkMapKey) {
+		if (pkMapKey) {
+			MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+			if (mapKeyAnnotation == null) {
+				mapKeyAnnotation = this.addMapKeyAnnotation();
+			} else {
+				mapKeyAnnotation.setName(null);
+			}
+
+			this.setSpecifiedMapKey_(null);
+			this.setNoMapKey_(false);
+			this.setPkMapKey_(true);
+			this.setCustomMapKey_(false);
+		} else {
+			this.setNoMapKey(true);  // hmmm...
+		}
+	}
+
+	protected void setPkMapKey_(boolean pkMapKey) {
+		boolean old = this.pkMapKey;
+		this.pkMapKey = pkMapKey;
+		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
+	}
+
+	protected boolean buildPkMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) && (mapKeyAnnotation.getName() == null);
+	}
+
+
+	// ********** custom map key **********
+
+	public boolean isCustomMapKey() {
+		return this.customMapKey;
+	}
+
+	public void setCustomMapKey(boolean customMapKey) {
+		if (customMapKey) {
+			this.setSpecifiedMapKey(""); //$NON-NLS-1$
+		} else {
+			this.setNoMapKey(true);  // hmmm...
+		}
+	}
+
+	protected void setCustomMapKey_(boolean customMapKey) {
+		boolean old = this.customMapKey;
+		this.customMapKey = customMapKey;
+		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
+	}
+
+	protected boolean buildCustomMapKey() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) && (mapKeyAnnotation.getName() != null);
+	}
+
+
+	// ********** map key annotation **********
+
 	protected MapKeyAnnotation getMapKeyAnnotation() {
 		return (MapKeyAnnotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
+	}
+
+	protected MapKeyAnnotation getMapKeyAnnotationForUpdate() {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) ? mapKeyAnnotation : this.addMapKeyAnnotation();
 	}
 
 	protected MapKeyAnnotation addMapKeyAnnotation() {
@@ -397,98 +330,8 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.getResourcePersistentAttribute().removeAnnotation(MapKeyAnnotation.ANNOTATION_NAME);
 	}
 
-	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
-	}
 
-
-	// ********** no map key **********  
-
-	public boolean isNoMapKey() {
-		return this.noMapKey;
-	}
-
-	public void setNoMapKey(boolean noMapKey) {
-		boolean old = this.noMapKey;
-		this.noMapKey = noMapKey;
-		if (noMapKey) {
-			if (this.getMapKeyAnnotation() != null) {
-				this.removeMapKeyAnnotation();
-			}
-		} else {
-			// the 'noMapKey' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setNoMapKey_(boolean)
-		}
-		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);
-	}
-
-	protected void setNoMapKey_(boolean noMapKey) {
-		boolean old = this.noMapKey;
-		this.noMapKey = noMapKey;
-		this.firePropertyChanged(NO_MAP_KEY_PROPERTY, old, noMapKey);	
-	}
-
-
-	// ********** pk map key **********  
-
-	public boolean isPkMapKey() {
-		return this.pkMapKey;
-	}
-
-	public void setPkMapKey(boolean pkMapKey) {
-		boolean old = this.pkMapKey;
-		this.pkMapKey = pkMapKey;
-		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
-		if (pkMapKey) {
-			if (mapKeyAnnotation == null) {
-				this.addMapKeyAnnotation();
-			} else {
-				mapKeyAnnotation.setName(null);
-			}
-		} else {
-			// the 'pkMapKey' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setPkMapKey_(boolean)
-		}
-		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
-	}
-
-	protected void setPkMapKey_(boolean pkMapKey) {
-		boolean old = this.pkMapKey;
-		this.pkMapKey = pkMapKey;
-		this.firePropertyChanged(PK_MAP_KEY_PROPERTY, old, pkMapKey);
-	}
-
-
-	// ********** custom map key **********  
-
-	public boolean isCustomMapKey() {
-		return this.customMapKey;
-	}
-
-	public void setCustomMapKey(boolean customMapKey) {
-		boolean old = this.customMapKey;
-		this.customMapKey = customMapKey;
-		if (customMapKey) {
-			this.setSpecifiedMapKey(""); //$NON-NLS-1$
-		} else {
-			// the 'customMapKey' flag is cleared as a
-			// side-effect of setting the other flags,
-			// via a call to #setCustomMapKey_(boolean)
-		}
-		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
-	}
-
-	protected void setCustomMapKey_(boolean customMapKey) {
-		boolean old = this.customMapKey;
-		this.customMapKey = customMapKey;
-		this.firePropertyChanged(CUSTOM_MAP_KEY_PROPERTY, old, customMapKey);
-	}
-
-
-	// *************** map key class *************
+	// ********** map key class **********
 
 	public String getMapKeyClass() {
 		return (this.specifiedMapKeyClass != null) ? this.specifiedMapKeyClass : this.defaultMapKeyClass;
@@ -499,21 +342,21 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	public void setSpecifiedMapKeyClass(String mapKeyClass) {
-		String old = this.specifiedMapKeyClass;
-		this.specifiedMapKeyClass = mapKeyClass;
-		MapKeyClass2_0Annotation mapKeyClassAnnotation = this.getMapKeyClassAnnotation();
-		if (mapKeyClass == null) {
-			if (mapKeyClassAnnotation != null) {
-				this.removeMapKeyClassAnnotation();
+		if (this.valuesAreDifferent(mapKeyClass, this.specifiedMapKeyClass)) {
+			MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+			if (mapKeyClass == null) {
+				if (annotation != null) {
+					this.removeMapKeyClassAnnotation();
+				}
+			} else {
+				if (annotation == null) {
+					annotation = this.addMapKeyClassAnnotation();
+				}
+				annotation.setValue(mapKeyClass);
 			}
-		} else {
-			if (mapKeyClassAnnotation == null) {
-				mapKeyClassAnnotation = this.addMapKeyClassAnnotation();
-			}
-			mapKeyClassAnnotation.setValue(mapKeyClass);
-		}
 
-		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
+			this.setSpecifiedMapKeyClass_(mapKeyClass);
+		}
 	}
 
 	protected void setSpecifiedMapKeyClass_(String mapKeyClass) {
@@ -522,9 +365,9 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.firePropertyChanged(SPECIFIED_MAP_KEY_CLASS_PROPERTY, old, mapKeyClass);
 	}
 
-	protected String getResourceMapKeyClass() {
-		MapKeyClass2_0Annotation annotation = getMapKeyClassAnnotation();
-		return annotation == null ? null : annotation.getValue();
+	protected String buildSpecifiedMapKeyClass() {
+		MapKeyClass2_0Annotation annotation = this.getMapKeyClassAnnotation();
+		return (annotation == null) ? null : annotation.getValue();
 	}
 
 	public String getDefaultMapKeyClass() {
@@ -538,7 +381,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	protected String buildDefaultMapKeyClass() {
-		return this.getPersistentAttribute().getMultiReferenceMapKeyTypeName();
+		return this.isJpa2_0Compatible() ? this.getPersistentAttribute().getMultiReferenceMapKeyTypeName() : null;
 	}
 
 	public String getFullyQualifiedMapKeyClass() {
@@ -552,16 +395,38 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	protected String buildFullyQualifiedMapKeyClass() {
+		return this.isJpa2_0Compatible() ? this.buildFullyQualifiedMapKeyClass_() : null;
+	}
+
+	protected String buildFullyQualifiedMapKeyClass_() {
 		return (this.specifiedMapKeyClass == null) ?
-			this.defaultMapKeyClass :
-			this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
+				this.defaultMapKeyClass :
+				this.getMapKeyClassAnnotation().getFullyQualifiedClassName();
 	}
 
 	public char getMapKeyClassEnclosingTypeSeparator() {
 		return '.';
 	}
 
+
+	// ********** resolved map key embeddable/entity **********
+
+	protected Embeddable getResolvedMapKeyEmbeddable() {
+		return this.getPersistenceUnit().getEmbeddable(this.fullyQualifiedMapKeyClass);
+	}
+
+	protected Entity getResolvedMapKeyEntity() {
+		return this.getPersistenceUnit().getEntity(this.fullyQualifiedMapKeyClass);
+	}
+
+
+	// ********** map key class annotation **********
+
 	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation() {
+		return this.isJpa2_0Compatible() ? this.getMapKeyClassAnnotation_() : null;
+	}
+
+	protected MapKeyClass2_0Annotation getMapKeyClassAnnotation_() {
 		return (MapKeyClass2_0Annotation) this.getResourcePersistentAttribute().getAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
@@ -573,42 +438,129 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		this.getResourcePersistentAttribute().removeAnnotation(MapKeyClass2_0Annotation.ANNOTATION_NAME);
 	}
 
-	// ********** map key column - JPA 2.0 **********
-	
-	protected JavaColumn buildMapKeyColumn() {
-		return this.isJpa2_0Compatible() ? 
-			((JpaFactory2_0) this.getJpaFactory()).buildJavaMapKeyColumn(this, this.buildMapKeyColumnOwner()) : 
-			new NullJavaMapKeyColumn2_0(this);
+
+	// ********** value type **********
+
+	public Type getValueType() {
+		return this.valueType;
 	}
+
+	protected void setValueType(Type valueType) {
+		Type old = this.valueType;
+		this.valueType = valueType;
+		this.firePropertyChanged(VALUE_TYPE_PROPERTY, old, valueType);
+	}
+
+	protected Type buildValueType() {
+		if (this.getResolvedTargetEntity() != null) {
+			return Type.ENTITY_TYPE;
+		}
+		if (this.getResolvedTargetEmbeddable() != null) {
+			return Type.EMBEDDABLE_TYPE;
+		}
+		if (this.getTargetEntity() == null) {
+			return Type.NO_TYPE;
+		}
+		return Type.BASIC_TYPE;
+	}
+
+	protected Embeddable getResolvedTargetEmbeddable() {
+		return this.getPersistenceUnit().getEmbeddable(this.fullyQualifiedTargetEntity);
+	}
+
+
+	// ********** key type **********
+
+	public Type getKeyType() {
+		return this.keyType;
+	}
+
+	protected void setKeyType(Type keyType) {
+		Type old = this.keyType;
+		this.keyType = keyType;
+		this.firePropertyChanged(KEY_TYPE_PROPERTY, old, keyType);
+	}
+
+	protected Type buildKeyType() {
+		if (this.getResolvedMapKeyEmbeddable() != null) {
+			return Type.EMBEDDABLE_TYPE;
+		}
+		if (this.getResolvedMapKeyEntity() != null) {
+			return Type.ENTITY_TYPE;
+		}
+		if (this.getMapKeyClass() == null) {
+			return Type.NO_TYPE;
+		}
+		return Type.BASIC_TYPE;
+	}
+
+
+	// ********** map key column **********
 
 	public JavaColumn getMapKeyColumn() {
 		return this.mapKeyColumn;
 	}
 
-	protected void initializeMapKeyColumn() {
-		this.mapKeyColumn.initialize(getMapKeyColumnAnnotation());
+	protected JavaColumn buildMapKeyColumn() {
+		return this.isJpa2_0Compatible() ?
+				this.getJpaFactory2_0().buildJavaMapKeyColumn(this, this.buildMapKeyColumnOwner()) :
+				new NullJavaMapKeyColumn2_0(this);
 	}
 
-	protected void updateMapKeyColumn() {
-		getMapKeyColumn().update(getMapKeyColumnAnnotation());
+	protected JavaColumn.Owner buildMapKeyColumnOwner() {
+		return new MapKeyColumnOwner();
 	}
 
-	public MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
-		if (!isJpa2_0Compatible()) {
-			return null;
-		}
+	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation() {
+		return this.isJpa2_0Compatible() ? this.getMapKeyColumnAnnotation_() : null;
+	}
+
+	protected MapKeyColumn2_0Annotation getMapKeyColumnAnnotation_() {
 		return (MapKeyColumn2_0Annotation) this.getResourcePersistentAttribute().getNonNullAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
 	}
 
-	protected JavaBaseColumn.Owner buildMapKeyColumnOwner() {
-		return new MapKeyColumnOwner();
+	protected void removeMapKeyColumnAnnotation() {
+		if (this.isJpa2_0Compatible()) {
+			this.removeMapKeyColumnAnnotation_();
+		} else {
+			throw new IllegalStateException();
+		}
 	}
+
+	protected void removeMapKeyColumnAnnotation_() {
+		this.getResourcePersistentAttribute().removeAnnotation(MapKeyColumn2_0Annotation.ANNOTATION_NAME);
+	}
+
+
+	// ********** map key attribute override container **********
 
 	public JavaAttributeOverrideContainer getMapKeyAttributeOverrideContainer() {
 		return this.mapKeyAttributeOverrideContainer;
 	}
 
-	// ********** Java completion proposals **********  
+	public JavaAttributeOverrideContainer buildMapKeyAttributeOverrideContainer() {
+		return this.getJpaFactory().buildJavaAttributeOverrideContainer(this, this.buildMapKeyAttributeOverrideContainerOwner());
+	}
+
+	protected JavaAttributeOverrideContainer.Owner buildMapKeyAttributeOverrideContainerOwner() {
+		return new MapKeyAttributeOverrideContainerOwner();
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	protected String buildDefaultTargetEntity() {
+		return this.getPersistentAttribute().getMultiReferenceTargetTypeName();
+	}
+
+	@Override
+	protected FetchType buildDefaultFetch() {
+		return DEFAULT_FETCH_TYPE;
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -616,22 +568,32 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		if (result != null) {
 			return result;
 		}
-		result = this.getOrderable().javaCompletionProposals(pos, filter, astRoot);
+
+		result = this.orderable.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
+
 		if (this.mapKeyNameTouches(pos, astRoot)) {
 			return this.javaCandidateMapKeyNames(filter);
 		}
-		result = this.getMapKeyColumn().javaCompletionProposals(pos, filter, astRoot);
+
+		result = this.mapKeyColumn.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
-		result = this.getMapKeyAttributeOverrideContainer().javaCompletionProposals(pos, filter, astRoot);
+
+		result = this.mapKeyAttributeOverrideContainer.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
+
 		return null;
+	}
+
+	protected boolean mapKeyNameTouches(int pos, CompilationUnit astRoot) {
+		MapKeyAnnotation mapKeyAnnotation = this.getMapKeyAnnotation();
+		return (mapKeyAnnotation != null) && mapKeyAnnotation.nameTouches(pos, astRoot);
 	}
 
 	protected Iterator<String> javaCandidateMapKeyNames(Filter<String> filter) {
@@ -647,7 +609,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 
-	// ********** metamodel **********  
+	// ********** metamodel **********
 
 	@Override
 	protected String getMetamodelFieldTypeName() {
@@ -670,9 +632,10 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	public String getMetamodelFieldMapKeyTypeName() {
 		return MappingTools.getMetamodelFieldMapKeyTypeName(this);
 	}
-	
+
+
 	// ********** validation **********
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -681,39 +644,69 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 	}
 
 	protected void validateMapKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
-		if (getMapKeyAnnotation() != null) {//If MapKey annotation specified, no other MapKey* annotations can be specified, don't validate them
+		if (this.getMapKeyAnnotation() != null) {//If MapKey annotation specified, no other MapKey* annotations can be specified, don't validate them
 			//TODO validate that the map key refers to an existing attribute
 			return;
 		}
-		if (getKeyType() == Type.BASIC_TYPE) {
-			this.getMapKeyColumn().validate(messages, reporter, astRoot);
+		if (this.getKeyType() == Type.BASIC_TYPE) {
+			this.mapKeyColumn.validate(messages, reporter, astRoot);
 			//validate map key converter
 		}
-		else if (getKeyType() == Type.ENTITY_TYPE) {
+		else if (this.getKeyType() == Type.ENTITY_TYPE) {
 			//validate map key join columns
 		}
-		else if (getKeyType() == Type.EMBEDDABLE_TYPE) {
-			getMapKeyAttributeOverrideContainer().validate(messages, reporter, astRoot);
+		else if (this.getKeyType() == Type.EMBEDDABLE_TYPE) {
+			this.mapKeyAttributeOverrideContainer.validate(messages, reporter, astRoot);
 			//validate map key association overrides - for eclipselink
 		}
 	}
 
 
-	protected class MapKeyColumnOwner implements JavaBaseColumn.Owner {		
+	// ********** abstract owner **********
+
+	/**
+	 * some common behavior
+	 */
+	protected abstract class AbstractOwner
+	{
 		public TypeMapping getTypeMapping() {
 			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
 		}
 
-		protected JoiningStrategy getPredominantJoiningStrategy() {
-			return getRelationshipReference().getPredominantJoiningStrategy();
-		}
-
 		public String getDefaultTableName() {
-			return getPredominantJoiningStrategy().getTableName();
+			return this.getJoinStrategy().getTableName();
 		}
 
-		public Table getDbTable(String tableName) {
-			return getPredominantJoiningStrategy().getDbTable(tableName);
+		public Table resolveDbTable(String tableName) {
+			return this.getJoinStrategy().resolveDbTable(tableName);
+		}
+
+		public Iterator<String> candidateTableNames() {
+			return EmptyIterator.instance();
+		}
+
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
+		}
+
+		protected JoiningStrategy getJoinStrategy() {
+			return AbstractJavaMultiRelationshipMapping.this.getRelationshipReference().getPredominantJoiningStrategy();
+		}
+	}
+
+
+	// ********** map key column owner **********
+
+	protected class MapKeyColumnOwner
+		extends AbstractOwner
+		implements JavaColumn.Owner
+	{
+		public MapKeyColumn2_0Annotation getColumnAnnotation() {
+			return AbstractJavaMultiRelationshipMapping.this.getMapKeyColumnAnnotation();
+		}
+
+		public void removeColumnAnnotation() {
+			AbstractJavaMultiRelationshipMapping.this.removeMapKeyColumnAnnotation();
 		}
 
 		public String getDefaultColumnName() {
@@ -721,94 +714,67 @@ public abstract class AbstractJavaMultiRelationshipMapping<T extends Relationshi
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
-		}
-
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
+			return this.getJoinStrategy().tableNameIsInvalid(tableName);
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new JoiningStrategyTableDescriptionProvider(getPredominantJoiningStrategy()));
+			return new MapKeyColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
 		}
 	}
 
-	protected abstract class OverrideContainerOwner implements JavaOverrideContainer.Owner {
-		public TypeMapping getTypeMapping() {
-			return AbstractJavaMultiRelationshipMapping.this.getTypeMapping();
+
+	// ********** map key attribute override owner **********
+
+	protected class MapKeyAttributeOverrideContainerOwner
+		extends AbstractOwner
+		implements JavaAttributeOverrideContainer.Owner
+	{
+		public JavaResourcePersistentMember getResourcePersistentMember() {
+			return AbstractJavaMultiRelationshipMapping.this.getResourcePersistentAttribute();
 		}
 
-		protected JoiningStrategy getPredominantJoiningStrategy() {
-			return getRelationshipReference().getPredominantJoiningStrategy();
+		public TypeMapping getOverridableTypeMapping() {
+			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
 		}
 
-		public String getDefaultTableName() {
-			return getPredominantJoiningStrategy().getTableName();
-		}
-
-		public Table getDbTable(String tableName) {
-			return getPredominantJoiningStrategy().getDbTable(tableName);
-		}
-
-		public java.util.Iterator<String> candidateTableNames() {
-			return EmptyIterator.instance();
-		}
-		
 		/**
 		 * If there is a specified table name it needs to be the same
 		 * the default table name.  the table is always the collection table
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+			return Tools.valuesAreDifferent(this.getDefaultTableName(), tableName);
 		}
-		
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
-		}
-	}
 
-	protected class MapKeyAttributeOverrideContainerOwner
-		extends OverrideContainerOwner
-		implements JavaAttributeOverrideContainer.Owner
-	{
-		public TypeMapping getOverridableTypeMapping() {
-			return AbstractJavaMultiRelationshipMapping.this.getResolvedMapKeyEmbeddable();
-		}
-		
 		public Iterator<String> allOverridableNames() {
-			TypeMapping typeMapping = getOverridableTypeMapping();
-			return (typeMapping == null) ? 
-					EmptyIterator.<String>instance()
-					: typeMapping.allOverridableAttributeNames();
+			TypeMapping typeMapping = this.getOverridableTypeMapping();
+			return (typeMapping != null) ? typeMapping.allOverridableAttributeNames() : EmptyIterator.<String>instance();
 		}
-		
+
+		protected static final String POSSIBLE_PREFIX = "key"; //$NON-NLS-1$
 		public String getPossiblePrefix() {
-			return "key."; //$NON-NLS-1$
+			return POSSIBLE_PREFIX;
 		}
-		
+
 		public String getWritePrefix() {
 			return this.getPossiblePrefix();
 		}
-		
-		//since only the key can be an embeddable on a 1-m or m-m, all overrides are relevant
+
+		// since only a map's key can be an embeddable on a 1-m or m-m;
+		// all overrides are relevant
 		public boolean isRelevant(String overrideName) {
 			return true;
 		}
-		
-		public Column resolveOverriddenColumn(String attributeOverrideName) {
-			return MappingTools.resolveOverridenColumn(getOverridableTypeMapping(), attributeOverrideName);
+
+		public Column resolveOverriddenColumn(String attributeName) {
+			return MappingTools.resolveOverriddenColumn(this.getOverridableTypeMapping(), attributeName);
 		}
 
-		public JptValidator buildValidator(BaseOverride override, BaseOverride.Owner owner, OverrideTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideValidator((AttributeOverride) override, (AttributeOverride.Owner) owner, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
+		public JptValidator buildValidator(Override_ override, OverrideContainer container, OverrideTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideValidator((AttributeOverride) override, (AttributeOverrideContainer) container, textRangeResolver, new EmbeddableOverrideDescriptionProvider());
 		}
 		
-		public JptValidator buildColumnValidator(BaseOverride override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new JoiningStrategyTableDescriptionProvider(getPredominantJoiningStrategy()));
+		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
+			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
 		}
 	}
 }

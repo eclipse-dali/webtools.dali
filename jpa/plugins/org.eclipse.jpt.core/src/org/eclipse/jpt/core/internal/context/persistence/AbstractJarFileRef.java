@@ -3,13 +3,14 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.persistence;
 
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -29,7 +30,6 @@ import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
 import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
@@ -39,98 +39,58 @@ import org.eclipse.wst.common.componentcore.resources.IVirtualFile;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-
+/**
+ * <code>persistence.xml</code> file
+ * <br>
+ * <code>jar-file</code> element
+ */
 public abstract class AbstractJarFileRef
 	extends AbstractPersistenceXmlContextNode
 	implements JarFileRef
 {
-	protected XmlJarFileRef xmlJarFileRef;
-	
+	protected final XmlJarFileRef xmlJarFileRef;
+
 	protected String fileName;
-	
+
+	/**
+	 * the jar file corresponding to the ref's file name;
+	 * this can be null if the name is invalid
+	 */
 	protected JarFile jarFile;
-	
-	
-	// **************** construction/initialization ****************************
-	
+
+
+	// ********** construction/initialization **********
+
 	public AbstractJarFileRef(PersistenceUnit parent, XmlJarFileRef xmlJarFileRef) {
 		super(parent);
 		this.xmlJarFileRef = xmlJarFileRef;
 		this.fileName = xmlJarFileRef.getFileName();
 		this.jarFile = this.buildJarFile();
 	}
-	
-	protected JarFile buildJarFile() {
-		if (StringTools.stringIsEmpty(this.fileName)) {
-			return null;
-		}
-		JavaResourcePackageFragmentRoot jrpfr = this.getJpaProject().getJavaResourcePackageFragmentRoot(this.getFileName());
-		return (jrpfr == null) ? null : this.buildJarFile(jrpfr);
-	}
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public PersistenceUnit getParent() {
-		return (PersistenceUnit) super.getParent();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.setFileName_(this.xmlJarFileRef.getFileName());
+		this.syncJarFile();
 	}
-	
-	
-	// **************** file name **********************************************
-	
-	public String getFileName() {
-		return this.fileName;
+
+	@Override
+	public void update() {
+		super.update();
+		this.updateJarFile();
 	}
-	
-	public void setFileName(String newFileName) {
-		String old = this.fileName;
-		this.fileName = newFileName;
-		this.xmlJarFileRef.setFileName(newFileName);
-		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
-	}
-	
-	protected void setFileName_(String newFileName) {
-		String old = this.fileName;
-		this.fileName = newFileName;
-		this.firePropertyChanged(FILE_NAME_PROPERTY, old, newFileName);
-	}
-	
-	
-	// **************** JAR file ***********************************************
-	
-	public JarFile getJarFile() {
-		return this.jarFile;
-	}
-	
-	protected void setJarFile(JarFile jarFile) {
-		JarFile old = this.jarFile;
-		this.jarFile = jarFile;
-		this.firePropertyChanged(JAR_FILE_PROPERTY, old, jarFile);
-	}
-	
-	
-	// ********** JarFileRef implementation **********
-	
-	public PersistentType getPersistentType(String typeName) {
-		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
-	}
-	
-	public boolean containsOffset(int textOffset) {
-		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
-	}
-	
-	
-	// ********** PersistentTypeContainer implementation **********
-	
-	public Iterable<? extends PersistentType> getPersistentTypes() {
-		return (this.jarFile != null) ? this.jarFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
-	}
-	
-	
-	// **************** JpaStructureNode impl **********************************
-	
+
+
+	// ********** JpaStructureNode implementation **********
+
 	public String getId() {
 		return PersistenceStructureNodes.JAR_FILE_REF_ID;
 	}
-	
+
 	public JpaStructureNode getStructureNode(int textOffset) {
 		return this;
 	}
@@ -144,72 +104,117 @@ public abstract class AbstractJarFileRef
 			this.jarFile.dispose();
 		}
 	}
-	
-	
-	// **************** XmlContextNode impl ************************************
-	
-	public TextRange getValidationTextRange() {
-		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getValidationTextRange();
-	}
-	
-	
-	// **************** updating ***********************************************
 
-	public void update(XmlJarFileRef xjfr) {
-		this.xmlJarFileRef = xjfr;
-		this.setFileName_(xjfr.getFileName());
-		this.updateJarFile();
+
+	// ********** file name **********
+
+	public String getFileName() {
+		return this.fileName;
 	}
 
-	protected void updateJarFile() {
-		JavaResourcePackageFragmentRoot jrpfr = null;
-		
-		if (! StringTools.stringIsEmpty(this.fileName)) {
-			
-			// first, attempt to resolve location specifically
-			jrpfr = javaPackageRoot_specifically();
-			
-			// then ... guess, basically
-			if (jrpfr == null) {
-				jrpfr = javaPackageRoot_guess();
+	public void setFileName(String fileName) {
+		this.setFileName_(fileName);
+		this.xmlJarFileRef.setFileName(fileName);
+	}
+
+	/**
+	 * We clear out {@link #jarFile} here because we cannot compare its file
+	 * name to the ref's file name, since it may have been munged (see
+	 * {@link #resolveJavaResourcePackageFragmentRoot_()}).
+	 */
+	protected void setFileName_(String fileName) {
+		String old = this.fileName;
+		this.fileName = fileName;
+		if (this.firePropertyChanged(FILE_NAME_PROPERTY, old, fileName)) {
+			// clear out the jar file here, it will be rebuilt during "update"
+			if (this.jarFile != null) {
+				this.jarFile.dispose();
+				this.setJarFile(null);
 			}
 		}
-		
+	}
+
+
+	// ********** jar file **********
+
+	public JarFile getJarFile() {
+		return this.jarFile;
+	}
+
+	protected void setJarFile(JarFile jarFile) {
+		JarFile old = this.jarFile;
+		this.jarFile = jarFile;
+		this.firePropertyChanged(JAR_FILE_PROPERTY, old, jarFile);
+	}
+
+	protected JarFile buildJarFile() {
+		JavaResourcePackageFragmentRoot jrpfr = this.resolveJavaResourcePackageFragmentRoot();
+		return (jrpfr == null) ? null : this.buildJarFile(jrpfr);
+	}
+
+	/**
+	 * If the file name changes during <em>sync</em>, the jar file will be
+	 * cleared out in {@link #setFileName_(String)}. If we get here and the jar
+	 * file is still present, we can <code>sync</code> it. Of course, it might
+	 * still be obsolete if other things have changed....
+	 * 
+	 * @see #updateJarFile()
+	 */
+	protected void syncJarFile() {
+		if (this.jarFile != null) {
+			this.jarFile.synchronizeWithResourceModel();
+		}
+	}
+
+	/**
+	 * @see #syncJarFile()
+	 */
+	protected void updateJarFile() {
+		JavaResourcePackageFragmentRoot jrpfr = this.resolveJavaResourcePackageFragmentRoot();
 		if (jrpfr == null) {
 			if (this.jarFile != null) {
 				this.jarFile.dispose();
 				this.setJarFile(null);
 			}
-		} else { 
+		} else {
 			if (this.jarFile == null) {
 				this.setJarFile(this.buildJarFile(jrpfr));
 			} else {
-				this.jarFile.update(jrpfr);
+				if (this.jarFile.getJarResourcePackageFragmentRoot() == jrpfr) {
+					this.jarFile.update();
+				} else {
+					this.jarFile.dispose();
+					this.setJarFile(this.buildJarFile(jrpfr));
+				}
 			}
 		}
 	}
-	
-	private JavaResourcePackageFragmentRoot javaPackageRoot_specifically() {
-		for (IPath runtimePath : resolveRuntimeJarFilePath(new Path(this.fileName))) {
+
+	protected JavaResourcePackageFragmentRoot resolveJavaResourcePackageFragmentRoot() {
+		return StringTools.stringIsEmpty(this.fileName) ? null : this.resolveJavaResourcePackageFragmentRoot_();
+	}
+
+	/**
+	 * pre-condition: 'fileName' is neither null nor empty
+	 */
+	protected JavaResourcePackageFragmentRoot resolveJavaResourcePackageFragmentRoot_() {
+		// first, attempt to resolve location specifically...
+		JavaResourcePackageFragmentRoot jrpfr = this.resolveJrpfrOnDeploymentPath();
+		// ...then guess, basically
+		return (jrpfr != null) ? jrpfr : this.resolveJrpfrBestMatch();
+	}
+
+	/**
+	 * pre-condition: 'fileName' is neither null nor empty
+	 */
+	protected JavaResourcePackageFragmentRoot resolveJrpfrOnDeploymentPath() {
+		for (IPath runtimePath : this.buildRuntimeJarFilePath(new Path(this.fileName))) {
 			IVirtualFile virtualJar = ComponentCore.createFile(this.getProject(), runtimePath);
 			IFile realJar = virtualJar.getUnderlyingFile();
 			if (realJar.exists() && realJar.getProject().equals(this.getProject())) {
-				return getJpaProject().getJavaResourcePackageFragmentRoot(realJar.getProjectRelativePath().toString());
+				return this.getJpaProject().getJavaResourcePackageFragmentRoot(realJar.getProjectRelativePath().toString());
 			}
 		}
-		
-		return null;
-	}
-	
-	private JavaResourcePackageFragmentRoot javaPackageRoot_guess() {
-		String jarFileName = new Path(this.fileName).lastSegment();
-		for (JpaFile jpaFile : CollectionTools.iterable(getJpaProject().jpaFiles())) {
-			if (jpaFile.getFile().getName().equals(jarFileName)
-					&& JptCorePlugin.JAR_CONTENT_TYPE.equals(jpaFile.getContentType())) {
-				return (JavaResourcePackageFragmentRoot) jpaFile.getResourceModel();
-			}
-		}
-		
 		return null;
 	}
 
@@ -217,11 +222,11 @@ public abstract class AbstractJarFileRef
 	 * Return an array of runtime paths that may correspond
 	 * to the given persistence.xml jar file entry
 	 */
-	protected IPath[] resolveRuntimeJarFilePath(IPath jarFilePath) {
+	protected IPath[] buildRuntimeJarFilePath(IPath jarFilePath) {
 		IPath root = this.getJarRuntimeRootPath();
 		return this.projectHasWebFacet() ?
-				this.resolveRuntimeJarFilePathWeb(root, jarFilePath) :
-				this.resolveRuntimeJarFilePathNonWeb(root, jarFilePath);
+				this.buildRuntimeJarFilePathWeb(root, jarFilePath) :
+				this.buildRuntimeJarFilePathNonWeb(root, jarFilePath);
 	}
 
 	protected IPath getJarRuntimeRootPath() {
@@ -232,7 +237,7 @@ public abstract class AbstractJarFileRef
 		return JptCorePlugin.projectHasWebFacet(this.getProject());
 	}
 
-	protected IPath[] resolveRuntimeJarFilePathWeb(IPath root, IPath jarFilePath) {
+	protected IPath[] buildRuntimeJarFilePathWeb(IPath root, IPath jarFilePath) {
 		return new IPath[] {
 				// first path entry assumes form "../lib/other.jar"
 				root.append(jarFilePath.removeFirstSegments(1)),
@@ -241,30 +246,73 @@ public abstract class AbstractJarFileRef
 			};
 	}
 
-	protected IPath[] resolveRuntimeJarFilePathNonWeb(IPath root, IPath jarFilePath) {
+	protected IPath[] buildRuntimeJarFilePathNonWeb(IPath root, IPath jarFilePath) {
 		return new IPath[] {
 				// assumes form "../lib/other.jar"
 				root.append(jarFilePath)
 			};
 	}
 
+	protected IProject getProject() {
+		return this.getJpaProject().getProject();
+	}
 
+	/**
+	 * pre-condition: 'fileName' is neither null nor empty
+	 */
+	protected JavaResourcePackageFragmentRoot resolveJrpfrBestMatch() {
+		String jarFileName = new Path(this.fileName).lastSegment();
+		for (JpaFile jpaFile : this.getJpaProject().getJarJpaFiles()) {
+			if (jpaFile.getFile().getName().equals(jarFileName)) {
+				return (JavaResourcePackageFragmentRoot) jpaFile.getResourceModel();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * pre-condition: 'jrpfr' is not null
+	 */
 	protected JarFile buildJarFile(JavaResourcePackageFragmentRoot jrpfr) {
 		return this.getContextNodeFactory().buildJarFile(this, jrpfr);
 	}
 
-	protected IProject getProject() {
-		return this.getJpaProject().getProject();
+
+	// ********** JarFileRef implementation **********
+
+	public XmlJarFileRef getXmlJarFileRef() {
+		return this.xmlJarFileRef;
+	}
+
+	public PersistentType getPersistentType(String typeName) {
+		return (this.jarFile == null) ? null : this.jarFile.getPersistentType(typeName);
+	}
+
+	public boolean containsOffset(int textOffset) {
+		return (this.xmlJarFileRef != null) && this.xmlJarFileRef.containsOffset(textOffset);
+	}
+
+
+	// ********** PersistentTypeContainer implementation **********
+
+	public Iterable<? extends PersistentType> getPersistentTypes() {
+		return (this.jarFile != null) ? this.jarFile.getPersistentTypes() : EmptyIterable.<JavaPersistentType>instance();
+	}
+
+
+	// ********** XmlContextNode implementation **********
+
+	public TextRange getValidationTextRange() {
+		return (this.xmlJarFileRef == null) ? null : this.xmlJarFileRef.getValidationTextRange();
 	}
 
 
 	// ********** refactoring **********
 
 	public Iterable<ReplaceEdit> createReplaceFolderEdits(IFolder originalFolder, String newName) {
-		if (this.isIn(originalFolder)) {
-			return new SingleElementIterable<ReplaceEdit>(this.createReplaceFolderEdit(originalFolder, newName));
-		}
-		return EmptyIterable.instance();
+		return this.isIn(originalFolder) ?
+				new SingleElementIterable<ReplaceEdit>(this.createReplaceFolderEdit(originalFolder, newName)) :
+				EmptyIterable.<ReplaceEdit>instance();
 	}
 
 	protected ReplaceEdit createReplaceFolderEdit(IFolder originalFolder, String newName) {
@@ -272,14 +320,11 @@ public abstract class AbstractJarFileRef
 	}
 
 	protected boolean isIn(IFolder folder) {
-		if (this.jarFile == null) {
-			return false;
-		}
-		return this.jarFile.isIn(folder);
+		return (this.jarFile != null) && this.jarFile.isIn(folder);
 	}
 
 
-	// **************** validation *********************************************
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
@@ -291,16 +336,20 @@ public abstract class AbstractJarFileRef
 					IMessage.HIGH_SEVERITY,
 					JpaValidationMessages.PERSISTENCE_UNIT_UNSPECIFIED_JAR_FILE,
 					this,
-					this.getValidationTextRange()));
+					this.getValidationTextRange()
+				)
+			);
 			return;
 		}
-		
+
 		messages.add(
 			DefaultJpaValidationMessages.buildMessage(
 				IMessage.NORMAL_SEVERITY,
 				JpaValidationMessages.PERSISTENCE_UNIT_JAR_FILE_DEPLOYMENT_PATH_WARNING,
 				this,
-				this.getValidationTextRange()));
+				this.getValidationTextRange()
+			)
+		);
 
 		if (this.jarFile == null) {
 			messages.add(
@@ -317,13 +366,19 @@ public abstract class AbstractJarFileRef
 
 		this.jarFile.validate(messages, reporter);
 	}
-	
-	
-	// **************** misc ***************************************************
-	
+
+
+	// ********** overrides **********
+
+	@Override
+	public PersistenceUnit getParent() {
+		return (PersistenceUnit) super.getParent();
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		super.toString(sb);
-		sb.append(this.getFileName());
+		sb.append(this.fileName);
 	}
+
 }

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
-import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.Entity;
+import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityOverridesComposite;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ public class Entity2_0OverridesComposite
 	
 	
 	@Override
-	protected Pane<AssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<AssociationOverride> associationOverrideHolder) {
+	protected Pane<ReadOnlyAssociationOverride> buildAssociationOverridePane(PageBook pageBook, PropertyValueModel<ReadOnlyAssociationOverride> associationOverrideHolder) {
 		return new AssociationOverride2_0Composite(this, associationOverrideHolder, pageBook);
 	}
 }

@@ -11,8 +11,8 @@ package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -41,13 +41,13 @@ public interface MappingResourceUiDefinition extends ResourceUiDefinition
 	/**
 	 * Return an iterator of attribute mapping ui definitions appropriate for this file type
 	 */
-	Iterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> 
+	Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> 
 			attributeMappingUiDefinitions();
 	
 	/**
 	 * Return a default attribute mapping ui definition for the given key or null
 	 */
-	DefaultMappingUiDefinition<PersistentAttribute, ? extends AttributeMapping> 
+	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> 
 			getDefaultAttributeMappingUiDefinition(String key);
 	
 	/**

@@ -276,40 +276,33 @@ public class JPTTools {
 	// ********** Access type **********
 
 	/**
-	 * Return the AccessType currently implied by the Java source code
-	 * or class file:
-	 *     - if only Fields are annotated => FIELD
-	 *     - if only Properties are annotated => PROPERTY
-	 *     - if both Fields and Properties are annotated => FIELD
-	 *     - if nothing is annotated
-	 *     		- and fields exist => FIELD
-	 *     		- and properties exist, but no fields exist => PROPERTY
-	 *     		- and neither fields nor properties exist => null at this level (FIELD in the context model)
+	 * Return the access type currently implied by the specified Java source
+	 * code or class file:<ul>
+	 * <li>if any fields are annotated =>
+	 *     {@link AccessType#FIELD FIELD}
+	 * <li>if only properties are annotated =>
+	 *     {@link AccessType#PROPERTY PROPERTY}
+	 * <li>if neither are annotated =>
+	 *     <code>null</code>
+	 *     
+	 * </ul>
 	 */
 	public static AccessType buildAccess(JavaResourcePersistentType jrpType) {
-		boolean hasPersistableFields = false;
 		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableFields(); stream.hasNext(); ) {
-			hasPersistableFields = true;
 			if (stream.next().isAnnotated()) {
 				// any field is annotated => FIELD
 				return AccessType.FIELD;
 			}
 		}
 
-		boolean hasPersistableProperties = false;
 		for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableProperties(); stream.hasNext(); ) {
-			hasPersistableProperties = true;
 			if (stream.next().isAnnotated()) {
 				// none of the fields are annotated and a getter is annotated => PROPERTY
 				return AccessType.PROPERTY;
 			}
 		}
 
-		if (hasPersistableProperties && ! hasPersistableFields) {
-			return AccessType.PROPERTY;
-		}
-
-		// if no annotations exist, access is null at the resource model level
+		// nothing is annotatated
 		return null;
 	}
 

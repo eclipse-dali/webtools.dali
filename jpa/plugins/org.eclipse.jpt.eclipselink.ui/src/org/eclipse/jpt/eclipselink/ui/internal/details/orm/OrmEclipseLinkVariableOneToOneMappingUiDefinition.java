@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.internal.context.orm.OrmEclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkVariableOneToOneMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkVariableOneToOneMappingUiDefinition
-	extends AbstractEclipseLinkVariableOneToOneMappingUiDefinition<PersistentAttribute, OrmEclipseLinkVariableOneToOneMapping>
+	extends AbstractEclipseLinkVariableOneToOneMappingUiDefinition<ReadOnlyPersistentAttribute, OrmEclipseLinkVariableOneToOneMapping>
 	implements OrmAttributeMappingUiDefinition<OrmEclipseLinkVariableOneToOneMapping>
 {
 	// singleton

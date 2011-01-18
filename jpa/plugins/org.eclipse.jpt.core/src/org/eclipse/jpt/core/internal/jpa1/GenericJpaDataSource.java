@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,6 @@ import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.db.ConnectionAdapter;
 import org.eclipse.jpt.db.ConnectionListener;
 import org.eclipse.jpt.db.ConnectionProfile;
@@ -92,14 +91,13 @@ public class GenericJpaDataSource
 		return this.connectionProfileName;
 	}
 
-	public void setConnectionProfileName(String connectionProfileName) {
+	public void setConnectionProfileName(String name) {
 		String old = this.connectionProfileName;
-		this.connectionProfileName = connectionProfileName;
-		if (this.attributeValueHasChanged(old, connectionProfileName)) {
-			this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, connectionProfileName);
+		this.connectionProfileName = name;
+		if (this.firePropertyChanged(CONNECTION_PROFILE_NAME_PROPERTY, old, name)) {
 			 // synch the connection profile when the name changes
-			this.setConnectionProfile(this.buildConnectionProfile(connectionProfileName));
-			JptCorePlugin.setConnectionProfileName(this.getJpaProject().getProject(), connectionProfileName);
+			this.setConnectionProfile(this.buildConnectionProfile(name));
+			JptCorePlugin.setConnectionProfileName(this.getJpaProject().getProject(), name);
 		}
 	}
 
@@ -140,8 +138,8 @@ public class GenericJpaDataSource
 
 	protected DatabaseIdentifierAdapter buildDatabaseIdentifierAdapter() {
 		return this.isJpa2_0Compatible() ?
-			((JpaFactory2_0) this.getJpaFactory()).buildDatabaseIdentifierAdapter(this) :
-			DatabaseIdentifierAdapter.Default.instance();
+				this.getJpaFactory2_0().buildDatabaseIdentifierAdapter(this) :
+				DatabaseIdentifierAdapter.Default.instance();
 	}
 
 	protected void setConnectionProfile(ConnectionProfile connectionProfile) {
@@ -171,8 +169,9 @@ public class GenericJpaDataSource
 	 * Listen for a connection profile with our name being removed.
 	 * Also listen for our connection's name being changed.
 	 */
-	protected class LocalConnectionProfileListener implements ConnectionProfileListener {
-
+	protected class LocalConnectionProfileListener
+		implements ConnectionProfileListener
+	{
 		protected LocalConnectionProfileListener() {
 			super();
 		}
@@ -215,18 +214,17 @@ public class GenericJpaDataSource
 	/**
 	 * Whenever the connection is opened or closed trigger a project update.
 	 */
-	protected class LocalConnectionListener extends ConnectionAdapter {
-
+	protected class LocalConnectionListener
+		extends ConnectionAdapter
+	{
 		@Override
 		public void opened(ConnectionProfile profile) {
-			GenericJpaDataSource.this.getJpaProject().update();
+			GenericJpaDataSource.this.stateChanged();
 		}
 
 		@Override
 		public void closed(ConnectionProfile profile) {
-			GenericJpaDataSource.this.getJpaProject().update();
+			GenericJpaDataSource.this.stateChanged();
 		}
-
 	}
-
 }

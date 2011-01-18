@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,10 +16,10 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * javax.persistence.Enumerated
+ * <code>javax.persistence.Enumerated</code>
  */
 public final class NullEnumeratedAnnotation
-	extends NullAnnotation
+	extends NullAnnotation<EnumeratedAnnotation>
 	implements EnumeratedAnnotation
 {
 	protected NullEnumeratedAnnotation(JavaResourcePersistentAttribute parent) {
@@ -28,11 +28,6 @@ public final class NullEnumeratedAnnotation
 
 	public String getAnnotationName() {
 		return ANNOTATION_NAME;
-	}
-
-	@Override
-	protected EnumeratedAnnotation addAnnotation() {
-		return (EnumeratedAnnotation) super.addAnnotation();
 	}
 
 	// ***** value
@@ -49,5 +44,4 @@ public final class NullEnumeratedAnnotation
 	public TextRange getValueTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
 }

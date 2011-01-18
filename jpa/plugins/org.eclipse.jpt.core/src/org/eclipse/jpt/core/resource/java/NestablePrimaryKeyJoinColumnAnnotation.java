@@ -11,8 +11,8 @@ package org.eclipse.jpt.core.resource.java;
 
 /**
  * Corresponds to the JPA annotation
- * javax.persistence.PrimaryKeyJoinColumn
- * 
+ * <code>javax.persistence.PrimaryKeyJoinColumn</code>
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -25,5 +25,5 @@ package org.eclipse.jpt.core.resource.java;
 public interface NestablePrimaryKeyJoinColumnAnnotation
 	extends PrimaryKeyJoinColumnAnnotation, NestableAnnotation
 {
-	// combine two interfaces
+	// combine interfaces
 }

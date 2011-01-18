@@ -272,7 +272,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		
 		associationOverride.setName(null);
 		associationOverride.removeJoinColumn(0);
-		assertSourceDoesNotContain("@AssociationOverride", cu);
+		assertSourceDoesNotContain("@AssociationOverride(", cu);
 	}
 	
 	public void testMoveJoinColumn() throws Exception {
@@ -376,8 +376,8 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		assertSourceContains("@AssociationOverride(name = \"" + ASSOCIATION_OVERRIDE_NAME + "\", joinTable = @JoinTable(name = \"Foo\"))", cu);
 		
 		joinTable.setName(null);
-		assertNull(associationOverride.getJoinTable());
-		assertSourceContains("@AssociationOverride(name = \"" + ASSOCIATION_OVERRIDE_NAME + "\")", cu);
+		assertNull(associationOverride.getJoinTable().getName());
+		assertSourceContains("@AssociationOverride(name = \"" + ASSOCIATION_OVERRIDE_NAME + "\", joinTable = @JoinTable)", cu);
 	}
 	
 	public void testAddJoinTable() throws Exception {
@@ -437,7 +437,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		table.setCatalog(null);
 		assertNull(table.getCatalog());
 		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testJoinTableGetSchema() throws Exception {
@@ -476,7 +476,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		table.setSchema(null);
 		assertNull(table.getSchema());
 		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testJoinTableUniqueConstraints() throws Exception {
@@ -555,7 +555,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		
 		table.removeUniqueConstraint(0);
 		assertEquals(0, table.uniqueConstraintsSize());		
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testJoinTableMoveUniqueConstraint() throws Exception {
@@ -660,7 +660,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		
 		table.removeJoinColumn(0);
 		assertEquals(0, table.joinColumnsSize());
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testJoinTableMoveJoinColumn() throws Exception {
@@ -816,7 +816,7 @@ public class AssociationOverride2_0Tests extends JavaResourceModel2_0TestCase {
 		assertFalse(inverseJoinColumns.hasNext());
 		
 		table.removeInverseJoinColumn(0);
-		assertSourceDoesNotContain("@JoinTable", cu);
+		assertSourceDoesNotContain("@JoinTable(", cu);
 	}
 	
 	public void testJoinTableMoveInverseJoinColumn() throws Exception {

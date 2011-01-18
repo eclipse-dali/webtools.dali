@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2010 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,10 +18,10 @@ import org.eclipse.jpt.utility.Command;
  * It also provides protocol for suspending a thread until the
  * value is set to a specified value, with optional time-outs.
  * 
- * @see IntReference
+ * @see SimpleIntReference
  */
 public class SynchronizedInt
-	implements Comparable<SynchronizedInt>, Cloneable, Serializable
+	implements IntReference, Cloneable, Serializable
 {
 	/** Backing <code>int</code>. */
 	private int value;
@@ -73,122 +73,138 @@ public class SynchronizedInt
 
 	// ********** methods **********
 
-	/**
-	 * Return the current value.
-	 */
 	public int getValue() {
 		synchronized (this.mutex) {
 			return this.value;
 		}
 	}
 
-	/**
-	 * Return whether the current value is equal to the specified value.
-	 */
 	public boolean equals(int v) {
 		synchronized (this.mutex) {
 			return this.value == v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is not equal to the specified value.
-	 */
-	public boolean notEquals(int v) {
+	public boolean notEqual(int v) {
 		synchronized (this.mutex) {
 			return this.value != v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is zero.
-	 */
 	public boolean isZero() {
 		synchronized (this.mutex) {
 			return this.value == 0;
 		}
 	}
 
-	/**
-	 * Return whether the current value is not zero.
-	 */
 	public boolean isNotZero() {
 		synchronized (this.mutex) {
 			return this.value != 0;
 		}
 	}
 
-	/**
-	 * Return whether the current value is greater than the specified value.
-	 */
 	public boolean isGreaterThan(int v) {
 		synchronized (this.mutex) {
 			return this.value > v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is greater than or equal to the
-	 * specified value.
-	 */
 	public boolean isGreaterThanOrEqual(int v) {
 		synchronized (this.mutex) {
 			return this.value >= v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is less than the specified value.
-	 */
 	public boolean isLessThan(int v) {
 		synchronized (this.mutex) {
 			return this.value < v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is less than or equal to the
-	 * specified value.
-	 */
 	public boolean isLessThanOrEqual(int v) {
 		synchronized (this.mutex) {
 			return this.value <= v;
 		}
 	}
 
-	/**
-	 * Return whether the current value is positive.
-	 */
 	public boolean isPositive() {
 		return this.isGreaterThan(0);
 	}
 
-	/**
-	 * Return whether the current value is not positive
-	 * (i.e. negative or zero).
-	 */
 	public boolean isNotPositive() {
 		return this.isLessThanOrEqual(0);
 	}
 
-	/**
-	 * Return whether the current value is negative.
-	 */
 	public boolean isNegative() {
 		return this.isLessThan(0);
 	}
 
-	/**
-	 * Return whether the current value is not negative
-	 * (i.e. zero or positive).
-	 */
 	public boolean isNotNegative() {
 		return this.isGreaterThanOrEqual(0);
 	}
 
+	public int abs() {
+		synchronized (this.mutex) {
+			return Math.abs(this.value);
+		}
+	}
+
+	public int neg() {
+		synchronized (this.mutex) {
+			return -this.value;
+		}
+	}
+
+	public int add(int v) {
+		synchronized (this.mutex) {
+			return this.value + v;
+		}
+	}
+
+	public int subtract(int v) {
+		synchronized (this.mutex) {
+			return this.value - v;
+		}
+	}
+
+	public int multiply(int v) {
+		synchronized (this.mutex) {
+			return this.value * v;
+		}
+	}
+
+	public int divide(int v) {
+		synchronized (this.mutex) {
+			return this.value / v;
+		}
+	}
+
+	public int remainder(int v) {
+		synchronized (this.mutex) {
+			return this.value % v;
+		}
+	}
+
+	public int min(int v) {
+		synchronized (this.mutex) {
+			return Math.min(this.value, v);
+		}
+	}
+
+	public int max(int v) {
+		synchronized (this.mutex) {
+			return Math.max(this.value, v);
+		}
+	}
+
+	public double pow(int v) {
+		synchronized (this.mutex) {
+			return Math.pow(this.value, v);
+		}
+	}
+
 	/**
-	 * Set the value. If the value changes, all waiting
-	 * threads are notified. Return the previous value.
+	 * If the value changes, all waiting threads are notified.
 	 */
 	public int setValue(int value) {
 		synchronized (this.mutex) {
@@ -197,48 +213,27 @@ public class SynchronizedInt
 	}
 
 	/**
-	 * Return the <em>old</em> value.
 	 * Pre-condition: synchronized
 	 */
 	private int setValue_(int v) {
 		int old = this.value;
-		if (this.value != v) {
-			this.value = v;
-			this.mutex.notifyAll();
-		}
+		return (old == v) ? old : this.setValue_(v, old);
+	}
+
+	/**
+	 * Pre-condition: synchronized and new value is different
+	 */
+	private int setChangedValue_(int v) {
+		return this.setValue_(v, this.value);
+	}
+
+	/**
+	 * Pre-condition: synchronized and new value is different
+	 */
+	private int setValue_(int v, int old) {
+		this.value = v;
+		this.mutex.notifyAll();
 		return old;
-	}
-
-	/**
-	 * Return the <em>new</em> value.
-	 * Pre-condition: synchronized
-	 */
-	private int setNewValue_(int v) {
-		if (this.value != v) {
-			this.value = v;
-			this.mutex.notifyAll();
-		}
-		return v;
-	}
-
-	/**
-	 * Set the value to the absolute value of the current value.
-	 * Return the new value.
-	 */
-	public int abs() {
-		synchronized (this.mutex) {
-			return this.setNewValue_(Math.abs(this.value));
-		}
-	}
-
-	/**
-	 * Set the value to the negative value of the current value.
-	 * Return the new value.
-	 */
-	public int neg() {
-		synchronized (this.mutex) {
-			return this.setNewValue_(-this.value);
-		}
 	}
 
 	/**
@@ -247,16 +242,6 @@ public class SynchronizedInt
 	 */
 	public int setZero() {
 		return this.setValue(0);
-	}
-
-	/**
-	 * Set the value to the current value plus the specified value.
-	 * Return the new value.
-	 */
-	public int add(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(this.value + v);
-		}
 	}
 
 	/**
@@ -272,16 +257,6 @@ public class SynchronizedInt
 	}
 
 	/**
-	 * Set the value to the current value minus the specified value.
-	 * Return the new value.
-	 */
-	public int subtract(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(this.value - v);
-		}
-	}
-
-	/**
 	 * Decrement the value by one.
 	 * Return the new value.
 	 */
@@ -290,68 +265,6 @@ public class SynchronizedInt
 			this.value--;
 			this.mutex.notifyAll();
 			return this.value;
-		}
-	}
-
-	/**
-	 * Set the value to the current value times the specified value.
-	 * Return the new value.
-	 */
-	public int multiply(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(this.value * v);
-		}
-	}
-
-	/**
-	 * Set the value to the current value divided by the specified value.
-	 * Return the new value.
-	 */
-	public int divide(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(this.value / v);
-		}
-	}
-
-	/**
-	 * Set the value to the remainder of the current value divided by the
-	 * specified value.
-	 * Return the new value.
-	 */
-	public int remainder(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(this.value % v);
-		}
-	}
-
-	/**
-	 * Set the value to the minimum of the current value and the specified value.
-	 * Return the new value.
-	 */
-	public int min(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(Math.min(this.value, v));
-		}
-	}
-
-	/**
-	 * Set the value to the maximum of the current value and the specified value.
-	 * Return the new value.
-	 */
-	public int max(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_(Math.max(this.value, v));
-		}
-	}
-
-	/**
-	 * Set the value to the current value raised to the power of the'
-	 * specified value.
-	 * Return the new value.
-	 */
-	public int pow(int v) {
-		synchronized (this.mutex) {
-			return this.setNewValue_((int) Math.pow(this.value, v));
 		}
 	}
 
@@ -569,7 +482,7 @@ public class SynchronizedInt
 	public int waitToSetValue(int v) throws InterruptedException {
 		synchronized (this.mutex) {
 			this.waitUntilNotEqual_(v);
-			return this.setValue_(v);
+			return this.setChangedValue_(v);
 		}
 	}
 
@@ -899,7 +812,7 @@ public class SynchronizedInt
 		synchronized (this.mutex) {
 			boolean success = this.waitUntilNotEqual_(v, timeout);
 			if (success) {
-				this.setValue_(v);
+				this.setChangedValue_(v);
 			}
 			return success;
 		}
@@ -967,10 +880,10 @@ public class SynchronizedInt
 
 	// ********** Comparable implementation **********
 
-	public int compareTo(SynchronizedInt si) {
+	public int compareTo(ReadOnlyIntReference ref) {
 		int thisValue = this.getValue();
-		int otherValue = si.getValue();
-		return thisValue < otherValue ? -1 : (thisValue == otherValue ? 0 : 1);
+		int otherValue = ref.getValue();
+		return (thisValue < otherValue) ? -1 : ((thisValue == otherValue) ? 0 : 1);
 	}
 
 
@@ -985,17 +898,6 @@ public class SynchronizedInt
 		} catch (CloneNotSupportedException ex) {
 			throw new InternalError();
 		}
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		return (obj instanceof SynchronizedInt) &&
-				(this.getValue() == ((SynchronizedInt) obj).getValue());
-	}
-
-	@Override
-	public int hashCode() {
-		return this.getValue();
 	}
 
 	@Override

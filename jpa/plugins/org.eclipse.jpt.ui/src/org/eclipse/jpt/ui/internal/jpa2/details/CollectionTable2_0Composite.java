@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -54,7 +55,8 @@ import org.eclipse.swt.widgets.Group;
  * @version 3.0
  * @since 3.0
  */
-public class CollectionTable2_0Composite extends ReferenceTableComposite<CollectionTable2_0>
+public class CollectionTable2_0Composite
+	extends ReferenceTableComposite<ReadOnlyReferenceTable>
 {
 	/**
 	 * Creates a new <code>CollectionTable2_0Composite</code>.
@@ -65,7 +67,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 	 */
 	public CollectionTable2_0Composite(
 			Pane<?> parentPane,
-			PropertyValueModel<? extends CollectionTable2_0> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyReferenceTable> subjectHolder,
 			Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -96,7 +98,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 		int groupBoxMargin = getGroupBoxMargin();
 
 		// Name widgets
-		TableCombo<CollectionTable2_0> tableCombo = addTableCombo(container);
+		TableCombo<ReadOnlyReferenceTable> tableCombo = addTableCombo(container);
 		Composite tablePane = addPane(container, groupBoxMargin);
 		addLabeledComposite(
 				tablePane,
@@ -106,7 +108,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 		);
 		
 		// schema widgets
-		SchemaCombo<CollectionTable2_0> schemaCombo = addSchemaCombo(container);
+		SchemaCombo<ReadOnlyReferenceTable> schemaCombo = addSchemaCombo(container);
 
 		addLabeledComposite(
 			tablePane,
@@ -116,7 +118,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 		);
 		
 		// catalog widgets
-		CatalogCombo<CollectionTable2_0> catalogCombo = addCatalogCombo(container);
+		CatalogCombo<ReadOnlyReferenceTable> catalogCombo = addCatalogCombo(container);
 
 		addLabeledComposite(
 			tablePane,
@@ -139,7 +141,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 			null
 		);
 
-		this.joinColumnsComposite = new JoinColumnsComposite<CollectionTable2_0>(
+		this.joinColumnsComposite = new JoinColumnsComposite<ReadOnlyReferenceTable>(
 			this,
 			joinColumnGroupPane,
 			buildJoinColumnsEditor()
@@ -149,7 +151,7 @@ public class CollectionTable2_0Composite extends ReferenceTableComposite<Collect
 	}
 	
 	@Override
-	protected boolean isParentVirtual(CollectionTable2_0 collectionTable) {
+	protected boolean tableIsVirtual(ReadOnlyReferenceTable collectionTable) {
 		return collectionTable.getPersistentAttribute().isVirtual();
 	}
 }

@@ -36,7 +36,7 @@ public abstract class SourceBaseEnumeratedAnnotation
 
 	protected SourceBaseEnumeratedAnnotation(JavaResourceNode parent, Attribute attribute, DeclarationAnnotationAdapter daa) {
 		super(parent, attribute, daa);
-		this.valueDeclarationAdapter = new EnumDeclarationAnnotationElementAdapter(daa, getValueElementName(), false);
+		this.valueDeclarationAdapter = new EnumDeclarationAnnotationElementAdapter(daa, getValueElementName());
 		this.valueAdapter = new AnnotatedElementAnnotationElementAdapter<String>(attribute, this.valueDeclarationAdapter);
 	}
 	
@@ -48,6 +48,12 @@ public abstract class SourceBaseEnumeratedAnnotation
 		this.syncValue(this.buildValue(astRoot));
 	}
 	
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				(this.value == null);
+	}
+
 	@Override
 	public void toString(StringBuilder sb) {
 		sb.append(this.value);

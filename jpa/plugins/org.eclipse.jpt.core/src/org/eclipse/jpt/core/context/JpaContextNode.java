@@ -36,32 +36,44 @@ public interface JpaContextNode
 	 * Return the resource type of the context node's resource.
 	 */
 	JpaResourceType getResourceType();
-	
+
 	/**
 	 * Return the persistence unit if the context node is within a 
 	 * persistence unit. Otherwise throw an exception.
 	 */
 	PersistenceUnit getPersistenceUnit();
-	
+
 	/**
 	 * Return the mapping file root if the context node is within a 
 	 * mapping file. Otherwise throw an exception.
 	 */
 	MappingFileRoot getMappingFileRoot();
 
+
+	// ********** database stuff **********
+
 	SchemaContainer getContextDefaultDbSchemaContainer();
-	
+
 	Catalog getContextDefaultDbCatalog();
-	
+
 	Schema getContextDefaultDbSchema();
 
+
+	// ********** synchronize/update **********
+
 	/**
-	 * "Post update" is called once the JPA project "update" is complete.
-	 * We use this to calculate (typically default) state that is dependent
-	 * on the entity inheritance hierarchy (e.g. discriminator column name).
-	 * Of course, if these settings change, yet another "update" will be
-	 * triggered, followed by yet another "post update"; until the JPA
-	 * project's state quiesces
+	 * The resource model has changed; synchronize the context model with it.
+	 * This will probably trigger a call to {@link #update()}.
 	 */
-	void postUpdate();
+	void synchronizeWithResourceModel();
+
+	/**
+	 * Some non-trivial state in the JPA project has changed; update the
+	 * parts of the context node that are dependent on yet other parts of the
+	 * node's JPA project.
+	 * If the dependent state changes also, yet another <em>update</em> will be
+	 * triggered, possibly followed by yet more <em>updates</em>; until the JPA
+	 * project's state quiesces.
+	 */
+	void update();
 }

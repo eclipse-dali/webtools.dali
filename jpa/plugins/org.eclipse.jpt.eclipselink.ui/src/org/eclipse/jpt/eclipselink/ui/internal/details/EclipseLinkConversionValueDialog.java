@@ -61,7 +61,7 @@ public class EclipseLinkConversionValueDialog extends ValidatingDialog<EclipseLi
 	protected EclipseLinkConversionValueStateObject buildStateObject() {
 		String dataValue = null;
 		String objectValue = null;
-		Set<String> dataValues = CollectionTools.set(this.objectTypeConverter.dataValues());
+		Set<String> dataValues = CollectionTools.set(this.objectTypeConverter.getDataValues(), this.objectTypeConverter.getDataValuesSize());
 		if (isEditDialog()) {
 			dataValue = this.conversionValue.getDataValue();
 			objectValue = this.conversionValue.getObjectValue();

@@ -16,11 +16,10 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
+import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
-import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
@@ -41,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
  * All the state in the definition should be "static" (i.e. unchanging once it is initialized).
  */
 public abstract class AbstractJavaResourceUiDefinition
-	implements ResourceUiDefinition, MappingResourceUiDefinition
+	implements MappingResourceUiDefinition
 {
 	private JavaTypeMappingUiDefinition<? extends TypeMapping>[] specifiedTypeMappingUiDefinitions;
 	
@@ -179,10 +178,10 @@ public abstract class AbstractJavaResourceUiDefinition
 		throw new IllegalArgumentException("Illegal attribute mapping key: " + mappingKey); //$NON-NLS-1$
 	}
 	
-	public ListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>> 
+	public ListIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> 
 			attributeMappingUiDefinitions() {
 		
-		return new ArrayListIterator<MappingUiDefinition<PersistentAttribute, ? extends AttributeMapping>>(
+		return new ArrayListIterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>(
 				getSpecifiedAttributeMappingUiDefinitions());
 	}
 	

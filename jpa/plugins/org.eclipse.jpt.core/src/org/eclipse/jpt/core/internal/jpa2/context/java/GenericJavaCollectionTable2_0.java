@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.PersistentAttribute;
+import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
@@ -30,16 +30,16 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * Java collection table
  */
 public class GenericJavaCollectionTable2_0
-	extends GenericJavaReferenceTable
+	extends GenericJavaReferenceTable<CollectionTable2_0Annotation>
 	implements JavaCollectionTable2_0
 {
-
 	public GenericJavaCollectionTable2_0(JavaElementCollectionMapping2_0 parent, Owner owner) {
 		super(parent, owner);
 	}
@@ -49,53 +49,52 @@ public class GenericJavaCollectionTable2_0
 		return new JoinColumnOwner();
 	}
 
+
+	// ********** table annotation **********
+
+	@Override
+	public CollectionTable2_0Annotation getTableAnnotation() {
+		return (CollectionTable2_0Annotation) this.getElementCollectionMapping().getResourcePersistentAttribute().getNonNullAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+	}
+
+	@Override
+	protected void removeTableAnnotation() {
+		this.getElementCollectionMapping().getResourcePersistentAttribute().removeAnnotation(CollectionTable2_0Annotation.ANNOTATION_NAME);
+	}
+
+
+	// ********** misc **********
+
+	public PersistentAttribute getPersistentAttribute() {
+		return this.getElementCollectionMapping().getPersistentAttribute();
+	}
+
 	@Override
 	public JavaElementCollectionMapping2_0 getParent() {
 		return (JavaElementCollectionMapping2_0) super.getParent();
 	}
 
-	public PersistentAttribute getPersistentAttribute() {
-		return getParent().getPersistentAttribute();
-	}
-	
-	public void initialize(CollectionTable2_0Annotation collectionTable) {
-		super.initialize(collectionTable);
-	}
-
-	public void update(CollectionTable2_0Annotation collectionTable) {
-		super.update(collectionTable);
-	}
-
-	// ********** AbstractJavaTable implementation **********
-
-	@Override
-	protected String getAnnotationName() {
-		return CollectionTable2_0Annotation.ANNOTATION_NAME;
+	protected JavaElementCollectionMapping2_0 getElementCollectionMapping() {
+		return this.getParent();
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		return MappingTools.buildCollectionTableDefaultName(getParent());
+		return MappingTools.buildCollectionTableDefaultName(this.getElementCollectionMapping());
 	}
-
-	@Override
-	protected CollectionTable2_0Annotation getAnnotation() {
-		return this.getParent().getCollectionTableAnnotation();
-	}
-
 
 
 	// ********** validation **********
 
-	public boolean shouldValidateAgainstDatabase() {
-		return getParent().shouldValidateAgainstDatabase();
+	public boolean validatesAgainstDatabase() {
+		return this.getElementCollectionMapping().validatesAgainstDatabase();
 	}
 
 
-	// ********** join column owner adapter **********
+	// ********** join column owner **********
 
 	/**
-	 * owner for "back-pointer" JoinColumns;
+	 * owner for "back-pointer" join columns;
 	 * these point at the source/owning entity
 	 */
 	protected class JoinColumnOwner
@@ -105,51 +104,47 @@ public class GenericJavaCollectionTable2_0
 			super();
 		}
 
-		//***** NamedColumn.Owner implementation *******
 		public TypeMapping getTypeMapping() {
-			return GenericJavaCollectionTable2_0.this.getParent().getTypeMapping();
+			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getTypeMapping();
 		}
 
-		public org.eclipse.jpt.db.Table getDbTable(String tableName) {
-			String collectionTableName = GenericJavaCollectionTable2_0.this.getName();
-			return (collectionTableName == null) ? null : (collectionTableName.equals(tableName)) ? GenericJavaCollectionTable2_0.this.getDbTable() : null;
+		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+			return Tools.valuesAreEqual(GenericJavaCollectionTable2_0.this.getName(), tableName) ?
+					GenericJavaCollectionTable2_0.this.getDbTable() :
+					null;
 		}
 
 		public String getDefaultColumnName() {
 			//built in MappingTools.buildJoinColumnDefaultName()
 			return null;
 		}
-		
-		//***** JavaNamedColumn.Owner implementation *******
-		public TextRange getValidationTextRange(CompilationUnit astRoot) {
-			return GenericJavaCollectionTable2_0.this.getValidationTextRange(astRoot);
-		}
 
-		//***** BaseColumn.Owner implementation *******
 		/**
-		 * by default, the join column is, obviously, in the collection table
+		 * by default, the join column is, obviously, in the collection table;
+		 * not sure whether it can be anywhere else...
 		 */
 		public String getDefaultTableName() {
 			return GenericJavaCollectionTable2_0.this.getName();
 		}
-		
 
-		//***** BaseJoinColumn.Owner implementation *******
+		public TextRange getValidationTextRange(CompilationUnit astRoot) {
+			return GenericJavaCollectionTable2_0.this.getValidationTextRange(astRoot);
+		}
+
 		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
-			return getTypeMapping().getPrimaryDbTable();
+			return this.getTypeMapping().getPrimaryDbTable();
 		}
 
-		public boolean isVirtual(BaseJoinColumn joinColumn) {
-			return GenericJavaCollectionTable2_0.this.defaultJoinColumn == joinColumn;
+		public boolean joinColumnIsDefault(ReadOnlyBaseJoinColumn joinColumn) {
+			return GenericJavaCollectionTable2_0.this.getDefaultJoinColumn() == joinColumn;
 		}
 
-		//***** JoinColumn.Owner implementation *******
 		/**
 		 * If there is a specified table name it needs to be the same
-		 * the default table name.  the table is always the collection table
+		 * the default table name. The table is always the collection table.
 		 */
 		public boolean tableNameIsInvalid(String tableName) {
-			return !StringTools.stringsAreEqual(getDefaultTableName(), tableName);
+			return ! StringTools.stringsAreEqual(this.getDefaultTableName(), tableName);
 		}
 
 		/**
@@ -160,7 +155,7 @@ public class GenericJavaCollectionTable2_0
 		}
 
 		public Entity getRelationshipTarget() {
-			return GenericJavaCollectionTable2_0.this.getParent().getEntity();
+			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getEntity();
 		}
 
 		public String getAttributeName() {
@@ -169,7 +164,7 @@ public class GenericJavaCollectionTable2_0
 		}
 
 		public PersistentAttribute getPersistentAttribute() {
-			return GenericJavaCollectionTable2_0.this.getParent().getPersistentAttribute();
+			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getPersistentAttribute();
 		}
 
 		public int joinColumnsSize() {

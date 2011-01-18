@@ -10,9 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
-import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
+import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
@@ -23,11 +22,10 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEmbeddedIdMapping2_0Composite
-	extends AbstractEmbeddedIdMappingComposite<OrmEmbeddedIdMapping>
-	implements JpaComposite
+	extends AbstractEmbeddedIdMappingComposite<EmbeddedIdMapping>
 {
 	public OrmEmbeddedIdMapping2_0Composite(
-			PropertyValueModel<? extends OrmEmbeddedIdMapping> subjectHolder,
+			PropertyValueModel<? extends EmbeddedIdMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		
@@ -45,7 +43,7 @@ public class OrmEmbeddedIdMapping2_0Composite
 	}	
 	
 	protected PropertyValueModel<AccessHolder> buildAccessHolderHolder() {
-		return new PropertyAspectAdapter<OrmEmbeddedIdMapping, AccessHolder>(getSubjectHolder()) {
+		return new PropertyAspectAdapter<EmbeddedIdMapping, AccessHolder>(getSubjectHolder()) {
 			@Override
 			protected AccessHolder buildValue_() {
 				return this.subject.getPersistentAttribute();

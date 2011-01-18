@@ -227,11 +227,11 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			}
 		} else {
 			if ((oldIndex == 0) && (newIndex == 1)) {
-				// this is one of two situations where we transition from standalone to container
+				// this is one of two situations where we transition from stand-alone to container
 				this.moveStandAloneAnnotationToContainerAnnotation(standAloneAnnotation, declaration);
 				this.moveNestedAnnotation(newIndex, declaration);
 			} else if (newIndex == 0) {
-				// we are moving a 'null' entry on top of the standalone, so remove it
+				// we are moving a 'null' entry on top of the stand-alone, so remove it
 				this.removeStandAloneAnnotation(declaration);
 			} else {
 				throw new IllegalStateException("old index = " + oldIndex + "; new index = " + newIndex); //$NON-NLS-1$ //$NON-NLS-2$
@@ -258,7 +258,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 			return annotationFactory.newAnnotation(this.nestedAnnotationAdapter, declaration);
 		}
 
-		// this is one of two situations where we transition from standalone to container
+		// this is one of two situations where we transition from stand-alone to container
 		this.moveStandAloneAnnotationToContainerAnnotation(declaration);
 		// once the stand-alone annotation is moved to index=0, build the new annotation at index=1
 		return annotationFactory.newAnnotation(this.nestedAnnotationAdapter, declaration);
@@ -384,7 +384,7 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 		} else {
 			throw new IllegalStateException("unknown annotation type: " + last); //$NON-NLS-1$
 		}
-		this.zeroNestedAnnotationAdapter.removeAnnotation(declaration);
+		this.removeContainerAnnotation(declaration);
 	}
 
 	private boolean standAloneAnnotationIsPresent(ModifiedDeclaration declaration) {
@@ -429,6 +429,10 @@ public class CombinationIndexedDeclarationAnnotationAdapter
 
 	private Annotation getContainerAnnotation(ModifiedDeclaration declaration) {
 		return this.nestedAnnotationAdapter.getOuterAnnotationAdapter().getAnnotation(declaration);
+	}
+
+	private void removeContainerAnnotation(ModifiedDeclaration declaration) {
+		this.nestedAnnotationAdapter.getOuterAnnotationAdapter().removeAnnotation(declaration);
 	}
 
 	private boolean zeroNestedAnnotationIsPresent(ModifiedDeclaration declaration) {

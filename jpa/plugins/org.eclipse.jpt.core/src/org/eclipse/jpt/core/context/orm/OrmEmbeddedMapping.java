@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.EmbeddedMapping;
+import org.eclipse.jpt.core.resource.orm.XmlEmbedded;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> embedded mapping
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -26,4 +27,5 @@ import org.eclipse.jpt.core.context.EmbeddedMapping;
 public interface OrmEmbeddedMapping
 	extends EmbeddedMapping, OrmBaseEmbeddedMapping
 {
+	XmlEmbedded getXmlAttributeMapping();
 }

@@ -46,7 +46,6 @@ public interface MapKeyClass2_0Annotation
 	/**
 	 * Corresponds to the 'value' element of the MapKeyClass annotation.
 	 * Set to null to remove the element.
-	 * This will also remove the MapKeyClass annotation itself.
 	 */
 	void setValue(String value);
 
@@ -57,13 +56,13 @@ public interface MapKeyClass2_0Annotation
 	TextRange getValueTextRange(CompilationUnit astRoot);
 
 	/**
-	 * Return the fully-qualified MapKeyClass name as resolved by the AST's bindings.
+	 * Return the fully-qualified class name as resolved by the AST's
+	 * bindings.
 	 * <pre>
 	 *     &#64;IdClass(Employee.class)
 	 * </pre>
-	 * will return "model.Employee" if there is an import for model.Employee.
+	 * will return <code>"model.Employee"</code> if there is an import for
+	 * <code>model.Employee</code>.
 	 */
 	String getFullyQualifiedClassName();
-		String FULLY_QUALIFIED_CLASS_NAME_PROPERTY = "fullyQualifiedClassName"; //$NON-NLS-1$
-
 }

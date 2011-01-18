@@ -27,11 +27,13 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	implements EclipseLinkWriteTransformerAnnotation
 {
 	private ColumnAnnotation column;
+	private final ColumnAnnotation nullColumn;
 
 
 	public BinaryEclipseLinkWriteTransformerAnnotation(JavaResourcePersistentAttribute parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.column = this.buildColumn();
+		this.nullColumn = this.buildNullColumn();
 	}
 
 	public String getAnnotationName() {
@@ -66,7 +68,7 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	}
 
 	public ColumnAnnotation getNonNullColumn() {
-		return (this.column != null) ? this.column : new NullEclipseLinkWriteTransformerColumnAnnotation(this);
+		return (this.column != null) ? this.column : this.nullColumn;
 	}
 
 	public ColumnAnnotation addColumn() {
@@ -84,6 +86,10 @@ public class BinaryEclipseLinkWriteTransformerAnnotation
 	private ColumnAnnotation buildColumn() {
 		IAnnotation jdtColumn = this.getJdtColumn();
 		return (jdtColumn == null) ? null : this.buildColumn(jdtColumn);
+	}
+
+	private ColumnAnnotation buildNullColumn() {
+		return new NullEclipseLinkWriteTransformerColumnAnnotation(this);
 	}
 
 	private ColumnAnnotation buildColumn(IAnnotation jdtColumn) {

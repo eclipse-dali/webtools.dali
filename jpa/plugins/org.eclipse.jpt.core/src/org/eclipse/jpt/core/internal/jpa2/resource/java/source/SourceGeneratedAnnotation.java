@@ -83,8 +83,12 @@ public final class SourceGeneratedAnnotation
 		this.syncComments(this.buildComments(astRoot));
 	}
 
-	public IndexedAnnotationAdapter getIndexedAnnotationAdapter() {
-		return (IndexedAnnotationAdapter) this.annotationAdapter;
+	@Override
+	public boolean isUnset() {
+		return super.isUnset() &&
+				this.values.isEmpty() &&
+				(this.date == null) &&
+				(this.comments == null);
 	}
 
 	@Override
@@ -204,7 +208,7 @@ public final class SourceGeneratedAnnotation
 	}
 
 	private static DeclarationAnnotationElementAdapter<String[]> buildArrayAnnotationElementAdapter(DeclarationAnnotationAdapter annotationAdapter, String elementName, ExpressionConverter<String[]> converter) {
-		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, false, converter);
+		return new ConversionDeclarationAnnotationElementAdapter<String[]>(annotationAdapter, elementName, converter);
 	}
 
 	protected static DeclarationAnnotationElementAdapter<String> buildAdapter(String elementName) {

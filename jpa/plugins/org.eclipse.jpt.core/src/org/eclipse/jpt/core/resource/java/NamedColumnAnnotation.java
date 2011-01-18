@@ -13,12 +13,15 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 
 /**
- * Common protocol among
- *     javax.persistence.Column
- *     javax.persistence.JoinColumn
- *     javax.persistence.DiscriminatorColumn
- *     javax.persistence.PrimaryKeyJoinColumn.
- * 
+ * Corresponds to the JPA annotations:<ul>
+ * <li><code>javax.persistence.Column<code>
+ * <li><code>javax.persistence.MapKeyColumn<code>
+ * <li><code>javax.persistence.JoinColumn<code>
+ * <li><code>javax.persistence.MapKeyJoinColumn<code>
+ * <li><code>javax.persistence.DiscriminatorColumn<code>
+ * <li><code>javax.persistence.OrderColumn<code>
+ * <li><code>javax.persistence.PrimaryKeyJoinColumn<code>
+ * </ul>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -32,9 +35,12 @@ public interface NamedColumnAnnotation
 	extends Annotation
 {
 	/**
-	 * Return true if the annotation exists in Java, false if it does not.
+	 * Return whether the annotation exists in Java.
 	 */
 	boolean isSpecified();
+
+
+	// ********** name **********
 
 	/**
 	 * Corresponds to the 'name' element of the *Column annotation.
@@ -61,6 +67,8 @@ public interface NamedColumnAnnotation
 	 */
 	boolean nameTouches(int pos, CompilationUnit astRoot);
 
+
+	// ********** column definition **********
 
 	/**
 	 * Corresponds to the 'columnDefinition' element of the *Column annotation.

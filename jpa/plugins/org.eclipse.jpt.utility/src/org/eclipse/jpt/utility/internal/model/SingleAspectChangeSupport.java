@@ -147,42 +147,42 @@ public class SingleAspectChangeSupport
 	// ********** property change support **********
 
 	@Override
-	public void firePropertyChanged(PropertyChangeEvent event) {
+	public boolean firePropertyChanged(PropertyChangeEvent event) {
 		this.check(PROPERTY_CHANGE_LISTENER_CLASS, event.getPropertyName());
-		super.firePropertyChanged(event);
+		return super.firePropertyChanged(event);
 	}
 
 	@Override
-	public void firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
+	public boolean firePropertyChanged(String propertyName, Object oldValue, Object newValue) {
 		this.check(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
-		super.firePropertyChanged(propertyName, oldValue, newValue);
+		return super.firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 	@Override
-	public void firePropertyChanged(String propertyName, int oldValue, int newValue) {
+	public boolean firePropertyChanged(String propertyName, int oldValue, int newValue) {
 		this.check(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
-		super.firePropertyChanged(propertyName, oldValue, newValue);
+		return super.firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 	@Override
-	public void firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
+	public boolean firePropertyChanged(String propertyName, boolean oldValue, boolean newValue) {
 		this.check(PROPERTY_CHANGE_LISTENER_CLASS, propertyName);
-		super.firePropertyChanged(propertyName, oldValue, newValue);
+		return super.firePropertyChanged(propertyName, oldValue, newValue);
 	}
 
 
 	// ********** collection change support **********
 
 	@Override
-	public void fireItemsAdded(CollectionAddEvent event) {
+	public boolean fireItemsAdded(CollectionAddEvent event) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
-		super.fireItemsAdded(event);
+		return super.fireItemsAdded(event);
 	}
 
 	@Override
-	public void fireItemsAdded(String collectionName, Collection<?> addedItems) {
+	public boolean fireItemsAdded(String collectionName, Collection<?> addedItems) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
-		super.fireItemsAdded(collectionName, addedItems);
+		return super.fireItemsAdded(collectionName, addedItems);
 	}
 
 	@Override
@@ -192,15 +192,15 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsRemoved(CollectionRemoveEvent event) {
+	public boolean fireItemsRemoved(CollectionRemoveEvent event) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, event.getCollectionName());
-		super.fireItemsRemoved(event);
+		return super.fireItemsRemoved(event);
 	}
 
 	@Override
-	public void fireItemsRemoved(String collectionName, Collection<?> removedItems) {
+	public boolean fireItemsRemoved(String collectionName, Collection<?> removedItems) {
 		this.check(COLLECTION_CHANGE_LISTENER_CLASS, collectionName);
-		super.fireItemsRemoved(collectionName, removedItems);
+		return super.fireItemsRemoved(collectionName, removedItems);
 	}
 
 	@Override
@@ -237,15 +237,15 @@ public class SingleAspectChangeSupport
 	// ********** list change support **********
 
 	@Override
-	public void fireItemsAdded(ListAddEvent event) {
+	public boolean fireItemsAdded(ListAddEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
-		super.fireItemsAdded(event);
+		return super.fireItemsAdded(event);
 	}
 
 	@Override
-	public void fireItemsAdded(String listName, int index, List<?> addedItems) {
+	public boolean fireItemsAdded(String listName, int index, List<?> addedItems) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireItemsAdded(listName, index, addedItems);
+		return super.fireItemsAdded(listName, index, addedItems);
 	}
 
 	@Override
@@ -255,15 +255,15 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsRemoved(ListRemoveEvent event) {
+	public boolean fireItemsRemoved(ListRemoveEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
-		super.fireItemsRemoved(event);
+		return super.fireItemsRemoved(event);
 	}
 
 	@Override
-	public void fireItemsRemoved(String listName, int index, List<?> removedItems) {
+	public boolean fireItemsRemoved(String listName, int index, List<?> removedItems) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireItemsRemoved(listName, index, removedItems);
+		return super.fireItemsRemoved(listName, index, removedItems);
 	}
 
 	@Override
@@ -273,33 +273,33 @@ public class SingleAspectChangeSupport
 	}
 
 	@Override
-	public void fireItemsReplaced(ListReplaceEvent event) {
+	public boolean fireItemsReplaced(ListReplaceEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
-		super.fireItemsReplaced(event);
+		return super.fireItemsReplaced(event);
 	}
 
 	@Override
-	public void fireItemsReplaced(String listName, int index, List<?> newItems, List<?> replacedItems) {
+	public boolean fireItemsReplaced(String listName, int index, List<?> newItems, List<?> replacedItems) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireItemsReplaced(listName, index, newItems, replacedItems);
+		return super.fireItemsReplaced(listName, index, newItems, replacedItems);
 	}
 
 	@Override
-	public void fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
+	public boolean fireItemReplaced(String listName, int index, Object newItem, Object replacedItem) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireItemReplaced(listName, index, newItem, replacedItem);
+		return super.fireItemReplaced(listName, index, newItem, replacedItem);
 	}
 
 	@Override
-	public void fireItemsMoved(ListMoveEvent event) {
+	public boolean fireItemsMoved(ListMoveEvent event) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, event.getListName());
-		super.fireItemsMoved(event);
+		return super.fireItemsMoved(event);
 	}
 
 	@Override
-	public void fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
+	public boolean fireItemsMoved(String listName, int targetIndex, int sourceIndex, int length) {
 		this.check(LIST_CHANGE_LISTENER_CLASS, listName);
-		super.fireItemsMoved(listName, targetIndex, sourceIndex, length);
+		return super.fireItemsMoved(listName, targetIndex, sourceIndex, length);
 	}
 
 	@Override

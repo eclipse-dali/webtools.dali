@@ -31,7 +31,7 @@ import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAd
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModelAdapter;
+import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.swing.ObjectListSelectionModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -341,7 +341,7 @@ public class EclipseLinkObjectTypeConverterComposite extends Pane<EclipseLinkObj
 	}
 	
 	protected ListValueModel<String> buildDefaultObjectValueListHolder() {
-		return new TransformationListValueModelAdapter<EclipseLinkConversionValue, String>(buildConversionValuesListModel()) {
+		return new TransformationListValueModel<EclipseLinkConversionValue, String>(buildConversionValuesListModel()) {
 			@Override
 			protected String transformItem(EclipseLinkConversionValue conversionValue) {
 				return conversionValue.getObjectValue();

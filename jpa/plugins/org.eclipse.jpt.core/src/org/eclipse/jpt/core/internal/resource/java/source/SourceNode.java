@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.internal.resource.java.AbstractJavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
@@ -28,4 +29,7 @@ public abstract class SourceNode
 		return (JavaResourceCompilationUnit) this.getRoot();
 	}
 
+	protected CompilationUnit buildASTRoot() {
+		return this.getJavaResourceCompilationUnit().buildASTRoot();
+	}
 }

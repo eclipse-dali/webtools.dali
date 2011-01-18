@@ -260,7 +260,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		aa.removeAnnotation();
 		assertNull(aa.getAnnotation(this.buildASTRoot(cu)));
 		this.assertSourceDoesNotContain(na, cu);
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("nestedAnnotations", cu);
 	}
 
 	public void testRemoveAnnotation5a() throws Exception {
@@ -272,7 +272,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
 		AnnotationAdapter aa1 = new ElementAnnotationAdapter(this.idField(cu), daa1);
-		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar", false);
+		DeclarationAnnotationAdapter daa2 = new NestedIndexedDeclarationAnnotationAdapter(daa1, "nestedAnnotations", 0, "annot.Bar");
 		AnnotationAdapter aa2 = new ElementAnnotationAdapter(this.idField(cu), daa2);
 		Annotation annotation = aa2.getAnnotation(this.buildASTRoot(cu));
 		assertNotNull(annotation);
@@ -441,7 +441,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		assertNotNull(annotation);
 
 		aa2.removeAnnotation();
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("Bar", cu);
 	}
 
 	public void testRemoveAnnotation14() throws Exception {
@@ -548,7 +548,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		assertNotNull(annotation);
 
 		aa2.removeAnnotation();
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("nestedAnnotations", cu);
 	}
 
 	public void testRemoveAnnotation19() throws Exception {
@@ -2191,7 +2191,7 @@ public class NestedIndexedDeclarationAnnotationAdapterTests extends AnnotationTe
 		assertNull(annotation);
 
 		iaa.moveAnnotation(0);
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("Bar", cu);
 	}
 
 	public void testMoveAnnotation12() throws Exception {

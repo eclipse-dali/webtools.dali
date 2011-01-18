@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -12,64 +12,86 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.context.AssociationOverride;
+import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
+import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaAssociationOverride extends AbstractJavaOverride
+/**
+ * Specified Java association override
+ */
+public class GenericJavaAssociationOverride
+	extends AbstractJavaOverride<JavaAssociationOverrideContainer, AssociationOverrideAnnotation>
 	implements JavaAssociationOverride
 {
+	protected final JavaAssociationOverrideRelationshipReference relationship;
 
-	protected final JavaAssociationOverrideRelationshipReference relationshipReference;
 
-	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, JavaAssociationOverride.Owner owner) {
-		super(parent, owner);
-		this.relationshipReference = buildRelationshipReference();
+	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
+		super(parent, annotation);
+		this.relationship = this.buildRelationshipReference();
 	}
-	
-	public void initializeFrom(AssociationOverride oldAssociationOverride) {
-		this.setName(oldAssociationOverride.getName());
-		this.relationshipReference.initializeFrom(oldAssociationOverride.getRelationshipReference());
+
+
+	// ********** synchronize/update **********
+
+	@Override
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.relationship.synchronizeWithResourceModel();
 	}
-	
-	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
-		return getJpaFactory().buildJavaAssociationOverrideRelationshipReference(this);
+
+	@Override
+	public void update() {
+		super.update();
+		this.relationship.update();
 	}
-	
+
+
+	// ********** specified/virtual **********
+
+	@Override
+	public JavaVirtualAssociationOverride convertToVirtual() {
+		return (JavaVirtualAssociationOverride) super.convertToVirtual();
+	}
+
+
+	// ********** relationship **********
+
 	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {
-		return this.relationshipReference;
-	}
-	
-	@Override
-	public JavaAssociationOverride setVirtual(boolean virtual) {
-		return (JavaAssociationOverride) super.setVirtual(virtual);
+		return this.relationship;
 	}
 
-	@Override
-	public AssociationOverrideAnnotation getOverrideAnnotation() {
-		return (AssociationOverrideAnnotation) super.getOverrideAnnotation();
+	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
+		return this.getJpaFactory().buildJavaAssociationOverrideRelationshipReference(this);
 	}
 
-	@Override
-	public JavaAssociationOverrideContainer getParent() {
-		return (JavaAssociationOverrideContainer) super.getParent();
-	}
-	
-	@Override
-	public JavaAssociationOverride.Owner getOwner() {
-		return (JavaAssociationOverride.Owner) super.getOwner();
+
+	// ********** misc **********
+
+	public RelationshipMapping getMapping() {
+		return this.getContainer().getRelationshipMapping(this.name);
 	}
 
-	@Override
-	protected Iterator<String> candidateNames() {
-		return this.getOwner().allOverridableAttributeNames();
+	public void initializeFrom(ReadOnlyAssociationOverride oldOverride) {
+		super.initializeFrom(oldOverride);
+		this.relationship.initializeFrom(oldOverride.getRelationshipReference());
 	}
+
+	public void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride) {
+		super.initializeFromVirtual(virtualOverride);
+		this.relationship.initializeFromVirtual(virtualOverride.getRelationshipReference());
+	}
+
+
+	// ********** Java completion proposals **********
 
 	@Override
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
@@ -77,29 +99,24 @@ public class GenericJavaAssociationOverride extends AbstractJavaOverride
 		if (result != null) {
 			return result;
 		}
-		result = this.relationshipReference.javaCompletionProposals(pos, filter, astRoot);
+		result = this.relationship.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
 		return null;
 	}
 
-	public void initialize(AssociationOverrideAnnotation associationOverride) {
-		super.initialize(associationOverride);
-		this.relationshipReference.initialize(associationOverride);
-	}		
-
-	public void update(AssociationOverrideAnnotation associationOverride) {
-		super.update(associationOverride);
-		this.relationshipReference.update(associationOverride);
+	@Override
+	protected Iterator<String> candidateNames() {
+		return this.getContainer().allOverridableNames();
 	}
-	
-	
+
+
 	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		this.relationshipReference.validate(messages, reporter, astRoot);
+		this.relationship.validate(messages, reporter, astRoot);
 	}
 }

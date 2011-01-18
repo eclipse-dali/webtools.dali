@@ -9,14 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import java.util.Map;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.IMemberValuePair;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.java.Annotation;
+import org.eclipse.jpt.core.resource.java.ContainerAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
+import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
 
 /**
  * JAR annotation
@@ -85,13 +88,26 @@ public abstract class BinaryAnnotation
 	public void removeAnnotation() {
 		throw new UnsupportedOperationException();
 	}
+	public boolean isUnset() {
+		throw new UnsupportedOperationException();
+	}
 
 	// ********** NestableAnnotation implementation **********
 	public void moveAnnotation(@SuppressWarnings("unused") int index) {
 		throw new UnsupportedOperationException();
 	}
-	public void initializeFrom(@SuppressWarnings("unused") NestableAnnotation oldAnnotation) {
+	public void convertToNested(@SuppressWarnings("unused") ContainerAnnotation<? extends NestableAnnotation> containerAnnotation, @SuppressWarnings("unused") DeclarationAnnotationAdapter containerAnnotationAdapter, @SuppressWarnings("unused") int index) {
+		throw new UnsupportedOperationException();
+	}
+	public void convertToStandAlone() {
 		throw new UnsupportedOperationException();
 	}
 
+	// ********** misc **********
+	public void storeOn(Map<String, Object> map) {
+		throw new UnsupportedOperationException();
+	}
+	public void restoreFrom(Map<String, Object> map) {
+		throw new UnsupportedOperationException();
+	}
 }

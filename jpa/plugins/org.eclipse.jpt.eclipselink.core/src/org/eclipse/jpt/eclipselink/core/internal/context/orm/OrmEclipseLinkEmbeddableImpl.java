@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -18,97 +18,117 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
-import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkConverterHolder;
+import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkEmbeddable;
-import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.internal.v1_1.context.EclipseLinkTypeMappingValidator;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlChangeTrackingHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertersHolder;
-import org.eclipse.jpt.eclipselink.core.resource.orm.XmlCustomizerHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEmbeddable;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
+/**
+ * EclipseLink
+ * <code>orm.xml</code> embeddable type mapping
+ */
 public class OrmEclipseLinkEmbeddableImpl
-	extends AbstractOrmEmbeddable
+	extends AbstractOrmEmbeddable<XmlEmbeddable>
 	implements OrmEclipseLinkEmbeddable
 {
-	protected final OrmEclipseLinkCustomizer customizer;
-	
+	protected final OrmEclipseLinkConverterContainer converterContainer;
+
 	protected final OrmEclipseLinkChangeTracking changeTracking;
-	
-	protected final OrmEclipseLinkConverterHolder converterHolder;
-	
-	
-	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable resourceMapping) {
-		super(parent, resourceMapping);
-		this.customizer = new OrmEclipseLinkCustomizer(this, (XmlCustomizerHolder) this.resourceTypeMapping, getJavaCustomizer());
-		this.changeTracking = new OrmEclipseLinkChangeTracking(this, (XmlChangeTrackingHolder) this.resourceTypeMapping, getJavaChangeTracking());
-		this.converterHolder = new OrmEclipseLinkConverterHolder(this, (XmlConvertersHolder) this.resourceTypeMapping); 
+
+	protected final OrmEclipseLinkCustomizer customizer;
+
+
+	public OrmEclipseLinkEmbeddableImpl(OrmPersistentType parent, XmlEmbeddable xmlEmbeddable) {
+		super(parent, xmlEmbeddable);
+		this.converterContainer = this.buildConverterContainer();
+		this.changeTracking = this.buildChangeTracking();
+		this.customizer = this.buildCustomizer();
 	}
-	
-	
+
+
+	// ********** synchronize/update **********
+
 	@Override
-	public XmlEmbeddable getResourceTypeMapping() {
-		return (XmlEmbeddable) super.getResourceTypeMapping();
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.converterContainer.synchronizeWithResourceModel();
+		this.changeTracking.synchronizeWithResourceModel();
+		this.customizer.synchronizeWithResourceModel();
 	}
-	
-	public boolean usesPrimaryKeyColumns() {
-		return false;
-	}
-	
-	public EclipseLinkCustomizer getCustomizer() {
-		return this.customizer;
-	}
-	
-	public EclipseLinkChangeTracking getChangeTracking() {
-		return this.changeTracking;
-	}
-
-	public EclipseLinkConverterHolder getConverterHolder() {
-		return this.converterHolder;
-	}
-
-	
-	
-	// **************** resource-context interaction ***************************
 
 	@Override
 	public void update() {
 		super.update();
-		this.customizer.update(getJavaCustomizer());
-		this.changeTracking.update(getJavaChangeTracking());
-		this.converterHolder.update(); 
+		this.converterContainer.update();
+		this.changeTracking.update();
+		this.customizer.update();
 	}
-	
+
+
+	// ********** converter container **********
+
+	public OrmEclipseLinkConverterContainer getConverterContainer() {
+		return this.converterContainer;
+	}
+
+	protected OrmEclipseLinkConverterContainer buildConverterContainer() {
+		return new OrmEclipseLinkConverterContainerImpl(this, this.getXmlTypeMapping());
+	}
+
+
+	// ********** change tracking **********
+
+	public EclipseLinkChangeTracking getChangeTracking() {
+		return this.changeTracking;
+	}
+
+	protected OrmEclipseLinkChangeTracking buildChangeTracking() {
+		return new OrmEclipseLinkChangeTracking(this);
+	}
+
+
+	// ********** customizer **********
+
+	public EclipseLinkCustomizer getCustomizer() {
+		return this.customizer;
+	}
+
+	protected OrmEclipseLinkCustomizer buildCustomizer() {
+		return new OrmEclipseLinkCustomizer(this);
+	}
+
+
+	// ********** misc **********
+
 	@Override
-	protected JavaEclipseLinkEmbeddable getJavaEmbeddableForDefaults() {
-		return (JavaEclipseLinkEmbeddable) super.getJavaEmbeddableForDefaults();
+	public JavaEclipseLinkEmbeddable getJavaTypeMapping() {
+		return (JavaEclipseLinkEmbeddable) super.getJavaTypeMapping();
 	}
-	
-	
-	protected JavaEclipseLinkCustomizer getJavaCustomizer() {
-		JavaEclipseLinkEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
-		return (javaEmbeddable == null) ? null : (JavaEclipseLinkCustomizer) javaEmbeddable.getCustomizer();
+
+	@Override
+	public JavaEclipseLinkEmbeddable getJavaTypeMappingForDefaults() {
+		return (JavaEclipseLinkEmbeddable) super.getJavaTypeMappingForDefaults();
 	}
-	
-	protected EclipseLinkChangeTracking getJavaChangeTracking() {
-		JavaEclipseLinkEmbeddable javaEmbeddable = getJavaEmbeddableForDefaults();
-		return (javaEmbeddable == null) ? null : javaEmbeddable.getChangeTracking();
+
+	public boolean usesPrimaryKeyColumns() {
+		return false;
 	}
 
 
-	//************************* refactoring ************************
+	// ********** refactoring **********
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<ReplaceEdit> createRenameTypeEdits(IType originalType, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenameTypeEdits(originalType, newName),
-			this.createCustomizerRenameTypeEdits(originalType, newName),
-			this.createConverterHolderRenameTypeEdits(originalType, newName));
+				super.createRenameTypeEdits(originalType, newName),
+				this.createCustomizerRenameTypeEdits(originalType, newName),
+				this.createConverterHolderRenameTypeEdits(originalType, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createCustomizerRenameTypeEdits(IType originalType, String newName) {
@@ -116,16 +136,17 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterHolderRenameTypeEdits(IType originalType, String newName) {
-		return this.converterHolder.createRenameTypeEdits(originalType, newName);
+		return this.converterContainer.createRenameTypeEdits(originalType, newName);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createMoveTypeEdits(originalType, newPackage),
-			this.createCustomizerMoveTypeEdits(originalType, newPackage),
-			this.createConverterHolderMoveTypeEdits(originalType, newPackage));
+				super.createMoveTypeEdits(originalType, newPackage),
+				this.createCustomizerMoveTypeEdits(originalType, newPackage),
+				this.createConverterHolderMoveTypeEdits(originalType, newPackage)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createCustomizerMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
@@ -133,16 +154,17 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterHolderMoveTypeEdits(IType originalType, IPackageFragment newPackage) {
-		return this.converterHolder.createMoveTypeEdits(originalType, newPackage);
+		return this.converterContainer.createMoveTypeEdits(originalType, newPackage);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
+	@SuppressWarnings("unchecked")
 	public Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName) {
 		return new CompositeIterable<ReplaceEdit>(
-			super.createRenamePackageEdits(originalPackage, newName),
-			this.createCustomizerRenamePackageEdits(originalPackage, newName),
-			this.createConverterHolderRenamePackageEdits(originalPackage, newName));
+				super.createRenamePackageEdits(originalPackage, newName),
+				this.createCustomizerRenamePackageEdits(originalPackage, newName),
+				this.createConverterHolderRenamePackageEdits(originalPackage, newName)
+			);
 	}
 
 	protected Iterable<ReplaceEdit> createCustomizerRenamePackageEdits(IPackageFragment originalPackage, String newName) {
@@ -150,17 +172,18 @@ public class OrmEclipseLinkEmbeddableImpl
 	}
 
 	protected Iterable<ReplaceEdit> createConverterHolderRenamePackageEdits(IPackageFragment originalPackage, String newName) {
-		return this.converterHolder.createRenamePackageEdits(originalPackage, newName);
+		return this.converterContainer.createRenamePackageEdits(originalPackage, newName);
 	}
 
 
-	// **************** validation **************************************
-	
+	// ********** validation **********
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.customizer.validate(messages, reporter);
 		this.changeTracking.validate(messages, reporter);
+		this.converterContainer.validate(messages, reporter);
 	}
 
 	@Override

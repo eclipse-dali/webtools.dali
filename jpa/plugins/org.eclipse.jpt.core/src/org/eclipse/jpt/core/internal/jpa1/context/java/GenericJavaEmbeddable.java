@@ -12,14 +12,17 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaEmbeddable;
+import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 
-
+/**
+ * Java embeddable type mapping
+ */
 public class GenericJavaEmbeddable
 	extends AbstractJavaEmbeddable
 {
-	public GenericJavaEmbeddable(JavaPersistentType parent) {
-		super(parent);
+	public GenericJavaEmbeddable(JavaPersistentType parent, EmbeddableAnnotation mappingAnnotation) {
+		super(parent, mappingAnnotation);
 	}
 	
 	@Override

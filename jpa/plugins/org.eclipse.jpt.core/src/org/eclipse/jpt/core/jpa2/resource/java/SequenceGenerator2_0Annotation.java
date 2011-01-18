@@ -39,8 +39,7 @@ public interface SequenceGenerator2_0Annotation
 
 	/**
 	 * Corresponds to the 'catalog' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setCatalog(String catalog);
 
@@ -68,8 +67,7 @@ public interface SequenceGenerator2_0Annotation
 
 	/**
 	 * Corresponds to the 'schema' element of the TableGenerator annotation.
-	 * Set to null to remove the element. If no other elements exist
-	 * the TableGenerator annotation will be removed as well.
+	 * Set to null to remove the element.
 	 */
 	void setSchema(String schema);
 

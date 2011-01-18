@@ -26,7 +26,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 public interface Member extends AnnotatedElement {
 
 	/**
-	 * Return whether the attribute is a persistable field or property getter.
+	 * Return whether the member is persistable.
 	 */
 	boolean isPersistable(CompilationUnit astRoot);
 

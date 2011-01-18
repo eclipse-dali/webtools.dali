@@ -3,7 +3,7 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
@@ -44,7 +44,7 @@ import org.eclipse.text.edits.ReplaceEdit;
  * @since 2.0
  */
 public interface PersistenceUnit
-	extends XmlContextNode, JpaStructureNode
+	extends XmlContextNode, JpaStructureNode, PersistentTypeContainer
 {
 	/**
 	 * Covariant override.
@@ -79,28 +79,28 @@ public interface PersistenceUnit
 	PersistenceUnitTransactionType getTransactionType();
 
 	/**
-	 * String constant associated with changes to the persistence unit's 
+	 * String constant associated with changes to the persistence unit's
 	 * specified transaction type
 	 */
 	String SPECIFIED_TRANSACTION_TYPE_PROPERTY = "specifiedTransactionType"; //$NON-NLS-1$
 
-	/** 
+	/**
 	 * Return the persistence unit's specified transaction type.
 	 */
 	PersistenceUnitTransactionType getSpecifiedTransactionType();
 
-	/** 
+	/**
 	 * Set the persistence unit's specified transaction type.
 	 */
 	void setSpecifiedTransactionType(PersistenceUnitTransactionType transactionType);
 
 	/**
-	 * String constant associated with changes to the persistence unit's 
+	 * String constant associated with changes to the persistence unit's
 	 * default transaction type (not typically changed).
 	 */
 	String DEFAULT_TRANSACTION_TYPE_PROPERTY = "defaultTransactionType"; //$NON-NLS-1$
 
-	/** 
+	/**
 	 * Return the persistence unit's default transaction type.
 	 */
 	PersistenceUnitTransactionType getDefaultTransactionType();
@@ -218,17 +218,16 @@ public interface PersistenceUnit
 	int specifiedMappingFileRefsSize();
 
 	/**
-	 * Add a new specified mapping file ref to the persistence unit with the given file name;
+	 * Add a new specified mapping file ref to the persistence unit;
 	 * return the newly-created mapping file ref.
 	 */
 	MappingFileRef addSpecifiedMappingFileRef(String fileName);
 
 	/**
-	 * Add a new specified mapping file ref to the persistence unit 
-	 * with the given file name at the specified index;
+	 * Add a new specified mapping file ref to the persistence unit at the specified index;
 	 * return the newly-created mapping file ref.
 	 */
-	MappingFileRef addSpecifiedMappingFileRef(String fileName, int index);
+	MappingFileRef addSpecifiedMappingFileRef(int index, String fileName);
 
 	/**
 	 * Remove the specified mapping file ref from the persistence unit.
@@ -274,16 +273,16 @@ public interface PersistenceUnit
 	int jarFileRefsSize();
 
 	/**
-	 * Add a new JAR file ref to the persistence unit with the given file name;
+	 * Add a new JAR file ref to the persistence unit;
 	 * return the newly-created JAR file ref.
 	 */
 	JarFileRef addJarFileRef(String fileName);
 
 	/**
-	 * Add a new JAR file ref to the persistence unit with the given file name 
-	 * at the specified index; return the newly-created JAR file ref.
+	 * Add a new JAR file ref to the persistence unit at the specified index;
+	 * return the newly-created JAR file ref.
 	 */
-	JarFileRef addJarFileRef(String fileName, int index);
+	JarFileRef addJarFileRef(int index, String fileName);
 
 	/**
 	 * Remove the specified JAR file ref from the persistence unit.
@@ -330,16 +329,16 @@ public interface PersistenceUnit
 	int specifiedClassRefsSize();
 
 	/**
-	 * Add a new specified class ref to the persistence unit with the given class name;
+	 * Add a new specified class ref to the persistence unit;
 	 * return the newly-created class ref.
 	 */
 	ClassRef addSpecifiedClassRef(String className);
 
 	/**
-	 * Add a new specified class ref to the persistence unit with the given class name
-	 * at the specified index; return the newly-created class ref.
+	 * Add a new specified class ref to the persistence unit at the specified index;
+	 * return the newly-created class ref.
 	 */
-	ClassRef addSpecifiedClassRef(String className, int index);
+	ClassRef addSpecifiedClassRef(int index, String className);
 
 	/**
 	 * Remove the specified class ref from the persistence unit.
@@ -373,34 +372,34 @@ public interface PersistenceUnit
 
 	// ********** exclude unlisted classes **********
 
-	/** 
+	/**
 	 * Return whether the persistence unit excludes unlisted classes.
 	 */
 	boolean excludesUnlistedClasses();
 
 	/**
-	 * String constant associated with changes to the persistence unit's 
+	 * String constant associated with changes to the persistence unit's
 	 * "exclude unlisted classes" flag.
 	 */
 	String SPECIFIED_EXCLUDE_UNLISTED_CLASSES_PROPERTY = "specifiedExcludeUnlistedClasses"; //$NON-NLS-1$
 
-	/** 
+	/**
 	 * Return the persistence unit's specified "exclude unlisted classes" flag.
 	 */
 	Boolean getSpecifiedExcludeUnlistedClasses();
 
-	/** 
+	/**
 	 * Set the persistence unit's specified "exclude unlisted classes" flag.
 	 */
 	void setSpecifiedExcludeUnlistedClasses(Boolean excludeUnlistedClasses);
 
 	/**
-	 * String constant associated with changes to the persistence unit's 
+	 * String constant associated with changes to the persistence unit's
 	 * default "exclude unlisted classes" flag (not typically changed).
 	 */
 	String DEFAULT_EXCLUDE_UNLISTED_CLASSES_PROPERTY = "defaultExcludeUnlistedClasses"; //$NON-NLS-1$
 
-	/** 
+	/**
 	 * Return whether the persistence unit excludes unlisted classes by default.
 	 */
 	boolean getDefaultExcludeUnlistedClasses();
@@ -492,15 +491,15 @@ public interface PersistenceUnit
 	void removeProperty(String propertyName, String value);
 
 	/**
-	 * Call back method for Property name changing. 
+	 * Call back method for Property name changing.
 	 */
-	void propertyNameChanged(String oldPropertyName, String newPropertyName, String value);	
+	void propertyNameChanged(String oldPropertyName, String newPropertyName, String value);
 
 	/**
-	 * Call back method for Property value changing. 
+	 * Call back method for Property value changing.
 	 */
 	void propertyValueChanged(String propertyName, String newValue);
-	
+
 	/**
 	 * Simple property interface.
 	 */
@@ -515,11 +514,10 @@ public interface PersistenceUnit
 		void setName(String name);
 
 		String VALUE_PROPERTY = "value"; //$NON-NLS-1$
-		void setValue(String value);
 		String getValue();
+		void setValue(String value);
 
 		XmlProperty getXmlProperty();
-		void update();
 
 		/**
 		 * Create ReplaceEdits for renaming the property value to the newName.
@@ -542,7 +540,21 @@ public interface PersistenceUnit
 		Iterable<ReplaceEdit> createRenamePackageEdits(IPackageFragment originalPackage, String newName);
 	}
 
-	// ********** ORM persistence unit defaults **********
+
+	// ********** mapping file (orm.xml) persistence unit metadata **********
+
+	/**
+	 * String constant associated with changes to the persistence unit's
+	 * "XML mapping metadata complete" flag.
+	 */
+	String XML_MAPPING_METADATA_COMPLETE_PROPERTY = "xmlMappingMetadataComplete"; //$NON-NLS-1$
+
+	/**
+	 * Return the default "XML mapping metadata complete" flag from the
+	 * first persistence unit metadata
+	 * found in the persistence unit's list of mapping files.
+	 */
+	boolean isXmlMappingMetadataComplete();
 
 	/**
 	 * String constant associated with changes to the persistence unit's
@@ -551,7 +563,7 @@ public interface PersistenceUnit
 	String DEFAULT_ACCESS_PROPERTY = "defaultAccess"; //$NON-NLS-1$
 
 	/**
-	 * Return the default access type from the first persistence unit defaults
+	 * Return the default access type from the first persistence unit metadata
 	 * found in the persistence unit's list of mapping files.
 	 */
 	AccessType getDefaultAccess();
@@ -563,7 +575,7 @@ public interface PersistenceUnit
 	String DEFAULT_CATALOG_PROPERTY = "defaultCatalog"; //$NON-NLS-1$
 
 	/**
-	 * Return the default database catalog from the first persistence unit defaults
+	 * Return the default database catalog from the first persistence unit metadata
 	 * found in the persistence unit's list of mapping files.
 	 */
 	String getDefaultCatalog();
@@ -575,7 +587,7 @@ public interface PersistenceUnit
 	String DEFAULT_SCHEMA_PROPERTY = "defaultSchema"; //$NON-NLS-1$
 
 	/**
-	 * Return the default database schema from the first persistence unit defaults
+	 * Return the default database schema from the first persistence unit metadata
 	 * found in the persistence unit's list of mapping files.
 	 */
 	String getDefaultSchema();
@@ -587,7 +599,7 @@ public interface PersistenceUnit
 	String DEFAULT_CASCADE_PERSIST_PROPERTY = "defaultCascadePersist"; //$NON-NLS-1$
 
 	/**
-	 * Return the default "cascade persist" flag from the first persistence unit defaults
+	 * Return the default "cascade persist" flag from the first persistence unit metadata
 	 * found in the persistence unit's list of mapping files.
 	 */
 	boolean getDefaultCascadePersist();
@@ -597,18 +609,18 @@ public interface PersistenceUnit
 
 	/**
 	 * String constant associated with changes to the persistence unit's
-	 * list of "global" generators.
-	 * NB: There are no granular list change notifications; only a "list changed"
-	 * notification when the list is rebuilt at the finish of the persistence
-	 * unit's "update".
+	 * collection of "global" generators.
+	 * NB: There are no granular collection change notifications;
+	 * only a "collection changed" notification when the collection
+	 * is rebuilt at the finish of the persistence unit's "update".
 	 */
-	String GENERATORS_LIST = "generators"; //$NON-NLS-1$
+	String GENERATORS_COLLECTION = "generators"; //$NON-NLS-1$
 
 	/**
-	 * Return the list of generators defined within the persistence unit's scope,
+	 * Return the generators defined within the persistence unit's scope,
 	 * including generators with duplicate names.
 	 */
-	ListIterator<Generator> generators();
+	Iterator<Generator> generators();
 
 	/**
 	 * Return the size of the list of generators defined within the persistence unit's scope,
@@ -630,28 +642,28 @@ public interface PersistenceUnit
 	 * Return the names of the generators defined in the persistence
 	 * unit's scope, with duplicates removed.
 	 */
-	String[] uniqueGeneratorNames();
+	Iterable<String> getUniqueGeneratorNames();
 
 
 	// ********** queries **********
 
 	/**
 	 * String constant associated with changes to the persistence unit's
-	 * list of "global" queries.
-	 * NB: There are no granular list change notifications; only a "list changed"
-	 * notification when the list is rebuilt at the finish of the persistence
-	 * unit's "update".
+	 * collection of "global" queries.
+	 * NB: There are no granular collection change notifications;
+	 * only a "collection changed" notification when the collection is
+	 * rebuilt at the finish of the persistence unit's "update".
 	 */
-	String QUERIES_LIST = "queries"; //$NON-NLS-1$
+	String QUERIES_COLLECTION = "queries"; //$NON-NLS-1$
 
 	/**
-	 * Return the list of queries defined within the persistence unit's scope,
+	 * Return the queries defined within the persistence unit's scope,
 	 * including queries with duplicate names.
 	 */
-	ListIterator<Query> queries();
+	Iterator<Query> queries();
 
 	/**
-	 * Return the size of the list of queries defined within the persistence unit's scope,
+	 * Return the number of queries defined within the persistence unit's scope,
 	 * including queries with duplicate names.
 	 */
 	int queriesSize();
@@ -666,34 +678,14 @@ public interface PersistenceUnit
 	 */
 	void addQuery(Query query);
 
-	
-	// ********** root entities **********
-	
-	/**
-	 * The entity with the given name is a root entity that has sub entities.
-	 * This will be stored by the persistence unit so that the entity can later
-	 * call {@link #entityIsRootWithSubEntities(String)}
-	 */
-	void addRootEntityWithSubEntities(String entityName);
-	
-	/**
-	 * Return whether the entity with the given name is a root entity
-	 * that also has sub entities.
-	 * @see #addRootEntityWithSubEntities(String)
-	 */
-	boolean entityIsRootWithSubEntities(String entityName);
-
-
-	// ********** updating **********
-	 
-	/**
-	 * Update the PersistenceUnit context model object to match the XmlPersistenceUnit 
-	 * resource model object. see {@link org.eclipse.jpt.core.JpaProject#update()}
-	 */
-	void update(XmlPersistenceUnit persistenceUnit);
-
 
 	// ********** misc **********
+
+	/**
+	 * Return the XML resource model corresponding to the
+	 * persistence unit.
+	 */
+	XmlPersistenceUnit getXmlPersistenceUnit();
 
 	/**
 	 * Return the persistent type specified in the persistence unit with the
@@ -709,20 +701,22 @@ public interface PersistenceUnit
 	boolean specifiesPersistentType(String typeName);
 
 	/**
+	 * Return the persistence unit's entities.
+	 */
+	Iterable<Entity> getEntities();
+
+	/**
 	 * Return the entity specified in the persistence unit with the
-	 * specified name. Return null if there is no persistent type 
+	 * specified name. Return null if there is no persistent type
 	 * with the specified name or if the persistent type is not mapped as an
 	 * entity.
 	 * @see org.eclipse.jpt.core.MappingKeys#ENTITY_TYPE_MAPPING_KEY
 	 */
 	Entity getEntity(String typeName);
-	
-	
-	// **************** validation *********************************************
-	
+
 	/**
 	 * Return the embeddable specified in the persistence unit with the
-	 * specified name. Return null if there is no persistent type 
+	 * specified name. Return null if there is no persistent type
 	 * with the specified name or if the persistent type is not mapped as an
 	 * embeddable.
 	 * @see org.eclipse.jpt.core.MappingKeys#EMBEDDABLE_TYPE_MAPPING_KEY
@@ -734,15 +728,18 @@ public interface PersistenceUnit
 	 * the given text offset
 	 */
 	boolean containsOffset(int textOffset);
-	
+
+
+	// ********** validation **********
+
 	/**
-	 * Return whether any database metadata specific validation should occur.
+	 * Return whether the persistence unit validates agains database metadata.
 	 * (For instance, if the connection is not active, then it should not.)
 	 */
-	boolean shouldValidateAgainstDatabase();
+	boolean validatesAgainstDatabase();
 
 
-	// **************** refactoring *********************************************
+	// ********** refactoring **********
 
 	/**
 	 * Create DeleteEdits for deleting any references to the deleted type.

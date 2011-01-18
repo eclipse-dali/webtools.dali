@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import org.eclipse.jpt.core.context.BaseColumn;
@@ -16,7 +15,8 @@ import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.BaseColumnTableValidator.TableDescriptionProvider;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 
-public class MapKeyColumnValidator extends AbstractNamedColumnValidator
+public class MapKeyColumnValidator
+	extends AbstractNamedColumnValidator<BaseColumn, BaseColumnTextRangeResolver>
 {
 
 	public MapKeyColumnValidator(
@@ -35,18 +35,8 @@ public class MapKeyColumnValidator extends AbstractNamedColumnValidator
 	}
 
 	@Override
-	public BaseColumn getColumn() {
-		return (BaseColumn) super.getColumn();
-	}
-
-	@Override
-	public BaseColumnTextRangeResolver getTextRangeResolver() {
-		return (BaseColumnTextRangeResolver) super.getTextRangeResolver();
-	}
-
-	@Override
 	protected TableValidator buildTableValidator() {
-		return new MapKeyColumnTableValidator(this.persistentAttribute, this.getColumn(), this.getTextRangeResolver(), this.tableDescriptionProvider);
+		return new MapKeyColumnTableValidator(this.persistentAttribute, this.column, this.textRangeResolver, this.tableDescriptionProvider);
 	}
 
 	@Override
@@ -59,8 +49,9 @@ public class MapKeyColumnValidator extends AbstractNamedColumnValidator
 		return JpaValidationMessages.VIRTUAL_ATTRIBUTE_MAP_KEY_COLUMN_UNRESOLVED_NAME;
 	}
 
-	public static class MapKeyColumnTableValidator extends BaseColumnTableValidator {
-
+	public static class MapKeyColumnTableValidator
+		extends BaseColumnTableValidator
+	{
 		protected MapKeyColumnTableValidator(
 					PersistentAttribute persistentAttribute,
 					BaseColumn column,

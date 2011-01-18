@@ -10,8 +10,6 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
-
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -24,16 +22,16 @@ import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.util.PaneEnabler;
 import org.eclipse.jpt.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
+import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
@@ -57,7 +55,8 @@ import org.eclipse.swt.widgets.Composite;
  * @version 2.1
  * @since 2.1
  */
-public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
+public class EclipseLinkConvertComposite
+	extends Pane<EclipseLinkConvert>
 {
 
 	/**
@@ -72,9 +71,6 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 	
 	/**
 	 * Creates a new <code>EnumTypeComposite</code>.
-	 *
-	 * @param parentPane The parent container of this one
-	 * @param parent The parent container
 	 */
 	public EclipseLinkConvertComposite(PropertyValueModel<? extends EclipseLinkConvert> subjectHolder,
 			Composite parent,
@@ -111,7 +107,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		addRadioButton(
 			subSection, 
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_custom, 
-			buildConverterHolder(EclipseLinkConverter.CUSTOM_CONVERTER), 
+			buildConverterHolder(EclipseLinkCustomConverter.class), 
 			null);
 		EclipseLinkCustomConverterComposite converterComposite = new EclipseLinkCustomConverterComposite(buildCustomConverterHolder(converterHolder), subSection, getWidgetFactory());
 		GridData gridData = (GridData) converterComposite.getControl().getLayoutData();
@@ -122,7 +118,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		addRadioButton(
 			subSection, 
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_type, 
-			buildConverterHolder(EclipseLinkConverter.TYPE_CONVERTER), 
+			buildConverterHolder(EclipseLinkTypeConverter.class), 
 			null);
 		EclipseLinkTypeConverterComposite typeConverterComposite = new EclipseLinkTypeConverterComposite(buildTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
 		gridData = (GridData) typeConverterComposite.getControl().getLayoutData();
@@ -133,7 +129,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		addRadioButton(
 			subSection, 
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_objectType, 
-			buildConverterHolder(EclipseLinkConverter.OBJECT_TYPE_CONVERTER), 
+			buildConverterHolder(EclipseLinkObjectTypeConverter.class), 
 			null);
 		EclipseLinkObjectTypeConverterComposite objectTypeConverterComposite = new EclipseLinkObjectTypeConverterComposite(buildObjectTypeConverterHolder(converterHolder), subSection, getWidgetFactory());
 		gridData = (GridData) objectTypeConverterComposite.getControl().getLayoutData();
@@ -144,7 +140,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		addRadioButton(
 			subSection, 
 			EclipseLinkUiDetailsMessages.EclipseLinkConvertComposite_struct, 
-			buildConverterHolder(EclipseLinkConverter.STRUCT_CONVERTER), 
+			buildConverterHolder(EclipseLinkStructConverter.class), 
 			null);
 		EclipseLinkStructConverterComposite structConverterComposite = new EclipseLinkStructConverterComposite(buildStructConverterHolder(converterHolder), subSection, getWidgetFactory());
 		gridData = (GridData) structConverterComposite.getControl().getLayoutData();
@@ -177,7 +173,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
 		list.add(buildDefaultNameListHolder());
 		list.add(buildReservedConverterNameListHolder());
-		list.add(buildConverterNameListHolder());
+		list.add(buildSortedConverterNamesModel());
 		return new CompositeListValueModel<ListValueModel<String>, String>(list);
 	}
 	
@@ -247,14 +243,18 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		return new StaticListValueModel<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
-	protected ListValueModel<String> buildConverterNameListHolder() {
-		return new ListAspectAdapter<EclipseLinkPersistenceUnit, String>(
+	protected ListValueModel<String> buildSortedConverterNamesModel() {
+		return new SortedListValueModelAdapter<String>(this.buildConverterNamesModel());
+	}
+	
+	protected CollectionValueModel<String> buildConverterNamesModel() {
+		return new CollectionAspectAdapter<EclipseLinkPersistenceUnit, String>(
 			buildPersistenceUnitHolder(),
-			EclipseLinkPersistenceUnit.CONVERTERS_LIST)//TODO need EclipseLinkPersistenceUnit interface
+			EclipseLinkPersistenceUnit.CONVERTERS_COLLECTION)//TODO need EclipseLinkPersistenceUnit interface
 		{
 			@Override
-			protected ListIterator<String> listIterator_() {
-				return CollectionTools.listIterator(ArrayTools.sort(this.subject.uniqueConverterNames()));
+			protected Iterable<String> getIterable() {
+				return this.subject.getUniqueConverterNames();
 			}
 		};
 	}
@@ -278,21 +278,19 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value.booleanValue()) {
-					this.subject.setConverter(EclipseLinkConverter.NO_CONVERTER);
+					this.subject.setConverter(null);
 				}
 			}
 		};
 	}
 	
-	private WritablePropertyValueModel<Boolean> buildConverterHolder(final String converterType) {
+	private WritablePropertyValueModel<Boolean> buildConverterHolder(final Class<? extends EclipseLinkConverter> converterType) {
 		return new PropertyAspectAdapter<EclipseLinkConvert, Boolean>(getSubjectHolder(), EclipseLinkConvert.CONVERTER_PROPERTY) {
 			@Override
 			protected Boolean buildValue_() {
 				EclipseLinkConverter converter = this.subject.getConverter();
-				if (converter == null) {
-					return Boolean.FALSE;
-				}
-				return Boolean.valueOf(converter.getType() == converterType);
+				boolean result = ((converter != null) && (converter.getType() == converterType));
+				return Boolean.valueOf(result);
 			}
 
 			@Override
@@ -317,7 +315,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkCustomConverter>(converterHolder) {
 			@Override
 			protected EclipseLinkCustomConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.CUSTOM_CONVERTER) ? (EclipseLinkCustomConverter) converter : null;
+				return (converter != null && converter.getType() == EclipseLinkCustomConverter.class) ? (EclipseLinkCustomConverter) converter : null;
 			}
 		};
 	}
@@ -326,7 +324,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkTypeConverter>(converterHolder) {
 			@Override
 			protected EclipseLinkTypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.TYPE_CONVERTER) ? (EclipseLinkTypeConverter) converter : null;
+				return (converter != null && converter.getType() == EclipseLinkTypeConverter.class) ? (EclipseLinkTypeConverter) converter : null;
 			}
 		};
 	}
@@ -335,7 +333,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkObjectTypeConverter>(converterHolder) {
 			@Override
 			protected EclipseLinkObjectTypeConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.OBJECT_TYPE_CONVERTER) ? (EclipseLinkObjectTypeConverter) converter : null;
+				return (converter != null && converter.getType() == EclipseLinkObjectTypeConverter.class) ? (EclipseLinkObjectTypeConverter) converter : null;
 			}
 		};
 	}
@@ -344,7 +342,7 @@ public class EclipseLinkConvertComposite extends Pane<EclipseLinkConvert>
 		return new TransformationPropertyValueModel<EclipseLinkConverter, EclipseLinkStructConverter>(converterHolder) {
 			@Override
 			protected EclipseLinkStructConverter transform_(EclipseLinkConverter converter) {
-				return (converter != null && converter.getType() == EclipseLinkConverter.STRUCT_CONVERTER) ? (EclipseLinkStructConverter) converter : null;
+				return (converter != null && converter.getType() == EclipseLinkStructConverter.class) ? (EclipseLinkStructConverter) converter : null;
 			}
 		};
 	}

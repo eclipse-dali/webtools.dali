@@ -9,78 +9,78 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.java;
 
-import java.util.Vector;
 import org.eclipse.jpt.core.MappingKeys;
+import org.eclipse.jpt.core.context.java.JavaMappingRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
-import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationshipReference2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.resource.java.OneToMany2_0Annotation;
-import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 
-
-public abstract class AbstractJavaOneToManyMapping<T extends OneToMany2_0Annotation>
-	extends AbstractJavaMultiRelationshipMapping<T>
+public abstract class AbstractJavaOneToManyMapping
+	extends AbstractJavaMultiRelationshipMapping<OneToManyAnnotation>
 	implements JavaOneToManyMapping2_0, JavaOrphanRemovalHolder2_0
 {
 	protected final JavaOrphanRemovable2_0 orphanRemoval;
-	
+
+
 	protected AbstractJavaOneToManyMapping(JavaPersistentAttribute parent) {
 		super(parent);
-		
 		this.orphanRemoval = this.buildOrphanRemoval();
 	}
 
-	// ********** initialize/update **********
-	
+
+	// ********** synchronize/update **********
+
 	@Override
-	protected void initialize() {
-		super.initialize();
-		this.orphanRemoval.initialize(this.getResourcePersistentAttribute());
+	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
+		this.orphanRemoval.synchronizeWithResourceModel();
 	}
-	
+
 	@Override
-	protected void update() {
+	public void update() {
 		super.update();
-		this.orphanRemoval.update(this.getResourcePersistentAttribute());
+		this.orphanRemoval.update();
 	}
-	
-	
-	public String getAnnotationName() {
-		return OneToManyAnnotation.ANNOTATION_NAME;
-	}
-	
+
+
+	// ********** relationship **********
+
 	@Override
-	protected void addSupportingAnnotationNamesTo(Vector<String> names) {
-		super.addSupportingAnnotationNamesTo(names);
-		names.add(JPA.JOIN_COLUMN);
-		names.add(JPA.JOIN_COLUMNS);
+	public JavaOneToManyRelationshipReference getRelationshipReference() {
+		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
 	}
-	
+
+	@Override
+	protected JavaMappingRelationshipReference buildRelationshipReference() {
+		return new GenericJavaOneToManyRelationship(this, this.isJpa2_0Compatible());
+	}
+
+
+	// ********** orphan removal **********
+
+	public JavaOrphanRemovable2_0 getOrphanRemoval() {
+		return this.orphanRemoval;
+	}
+
+	protected JavaOrphanRemovable2_0 buildOrphanRemoval() {
+		return this.isJpa2_0Compatible() ? 
+				this.getJpaFactory2_0().buildJavaOrphanRemoval(this) : 
+				new NullJavaOrphanRemoval2_0(this);
+	}
+
+
+	// ********** misc **********
+
 	public String getKey() {
 		return MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	// ********** JavaOneToManyMapping implementation **********
-
 	@Override
-	public JavaOneToManyRelationshipReference2_0 getRelationshipReference() {
-		return (JavaOneToManyRelationshipReference2_0) super.getRelationshipReference();
-	}
-
-	// ********** JavaOrphanRemovalHolder2_0 implementation **********
-
-	protected JavaOrphanRemovable2_0 buildOrphanRemoval() {
-		return this.isJpa2_0Compatible() ? 
-			((JpaFactory2_0) this.getJpaFactory()).buildJavaOrphanRemoval(this) : 
-			new NullJavaOrphanRemoval2_0(this);
-	}
-
-	public JavaOrphanRemovable2_0 getOrphanRemoval() {
-		return this.orphanRemoval;
+	protected String getAnnotationName() {
+		return OneToManyAnnotation.ANNOTATION_NAME;
 	}
 }

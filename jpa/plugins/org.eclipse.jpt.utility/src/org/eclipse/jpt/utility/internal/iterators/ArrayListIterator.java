@@ -18,7 +18,8 @@ import java.util.NoSuchElementException;
  * <p>
  * The name might be a bit confusing:
  * This is a {@link ListIterator} for an <code>Array</code>;
- * <em>not</em> an {@link Iterator} for a {@link java.util.ArrayList}.
+ * <em>not</em> an {@link java.util.Iterator Iterator} for an
+ * {@link java.util.ArrayList ArrayList}.
  * 
  * @param <E> the type of elements returned by the iterator
  * 

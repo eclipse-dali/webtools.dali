@@ -79,7 +79,7 @@ public class SourceXmlElementsAnnotation
 	
 	private IndexedDeclarationAnnotationAdapter buildXmlElementIndexedDeclarationAnnotationAdapter(int index) {
 		return new NestedIndexedDeclarationAnnotationAdapter(
-			this.daa, JAXB.XML_ELEMENTS__VALUE, index, JAXB.XML_ELEMENT, false);
+			this.daa, JAXB.XML_ELEMENTS__VALUE, index, JAXB.XML_ELEMENT);
 	}
 	
 	public void moveXmlElement(int targetIndex, int sourceIndex) {

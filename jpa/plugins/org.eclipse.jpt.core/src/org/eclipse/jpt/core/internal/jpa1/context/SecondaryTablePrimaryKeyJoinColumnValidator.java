@@ -1,13 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. 
- *  All rights reserved.  This program and the accompanying materials are 
- *  made available under the terms of the Eclipse Public License v1.0 which 
- *  accompanies this distribution, and is available at 
- *  http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import org.eclipse.jpt.core.context.BaseJoinColumn;
@@ -17,10 +16,11 @@ import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 
-public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinColumnValidator
+public class SecondaryTablePrimaryKeyJoinColumnValidator
+	extends PrimaryKeyJoinColumnValidator
 {
 	private final SecondaryTable secondaryTable;
-	
+
 	public SecondaryTablePrimaryKeyJoinColumnValidator(
 				SecondaryTable secondaryTable,
 				BaseJoinColumn column,
@@ -37,25 +37,28 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 	protected String getSecondaryTableName() {
 		return this.secondaryTable.getName();
 	}
-	
+
 	@Override
 	public IMessage buildUnresolvedNameMessage() {
-		if (isSecondaryTableVirtual())  {
-			return this.buildVirtualSecondaryTableUnresolvedNameMessage();
-		}
-		return super.buildUnresolvedNameMessage();
+		return this.isSecondaryTableVirtual() ?
+				this.buildVirtualSecondaryTableUnresolvedNameMessage() :
+				super.buildUnresolvedNameMessage();
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
-			new String[] {this.getSecondaryTableName(), getColumn().getName(), getColumn().getDbTable().getName()},
-			getColumn(), 
-			getTextRangeResolver().getNameTextRange()
-		);
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_NAME,
+				new String[] {
+					this.getSecondaryTableName(),
+					this.column.getName(),
+					this.column.getDbTable().getName()
+				},
+				this.column,
+				this.textRangeResolver.getNameTextRange()
+			);
 	}
-	
+
 	@Override
 	protected String getVirtualAttributeUnresolvedNameMessage() {
 		throw new UnsupportedOperationException();
@@ -63,21 +66,24 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 
 	@Override
 	public IMessage buildUnresolvedReferencedColumnNameMessage() {
-		if (isSecondaryTableVirtual())  {
-			return this.buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage();
-		}
-		return super.buildUnresolvedReferencedColumnNameMessage();
+		return this.isSecondaryTableVirtual() ?
+				this.buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() :
+				super.buildUnresolvedReferencedColumnNameMessage();
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnresolvedReferencedColumnNameMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
-			new String[] {this.getSecondaryTableName(), getColumn().getReferencedColumnName(), getColumn().getReferencedColumnDbTable().getName()},
-			getColumn(), 
-			getTextRangeResolver().getReferencedColumnNameTextRange()
-		);
-	}	
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_UNRESOLVED_REFERENCED_COLUMN_NAME,
+				new String[] {
+					this.getSecondaryTableName(),
+					this.column.getReferencedColumnName(),
+					this.column.getReferencedColumnDbTable().getName()
+				},
+				this.column,
+				this.textRangeResolver.getReferencedColumnNameTextRange()
+			);
+	}
 
 	@Override
 	protected String getVirtualAttributeUnresolvedReferencedColumnNameMessage() {
@@ -86,20 +92,19 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 
 	@Override
 	public IMessage buildUnspecifiedNameMultipleJoinColumnsMessage() {
-		if (this.isSecondaryTableVirtual()) {
-			return this.buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage();
-		}
-		return super.buildUnspecifiedNameMultipleJoinColumnsMessage();
+		return this.isSecondaryTableVirtual() ?
+				this.buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() :
+				super.buildUnspecifiedNameMultipleJoinColumnsMessage();
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-			new String[] {this.getSecondaryTableName()},
-			getColumn(), 
-			getTextRangeResolver().getNameTextRange()
-		);
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[] {this.getSecondaryTableName()},
+				this.column,
+				this.textRangeResolver.getNameTextRange()
+			);
 	}
 
 	@Override
@@ -109,20 +114,19 @@ public class SecondaryTablePrimaryKeyJoinColumnValidator extends PrimaryKeyJoinC
 
 	@Override
 	public IMessage buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
-		if (this.isSecondaryTableVirtual()) {
-			return this.buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
-		}
-		return super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
+		return this.isSecondaryTableVirtual() ?
+				this.buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() :
+				super.buildUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage();
 	}
 
 	protected IMessage buildVirtualSecondaryTableUnspecifiedReferencedColumnNameMultipleJoinColumnsMessage() {
 		return DefaultJpaValidationMessages.buildMessage(
-			IMessage.HIGH_SEVERITY,
-			JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
-			new String[] {this.getSecondaryTableName()},
-			getColumn(), 
-			getTextRangeResolver().getReferencedColumnNameTextRange()
-		);
+				IMessage.HIGH_SEVERITY,
+				JpaValidationMessages.VIRTUAL_SECONDARY_TABLE_PRIMARY_KEY_JOIN_COLUMN_REFERENCED_COLUMN_NAME_MUST_BE_SPECIFIED_MULTIPLE_JOIN_COLUMNS,
+				new String[] {this.getSecondaryTableName()},
+				this.column,
+				this.textRangeResolver.getReferencedColumnNameTextRange()
+			);
 	}
 
 	@Override

@@ -30,6 +30,8 @@ public class MetadataCompleteComposite extends Pane<OrmTypeMapping> {
 	@Override
 	protected void initializeLayout(Composite container) {
 
+		// TODO not sure the is the right thing to do; since metadata complete
+		// has an "override" (from the persistence unit), not a default...
 		addTriStateCheckBoxWithDefault(
 			container,
 			JptUiDetailsOrmMessages.MetadataCompleteComposite_metadataComplete,
@@ -57,7 +59,7 @@ public class MetadataCompleteComposite extends Pane<OrmTypeMapping> {
 	}
 
 	private PropertyValueModel<String> buildMetadataCompleteStringHolder() {
-		return new TransformationPropertyValueModel<Boolean, String>(buildDefaultMetadataCompleteHolder()) {
+		return new TransformationPropertyValueModel<Boolean, String>(buildOverrideMetadataCompleteHolder()) {
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
@@ -68,18 +70,18 @@ public class MetadataCompleteComposite extends Pane<OrmTypeMapping> {
 			}
 		};
 	}
-	private PropertyValueModel<Boolean> buildDefaultMetadataCompleteHolder() {
+	private PropertyValueModel<Boolean> buildOverrideMetadataCompleteHolder() {
 		return new PropertyAspectAdapter<OrmTypeMapping, Boolean>(
 			getSubjectHolder(),
 			OrmTypeMapping.SPECIFIED_METADATA_COMPLETE_PROPERTY,
-			OrmTypeMapping.DEFAULT_METADATA_COMPLETE_PROPERTY)
+			OrmTypeMapping.OVERRIDE_METADATA_COMPLETE_PROPERTY)
 		{
 			@Override
 			protected Boolean buildValue_() {
 				if (this.subject.getSpecifiedMetadataComplete() != null) {
 					return null;
 				}
-				return Boolean.valueOf(this.subject.isDefaultMetadataComplete());
+				return Boolean.valueOf(this.subject.isOverrideMetadataComplete());
 			}
 		};
 	}

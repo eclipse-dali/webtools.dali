@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * 
- * 
+ * JPA generated value
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,20 +24,18 @@ package org.eclipse.jpt.core.context;
 public interface GeneratedValue
 	extends JpaContextNode
 {
-
 	GenerationType getStrategy();
-	GenerationType getDefaultStrategy();
-		String DEFAULT_STRATEGY_PROPERTY = "defaultStrategy"; //$NON-NLS-1$
-		GenerationType DEFAULT_STRATEGY = GenerationType.AUTO;
 	GenerationType getSpecifiedStrategy();
 	void setSpecifiedStrategy(GenerationType strategy);
 		String SPECIFIED_STRATEGY_PROPERTY = "specifiedStrategy"; //$NON-NLS-1$
+	GenerationType getDefaultStrategy();
+		String DEFAULT_STRATEGY_PROPERTY = "defaultStrategy"; //$NON-NLS-1$
+		GenerationType DEFAULT_STRATEGY = GenerationType.AUTO;
 	
 	String getGenerator();
-	String getDefaultGenerator();
-		String DEFAULT_GENERATOR_PROPERTY = "defaultGenerator"; //$NON-NLS-1$
 	String getSpecifiedGenerator();
 	void setSpecifiedGenerator(String generator);
 		String SPECIFIED_GENERATOR_PROPERTY = "specifiedGenerator"; //$NON-NLS-1$
-
+	String getDefaultGenerator();
+		String DEFAULT_GENERATOR_PROPERTY = "defaultGenerator"; //$NON-NLS-1$
 }

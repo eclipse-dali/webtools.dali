@@ -403,7 +403,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 
 		aea.setValue(null);
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("bar", cu);
 	}
 
 	public void testSetValue2() throws Exception {
@@ -412,7 +412,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType(annotation);
 		this.assertSourceContains(annotation, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "bar", false);
+		DeclarationAnnotationElementAdapter<String> daea = ConversionDeclarationAnnotationElementAdapter.forStrings(daa, "bar");
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 
 		aea.setValue(null);
@@ -435,8 +435,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 
 		aea.setValue(null);
 		this.assertSourceDoesNotContain(annotation, cu);
-		this.assertSourceDoesNotContain("Foo", cu);
-		this.assertSourceDoesNotContain("Bar", cu);
+		this.assertSourceDoesNotContain("fred", cu);
 	}
 
 	public void testSetValue3a() throws Exception {
@@ -447,14 +446,15 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType(annotation);
 		this.assertSourceContains(annotation, cu);
 		DeclarationAnnotationAdapter daa1 = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar", false);
-		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz", false);
+		DeclarationAnnotationAdapter daa2 = new NestedDeclarationAnnotationAdapter(daa1, "value", "annot.Bar");
+		DeclarationAnnotationAdapter daa3 = new NestedDeclarationAnnotationAdapter(daa2, "jimmy", "annot.Baz");
 		DeclarationAnnotationElementAdapter<Boolean> daea = new ConversionDeclarationAnnotationElementAdapter<Boolean>(daa3, "fred", BooleanExpressionConverter.instance());
 		AnnotationElementAdapter<Boolean> aea = new AnnotatedElementAnnotationElementAdapter<Boolean>(this.idField(cu), daea);
 
 		aea.setValue(null);
 		this.assertSourceDoesNotContain(annotation, cu);
-		this.assertSourceContains("@annot.Foo(@Bar)", cu);
+		this.assertSourceDoesNotContain("fred", cu);
+		this.assertSourceContains("@annot.Foo(@annot.Bar(jimmy=@Baz))", cu);
 	}
 
 	public void testSetValue4() throws Exception {
@@ -781,7 +781,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		DeclarationAnnotationElementAdapter<String> daea = new EnumDeclarationAnnotationElementAdapter(daa, "bar");
 		AnnotationElementAdapter<String> aea = new AnnotatedElementAnnotationElementAdapter<String>(this.idField(cu), daea);
 		aea.setValue(null);
-		this.assertSourceDoesNotContain("Foo", cu);
+		this.assertSourceDoesNotContain("bar", cu);
 	}
 
 	public void testSetValueEnum2() throws Exception {
@@ -1140,7 +1140,7 @@ public class MemberAnnotationElementAdapterTests extends AnnotationTestCase {
 		ICompilationUnit cu = this.createTestType();
 		this.assertSourceDoesNotContain(expected, cu);
 		DeclarationAnnotationAdapter daa = new SimpleDeclarationAnnotationAdapter("annot.Foo");
-		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar", true, false);
+		DeclarationAnnotationElementAdapter<String[]> daea = new EnumArrayDeclarationAnnotationElementAdapter(daa, "bar", false);
 		AnnotationElementAdapter<String[]> aea = new AnnotatedElementAnnotationElementAdapter<String[]>(this.idField(cu), daea);
 		aea.setValue(new String[0]);
 		this.assertSourceContains(expected, cu);

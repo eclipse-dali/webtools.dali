@@ -3,82 +3,86 @@
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
- * 
+ *
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import org.eclipse.jpt.core.context.orm.OrmEntity;
-import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmTable;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlEntity;
 import org.eclipse.jpt.core.resource.orm.XmlTable;
 
 /**
- * 
+ * <code>orm.xml</code> table
  */
 public class GenericOrmTable
-	extends AbstractOrmTable
-	implements OrmTable
+	extends AbstractOrmTable<XmlTable>
 {
-	protected XmlEntity resourceEntity;
-	
 	public GenericOrmTable(OrmEntity parent, Owner owner) {
 		super(parent, owner);
 	}
 
-	public OrmEntity getOrmEntity() {
-		return (OrmEntity) super.getParent();
-	}
-	
+
+	// ********** XML table **********
+
 	@Override
-	protected XmlTable getResourceTable() {
-		return this.resourceEntity.getTable();
+	protected XmlTable getXmlTable() {
+		return this.getXmlEntity().getTable();
 	}
 
 	@Override
-	protected XmlTable addResourceTable() {
-		XmlTable resourceTable = OrmFactory.eINSTANCE.createXmlTable();
-		this.resourceEntity.setTable(resourceTable);
-		return resourceTable;
+	protected XmlTable buildXmlTable() {
+		XmlTable xmlTable = OrmFactory.eINSTANCE.createXmlTable();
+		this.getXmlEntity().setTable(xmlTable);
+		return xmlTable;
 	}
-	
+
 	@Override
-	protected void removeResourceTable() {
-		this.resourceEntity.setTable(null);
+	protected void removeXmlTable() {
+		this.getXmlEntity().setTable(null);
 	}
-	
-	public void initialize(XmlEntity xmlEntity) {
-		this.resourceEntity = xmlEntity;
-		this.initialize(this.getResourceTable());
+
+	protected XmlEntity getXmlEntity() {
+		return this.getEntity().getXmlTypeMapping();
 	}
-	
-	public void update(XmlEntity xmlEntity) {
-		this.resourceEntity = xmlEntity;
-		this.update(this.getResourceTable());
-	}
+
+
+	// ********** defaults **********
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getOrmEntity().getDefaultTableName();
+		return this.getEntity().getDefaultTableName();
 	}
-	
+
 	@Override
 	protected String buildDefaultSchema() {
-		return this.getOrmEntity().getDefaultSchema();
+		return this.getEntity().getDefaultSchema();
 	}
-	
+
 	@Override
 	protected String buildDefaultCatalog() {
-		return this.getOrmEntity().getDefaultCatalog();
+		return this.getEntity().getDefaultCatalog();
 	}
 
 
-	//*********** Validation *******************************
-	
-	public boolean shouldValidateAgainstDatabase() {
+	// ********** validation **********
+
+	public boolean validatesAgainstDatabase() {
 		return this.connectionProfileIsActive();
+	}
+
+
+	// ********** misc **********
+
+	@Override
+	public OrmEntity getParent() {
+		return (OrmEntity) super.getParent();
+	}
+
+	protected OrmEntity getEntity() {
+		return this.getParent();
 	}
 }

@@ -156,7 +156,7 @@ public class SynchronousSynchronizer
 	private void synchronize_() {
 		do {
 			this.execute();
-		} while (this.endSynchronization());
+		} while (this.repeatSynchronization());
 	}
 
 	/**
@@ -182,7 +182,7 @@ public class SynchronousSynchronizer
 	 * The current synchronization has finished.
 	 * Return whether we should begin another synchronization.
 	 */
-	private synchronized boolean endSynchronization() {
+	private synchronized boolean repeatSynchronization() {
 		switch (this.state.getValue()) {
 			case STOPPED:
 			case READY:

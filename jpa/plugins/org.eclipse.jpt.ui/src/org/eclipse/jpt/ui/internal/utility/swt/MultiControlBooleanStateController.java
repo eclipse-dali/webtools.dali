@@ -109,7 +109,7 @@ final class MultiControlBooleanStateController
 		}
 	}
 
-	/* private */ void addControls(Iterable<? extends Control> controls_) {
+	/* CU private */ void addControls(Iterable<? extends Control> controls_) {
 		boolean b = this.getBooleanValue();
 		for (Control control : controls_) {
 			this.addControl(control, b);
@@ -129,11 +129,11 @@ final class MultiControlBooleanStateController
 		}
 	}
 
-	/* private */ void clearControls() {
+	/* CU private */ void clearControls() {
 		this.removeControls(new SnapshotCloneIterable<Control>(this.controls));
 	}
 
-	/* private */ void removeControls(Iterable<? extends Control> controls_) {
+	/* CU private */ void removeControls(Iterable<? extends Control> controls_) {
 		for (Control control : controls_) {
 			this.disengageControl(control);
 			this.removeControl(control);

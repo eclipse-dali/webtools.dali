@@ -11,6 +11,8 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -39,15 +41,12 @@ public class JoinColumnInJoiningStrategyDialog
 	 */
 	JoinColumnInJoiningStrategyDialog(
 		Shell parent,
-	    JoinColumnJoiningStrategy joinColumnOwner,
-	    JoinColumn joinColumn) {
+	    ReadOnlyJoinColumnJoiningStrategy joinColumnOwner,
+	    ReadOnlyJoinColumn joinColumn) {
 
 		super(parent, joinColumnOwner, joinColumn);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected JoinColumnInJoiningStrategyStateObject buildStateObject() {
 		return new JoinColumnInJoiningStrategyStateObject(
@@ -56,9 +55,6 @@ public class JoinColumnInJoiningStrategyDialog
 		);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	protected JoinColumnJoiningStrategy getOwner() {
 		return (JoinColumnJoiningStrategy) super.getOwner();

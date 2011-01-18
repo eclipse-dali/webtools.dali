@@ -10,10 +10,11 @@
 package org.eclipse.jpt.core.context.orm;
 
 import org.eclipse.jpt.core.context.Cascade;
+import org.eclipse.jpt.core.context.XmlContextNode;
 
 /**
- * 
- * 
+ * <code>orm.xml</code> cascade (persist, merge, remove, refresh)
+ * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
  * stability. It is available at this early stage to solicit feedback from
@@ -24,7 +25,7 @@ import org.eclipse.jpt.core.context.Cascade;
  * @since 2.3
  */
 public interface OrmCascade
-	extends Cascade
+	extends Cascade, XmlContextNode
 {
-	void update();
+	void initializeFrom(Cascade oldCascade);
 }
