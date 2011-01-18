@@ -74,7 +74,12 @@ public final class BinaryXmlRootElementAnnotation
 	public TextRange getNameTextRange(CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
-
+	
+	public boolean nameTouches(int pos, CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	
 	// ***** namespace
 	public String getNamespace() {
 		return this.namespace;
@@ -95,6 +100,10 @@ public final class BinaryXmlRootElementAnnotation
 	}
 
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
+		throw new UnsupportedOperationException();
+	}
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
 		throw new UnsupportedOperationException();
 	}
 }
