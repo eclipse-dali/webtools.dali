@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,9 @@ import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -22,12 +24,16 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -35,6 +41,8 @@ import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaPersistentClass
 		extends AbstractJavaPersistentType
@@ -50,6 +58,8 @@ public class GenericJavaPersistentClass
 
 	protected final Vector<JaxbPersistentAttribute> attributes = new Vector<JaxbPersistentAttribute>();
 
+	protected final XmlAdaptable xmlAdaptable;
+
 	public GenericJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
 		this.superPersistentClass = this.buildSuperPersistentClass();
@@ -57,6 +67,7 @@ public class GenericJavaPersistentClass
 		this.specifiedAccessOrder = this.getResourceAccessOrder();
 		this.defaultAccessType = this.buildDefaultAccessType();
 		this.defaultAccessOrder = this.buildDefaultAccessOrder();
+		this.xmlAdaptable = this.buildXmlAdaptable();
 		this.initializeAttributes();
 	}
 
@@ -72,6 +83,7 @@ public class GenericJavaPersistentClass
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
+		this.xmlAdaptable.synchronizeWithResourceModel();
 		this.syncAttributes();
 	}
 
@@ -80,6 +92,7 @@ public class GenericJavaPersistentClass
 		this.setSuperPersistentClass(this.buildSuperPersistentClass());
 		this.setDefaultAccessType(this.buildDefaultAccessType());
 		this.setDefaultAccessOrder(this.buildDefaultAccessOrder());
+		this.xmlAdaptable.update();
 		this.updateAttributes();
 	}
 
@@ -426,7 +439,7 @@ public class GenericJavaPersistentClass
 			return true;
 		}
 		//Lists do not have to have a corresponding setter method
-		else if (getterMethod.getReturnTypeName().equals("java.util.List")) { //$NON-NLS-1$
+		else if (getterMethod.getTypeName().equals("java.util.List")) { //$NON-NLS-1$
 			return true;
 		}
 		else if (getterMethod.isAnnotated()) {
@@ -444,7 +457,7 @@ public class GenericJavaPersistentClass
 				}
 			}
 			//Lists do not have to have a corresponding setter method
-			else if (getterMethod.getReturnTypeName().equals("java.util.List")) { //$NON-NLS-1$
+			else if (getterMethod.getTypeName().equals("java.util.List")) { //$NON-NLS-1$
 				return true;
 			}
 			else if (getterMethod.isAnnotated()) {
@@ -731,7 +744,7 @@ public class GenericJavaPersistentClass
 			return false;
 		}
 
-		String returnTypeName = resourceMethod.getReturnTypeName();
+		String returnTypeName = resourceMethod.getTypeName();
 		if (returnTypeName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
@@ -757,7 +770,7 @@ public class GenericJavaPersistentClass
 	}
 
 	private static boolean methodIsBooleanGetter(JavaResourceMethod resourceMethod) {
-		String returnTypeName = resourceMethod.getReturnTypeName();
+		String returnTypeName = resourceMethod.getTypeName();
 		String name = resourceMethod.getMethodName();
 		boolean booleanGetter = false;
 		if (name.startsWith("is")) { //$NON-NLS-1$
@@ -780,7 +793,7 @@ public class GenericJavaPersistentClass
 	 * from being a getter or setter for a "persistent" property.
 	 */
 	private static boolean methodHasInvalidModifiers(JavaResourceMethod resourceMethod) {
-		int modifiers = resourceMethod.getReturnTypeModifiers();
+		int modifiers = resourceMethod.getModifiers();
 		if (Modifier.isStatic(modifiers)) {
 			return true;
 		}
@@ -815,7 +828,7 @@ public class GenericJavaPersistentClass
 	 */
 	private static JavaResourceMethod getValidSiblingSetMethod(JavaResourceMethod getMethod, Collection<JavaResourceMethod> resourceMethods) {
 		String capitalizedAttributeName = StringTools.capitalize(getMethod.getName());
-		String parameterTypeErasureName = getMethod.getReturnTypeName();
+		String parameterTypeErasureName = getMethod.getTypeName();
 		for (JavaResourceMethod sibling : resourceMethods) {
 			ListIterable<String> siblingParmTypeNames = sibling.getParameterTypeNames();
 			if ((sibling.getParametersSize() == 1)
@@ -841,11 +854,52 @@ public class GenericJavaPersistentClass
 		if (resourceMethod.isConstructor()) {
 			return false;
 		}
-		String rtName = resourceMethod.getReturnTypeName();
+		String rtName = resourceMethod.getTypeName();
 		if (rtName == null) {
 			return false;  // DOM method bindings can have a null name
 		}
 		return rtName.equals(returnTypeName);
 	}
 
+
+	//****************** XmlJavaTypeAdapter *********************
+
+	public XmlAdaptable buildXmlAdaptable() {
+		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
+			public JavaResourceAnnotatedElement getResource() {
+				return getJavaResourceType();
+			}
+			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
+				return GenericJavaPersistentClass.this.buildXmlJavaTypeAdapter(adapterAnnotation);
+			}
+			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
+				GenericJavaPersistentClass.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
+			}
+		});
+	}
+
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.getXmlJavaTypeAdapter();
+	}
+
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.addXmlJavaTypeAdapter();
+	}
+
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaTypeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+
+	public void removeXmlJavaTypeAdapter() {
+		this.xmlAdaptable.removeXmlJavaTypeAdapter();
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			attribute.validate(messages, reporter, astRoot);
+		}
+	}
 }

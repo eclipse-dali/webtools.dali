@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -42,6 +42,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
@@ -2010,6 +2011,58 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		this.removeModifiers(resourceSetter, ModifierKeyword.PRIVATE_KEYWORD);
 		this.addModifiers(resourceGetter, ModifierKeyword.PUBLIC_KEYWORD);
 		this.addModifiers(resourceSetter, ModifierKeyword.PUBLIC_KEYWORD);
+	}
+
+	public void testModifyXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlType();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
+
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(persistentClass.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+		persistentClass.addXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		persistentClass.removeXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlType();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		AbstractJavaResourceType resourceType = persistentClass.getJavaResourceType();
+
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(persistentClass.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+
+		//add an XmlJavaTypeAdapter annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNotNull(persistentClass.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		//remove the XmlJavaTypeAdapter annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceType.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(persistentClass.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
 	}
 
 	protected void addModifiers(JavaResourceMember resourceMember, final ModifierKeyword... modifiers) {

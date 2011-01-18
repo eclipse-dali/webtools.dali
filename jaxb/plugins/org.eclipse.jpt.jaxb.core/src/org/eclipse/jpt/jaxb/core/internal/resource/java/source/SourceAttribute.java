@@ -129,10 +129,8 @@ abstract class SourceAttribute<A extends Attribute>
 	private void syncModifiers(int astModifiers) {
 		int old = this.modifiers;
 		this.modifiers = astModifiers;
-		this.firePropertyChanged(getModifiersProperty(), old, astModifiers);
+		this.firePropertyChanged(MODIFIERS_PROPERTY, old, astModifiers);
 	}
-
-	protected abstract String getModifiersProperty();
 
 	/**
 	 * zero seems like a reasonable default...
@@ -150,10 +148,8 @@ abstract class SourceAttribute<A extends Attribute>
 	private void syncTypeName(String astTypeName) {
 		String old = this.typeName;
 		this.typeName = astTypeName;
-		this.firePropertyChanged(getTypeNameProperty(), old, astTypeName);
+		this.firePropertyChanged(TYPE_NAME_PROPERTY, old, astTypeName);
 	}
-
-	protected abstract String getTypeNameProperty();
 
 	/**
 	 * this can be an array (e.g. "java.lang.String[]");
@@ -182,10 +178,8 @@ abstract class SourceAttribute<A extends Attribute>
 	private void syncTypeIsInterface(boolean astTypeIsInterface) {
 		boolean old = this.typeIsInterface;
 		this.typeIsInterface = astTypeIsInterface;
-		this.firePropertyChanged(getTypeIsInterfaceProperty(), old, astTypeIsInterface);
+		this.firePropertyChanged(TYPE_IS_INTERFACE_PROPERTY, old, astTypeIsInterface);
 	}
-
-	protected abstract String getTypeIsInterfaceProperty();
 
 	private boolean buildTypeIsInterface(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isInterface();
@@ -199,10 +193,8 @@ abstract class SourceAttribute<A extends Attribute>
 	private void syncTypeIsEnum(boolean astTypeIsEnum) {
 		boolean old = this.typeIsEnum;
 		this.typeIsEnum = astTypeIsEnum;
-		this.firePropertyChanged(getTypeIsEnumProperty(), old, astTypeIsEnum);
+		this.firePropertyChanged(TYPE_IS_ENUM_PROPERTY, old, astTypeIsEnum);
 	}
-
-	protected abstract String getTypeIsEnumProperty();
 
 	private boolean buildTypeIsEnum(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isEnum();
@@ -214,10 +206,8 @@ abstract class SourceAttribute<A extends Attribute>
 	}
 
 	private void syncTypeSuperclassNames(List<String> astTypeSuperclassNames) {
-		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, getTypeSuperclassNamesProperty());
+		this.synchronizeList(astTypeSuperclassNames, this.typeSuperclassNames, TYPE_SUPERCLASS_NAMES_LIST);
 	}
-
-	protected abstract String getTypeSuperclassNamesProperty();
 
 	private List<String> buildTypeSuperclassNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
@@ -242,10 +232,8 @@ abstract class SourceAttribute<A extends Attribute>
 //	}
 //
 	private void syncTypeInterfaceNames(Collection<String> astTypeInterfaceNames) {
-		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, getTypeInterfaceNamesProperty());
+		this.synchronizeCollection(astTypeInterfaceNames, this.typeInterfaceNames, TYPE_INTERFACE_NAMES_COLLECTION);
 	}
-
-	protected abstract String getTypeInterfaceNamesProperty();
 
 	private Collection<String> buildTypeInterfaceNames(ITypeBinding typeBinding) {
 		if (typeBinding == null) {
@@ -280,10 +268,8 @@ abstract class SourceAttribute<A extends Attribute>
 	}
 
 	private void syncTypeTypeArgumentNames(List<String> astTypeTypeArgumentNames) {
-		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, this.getTypeTypeArgumentNamesProperty());
+		this.synchronizeList(astTypeTypeArgumentNames, this.typeTypeArgumentNames, TYPE_TYPE_ARGUMENT_NAMES_LIST);
 	}
-
-	protected abstract String getTypeTypeArgumentNamesProperty();
 
 	/**
 	 * these types can be arrays (e.g. "java.lang.String[]");

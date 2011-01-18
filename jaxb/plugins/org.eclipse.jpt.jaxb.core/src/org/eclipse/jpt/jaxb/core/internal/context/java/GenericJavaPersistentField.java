@@ -32,6 +32,10 @@ public class GenericJavaPersistentField
 		return this.getResourceField();
 	}
 
+	public String getJavaResourceAttributeTypeName() {
+		return getJavaResourceAttributeType(this.getJavaResourceAttribute());
+	}
+
 	public JavaResourceField getResourceField() {
 		return this.resourceField;
 	}

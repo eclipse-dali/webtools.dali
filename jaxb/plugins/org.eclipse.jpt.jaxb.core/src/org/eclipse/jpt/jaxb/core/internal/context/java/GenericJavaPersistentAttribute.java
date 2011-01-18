@@ -9,17 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.Collection;
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
-import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class GenericJavaPersistentAttribute
-		extends AbstractJaxbContextNode
+		extends AbstractJavaContextNode
 		implements JaxbPersistentAttribute {
 
 	protected JaxbAttributeMapping mapping;  // never null
@@ -310,4 +316,32 @@ public abstract class GenericJavaPersistentAttribute
 	public void toString(StringBuilder sb) {
 		sb.append(this.getName());
 	}
+
+
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.getJavaResourceAttribute().getTextRange(astRoot);
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.getMapping().validate(messages, reporter, astRoot);
+	}
+
+
+	//**************** static methods *****************
+
+	protected static String getJavaResourceAttributeType(JavaResourceAttribute attribute) {
+		if (attribute.typeIsSubTypeOf(COLLECTION_CLASS_NAME)) {
+			if (attribute.getTypeTypeArgumentNamesSize() == 1) {
+				return attribute.getTypeTypeArgumentName(0);
+			}
+			return null;
+		}
+		return attribute.getTypeName();
+	}
+
+	private static final String COLLECTION_CLASS_NAME = Collection.class.getName();
+
 }

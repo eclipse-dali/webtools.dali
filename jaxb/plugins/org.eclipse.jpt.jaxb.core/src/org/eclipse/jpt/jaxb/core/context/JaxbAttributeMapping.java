@@ -9,6 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+
 
 /**
  * Represents a JAXB attribute mapping.
@@ -23,9 +26,11 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface JaxbAttributeMapping
-		extends JaxbContextNode {
+		extends JavaContextNode {
 
 	JaxbPersistentAttribute getParent();
+
+	JavaResourceAttribute getJavaResourceAttribute();
 
 	String getKey();
 

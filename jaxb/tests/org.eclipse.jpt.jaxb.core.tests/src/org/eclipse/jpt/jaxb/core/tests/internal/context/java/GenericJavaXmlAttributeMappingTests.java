@@ -26,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -244,6 +245,61 @@ public class GenericJavaXmlAttributeMappingTests extends JaxbContextModelTestCas
 		assertNull(resourceAttribute.getAnnotation(XmlElementAnnotation.ANNOTATION_NAME));
 	}
 
+	public void testModifyXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+		xmlAttributeMapping.addXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		xmlAttributeMapping.removeXmlJavaTypeAdapter();
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlJavaTypeAdapter() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+
+
+		//add an XmlJavaTypeAdapter annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
+		assertNotNull(xmlJavaTypeAdapterAnnotation);
+
+		//remove the XmlJavaTypeAdapter annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.removeAnnotation(declaration, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
+		assertNull(xmlJavaTypeAdapterAnnotation);
+	}
 
 	protected void addXmlAttributeMemberValuePair(ModifiedDeclaration declaration, String name, String value) {
 		this.addMemberValuePair((MarkerAnnotation) this.getXmlAttributeAnnotation(declaration), name, value);

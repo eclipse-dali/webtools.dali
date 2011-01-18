@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -123,85 +123,6 @@ final class SourceMethod
 		return this.annotatedElement.matches(signature, occurrence);
 	}
 
-	public boolean returnTypeIsSubTypeOf(String tn) {
-		return this.typeIsSubTypeOf(tn);
-	}
-
-	public boolean returnTypeIsVariablePrimitive() {
-		return this.typeIsVariablePrimitive();
-	}
-
-	public int getReturnTypeModifiers() {
-		return this.getModifiers();
-	}
-
-	@Override
-	protected String getModifiersProperty() {
-		return RETURN_TYPE_MODIFIERS_PROPERTY;
-	}
-
-	public String getReturnTypeName() {
-		return this.getTypeName();
-	}
-
-	@Override
-	protected String getTypeNameProperty() {
-		return RETURN_TYPE_NAME_PROPERTY;
-	}
-
-	public boolean returnTypeIsInterface() {
-		return this.typeIsInterface();
-	}
-
-	@Override
-	protected String getTypeIsInterfaceProperty() {
-		return RETURN_TYPE_IS_INTERFACE_PROPERTY;
-	}
-
-	public boolean returnTypeIsEnum() {
-		return this.typeIsEnum();
-	}
-
-	@Override
-	protected String getTypeIsEnumProperty() {
-		return RETURN_TYPE_IS_ENUM_PROPERTY;
-	}
-
-	public ListIterable<String> getReturnTypeSuperclassNames() {
-		return this.getTypeSuperclassNames();
-	}
-
-	@Override
-	protected String getTypeSuperclassNamesProperty() {
-		return RETURN_TYPE_SUPERCLASS_NAMES_LIST;
-	}
-
-	public Iterable<String> getReturnTypeInterfaceNames() {
-		return this.getTypeInterfaceNames();
-	}
-
-	@Override
-	protected String getTypeInterfaceNamesProperty() {
-		return RETURN_TYPE_INTERFACE_NAMES_COLLECTION;
-	}
-
-	public ListIterable<String> getReturnTypeTypeArgumentNames() {
-		return this.getTypeTypeArgumentNames();
-	}
-
-	@Override
-	protected String getTypeTypeArgumentNamesProperty() {
-		return RETURN_TYPE_TYPE_ARGUMENT_NAMES_LIST;
-	}
-
-	public int getReturnTypeTypeArgumentNamesSize() {
-		return this.getTypeTypeArgumentNamesSize();
-	}
-
-	public String getReturnTypeTypeArgumentName(int index) {
-		return this.getTypeTypeArgumentName(index);
-	}
-
 	// ***** parameter type names
 	public ListIterable<String> getParameterTypeNames() {
 		return new LiveCloneListIterable<String>(this.parameterTypeNames);
@@ -212,7 +133,7 @@ final class SourceMethod
 	}
 
 	private void syncParameterTypeNames(List<String> astParameterTypeNames) {
-		this.synchronizeList(astParameterTypeNames, this.parameterTypeNames, getTypeSuperclassNamesProperty());
+		this.synchronizeList(astParameterTypeNames, this.parameterTypeNames, PARAMETER_TYPE_NAMES_LIST);
 	}
 
 	private List<String> buildParameterTypeNames(IMethodBinding methodBinding) {

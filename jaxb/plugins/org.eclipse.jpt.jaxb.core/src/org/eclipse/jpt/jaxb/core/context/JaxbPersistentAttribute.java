@@ -9,6 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
@@ -26,7 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
  * @since 3.0
  */
 public interface JaxbPersistentAttribute
-		extends JaxbContextNode {
+		extends JavaContextNode {
 
 
 	// ********** name **********
@@ -43,6 +44,11 @@ public interface JaxbPersistentAttribute
 
 	JavaResourceAttribute getJavaResourceAttribute();
 
+	/**
+	 * Return the type name of the java resource attribute
+	 * This might not return the same thing as getJavaResourceAttribute().getTypeName().
+	 */
+	String getJavaResourceAttributeTypeName();
 
 	// ********** mapping **********
 

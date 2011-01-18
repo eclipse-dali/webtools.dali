@@ -9,10 +9,18 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
+import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementMapping
 	extends AbstractJavaAttributeMapping<XmlElementAnnotation>
@@ -31,6 +39,8 @@ public class GenericJavaXmlElementMapping
 
 	protected String specifiedType;
 
+	protected final XmlAdaptable xmlAdaptable;
+
 	public GenericJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.specifiedName = this.buildSpecifiedName();
@@ -39,6 +49,7 @@ public class GenericJavaXmlElementMapping
 		this.specifiedNamespace = this.buildSpecifiedNamespace();
 		this.defaultValue = this.buildDefaultValue();
 		this.specifiedType = this.buildSpecifiedType();
+		this.xmlAdaptable = this.buildXmlAdaptable();
 	}
 
 	public String getKey() {
@@ -59,6 +70,13 @@ public class GenericJavaXmlElementMapping
 		this.setSpecifiedNamespace_(this.buildSpecifiedNamespace());
 		this.setDefaultValue_(this.buildDefaultValue());
 		this.setSpecifiedType_(this.buildSpecifiedType());
+		this.xmlAdaptable.synchronizeWithResourceModel();
+	}
+
+	@Override
+	public void update() {
+		super.update();
+		this.xmlAdaptable.update();
 	}
 
 	//************ XmlElement.name ***************
@@ -231,4 +249,45 @@ public class GenericJavaXmlElementMapping
 		return getMappingAnnotation() == null ? null : getMappingAnnotation().getType();
 	}
 
+
+	//****************** XmlJavaTypeAdapter *********************
+
+	public XmlAdaptable buildXmlAdaptable() {
+		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
+			public JavaResourceAnnotatedElement getResource() {
+				return getJavaResourceAttribute();
+			}
+			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
+				return GenericJavaXmlElementMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
+			}
+			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
+				GenericJavaXmlElementMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
+			}
+		});
+	}
+
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.getXmlJavaTypeAdapter();
+	}
+
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.addXmlJavaTypeAdapter();
+	}
+
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaAttributeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+
+	public void removeXmlJavaTypeAdapter() {
+		this.xmlAdaptable.removeXmlJavaTypeAdapter();
+	}
+
+
+	// ********** validation **********
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.xmlAdaptable.validate(messages, reporter, astRoot);
+	}
 }

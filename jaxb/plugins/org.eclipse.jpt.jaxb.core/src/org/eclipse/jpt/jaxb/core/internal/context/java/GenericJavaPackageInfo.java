@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -18,14 +21,16 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
+import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
-import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaPackageInfo
 		extends AbstractJavaContextNode
@@ -51,6 +56,13 @@ public class GenericJavaPackageInfo
 		this.specifiedAccessOrder = getResourceAccessOrder();
 		this.xmlSchemaTypeContainer = new XmlSchemaTypeContainer();
 		this.xmlJavaTypeAdapterContainer = new XmlJavaTypeAdapterContainer();
+	}
+
+	// **************** AbstractJaxbNode impl *********************************
+	
+	@Override
+	public IResource getResource() {
+		return this.resourcePackage.getFile();
 	}
 
 
@@ -221,8 +233,8 @@ public class GenericJavaPackageInfo
 		this.xmlJavaTypeAdapterContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 
-	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlSchemaTypeAnnotation) {
-		return this.getFactory().buildJavaXmlJavaTypeAdapter(this, xmlSchemaTypeAnnotation);
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaPackageXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
 	}
 
 	protected void syncXmlJavaTypeAdapters() {
@@ -233,16 +245,47 @@ public class GenericJavaPackageInfo
 	protected ListIterable<XmlJavaTypeAdapterAnnotation> getXmlJavaTypeAdapterAnnotations() {
 		return (ListIterable<XmlJavaTypeAdapterAnnotation>) this.resourcePackage.getAnnotations(XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 	}
+
+
+	// **************** misc **************************************************
 	
-	
+	protected CompilationUnit buildASTRoot() {
+		return this.resourcePackage.getJavaResourceCompilationUnit().buildASTRoot();
+	}
+
+
 	// **************** validation ********************************************
 	
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		if (reporter.isCancelled()) {
+			throw new ValidationCancelledException();
+		}
+		IFile file = this.resourcePackage.getFile();
+		// 'file' will be null if the type is "external" and binary;
+		// the file will be in a different project if the type is "external" and source;
+		// the type will be binary if it is in a JAR in the current project
+		if ((file != null) 
+				&& file.getProject().equals(getJaxbProject().getProject()) 
+				&& (this.resourcePackage instanceof SourceNode)) {
+			// build the AST root here to pass down
+			this.validate(messages, reporter, this.buildASTRoot());
+		}
+	}
+
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.resourcePackage.getNameTextRange(astRoot);
 	}
-	
-	
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
+			adapter.validate(messages, reporter, astRoot);
+		}
+	}
+
+
 	/**
 	 * xml schema type container
 	 */

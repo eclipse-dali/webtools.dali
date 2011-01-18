@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,11 +20,16 @@ public interface JaxbValidationMessages {
 	
 	// validation on package
 	public static final String PACKAGE_NO_SCHEMA_FOR_NAMESPACE = "PACKAGE_NO_SCHEMA_FOR_NAMESPACE";
+	public static final String PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED = "PACKAGE_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_SPECIFIED";
 	
 	// validation on type
 	public static final String XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE = "XML_TYPE_UNMATCHING_NAMESPACE_FOR_ANONYMOUS_TYPE";
 	public static final String XML_TYPE_UNRESOLVED_SCHEMA_TYPE = "XML_TYPE_UNRESOLVED_SCHEMA_TYPE";
-	
+
 	public static final String XML_ROOT_ELEMENT_UNRESOLVED_SCHEMA_ELEMENT = "XML_ROOT_ELEMENT_UNRESOLVED_SCHEMA_ELEMENT";
 	public static final String XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE = "XML_ROOT_ELEMENT_TYPE_CONFLICTS_WITH_XML_TYPE";
+	
+	// validation on attribute mapping
+	public static final String ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED = "ATTRIBUTE_MAPPING_XML_JAVA_TYPE_ADAPTER_TYPE_NOT_DEFINED";
+
 }

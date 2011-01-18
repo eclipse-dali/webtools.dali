@@ -9,14 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
-import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 
 public abstract class AbstractJavaAttributeMapping<A extends Annotation>
-	extends AbstractJaxbContextNode
+	extends AbstractJavaContextNode
 	implements JaxbAttributeMapping
 {
 
@@ -88,6 +89,14 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 	}
 
 
+	// ********** validation **********
+
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return getAnnotation_() == null ? getJavaResourceAttribute().getNameTextRange(astRoot) : getAnnotation_().getTextRange(astRoot);
+	}
+
+
 	// ********** misc **********
 
 	@Override
@@ -103,4 +112,7 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 		return this.getPersistentAttribute().getJavaResourceAttribute();
 	}
 
+	public String getJavaResourceAttributeType() {
+		return this.getPersistentAttribute().getJavaResourceAttributeTypeName();
+	}
 }

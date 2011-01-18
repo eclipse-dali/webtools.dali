@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 /**
  * 
@@ -59,5 +62,13 @@ public interface JaxbPackageInfo
 	void removeXmlJavaTypeAdapter(XmlJavaTypeAdapter xmlJavaTypeAdapter);
 	void moveXmlJavaTypeAdapter(int targetIndex, int sourceIndex);
 		String XML_JAVA_TYPE_ADAPTERS_LIST = "xmlJavaTypeAdapters"; //$NON-NLS-1$
+
+
+	// **************** validation ********************************************
+	
+	/**
+	 * Add validation messages to the specified list.
+	 */
+	void validate(List<IMessage> messages, IReporter reporter);
 
 }

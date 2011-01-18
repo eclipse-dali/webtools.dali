@@ -32,7 +32,6 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
-import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
@@ -50,7 +49,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentProp
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaRegistry;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
@@ -62,7 +60,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -125,10 +122,6 @@ public abstract class AbstractJaxbFactory
 	
 	public XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation resourceXmlSchemaType) {
 		return new GenericJavaXmlSchemaType(parent, resourceXmlSchemaType);
-	}
-	
-	public XmlJavaTypeAdapter buildJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resourceXmlJavaTypeAdapter) {
-		return new GenericJavaXmlJavaTypeAdapter(parent, resourceXmlJavaTypeAdapter);
 	}
 	
 	public JaxbEnumConstant buildJavaEnumConstant(JaxbPersistentEnum parent, JavaResourceEnumConstant resourceEnumConstant) {

@@ -35,6 +35,13 @@ public class GenericJavaPersistentProperty
 		return this.calculateResourceMethodToAnnotate();
 	}
 
+	public String getJavaResourceAttributeTypeName() {
+		JavaResourceAttribute getterMethod = getResourceGetterMethod();
+		//it's invalid to have a setter without a getter, so just return null in this case
+		//rather than attempting to define the type from the setter's parameters
+		return getterMethod == null ? null : getJavaResourceAttributeType(getterMethod);
+	}
+
 	public JavaResourceMethod getResourceGetterMethod() {
 		return this.resourceGetter;
 	}

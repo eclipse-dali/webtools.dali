@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,10 +27,10 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 
 
 @SuppressWarnings("nls")
-public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
+public class GenericJavaPackageXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 {
 
-	public GenericJavaXmlJavaTypeAdapterTests(String name) {
+	public GenericJavaPackageXmlJavaTypeAdapterTests(String name) {
 		super(name);
 	}
 
@@ -73,14 +73,14 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlJavaTypeAdapterTests.this.addXmlJavaTypeAdapterTypeMemberValuePair(declaration, JAXB.XML_JAVA_TYPE_ADAPTER__VALUE, "String");
+				GenericJavaPackageXmlJavaTypeAdapterTests.this.addXmlJavaTypeAdapterTypeMemberValuePair(declaration, JAXB.XML_JAVA_TYPE_ADAPTER__VALUE, "String");
 			}
 		});
 		assertEquals("String", contextXmlJavaTypeAdapter.getValue());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
+				GenericJavaPackageXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
 		assertFalse(contextPackageInfo.getXmlJavaTypeAdapters().iterator().hasNext());
@@ -93,17 +93,21 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		assertNull(contextXmlJavaTypeAdapter.getType());
+		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getDefaultType());
 
-		contextXmlJavaTypeAdapter.setType("foo");
+		contextXmlJavaTypeAdapter.setSpecifiedType("foo");
 		XmlJavaTypeAdapterAnnotation javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", javaTypeAdapterAnnotation.getType());
 		assertEquals("foo", contextXmlJavaTypeAdapter.getType());
 
 		 //verify the xml schema type annotation is not removed when the type is set to null
-		contextXmlJavaTypeAdapter.setType(null);
+		contextXmlJavaTypeAdapter.setSpecifiedType(null);
 		javaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourcePackage.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(javaTypeAdapterAnnotation.getType());
 		assertNull(contextXmlJavaTypeAdapter.getType());
+		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getDefaultType());
 	}
 
 	public void testUpdateType() throws Exception {
@@ -113,19 +117,21 @@ public class GenericJavaXmlJavaTypeAdapterTests extends JaxbContextModelTestCase
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
 		assertNull(contextXmlJavaTypeAdapter.getType());
+		assertNull(contextXmlJavaTypeAdapter.getSpecifiedType());
+		assertNull(contextXmlJavaTypeAdapter.getDefaultType());
 
 		//add a type member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlJavaTypeAdapterTests.this.addXmlJavaTypeAdapterTypeMemberValuePair(declaration, JAXB.XML_JAVA_TYPE_ADAPTER__TYPE, "String");
+				GenericJavaPackageXmlJavaTypeAdapterTests.this.addXmlJavaTypeAdapterTypeMemberValuePair(declaration, JAXB.XML_JAVA_TYPE_ADAPTER__TYPE, "String");
 			}
 		});
 		assertEquals("String", contextXmlJavaTypeAdapter.getType());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {
-				GenericJavaXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
+				GenericJavaPackageXmlJavaTypeAdapterTests.this.removeXmlJavaTypeAdapterAnnotation(declaration);
 			}
 		});
 		assertFalse(contextPackageInfo.getXmlJavaTypeAdapters().iterator().hasNext());

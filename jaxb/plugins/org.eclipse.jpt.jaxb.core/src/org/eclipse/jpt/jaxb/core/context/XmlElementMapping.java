@@ -23,7 +23,7 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlElementMapping
-		extends JaxbAttributeMapping {
+		extends JaxbAttributeMapping, XmlAdaptable {
 
 
 	String getName();

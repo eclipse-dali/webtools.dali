@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -50,45 +50,4 @@ final class SourceField
 	private SourceField(JavaResourceType parent, FieldAttribute field){
 		super(parent, field);
 	}
-
-
-	// ******** SourceAttribute implementation ********
-
-	@Override
-	protected String getModifiersProperty() {
-		return MODIFIERS_PROPERTY;
-	}
-
-	@Override
-	protected String getTypeNameProperty() {
-		return TYPE_NAME_PROPERTY;
-	}
-
-	@Override
-	protected String getTypeIsInterfaceProperty() {
-		return TYPE_IS_INTERFACE_PROPERTY;
-	}
-
-	@Override
-	protected String getTypeIsEnumProperty() {
-		return TYPE_IS_ENUM_PROPERTY;
-	}
-
-	@Override
-	protected String getTypeSuperclassNamesProperty() {
-		return TYPE_SUPERCLASS_NAMES_LIST;
-	}
-
-	@Override
-	protected String getTypeInterfaceNamesProperty() {
-		return TYPE_INTERFACE_NAMES_COLLECTION;
-	}
-
-	@Override
-	protected String getTypeTypeArgumentNamesProperty() {
-		return TYPE_TYPE_ARGUMENT_NAMES_LIST;
-	}
-	
-
-
 }
