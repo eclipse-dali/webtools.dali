@@ -174,7 +174,7 @@ public abstract class AbstractEntityMappingsDetailsPage extends AbstractJpaDetai
 
 			@Override
 			protected AccessType getValue() {
-				return getSubject().getAccess();
+				return getSubject().getSpecifiedAccess();
 			}
 
 			@Override
