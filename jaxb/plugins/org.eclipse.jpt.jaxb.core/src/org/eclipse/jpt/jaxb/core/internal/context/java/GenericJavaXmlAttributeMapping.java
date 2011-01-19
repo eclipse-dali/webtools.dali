@@ -37,8 +37,10 @@ public class GenericJavaXmlAttributeMapping
 
 	public GenericJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {
 		super(parent);
-		this.specifiedRequired = this.buildSpecifiedRequired();
-		this.xmlAdaptable = this.buildXmlAdaptable();
+		this.specifiedName = buildSpecifiedName();
+		this.specifiedNamespace = buildSpecifiedNamespace();
+		this.specifiedRequired = buildSpecifiedRequired();
+		this.xmlAdaptable = buildXmlAdaptable();
 	}
 
 	public String getKey() {
@@ -53,9 +55,9 @@ public class GenericJavaXmlAttributeMapping
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
-		this.setSpecifiedName_(this.buildSpecifiedName());
-		this.setSpecifiedRequired_(this.buildSpecifiedRequired());
-		this.setSpecifiedNamespace_(this.buildSpecifiedNamespace());
+		setSpecifiedName_(buildSpecifiedName());
+		setSpecifiedNamespace_(buildSpecifiedNamespace());
+		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.xmlAdaptable.synchronizeWithResourceModel();
 	}
 
