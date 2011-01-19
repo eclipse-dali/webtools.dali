@@ -87,12 +87,6 @@ public interface JavaResourcePersistentType
 	 */
 	boolean hasPrivateNoArgConstructor();
 		String PRIVATE_NO_ARG_CONSTRUCTOR_PROPERTY = "privateNoArgConstructor"; //$NON-NLS-1$
-
-	/**
-	 * Return the type's access type ({@link AccessType#FIELD FIELD} or
-	 * {@link AccessType#PROPERTY PROPERTY}).
-	 */
-	AccessType getAccess();
 	
 	/**
 	 * Return whether the type is annotated with any annotations that determine whether and 

@@ -31,7 +31,6 @@ import org.eclipse.jpt.core.internal.jpa2.resource.java.GeneratedAnnotationDefin
 import org.eclipse.jpt.core.internal.jpa2.resource.java.StaticMetamodelAnnotationDefinition;
 import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTType;
-import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.StaticMetamodelAnnotation;
@@ -447,10 +446,6 @@ final class SourcePersistentType
 
 
 	// ********** misc **********
-
-	public AccessType getAccess() {
-		return JPTTools.buildAccess(this);
-	}
 
 	public boolean isMapped() {
 		for (Annotation each : this.getAnnotations()) {

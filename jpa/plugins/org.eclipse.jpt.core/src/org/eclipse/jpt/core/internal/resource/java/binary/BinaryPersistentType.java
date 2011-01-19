@@ -344,10 +344,6 @@ final class BinaryPersistentType
 
 
 	// ********** misc **********
-
-	public AccessType getAccess() {
-		return JPTTools.buildAccess(this);
-	}
 	
 	public boolean isMapped() {
 		for (Annotation each : CollectionTools.iterable(annotations())) {

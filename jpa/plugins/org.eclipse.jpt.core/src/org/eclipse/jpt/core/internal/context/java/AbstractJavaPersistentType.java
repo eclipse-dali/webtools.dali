@@ -32,6 +32,7 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNode;
+import org.eclipse.jpt.core.internal.utility.jdt.JPTTools;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -233,7 +234,7 @@ public abstract class AbstractJavaPersistentType
 	 * </ul>
 	 */
 	protected AccessType buildDefaultAccess() {
-		AccessType accessType = AccessType.fromJavaResourceModel(this.resourcePersistentType.getAccess());
+		AccessType accessType = AccessType.fromJavaResourceModel(JPTTools.buildAccess(this.resourcePersistentType));
 		if (accessType != null) {
 			return accessType;
 		}
