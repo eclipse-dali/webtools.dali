@@ -116,8 +116,8 @@ public class GenericOrmOrderable
 		if (orderBy != null) {
 			this.setSpecifiedOrderBy_(orderBy);
 			this.setNoOrdering_(false);
-			this.setPkOrdering_(orderBy.isEmpty());
-			this.setCustomOrdering_( ! orderBy.isEmpty());
+			this.setPkOrdering_(orderBy.length() == 0);
+			this.setCustomOrdering_(orderBy.length() != 0);
 			this.setOrderColumnOrdering_(false);
 
 			this.removeXmlOrderColumn();
@@ -219,7 +219,7 @@ public class GenericOrmOrderable
 			return false;
 		}
 		String xmlOrderBy = this.getXmlOrderBy();
-		return (xmlOrderBy != null) && xmlOrderBy.isEmpty();
+		return (xmlOrderBy != null) && (xmlOrderBy.length() == 0);
 	}
 
 
@@ -263,7 +263,7 @@ public class GenericOrmOrderable
 			return false;
 		}
 		String xmlOrderBy = this.getXmlOrderBy();
-		return (xmlOrderBy != null) && ! xmlOrderBy.isEmpty();
+		return (xmlOrderBy != null) && (xmlOrderBy.length() != 0);
 	}
 
 
