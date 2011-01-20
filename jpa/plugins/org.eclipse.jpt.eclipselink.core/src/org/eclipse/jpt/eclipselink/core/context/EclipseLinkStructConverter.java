@@ -21,11 +21,7 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkStructConverter
-	extends EclipseLinkConverter
+public interface EclipseLinkStructConverter extends EclipseLinkConverterClassConverter
 {
-	String getConverterClass();	
-	void setConverterClass(String converterClass);
-		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
 		String ECLIPSELINK_STRUCT_CONVERTER_CLASS_NAME = "org.eclipse.persistence.platform.database.converters.StructConverter"; //$NON-NLS-1$
 }

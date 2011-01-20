@@ -16,6 +16,7 @@ import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -204,6 +205,10 @@ public class XmlStructConverter extends XmlNamedConverter
 		result.append(converter);
 		result.append(')');
 		return result.toString();
+	}
+	
+	public TextRange getConverterClassTextRange() {
+		return getAttributeTextRange(EclipseLink.STRUCT_CONVERTER__CONVERTER);
 	}
 	
 	// ********** translators **********

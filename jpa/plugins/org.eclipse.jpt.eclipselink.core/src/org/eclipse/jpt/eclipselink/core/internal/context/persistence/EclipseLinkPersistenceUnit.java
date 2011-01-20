@@ -377,7 +377,11 @@ public class EclipseLinkPersistenceUnit
 
 	@Override
 	public boolean calculateDefaultCacheable() {
-		switch (this.getSharedCacheMode()) {
+		SharedCacheMode sharedCacheMode = this.getDefaultSharedCacheMode();
+		if (sharedCacheMode == null) {
+			return true;
+		}
+		switch (sharedCacheMode) {
 			case NONE:
 			case ENABLE_SELECTIVE:
 				return false;
@@ -386,7 +390,7 @@ public class EclipseLinkPersistenceUnit
 			case UNSPECIFIED:
 				return true;
 		}
-		return true;//null
+		return true;
 	}
 
 

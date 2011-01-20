@@ -118,7 +118,7 @@ public final class SourceEclipseLinkConverterAnnotation
 
 	public boolean converterClassImplementsInterface(String interfaceName, CompilationUnit astRoot) {
 		return (this.converterClass != null)
-				&& ASTTools.typeIsSubTypeOf(this.converterClassAdapter.getExpression(astRoot), interfaceName);
+				&& ASTTools.typeImplementsInterface(this.converterClassAdapter.getExpression(astRoot), interfaceName);
 	}
 
 	// ***** fully-qualified converter class name

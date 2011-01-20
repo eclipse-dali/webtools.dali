@@ -18,6 +18,7 @@ import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidation
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -101,7 +102,17 @@ public class JavaEclipseLinkCustomConverter
 	}
 
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if ( ! this.converterAnnotation.converterClassImplementsInterface(ECLIPSELINK_CONVERTER_CLASS_NAME, astRoot)) {
+		if (StringTools.stringIsEmpty(this.converterClass)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
+					this,
+					getConverterClassTextRange(astRoot)
+				)
+			);			
+		}
+		else if ( ! this.converterAnnotation.converterClassImplementsInterface(ECLIPSELINK_CONVERTER_CLASS_NAME, astRoot)) {
 			messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,

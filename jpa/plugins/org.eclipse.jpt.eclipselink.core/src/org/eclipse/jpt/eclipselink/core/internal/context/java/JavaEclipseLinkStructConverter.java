@@ -9,10 +9,21 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.List;
+
+import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
+import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkStructConverterAnnotation;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class JavaEclipseLinkStructConverter
 	extends JavaEclipseLinkConverter<EclipseLinkStructConverterAnnotation>
@@ -59,7 +70,79 @@ public class JavaEclipseLinkStructConverter
 	public Class<EclipseLinkStructConverter> getType() {
 		return EclipseLinkStructConverter.class;
 	}
+	
+	//************ validation ***************
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.converterClass != null) {
+			// the annotation will have a compile error if its converter class is missing
+			validateConverterClass(messages, astRoot);
+		}
+	}
+	
+	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
+		IJavaProject javaProject = getJpaProject().getJavaProject();
 
+		if (StringTools.stringIsEmpty(this.converterClass)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_DEFINED,
+					this,
+					getConverterClassTextRange(astRoot)
+				)
+			);			
+		}
+		
+		else if (!converterClassExists(javaProject)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_EXISTS,
+					new String[] {this.converterClass},
+					this,
+					getConverterClassTextRange(astRoot)
+				)
+			);			
+		} 
+		else if (!converterClassImplementsInterface(javaProject, ECLIPSELINK_CONVERTER_CLASS_NAME)) {
+			messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					EclipseLinkJpaValidationMessages.CONVERTER_CLASS_IMPLEMENTS_CONVERTER,
+					new String[] {this.converterClass},
+					this,
+					getConverterClassTextRange(astRoot)
+				)
+			);			
+		}
+	}
+	
+	private boolean converterClassExists(IJavaProject javaProject) {
+		if (this.converterClass != null) 
+		{
+			if (JDTTools.getJDTType(javaProject, this.converterClass) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean converterClassImplementsInterface(IJavaProject javaProject, String interfaceName) {
+		if (this.converterClass != null) 
+		{
+			if (JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {
+		return this.converterAnnotation.getConverterTextRange(astRoot);
+	}
 
 	// ********** adapter **********
 
@@ -87,5 +170,6 @@ public class JavaEclipseLinkStructConverter
 		public JavaEclipseLinkConverter<? extends EclipseLinkNamedConverterAnnotation> buildConverter(EclipseLinkNamedConverterAnnotation converterAnnotation, JavaJpaContextNode parent) {
 			return new JavaEclipseLinkStructConverter(parent, (EclipseLinkStructConverterAnnotation) converterAnnotation);
 		}
+		
 	}
 }

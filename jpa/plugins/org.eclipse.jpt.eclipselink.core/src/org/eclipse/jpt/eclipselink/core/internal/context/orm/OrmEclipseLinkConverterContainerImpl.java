@@ -710,6 +710,34 @@ public class OrmEclipseLinkConverterContainerImpl
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
+		validateCustomConverters(messages, reporter);
+		validateObjectTypeConverters(messages, reporter);
+		validateStructConverters(messages, reporter);
+		validateTypeConverters(messages, reporter);
+	}
+	
+	private void validateCustomConverters(List<IMessage> messages, IReporter reporter) {
+		for (OrmEclipseLinkCustomConverter converter : this.getCustomConverters()) {
+			converter.validate(messages, reporter);
+		}
+	}
+
+	private void validateObjectTypeConverters(List<IMessage> messages, IReporter reporter) {
+		for (OrmEclipseLinkObjectTypeConverter converter : this.getObjectTypeConverters()) {
+			converter.validate(messages, reporter);
+		}
+	}
+	
+	private void validateStructConverters(List<IMessage> messages, IReporter reporter) {
+		for (OrmEclipseLinkStructConverter converter : this.getStructConverters()) {
+			converter.validate(messages, reporter);
+		}
+	}
+
+	private void validateTypeConverters(List<IMessage> messages, IReporter reporter) {
+		for (OrmEclipseLinkTypeConverter converter : this.getTypeConverters()) {
+			converter.validate(messages, reporter);
+		}
 	}
 
 	public TextRange getValidationTextRange() {

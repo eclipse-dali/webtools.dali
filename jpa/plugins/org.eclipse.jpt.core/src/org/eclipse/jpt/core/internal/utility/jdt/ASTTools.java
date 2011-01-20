@@ -183,15 +183,27 @@ public class ASTTools {
 			return typeBinding;
 		}
 		visited.add(typeName);
+		
+		ITypeBinding interfaceBinding = findTypeInInterfaces(typeBinding, searchTypeName, visited);
+		if (interfaceBinding != null) {
+			return interfaceBinding;
+		}
+		
+		return findTypeInSuperclasses(typeBinding, searchTypeName, visited);
+	}
 
+	private static ITypeBinding findTypeInInterfaces(ITypeBinding typeBinding, String searchTypeName, HashSet<String> visited) {
 		ITypeBinding[] interfaceBindings = typeBinding.getInterfaces();
 		for (ITypeBinding interfaceBinding : interfaceBindings) {  // recurse up interfaces
 			ITypeBinding result = findTypeInHierarchy(interfaceBinding, searchTypeName, visited);
 			if (result != null) {
-				return result;
+ 				return result;
 			}
 		}
-
+		return null;
+	}
+	
+	private static ITypeBinding findTypeInSuperclasses(ITypeBinding typeBinding, String searchTypeName, HashSet<String> visited) {
 		ITypeBinding superBinding = typeBinding.getSuperclass();
 		if (superBinding != null) {  // recurse up superclasses
 			ITypeBinding result = findTypeInHierarchy(superBinding, searchTypeName, visited);
@@ -199,8 +211,41 @@ public class ASTTools {
 				return result;
 			}
 		}
+		return null;		
+	}
+	/**
+	 * Return whether the specified expression is a type literal and the type binding
+	 * corresponding to the specified interface name exists in the type
+	 * literal's inheritance hierarchy (superclasses and interfaces).
+	 * Return null otherwise.
+	 */
+	public static boolean typeImplementsInterface(Expression expression, String searchInterfaceName) {
+		ITypeBinding typeBinding = resolveTypeBinding(expression);
+		if (typeBinding == null) {
+			return false;
+		} else {
+			return findInterfaceInHierarchy(typeBinding, searchInterfaceName) != null;
+		}
+	}
 
-		return null;
+	/**
+	 * Return whether a type binding with the specified interface name exists in
+	 * the specified type binding's inheritance hierarchy (superclasses
+	 * and interfaces).
+	 */
+	public static boolean typeImplementsInterface(ITypeBinding typeBinding, String searchInterfaceName) {
+		return findInterfaceInHierarchy(typeBinding, searchInterfaceName) != null;
+	}
+	
+	private static ITypeBinding findInterfaceInHierarchy(ITypeBinding typeBinding, String searchInterfaceName) {
+		HashSet<String> visited = new HashSet<String>();
+		ITypeBinding interfaceBinding = findTypeInInterfaces(typeBinding, searchInterfaceName, visited);
+		if (interfaceBinding != null) {
+			return interfaceBinding;
+		}
+		
+		return findTypeInSuperclasses(typeBinding, searchInterfaceName, visited);
+
 	}
 
 }

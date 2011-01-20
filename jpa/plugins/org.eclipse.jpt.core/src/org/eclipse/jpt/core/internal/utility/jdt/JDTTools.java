@@ -10,12 +10,16 @@
 package org.eclipse.jpt.core.internal.utility.jdt;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
@@ -56,6 +60,130 @@ public final class JDTTools
 	}
 
 	private static final IJavaElement[] EMPTY_JAVA_ELEMENT_ARRAY = new IJavaElement[0];
+	
+	public static boolean typeNamedImplementsInterfaceNamed(IJavaProject javaProject, String typeName, String interfaceNamed) {
+		try {
+			return typeImplementsInterface(javaProject, javaProject.findType(typeName), javaProject.findType(interfaceNamed));
+		}
+		catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return false;
+		}
+	}
+	
+	public static boolean typeImplementsInterface(IJavaProject javaProject, IType type, IType interfase) {
+		try {
+			if (type == null || interfase == null) {
+				return false;
+			}
+			
+			Iterable<String> resolvedSuperInterfaceNames = resolveSuperInterfaceNames(type);
+			if (CollectionTools.contains(resolvedSuperInterfaceNames, interfase.getFullyQualifiedName())) {
+				return true;
+			}
+
+			for (String interfaceName : resolveSuperInterfaceNames(type)) {
+				IType superInterface = javaProject.findType(interfaceName);
+				if (superInterface != null && typeImplementsInterface(javaProject, superInterface, interfase)) {
+					return true;
+				}
+			}
+
+			if (type.getSuperclassName() == null) {
+				return false;
+			}
+
+			return typeImplementsInterface(javaProject, getJDTSuperclass(javaProject, type), interfase);
+		}
+		catch (JavaModelException ex) {
+			return false;
+		}
+
+	}
+	
+	/**
+	 * This is necessary because for whatever reason getSuperClassName() on IType returns unqualified names 
+	 * when the type is java sourced.
+	 * @param type
+	 * @return String - resolved super class name or null
+	 */
+	private static String resolveSuperClassName(final IType type) {
+		try {
+			if (!type.isBinary()) {
+				String superClassName = type.getSuperclassName();
+				String[][] resolvedSuperClassName = type.resolveType(superClassName);
+				return resolvedSuperClassName[0][0] + "." + resolvedSuperClassName[0][1];
+			} else {
+				return type.getSuperclassName();
+			}
+		} catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return null;
+		}
+	}
+	
+	/**
+	 * This is necessary because for whatever reason getSuperInterfaceNames() on IType returns unqualified names
+	 *  when the type is java sourced.
+	 * @param type
+	 * @return Iterable<String> - resolved super interface names
+	 */
+	private static Iterable<String> resolveSuperInterfaceNames(final IType type) {
+		try {
+			if (!type.isBinary()) {
+				ArrayList<String> resolvedSuperInterfaceNames = new ArrayList<String>();
+				for (String superInterfaceName : new ArrayIterable<String>(type.getSuperInterfaceNames())) {
+					String[][] resolvedTypeNames = type.resolveType(superInterfaceName);
+					for (String[] resolvedTypeName : resolvedTypeNames) {
+						resolvedSuperInterfaceNames.add(resolvedTypeName[0] + "." + resolvedTypeName[1]);
+					}
+				}
+				return resolvedSuperInterfaceNames;
+			} else {
+				return new ArrayIterable<String>(type.getSuperInterfaceNames());
+			}
+		}
+		catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return EmptyIterable.instance();
+		}
+	}
+	
+	public static IType getJDTType(IJavaProject javaProject, String fullyQualifiedName) {
+		try {
+			return javaProject.findType(fullyQualifiedName);
+		}
+		catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return null;
+		}
+	}
+	
+	public static IType getJDTSuperclass(IJavaProject javaProject, IType child) {
+		 try {
+			 return javaProject.findType(resolveSuperClassName(child));
+		 }
+		 catch (JavaModelException ex) {
+			 JptCorePlugin.log(ex);
+			 return null;
+		 }
+	}
+	
+	public static Iterable<IType> getJDTSuperInterfaces(IJavaProject javaProject, IType child) {
+		ArrayList<IType> superclassInterfaces = new ArrayList<IType>();
+		try {
+			Iterable<String> superInterfaceNameIterable = resolveSuperInterfaceNames(child);
+			for (String superInterfaceName : superInterfaceNameIterable) {
+				superclassInterfaces.add(javaProject.findType(superInterfaceName));
+			}
+		}
+		catch (JavaModelException ex) {
+			JptCorePlugin.log(ex);
+			return EmptyIterable.instance();
+		}
+		
+		return superclassInterfaces;
+	}
 
 	public static Iterable<IPackageFragmentRoot> getJavaSourceFolders(IJavaProject javaProject) {
 		try {

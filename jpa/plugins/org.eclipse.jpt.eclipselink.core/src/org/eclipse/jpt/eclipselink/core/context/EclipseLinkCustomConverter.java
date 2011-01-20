@@ -21,11 +21,6 @@ package org.eclipse.jpt.eclipselink.core.context;
  * @version 2.1
  * @since 2.1
  */
-public interface EclipseLinkCustomConverter
-	extends EclipseLinkConverter
+public interface EclipseLinkCustomConverter extends EclipseLinkConverterClassConverter
 {
-	String getConverterClass();	
-	void setConverterClass(String converterClass);
-		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
-		String ECLIPSELINK_CONVERTER_CLASS_NAME = "org.eclipse.persistence.mappings.converters.Converter"; //$NON-NLS-1$
 }
