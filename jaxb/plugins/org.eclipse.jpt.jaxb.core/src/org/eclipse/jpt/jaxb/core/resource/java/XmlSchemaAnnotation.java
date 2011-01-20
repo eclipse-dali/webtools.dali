@@ -106,7 +106,13 @@ public interface XmlSchemaAnnotation
 	 * does not exist return the {@link TextRange} for the XmlSchema annotation.
 	 */
 	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
+	
+	/**
+	 * Return whether the specified position touches the 'namespace' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean namespaceTouches(int pos, CompilationUnit astRoot);
+	
 	/**
 	 * Corresponds to the 'xmlns' element of the XmlSchema annotation.
 	 * Return an empty iterator if the element does not exist in Java.

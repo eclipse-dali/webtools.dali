@@ -42,6 +42,7 @@ public final class NullXmlSchemaAnnotation
 	// ********** XmlSchemaAnnotation implementation **********
 
 	// ***** namespace
+	
 	public String getNamespace() {
 		return null;
 	}
@@ -55,8 +56,14 @@ public final class NullXmlSchemaAnnotation
 	public TextRange getNamespaceTextRange(CompilationUnit astRoot) {
 		return null;
 	}
-
+	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return false;
+	}
+	
+	
 	// ***** location
+	
 	public String getLocation() {
 		return null;
 	}

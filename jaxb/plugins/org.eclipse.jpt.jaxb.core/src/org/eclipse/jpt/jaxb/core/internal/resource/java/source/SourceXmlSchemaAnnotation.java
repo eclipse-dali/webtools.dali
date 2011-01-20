@@ -236,6 +236,10 @@ public class SourceXmlSchemaAnnotation
 		return this.getElementTextRange(NAMESPACE_ADAPTER, astRoot);
 	}
 	
+	public boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return elementTouches(NAMESPACE_ADAPTER, pos, astRoot);
+	}
+	
 	
 	// **************** xmlns *************************************************
 	
