@@ -121,6 +121,8 @@ public class GenericPackage
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		this.getPackageInfo().validate(messages, reporter);
+		if (this.packageInfo != null) {
+			this.packageInfo.validate(messages, reporter);
+		}
 	}
 }
