@@ -45,10 +45,11 @@ public class JptJaxbUiMessages {
 	public static String SchemasPage_editSchemaDialogTitle;
 	public static String SchemasPage_addSchemaTitle;
 	public static String SchemasPage_editSchemaTitle;
-	public static String SchemasPage_namespaceLabel;
 	public static String SchemasPage_locationLabel;
 	public static String SchemasPage_browseButtonLabel;
-	public static String SchemasPage_noNamespaceMessage;
+	public static String SchemasPage_namespaceLabel;
+	public static String SchemasPage_noNamespaceText;
+	public static String SchemasPage_schemaUnresolvedMessage;
 	public static String SchemasPage_duplicateNamespaceMessage;
 	public static String SchemasPage_noLocationMessage;
 	public static String SchemasPage_chooseLocationTitle;

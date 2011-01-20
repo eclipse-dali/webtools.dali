@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +19,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
-import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -69,49 +65,8 @@ public class SchemaLibraryImpl
 	}
 	
 	protected String getResolvedUri(String namespace) {
-		String resolvedUri = null;
 		String location = this.schemaLocations.get(namespace);
-		
-		ICatalog catalog = XMLCorePlugin.getDefault().getDefaultXMLCatalog();
-		
-		if (! StringTools.stringIsEmpty(location)) {
-			try {
-				resolvedUri = catalog.resolveSystem(location);
-				if (resolvedUri == null) {
-					resolvedUri = catalog.resolveURI(location);
-				}
-			}
-			catch (MalformedURLException me) {
-				JptJaxbCorePlugin.log(me);
-				resolvedUri = null;
-			}
-			catch (IOException ie) {
-				JptJaxbCorePlugin.log(ie);
-				resolvedUri = null;
-			}
-		}
-		
-		if (resolvedUri == null && namespace != null) {
-			if ( ! (location != null && location.endsWith(".xsd"))) { //$NON-NLS-1$ 
-				try {
-					resolvedUri = catalog.resolvePublic(namespace, location);
-					if (resolvedUri == null) {
-						resolvedUri = catalog.resolveURI(namespace);
-					}
-				}
-				catch (MalformedURLException me) {
-					JptJaxbCorePlugin.log(me);
-					resolvedUri = null;
-				}
-				catch (IOException ie) {
-            		JptJaxbCorePlugin.log(ie);
-					resolvedUri = null;
-				}
-			}
-		}
-		
-		// if resolvedUri is null, assume the location is resolved
-		return (resolvedUri != null) ? resolvedUri : location;
+		return XsdUtil.getResolvedUri(namespace, location);
 	}
 	
 	protected XSDSchema addSchema(String namespace, String resolvedUri) {

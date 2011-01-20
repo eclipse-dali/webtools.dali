@@ -11,7 +11,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.xsd;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
@@ -20,7 +22,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.common.uriresolver.internal.provisional.URIResolverPlugin;
+import org.eclipse.wst.xml.core.internal.XMLCorePlugin;
+import org.eclipse.wst.xml.core.internal.catalog.provisional.ICatalog;
 import org.eclipse.wst.xsd.contentmodel.internal.util.XSDSchemaLocatorAdapterFactory;
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
@@ -37,6 +42,52 @@ import org.eclipse.xsd.util.XSDSwitch;
 public class XsdUtil {
 	
 	static final XsdAdapterFactoryImpl adapterFactory = new XsdAdapterFactoryImpl();
+	
+	public static String getResolvedUri(String namespace, String location) {
+		String resolvedUri = null;
+		
+		ICatalog catalog = XMLCorePlugin.getDefault().getDefaultXMLCatalog();
+		
+		if (! StringTools.stringIsEmpty(location)) {
+			try {
+				resolvedUri = catalog.resolveSystem(location);
+				if (resolvedUri == null) {
+					resolvedUri = catalog.resolveURI(location);
+				}
+			}
+			catch (MalformedURLException me) {
+				JptJaxbCorePlugin.log(me);
+				resolvedUri = null;
+			}
+			catch (IOException ie) {
+				JptJaxbCorePlugin.log(ie);
+				resolvedUri = null;
+			}
+		}
+		
+		if (resolvedUri == null && namespace != null) {
+			if ( ! (location != null && location.endsWith(".xsd"))) { //$NON-NLS-1$ 
+				try {
+					resolvedUri = catalog.resolvePublic(namespace, location);
+					if (resolvedUri == null) {
+						resolvedUri = catalog.resolveURI(namespace);
+					}
+				}
+				catch (MalformedURLException me) {
+					JptJaxbCorePlugin.log(me);
+					resolvedUri = null;
+				}
+				catch (IOException ie) {
+            		JptJaxbCorePlugin.log(ie);
+					resolvedUri = null;
+				}
+			}
+		}
+		
+		// if resolvedUri is null, assume the location is resolved
+		return (resolvedUri != null) ? resolvedUri : location;
+	}
+	
 	
 	/**
 	 * Given uri for an XML Schema document, parse the document and build

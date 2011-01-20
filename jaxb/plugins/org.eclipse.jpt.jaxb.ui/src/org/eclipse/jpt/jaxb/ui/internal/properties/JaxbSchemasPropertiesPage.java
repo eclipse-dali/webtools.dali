@@ -28,7 +28,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.dialogs.TrayDialog;
@@ -45,6 +44,7 @@ import org.eclipse.jface.window.ToolTip;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen.SelectFileOrXMLCatalogIdPanel;
 import org.eclipse.jpt.ui.internal.swt.ColumnAdapter;
@@ -69,8 +69,6 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -86,6 +84,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PropertyPage;
 import org.eclipse.wst.common.uriresolver.internal.URI;
+import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
+import org.eclipse.xsd.XSDSchema;
 
 /**
  * Shows the schemas associated with a JAXB project
@@ -675,9 +675,11 @@ public class JaxbSchemasPropertiesPage
 		
 		private String defaultMessage;
 		
-		private String namespace;
-		
 		private final WritablePropertyValueModel<String> location;
+		
+		private final WritablePropertyValueModel<String> namespace;
+		
+		private XSDSchema resolvedSchema;
 		
 		private final Mode mode;
 		
@@ -689,17 +691,18 @@ public class JaxbSchemasPropertiesPage
 			this.currentSchema = currentSchema;
 			this.allSchemas = allSchemas;
 			this.location = new SimplePropertyValueModel<String>();
+			this.namespace = new SimplePropertyValueModel<String>();
 			
 			this.mode = (this.currentSchema == null) ? Mode.ADD : Mode.EDIT;
 			if (this.mode == Mode.ADD) {
 				this.defaultMessage = JptJaxbUiMessages.SchemasPage_addSchemaMessage;
-				this.namespace = "";
 				this.location.setValue("");
+				this.namespace.setValue("");
 			}
 			else {
 				this.defaultMessage = JptJaxbUiMessages.SchemasPage_editSchemaMessage;
-				this.namespace = currentSchema.getNamespace();
 				this.location.setValue(currentSchema.getLocation());
+				this.namespace.setValue(currentSchema.getNamespace());
 			}
 		}
 		
@@ -731,20 +734,6 @@ public class JaxbSchemasPropertiesPage
 			composite.setLayout(new GridLayout(3, false));
 			composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 			
-			Label namespaceLabel = new Label(composite, SWT.NULL);
-			namespaceLabel.setText(JptJaxbUiMessages.SchemasPage_namespaceLabel);
-			namespaceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
-			
-			final Text namespaceText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-			namespaceText.setText(this.namespace);
-			namespaceText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
-			namespaceText.addModifyListener(
-					new ModifyListener() {
-						public void modifyText(ModifyEvent event) {
-							namespaceChanged(namespaceText.getText());
-						}
-					});
-			
 			Label locationLabel = new Label(composite, SWT.NULL);
 			locationLabel.setText(JptJaxbUiMessages.SchemasPage_locationLabel);
 			locationLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
@@ -775,6 +764,25 @@ public class JaxbSchemasPropertiesPage
 						}
 					});
 			
+			Label namespaceLabel = new Label(composite, SWT.NULL);
+			namespaceLabel.setText(JptJaxbUiMessages.SchemasPage_namespaceLabel);
+			namespaceLabel.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false));
+			
+			final Text namespaceText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+			namespaceText.setText(this.namespace.getValue());
+			namespaceText.setEditable(false);
+			namespaceText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+			this.namespace.addPropertyChangeListener(
+					PropertyValueModel.VALUE,
+					new PropertyChangeListener() {
+						public void propertyChanged(PropertyChangeEvent event) {
+							String newValue = (String) event.getNewValue();
+							String display = (StringTools.stringIsEmpty(newValue)) ? 
+									JptJaxbUiMessages.SchemasPage_noNamespaceText : newValue;
+							namespaceText.setText(display);
+						}
+					});
+			
 			Dialog.applyDialogFont(dialogArea);
 			
 			return dialogArea;
@@ -785,11 +793,6 @@ public class JaxbSchemasPropertiesPage
 			return true;
 		}
 		
-		private void namespaceChanged(String newNamespace) {
-			this.namespace = newNamespace;
-			validate();
-		}
-		
 		private void browseForSchemaLocation() {
 			SchemaLocationDialog dialog = new SchemaLocationDialog(getShell());
 			
@@ -798,12 +801,21 @@ public class JaxbSchemasPropertiesPage
 				return;
 			}
 			
-			this.location.setValue(dialog.getLocation());
+			String location = dialog.getLocation();
+			this.location.setValue(location);
+			
+			String resolvedUri = XsdUtil.getResolvedUri(null, location);
+			
+			XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
+			String newNamespace = (schema == null) ? null : schema.getTargetNamespace();
+			this.namespace.setValue(newNamespace);
+			this.resolvedSchema = schema;
+			
 			validate();
 		}
 		
 		public String getNamespace() {
-			return this.namespace;
+			return this.namespace.getValue();
 		}
 		
 		public String getLocation() {
@@ -811,8 +823,8 @@ public class JaxbSchemasPropertiesPage
 		}
 		
 		private void validate() {
-			if (StringTools.stringIsEmpty(this.namespace)) {
-				setMessage(JptJaxbUiMessages.SchemasPage_noNamespaceMessage, IMessageProvider.INFORMATION);
+			if (this.resolvedSchema == null) {
+				setErrorMessage(JptJaxbUiMessages.SchemasPage_schemaUnresolvedMessage);
 			}
 			else if (isDuplicateNamespace()) {
 				setErrorMessage(JptJaxbUiMessages.SchemasPage_duplicateNamespaceMessage);
@@ -829,7 +841,7 @@ public class JaxbSchemasPropertiesPage
 		
 		private boolean isDuplicateNamespace() {
 			for (Schema schema : this.allSchemas) {
-				if ((this.currentSchema != schema) && this.namespace.equals(schema.getNamespace())) {
+				if ((this.currentSchema != schema) && getNamespace().equals(schema.getNamespace())) {
 					return true;
 				}
 			}
