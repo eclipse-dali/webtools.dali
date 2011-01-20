@@ -48,7 +48,13 @@ public interface XmlSchemaTypeAnnotation
 	 * does not exist return the {@link TextRange} for the XmlSchemaType annotation.
 	 */
 	TextRange getNameTextRange(CompilationUnit astRoot);
-	
+
+	/**
+	 * Return whether the specified position touches the 'name' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean nameTouches(int pos, CompilationUnit astRoot);
+
 	/**
 	 * Corresponds to the 'namespace' element of the XmlSchemaType annotation.
 	 * Return null if the element does not exist in Java.
@@ -67,7 +73,13 @@ public interface XmlSchemaTypeAnnotation
 	 * does not exist return the {@link TextRange} for the XmlSchemaType annotation.
 	 */
 	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-	
+
+	/**
+	 * Return whether the specified position touches the 'namespace' element.
+	 * Return false if the element does not exist.
+	 */
+	boolean namespaceTouches(int pos, CompilationUnit astRoot);
+
 	/**
 	 * Corresponds to the 'type' element of the XmlSchemaType annotation.
 	 * Return null if the element does not exist in Java.
