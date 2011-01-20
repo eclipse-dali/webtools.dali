@@ -9,18 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
-import org.eclipse.jpt.jaxb.core.internal.context.AbstractJaxbContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 public class GenericJavaXmlSchema
-		extends AbstractJaxbContextNode
+		extends AbstractJavaContextNode
 		implements XmlSchema {
 	
 	protected String specifiedNamespace;
@@ -209,6 +215,42 @@ public class GenericJavaXmlSchema
 
 	protected ListIterable<XmlNsAnnotation> getXmlNsAnnotations() {
 		return getXmlSchemaAnnotation().getXmlns();
+	}
+	
+	
+	// **************** content assist ****************************************
+	
+	@Override
+	public Iterable<String> javaCompletionProposals(
+			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		if (namespaceTouches(pos, astRoot)) {
+			return namespaceProposals(filter);
+		}
+		
+		return EmptyIterable.instance();
+	}
+	
+	protected boolean namespaceTouches(int pos, CompilationUnit astRoot) {
+		return getXmlSchemaAnnotation().namespaceTouches(pos, astRoot);
+	}
+	
+	protected Iterable<String> namespaceProposals(Filter<String> filter) {
+		return StringTools.convertToJavaStringLiterals(
+				new FilteringIterable<String>(
+						getJaxbProject().getSchemaLibrary().getSchemaLocations().keySet(), filter));
+	}
+	
+	
+	// **************** validation ********************************************
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return getXmlSchemaAnnotation().getTextRange(astRoot);
 	}
 	
 	

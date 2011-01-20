@@ -27,6 +27,9 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -252,9 +255,33 @@ public class GenericJavaPackageInfo
 	protected CompilationUnit buildASTRoot() {
 		return this.resourcePackage.getJavaResourceCompilationUnit().buildASTRoot();
 	}
+	
+	
+	// **************** content assist ****************************************
+	
+	@Override
+	public Iterable<String> javaCompletionProposals(
+			int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		result = this.xmlSchema.javaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+			
+		return EmptyIterable.instance();
+	}
 
 
 	// **************** validation ********************************************
+	
+	@Override
+	public TextRange getValidationTextRange(CompilationUnit astRoot) {
+		return this.resourcePackage.getNameTextRange(astRoot);
+	}
 	
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		if (reporter.isCancelled()) {
@@ -271,21 +298,17 @@ public class GenericJavaPackageInfo
 			this.validate(messages, reporter, this.buildASTRoot());
 		}
 	}
-
-	@Override
-	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.resourcePackage.getNameTextRange(astRoot);
-	}
-
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
+		
 		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
 			adapter.validate(messages, reporter, astRoot);
 		}
 	}
-
-
+	
+	
 	/**
 	 * xml schema type container
 	 */

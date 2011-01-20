@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
@@ -24,7 +25,7 @@ import org.eclipse.jpt.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlSchema
-		extends JaxbContextNode {
+		extends JavaContextNode {
 	
 	/**
 	 * Return the specified namespace or "" (default value)
