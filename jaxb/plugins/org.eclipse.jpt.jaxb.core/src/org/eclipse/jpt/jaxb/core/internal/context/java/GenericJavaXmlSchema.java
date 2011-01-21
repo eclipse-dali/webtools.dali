@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -221,15 +221,15 @@ public class GenericJavaXmlSchema
 	// **************** content assist ****************************************
 	
 	@Override
-	public Iterable<String> javaCompletionProposals(
+	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (namespaceTouches(pos, astRoot)) {
-			return namespaceProposals(filter);
+			return getNamespaceProposals(filter);
 		}
 		
 		return EmptyIterable.instance();
@@ -239,7 +239,7 @@ public class GenericJavaXmlSchema
 		return getXmlSchemaAnnotation().namespaceTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> namespaceProposals(Filter<String> filter) {
+	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(
 				new FilteringIterable<String>(
 						getJaxbProject().getSchemaLibrary().getSchemaLocations().keySet(), filter));

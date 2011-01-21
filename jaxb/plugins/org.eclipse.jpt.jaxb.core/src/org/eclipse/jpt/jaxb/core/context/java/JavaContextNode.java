@@ -26,7 +26,7 @@ public interface JavaContextNode
 	/**
 	 * Return the Java code-completion proposals for the specified position in the source code.
 	 */
-	Iterable<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
+	Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot);
 	
 	
 	// ******************** validation ****************************************

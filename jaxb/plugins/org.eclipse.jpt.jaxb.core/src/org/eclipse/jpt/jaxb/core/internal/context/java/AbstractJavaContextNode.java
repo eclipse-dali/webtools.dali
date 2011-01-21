@@ -35,7 +35,7 @@ public abstract class AbstractJavaContextNode
 	
 	// **************** content assist ****************************************
 	
-	public Iterable<String> javaCompletionProposals(
+	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
 		return EmptyIterable.instance();
 	}

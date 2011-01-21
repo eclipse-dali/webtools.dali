@@ -141,7 +141,7 @@ public class JaxbJavaCompletionProposalComputer
 		CompilationUnit astRoot = ASTTools.buildASTRoot(cu);
 		List<ICompletionProposal> proposals = new ArrayList<ICompletionProposal>();
 		for (JavaContextNode javaNode : javaNodes) {
-			for (String proposal : javaNode.javaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
+			for (String proposal : javaNode.getJavaCompletionProposals(context.getInvocationOffset(), filter, astRoot)) {
 				proposals.add(new CompletionProposal(proposal, tokenStart, tokenEnd - tokenStart + 1, proposal.length()));
 			}
 		}

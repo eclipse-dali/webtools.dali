@@ -29,9 +29,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -289,23 +287,23 @@ public abstract class AbstractJavaPersistentType
 	// **************** content assist ****************************************
 	
 	@Override
-	public Iterable<String> javaCompletionProposals(
+	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (namespaceTouches(pos, astRoot)) {
-			return namespaceProposals(filter);
+			return getNamespaceProposals(filter);
 		}
 		
 		if (nameTouches(pos, astRoot)) {
-			return nameProposals(filter);
+			return getNameProposals(filter);
 		}
 		
 		if (this.rootElement != null) {
-			result = this.rootElement.javaCompletionProposals(pos, filter, astRoot);
+			result = this.rootElement.getJavaCompletionProposals(pos, filter, astRoot);
 			if (! CollectionTools.isEmpty(result)) {
 				return result;
 			}
@@ -318,34 +316,24 @@ public abstract class AbstractJavaPersistentType
 		return getXmlTypeAnnotation().namespaceTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> namespaceProposals(Filter<String> filter) {
+	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
 		XsdSchema schema = getJaxbPackage().getXsdSchema();
 		if (schema == null) {
 			return EmptyIterable.instance();
 		}
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(schema.getNamespaces(), filter));
+		return schema.getNamespaceProposals(filter);
 	}
 	
 	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return getXmlTypeAnnotation().nameTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> nameProposals(Filter<String> filter) {
-		String namespace = getNamespace();
+	protected Iterable<String> getNameProposals(Filter<String> filter) {
 		XsdSchema schema = getJaxbPackage().getXsdSchema();
 		if (schema == null) {
 			return EmptyIterable.instance();
 		}
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(
-					new TransformationIterable<XsdTypeDefinition, String>(schema.getTypeDefinitions(namespace)) {
-						@Override
-						protected String transform(XsdTypeDefinition o) {
-							return o.getName();
-						}
-					},
-					filter));
+		return schema.getTypeNameProposals(getNamespace(), filter);
 	}
 	
 	

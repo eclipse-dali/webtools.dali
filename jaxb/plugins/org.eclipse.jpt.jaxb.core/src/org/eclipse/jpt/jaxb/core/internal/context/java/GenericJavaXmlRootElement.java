@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -130,19 +130,19 @@ public class GenericJavaXmlRootElement
 	// **************** content assist ****************************************
 	
 	@Override
-	public Iterable<String> javaCompletionProposals(
+	public Iterable<String> getJavaCompletionProposals(
 			int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
 		if (namespaceTouches(pos, astRoot)) {
-			return namespaceProposals(filter);
+			return getNamespaceProposals(filter);
 		}
 		
 		if (nameTouches(pos, astRoot)) {
-			return nameProposals(filter);
+			return getNameProposals(filter);
 		}
 		
 		return EmptyIterable.instance();
@@ -152,20 +152,19 @@ public class GenericJavaXmlRootElement
 		return this.resourceXmlRootElementAnnotation.namespaceTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> namespaceProposals(Filter<String> filter) {
+	protected Iterable<String> getNamespaceProposals(Filter<String> filter) {
 		XsdSchema schema = getParent().getJaxbPackage().getXsdSchema();
 		if (schema == null) {
 			return EmptyIterable.instance();
 		}
-		return StringTools.convertToJavaStringLiterals(
-				new FilteringIterable<String>(schema.getNamespaces(), filter));
+		return schema.getNamespaceProposals(filter);
 	}
 	
 	protected boolean nameTouches(int pos, CompilationUnit astRoot) {
 		return this.resourceXmlRootElementAnnotation.nameTouches(pos, astRoot);
 	}
 	
-	protected Iterable<String> nameProposals(Filter<String> filter) {
+	protected Iterable<String> getNameProposals(Filter<String> filter) {
 		String namespace = getNamespace();
 		XsdSchema schema = getParent().getJaxbPackage().getXsdSchema();
 		if (schema == null) {
