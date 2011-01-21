@@ -38,6 +38,7 @@ import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ChainIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -893,6 +894,25 @@ public class GenericJavaPersistentClass
 	public void removeXmlJavaTypeAdapter() {
 		this.xmlAdaptable.removeXmlJavaTypeAdapter();
 	}
+
+	// ********** content assist **********
+
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (!CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		for (JaxbPersistentAttribute attribute : this.getAttributes()) {
+			result = attribute.getJavaCompletionProposals(pos, filter, astRoot);
+			if (!CollectionTools.isEmpty(result)) {
+				return result;
+			}
+		}
+		return EmptyIterable.instance();
+	}
+
+	// ********** validation **********
 
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

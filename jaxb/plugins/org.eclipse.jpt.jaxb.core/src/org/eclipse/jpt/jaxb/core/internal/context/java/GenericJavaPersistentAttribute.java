@@ -19,6 +19,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -34,6 +36,11 @@ public abstract class GenericJavaPersistentAttribute
 
 	protected GenericJavaPersistentAttribute(JaxbPersistentClass parent) {
 		super(parent);
+	}
+
+	@Override
+	public JaxbPersistentClass getParent() {
+		return (JaxbPersistentClass) super.getParent();
 	}
 
 	/**
@@ -317,6 +324,25 @@ public abstract class GenericJavaPersistentAttribute
 		sb.append(this.getName());
 	}
 
+	// **************** content assist ****************************************
+
+	@Override
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		result = this.mapping.getJavaCompletionProposals(pos, filter, astRoot);
+		if (! CollectionTools.isEmpty(result)) {
+			return result;
+		}
+		
+		return EmptyIterable.instance();
+	}
+
+
+	// **************** validation ********************************************
 
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
