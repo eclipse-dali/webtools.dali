@@ -20,13 +20,15 @@ public class DefaultProblem
 {
 	private final Node source;
 	private final String messageKey;
+	private final int messageType;
 	private final Object[] messageArguments;
 
 
-	DefaultProblem(Node source, String messageKey, Object[] messageArguments) {
+	DefaultProblem(Node source, String messageKey, int messageType, Object[] messageArguments) {
 		super();
 		this.source = source;
 		this.messageKey = messageKey;
+		this.messageType = messageType;
 		this.messageArguments = messageArguments;
 	}
 
@@ -39,6 +41,10 @@ public class DefaultProblem
 
 	public String messageKey() {
 		return this.messageKey;
+	}
+
+	public int messageType() {
+		return this.messageType;
 	}
 
 	public Object[] messageArguments() {

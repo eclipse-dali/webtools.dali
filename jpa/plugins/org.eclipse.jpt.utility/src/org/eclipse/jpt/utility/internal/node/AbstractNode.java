@@ -706,12 +706,12 @@ public abstract class AbstractNode
 		return this.branchProblems.contains(problem);
 	}
 
-	protected final Problem buildProblem(String messageKey, Object... messageArguments) {
-		return new DefaultProblem(this, messageKey, messageArguments);
+	protected final Problem buildProblem(String messageKey, int messageType, Object... messageArguments) {
+		return new DefaultProblem(this, messageKey, messageType, messageArguments);
 	}
 
-	protected final Problem buildProblem(String messageKey) {
-		return this.buildProblem(messageKey, EMPTY_PROBLEM_MESSAGE_ARGUMENTS);
+	protected final Problem buildProblem(String messageKey, int messageType) {
+		return this.buildProblem(messageKey, messageType, EMPTY_PROBLEM_MESSAGE_ARGUMENTS);
 	}
 
 	/**

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
+import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -22,6 +23,9 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.AbstractOrmConverter;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.utility.internal.Association;
@@ -58,6 +62,11 @@ public class OrmEclipseLinkConvert
 
 	// ********** synchronize/update **********
 
+	@Override
+	public EclipseLinkPersistenceUnit getPersistenceUnit(){
+		return (EclipseLinkPersistenceUnit) super.getPersistenceUnit();
+	}
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
@@ -260,6 +269,30 @@ public class OrmEclipseLinkConvert
 		if (this.converter != null) {
 			this.converter.validate(messages, reporter);
 		}
+		this.validateConvertValue(messages);
+	}
+	
+	private void validateConvertValue(List<IMessage> messages) {
+		String converter = this.getConverterName();
+				if (converter == null) {
+					return;
+				}
+
+		for (Iterator<EclipseLinkConverter> converters = this.getPersistenceUnit().allConverters(); converters.hasNext(); ) {
+			if (converter.equals(converters.next().getName())) {
+				return;
+			}
+		}
+		
+		messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
+						new String[] {converter, this.getParent().getName()},
+						this.getParent(),
+						this.getValidationTextRange()
+				)
+		);	
 	}
 
 	public TextRange getValidationTextRange() {

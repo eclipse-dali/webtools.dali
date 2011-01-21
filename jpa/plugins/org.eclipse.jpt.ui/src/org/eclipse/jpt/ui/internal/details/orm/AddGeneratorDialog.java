@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details.orm;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -36,19 +37,24 @@ public class AddGeneratorDialog extends ValidatingDialog<AddGeneratorStateObject
 	public static final String SEQUENCE_GENERATOR = "sequenceGenerator"; //$NON-NLS-1$
 	public static final String TABLE_GENERATOR = "tableGenerator"; //$NON-NLS-1$
 
+	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
 	
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public AddGeneratorDialog(Shell parent) {
+	public AddGeneratorDialog(Shell parent, PersistenceUnit pUnit) {
 		super(parent);
+		this.pUnit = pUnit;
 	}
 
 	@Override
 	protected AddGeneratorStateObject buildStateObject() {
-		return new AddGeneratorStateObject();
+		return new AddGeneratorStateObject(this.pUnit);
 	}
 
 	// ********** open **********

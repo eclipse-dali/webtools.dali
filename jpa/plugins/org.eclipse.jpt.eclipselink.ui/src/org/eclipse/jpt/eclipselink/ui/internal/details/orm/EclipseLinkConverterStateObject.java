@@ -9,8 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
@@ -42,6 +46,11 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	 * The <code>Validator</code> used to validate this state object.
 	 */
 	private Validator validator;
+	
+	/**
+	 * The associated persistence unit
+	 */
+	private EclipseLinkPersistenceUnit pUnit;
 
 	/**
 	 * Notifies a change in the data value property.
@@ -54,20 +63,23 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 	static final String CONVERTER_TYPE_PROPERTY = "converterType"; //$NON-NLS-1$
 
 
-	EclipseLinkConverterStateObject() {
+	EclipseLinkConverterStateObject(EclipseLinkPersistenceUnit pUnit) {
 		super(null);
-
+		this.pUnit = pUnit;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+		} 
+		else if (names().contains(this.name)) {
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_nameExists, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addConverterTypeProblemsTo(List<Problem> currentProblems) {
 		if (this.converterType == null) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_typeMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConverterStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 
@@ -76,6 +88,15 @@ final class EclipseLinkConverterStateObject extends AbstractNode
 		super.addProblemsTo(currentProblems);
 		addNameProblemsTo(currentProblems);
 		addConverterTypeProblemsTo(currentProblems);
+	}
+	
+	private List<String> names() {
+		List<String> names = new ArrayList<String>();
+		for (ListIterator<EclipseLinkConverter> converters = this.pUnit.allConverters(); converters.hasNext();){
+			String name = converters.next().getName();
+			names.add(name);
+		}
+		return names ;
 	}
 
 	@Override

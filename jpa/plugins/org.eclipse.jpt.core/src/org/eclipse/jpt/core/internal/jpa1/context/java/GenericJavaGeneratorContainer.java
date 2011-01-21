@@ -27,6 +27,7 @@ import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -229,17 +230,32 @@ public class GenericJavaGeneratorContainer
 
 	protected void validateGenerators(List<IMessage> messages, CompilationUnit astRoot) {
 		for (JavaGenerator localGenerator : this.getGenerators()) {
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-				if (localGenerator.duplicates(globalGenerators.next())) {
-					messages.add(
+			String name = localGenerator.getName();
+			if (StringTools.stringIsEmpty(name)){
+				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {localGenerator.getName()},
+							JpaValidationMessages.GENERATOR_NAME_UNDEFINED,
+							new String[] {},
 							localGenerator,
 							localGenerator.getNameTextRange(astRoot)
 						)
 					);
+			} else {
+				List<String> reportedNames = new ArrayList<String>();
+				for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
+					if (localGenerator.duplicates(globalGenerators.next()) && !reportedNames.contains(name)) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+								new String[] {name},
+								localGenerator,
+								localGenerator.getNameTextRange(astRoot)
+							)
+						);
+						reportedNames.add(name);
+					}
 				}
 			}
 		}

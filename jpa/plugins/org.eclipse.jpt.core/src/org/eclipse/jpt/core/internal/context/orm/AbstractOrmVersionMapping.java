@@ -316,6 +316,7 @@ public abstract class AbstractOrmVersionMapping<X extends XmlVersion>
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.column.validate(messages, reporter);
+		this.converter.validate(messages, reporter);
 	}
 
 	public JptValidator buildColumnValidator(NamedColumn col, NamedColumnTextRangeResolver textRangeResolver) {

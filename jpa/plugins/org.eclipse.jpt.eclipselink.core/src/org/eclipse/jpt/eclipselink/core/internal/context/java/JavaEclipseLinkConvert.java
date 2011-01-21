@@ -22,6 +22,8 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkConvertAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
@@ -289,8 +291,32 @@ public class JavaEclipseLinkConvert
 		if (this.converter != null) {
 			this.converter.validate(messages, reporter, astRoot);
 		}
+		this.validateConvertValue(messages, astRoot);
 	}
+	
+	private void validateConvertValue(List<IMessage> messages, CompilationUnit astRoot) {
+		String converter = this.getConverterName();
+				if (converter == null) {
+					return;
+				}
 
+		for (Iterator<EclipseLinkConverter> converters = this.getEclipseLinkPersistenceUnit().allConverters(); converters.hasNext(); ) {
+			if (converter.equals(converters.next().getName())) {
+				return;
+			}
+		}
+		
+		messages.add(
+				DefaultEclipseLinkJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
+						new String[] {converter, this.getParent().getName()},
+						this.getParent(),
+						this.getValidationTextRange(astRoot)
+				)
+		);	
+	}
+	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.convertAnnotation.getTextRange(astRoot);
 	}

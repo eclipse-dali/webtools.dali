@@ -9,20 +9,27 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
-import org.eclipse.jpt.core.context.XmlContextNode;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 	extends AbstractOrmXmlContextNode
@@ -109,6 +116,42 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 
 	// ********** validation **********
 
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateConverterNames(messages);
+	}
+
+	protected void validateConverterNames(List<IMessage> messages){
+			String name = this.getName();
+			if (StringTools.stringIsEmpty(name)) {
+				messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY, 
+							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
+							new String[] {},
+							this,
+							this.getNameTextRange()
+					));
+			} else {
+				List<String> reportedNames = new ArrayList<String>();
+				for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit().allConverters(); globalConverters.hasNext(); ) {
+					if ( this.duplicates(globalConverters.next()) && !reportedNames.contains(name)	){
+						messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+									new String[] {name},
+									this,
+									this.getNameTextRange()
+							)
+						);
+						reportedNames.add(name);
+					}
+				}
+			}
+		}
+	
 	public boolean overrides(EclipseLinkConverter converter) {
 		if (this.name == null) {
 			return false;
@@ -130,6 +173,9 @@ public abstract class OrmEclipseLinkConverter<X extends XmlNamedConverter>
 		return this.xmlConverter.getValidationTextRange();
 	}
 
+	public TextRange getNameTextRange() {
+		return this.xmlConverter.getNameTextRange();
+	}
 
 	// ********** adapter **********
 

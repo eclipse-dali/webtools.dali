@@ -11,6 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import java.util.Collection;
 import java.util.List;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -76,16 +78,16 @@ final class EclipseLinkConversionValueStateObject extends AbstractNode
 
 	private void addDataValueProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.dataValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueMustBeSpecified, IMessageProvider.ERROR));
 		}
 		else if (this.dataValues.contains(this.dataValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueAlreadyExists));
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_dataValueAlreadyExists, IMessageProvider.ERROR));
 		}
 	}
 
 	private void addObjectValueProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.objectValue)) {
-			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_objectValueMustBeSpecified));
+			currentProblems.add(buildProblem(EclipseLinkUiDetailsMessages.EclipseLinkConversionValueStateObject_objectValueMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 

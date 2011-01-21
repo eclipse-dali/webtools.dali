@@ -9,16 +9,23 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
+import org.eclipse.jpt.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkNamedConverterAnnotation;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConverterAnnotation>
 	extends AbstractJavaJpaContextNode
@@ -206,6 +213,45 @@ public abstract class JavaEclipseLinkConverter<A extends EclipseLinkNamedConvert
 		@Override
 		public String toString() {
 			return StringTools.buildToStringFor(this, ClassName.getSimpleName(this.getAnnotationName()));
+		}
+	}
+	
+	public TextRange getNameTextRange(CompilationUnit astRoot){
+		return getConverterAnnotation().getNameTextRange(astRoot);
+	}
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		this.validateConverterNames(messages, astRoot);
+	}
+
+	protected void validateConverterNames(List<IMessage> messages, CompilationUnit astRoot){
+		String name = this.getName();
+		if (StringTools.stringIsEmpty(name)) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY, 
+							EclipseLinkJpaValidationMessages.CONVERTER_NAME_UNDEFINED, 
+							new String[] {},
+							this,
+							this.getNameTextRange(astRoot)
+							));
+		} else {
+			List<String> reportedNames = new ArrayList<String>();
+			for (ListIterator<EclipseLinkConverter> globalConverters = this.getPersistenceUnit	().allConverters(); globalConverters.hasNext(); ) {
+				if ( this.duplicates( globalConverters.next())  && !reportedNames.contains(name)){
+					messages.add(
+							DefaultEclipseLinkJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									EclipseLinkJpaValidationMessages.CONVERTER_DUPLICATE_NAME,
+									new String[] {name},
+									this,
+									this.getNameTextRange(astRoot)
+							));
+					reportedNames.add(name);
+				}
+			}
 		}
 	}
 }

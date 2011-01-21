@@ -155,6 +155,7 @@ public class EclipseLinkUiDetailsMessages extends NLS {
 	public static String EclipseLinkConverterDialog_addConverter;
 	public static String EclipseLinkConverterDialog_addConverterDescriptionTitle;
 	public static String EclipseLinkConverterDialog_addConverterDescription;
+	public static String EclipseLinkConverterStateObject_nameExists;
 	public static String EclipseLinkConverterStateObject_nameMustBeSpecified;
 	public static String EclipseLinkConverterStateObject_typeMustBeSpecified;
 	

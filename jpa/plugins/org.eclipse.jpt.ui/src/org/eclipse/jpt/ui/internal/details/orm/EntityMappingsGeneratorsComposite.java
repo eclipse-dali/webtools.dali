@@ -104,7 +104,7 @@ public class EntityMappingsGeneratorsComposite extends Pane<EntityMappings>
 	}
 	
 	protected AddGeneratorDialog buildAddGeneratorDialog() {
-		return new AddGeneratorDialog(getShell());
+		return new AddGeneratorDialog(getShell(), this.getSubject().getPersistenceUnit());
 	}
 
 	protected void addGeneratorFromDialog(ObjectListSelectionModel listSelectionModel, AddGeneratorDialog dialog) {

@@ -102,6 +102,11 @@ public class JavaEclipseLinkCustomConverter
 	}
 
 	protected void validateConverterClass(List<IMessage> messages, CompilationUnit astRoot) {
+		if (this.converterClass == null) {
+			//Annotation itself will have compile error if converter class not defined
+			return;
+		}
+
 		if (StringTools.stringIsEmpty(this.converterClass)) {
 			messages.add(
 					DefaultEclipseLinkJpaValidationMessages.buildMessage(

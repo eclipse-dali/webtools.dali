@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -48,6 +49,7 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
@@ -167,7 +169,7 @@ public abstract class AbstractEntityMappings
 		return (OrmXml) super.getParent();
 	}
 
-	protected OrmXml getOrmXml() {
+	public OrmXml getOrmXml() {
 		return this.getParent();
 	}
 
@@ -902,17 +904,31 @@ public abstract class AbstractEntityMappings
 
 	protected void validateGenerators(List<IMessage> messages) {
 		for (OrmGenerator localGenerator : this.getGenerators()) {
-			for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
-				if (localGenerator.duplicates(globalGenerators.next())) {
-					messages.add(
+			String name = localGenerator.getName();
+			if (StringTools.stringIsEmpty(name)) {
+				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
-							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
-							new String[] {localGenerator.getName()},
-							localGenerator,
-							localGenerator.getNameTextRange()
-						)
-					);
+								IMessage.HIGH_SEVERITY, 
+								JpaValidationMessages.GENERATOR_NAME_UNDEFINED, 
+								new String[] {},
+								localGenerator,
+								localGenerator.getNameTextRange()
+						));
+			} else {
+				List<String> reportedNames = new ArrayList<String>();
+				for (Iterator<Generator> globalGenerators = this.getPersistenceUnit().generators(); globalGenerators.hasNext(); ) {
+					if (localGenerator.duplicates(globalGenerators.next()) && !reportedNames.contains(name)) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+										IMessage.HIGH_SEVERITY,
+										JpaValidationMessages.GENERATOR_DUPLICATE_NAME,
+										new String[] {localGenerator.getName()},
+										localGenerator,
+										localGenerator.getNameTextRange()
+								)
+						);
+						reportedNames.add(name);
+					}
 				}
 			}
 		}

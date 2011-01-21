@@ -469,7 +469,7 @@ public class AbstractNodeTests extends TestCase {
 			for (int i = this.name.length(); i-- > 0; ) {
 				char c = this.name.charAt(i);
 				if (Character.isLetter(c) && ! Character.isLowerCase(c)) {
-					currentProblems.add(this.buildProblem("NAME_MUST_BE_LOWERCASE", this.name));
+					currentProblems.add(this.buildProblem("NAME_MUST_BE_LOWERCASE", 3 ,this.name));
 					return;
 				}
 			}

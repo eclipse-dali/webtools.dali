@@ -471,6 +471,7 @@ public abstract class AbstractOrmIdMapping<X extends XmlId>
 			this.generatedValue.validate(messages, reporter);
 		}
 		this.generatorContainer.validate(messages, reporter);
+		this.converter.validate(messages, reporter);
 	}
 
 	protected IMessage buildMappedByRelationshipAndColumnSpecifiedMessage() {

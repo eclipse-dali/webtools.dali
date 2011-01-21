@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import java.util.ListIterator;
+import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jpt.utility.internal.node.Node;
 import org.eclipse.jpt.utility.internal.node.Problem;
 import org.eclipse.osgi.util.NLS;
@@ -67,6 +69,13 @@ public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
 				ValidatingDialog.this.validate();
 			}
 		};
+	}
+
+	/**
+	 * Clears the messages from the description pane
+	 */
+	protected final void clearMessage(){
+		setMessage(getDescription());
 	}
 
 	/**
@@ -166,25 +175,51 @@ public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
 	}
 
 	/**
+	 * Updates the description pane by showing the given warning message and format
+	 * the text with the given list of arguments if any exists.
+	 *
+	 * @param warningMessage The warning message to show in the description pane
+	 * @param arguments The list of arguments used to format the error message
+	 */
+	
+	protected final void setWarningMessage(String warningMessage, Object... arguments) {
+		setMessage(NLS.bind(warningMessage, arguments), IMessageProvider.WARNING);
+	}
+
+	/**
 	 * Updates the error message, either shows the first error problem or hides
 	 * the error pane. If the progress bar is shown, then the error message will
 	 * not be shown.
 	 */
-	private void updateErrorMessage() {
-		if (getSubject().hasBranchProblems()) {
-			Problem problem = getSubject().branchProblems().next();
-			setErrorMessage(problem.messageKey(), problem.messageArguments());
+	private void updateMessage() {
+		if (getSubject().branchProblemsSize() == 0) {
+			clearMessage();
+		} else {
+				for (ListIterator<Problem> problems = getSubject().branchProblems(); problems.hasNext();){
+					Problem problem = problems.next();
+					if (problem.messageType() == IMessageProvider.ERROR){
+						this.setErrorMessage(problem.messageKey(), problem.messageArguments());
+					} 
+					else if (problem.messageType() == IMessageProvider.WARNING){
+						this.setWarningMessage(problem.messageKey(), problem.messageArguments());
+					}
+				}
 		}
-		// TODO: It would be nice to add warnings to the model
-//		else if (this.subject().hasBranchWarnings()) {
-//			Problem problem = this.subject().branchWarnings().next();
-//			this.setWarningMessageKey(problem.getMessageKey(), problem.getMessageArguments());
-//		}
-		else {
+		if (!this.containsErrorMessage()){
 			clearErrorMessage();
 		}
 	}
-
+	
+	public final boolean containsErrorMessage(){
+		boolean error = false;
+		for (ListIterator<Problem> problems = getSubject().branchProblems(); problems.hasNext();){
+			Problem problem = problems.next();
+			if (problem.messageType() ==IMessageProvider.ERROR){
+				error = true;
+			} 
+		}
+		return error;
+	}
 	/**
 	 * Validates the state object and based on its status, update the description
 	 * pane to show the first error if any exists and update the enablement of
@@ -192,7 +227,7 @@ public abstract class ValidatingDialog<T extends Node> extends Dialog<T> {
 	 */
 	private void validate() {
 		getSubject().validateBranch();
-		updateErrorMessage();
-		getButton(OK).setEnabled(!getSubject().hasBranchProblems());
+		updateMessage();
+		getButton(OK).setEnabled(!containsErrorMessage());
 	}
 }

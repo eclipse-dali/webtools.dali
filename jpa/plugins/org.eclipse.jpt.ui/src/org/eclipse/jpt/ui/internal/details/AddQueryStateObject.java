@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.core.context.Query;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -42,6 +47,11 @@ final class AddQueryStateObject extends AbstractNode
 	private Validator validator;
 
 	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
+	
+	/**
 	 * Notifies a change in the data value property.
 	 */
 	static final String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
@@ -59,20 +69,23 @@ final class AddQueryStateObject extends AbstractNode
 	 * @param names The collection of names that can't be used or an empty
 	 * collection if none are available
 	 */
-	AddQueryStateObject() {
+	AddQueryStateObject(PersistenceUnit pUnit) {
 		super(null);
-
+		this.pUnit = pUnit;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+		}
+		else if (names().contains(this.name)){
+			currentProblems.add(buildProblem(JptUiDetailsMessages.AddQueryDialog_nameExists, IMessageProvider.WARNING));
 		}
 	}
 
 	private void addQueryTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.queryType)) {
-			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsMessages.QueryStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 
@@ -83,6 +96,15 @@ final class AddQueryStateObject extends AbstractNode
 		addQueryTypeProblemsTo(currentProblems);
 	}
 
+	private List<String> names(){
+			List<String> names = new ArrayList<String>();
+			for (Iterator<Query> queries = this.pUnit.queries(); queries.hasNext();){
+				String name = queries.next().getName();
+				names.add(name);
+			}
+			return names;
+	}
+	
 	@Override
 	protected void checkParent(Node parentNode) {
 		//no parent

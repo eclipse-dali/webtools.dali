@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
@@ -36,19 +37,25 @@ public class AddQueryDialog extends ValidatingDialog<AddQueryStateObject> {
 	public static final String NAMED_QUERY = "namedQuery"; //$NON-NLS-1$
 	public static final String NAMED_NATIVE_QUERY = "namedNativeQuery"; //$NON-NLS-1$
 
-	
+	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
+
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
+	 * @param pUnit 
 	 */
-	public AddQueryDialog(Shell parent) {
+	public AddQueryDialog(Shell parent, PersistenceUnit pUnit) {
 		super(parent);
+		this.pUnit = pUnit;
 	}
 
 	@Override
 	protected AddQueryStateObject buildStateObject() {
-		return new AddQueryStateObject();
+		return new AddQueryStateObject(this.pUnit);
 	}
 
 	// ********** open **********

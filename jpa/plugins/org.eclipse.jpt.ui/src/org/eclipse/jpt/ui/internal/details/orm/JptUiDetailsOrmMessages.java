@@ -59,6 +59,7 @@ public class JptUiDetailsOrmMessages {
 	public static String AddGeneratorDialog_description;
 	public static String AddGeneratorDialog_tableGenerator;
 	public static String AddGeneratorDialog_sequenceGenerator;
+	public static String GeneratorStateObject_nameExists;
 	public static String GeneratorStateObject_nameMustBeSpecified;
 	public static String GeneratorStateObject_typeMustBeSpecified;
 	

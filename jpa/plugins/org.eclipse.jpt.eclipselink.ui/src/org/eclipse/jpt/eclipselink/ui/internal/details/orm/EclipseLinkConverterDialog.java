@@ -14,6 +14,7 @@ import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
@@ -29,19 +30,24 @@ import org.eclipse.swt.widgets.Text;
 public class EclipseLinkConverterDialog
 	extends ValidatingDialog<EclipseLinkConverterStateObject>
 {
+	/**
+	 * The associated persistence unit
+	 */
+	EclipseLinkPersistenceUnit pUnit;
 	
 	// ********** constructors **********
 
 	/**
 	 * Use this constructor to edit an existing conversion value
 	 */
-	public EclipseLinkConverterDialog(Shell parent) {
+	public EclipseLinkConverterDialog(Shell parent, EclipseLinkPersistenceUnit pUnit) {
 		super(parent);
+		this.pUnit = pUnit;
 	}
 
 	@Override
 	protected EclipseLinkConverterStateObject buildStateObject() {
-		return new EclipseLinkConverterStateObject();
+		return new EclipseLinkConverterStateObject(pUnit);
 	}
 
 	// ********** open **********
@@ -131,6 +137,9 @@ public class EclipseLinkConverterDialog
 		private StringConverter<Class<? extends EclipseLinkConverter>> buildStringConverter() {
 			return new StringConverter<Class<? extends EclipseLinkConverter>>() {
 				public String convertToString(Class<? extends EclipseLinkConverter> value) {
+					if (value == null) {
+						return null;
+					}
 					if (value == EclipseLinkCustomConverter.class) {
 						return EclipseLinkUiDetailsMessages.EclipseLinkConvertersComposite_customConverter;
 					}

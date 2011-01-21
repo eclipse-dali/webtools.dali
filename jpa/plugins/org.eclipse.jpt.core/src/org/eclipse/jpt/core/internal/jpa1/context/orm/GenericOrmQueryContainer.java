@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -31,6 +32,7 @@ import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedQuery;
 import org.eclipse.jpt.core.resource.orm.XmlQueryContainer;
 import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
@@ -303,18 +305,45 @@ public class GenericOrmQueryContainer
 
 	protected void validateQueries(List<IMessage> messages) {
 		for (OrmQuery localQuery : this.getQueries()) {
-			for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
-				if (localQuery.duplicates(globalQueries.next())) {
-					messages.add(
+			String name = localQuery.getName();
+			if (StringTools.stringIsEmpty(name)){
+				messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 							IMessage.HIGH_SEVERITY,
-							JpaValidationMessages.QUERY_DUPLICATE_NAME,
-							new String[] {localQuery.getName()},
+							JpaValidationMessages.QUERY_NAME_UNDEFINED,
+							new String[] {},
 							localQuery,
 							localQuery.getNameTextRange()
 						)
 					);
+			} else {
+				List<String> reportedNames = new ArrayList<String>();
+				for (Iterator<Query> globalQueries = this.getPersistenceUnit().queries(); globalQueries.hasNext(); ) {
+					Query globalQuery = globalQueries.next();
+					if (localQuery.duplicates(globalQuery) && !reportedNames.contains(name)) {
+						messages.add(
+								DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.QUERY_DUPLICATE_NAME,
+								new String[] {name},
+								localQuery,
+								localQuery.getNameTextRange())
+						);
+						reportedNames.add(name);
+					}
 				}
+			}
+			String query = localQuery.getQuery();
+			if (StringTools.stringIsEmpty(query)){
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.QUERY_STATEMENT_UNDEFINED,
+								new String[] {name},
+								localQuery,
+								localQuery.getNameTextRange()
+						)
+				);
 			}
 		}
 	}

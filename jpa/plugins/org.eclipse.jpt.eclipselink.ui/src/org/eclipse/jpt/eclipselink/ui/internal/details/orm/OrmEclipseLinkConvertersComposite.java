@@ -17,20 +17,26 @@ import java.util.ListIterator;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.core.context.NamedNativeQuery;
+import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
+import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCustomConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkObjectTypeConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkStructConverterComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkTypeConverterComposite;
+import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
+import org.eclipse.jpt.ui.internal.details.NamedNativeQueryPropertyComposite;
+import org.eclipse.jpt.ui.internal.details.NamedQueryPropertyComposite;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.AddRemoveListPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.ui.internal.widgets.AddRemovePane.Adapter;
+import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
@@ -205,7 +211,7 @@ public class OrmEclipseLinkConvertersComposite extends Pane<OrmEclipseLinkConver
 	}
 	
 	protected EclipseLinkConverterDialog buildEclipseLinkConverterDialog() {
-		return new EclipseLinkConverterDialog(getShell());
+		return new EclipseLinkConverterDialog(getShell(), (EclipseLinkPersistenceUnit)this.getSubject().getPersistenceUnit());
 	}
 
 	protected void addEclipseLinkConverterFromDialog(EclipseLinkConverterDialog dialog) {

@@ -9,7 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.core.context.Generator;
+import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;
@@ -42,6 +47,11 @@ final class AddGeneratorStateObject extends AbstractNode
 	private Validator validator;
 
 	/**
+	 * The associated persistence unit
+	 */
+	private PersistenceUnit pUnit;
+	
+	/**
 	 * Notifies a change in the data value property.
 	 */
 	static final String NAME_PROPERTY = "nameProperty"; //$NON-NLS-1$
@@ -59,19 +69,23 @@ final class AddGeneratorStateObject extends AbstractNode
 	 * @param names The collection of names that can't be used or an empty
 	 * collection if none are available
 	 */
-	AddGeneratorStateObject() {
+	AddGeneratorStateObject(PersistenceUnit pUnit) {
 		super(null);
+		this.pUnit = pUnit;
 	}
 
 	private void addNameProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.name)) {
-			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameMustBeSpecified));
-		}
+			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameMustBeSpecified, IMessageProvider.ERROR));
+		} 
+		else if (names().contains(this.name)){
+			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_nameExists, IMessageProvider.WARNING));
+		} 
 	}
 
 	private void addGeneratorTypeProblemsTo(List<Problem> currentProblems) {
 		if (StringTools.stringIsEmpty(this.generatorType)) {
-			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_typeMustBeSpecified));
+			currentProblems.add(buildProblem(JptUiDetailsOrmMessages.GeneratorStateObject_typeMustBeSpecified, IMessageProvider.ERROR));
 		}
 	}
 
@@ -80,6 +94,15 @@ final class AddGeneratorStateObject extends AbstractNode
 		super.addProblemsTo(currentProblems);
 		addNameProblemsTo(currentProblems);
 		addGeneratorTypeProblemsTo(currentProblems);
+	}
+	
+	private List<String> names() {
+		List<String> names = new ArrayList<String>();
+		for (Iterator<Generator> generators = this.pUnit.generators(); generators.hasNext();){
+			String name = generators.next().getName();
+			names.add(name);
+		}
+		return names;
 	}
 
 	@Override

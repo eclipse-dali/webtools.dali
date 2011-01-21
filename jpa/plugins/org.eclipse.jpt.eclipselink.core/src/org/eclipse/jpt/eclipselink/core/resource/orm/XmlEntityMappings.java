@@ -11,9 +11,9 @@
 package org.eclipse.jpt.eclipselink.core.resource.orm;
 
 import java.util.Collection;
-import org.eclipse.emf.common.notify.Notification;
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -21,17 +21,6 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlEntityMappings_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
-import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
 import org.eclipse.jpt.core.internal.utility.translators.SimpleRootTranslator;
 import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
@@ -43,7 +32,18 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v1_1.EclipseLink1_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v1_2.EclipseLink1_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_0.EclipseLink2_0;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.EclipseLink2_1;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_1.XmlEntityMappings_2_1;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlEntityMappings_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlHashPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlPinnedPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRangePartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
+import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

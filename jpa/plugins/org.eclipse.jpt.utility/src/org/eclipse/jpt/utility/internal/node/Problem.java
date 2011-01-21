@@ -28,6 +28,11 @@ public interface Problem {
 	 * Return the arguments associate with the problem's message.
 	 */
 	Object[] messageArguments();
+	
+	/**
+	 * Return the type of the identified problem's message
+	 */
+	int messageType();
 
 	/**
 	 * Return whether the problem is equal to the specified object.

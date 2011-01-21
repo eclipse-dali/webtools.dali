@@ -25,6 +25,7 @@ public class JptUiDetailsMessages {
  	public static String AddQueryDialog_title;
 	public static String AddQueryDialog_descriptionTitle;
 	public static String AddQueryDialog_description;
+	public static String AddQueryDialog_nameExists;
 	public static String AddQueryDialog_namedQuery;
 	public static String AddQueryDialog_namedNativeQuery;
 	public static String QueryStateObject_nameMustBeSpecified;
