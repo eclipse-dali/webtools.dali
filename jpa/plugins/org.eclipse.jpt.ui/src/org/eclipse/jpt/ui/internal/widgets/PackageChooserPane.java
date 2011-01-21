@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.widgets;
 
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
@@ -18,7 +19,6 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -191,7 +191,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 		return null;
 	}
 
-	protected abstract JpaProject getJpaProject();
+	protected abstract IJavaProject getJavaProject();
 
 	/**
 	 * Returns the package name from its subject.
@@ -226,7 +226,7 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
+		return JDTTools.getCodeCompletionContextRoot(getJavaProject());
 	}
 
 	@Override

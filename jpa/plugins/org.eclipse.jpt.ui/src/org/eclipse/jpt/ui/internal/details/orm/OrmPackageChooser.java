@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.widgets.PackageChooserPane;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -80,8 +80,8 @@ public class OrmPackageChooser extends Pane<EntityMappings>
 			}
 
 			@Override
-			protected JpaProject getJpaProject() {
-				return getSubject().getJpaProject();
+			protected IJavaProject getJavaProject() {
+				return getSubject().getJpaProject().getJavaProject();
 			}
 
 			@Override
