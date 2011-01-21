@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
@@ -64,10 +64,10 @@ public class ProfilerComposite extends ClassChooserComboPane<Customization>
     	return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_profilerLabel;
     }
     
-    @Override
-    protected JpaProject getJpaProject() {
-    	return getSubject().getJpaProject();
-    }
+	@Override
+	protected IJavaProject getJavaProject() {
+		return getSubject().getJpaProject().getJavaProject();
+	}
     
     @Override
 	protected WritablePropertyValueModel<String> buildTextHolder() {

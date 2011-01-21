@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IJavaElement;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
@@ -28,7 +29,6 @@ import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -172,7 +172,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		}
 		IType type = null;
 		try {
-			type = getJpaProject().getJavaProject().findType(getClassName().replace('$', '.'));
+			type = getJavaProject().findType(getClassName().replace('$', '.'));
 		}
 		catch (JavaModelException e) {
 			JptUiPlugin.log(e);
@@ -181,7 +181,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 	
 	protected void createType() {
-		StructuredSelection selection = new StructuredSelection(getJpaProject().getProject());
+		StructuredSelection selection = new StructuredSelection(getJavaProject().getProject());
 
 		NewClassWizardPage newClassWizardPage = new NewClassWizardPage();
 		newClassWizardPage.init(selection);
@@ -260,7 +260,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 		}
 	}
 
-	protected abstract JpaProject getJpaProject();
+	protected abstract IJavaProject getJavaProject();
 	
 	@Override
 	protected final Runnable buildBrowseAction() {
@@ -298,7 +298,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	 * cancelled the dialog
 	 */
 	protected IType chooseType() {
-		IJavaElement[] elements = new IJavaElement[] { getJpaProject().getJavaProject() };
+		IJavaElement[] elements = new IJavaElement[] { getJavaProject() };
 		IJavaSearchScope scope = SearchEngine.createJavaSearchScope(elements);
 		SelectionDialog typeSelectionDialog;
 
@@ -339,7 +339,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	protected abstract String getClassName();
 
 	protected IPackageFragmentRoot getFirstJavaSourceFolder() {
-		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(getJpaProject().getJavaProject()).iterator();
+		Iterator<IPackageFragmentRoot> i = JDTTools.getJavaSourceFolders(getJavaProject()).iterator();
 		return i.hasNext() ? i.next() : null;
 	}
 
@@ -357,7 +357,7 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
+		return JDTTools.getCodeCompletionContextRoot(getJavaProject());
 	}
 
 	@Override

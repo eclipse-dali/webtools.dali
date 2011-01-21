@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2009 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.connection;
 
-import org.eclipse.jpt.core.JpaProject;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.jpt.ui.internal.widgets.ClassChooserPane;
@@ -70,9 +70,10 @@ public class JdbcDriverComposite extends Pane<Connection>
 			}
 			
 			@Override
-			protected JpaProject getJpaProject() {
-				return getSubject().getJpaProject();
+			protected IJavaProject getJavaProject() {
+				return getSubject().getJpaProject().getJavaProject();
 			}
+
 			@Override
 			protected void setClassName(String className) {
 				this.getSubject().setDriver(className);				
