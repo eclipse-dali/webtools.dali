@@ -30,6 +30,8 @@ public interface JaxbPersistentAttribute
 		extends JavaContextNode {
 
 
+	JaxbPersistentClass getParent();
+
 	// ********** name **********
 
 	/**

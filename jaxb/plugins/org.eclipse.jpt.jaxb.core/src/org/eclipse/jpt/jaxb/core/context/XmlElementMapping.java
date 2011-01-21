@@ -23,14 +23,8 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlElementMapping
-		extends JaxbAttributeMapping, XmlAdaptable {
+		extends JaxbContainmentMapping {
 
-
-	String getName();
-	String getDefaultName();
-	String getSpecifiedName();
-	void setSpecifiedName(String name);
-		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
 
 	boolean isNillable();
 	boolean isDefaultNillable();
@@ -38,19 +32,6 @@ public interface XmlElementMapping
 	Boolean getSpecifiedNillable();
 	void setSpecifiedNillable(Boolean specifiedNillable);
 		String SPECIFIED_NILLABLE_PROPERTY = "specifiedNillable"; //$NON-NLS-1$
-
-	boolean isRequired();
-	boolean isDefaultRequired();
-		boolean DEFAULT_REQUIRED = false;
-	Boolean getSpecifiedRequired();
-	void setSpecifiedRequired(Boolean specifiedRequired);
-		String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
-
-	String getNamespace();
-	String getDefaultNamespace();
-	String getSpecifiedNamespace();
-	void setSpecifiedNamespace(String namespace);
-		String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
 
 	String getDefaultValue();
 	void setDefaultValue(String defaultValue);

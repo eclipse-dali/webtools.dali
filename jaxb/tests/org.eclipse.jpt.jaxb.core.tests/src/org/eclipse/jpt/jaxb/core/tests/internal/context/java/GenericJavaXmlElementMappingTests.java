@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -458,6 +459,62 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlElementMapping.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
+	}
+
+	public void testModifyXmlSchemaType() throws Exception {
+		createTypeWithXmlElement();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+
+		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
+
+		xmlElementMapping.addXmlSchemaType();
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlElementMapping.getXmlSchemaType());
+		assertNotNull(xmlSchemaTypeAnnotation);
+
+		xmlElementMapping.removeXmlSchemaType();
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlSchemaType() throws Exception {
+		createTypeWithXmlElement();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+
+		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
+
+
+		//add an XmlSchemaType annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlElementMapping.getXmlSchemaType());
+		assertNotNull(xmlSchemaTypeAnnotation);
+
+		//remove the XmlSchemaType annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.removeAnnotation(declaration, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
 	}
 
 	protected void addXmlElementMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

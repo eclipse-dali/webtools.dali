@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 /**
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
  */
 public interface XmlSchemaType
 	extends 
-		JaxbContextNode
+		JavaContextNode
 {
 
 	XmlSchemaTypeAnnotation getResourceXmlSchemaType();
@@ -44,8 +45,10 @@ public interface XmlSchemaType
 	 * Corresponds to the XmlSchemaType annotation 'namespace' element
 	 */
 	String getNamespace();
-	void setNamespace(String namespace);
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
+	String getDefaultNamespace();
+	String getSpecifiedNamespace();
+	void setSpecifiedNamespace(String namespace);
+		String SPECIFIED_NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
 		String DEFAULT_NAMESPACE = "http://www.w3.org/2001/XMLSchema"; //$NON-NLS-1$
 
 

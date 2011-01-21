@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010,2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,9 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
-
-import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the JAXB annotation
@@ -26,64 +23,8 @@ import org.eclipse.jpt.core.utility.TextRange;
  * @since 3.0
  */
 public interface XmlAttributeAnnotation
-	extends Annotation
+	extends JaxbContainmentAnnotation
 {
 	String ANNOTATION_NAME = JAXB.XML_ATTRIBUTE;
 
-	/**
-	 * Corresponds to the 'name' element of the XmlAttribute annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getName();
-		String NAME_PROPERTY = "name"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'name' element of the XmlAttribute annotation.
-	 * Set to null to remove the element.
-	 */
-	void setName(String name);
-
-	/**
-	 * Return the {@link TextRange} for the 'name' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
-	 */
-	TextRange getNameTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlAttribute annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	String getNamespace();
-		String NAMESPACE_PROPERTY = "namespace"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'namespace' element of the XmlAttribute annotation.
-	 * Set to null to remove the element.
-	 */
-	void setNamespace(String namespace);
-
-	/**
-	 * Return the {@link TextRange} for the 'namespace' element. If the element 
-	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
-	 */
-	TextRange getNamespaceTextRange(CompilationUnit astRoot);
-
-	/**
-	 * Corresponds to the 'required' element of the XmlAttribute annotation.
-	 * Return null if the element does not exist in Java.
-	 */
-	Boolean getRequired();
-		String REQUIRED_PROPERTY = "required"; //$NON-NLS-1$
-
-	/**
-	 * Corresponds to the 'required' element of the XmlAttribute annotation.
-	 * Set to null to remove the element.
-	 */
-	void setRequired(Boolean required);
-
-	/**
-	 * Return the {@link TextRange} for the 'required' element. If the element
-	 * does not exist return the {@link TextRange} for the XmlAttribute annotation.
-	 */
-	TextRange getRequiredTextRange(CompilationUnit astRoot);
 }

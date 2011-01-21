@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
@@ -34,7 +33,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
-import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
@@ -43,7 +41,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 /**
  * Use a JAXB factory to build any core (e.g. {@link JaxbProject})
@@ -117,8 +114,6 @@ public interface JaxbFactory  {
 	JaxbPersistentEnum buildJavaPersistentEnum(JaxbContextRoot parent, JavaResourceEnum resourceEnum);
 
 	XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent);
-	
-	XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation);
 	
 	XmlNs buildJavaXmlNs(XmlSchema parent, XmlNsAnnotation xmlNsAnnotation);
 

@@ -17,7 +17,6 @@ import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProject.Config;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
-import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
@@ -35,7 +34,6 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
-import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaElementFactoryMethod;
@@ -52,7 +50,6 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapp
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
-import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchemaType;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlTransientMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
@@ -62,7 +59,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 
 /**
  * Central class that allows extenders to easily replace implementations of
@@ -118,10 +114,6 @@ public abstract class AbstractJaxbFactory
 	
 	public XmlSchema buildJavaXmlSchema(JaxbPackageInfo parent) {
 		return new GenericJavaXmlSchema(parent);
-	}
-	
-	public XmlSchemaType buildJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation resourceXmlSchemaType) {
-		return new GenericJavaXmlSchemaType(parent, resourceXmlSchemaType);
 	}
 	
 	public JaxbEnumConstant buildJavaEnumConstant(JaxbPersistentEnum parent, JavaResourceEnumConstant resourceEnumConstant) {

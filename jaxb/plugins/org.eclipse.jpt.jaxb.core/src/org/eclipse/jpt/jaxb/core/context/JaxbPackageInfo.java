@@ -33,6 +33,7 @@ public interface JaxbPackageInfo
 	
 	JavaResourcePackage getResourcePackage();
 
+	JaxbPackage getParent();
 
 	// ********** xml schema **********
 

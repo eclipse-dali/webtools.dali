@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -91,18 +91,18 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 	
-		assertNull(contextXmlSchemaType.getNamespace());
+		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
 		
-		contextXmlSchemaType.setNamespace("foo");
+		contextXmlSchemaType.setSpecifiedNamespace("foo");
 		XmlSchemaTypeAnnotation schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertEquals("foo", schemaTypeAnnotation.getNamespace());
-		assertEquals("foo", contextXmlSchemaType.getNamespace());
+		assertEquals("foo", contextXmlSchemaType.getSpecifiedNamespace());
 		
 		 //verify the xml schema type annotation is not removed when the namespace is set to null
-		contextXmlSchemaType.setNamespace(null);
+		contextXmlSchemaType.setSpecifiedNamespace(null);
 		schemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourcePackage.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
 		assertNull(schemaTypeAnnotation.getNamespace());
-		assertNull(contextXmlSchemaType.getNamespace());
+		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
 	}
 	
 	public void testUpdateNamespace() throws Exception {
@@ -111,7 +111,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 		XmlSchemaType contextXmlSchemaType = contextPackageInfo.getXmlSchemaTypes().iterator().next();
 		JavaResourcePackage resourcePackage = contextPackageInfo.getResourcePackage();
 
-		assertNull(contextXmlSchemaType.getNamespace());
+		assertNull(contextXmlSchemaType.getSpecifiedNamespace());
 		
 		//add a namespace member value pair
 		AnnotatedElement annotatedElement = this.annotatedElement(resourcePackage);
@@ -120,7 +120,7 @@ public class GenericJavaXmlSchemaTypeTests extends JaxbContextModelTestCase
 				GenericJavaXmlSchemaTypeTests.this.addXmlSchemaTypeMemberValuePair(declaration, JAXB.XML_SCHEMA_TYPE__NAMESPACE, "foo");
 			}
 		});
-		assertEquals("foo", contextXmlSchemaType.getNamespace());
+		assertEquals("foo", contextXmlSchemaType.getSpecifiedNamespace());
 
 		annotatedElement.edit(new Member.Editor() {
 			public void edit(ModifiedDeclaration declaration) {

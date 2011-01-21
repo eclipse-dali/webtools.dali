@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -299,6 +300,62 @@ public class GenericJavaXmlAttributeMappingTests extends JaxbContextModelTestCas
 		xmlJavaTypeAdapterAnnotation = (XmlJavaTypeAdapterAnnotation) resourceAttribute.getAnnotation(0, XmlJavaTypeAdapterAnnotation.ANNOTATION_NAME);
 		assertNull(xmlAttributeMapping.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
+	}
+
+	public void testModifyXmlSchemaType() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
+
+		xmlAttributeMapping.addXmlSchemaType();
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlSchemaType());
+		assertNotNull(xmlSchemaTypeAnnotation);
+
+		xmlAttributeMapping.removeXmlSchemaType();
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlSchemaType() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
+
+
+		//add an XmlSchemaType annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlSchemaType());
+		assertNotNull(xmlSchemaTypeAnnotation);
+
+		//remove the XmlSchemaType annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.removeAnnotation(declaration, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlSchemaTypeAnnotation = (XmlSchemaTypeAnnotation) resourceAttribute.getAnnotation(0, XmlSchemaTypeAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlSchemaType());
+		assertNull(xmlSchemaTypeAnnotation);
 	}
 
 	protected void addXmlAttributeMemberValuePair(ModifiedDeclaration declaration, String name, String value) {

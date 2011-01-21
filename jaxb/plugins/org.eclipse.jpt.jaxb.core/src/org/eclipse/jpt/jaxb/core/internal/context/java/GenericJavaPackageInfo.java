@@ -61,6 +61,12 @@ public class GenericJavaPackageInfo
 		this.xmlJavaTypeAdapterContainer = new XmlJavaTypeAdapterContainer();
 	}
 
+	@Override
+	public JaxbPackage getParent() {
+		return (JaxbPackage) super.getParent();
+	}
+
+
 	// **************** AbstractJaxbNode impl *********************************
 	
 	@Override
@@ -194,7 +200,7 @@ public class GenericJavaPackageInfo
 	}
 
 	protected XmlSchemaType buildXmlSchemaType(XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
-		return this.getFactory().buildJavaXmlSchemaType(this, xmlSchemaTypeAnnotation);
+		return new GenericJavaPackageXmlSchemaType(this, xmlSchemaTypeAnnotation);
 	}
 
 	protected void syncXmlSchemaTypes() {
@@ -256,28 +262,32 @@ public class GenericJavaPackageInfo
 		return this.resourcePackage.getJavaResourceCompilationUnit().buildASTRoot();
 	}
 	
-	
 	// **************** content assist ****************************************
 	
+	//This doesn't actually work yet because of JDT bug (bugs.eclipse.org/326610)
 	@Override
-	public Iterable<String> javaCompletionProposals(
-			int pos, Filter<String> filter, CompilationUnit astRoot) {
-		Iterable<String> result = super.javaCompletionProposals(pos, filter, astRoot);
+	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
+		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
 		}
 		
-		result = this.xmlSchema.javaCompletionProposals(pos, filter, astRoot);
+		result = this.xmlSchema.getJavaCompletionProposals(pos, filter, astRoot);
 		if (! CollectionTools.isEmpty(result)) {
 			return result;
+		}		
+		for (XmlSchemaType xmlSchemaType : this.getXmlSchemaTypes()) {
+			result = xmlSchemaType.getJavaCompletionProposals(pos, filter, astRoot);
+			if (!CollectionTools.isEmpty(result)) {
+				return result;
+			}
 		}
-			
+		
 		return EmptyIterable.instance();
 	}
-
-
-	// **************** validation ********************************************
 	
+	// **************** validation ********************************************
+
 	@Override
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
 		return this.resourcePackage.getNameTextRange(astRoot);
@@ -298,17 +308,17 @@ public class GenericJavaPackageInfo
 			this.validate(messages, reporter, this.buildASTRoot());
 		}
 	}
-	
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		
+
 		for (XmlJavaTypeAdapter adapter : getXmlJavaTypeAdapters()) {
 			adapter.validate(messages, reporter, astRoot);
 		}
 	}
-	
-	
+
+
 	/**
 	 * xml schema type container
 	 */

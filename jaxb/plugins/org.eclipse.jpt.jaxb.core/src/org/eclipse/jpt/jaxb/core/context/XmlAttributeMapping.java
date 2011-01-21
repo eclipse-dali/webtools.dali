@@ -23,50 +23,6 @@ package org.eclipse.jpt.jaxb.core.context;
  * @since 3.0
  */
 public interface XmlAttributeMapping
-		extends JaxbAttributeMapping, XmlAdaptable {
-
-
-	String getName();
-	String getDefaultName();
-	String getSpecifiedName();
-	void setSpecifiedName(String name);
-		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
-
-	boolean isRequired();
-	boolean isDefaultRequired();
-		boolean DEFAULT_REQUIRED = false;
-	Boolean getSpecifiedRequired();
-	void setSpecifiedRequired(Boolean specifiedRequired);
-		String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
-
-	String getNamespace();
-	String getDefaultNamespace();
-	String getSpecifiedNamespace();
-	void setSpecifiedNamespace(String namespace);
-		String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
-
-
-//	// ********** xml schema type ************
-//	/**
-//	 * Return whether this class has an XmlSchemaType annotation)
-//	 */
-//	boolean hasXmlSchemaType();
-//
-//	/**
-//	 * Return the xml schema type or null.
-//	 */
-//	XmlSchemaType getXmlSchemaType();
-//
-//	/**
-//	 * Set the xml schema type name, this will add the XmlSchemaType annotation
-//	 * and set its name to the specified name.
-//	 * To remove the XmlSchemaType annotation, pass in null.
-//	 * To set the name when the class already has an XmlSchemaType,
-//	 * set it directly on the XmlSchemaType.
-//	 */
-//		
-//	XmlSchemaType setXmlSchemaTypeName(String name);
-//		String XML_SCHEMA_TYPE = "xmlSchemaType"; //$NON-NLS-1$
-//	
+		extends JaxbContainmentMapping {	
 	
 }
