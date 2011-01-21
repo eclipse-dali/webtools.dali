@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -25,7 +25,7 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.internal.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.osgi.util.NLS;
 
@@ -36,9 +36,9 @@ public class GenericJpaUserLibraryValidator
 		JpaUserLibraryProviderInstallOperationConfig jpaConfig 
 				= (JpaUserLibraryProviderInstallOperationConfig) config;
 		Set<String> classNames = new HashSet<String>();
-		classNames.add("javax.persistence.Entity");
+		classNames.add("javax.persistence.Entity"); //$NON-NLS-1$
 		if (config.getProjectFacetVersion().compareTo(JpaFacet.VERSION_2_0) >= 0) {
-			classNames.add("javax.persistence.ElementCollection");
+			classNames.add("javax.persistence.ElementCollection"); //$NON-NLS-1$
 		}
 		return validate(jpaConfig, classNames);
 	}
@@ -49,7 +49,7 @@ public class GenericJpaUserLibraryValidator
 		Set<String> classFileNames = new HashSet<String>();
 		Map<String,String> classFileNameToClassName = new HashMap<String,String>();
 		for (String className : classNames) {
-			String classFileName = className.replace('.', '/') + ".class";
+			String classFileName = className.replace('.', '/') + ".class"; //$NON-NLS-1$
 			classFileNames.add(classFileName);
 			classFileNameToClassName.put(classFileName, className);
 		}

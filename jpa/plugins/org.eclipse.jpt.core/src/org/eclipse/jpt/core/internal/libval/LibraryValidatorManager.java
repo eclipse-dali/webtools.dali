@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.XPointUtil.XPointException;
-import org.eclipse.jpt.core.internal.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.jpt.utility.internal.KeyedSet;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
@@ -30,12 +30,12 @@ import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 public class LibraryValidatorManager {
 	
-	public static final String EXTENSION_POINT_ID = "libraryValidators";
+	public static final String EXTENSION_POINT_ID = "libraryValidators"; //$NON-NLS-1$
 	public static final String QUALIFIED_EXTENSION_POINT_ID = JptCorePlugin.PLUGIN_ID_ + EXTENSION_POINT_ID;
-	public static final String LIBRARY_VALIDATOR_ELEMENT = "libraryValidator";
-	public static final String ID_ATTRIBUTE = "id";
-	public static final String CLASS_ATTRIBUTE = "class";
-	public static final String ENABLEMENT_ELEMENT = "enablement";
+	public static final String LIBRARY_VALIDATOR_ELEMENT = "libraryValidator"; //$NON-NLS-1$
+	public static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$
+	public static final String CLASS_ATTRIBUTE = "class"; //$NON-NLS-1$
+	public static final String ENABLEMENT_ELEMENT = "enablement"; //$NON-NLS-1$
 	
 	
 	private static LibraryValidatorManager INSTANCE = new LibraryValidatorManager();

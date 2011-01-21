@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,7 +15,7 @@ import org.eclipse.core.expressions.EvaluationResult;
 import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.core.internal.XPointUtil;
-import org.eclipse.jpt.core.internal.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.libval.LibraryValidator;
 
 public class LibraryValidatorConfig {

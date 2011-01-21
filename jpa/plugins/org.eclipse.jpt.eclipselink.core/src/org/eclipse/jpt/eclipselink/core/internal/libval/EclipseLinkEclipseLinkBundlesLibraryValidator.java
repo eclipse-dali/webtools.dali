@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.internal.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.internal.libval.AbstractOsgiBundlesLibraryValidator;
+import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.osgi.service.resolver.VersionRange;
