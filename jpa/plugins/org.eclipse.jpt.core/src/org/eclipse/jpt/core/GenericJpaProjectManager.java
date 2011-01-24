@@ -51,7 +51,6 @@ import org.eclipse.wst.common.project.facet.core.FacetedProjectFramework;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectEvent;
 import org.eclipse.wst.common.project.facet.core.events.IFacetedProjectListener;
 import org.eclipse.wst.common.project.facet.core.events.IProjectFacetActionEvent;
-import org.osgi.framework.BundleContext;
 
 /**
  * The JPA project manager maintains a list of all JPA projects in the workspace.
