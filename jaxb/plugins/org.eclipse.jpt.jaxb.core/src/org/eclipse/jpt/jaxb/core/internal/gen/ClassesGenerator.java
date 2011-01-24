@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -94,6 +94,8 @@ public class ClassesGenerator extends AbstractJptGenerator
 		this.mainType = (usesMoxyGenerator) ? JAXB_ECLIPSELINK_GEN_CLASS : JAXB_GENERIC_GEN_CLASS;
 	}
 
+	// ********** overrides **********
+
 	@Override
 	protected String getMainType() {
 		return this.mainType;
@@ -103,7 +105,6 @@ public class ClassesGenerator extends AbstractJptGenerator
 	protected String getLaunchConfigName() {
 		return LAUNCH_CONFIG_NAME;
 	}
-
 
 	// ********** behavior **********
 

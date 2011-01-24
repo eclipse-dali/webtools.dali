@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,23 +11,19 @@ package org.eclipse.jpt.jaxb.core.internal.gen;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaProject;
@@ -35,13 +31,9 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
-import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
-import org.eclipse.osgi.service.datalocation.Location;
-import org.osgi.framework.Bundle;
 
 /**
  *  SchemaGenerator
@@ -58,12 +50,11 @@ public class SchemaGenerator extends AbstractJptGenerator
 	static public String ECLIPSELINK_JAXB_PROPERTIES_FILE_CONTENTS = "javax.xml.bind.context.factory=" + ECLIPSELINK_JAXB_CONTEXT_FACTORY;  //$NON-NLS-1$
 	static public String JAXB_PROPERTIES_FILE_NAME = "jaxb.properties";  //$NON-NLS-1$
 	
-	static public String JAXB_SCHEMA_GEN_JAR = JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
-	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_JAR = ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
+	static public String JAXB_SCHEMA_GEN_JAR_PREFIX = JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
+	static public String ECLIPSELINK_JAXB_SCHEMA_GEN_JAR_PREFIX = ECLIPSELINK_JAXB_SCHEMA_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 
 	static public String JAXB_GENERIC_SCHEMA_GEN_CLASS = "javax.xml.bind.JAXBContext";	//$NON-NLS-1$
 	static public String JAXB_ECLIPSELINK_SCHEMA_GEN_CLASS = "org.eclipse.persistence.jaxb.JAXBContext";	//$NON-NLS-1$
-	static public String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 	
 	private final String targetSchemaName;
 	private final String[] sourceClassNames;
@@ -104,6 +95,8 @@ public class SchemaGenerator extends AbstractJptGenerator
 		this.initialize();
 	}
 
+	// ********** overrides **********
+
 	@Override
 	protected String getMainType() {
 		return this.mainType;
@@ -114,8 +107,12 @@ public class SchemaGenerator extends AbstractJptGenerator
 		return LAUNCH_CONFIG_NAME;
 	}
 
-
-	// ********** behavior **********
+	@Override
+	protected String getBootstrapJarPrefix() {
+		return (this.useMoxy) ? 
+						ECLIPSELINK_JAXB_SCHEMA_GEN_JAR_PREFIX :
+						JAXB_SCHEMA_GEN_JAR_PREFIX;
+	}
 
 	@Override
 	protected void preGenerate(IProgressMonitor monitor) {
@@ -141,6 +138,44 @@ public class SchemaGenerator extends AbstractJptGenerator
 		}
 		catch (CoreException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	// ********** Launch Configuration Setup **********
+
+	@Override
+	protected List<String> buildClasspath() throws CoreException {
+		List<String> classpath = new ArrayList<String>();
+		// Schema_Gen jar
+		classpath.add(this.getBootstrapJarClasspathEntry().getMemento());
+		// Default Project classpath
+		classpath.add(this.getDefaultProjectClasspathEntry().getMemento());
+		// System Library  
+		classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
+		return classpath;
+	}
+	
+	@Override
+	protected void specifyProgramArguments() {
+
+		StringBuffer programArguments = new StringBuffer();
+		// sourceClassNames
+		this.appendClassNameArguments(programArguments);
+
+		// schema
+		programArguments.append(" -s \"");	  //$NON-NLS-1$
+		programArguments.append(this.targetSchemaName);
+		programArguments.append('"');
+
+		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
+	}
+
+	// ********** private methods **********
+	
+	private void appendClassNameArguments(StringBuffer sb) {
+		for (String className : this.sourceClassNames) {
+			sb.append(" -c ");	  //$NON-NLS-1$
+			sb.append(className);
 		}
 	}
 	
@@ -250,97 +285,4 @@ public class SchemaGenerator extends AbstractJptGenerator
 		throw new IllegalStateException("Java package must exist for source class");
 	}
 
-
-	// ********** Launch Configuration Setup **********
-
-	@Override
-	protected List<String> buildClasspath() throws CoreException {
-		List<String> classpath = new ArrayList<String>();
-		// Schema_Gen jar
-		classpath.add(getBootstrapJarClasspathEntry().getMemento());
-		// Default Project classpath
-		classpath.add(this.getDefaultProjectClasspathEntry().getMemento());
-		// System Library  
-		classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
-		return classpath;
-	}
-	
-	@Override
-	protected void specifyProgramArguments() {
-
-		StringBuffer programArguments = new StringBuffer();
-		// sourceClassNames
-		this.appendClassNameArguments(programArguments);
-
-		// schema
-		programArguments.append(" -s \"");	  //$NON-NLS-1$
-		programArguments.append(this.targetSchemaName);
-		programArguments.append('"');
-
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, programArguments.toString());
-	}
-	
-	private void appendClassNameArguments(StringBuffer sb) {
-		for (String className : this.sourceClassNames) {
-			sb.append(" -c ");	  //$NON-NLS-1$
-			sb.append(className);
-		}
-	}
-
-
-	// ********** private methods **********
-
-	private IRuntimeClasspathEntry getBootstrapJarClasspathEntry() {
-		return getArchiveClasspathEntry(this.buildBootstrapJarPath());
-	}
-
-	private IPath buildBootstrapJarPath() {
-		String jarName = (this.useMoxy) ? 
-			ECLIPSELINK_JAXB_SCHEMA_GEN_JAR :
-			JAXB_SCHEMA_GEN_JAR;
-
-		try {
-			File jarInstallDir = this.getBundleParentDir(JptJaxbCorePlugin.PLUGIN_ID);
-
-			List<File> result = new ArrayList<File>();
-			this.findFile(jarName, jarInstallDir, result);
-			if (result.isEmpty()) {
-				throw new RuntimeException("Could not find: " + jarName + "#.#.#v###.jar in: " + jarInstallDir);   //$NON-NLS-1$ //$NON-NLS-2$
-			}
-			File ddlGenJarFile = result.get(0);
-			String ddlGenJarPath = ddlGenJarFile.getCanonicalPath();
-			return new Path(ddlGenJarPath);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
-	private void findFile(String fileName, File directory, List<? super File> list) {
-		if(directory.listFiles() == null) {
-			throw new RuntimeException("Could not find directory: " + directory);   //$NON-NLS-1$
-		}
-		for (File file : directory.listFiles()) {
-			if (file.getName().startsWith(fileName)) {
-				list.add(file);
-			}
-			if (file.isDirectory()) {
-				this.findFile(fileName, file, list);
-			}
-		}
-	} 
-	
-	private File getBundleParentDir(String bundleName) throws IOException {
-	
-		if (Platform.inDevelopmentMode()) {
-			Location eclipseHomeLoc = Platform.getInstallLocation();
-			String eclipseHome = eclipseHomeLoc.getURL().getPath();
-			if ( ! eclipseHome.endsWith(PLUGINS_DIR)) {
-				eclipseHome += PLUGINS_DIR;
-			}
-			return new File(eclipseHome);
-		}
-		Bundle bundle = Platform.getBundle(bundleName);
-		return FileLocator.getBundleFile(bundle).getParentFile();
-	}
 }

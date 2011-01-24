@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,6 +19,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -46,8 +47,6 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
-import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
-import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.osgi.util.ManifestElement;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.osgi.framework.Bundle;
@@ -58,17 +57,16 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	public static final String LAUNCH_CONFIG_NAME = "Dali EclipseLink Table Generation";   //$NON-NLS-1$
 	public static final String DDL_GEN_PACKAGE_NAME = "org.eclipse.jpt.eclipselink.core.ddlgen";   //$NON-NLS-1$
 	public static final String ECLIPSELINK_DDL_GEN_CLASS = DDL_GEN_PACKAGE_NAME + ".Main";	  //$NON-NLS-1$
-	public static final String ECLIPSELINK_DDL_GEN_JAR = DDL_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
+	public static final String ECLIPSELINK_DDL_GEN_JAR_PREFIX = DDL_GEN_PACKAGE_NAME + "_";	//$NON-NLS-1$
 	public static final String BUNDLE_CLASSPATH = "Bundle-ClassPath";	  //$NON-NLS-1$
 	public static final String PROPERTIES_FILE_NAME = "login.properties";	  //$NON-NLS-1$
-	public static final String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
 	public static final String TRUE = "true";	  //$NON-NLS-1$
 	public static final String FALSE = "false";	  //$NON-NLS-1$
 	public static final String NONE = "NONE";	  //$NON-NLS-1$
 
 	private String puName;
 	private JpaProject jpaProject;
-	
+
 	// ********** constructors **********
 
 	protected AbstractEclipseLinkDDLGenerator(String puName, JpaProject jpaProject) {
@@ -76,6 +74,8 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		this.puName = puName;
 		this.jpaProject = jpaProject;
 	}
+
+	// ********** overrides **********
 
 	@Override
 	protected String getLaunchConfigName() {
@@ -87,8 +87,10 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		return ECLIPSELINK_DDL_GEN_CLASS;
 	}
 
-	// ********** behavior **********
-	
+	@Override
+	protected String getBootstrapJarPrefix() {
+		return ECLIPSELINK_DDL_GEN_JAR_PREFIX;
+	}
 	
 	@Override
 	protected void preGenerate(IProgressMonitor monitor) {
@@ -110,107 +112,6 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		this.reconnect();
 		this.validateProject();
 	}
-
-	//reconnect since we disconnected in preGenerate();
-	//ensure the project is fully updated before validating - bug 277236
-	protected void reconnect() {
-		getJpaProject().updateAndWait();
-		ConnectionProfile cp = this.getConnectionProfile();
-		if (cp != null) {
-			cp.connect();
-		}
-	}
-
-	protected void validateProject() {
-		IProject project = this.getJpaProject().getProject();
-		ValidateJob job = new ValidateJob(project);
-		job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(project));
-		job.schedule();
-	}
-
-	/**
-	 * Performs validation after tables have been generated
-	 */
-	private class ValidateJob extends Job 
-	{	
-		private IProject project;
-		
-		
-		public ValidateJob(IProject project) {
-			super(JptCoreMessages.VALIDATE_JOB);
-			this.project = project;
-		}
-		
-		
-		@Override
-		protected IStatus run(IProgressMonitor monitor) {
-			IStatus status = Status.OK_STATUS;
-			try {
-				ValidationFramework.getDefault().validate(
-					new IProject[] {this.project}, true, false, monitor);
-			}
-			catch (CoreException ce) {
-				status = Status.CANCEL_STATUS;
-			}
-			return status;
-		}
-	}
-	
-	private IPath buildJdbcJarPath() {
-		return new Path(this.getJpaProjectConnectionDriverJarList());
-	}
-	
-	private String getJpaProjectConnectionDriverJarList() {
-		ConnectionProfile cp = this.getConnectionProfile();
-		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
-	}
-	
-	private IPath buildBootstrapJarPath() {
-		try {
-			File jarInstallDir = this.getBundleParentDir(JptEclipseLinkCorePlugin.PLUGIN_ID);
-
-			List<File> result = new ArrayList<File>();
-			this.findFile(ECLIPSELINK_DDL_GEN_JAR, jarInstallDir, result);
-			if (result.isEmpty()) {
-				throw new RuntimeException("Could not find: " + DDL_GEN_PACKAGE_NAME + ".jar in: " + jarInstallDir);
-			}
-			File ddlGenJarFile = result.get(0);
-			String ddlGenJarPath = ddlGenJarFile.getCanonicalPath();
-			return new Path(ddlGenJarPath);
-		}
-		catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	private void findFile(String fileName, File directory, List<? super File> list) {
-		if(directory.listFiles() == null) {
-			throw new RuntimeException("Could not find directory: " + directory);
-		}
-		for (File file : directory.listFiles()) {
-			if (file.getName().startsWith(fileName)) {
-				list.add(file);
-			}
-			if (file.isDirectory()) {
-				this.findFile(fileName, file, list);
-			}
-		}
-	} 
-	
-	private File getBundleParentDir(String bundleName) throws IOException {
-
-		if (Platform.inDevelopmentMode()) {
-			Location eclipseHomeLoc = Platform.getInstallLocation();
-			String eclipseHome = eclipseHomeLoc.getURL().getPath();
-			if ( ! eclipseHome.endsWith(PLUGINS_DIR)) {
-				eclipseHome += PLUGINS_DIR;
-			}
-			return new File(eclipseHome);
-		}
-		Bundle bundle = Platform.getBundle(bundleName);
-		return FileLocator.getBundleFile(bundle).getParentFile();
-	}
-
 
 	// ********** Setting Launch Configuration **********
 	
@@ -234,17 +135,32 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		// Osgi Bundles
 		classpath.addAll(this.getPersistenceOsgiBundlesMemento());
 		// JDBC jar
-		classpath.add(getJdbcJarClasspathEntry().getMemento());
+		classpath.add(this.getJdbcJarClasspathEntry().getMemento());
 		// System Library  
 		classpath.add(this.getSystemLibraryClasspathEntry().getMemento());
 		return classpath;
 	}
 
-	// ********** ClasspathEntry **********
-	
-	private IRuntimeClasspathEntry getBootstrapJarClasspathEntry() {
-		return getArchiveClasspathEntry(this.buildBootstrapJarPath());
+	// ********** behavior **********
+
+	//reconnect since we disconnected in preGenerate();
+	//ensure the project is fully updated before validating - bug 277236
+	protected void reconnect() {
+		getJpaProject().updateAndWait();
+		ConnectionProfile cp = this.getConnectionProfile();
+		if (cp != null) {
+			cp.connect();
+		}
 	}
+
+	protected void validateProject() {
+		IProject project = this.getJpaProject().getProject();
+		ValidateJob job = new ValidateJob(project);
+		job.setRule(ResourcesPlugin.getWorkspace().getRuleFactory().modifyRule(project));
+		job.schedule();
+	}
+
+	// ********** ClasspathEntry **********
 
 	private IRuntimeClasspathEntry getJdbcJarClasspathEntry() {
 		return getArchiveClasspathEntry(this.buildJdbcJarPath());
@@ -260,31 +176,10 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 
 	// ********** EclipseLink properties **********
 	
-	private void buildProjectLocationProperty(Properties properties) {
-		this.putProperty(properties, 
-			SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION,
-			this.projectLocation);
-	}
-	
-	private void buildDDLModeProperties(Properties properties) {
-		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
-			DdlGenerationType.DROP_AND_CREATE_TABLES);
-		this.putProperty(properties,  
-			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
-			OutputMode.DATABASE);
-	}
-	
 	protected void buildConnectionProperties(Properties properties) {
 		this.putProperty(properties,  
 			Connection.ECLIPSELINK_BIND_PARAMETERS,
 			FALSE);
-	}
-	
-	private void buildConnectionPoolingProperties(Properties properties) {
-		this.putProperty(properties,
-			Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
-			TRUE);
 	}
 	
 	private void buildLoggingProperties(Properties properties) {
@@ -323,6 +218,29 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 		this.buildDDLModeProperties(properties);
 		this.buildProjectLocationProperty(properties);
 	}
+
+	// ********** private methods **********
+	
+	private void buildProjectLocationProperty(Properties properties) {
+		this.putProperty(properties, 
+			SchemaGeneration.ECLIPSELINK_APPLICATION_LOCATION,
+			this.projectLocation);
+	}
+	
+	private void buildDDLModeProperties(Properties properties) {
+		this.putProperty(properties,  
+			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_TYPE,
+			DdlGenerationType.DROP_AND_CREATE_TABLES);
+		this.putProperty(properties,  
+			SchemaGeneration.ECLIPSELINK_DDL_GENERATION_OUTPUT_MODE,
+			OutputMode.DATABASE);
+	}
+	
+	private void buildConnectionPoolingProperties(Properties properties) {
+		this.putProperty(properties,
+			Connection.ECLIPSELINK_READ_CONNECTIONS_SHARED,
+			TRUE);
+	}
 	
 	private void saveLoginProperties() {
 		String propertiesFile  = this.projectLocation + "/" + PROPERTIES_FILE_NAME; 	  //$NON-NLS-1$
@@ -357,6 +275,43 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 				throw new RuntimeException(e);
 			}
     	}		
+	}
+
+	/**
+	 * Performs validation after tables have been generated
+	 */
+	private class ValidateJob extends Job 
+	{	
+		private IProject project;
+		
+		
+		public ValidateJob(IProject project) {
+			super(JptCoreMessages.VALIDATE_JOB);
+			this.project = project;
+		}
+		
+		
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			IStatus status = Status.OK_STATUS;
+			try {
+				ValidationFramework.getDefault().validate(
+					new IProject[] {this.project}, true, false, monitor);
+			}
+			catch (CoreException ce) {
+				status = Status.CANCEL_STATUS;
+			}
+			return status;
+		}
+	}
+	
+	private IPath buildJdbcJarPath() {
+		return new Path(this.getJpaProjectConnectionDriverJarList());
+	}
+	
+	private String getJpaProjectConnectionDriverJarList() {
+		ConnectionProfile cp = this.getConnectionProfile();
+		return (cp == null) ? "" : cp.getDriverJarList(); //$NON-NLS-1$
 	}
 
 	// ********** Main arguments **********

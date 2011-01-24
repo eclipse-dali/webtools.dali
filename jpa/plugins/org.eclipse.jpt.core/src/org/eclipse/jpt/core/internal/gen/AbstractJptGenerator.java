@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2008, 2010 Oracle. All rights reserved.
+* Copyright (c) 2008, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,18 @@
 package org.eclipse.jpt.core.internal.gen;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -30,10 +35,15 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.osgi.service.datalocation.Location;
+import org.osgi.framework.Bundle;
 
 public abstract class AbstractJptGenerator
 {
+	public static final String PLUGINS_DIR = "plugins/";	  //$NON-NLS-1$
+
 	private IVMInstall jre;
 	protected ILaunchConfigurationWorkingCopy launchConfig;
 	private ILaunch launch;
@@ -51,6 +61,20 @@ public abstract class AbstractJptGenerator
 		this.projectLocation = javaProject.getProject().getLocation().toString();
 		this.initialize();
 	}
+
+	// ********** abstract methods **********
+	
+	protected abstract String getMainType();
+
+	protected abstract String getLaunchConfigName();
+
+	protected String getBootstrapJarPrefix() {
+		throw new RuntimeException("Bootstrap JAR not specified.");   //$NON-NLS-1$;
+	}
+	
+	protected abstract void specifyProgramArguments();
+
+	protected abstract List<String> buildClasspath() throws CoreException;
 
 	// ********** behavior **********
 	
@@ -111,11 +135,11 @@ public abstract class AbstractJptGenerator
 	
 	protected void postGenerate() {
 		try {
-			if ( ! this.isDebug) {
+			if( ! this.isDebug) {
 				this.removeLaunchConfiguration();
 			}
 		}
-		catch (CoreException e) {
+		catch(CoreException e) {
 			throw new RuntimeException(e);
 		}
 	}
@@ -124,7 +148,7 @@ public abstract class AbstractJptGenerator
 		return new ILaunchesListener2() {
 			
 			public void launchesTerminated(ILaunch[] launches) {
-				for (int i = 0; i < launches.length; i++) {
+				for(int i = 0; i < launches.length; i++) {
 					ILaunch launch = launches[i];
 					if (launch.equals(AbstractJptGenerator.this.getLaunch())) {
 
@@ -170,10 +194,6 @@ public abstract class AbstractJptGenerator
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_MAIN_TYPE_NAME, this.getMainType());
 	}
 
-	protected abstract String getMainType();
-	
-	protected abstract void specifyProgramArguments();
-
 	protected void specifyClasspathProperties()  {
 		List<String> classpath;
 		try {
@@ -184,13 +204,6 @@ public abstract class AbstractJptGenerator
 		}
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, classpath);
 		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_DEFAULT_CLASSPATH, false);
-	}
-
-	protected abstract List<String> buildClasspath() throws CoreException;
-	
-	private void specifyWorkingDir() {
-		File workingDir = new Path(this.projectLocation).toFile();
-		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workingDir.getAbsolutePath());
 	}
 
 	// ********** ClasspathEntry **********
@@ -244,32 +257,6 @@ public abstract class AbstractJptGenerator
 		return result;
 	}
 
-	private ILaunchConfigurationWorkingCopy buildLaunchConfiguration() throws CoreException {
-		this.removeLaunchConfiguration();
-
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-
-		return type.newInstance(null, this.getLaunchConfigName());
-	}
-
-	protected abstract String getLaunchConfigName();
-	
-	private void removeLaunchConfiguration() throws CoreException {
-
-		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
-	
-		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);
-				for (int i = 0; i < configurations.length; i++) {
-			ILaunchConfiguration configuration = configurations[i];
-			if (configuration.getName().equals(this.getLaunchConfigName())) {
-				configuration.delete();
-				break;
-			}
-		}
-	}
-
 	// ********** Main arguments **********
 	
 	protected void appendDebugArgument(StringBuffer sb) {
@@ -291,4 +278,92 @@ public abstract class AbstractJptGenerator
 	private IVMInstall getProjectJRE() throws CoreException {
 		return JavaRuntime.getVMInstall(this.javaProject);
 	}
+
+	// ********** Utilities **********
+
+	protected IRuntimeClasspathEntry getBootstrapJarClasspathEntry() {
+		return getArchiveClasspathEntry(this.buildBootstrapJarPath());
+	}
+
+	protected IPath buildBootstrapJarPath() {
+		return this.findGenJarStartingWith(this.getBootstrapJarPrefix());
+	}
+	
+	protected IPath findGenJarStartingWith(String genJarName) {
+		try {
+			File jarInstallDir = this.getBundleParentDir(JptCorePlugin.PLUGIN_ID);
+
+			List<File> result = new ArrayList<File>();
+			this.findFileStartingWith(genJarName, jarInstallDir, result);
+			if (result.isEmpty()) {
+				throw new RuntimeException("Could not find: " + genJarName + "#.#.#v###.jar in: " + jarInstallDir);   //$NON-NLS-1$ //$NON-NLS-2$
+			}
+			File genJarFile = result.get(0);
+			String genJarPath = genJarFile.getCanonicalPath();
+			return new Path(genJarPath);
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	// ********** private methods **********
+
+	private File getBundleParentDir(String bundleName) throws IOException {
+	
+		if (Platform.inDevelopmentMode()) {
+			Location eclipseHomeLoc = Platform.getInstallLocation();
+			String eclipseHome = eclipseHomeLoc.getURL().getPath();
+			if ( ! eclipseHome.endsWith(PLUGINS_DIR)) {
+				eclipseHome += PLUGINS_DIR;
+			}
+			return new File(eclipseHome);
+		}
+		Bundle bundle = Platform.getBundle(bundleName);
+		return FileLocator.getBundleFile(bundle).getParentFile();
+	}
+
+	private ILaunchConfigurationWorkingCopy buildLaunchConfiguration() throws CoreException {
+		this.removeLaunchConfiguration();
+
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+
+		return type.newInstance(null, this.getLaunchConfigName());
+	}
+	
+	private void removeLaunchConfiguration() throws CoreException {
+
+		ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType type = manager.getLaunchConfigurationType(IJavaLaunchConfigurationConstants.ID_JAVA_APPLICATION);
+	
+		ILaunchConfiguration[] configurations = manager.getLaunchConfigurations(type);
+				for (int i = 0; i < configurations.length; i++) {
+			ILaunchConfiguration configuration = configurations[i];
+			if (configuration.getName().equals(this.getLaunchConfigName())) {
+				configuration.delete();
+				break;
+			}
+		}
+	}
+
+	private void findFileStartingWith(String fileName, File directory, List<? super File> list) {
+		if(directory.listFiles() == null) {
+			throw new RuntimeException("Could not find directory: " + directory);   //$NON-NLS-1$
+		}
+		for (File file : directory.listFiles()) {
+			if (file.getName().startsWith(fileName)) {
+				list.add(file);
+			}
+			if (file.isDirectory()) {
+				this.findFileStartingWith(fileName, file, list);
+			}
+		}
+	}
+	
+	private void specifyWorkingDir() {
+		File workingDir = new Path(this.projectLocation).toFile();
+		this.launchConfig.setAttribute(IJavaLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY, workingDir.getAbsolutePath());
+	}
+	
 }
