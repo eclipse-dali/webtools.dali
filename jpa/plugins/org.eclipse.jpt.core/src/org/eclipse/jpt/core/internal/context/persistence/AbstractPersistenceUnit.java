@@ -836,19 +836,6 @@ public abstract class AbstractPersistenceUnit
 		};
 	}
 	
-	protected Iterable<PersistentType> getNonNullClassRefPersistentTypes() {
-		return new FilteringIterable<PersistentType>(this.getClassRefPersistentTypes(), NotNullFilter.<PersistentType>instance());
-	}
-
-	protected Iterable<PersistentType> getClassRefPersistentTypes() {
-		return new TransformationIterable<ClassRef, PersistentType>(this.getClassRefs()) {
-			@Override
-			protected PersistentType transform(ClassRef classRef) {
-				return classRef.getJavaPersistentType();
-			}
-		};
-	}
-
 
 	// ********** specified class refs **********
 
@@ -2200,7 +2187,7 @@ public abstract class AbstractPersistenceUnit
 		// precedence)
 		HashMap<String, PersistentType2_0> allPersistentTypes = new HashMap<String, PersistentType2_0>();
 		this.addPersistentTypesTo_(this.getJarFileRefs(), allPersistentTypes);
-		this.addPersistentTypesTo(this.getNonNullClassRefPersistentTypes(), allPersistentTypes);
+		this.addPersistentTypesTo(this.getNonNullClassPersistentTypes(), allPersistentTypes);
 		this.addPersistentTypesTo_(this.getMappingFileRefs(), allPersistentTypes);
 
 		// build a list of the top-level types and a tree of their associated
