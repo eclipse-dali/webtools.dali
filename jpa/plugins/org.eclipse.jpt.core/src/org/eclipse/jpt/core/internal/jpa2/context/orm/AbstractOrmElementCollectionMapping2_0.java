@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.OverrideContainer;
 import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
@@ -1062,17 +1062,17 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	@Override
-	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+	public Relationship resolveOverriddenRelationship(String attributeName) {
 		attributeName = this.unqualify(attributeName);
 		if (attributeName == null) {
 			return null;
 		}
 		AssociationOverride override = this.valueAssociationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
 		// recurse into the target embeddable if necessary
-		return (override != null) ? override.getRelationshipReference() : this.resolveOverriddenRelationshipInTargetEmbeddable(attributeName);
+		return (override != null) ? override.getRelationship() : this.resolveOverriddenRelationshipInTargetEmbeddable(attributeName);
 	}
 
-	protected RelationshipReference resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
+	protected Relationship resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
 		Embeddable targetEmbeddable = this.getResolvedTargetEmbeddable();
 		return (targetEmbeddable == null) ? null : targetEmbeddable.resolveOverriddenRelationship(attributeName);
 	}
@@ -1481,11 +1481,11 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return this.getXmlMapping().getAssociationOverrides();
 		}
 
-		public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		public Relationship resolveOverriddenRelationship(String attributeName) {
 			if (this.mappingIsVirtual() && ! this.getTypeMapping().isMetadataComplete()) {
 				JavaAssociationOverride override = AbstractOrmElementCollectionMapping2_0.this.getSpecifiedJavaValueAssociationOverrideNamed(attributeName);
 				if (override != null) {
-					return override.getRelationshipReference();
+					return override.getRelationship();
 				}
 			}
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);

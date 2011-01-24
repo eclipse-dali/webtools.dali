@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetchType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationship;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkRelationshipMapping;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLink;
@@ -276,38 +276,38 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
 		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkOneToManyMapping mapping = (EclipseLinkOneToManyMapping) contextAttribute.getMapping();
-		EclipseLinkOneToManyRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		EclipseLinkOneToManyRelationship rel = mapping.getRelationship();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 		
-		relationshipReference.setJoinColumnJoiningStrategy();
+		rel.setJoinColumnJoiningStrategy();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 		
-		relationshipReference.setMappedByJoiningStrategy();
+		rel.setMappedByJoiningStrategy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.usesMappedByJoiningStrategy());
 		
-		relationshipReference.setJoinTableJoiningStrategy();
+		rel.setJoinTableJoiningStrategy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -318,68 +318,68 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		OneToManyAnnotation annotation = (OneToManyAnnotation) resourceAttribute.getAnnotation(JPA.ONE_TO_MANY);
 		PersistentAttribute contextAttribute = getJavaPersistentType().attributes().next();
 		EclipseLinkOneToManyMapping mapping = (EclipseLinkOneToManyMapping) contextAttribute.getMapping();
-		EclipseLinkOneToManyRelationshipReference relationshipReference = mapping.getRelationshipReference();
+		EclipseLinkOneToManyRelationship rel = mapping.getRelationship();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.usesMappedByJoiningStrategy());
 		
 		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.usesMappedByJoiningStrategy());
 		
 		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertTrue(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.usesMappedByJoiningStrategy());
 		
 		annotation.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 		
 		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertFalse(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 		
 		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertFalse(relationshipReference.usesJoinColumnJoiningStrategy());
-		assertTrue(relationshipReference.usesJoinTableJoiningStrategy());
-		assertFalse(relationshipReference.usesMappedByJoiningStrategy());
+		assertFalse(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.usesMappedByJoiningStrategy());
 	}
 	
 	public void testDefaultOneToMany() throws Exception {
@@ -450,10 +450,10 @@ public class EclipseLinkJavaOneToManyMappingTests extends EclipseLinkContextMode
 		assertEquals(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
 		EclipseLinkOneToManyMapping oneToManyMapping = (EclipseLinkOneToManyMapping) persistentAttribute.getMapping();
-		oneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().setMappedByAttribute("Foo");
+		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("Foo");
 		
 		EclipseLinkOneToManyMapping specifiedOneToManyMapping = (EclipseLinkOneToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		assertEquals("Foo", specifiedOneToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertEquals("Foo", specifiedOneToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
 
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();

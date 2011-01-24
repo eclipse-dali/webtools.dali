@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -45,7 +45,7 @@ import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -1378,25 +1378,25 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	@Override
-	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+	public Relationship resolveOverriddenRelationship(String attributeName) {
 		if (this.isJpa2_0Compatible()) {
 			// strip off the first segment
 			int dotIndex = attributeName.indexOf('.');
 			if (dotIndex != -1) {
 				AssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName.substring(dotIndex + 1));
 				if (override != null) {
-					return override.getRelationshipReference();
+					return override.getRelationship();
 				}
 			}
 		}
 		return super.resolveOverriddenRelationship(attributeName);
 	}
 
-	protected RelationshipReference resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
+	protected Relationship resolveOverriddenRelationshipForAssociationOverride(String attributeName) {
 		if ( ! this.isMetadataComplete()) {
 			JavaPersistentType javaType = this.getJavaPersistentType();
 			if (javaType != null) {
-				RelationshipReference relationship = javaType.getMapping().resolveOverriddenRelationship(attributeName);
+				Relationship relationship = javaType.getMapping().resolveOverriddenRelationship(attributeName);
 				if (relationship != null) {
 					return relationship;
 				}
@@ -2107,7 +2107,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.xmlTypeMapping.getAssociationOverrides();
 		}
 
-		public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		public Relationship resolveOverriddenRelationship(String attributeName) {
 			return AbstractOrmEntity.this.resolveOverriddenRelationshipForAssociationOverride(attributeName);
 		}
 

@@ -1,17 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.jpa2.context.OneToOneRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
@@ -34,7 +34,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkOneToOneMapping2_0Composite
-	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping, OneToOneRelationshipReference2_0>
+	extends AbstractOneToOneMapping2_0Composite<OneToOneMapping, OneToOneRelationship2_0>
 {
 	public OrmEclipseLinkOneToOneMapping2_0Composite(
 			PropertyValueModel<? extends OneToOneMapping> subjectHolder,

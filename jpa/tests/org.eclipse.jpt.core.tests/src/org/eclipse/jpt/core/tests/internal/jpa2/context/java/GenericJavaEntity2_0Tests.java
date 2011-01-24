@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
@@ -2062,7 +2062,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = getJavaEntity().getAssociationOverrideContainer().specifiedOverrides().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((JavaAssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = ((JavaOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.inverseJoinColumns().next().getName());
 	}

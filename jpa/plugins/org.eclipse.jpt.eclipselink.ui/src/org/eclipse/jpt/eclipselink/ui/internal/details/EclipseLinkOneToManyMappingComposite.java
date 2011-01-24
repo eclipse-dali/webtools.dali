@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
-import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationshipReference;
+import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationship;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -79,7 +79,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public class EclipseLinkOneToManyMappingComposite<T extends OneToManyMapping> 
-	extends AbstractOneToManyMappingComposite<T, EclipseLinkOneToManyRelationshipReference>
+	extends AbstractOneToManyMappingComposite<T, EclipseLinkOneToManyRelationship>
     implements JpaComposite
 {
 	/**

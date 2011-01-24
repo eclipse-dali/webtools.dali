@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
-import org.eclipse.jpt.core.context.java.JavaManyToManyRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaManyToManyRelationship;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -21,7 +21,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaManyToManyMapping2_0Composite
-	extends AbstractManyToManyMappingComposite<JavaManyToManyMapping, JavaManyToManyRelationshipReference>
+	extends AbstractManyToManyMappingComposite<JavaManyToManyMapping, JavaManyToManyRelationship>
 {
 	public JavaManyToManyMapping2_0Composite(
 			PropertyValueModel<? extends JavaManyToManyMapping> subjectHolder,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
@@ -46,7 +46,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	protected JavaJoinColumn defaultJoinColumn;
 
 
-	protected AbstractJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
+	protected AbstractJavaJoinColumnJoiningStrategy(JavaJoinColumnRelationship parent) {
 		super(parent);
 		this.specifiedJoinColumnContainerAdapter = this.buildSpecifiedJoinColumnContainerAdapter();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
@@ -231,7 +231,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 
 	protected boolean buildsDefaultJoinColumn() {
 		return ! this.hasSpecifiedJoinColumns() &&
-				this.getRelationshipReference().mayHaveDefaultJoinColumn();
+				this.getRelationship().mayHaveDefaultJoinColumn();
 	}
 
 
@@ -251,11 +251,11 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public JavaJoinColumnEnabledRelationshipReference getParent() {
-		return (JavaJoinColumnEnabledRelationshipReference) super.getParent();
+	public JavaJoinColumnRelationship getParent() {
+		return (JavaJoinColumnRelationship) super.getParent();
 	}
 
-	public JavaJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public JavaJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
@@ -276,7 +276,7 @@ public abstract class AbstractJavaJoinColumnJoiningStrategy
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public String getTableName() {

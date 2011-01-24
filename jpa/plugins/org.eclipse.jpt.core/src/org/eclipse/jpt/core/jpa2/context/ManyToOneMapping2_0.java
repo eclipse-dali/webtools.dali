@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.ManyToOneMapping;
-import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
+import org.eclipse.jpt.core.context.ManyToOneRelationship;
 
 /**
  * JPA 2.0 m:1 mapping
@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.context.ManyToOneRelationshipReference;
 public interface ManyToOneMapping2_0
 	extends ManyToOneMapping, SingleRelationshipMapping2_0
 {
-	ManyToOneRelationshipReference getRelationshipReference();
+	ManyToOneRelationship getRelationship();
 }

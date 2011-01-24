@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOneToManyRelationship;
-import org.eclipse.jpt.eclipselink.core.v2_0.context.java.EclipseLinkJavaOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.eclipselink.core.v2_0.context.java.EclipseLinkJavaOneToManyRelationship2_0;
 
 /**
  * We need this class because the EclipseLink 1.0 1:m mapping supports a join
@@ -20,7 +20,7 @@ import org.eclipse.jpt.eclipselink.core.v2_0.context.java.EclipseLinkJavaOneToMa
  */
 public class EclipseLinkJavaOneToManyRelationship
 	extends GenericJavaOneToManyRelationship
-	implements EclipseLinkJavaOneToManyRelationshipReference2_0
+	implements EclipseLinkJavaOneToManyRelationship2_0
 {
 	public EclipseLinkJavaOneToManyRelationship(JavaOneToManyMapping parent) {
 		super(parent, true);  // true=supports join column strategy

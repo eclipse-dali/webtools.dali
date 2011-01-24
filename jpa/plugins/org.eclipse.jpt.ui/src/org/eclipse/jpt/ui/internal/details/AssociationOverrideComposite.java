@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,10 +10,9 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
 import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -68,18 +67,18 @@ public class AssociationOverrideComposite
 		JoinColumnJoiningStrategyPane.
 			buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
 				this, 
-				buildRelationshipReferenceHolder(), 
+				buildRelationshipModel(), 
 				container);		
 	}
 	
-	private PropertyValueModel<ReadOnlyJoinColumnEnabledRelationshipReference> buildRelationshipReferenceHolder() {
-		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinColumnEnabledRelationshipReference>(getSubjectHolder()) {
+	private PropertyValueModel<ReadOnlyJoinColumnRelationship> buildRelationshipModel() {
+		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinColumnRelationship>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinColumnEnabledRelationshipReference transform_(ReadOnlyAssociationOverride value) {
+			protected ReadOnlyJoinColumnRelationship transform_(ReadOnlyAssociationOverride value) {
 				// with virtual overrides: m:m mappings do not support join columns, so we need to check
-				ReadOnlyRelationshipReference rr = value.getRelationshipReference();
-				return (rr instanceof ReadOnlyJoinColumnEnabledRelationshipReference) ?
-					(ReadOnlyJoinColumnEnabledRelationshipReference) rr : null;
+				ReadOnlyRelationship relationship = value.getRelationship();
+				return (relationship instanceof ReadOnlyJoinColumnRelationship) ?
+					(ReadOnlyJoinColumnRelationship) relationship : null;
 			}
 		};
 	}

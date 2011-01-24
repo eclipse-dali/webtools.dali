@@ -1,18 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2009, 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationship2_0;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaOneToManyMapping2_0Composite
-	extends AbstractOneToManyMappingComposite<JavaOneToManyMapping, JavaOneToManyRelationshipReference2_0>
+	extends AbstractOneToManyMappingComposite<JavaOneToManyMapping, JavaOneToManyRelationship2_0>
 {
 	public JavaOneToManyMapping2_0Composite(
 			PropertyValueModel<? extends JavaOneToManyMapping> subjectHolder,

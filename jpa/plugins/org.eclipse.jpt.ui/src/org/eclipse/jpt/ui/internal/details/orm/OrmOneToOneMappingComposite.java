@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
+import org.eclipse.jpt.core.context.OneToOneRelationship;
 import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
@@ -62,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 1.0
  */
 public class OrmOneToOneMappingComposite 
-	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationshipReference>
+	extends AbstractOneToOneMappingComposite<OneToOneMapping, OneToOneRelationship>
 {
 	/**
 	 * Creates a new <code>OneToOneMappingComposite</code>.

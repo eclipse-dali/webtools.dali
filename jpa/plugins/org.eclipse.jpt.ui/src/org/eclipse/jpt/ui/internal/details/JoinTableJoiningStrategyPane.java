@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinTableRelationship;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -34,7 +34,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link JoinTableEnabledRelationshipReference}
+ * @see {@link JoinTableRelationship}
  * @see {@link JoinTableJoiningStrategy}
  * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
@@ -44,16 +44,16 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinTableJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinTableEnabledRelationshipReference, ReadOnlyJoinTableJoiningStrategy>
+		<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableJoiningStrategy>
 {
 	public JoinTableJoiningStrategyPane(
-			Pane<? extends ReadOnlyJoinTableEnabledRelationshipReference> parentPane, 
+			Pane<? extends ReadOnlyJoinTableRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
 
 	public JoinTableJoiningStrategyPane(Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinTableEnabledRelationshipReference> subjectHolder,
+		PropertyValueModel<? extends ReadOnlyJoinTableRelationship> subjectHolder,
         Composite parent) {
 
 		super(parentPane, subjectHolder, parent);
@@ -71,7 +71,7 @@ public class JoinTableJoiningStrategyPane
 
 	protected PropertyValueModel<ReadOnlyJoinTableJoiningStrategy> buildJoinTableJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinTableEnabledRelationshipReference, ReadOnlyJoinTableJoiningStrategy>(
+				<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableJoiningStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected ReadOnlyJoinTableJoiningStrategy buildValue_() {
@@ -90,9 +90,9 @@ public class JoinTableJoiningStrategyPane
 		};
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinTableEnabledRelationshipReference> subjectHolder) {
-		return new PropertyAspectAdapter<ReadOnlyJoinTableEnabledRelationshipReference, Boolean>(
-			subjectHolder, ReadOnlyRelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+	public static WritablePropertyValueModel<Boolean> buildUsesJoinTableJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinTableRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<ReadOnlyJoinTableRelationship, Boolean>(
+			subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.buildBooleanValue());
@@ -105,7 +105,7 @@ public class JoinTableJoiningStrategyPane
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					((JoinTableEnabledRelationshipReference) this.subject).setJoinTableJoiningStrategy();
+					((JoinTableRelationship) this.subject).setJoinTableJoiningStrategy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

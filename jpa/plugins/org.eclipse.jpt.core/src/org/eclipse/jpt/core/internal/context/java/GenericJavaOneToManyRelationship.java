@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,11 +14,11 @@ import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.MappedByRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationship2_0;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -34,7 +34,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaOneToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaOneToManyMapping>
-	implements JavaOneToManyRelationshipReference2_0
+	implements JavaOneToManyRelationship2_0
 {
 	protected final JavaMappedByJoiningStrategy mappedByStrategy;
 
@@ -183,26 +183,26 @@ public class GenericJavaOneToManyRelationship
 
 	// ********** conversions **********
 
-	public void initializeOn(RelationshipReference newRelationship) {
+	public void initializeOn(Relationship newRelationship) {
 		newRelationship.initializeFromMappedByRelationship(this);
 		newRelationship.initializeFromJoinTableRelationship(this);
 		newRelationship.initializeFromJoinColumnRelationship(this);
 	}
 
 	@Override
-	public void initializeFromMappedByRelationship(OwnableRelationshipReference oldRelationship) {
+	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
 		super.initializeFromMappedByRelationship(oldRelationship);
 		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByJoiningStrategy());
 	}
 
 	@Override
-	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableEnabledRelationshipReference oldRelationship) {
+	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
 		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
 	}
 
 	@Override
-	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnEnabledRelationshipReference oldRelationship) {
+	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
 		super.initializeFromJoinColumnRelationship(oldRelationship);
 		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnJoiningStrategy());
 	}

@@ -1,16 +1,16 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ *
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.core.context.ManyToManyMapping;
-import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
+import org.eclipse.jpt.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkJoinFetchComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkManyToManyMappingComposite;
 import org.eclipse.jpt.ui.WidgetFactory;
@@ -46,11 +46,11 @@ public class JavaEclipseLinkManyToManyMapping2_0Composite
 		new Ordering2_0Composite(this, container);
 	}
 
-	protected PropertyValueModel<ManyToManyRelationshipReference> buildEclipseLinkJoiningHolder() {
-		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationshipReference>(this.getSubjectHolder()) {
+	protected PropertyValueModel<ManyToManyRelationship> buildEclipseLinkJoiningHolder() {
+		return new TransformationPropertyValueModel<ManyToManyMapping, ManyToManyRelationship>(this.getSubjectHolder()) {
 			@Override
-			protected ManyToManyRelationshipReference transform_(ManyToManyMapping value) {
-				return value.getRelationshipReference();
+			protected ManyToManyRelationship transform_(ManyToManyMapping value) {
+				return value.getRelationship();
 			}
 		};
 	}

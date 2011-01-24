@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
@@ -66,7 +66,7 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaVirtualColumn;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
@@ -243,9 +243,9 @@ public interface JpaFactory
 	
 	JavaVirtualAssociationOverride buildJavaVirtualAssociationOverride(JavaAssociationOverrideContainer parent, String name);
 	
-	JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent);
+	JavaOverrideRelationship buildJavaOverrideRelationship(JavaAssociationOverride parent);
 	
-	JavaVirtualAssociationOverrideRelationshipReference buildJavaVirtualAssociationOverrideRelationshipReference(JavaVirtualAssociationOverride parent);
+	JavaVirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent);
 	
 	JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent, JavaQueryContainer.Owner owner);
 

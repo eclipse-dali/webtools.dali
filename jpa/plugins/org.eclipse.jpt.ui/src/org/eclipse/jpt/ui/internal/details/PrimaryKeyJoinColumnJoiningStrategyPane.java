@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link PrimaryKeyJoinColumnEnabledRelationshipReference}
+ * @see {@link PrimaryKeyJoinColumnRelationship}
  * @see {@link PrimaryKeyJoinColumnJoiningStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
@@ -36,10 +36,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
 	extends AbstractJoiningStrategyPane
-		<PrimaryKeyJoinColumnEnabledRelationshipReference, PrimaryKeyJoinColumnJoiningStrategy>
+		<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnJoiningStrategy>
 {
 	public PrimaryKeyJoinColumnJoiningStrategyPane(
-			Pane<? extends PrimaryKeyJoinColumnEnabledRelationshipReference> parentPane, 
+			Pane<? extends PrimaryKeyJoinColumnRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
@@ -51,7 +51,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 
 	protected PropertyValueModel<PrimaryKeyJoinColumnJoiningStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<PrimaryKeyJoinColumnEnabledRelationshipReference, PrimaryKeyJoinColumnJoiningStrategy>(
+				<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnJoiningStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected PrimaryKeyJoinColumnJoiningStrategy buildValue_() {
@@ -65,9 +65,9 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return null;
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnEnabledRelationshipReference> subjectHolder) {
-		return new PropertyAspectAdapter<PrimaryKeyJoinColumnEnabledRelationshipReference, Boolean>(
-				subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+	public static WritablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<PrimaryKeyJoinColumnRelationship, Boolean>(
+				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :

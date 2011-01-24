@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ public interface JavaRelationshipMapping
 
 	JavaCascade getCascade();
 
-	JavaMappingRelationshipReference getRelationshipReference();
+	JavaMappingRelationship getRelationship();
 
 	/**
 	 * If the target entity is specified, this will return it fully qualified.

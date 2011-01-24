@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -108,7 +108,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
-		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
@@ -148,7 +148,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
-		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 		
@@ -178,7 +178,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
-		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 
@@ -218,7 +218,7 @@ public class OrmAssociationOverrideTests extends ContextModelTestCase
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		entityResource.getAssociationOverrides().add(OrmFactory.eINSTANCE.createXmlAssociationOverride());
 		OrmAssociationOverride ormAssociationOverride = overrideContainer.specifiedOverrides().next();
-		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationshipReference().getJoinColumnJoiningStrategy();
+		OrmJoinColumnJoiningStrategy joiningStrategy = ormAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
 		
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
 	

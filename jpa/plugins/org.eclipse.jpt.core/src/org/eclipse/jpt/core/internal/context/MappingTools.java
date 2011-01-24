@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,10 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.jpa2.context.AttributeMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.CollectionMapping2_0;
@@ -62,16 +62,16 @@ public final class MappingTools {
 	 * database connection. We need the database to convert the resulting name
 	 * to an identifier appropriate to the current database.
 	 */
-	public static String buildJoinTableDefaultName(ReadOnlyRelationshipReference relationshipReference) {
-		if (relationshipReference.getJpaProject().getDataSource().connectionProfileIsActive()) {
-			return buildDbJoinTableDefaultName(relationshipReference);
+	public static String buildJoinTableDefaultName(ReadOnlyRelationship relationship) {
+		if (relationship.getJpaProject().getDataSource().connectionProfileIsActive()) {
+			return buildDbJoinTableDefaultName(relationship);
 		}
 		// continue with a "best effort":
-		String owningTableName = relationshipReference.getTypeMapping().getPrimaryTableName();
+		String owningTableName = relationship.getTypeMapping().getPrimaryTableName();
 		if (owningTableName == null) {
 			return null;
 		}
-		RelationshipMapping relationshipMapping = relationshipReference.getMapping();
+		RelationshipMapping relationshipMapping = relationship.getMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -89,12 +89,12 @@ public final class MappingTools {
 	/**
 	 * Use the database to build a more accurate default name.
 	 */
-	private static String buildDbJoinTableDefaultName(ReadOnlyRelationshipReference relationshipReference) {
-		Table owningTable = relationshipReference.getTypeMapping().getPrimaryDbTable();
+	private static String buildDbJoinTableDefaultName(ReadOnlyRelationship relationship) {
+		Table owningTable = relationship.getTypeMapping().getPrimaryDbTable();
 		if (owningTable == null) {
 			return null;
 		}
-		RelationshipMapping relationshipMapping = relationshipReference.getMapping();
+		RelationshipMapping relationshipMapping = relationship.getMapping();
 		if (relationshipMapping == null) {
 			return null;
 		}
@@ -136,7 +136,7 @@ public final class MappingTools {
 	 * OneToMany or ManyToMany) is
 	 *     [target entity name]_[referenced column name]
 	 *
-	 * @see #buildJoinTableDefaultName(ReadOnlyRelationshipReference)
+	 * @see #buildJoinTableDefaultName(ReadOnlyRelationship)
 	 */
 	public static String buildJoinColumnDefaultName(ReadOnlyJoinColumn joinColumn, ReadOnlyJoinColumn.Owner owner) {
 		if (owner.joinColumnsSize() != 1) {
@@ -294,14 +294,14 @@ public final class MappingTools {
 	}
 
 	// TODO move to TypeMapping? may need different name (or may need to rename existing #resolve...)
-	public static RelationshipReference resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
+	public static Relationship resolveOverriddenRelationship(TypeMapping overridableTypeMapping, String attributeName) {
 		// convenience null check to simplify client code
 		if (overridableTypeMapping == null) {
 			return null;
 		}
 
 		for (TypeMapping typeMapping : CollectionTools.iterable(overridableTypeMapping.inheritanceHierarchy())) {
-			RelationshipReference relationship = typeMapping.resolveOverriddenRelationship(attributeName);
+			Relationship relationship = typeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -328,11 +328,11 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertEquals(FetchType.LAZY, virtualOneToOneMapping.getSpecifiedFetch());
 		assertEquals(Boolean.FALSE, virtualOneToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", virtualOneToOneMapping.getSpecifiedTargetEntity());
-		assertNull(virtualOneToOneMapping.getRelationshipReference().
+		assertNull(virtualOneToOneMapping.getRelationship().
 			getMappedByJoiningStrategy().getMappedByAttribute());
 
 		JoinColumn virtualJoinColumn = 
-			virtualOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+			virtualOneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());
@@ -371,7 +371,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());
 		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormOneToOneMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
 
 		//TODO default join columns in xml one-to-one
 //		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.specifiedJoinColumns().next();
@@ -413,13 +413,13 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertNull(ormOneToOneMapping.getSpecifiedFetch());
 		assertNull(ormOneToOneMapping.getSpecifiedOptional());
 		assertNull(ormOneToOneMapping.getSpecifiedTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormOneToOneMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());
 		//TODO default target entity in xml
 		//assertEquals("test.Address", ormOneToOneMapping.getDefaultTargetEntity());
 		
-		assertTrue(ormOneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().joinColumnsSize() > 0);
+		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().joinColumnsSize() > 0);
 		
 		//TODO default join columns for specified xmlOneToOne mapping
 //		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.defaultJoinColumns().next();

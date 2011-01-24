@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOverride;
 import org.eclipse.jpt.core.resource.java.AssociationOverrideAnnotation;
@@ -31,12 +31,12 @@ public class GenericJavaAssociationOverride
 	extends AbstractJavaOverride<JavaAssociationOverrideContainer, AssociationOverrideAnnotation>
 	implements JavaAssociationOverride
 {
-	protected final JavaAssociationOverrideRelationshipReference relationship;
+	protected final JavaOverrideRelationship relationship;
 
 
 	public GenericJavaAssociationOverride(JavaAssociationOverrideContainer parent, AssociationOverrideAnnotation annotation) {
 		super(parent, annotation);
-		this.relationship = this.buildRelationshipReference();
+		this.relationship = this.buildRelationship();
 	}
 
 
@@ -65,12 +65,12 @@ public class GenericJavaAssociationOverride
 
 	// ********** relationship **********
 
-	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {
+	public JavaOverrideRelationship getRelationship() {
 		return this.relationship;
 	}
 
-	protected JavaAssociationOverrideRelationshipReference buildRelationshipReference() {
-		return this.getJpaFactory().buildJavaAssociationOverrideRelationshipReference(this);
+	protected JavaOverrideRelationship buildRelationship() {
+		return this.getJpaFactory().buildJavaOverrideRelationship(this);
 	}
 
 
@@ -82,12 +82,12 @@ public class GenericJavaAssociationOverride
 
 	public void initializeFrom(ReadOnlyAssociationOverride oldOverride) {
 		super.initializeFrom(oldOverride);
-		this.relationship.initializeFrom(oldOverride.getRelationshipReference());
+		this.relationship.initializeFrom(oldOverride.getRelationship());
 	}
 
 	public void initializeFromVirtual(ReadOnlyAssociationOverride virtualOverride) {
 		super.initializeFromVirtual(virtualOverride);
-		this.relationship.initializeFromVirtual(virtualOverride.getRelationshipReference());
+		this.relationship.initializeFromVirtual(virtualOverride.getRelationship());
 	}
 
 

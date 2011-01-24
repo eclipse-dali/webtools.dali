@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.OverrideContainer;
 import org.eclipse.jpt.core.context.Override_;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
@@ -156,21 +156,21 @@ public class GenericJavaEmbeddedMapping
 	}
 
 	@Override
-	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+	public Relationship resolveOverriddenRelationship(String attributeName) {
 		return this.isJpa2_0Compatible() ? this.resolveOverriddenRelationship_(attributeName) : null;
 	}
 
-	protected RelationshipReference resolveOverriddenRelationship_(String attributeName) {
+	protected Relationship resolveOverriddenRelationship_(String attributeName) {
 		attributeName = this.unqualify(attributeName);
 		if (attributeName == null) {
 			return null;
 		}
 		AssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
 		// recurse into the target embeddable if necessary
-		return (override != null) ? override.getRelationshipReference() : this.resolveOverriddenRelationshipInTargetEmbeddable(attributeName);
+		return (override != null) ? override.getRelationship() : this.resolveOverriddenRelationshipInTargetEmbeddable(attributeName);
 	}
 
-	protected RelationshipReference resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
+	protected Relationship resolveOverriddenRelationshipInTargetEmbeddable(String attributeName) {
 		return (this.targetEmbeddable == null) ? null : this.targetEmbeddable.resolveOverriddenRelationship(attributeName);
 	}
 
@@ -224,7 +224,7 @@ public class GenericJavaEmbeddedMapping
 			return (typeMapping != null) ? typeMapping.allOverridableAssociationNames() : EmptyIterator.<String>instance();
 		}
 
-		public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		public Relationship resolveOverriddenRelationship(String attributeName) {
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 

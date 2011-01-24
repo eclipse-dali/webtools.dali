@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -27,7 +27,7 @@ import org.eclipse.jpt.db.Table;
  * 
  * @see RelationshipMapping
  * @see AssociationOverride
- * @see RelationshipReference
+ * @see Relationship
  * 
  * @version 2.3
  * @since 2.2
@@ -36,7 +36,7 @@ public interface JoiningStrategy
 	extends ReadOnlyJoiningStrategy
 {
 // TODO bjv rename to RelationshipStrategy - move to inside Relationship interface?
-	RelationshipReference getRelationshipReference();
+	Relationship getRelationship();
 
 	/**
 	 * Add this strategy to the relationship reference.

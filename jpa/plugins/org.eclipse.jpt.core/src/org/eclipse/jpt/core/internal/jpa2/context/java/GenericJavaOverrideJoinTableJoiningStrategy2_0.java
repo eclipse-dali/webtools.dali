@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideInverseJoin
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.AssociationOverrideJoinTableValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
-import org.eclipse.jpt.core.jpa2.context.java.JavaAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 public class GenericJavaOverrideJoinTableJoiningStrategy2_0
 	extends AbstractJavaJoinTableJoiningStrategy
 {
-	public GenericJavaOverrideJoinTableJoiningStrategy2_0(JavaAssociationOverrideRelationshipReference2_0 parent) {
+	public GenericJavaOverrideJoinTableJoiningStrategy2_0(JavaOverrideRelationship2_0 parent) {
 		super(parent);
 	}
 
@@ -60,17 +60,17 @@ public class GenericJavaOverrideJoinTableJoiningStrategy2_0
 	// ********** misc **********
 
 	@Override
-	public JavaAssociationOverrideRelationshipReference2_0 getParent() {
-		return (JavaAssociationOverrideRelationshipReference2_0) super.getParent();
+	public JavaOverrideRelationship2_0 getParent() {
+		return (JavaOverrideRelationship2_0) super.getParent();
 	}
 
 	@Override
-	public JavaAssociationOverrideRelationshipReference2_0 getRelationshipReference() {
+	public JavaOverrideRelationship2_0 getRelationship() {
 		return this.getParent();
 	}
 
 	protected JavaAssociationOverride getAssociationOverride() {
-		return this.getRelationshipReference().getAssociationOverride();
+		return this.getRelationship().getAssociationOverride();
 	}
 
 	public boolean isOverridable() {
@@ -81,22 +81,22 @@ public class GenericJavaOverrideJoinTableJoiningStrategy2_0
 	// ********** validation **********
 
 	public boolean validatesAgainstDatabase() {
-		return this.getRelationshipReference().getTypeMapping().validatesAgainstDatabase();
+		return this.getRelationship().getTypeMapping().validatesAgainstDatabase();
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationshipReference().getValidationTextRange(astRoot);
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {
-		return new AssociationOverrideJoinTableValidator(this.getRelationshipReference().getAssociationOverride(), (JoinTable) table, textRangeResolver);
+		return new AssociationOverrideJoinTableValidator(this.getRelationship().getAssociationOverride(), (JoinTable) table, textRangeResolver);
 	}
 
 	public JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new AssociationOverrideJoinColumnValidator(this.getRelationshipReference().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new AssociationOverrideJoinColumnValidator(this.getRelationship().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 
 	public JptValidator buildJoinTableInverseJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver) {
-		return new  AssociationOverrideInverseJoinColumnValidator(this.getRelationshipReference().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
+		return new  AssociationOverrideInverseJoinColumnValidator(this.getRelationship().getAssociationOverride(), column, owner, textRangeResolver, new JoinTableTableDescriptionProvider());
 	}
 }

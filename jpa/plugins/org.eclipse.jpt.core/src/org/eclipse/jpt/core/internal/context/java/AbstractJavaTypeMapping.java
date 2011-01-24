@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -251,9 +251,9 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return new TransformationIterator<TypeMapping, Iterator<String>>(this.inheritanceHierarchy(), TypeMappingTools.OVERRIDABLE_ASSOCIATION_NAMES_TRANSFORMER);
 	}
 
-	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+	public Relationship resolveOverriddenRelationship(String attributeName) {
 		for (AttributeMapping attributeMapping : CollectionTools.iterable(this.attributeMappings())) {
-			RelationshipReference relationship = attributeMapping.resolveOverriddenRelationship(attributeName);
+			Relationship relationship = attributeMapping.resolveOverriddenRelationship(attributeName);
 			if (relationship != null) {
 				return relationship;
 			}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
+import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoiningStrategy;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.Transformer;
@@ -37,7 +37,7 @@ import org.eclipse.ui.part.PageBook;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see OwnableRelationshipReference
+ * @see MappedByRelationship
  * @see MappedByJoiningStrategy
  * @see OneToOneJoiningStrategyPane
  *
@@ -45,7 +45,7 @@ import org.eclipse.ui.part.PageBook;
  * @since 2.1
  */
 public abstract class AbstractJoiningStrategyPane
-		<R extends ReadOnlyRelationshipReference, S extends ReadOnlyJoiningStrategy> 
+		<R extends ReadOnlyRelationship, S extends ReadOnlyJoiningStrategy> 
 	extends Pane<R>
 {
 	protected Composite strategyDetailsComposite;

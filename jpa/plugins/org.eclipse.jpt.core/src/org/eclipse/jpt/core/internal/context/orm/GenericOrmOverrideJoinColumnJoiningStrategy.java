@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -19,7 +19,7 @@ import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn.Owner;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
@@ -31,7 +31,7 @@ import org.eclipse.jpt.db.Table;
 public class GenericOrmOverrideJoinColumnJoiningStrategy
 	extends AbstractOrmJoinColumnJoiningStrategy
 {
-	public GenericOrmOverrideJoinColumnJoiningStrategy(OrmAssociationOverrideRelationshipReference parent) {
+	public GenericOrmOverrideJoinColumnJoiningStrategy(OrmOverrideRelationship parent) {
 		super(parent);
 	}
 
@@ -43,7 +43,7 @@ public class GenericOrmOverrideJoinColumnJoiningStrategy
 	public boolean isTargetForeignKey() {
 		RelationshipMapping relationshipMapping = this.getRelationshipMapping();
 		return (relationshipMapping != null) &&
-				relationshipMapping.getRelationshipReference().isTargetForeignKey();
+				relationshipMapping.getRelationship().isTargetForeignKey();
 	}
 
 	public TypeMapping getRelationshipSource() {
@@ -114,7 +114,7 @@ public class GenericOrmOverrideJoinColumnJoiningStrategy
 	}
 
 	protected OrmAssociationOverride getAssociationOverride() {
-		return this.getRelationshipReference().getAssociationOverride();
+		return this.getRelationship().getAssociationOverride();
 	}
 
 	protected AssociationOverrideContainer getAssociationOverrideContainer() {
@@ -122,12 +122,12 @@ public class GenericOrmOverrideJoinColumnJoiningStrategy
 	}
 
 	@Override
-	public OrmAssociationOverrideRelationshipReference getRelationshipReference() {
-		return (OrmAssociationOverrideRelationshipReference) super.getRelationshipReference();
+	public OrmOverrideRelationship getRelationship() {
+		return (OrmOverrideRelationship) super.getRelationship();
 	}
 
 	public TextRange getValidationTextRange() {
-		return this.getRelationshipReference().getValidationTextRange();
+		return this.getRelationship().getValidationTextRange();
 	}
 
 

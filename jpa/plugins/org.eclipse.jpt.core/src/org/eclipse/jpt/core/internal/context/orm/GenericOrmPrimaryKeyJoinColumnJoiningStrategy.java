@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.orm.OrmPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.BaseJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
@@ -51,7 +51,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	protected final OrmJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
-	public GenericOrmPrimaryKeyJoinColumnJoiningStrategy(OrmPrimaryKeyJoinColumnEnabledRelationshipReference parent) {
+	public GenericOrmPrimaryKeyJoinColumnJoiningStrategy(OrmPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
 		this.primaryKeyJoinColumnContainerAdapter = this.buildPrimaryKeyJoinColumnContainerAdapter();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
@@ -200,20 +200,20 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmPrimaryKeyJoinColumnEnabledRelationshipReference getParent() {
-		return (OrmPrimaryKeyJoinColumnEnabledRelationshipReference) super.getParent();
+	public OrmPrimaryKeyJoinColumnRelationship getParent() {
+		return (OrmPrimaryKeyJoinColumnRelationship) super.getParent();
 	}
 
-	public OrmPrimaryKeyJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public OrmPrimaryKeyJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	protected XmlPrimaryKeyJoinColumnContainer getXmlPrimaryKeyJoinColumnContainer() {
-		return this.getRelationshipReference().getXmlContainer();
+		return this.getRelationship().getXmlContainer();
 	}
 
 	public String getTableName() {
@@ -256,7 +256,7 @@ public class GenericOrmPrimaryKeyJoinColumnJoiningStrategy
 	// ********** validation **********
 
 	public TextRange getValidationTextRange() {
-		return this.getRelationshipReference().getValidationTextRange();
+		return this.getRelationship().getValidationTextRange();
 	}
 
 	@Override

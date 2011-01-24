@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.MappedByRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see {@link OwnableRelationshipReference}
+ * @see {@link MappedByRelationship}
  * @see {@link MappedByJoiningStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link OneToManyJoiningStrategyPane}
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane<OwnableRelationshipReference, MappedByJoiningStrategy>
+	extends AbstractJoiningStrategyPane<MappedByRelationship, MappedByJoiningStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByJoiningStrategyPane</code>.
@@ -48,7 +48,7 @@ public class MappedByJoiningStrategyPane
 	 * @param parent The parent container
 	 */
 	public MappedByJoiningStrategyPane(
-			Pane<? extends OwnableRelationshipReference> parentPane, 
+			Pane<? extends MappedByRelationship> parentPane, 
 			Composite parent) {
 		super(parentPane, parent);
 	}
@@ -64,7 +64,7 @@ public class MappedByJoiningStrategyPane
 	}
 
 	protected PropertyValueModel<MappedByJoiningStrategy> buildMappedByJoiningStrategyHolder() {
-		return new PropertyAspectAdapter<OwnableRelationshipReference, MappedByJoiningStrategy>(
+		return new PropertyAspectAdapter<MappedByRelationship, MappedByJoiningStrategy>(
 				getSubjectHolder()) {
 			@Override
 			protected MappedByJoiningStrategy buildValue_() {
@@ -73,9 +73,9 @@ public class MappedByJoiningStrategyPane
 		};
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends OwnableRelationshipReference> subjectHolder) {
-		return new PropertyAspectAdapter<OwnableRelationshipReference, Boolean>(
-				subjectHolder, RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+	public static WritablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
+				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :

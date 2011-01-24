@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
@@ -33,7 +33,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	protected OrmJoinTable joinTable;
 
 
-	protected AbstractOrmJoinTableJoiningStrategy(OrmJoinTableEnabledRelationshipReference parent) {
+	protected AbstractOrmJoinTableJoiningStrategy(OrmJoinTableRelationship parent) {
 		super(parent);
 	}
 
@@ -87,7 +87,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	 */
 	protected boolean buildsJoinTable() {
 		return (this.getXmlJoinTable() != null) ||
-				this.getRelationshipReference().mayHaveDefaultJoinTable();
+				this.getRelationship().mayHaveDefaultJoinTable();
 	}
 
 	protected OrmJoinTable buildJoinTable() {
@@ -112,7 +112,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	}
 
 	protected XmlJoinTableContainer getXmlJoinTableContainer() {
-		return this.getRelationshipReference().getXmlContainer();
+		return this.getRelationship().getXmlContainer();
 	}
 
 
@@ -130,16 +130,16 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmJoinTableEnabledRelationshipReference getParent() {
-		return (OrmJoinTableEnabledRelationshipReference) super.getParent();
+	public OrmJoinTableRelationship getParent() {
+		return (OrmJoinTableRelationship) super.getParent();
 	}
 
-	public OrmJoinTableEnabledRelationshipReference getRelationshipReference() {
+	public OrmJoinTableRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public void initializeFrom(ReadOnlyJoinTableJoiningStrategy oldStrategy) {
@@ -175,7 +175,7 @@ public abstract class AbstractOrmJoinTableJoiningStrategy
 	}
 
 	public String getJoinTableDefaultName() {
-		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
+		return MappingTools.buildJoinTableDefaultName(this.getRelationship());
 	}
 
 	public void addStrategy() {

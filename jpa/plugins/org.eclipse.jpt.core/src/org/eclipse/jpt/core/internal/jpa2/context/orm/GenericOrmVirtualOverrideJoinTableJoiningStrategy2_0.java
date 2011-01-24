@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import org.eclipse.jpt.core.context.JoinTable;
-import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinTableRelationship;
 import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableRelationship;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
@@ -27,7 +27,7 @@ public class GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0
 	protected OrmVirtualJoinTable joinTable;
 
 
-	public GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0(OrmVirtualJoinTableEnabledRelationshipReference parent) {
+	public GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0(OrmVirtualJoinTableRelationship parent) {
 		super(parent);
 	}
 
@@ -81,26 +81,26 @@ public class GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0
 	// ********** misc **********
 
 	@Override
-	public OrmVirtualJoinTableEnabledRelationshipReference getParent() {
-		return (OrmVirtualJoinTableEnabledRelationshipReference) super.getParent();
+	public OrmVirtualJoinTableRelationship getParent() {
+		return (OrmVirtualJoinTableRelationship) super.getParent();
 	}
 
-	public OrmVirtualJoinTableEnabledRelationshipReference getRelationshipReference() {
+	public OrmVirtualJoinTableRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected JoinTableJoiningStrategy getOverriddenStrategy() {
-		JoinTableEnabledRelationshipReference relationship = this.getOverriddenJoinTableRelationship();
+		JoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
 		return (relationship == null) ? null : relationship.getJoinTableJoiningStrategy();
 	}
 
-	protected JoinTableEnabledRelationshipReference getOverriddenJoinTableRelationship() {
-		RelationshipReference relationship = this.resolveOverriddenRelationship();
-		return (relationship instanceof JoinTableEnabledRelationshipReference) ? (JoinTableEnabledRelationshipReference) relationship : null;
+	protected JoinTableRelationship getOverriddenJoinTableRelationship() {
+		Relationship relationship = this.resolveOverriddenRelationship();
+		return (relationship instanceof JoinTableRelationship) ? (JoinTableRelationship) relationship : null;
 	}
 
-	protected RelationshipReference resolveOverriddenRelationship() {
-		return this.getRelationshipReference().resolveOverriddenRelationship();
+	protected Relationship resolveOverriddenRelationship() {
+		return this.getRelationship().resolveOverriddenRelationship();
 	}
 
 	public String getTableName() {
@@ -108,7 +108,7 @@ public class GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0
 	}
 
 	public String getJoinTableDefaultName() {
-		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
+		return MappingTools.buildJoinTableDefaultName(this.getRelationship());
 	}
 
 

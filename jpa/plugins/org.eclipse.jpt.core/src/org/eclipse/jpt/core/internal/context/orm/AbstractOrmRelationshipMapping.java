@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmCascade;
-import org.eclipse.jpt.core.context.orm.OrmMappingRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AttributeMappingTools;
@@ -53,7 +53,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected String specifiedTargetEntity;
 	protected String defaultTargetEntity;
 
-	protected final OrmMappingRelationshipReference relationshipReference;
+	protected final OrmMappingRelationship relationship;
 
 	protected final OrmCascade cascade;
 
@@ -64,7 +64,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	protected AbstractOrmRelationshipMapping(OrmPersistentAttribute parent, X xmlMapping) {
 		super(parent, xmlMapping);
 		this.specifiedTargetEntity = xmlMapping.getTargetEntity();
-		this.relationshipReference = this.buildRelationshipReference();
+		this.relationship = this.buildRelationship();
 		this.cascade = this.buildCascade();
 		this.specifiedFetch = this.buildSpecifiedFetch();
 	}
@@ -76,7 +76,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedTargetEntity_(this.xmlAttributeMapping.getTargetEntity());
-		this.relationshipReference.synchronizeWithResourceModel();
+		this.relationship.synchronizeWithResourceModel();
 		this.cascade.synchronizeWithResourceModel();
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
 	}
@@ -85,7 +85,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public void update() {
 		super.update();
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
-		this.relationshipReference.update();
+		this.relationship.update();
 		this.cascade.update();
 		this.setDefaultFetch(this.buildDefaultFetch());
 	}
@@ -154,11 +154,11 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	// ********** relationship reference **********
 
-	public OrmMappingRelationshipReference getRelationshipReference() {
-		return this.relationshipReference;
+	public OrmMappingRelationship getRelationship() {
+		return this.relationship;
 	}
 
-	protected abstract OrmMappingRelationshipReference buildRelationshipReference();
+	protected abstract OrmMappingRelationship buildRelationship();
 
 
 	// ********** cascade **********
@@ -215,13 +215,13 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	@Override
 	public boolean isRelationshipOwner() {
-		return this.relationshipReference.isOwner();
+		return this.relationship.isOwner();
 	}
 
 	@Override
 	public boolean isOwnedBy(AttributeMapping mapping) {
 		return mapping.isRelationshipOwner() &&
-			this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
+			this.relationship.isOwnedBy((RelationshipMapping) mapping);
 	}
 
 	public RelationshipMapping getRelationshipOwner() {
@@ -240,7 +240,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 
 	@Override
 	public boolean isOverridableAssociationMapping() {
-		return this.relationshipReference.isOverridable();
+		return this.relationship.isOverridable();
 	}
 
 	@Override
@@ -248,7 +248,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 		super.initializeFromOrmRelationshipMapping(oldMapping);
 		this.setSpecifiedTargetEntity(oldMapping.getSpecifiedTargetEntity());
 		this.setSpecifiedFetch(oldMapping.getSpecifiedFetch());
-		oldMapping.getRelationshipReference().initializeOn(this.relationshipReference);
+		oldMapping.getRelationship().initializeOn(this.relationship);
 		this.cascade.initializeFrom(oldMapping.getCascade());
 		//TODO should we set the fetch type from a BasicMapping??
 	}
@@ -351,7 +351,7 @@ public abstract class AbstractOrmRelationshipMapping<X extends AbstractXmlRelati
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		this.validateTargetEntity(messages);
-		this.relationshipReference.validate(messages, reporter);
+		this.relationship.validate(messages, reporter);
 	}
 
 	protected void validateTargetEntity(List<IMessage> messages) {

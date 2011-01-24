@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTable;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmVirtualRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmVirtualRelationship;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -227,7 +227,7 @@ public class GenericOrmVirtualJoinTable
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationshipReference().getMapping();
+		return this.getJoinStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
@@ -248,7 +248,7 @@ public class GenericOrmVirtualJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return this.getRelationshipReference().getTypeMapping();
+			return this.getRelationship().getTypeMapping();
 		}
 
 		/**
@@ -266,8 +266,8 @@ public class GenericOrmVirtualJoinTable
 			throw new UnsupportedOperationException();
 		}
 
-		protected OrmVirtualRelationshipReference getRelationshipReference() {
-			return GenericOrmVirtualJoinTable.this.getJoinStrategy().getRelationshipReference();
+		protected OrmVirtualRelationship getRelationship() {
+			return GenericOrmVirtualJoinTable.this.getJoinStrategy().getRelationship();
 		}
 	}
 
@@ -284,7 +284,7 @@ public class GenericOrmVirtualJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return this.getRelationshipReference().getEntity();
+			return this.getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {

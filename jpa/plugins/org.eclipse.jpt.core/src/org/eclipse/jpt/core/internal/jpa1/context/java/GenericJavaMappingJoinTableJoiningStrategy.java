@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -55,7 +55,7 @@ public class GenericJavaMappingJoinTableJoiningStrategy
 	// ********** misc **********
 
 	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getRelationshipReference().getMapping().getResourcePersistentAttribute();
+		return this.getRelationship().getMapping().getResourcePersistentAttribute();
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class GenericJavaMappingJoinTableJoiningStrategy
 	}
 
 	@Override
-	public JavaMappingJoinTableRelationship getRelationshipReference() {
+	public JavaMappingJoinTableRelationship getRelationship() {
 		return this.getParent();
 	}
 
@@ -80,7 +80,7 @@ public class GenericJavaMappingJoinTableJoiningStrategy
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationshipReference().getValidationTextRange(astRoot);
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 	public JptValidator buildTableValidator(Table table, TableTextRangeResolver textRangeResolver) {

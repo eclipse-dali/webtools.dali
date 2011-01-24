@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoiningStrategy;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.MappedByRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmMappingRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -29,7 +29,7 @@ import org.eclipse.jpt.core.utility.TextRange;
  */
 public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMapping>
 	extends AbstractOrmXmlContextNode
-	implements OrmMappingRelationshipReference
+	implements OrmMappingRelationship
 {
 	protected OrmJoiningStrategy strategy;
 
@@ -73,19 +73,19 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** conversions **********
 
-	public void initializeFrom(ReadOnlyRelationshipReference oldRelationship) {
+	public void initializeFrom(ReadOnlyRelationship oldRelationship) {
 		oldRelationship.initializeOn(this);
 	}
 
-	public void initializeFromMappedByRelationship(OwnableRelationshipReference oldRelationship) {
+	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
 		// NOP
 	}
 
-	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableEnabledRelationshipReference oldRelationship) {
+	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
 		// NOP
 	}
 
-	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnEnabledRelationshipReference oldRelationship) {
+	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
 		// NOP
 	}
 

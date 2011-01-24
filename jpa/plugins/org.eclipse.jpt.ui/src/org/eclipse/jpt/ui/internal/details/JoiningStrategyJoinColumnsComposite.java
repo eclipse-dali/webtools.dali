@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * ---------------------------------------------------------------------
  * -------------------------------------------------------------------------</pre>
  *
- * @see JoinColumnEnabledRelationshipReference
+ * @see JoinColumnRelationship
  * @see JoinColumnJoiningStrategy
  * @see JoinColumnJoiningStrategyPane
  * @see JoinColumnInJoiningStrategyDialog
@@ -171,7 +171,7 @@ public class JoiningStrategyJoinColumnsComposite
 			
 			@Override
 			protected Boolean transform_(ReadOnlyJoinColumnJoiningStrategy value) {
-				boolean virtual = value.getRelationshipReference().getMapping().getPersistentAttribute().isVirtual();
+				boolean virtual = value.getRelationship().getMapping().getPersistentAttribute().isVirtual();
 				return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 			}
 		};
@@ -218,7 +218,7 @@ public class JoiningStrategyJoinColumnsComposite
 		
 		@Override
 		protected Boolean transform_(ReadOnlyJoinColumnJoiningStrategy value) {
-			boolean virtual = value.getRelationshipReference().isVirtual();
+			boolean virtual = value.getRelationship().isVirtual();
 			return Boolean.valueOf(! virtual && value.specifiedJoinColumnsSize() > 0);
 		}
 		

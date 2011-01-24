@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaCascade;
-import org.eclipse.jpt.core.context.java.JavaMappingRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.AttributeMappingTools;
@@ -49,7 +49,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	protected String defaultTargetEntity;
 	protected String fullyQualifiedTargetEntity;
 
-	protected final JavaMappingRelationshipReference relationshipReference;
+	protected final JavaMappingRelationship relationship;
 
 	protected final JavaCascade cascade;
 
@@ -60,7 +60,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	protected AbstractJavaRelationshipMapping(JavaPersistentAttribute parent) {
 		super(parent);
 		this.specifiedTargetEntity = this.buildSpecifiedTargetEntity();
-		this.relationshipReference = this.buildRelationshipReference();
+		this.relationship = this.buildRelationship();
 		this.cascade = this.buildCascade();
 		this.specifiedFetch = this.buildSpecifiedFetch();
 	}
@@ -72,7 +72,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedTargetEntity_(this.buildSpecifiedTargetEntity());
-		this.relationshipReference.synchronizeWithResourceModel();
+		this.relationship.synchronizeWithResourceModel();
 		this.cascade.synchronizeWithResourceModel();
 		this.setSpecifiedFetch_(this.buildSpecifiedFetch());
 	}
@@ -82,7 +82,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 		super.update();
 		this.setDefaultTargetEntity(this.buildDefaultTargetEntity());
 		this.setFullyQualifiedTargetEntity(this.buildFullyQualifiedTargetEntity());
-		this.relationshipReference.update();
+		this.relationship.update();
 		this.cascade.update();
 		this.setDefaultFetch(this.buildDefaultFetch());
 	}
@@ -160,11 +160,11 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	// ********** relationship reference **********
 
-	public JavaMappingRelationshipReference getRelationshipReference() {
-		return this.relationshipReference;
+	public JavaMappingRelationship getRelationship() {
+		return this.relationship;
 	}
 
-	protected abstract JavaMappingRelationshipReference buildRelationshipReference();
+	protected abstract JavaMappingRelationship buildRelationship();
 
 
 	// ********** cascade **********
@@ -224,13 +224,13 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	@Override
 	public boolean isRelationshipOwner() {
-		return this.relationshipReference.isOwner();
+		return this.relationship.isOwner();
 	}
 
 	@Override
 	public boolean isOwnedBy(AttributeMapping mapping) {
 		return mapping.isRelationshipOwner() &&
-			this.relationshipReference.isOwnedBy((RelationshipMapping) mapping);
+			this.relationship.isOwnedBy((RelationshipMapping) mapping);
 	}
 
 	public RelationshipMapping getRelationshipOwner() {
@@ -249,7 +249,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 
 	@Override
 	public boolean isOverridableAssociationMapping() {
-		return this.relationshipReference.isOverridable();
+		return this.relationship.isOverridable();
 	}
 
 	public Iterator<String> allTargetEntityAttributeNames() {
@@ -285,7 +285,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 			return result;
 		}
 
-		result = this.relationshipReference.javaCompletionProposals(pos, filter, astRoot);
+		result = this.relationship.javaCompletionProposals(pos, filter, astRoot);
 		if (result != null) {
 			return result;
 		}
@@ -308,7 +308,7 @@ public abstract class AbstractJavaRelationshipMapping<A extends RelationshipMapp
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.validateTargetEntity(messages, astRoot);
-		this.relationshipReference.validate(messages, reporter, astRoot);
+		this.relationship.validate(messages, reporter, astRoot);
 	}
 
 	protected void validateTargetEntity(List<IMessage> messages, CompilationUnit astRoot) {

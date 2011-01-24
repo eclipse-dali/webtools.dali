@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -41,7 +41,7 @@ import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -971,10 +971,10 @@ public abstract class AbstractJavaEntity
 	}
 
 	@Override
-	public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+	public Relationship resolveOverriddenRelationship(String attributeName) {
 		// check for an override before looking at attribute mappings
 		AssociationOverride override = this.associationOverrideContainer.getSpecifiedOverrideNamed(attributeName);
-		return (override != null) ? override.getRelationshipReference() : super.resolveOverriddenRelationship(attributeName);
+		return (override != null) ? override.getRelationship() : super.resolveOverriddenRelationship(attributeName);
 	}
 
 
@@ -1670,7 +1670,7 @@ public abstract class AbstractJavaEntity
 			return typeMapping.allOverridableAssociationNames();
 		}
 
-		public RelationshipReference resolveOverriddenRelationship(String attributeName) {
+		public Relationship resolveOverriddenRelationship(String attributeName) {
 			return MappingTools.resolveOverriddenRelationship(this.getOverridableTypeMapping(), attributeName);
 		}
 

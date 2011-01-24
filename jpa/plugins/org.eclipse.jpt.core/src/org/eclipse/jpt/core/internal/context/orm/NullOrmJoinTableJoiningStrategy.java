@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.context.orm;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -25,7 +25,7 @@ public class NullOrmJoinTableJoiningStrategy
 	extends AbstractOrmXmlContextNode
 	implements OrmJoinTableJoiningStrategy
 {
-	public NullOrmJoinTableJoiningStrategy(OrmJoinTableEnabledRelationshipReference parent) {
+	public NullOrmJoinTableJoiningStrategy(OrmJoinTableRelationship parent) {
 		super(parent);
 	}
 
@@ -74,11 +74,11 @@ public class NullOrmJoinTableJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmJoinTableEnabledRelationshipReference getParent() {
-		return (OrmJoinTableEnabledRelationshipReference) super.getParent();
+	public OrmJoinTableRelationship getParent() {
+		return (OrmJoinTableRelationship) super.getParent();
 	}
 
-	public OrmJoinTableEnabledRelationshipReference getRelationshipReference() {
+	public OrmJoinTableRelationship getRelationship() {
 		return this.getParent();
 	}
 

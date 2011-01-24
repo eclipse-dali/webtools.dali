@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.core.context.java.JavaJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
@@ -34,7 +34,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	protected JavaJoinTable joinTable;
 
 
-	protected AbstractJavaJoinTableJoiningStrategy(JavaJoinTableEnabledRelationshipReference parent) {
+	protected AbstractJavaJoinTableJoiningStrategy(JavaJoinTableRelationship parent) {
 		super(parent);
 	}
 
@@ -88,7 +88,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	 */
 	protected boolean buildsJoinTable() {
 		return this.getJoinTableAnnotation().isSpecified()
-			|| this.getRelationshipReference().mayHaveDefaultJoinTable();
+			|| this.getRelationship().mayHaveDefaultJoinTable();
 	}
 
 	protected JavaJoinTable buildJoinTable() {
@@ -106,16 +106,16 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public JavaJoinTableEnabledRelationshipReference getParent() {
-		return (JavaJoinTableEnabledRelationshipReference) super.getParent();
+	public JavaJoinTableRelationship getParent() {
+		return (JavaJoinTableRelationship) super.getParent();
 	}
 
-	public JavaJoinTableEnabledRelationshipReference getRelationshipReference() {
+	public JavaJoinTableRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public void initializeFrom(ReadOnlyJoinTableJoiningStrategy oldStrategy) {
@@ -151,7 +151,7 @@ public abstract class AbstractJavaJoinTableJoiningStrategy
 	}
 
 	public String getJoinTableDefaultName() {
-		return MappingTools.buildJoinTableDefaultName(this.getRelationshipReference());
+		return MappingTools.buildJoinTableDefaultName(this.getRelationship());
 	}
 
 	public void addStrategy() {

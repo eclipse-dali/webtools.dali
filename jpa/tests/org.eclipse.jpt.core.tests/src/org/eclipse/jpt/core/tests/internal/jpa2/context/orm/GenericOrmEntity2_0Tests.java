@@ -36,7 +36,7 @@ import org.eclipse.jpt.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmAssociationOverrideRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOverrideRelationship2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmNamedQuery2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
@@ -1965,7 +1965,7 @@ public class GenericOrmEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = entity.getAssociationOverrideContainer().specifiedOverrides().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((OrmAssociationOverrideRelationshipReference2_0) associationOverride.getRelationshipReference()).getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = ((OrmOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.inverseJoinColumns().next().getName());
 	}

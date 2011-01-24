@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,7 +22,7 @@ import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinTable;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaVirtualRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualRelationship;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -227,7 +227,7 @@ public class GenericJavaVirtualJoinTable
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationshipReference().getMapping();
+		return this.getJoinStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
@@ -248,7 +248,7 @@ public class GenericJavaVirtualJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return this.getRelationshipReference().getTypeMapping();
+			return this.getRelationship().getTypeMapping();
 		}
 
 		/**
@@ -266,8 +266,8 @@ public class GenericJavaVirtualJoinTable
 			throw new UnsupportedOperationException();
 		}
 
-		protected JavaVirtualRelationshipReference getRelationshipReference() {
-			return GenericJavaVirtualJoinTable.this.getJoinStrategy().getRelationshipReference();
+		protected JavaVirtualRelationship getRelationship() {
+			return GenericJavaVirtualJoinTable.this.getJoinStrategy().getRelationship();
 		}
 	}
 
@@ -284,7 +284,7 @@ public class GenericJavaVirtualJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return this.getRelationshipReference().getEntity();
+			return this.getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {

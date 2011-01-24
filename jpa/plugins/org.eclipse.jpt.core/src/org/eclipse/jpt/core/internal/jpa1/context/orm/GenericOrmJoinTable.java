@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -322,7 +322,7 @@ public class GenericOrmJoinTable
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationshipReference().getMapping();
+		return this.getJoinStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
@@ -356,7 +356,7 @@ public class GenericOrmJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return GenericOrmJoinTable.this.getJoinStrategy().getRelationshipReference().getTypeMapping();
+			return GenericOrmJoinTable.this.getJoinStrategy().getRelationship().getTypeMapping();
 		}
 
 		protected PersistentAttribute getPersistentAttribute() {
@@ -429,7 +429,7 @@ public class GenericOrmJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return this.getJoinStrategy().getRelationshipReference().getEntity();
+			return this.getJoinStrategy().getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {

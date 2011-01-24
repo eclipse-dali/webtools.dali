@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.SecondaryTable;
@@ -2456,7 +2456,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
-		ReadOnlyJoinColumnJoiningStrategy joiningStrategy = ((ReadOnlyJoinColumnEnabledRelationshipReference) virtualAssociationOverride.getRelationshipReference()).getJoinColumnJoiningStrategy();
+		ReadOnlyJoinColumnJoiningStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
 		ReadOnlyJoinColumn virtualJoinColumn = joiningStrategy.joinColumns().next();
@@ -2471,7 +2471,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) getJavaPersistentType().getAttributeNamed("oneToOne").getMapping();
-		JoinColumn joinColumn = oneToOneMapping.getRelationshipReference().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
+		JoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
 		joinColumn.setSpecifiedTable("BAR");
@@ -2487,7 +2487,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		virtualAssociationOverride = overrideContainer.virtualOverrides().next();
-		joiningStrategy = ((ReadOnlyJoinColumnEnabledRelationshipReference) virtualAssociationOverride.getRelationshipReference()).getJoinColumnJoiningStrategy();
+		joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
 		virtualAssociationOverride = overrideContainer.virtualOverrides().next();

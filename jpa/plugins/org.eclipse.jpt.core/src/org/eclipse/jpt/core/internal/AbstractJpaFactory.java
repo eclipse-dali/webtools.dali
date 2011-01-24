@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
@@ -70,7 +70,7 @@ import org.eclipse.jpt.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.core.context.java.JavaUniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaVersionMapping;
 import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaVirtualColumn;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
@@ -88,7 +88,7 @@ import org.eclipse.jpt.core.internal.jpa1.GenericJpaProject;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericRootContextNode;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaOverrideRelationship;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaBasicMapping;
@@ -128,7 +128,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaTransientMappi
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAssociationOverride;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualOverrideRelationship;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaVirtualJoinColumn;
@@ -352,12 +352,12 @@ public abstract class AbstractJpaFactory
 		return new GenericJavaVirtualAssociationOverride(parent, name);
 	}
 	
-	public JavaAssociationOverrideRelationshipReference buildJavaAssociationOverrideRelationshipReference(JavaAssociationOverride parent) {
-		return new GenericJavaAssociationOverrideRelationshipReference(parent);
+	public JavaOverrideRelationship buildJavaOverrideRelationship(JavaAssociationOverride parent) {
+		return new GenericJavaOverrideRelationship(parent);
 	}
 	
-	public JavaVirtualAssociationOverrideRelationshipReference buildJavaVirtualAssociationOverrideRelationshipReference(JavaVirtualAssociationOverride parent) {
-		return new GenericJavaVirtualAssociationOverrideRelationshipReference(parent);
+	public JavaVirtualOverrideRelationship buildJavaVirtualOverrideRelationship(JavaVirtualAssociationOverride parent) {
+		return new GenericJavaVirtualOverrideRelationship(parent);
 	}
 	
 	public JavaQueryContainer buildJavaQueryContainer(JavaJpaContextNode parent, JavaQueryContainer.Owner owner) {

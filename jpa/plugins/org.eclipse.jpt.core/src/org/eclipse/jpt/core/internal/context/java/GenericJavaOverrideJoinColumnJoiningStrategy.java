@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.java.JavaAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn.Owner;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
@@ -36,7 +36,7 @@ import org.eclipse.jpt.db.Table;
 public class GenericJavaOverrideJoinColumnJoiningStrategy
 	extends AbstractJavaJoinColumnJoiningStrategy
 {
-	public GenericJavaOverrideJoinColumnJoiningStrategy(JavaAssociationOverrideRelationshipReference parent) {
+	public GenericJavaOverrideJoinColumnJoiningStrategy(JavaOverrideRelationship parent) {
 		super(parent);
 	}
 
@@ -83,7 +83,7 @@ public class GenericJavaOverrideJoinColumnJoiningStrategy
 	public boolean isTargetForeignKey() {
 		RelationshipMapping relationshipMapping = this.getRelationshipMapping();
 		return (relationshipMapping != null) &&
-				relationshipMapping.getRelationshipReference().isTargetForeignKey();
+				relationshipMapping.getRelationship().isTargetForeignKey();
 	}
 
 	public TypeMapping getRelationshipSource() {
@@ -154,7 +154,7 @@ public class GenericJavaOverrideJoinColumnJoiningStrategy
 	}
 
 	protected JavaAssociationOverride getAssociationOverride() {
-		return this.getRelationshipReference().getAssociationOverride();
+		return this.getRelationship().getAssociationOverride();
 	}
 
 	protected JavaAssociationOverrideContainer getAssociationOverrideContainer() {
@@ -162,12 +162,12 @@ public class GenericJavaOverrideJoinColumnJoiningStrategy
 	}
 
 	@Override
-	public JavaAssociationOverrideRelationshipReference getRelationshipReference() {
-		return (JavaAssociationOverrideRelationshipReference) super.getRelationshipReference();
+	public JavaOverrideRelationship getRelationship() {
+		return (JavaOverrideRelationship) super.getRelationship();
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationshipReference().getValidationTextRange(astRoot);
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 

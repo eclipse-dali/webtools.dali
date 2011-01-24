@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaOwnableRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaMappedByRelationship;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -41,7 +41,7 @@ public class GenericJavaMappedByJoiningStrategy
 	protected String mappedByAttribute;
 
 
-	public GenericJavaMappedByJoiningStrategy(JavaOwnableRelationshipReference parent) {
+	public GenericJavaMappedByJoiningStrategy(JavaMappedByRelationship parent) {
 		super(parent);
 		this.mappedByAttribute = this.buildMappedByAttribute();
 	}
@@ -84,19 +84,19 @@ public class GenericJavaMappedByJoiningStrategy
 	// ********** misc **********
 
 	protected OwnableRelationshipMappingAnnotation getMappingAnnotation() {
-		return this.getRelationshipReference().getMappingAnnotation();
+		return this.getRelationship().getMappingAnnotation();
 	}
 
 	protected OwnableRelationshipMappingAnnotation getMappingAnnotationForUpdate() {
-		return this.getRelationshipReference().getMappingAnnotationForUpdate();
+		return this.getRelationship().getMappingAnnotationForUpdate();
 	}
 
 	@Override
-	public JavaOwnableRelationshipReference getParent() {
-		return (JavaOwnableRelationshipReference) super.getParent();
+	public JavaMappedByRelationship getParent() {
+		return (JavaMappedByRelationship) super.getParent();
 	}
 
-	public JavaOwnableRelationshipReference getRelationshipReference() {
+	public JavaMappedByRelationship getRelationship() {
 		return this.getParent();
 	}
 
@@ -106,22 +106,22 @@ public class GenericJavaMappedByJoiningStrategy
 
 	public String getTableName() {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().getTableName();
 	}
 
 	public Table resolveDbTable(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().resolveDbTable(tableName);
+		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().resolveDbTable(tableName);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner != null) && owner.getRelationshipReference().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
+		return (owner != null) && owner.getRelationship().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
 		//this will not be called if getRelationshipOwner() is null
-		return this.getRelationshipOwner().getRelationshipReference().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
+		return this.getRelationshipOwner().getRelationship().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
 	}
 
 	protected RelationshipMapping getRelationshipOwner() {
@@ -133,7 +133,7 @@ public class GenericJavaMappedByJoiningStrategy
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
@@ -145,7 +145,7 @@ public class GenericJavaMappedByJoiningStrategy
 	}
 
 	protected String getEntityName() {
-		Entity entity = this.getRelationshipReference().getEntity();
+		Entity entity = this.getRelationship().getEntity();
 		return (entity == null) ? null : entity.getName();
 	}
 
@@ -223,7 +223,7 @@ public class GenericJavaMappedByJoiningStrategy
 			return;
 		}
 
-		if ( ! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
+		if ( ! this.getRelationship().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
 				this.buildMessage(
 					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,

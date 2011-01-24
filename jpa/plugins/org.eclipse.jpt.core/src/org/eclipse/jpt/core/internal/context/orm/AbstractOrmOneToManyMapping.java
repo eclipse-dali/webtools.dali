@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,7 @@ import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.NullOrmOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyMapping2_0;
-import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationshipReference2_0;
+import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.resource.orm.Attributes;
@@ -65,13 +65,13 @@ public abstract class AbstractOrmOneToManyMapping<X extends XmlOneToMany>
 	// ********** relationship **********
 
 	@Override
-	protected OrmOneToManyRelationshipReference2_0 buildRelationshipReference() {
-		return new GenericOrmOneToManyRelationshipReference(this, this.isJpa2_0Compatible());
+	protected OrmOneToManyRelationship2_0 buildRelationship() {
+		return new GenericOrmOneToManyRelationship(this, this.isJpa2_0Compatible());
 	}
 
 	@Override
-	public OrmOneToManyRelationshipReference2_0 getRelationshipReference() {
-		return (OrmOneToManyRelationshipReference2_0) super.getRelationshipReference();
+	public OrmOneToManyRelationship2_0 getRelationship() {
+		return (OrmOneToManyRelationship2_0) super.getRelationship();
 	}
 
 

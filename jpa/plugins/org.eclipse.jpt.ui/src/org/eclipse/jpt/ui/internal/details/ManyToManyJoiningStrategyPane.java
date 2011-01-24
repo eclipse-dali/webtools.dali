@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.JoinTableEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ManyToManyRelationshipReference;
-import org.eclipse.jpt.core.context.OwnableRelationshipReference;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.JoinTableRelationship;
+import org.eclipse.jpt.core.context.ManyToManyMapping;
+import org.eclipse.jpt.core.context.ManyToManyRelationship;
+import org.eclipse.jpt.core.context.MappedByRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -38,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link ManyToManyMapping}
- * @see {@link ManyToManyRelationshipReference}
+ * @see {@link ManyToManyRelationship}
  * @see {@link ManyToManyMappingComposite}
  * @see {@link MappedByStrategyPane}
  * @see {@link JoinTableStrategyPane}
@@ -47,11 +48,11 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public class ManyToManyJoiningStrategyPane 
-	extends Pane<ManyToManyRelationshipReference>
+	extends Pane<ManyToManyRelationship>
 {
 	public ManyToManyJoiningStrategyPane(
 			Pane<?> parentPane, 
-			PropertyValueModel<? extends ManyToManyRelationshipReference> subjectHolder, 
+			PropertyValueModel<? extends ManyToManyRelationship> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);
@@ -85,8 +86,8 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
-		return new PropertyAspectAdapter<OwnableRelationshipReference, Boolean>(
-				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
+				this.getSubjectHolder(), ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
@@ -104,8 +105,8 @@ public class ManyToManyJoiningStrategyPane
 	}
 
 	protected WritablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
-		return new PropertyAspectAdapter<JoinTableEnabledRelationshipReference, Boolean>(
-				this.getSubjectHolder(), RelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
+				this.getSubjectHolder(), ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :

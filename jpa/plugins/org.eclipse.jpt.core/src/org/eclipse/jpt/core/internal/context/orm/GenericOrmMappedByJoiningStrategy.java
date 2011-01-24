@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmOwnableRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmMappedByRelationship;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
@@ -37,7 +37,7 @@ public class GenericOrmMappedByJoiningStrategy
 	protected String mappedByAttribute;
 
 
-	public GenericOrmMappedByJoiningStrategy(OrmOwnableRelationshipReference parent) {
+	public GenericOrmMappedByJoiningStrategy(OrmMappedByRelationship parent) {
 		super(parent);
 		this.mappedByAttribute = this.getXmlMappedByMapping().getMappedBy();
 	}
@@ -73,16 +73,16 @@ public class GenericOrmMappedByJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmOwnableRelationshipReference getParent() {
-		return (OrmOwnableRelationshipReference) super.getParent();
+	public OrmMappedByRelationship getParent() {
+		return (OrmMappedByRelationship) super.getParent();
 	}
 
-	public OrmOwnableRelationshipReference getRelationshipReference() {
+	public OrmMappedByRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected XmlMappedByMapping getXmlMappedByMapping() {
-		return this.getRelationshipReference().getXmlContainer();
+		return this.getRelationship().getXmlContainer();
 	}
 
 	public void initializeFrom(MappedByJoiningStrategy oldStrategy) {
@@ -91,22 +91,22 @@ public class GenericOrmMappedByJoiningStrategy
 
 	public String getTableName() {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().getTableName();
+		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().getTableName();
 	}
 
 	public Table resolveDbTable(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationshipReference().getPredominantJoiningStrategy().resolveDbTable(tableName);
+		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().resolveDbTable(tableName);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner != null) && owner.getRelationshipReference().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
+		return (owner != null) && owner.getRelationship().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
 		// this will not be called if getRelationshipOwner() returns null
-		return this.getRelationshipOwner().getRelationshipReference().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
+		return this.getRelationshipOwner().getRelationship().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
 	}
 
 	protected RelationshipMapping getRelationshipOwner() {
@@ -118,7 +118,7 @@ public class GenericOrmMappedByJoiningStrategy
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public boolean relationshipIsOwnedBy(RelationshipMapping otherMapping) {
@@ -130,7 +130,7 @@ public class GenericOrmMappedByJoiningStrategy
 	}
 
 	protected String getEntityName() {
-		Entity entity = this.getRelationshipReference().getEntity();
+		Entity entity = this.getRelationship().getEntity();
 		return (entity == null) ? null : entity.getName();
 	}
 
@@ -155,7 +155,7 @@ public class GenericOrmMappedByJoiningStrategy
 
 	public TextRange getValidationTextRange() {
 		TextRange mappedByTextRange = this.getXmlMappedByMapping().getMappedByTextRange();
-		return (mappedByTextRange != null) ? mappedByTextRange : this.getRelationshipReference().getValidationTextRange();
+		return (mappedByTextRange != null) ? mappedByTextRange : this.getRelationship().getValidationTextRange();
 	}
 
 	@Override
@@ -183,7 +183,7 @@ public class GenericOrmMappedByJoiningStrategy
 			return;
 		}
 
-		if ( ! this.getRelationshipReference().mayBeMappedBy(mappedByMapping)) {
+		if ( ! this.getRelationship().mayBeMappedBy(mappedByMapping)) {
 			messages.add(
 				this.buildMessage(
 					JpaValidationMessages.MAPPING_INVALID_MAPPED_BY,

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -32,7 +32,7 @@ public class NullJavaJoinColumnJoiningStrategy
 	extends AbstractJavaJpaContextNode
 	implements JavaJoinColumnJoiningStrategy
 {
-	public NullJavaJoinColumnJoiningStrategy(JavaJoinColumnEnabledRelationshipReference parent) {
+	public NullJavaJoinColumnJoiningStrategy(JavaJoinColumnRelationship parent) {
 		super(parent);
 	}
 
@@ -97,16 +97,16 @@ public class NullJavaJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public JavaJoinColumnEnabledRelationshipReference getParent() {
-		return (JavaJoinColumnEnabledRelationshipReference) super.getParent();
+	public JavaJoinColumnRelationship getParent() {
+		return (JavaJoinColumnRelationship) super.getParent();
 	}
 
-	public JavaJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public JavaJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	public String getTableName() {

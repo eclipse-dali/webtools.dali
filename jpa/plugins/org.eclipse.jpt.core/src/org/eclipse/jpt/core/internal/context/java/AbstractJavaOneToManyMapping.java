@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jpt.core.MappingKeys;
-import org.eclipse.jpt.core.context.java.JavaMappingRelationshipReference;
-import org.eclipse.jpt.core.context.java.JavaOneToManyRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaMappingRelationship;
+import org.eclipse.jpt.core.context.java.JavaOneToManyRelationship;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa2.context.java.NullJavaOrphanRemoval2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyMapping2_0;
@@ -50,12 +50,12 @@ public abstract class AbstractJavaOneToManyMapping
 	// ********** relationship **********
 
 	@Override
-	public JavaOneToManyRelationshipReference getRelationshipReference() {
-		return (JavaOneToManyRelationshipReference) super.getRelationshipReference();
+	public JavaOneToManyRelationship getRelationship() {
+		return (JavaOneToManyRelationship) super.getRelationship();
 	}
 
 	@Override
-	protected JavaMappingRelationshipReference buildRelationshipReference() {
+	protected JavaMappingRelationship buildRelationship() {
 		return new GenericJavaOneToManyRelationship(this, this.isJpa2_0Compatible());
 	}
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -15,7 +15,7 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -24,14 +24,14 @@ import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * Used by
- * {@link org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyRelationshipReference#buildJoinColumnStrategy()}
+ * {@link org.eclipse.jpt.core.internal.context.orm.GenericOrmOneToManyRelationship#buildJoinColumnStrategy()}
  * in a JPA 1.0 project.
  */
 public class NullOrmJoinColumnJoiningStrategy
 	extends AbstractOrmXmlContextNode
 	implements OrmJoinColumnJoiningStrategy
 {
-	public NullOrmJoinColumnJoiningStrategy(OrmJoinColumnEnabledRelationshipReference parent) {
+	public NullOrmJoinColumnJoiningStrategy(OrmJoinColumnRelationship parent) {
 		super(parent);
 	}
 
@@ -107,11 +107,11 @@ public class NullOrmJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public OrmJoinColumnEnabledRelationshipReference getParent() {
-		return (OrmJoinColumnEnabledRelationshipReference) super.getParent();
+	public OrmJoinColumnRelationship getParent() {
+		return (OrmJoinColumnRelationship) super.getParent();
 	}
 
-	public OrmJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public OrmJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
@@ -160,6 +160,6 @@ public class NullOrmJoinColumnJoiningStrategy
 	}
 
 	protected RelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 }

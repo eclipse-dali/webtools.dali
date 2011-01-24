@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -49,7 +49,7 @@ public class GenericOrmAssociationOverrideContainer
 		return MappingTools.getRelationshipMapping(attributeName, this.owner.getOverridableTypeMapping());
 	}
 
-	public RelationshipReference resolveOverriddenRelationship(String associationOverrideName) {
+	public Relationship resolveOverriddenRelationship(String associationOverrideName) {
 		return this.owner.resolveOverriddenRelationship(associationOverrideName);
 	}
 

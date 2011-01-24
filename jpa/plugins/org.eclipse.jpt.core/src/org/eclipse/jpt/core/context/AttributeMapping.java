@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -98,9 +98,9 @@ public interface AttributeMapping
 	boolean validatesAgainstDatabase();
 
 	/**
-	 * Return the relationship reference for the specified attribute.
+	 * Return the relationship for the specified attribute.
 	 */
-	RelationshipReference resolveOverriddenRelationship(String attributeName);
+	Relationship resolveOverriddenRelationship(String attributeName);
 
 
 	// ********** embedded mappings **********

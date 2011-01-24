@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnRelationship;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.ReadOnlyRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Composite;
  * | ------------------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see JoinColumnEnabledRelationshipReference
+ * @see JoinColumnRelationship
  * @see ReadOnlyJoinColumnJoiningStrategy
  * @see OneToOneJoiningStrategyPane
  * @see ManyToOneJoiningStrategyPane
@@ -42,40 +42,40 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinColumnJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinColumnEnabledRelationshipReference, ReadOnlyJoinColumnJoiningStrategy>
+		<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnJoiningStrategy>
 {
 	private final boolean includeOverrideCheckBox;
 	
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
-		Pane<? extends ReadOnlyJoinColumnEnabledRelationshipReference> parentPane, 
+		Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
 		Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, parent, true);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
-		Pane<? extends ReadOnlyJoinColumnEnabledRelationshipReference> parentPane, 
+		Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
 		Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, parent, false);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithIncludeOverrideCheckBox(
 		Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinColumnEnabledRelationshipReference> subjectHolder,
+		PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
         Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, true);
 	}
 	
 	public static JoinColumnJoiningStrategyPane buildJoinColumnJoiningStrategyPaneWithoutIncludeOverrideCheckBox(
 		Pane<?> parentPane,
-		PropertyValueModel<? extends ReadOnlyJoinColumnEnabledRelationshipReference> subjectHolder,
+		PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
         Composite parent) {
 		return new JoinColumnJoiningStrategyPane(parentPane, subjectHolder, parent, false);
 	}
 	
 	
 	private JoinColumnJoiningStrategyPane(
-			Pane<? extends ReadOnlyJoinColumnEnabledRelationshipReference> parentPane, 
+			Pane<? extends ReadOnlyJoinColumnRelationship> parentPane, 
 			Composite parent,
 	        boolean includeOverrideCheckBox) {
 		super(parentPane, parent);
@@ -84,7 +84,7 @@ public class JoinColumnJoiningStrategyPane
 	}
 	
 	private JoinColumnJoiningStrategyPane(Pane<?> parentPane,
-			PropertyValueModel<? extends ReadOnlyJoinColumnEnabledRelationshipReference> subjectHolder,
+			PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder,
 			Composite parent,
 			boolean includeOverrideCheckBox) {
 		
@@ -119,7 +119,7 @@ public class JoinColumnJoiningStrategyPane
 
 	protected PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> buildJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinColumnEnabledRelationshipReference, ReadOnlyJoinColumnJoiningStrategy>(
+				<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnJoiningStrategy>(
 					getSubjectHolder()) {
 			@Override
 			protected ReadOnlyJoinColumnJoiningStrategy buildValue_() {
@@ -128,9 +128,9 @@ public class JoinColumnJoiningStrategyPane
 		};
 	}
 
-	public static WritablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinColumnEnabledRelationshipReference> subjectHolder) {
-		return new PropertyAspectAdapter<ReadOnlyJoinColumnEnabledRelationshipReference, Boolean>(
-				subjectHolder, ReadOnlyRelationshipReference.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+	public static WritablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder) {
+		return new PropertyAspectAdapter<ReadOnlyJoinColumnRelationship, Boolean>(
+				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.buildBooleanValue());
@@ -143,7 +143,7 @@ public class JoinColumnJoiningStrategyPane
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					((JoinColumnEnabledRelationshipReference) this.subject).setJoinColumnJoiningStrategy();
+					((JoinColumnRelationship) this.subject).setJoinColumnJoiningStrategy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

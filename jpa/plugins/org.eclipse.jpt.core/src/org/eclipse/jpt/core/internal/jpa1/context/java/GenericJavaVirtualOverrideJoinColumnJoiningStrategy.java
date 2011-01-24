@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,18 +14,18 @@ import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.RelationshipMapping;
-import org.eclipse.jpt.core.context.RelationshipReference;
+import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaReadOnlyAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumnRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
@@ -48,7 +48,7 @@ public class GenericJavaVirtualOverrideJoinColumnJoiningStrategy
 	protected JavaVirtualJoinColumn defaultJoinColumn;
 
 
-	public GenericJavaVirtualOverrideJoinColumnJoiningStrategy(JavaVirtualJoinColumnEnabledRelationshipReference parent) {
+	public GenericJavaVirtualOverrideJoinColumnJoiningStrategy(JavaVirtualJoinColumnRelationship parent) {
 		super(parent);
 		this.specifiedJoinColumnContainerAdapter = this.buildSpecifiedJoinColumnContainerAdapter();
 		this.joinColumnOwner = this.buildJoinColumnOwner();
@@ -208,32 +208,32 @@ public class GenericJavaVirtualOverrideJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public JavaVirtualJoinColumnEnabledRelationshipReference getParent() {
-		return (JavaVirtualJoinColumnEnabledRelationshipReference) super.getParent();
+	public JavaVirtualJoinColumnRelationship getParent() {
+		return (JavaVirtualJoinColumnRelationship) super.getParent();
 	}
 
-	public JavaVirtualJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public JavaVirtualJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected JoinColumnJoiningStrategy getOverriddenStrategy() {
-		JoinColumnEnabledRelationshipReference relationship = this.getOverriddenJoinColumnRelationship();
+		JoinColumnRelationship relationship = this.getOverriddenJoinColumnRelationship();
 		return (relationship == null) ? null : relationship.getJoinColumnJoiningStrategy();
 	}
 
-	protected JoinColumnEnabledRelationshipReference getOverriddenJoinColumnRelationship() {
-		RelationshipReference relationship = this.resolveOverriddenRelationship();
-		return (relationship instanceof JoinColumnEnabledRelationshipReference) ? (JoinColumnEnabledRelationshipReference) relationship : null;
+	protected JoinColumnRelationship getOverriddenJoinColumnRelationship() {
+		Relationship relationship = this.resolveOverriddenRelationship();
+		return (relationship instanceof JoinColumnRelationship) ? (JoinColumnRelationship) relationship : null;
 	}
 
-	protected RelationshipReference resolveOverriddenRelationship() {
-		return this.getRelationshipReference().resolveOverriddenRelationship();
+	protected Relationship resolveOverriddenRelationship() {
+		return this.getRelationship().resolveOverriddenRelationship();
 	}
 
 	public boolean isTargetForeignKey() {
 		RelationshipMapping relationshipMapping = this.getRelationshipMapping();
 		return (relationshipMapping != null) &&
-				relationshipMapping.getRelationshipReference().isTargetForeignKey();
+				relationshipMapping.getRelationship().isTargetForeignKey();
 	}
 
 	public TypeMapping getRelationshipSource() {
@@ -263,7 +263,7 @@ public class GenericJavaVirtualOverrideJoinColumnJoiningStrategy
 	}
 
 	protected JavaReadOnlyAssociationOverride getAssociationOverride() {
-		return ((JavaVirtualAssociationOverrideRelationshipReference) this.getRelationshipReference()).getAssociationOverride();
+		return ((JavaVirtualOverrideRelationship) this.getRelationship()).getAssociationOverride();
 	}
 
 	protected JavaAssociationOverrideContainer getAssociationOverrideContainer() {

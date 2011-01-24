@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumnJoiningStrategy;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
@@ -55,7 +55,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	protected final JavaJoinColumn.Owner primaryKeyJoinColumnOwner;
 
 
-	public GenericJavaPrimaryKeyJoinColumnJoiningStrategy(JavaPrimaryKeyJoinColumnEnabledRelationshipReference parent) {
+	public GenericJavaPrimaryKeyJoinColumnJoiningStrategy(JavaPrimaryKeyJoinColumnRelationship parent) {
 		super(parent);
 		this.primaryKeyJoinColumnContainerAdapter = this.buildPrimaryKeyJoinColumnContainerAdapter();
 		this.primaryKeyJoinColumnOwner = this.buildPrimaryKeyJoinColumnOwner();
@@ -220,20 +220,20 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	// ********** misc **********
 
 	@Override
-	public JavaPrimaryKeyJoinColumnEnabledRelationshipReference getParent() {
-		return (JavaPrimaryKeyJoinColumnEnabledRelationshipReference) super.getParent();
+	public JavaPrimaryKeyJoinColumnRelationship getParent() {
+		return (JavaPrimaryKeyJoinColumnRelationship) super.getParent();
 	}
 
-	public JavaPrimaryKeyJoinColumnEnabledRelationshipReference getRelationshipReference() {
+	public JavaPrimaryKeyJoinColumnRelationship getRelationship() {
 		return this.getParent();
 	}
 
 	protected JavaRelationshipMapping getRelationshipMapping() {
-		return this.getRelationshipReference().getMapping();
+		return this.getRelationship().getMapping();
 	}
 
 	protected JavaResourcePersistentAttribute getResourcePersistentAttribute() {
-		return this.getRelationshipReference().getMapping().getResourcePersistentAttribute();
+		return this.getRelationship().getMapping().getResourcePersistentAttribute();
 	}
 
 	public String getTableName() {
@@ -302,7 +302,7 @@ public class GenericJavaPrimaryKeyJoinColumnJoiningStrategy
 	}
 
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
-		return this.getRelationshipReference().getValidationTextRange(astRoot);
+		return this.getRelationship().getValidationTextRange(astRoot);
 	}
 
 

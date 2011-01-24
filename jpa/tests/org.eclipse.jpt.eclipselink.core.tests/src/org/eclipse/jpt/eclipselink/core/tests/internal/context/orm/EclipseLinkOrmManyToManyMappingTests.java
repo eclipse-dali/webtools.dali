@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -270,7 +270,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		ManyToManyMapping manyToMany = (ManyToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
-		JoinTable ormJoinTable = manyToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable ormJoinTable = manyToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("DEP_EMP", ormJoinTable.getName());
 		assertEquals("DEPT_ID", ormJoinTable.specifiedJoinColumns().next().getName());
 		assertEquals("id", ormJoinTable.specifiedJoinColumns().next().getReferencedColumnName());
@@ -284,7 +284,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		OneToManyMapping oneToMany = (OneToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
-		ormJoinTable = oneToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = oneToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("Department_Employee", ormJoinTable.getName());
 		assertEquals("Department_id", ormJoinTable.getDefaultJoinColumn().getName());
 		assertEquals("id", ormJoinTable.getDefaultJoinColumn().getReferencedColumnName());
@@ -296,7 +296,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		attribute = departmentPersistentType.getAttributeNamed("employees");
 		manyToMany = (ManyToManyMapping) attribute.getMapping();
 		assertEquals(true, attribute.isVirtual());
-		ormJoinTable = manyToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = manyToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("DEP_EMP", ormJoinTable.getName());
 		assertEquals("DEPT_ID", ormJoinTable.specifiedJoinColumns().next().getName());
 		assertEquals("id", ormJoinTable.specifiedJoinColumns().next().getReferencedColumnName());
@@ -308,7 +308,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		attribute = departmentPersistentType.getAttributeNamed("employees");
 		manyToMany = (ManyToManyMapping) attribute.getMapping();
 		assertEquals(false, attribute.isVirtual());
-		ormJoinTable = manyToMany.getRelationshipReference().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = manyToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
 		assertEquals("Department_Employee", ormJoinTable.getName());
 		assertEquals(0, ormJoinTable.specifiedJoinColumnsSize());
 		assertEquals("Department_id", ormJoinTable.getDefaultJoinColumn().getName());
@@ -331,7 +331,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertEquals("address", virtualManyToManyMapping.getName());
 		assertEquals(FetchType.EAGER, virtualManyToManyMapping.getSpecifiedFetch());
 		assertEquals("Address", virtualManyToManyMapping.getSpecifiedTargetEntity());
-		assertNull(virtualManyToManyMapping.getRelationshipReference().
+		assertNull(virtualManyToManyMapping.getRelationship().
 			getMappedByJoiningStrategy().getMappedByAttribute());
 
 		Cascade cascade = virtualManyToManyMapping.getCascade();
@@ -366,7 +366,7 @@ public class EclipseLinkOrmManyToManyMappingTests
 		assertEquals("address", ormManyToManyMapping.getName());
 		assertEquals(FetchType.LAZY, ormManyToManyMapping.getFetch());
 		assertEquals("test.Address", ormManyToManyMapping.getTargetEntity());
-		assertNull(ormManyToManyMapping.getRelationshipReference().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormManyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
 
 		Cascade cascade = ormManyToManyMapping.getCascade();
 		assertFalse(cascade.isAll());

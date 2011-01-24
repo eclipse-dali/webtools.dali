@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.context.OneToOneMapping;
-import org.eclipse.jpt.core.context.OneToOneRelationshipReference;
-import org.eclipse.jpt.core.jpa2.context.OneToOneRelationshipReference2_0;
+import org.eclipse.jpt.core.context.OneToOneRelationship;
+import org.eclipse.jpt.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.ui.internal.details.JoinColumnJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link OneToOneMapping}
- * @see {@link OneToOneRelationshipReference}
+ * @see {@link OneToOneRelationship}
  * @see {@link OneToOneMappingComposite}
  * @see {@link MappedByStrategyPane}
  * @see {@link JoinColumnStrategyPane}
@@ -59,11 +59,11 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public class OneToOneJoiningStrategy2_0Pane 
-	extends Pane<OneToOneRelationshipReference2_0>
+	extends Pane<OneToOneRelationship2_0>
 {
 	public OneToOneJoiningStrategy2_0Pane(
 			Pane<?> parentPane, 
-			PropertyValueModel<? extends OneToOneRelationshipReference2_0> subjectHolder, 
+			PropertyValueModel<? extends OneToOneRelationship2_0> subjectHolder, 
 			Composite parent) {
 		
 		super(parentPane, subjectHolder, parent);

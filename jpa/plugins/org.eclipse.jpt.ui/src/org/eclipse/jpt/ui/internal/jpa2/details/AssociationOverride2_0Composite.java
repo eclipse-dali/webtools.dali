@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableEnabledRelationshipReference;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.ui.internal.details.AssociationOverrideComposite;
 import org.eclipse.jpt.ui.internal.details.EntityOverridesComposite;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
@@ -71,15 +71,15 @@ public class AssociationOverride2_0Composite
 	}
 	
 	protected void addJoinTableJoiningStrategyPane(Composite container) {
-		new JoinTableJoiningStrategyPane(this, buildRelationshipReferenceHolder(), container);		
+		new JoinTableJoiningStrategyPane(this, buildRelationshipModel(), container);		
 	}
 	
-	private PropertyValueModel<ReadOnlyJoinTableEnabledRelationshipReference> buildRelationshipReferenceHolder() {
-		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinTableEnabledRelationshipReference>(getSubjectHolder()) {
+	private PropertyValueModel<ReadOnlyJoinTableRelationship> buildRelationshipModel() {
+		return new TransformationPropertyValueModel<ReadOnlyAssociationOverride, ReadOnlyJoinTableRelationship>(getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinTableEnabledRelationshipReference transform_(ReadOnlyAssociationOverride value) {
+			protected ReadOnlyJoinTableRelationship transform_(ReadOnlyAssociationOverride value) {
 				// all specified and virtual (mappings) overrides support join tables
-				return (ReadOnlyJoinTableEnabledRelationshipReference) value.getRelationshipReference();
+				return (ReadOnlyJoinTableRelationship) value.getRelationship();
 			}
 		};
 	}

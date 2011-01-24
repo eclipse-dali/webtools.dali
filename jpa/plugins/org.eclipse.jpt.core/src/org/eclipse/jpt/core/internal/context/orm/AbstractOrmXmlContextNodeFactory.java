@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideContainer;
-import org.eclipse.jpt.core.context.orm.OrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
@@ -65,7 +65,7 @@ import org.eclipse.jpt.core.context.orm.OrmTransientMapping;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.OrmVersionMapping;
 import org.eclipse.jpt.core.context.orm.OrmVirtualAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.context.orm.OrmVirtualOverrideRelationship;
 import org.eclipse.jpt.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmVirtualColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumn;
@@ -79,7 +79,7 @@ import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericEntityMappings;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideContainer;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOverrideRelationship;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmBasicMapping;
@@ -121,7 +121,7 @@ import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmTransientMapping
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVersionMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualAssociationOverride;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualAssociationOverrideRelationshipReference;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualOverrideRelationship;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualColumn;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmVirtualJoinColumn;
@@ -260,12 +260,12 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualAssociationOverride(parent, name);
 	}
 	
-	public OrmAssociationOverrideRelationshipReference buildOrmAssociationOverrideRelationshipReference(OrmAssociationOverride parent) {
-		return new GenericOrmAssociationOverrideRelationshipReference(parent);
+	public OrmOverrideRelationship buildOrmOverrideRelationship(OrmAssociationOverride parent) {
+		return new GenericOrmOverrideRelationship(parent);
 	}
 	
-	public OrmVirtualAssociationOverrideRelationshipReference buildOrmVirtualAssociationOverrideRelationshipReference(OrmVirtualAssociationOverride parent) {
-		return new GenericOrmVirtualAssociationOverrideRelationshipReference(parent);
+	public OrmVirtualOverrideRelationship buildOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent) {
+		return new GenericOrmVirtualOverrideRelationship(parent);
 	}
 	
 	public OrmDiscriminatorColumn buildOrmDiscriminatorColumn(OrmEntity parent, OrmDiscriminatorColumn.Owner owner) {
