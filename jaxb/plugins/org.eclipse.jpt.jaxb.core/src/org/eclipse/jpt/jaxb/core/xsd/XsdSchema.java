@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.xsd;
 
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
@@ -18,6 +19,7 @@ import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
 import org.eclipse.xsd.XSDTypeDefinition;
+import org.eclipse.xsd.util.XSDUtil;
 
 public class XsdSchema
 		extends XsdAdapter {
@@ -36,8 +38,8 @@ public class XsdSchema
 		return new SnapshotCloneIterable(this.xsdSchema.getQNamePrefixToNamespaceMap().values());
 	}
 	
-	public Iterable<XsdTypeDefinition> getTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getXSDTypeDefinitions()) {
+	public Iterable<XsdTypeDefinition> getAllTypeDefinitions() {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getAllXSDTypeDefinitions()) {
 			@Override
 			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
@@ -45,23 +47,26 @@ public class XsdSchema
 		};
 	}
 	
-	public Iterable<XsdSimpleTypeDefinition> getSimpleTypeDefinitions() {
-		return new TransformationIterable<XSDTypeDefinition, XsdSimpleTypeDefinition>(getXSDSimpleTypeDefinitions()) {
+	public Iterable<XsdTypeDefinition> getDeclaredTypeDefinitions() {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getDeclaredXSDTypeDefinitions()) {
 			@Override
-			protected XsdSimpleTypeDefinition transform(XSDTypeDefinition o) {
-				return (XsdSimpleTypeDefinition) XsdUtil.getAdapter(o);
+			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
+				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
+			}
+		};
+	}
+	
+	public Iterable<XsdTypeDefinition> getBuiltInTypeDefinitions() {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getBuiltInXSDTypeDefinitions()) {
+			@Override
+			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
+				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
 			}
 		};
 	}
 	
 	public Iterable<XsdTypeDefinition> getTypeDefinitions(final String namespace) {
-		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(
-				new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions()) {
-					@Override
-					protected boolean accept(XSDTypeDefinition o) {
-						return o.getTargetNamespace().equals(namespace);
-					}
-				}) {
+		return new TransformationIterable<XSDTypeDefinition, XsdTypeDefinition>(getXSDTypeDefinitions(namespace)) {
 			@Override
 			protected XsdTypeDefinition transform(XSDTypeDefinition o) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(o);
@@ -71,12 +76,7 @@ public class XsdSchema
 	
 	public Iterable<XsdSimpleTypeDefinition> getSimpleTypeDefinitions(final String namespace) {
 		return new TransformationIterable<XSDSimpleTypeDefinition, XsdSimpleTypeDefinition>(
-				new FilteringIterable<XSDSimpleTypeDefinition>(getXSDSimpleTypeDefinitions()) {
-					@Override
-					protected boolean accept(XSDSimpleTypeDefinition o) {
-						return o.getTargetNamespace().equals(namespace);
-					}
-				}) {
+				getXSDSimpleTypeDefinitions(namespace)) {
 			@Override
 			protected XsdSimpleTypeDefinition transform(XSDSimpleTypeDefinition o) {
 				return (XsdSimpleTypeDefinition) XsdUtil.getAdapter(o);
@@ -85,7 +85,7 @@ public class XsdSchema
 	}
 	
 	public XsdTypeDefinition getTypeDefinition(String namespace, String name) {
-		for (XSDTypeDefinition typeDefinition : getXSDTypeDefinitions()) {
+		for (XSDTypeDefinition typeDefinition : getXSDTypeDefinitions(namespace)) {
 			if (typeDefinition.getTargetNamespace().equals(namespace) && typeDefinition.getName().equals(name)) {
 				return (XsdTypeDefinition) XsdUtil.getAdapter(typeDefinition);
 			}
@@ -93,13 +93,34 @@ public class XsdSchema
 		return null;
 	}
 	
-	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions() {
+	protected Iterable<XSDTypeDefinition> getAllXSDTypeDefinitions() {
+		return new CompositeIterable<XSDTypeDefinition>(
+				getDeclaredXSDTypeDefinitions(), getBuiltInXSDTypeDefinitions());
+	}
+	
+	protected Iterable<XSDTypeDefinition> getDeclaredXSDTypeDefinitions() {
 		return new SnapshotCloneIterable(this.xsdSchema.getTypeDefinitions());
 	}
 	
-	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions() {
+	protected Iterable<XSDTypeDefinition> getBuiltInXSDTypeDefinitions() {
+		return new SnapshotCloneIterable(this.xsdSchema.getSchemaForSchema().getTypeDefinitions());
+	}
+	
+	protected Iterable<XSDTypeDefinition> getXSDTypeDefinitions(final String namespace) {
+		if (XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001.equals(namespace)) {
+			return getBuiltInXSDTypeDefinitions();
+		}
+		return new FilteringIterable<XSDTypeDefinition>(getDeclaredXSDTypeDefinitions()) {
+			@Override
+			protected boolean accept(XSDTypeDefinition o) {
+				return namespace.equals(o.getTargetNamespace());
+			}
+		};
+	}
+	
+	protected Iterable<XSDSimpleTypeDefinition> getXSDSimpleTypeDefinitions(String namespace) {
 		return new TransformationIterable<XSDTypeDefinition, XSDSimpleTypeDefinition>(
-			new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions()) {
+			new FilteringIterable<XSDTypeDefinition>(getXSDTypeDefinitions(namespace)) {
 				@Override
 				protected boolean accept(XSDTypeDefinition o) {
 					return o instanceof XSDSimpleTypeDefinition;
@@ -169,13 +190,13 @@ public class XsdSchema
 	public Iterable<String> getSimpleTypeNameProposals(String namespace, Filter<String> filter) {
 		return StringTools.convertToJavaStringLiterals(
 				new FilteringIterable<String>(
-					new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
-						@Override
-						protected String transform(XsdSimpleTypeDefinition o) {
-							return o.getName();
-						}
-					},
-					filter));
+						new TransformationIterable<XsdSimpleTypeDefinition, String>(this.getSimpleTypeDefinitions(namespace)) {
+							@Override
+							protected String transform(XsdSimpleTypeDefinition o) {
+								return o.getName();
+							}
+						},
+						filter));
 	}
 
 }
