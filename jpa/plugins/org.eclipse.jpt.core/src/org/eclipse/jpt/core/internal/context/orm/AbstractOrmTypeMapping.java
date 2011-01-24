@@ -399,6 +399,10 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 		return this.xmlTypeMapping.getAttributesTextRange();
 	}
 
+	public TextRange getNameTextRange() {
+		return this.xmlTypeMapping.getNameTextRange();
+	}
+	
 	public boolean containsOffset(int textOffset) {
 		return this.xmlTypeMapping.containsOffset(textOffset);
 	}

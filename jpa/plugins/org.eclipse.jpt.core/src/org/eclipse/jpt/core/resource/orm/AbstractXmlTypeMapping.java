@@ -502,6 +502,10 @@ public abstract class AbstractXmlTypeMapping extends AbstractJpaEObject implemen
 		return getAttributeTextRange(JPA.ATTRIBUTES);
 	}
 	
+	public TextRange getNameTextRange(){
+		return getAttributeTextRange(JPA.NAME);
+	}
+	
 	// ********** translators **********
 	
 	protected static Translator buildClassTranslator() {

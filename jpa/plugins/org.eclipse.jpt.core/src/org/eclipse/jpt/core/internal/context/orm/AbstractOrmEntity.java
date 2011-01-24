@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
@@ -115,6 +116,7 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.internal.ClassName;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.NotNullFilter;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
@@ -1776,6 +1778,47 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		this.associationOverrideContainer.validate(messages, reporter);
 		this.generatorContainer.validate(messages, reporter);
 		this.queryContainer.validate(messages, reporter);
+		this.validateEntityName(messages,  reporter);
+		this.validateDuplicateEntityNames(messages, reporter);
+	}
+
+	protected void validateEntityName(List<IMessage> messages, IReporter reporter) {
+		if (StringTools.stringIsEmpty(this.getName())){
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ENTITY_NAME_MISSING,
+							new String[] {this.getClass_()}, 
+							this,
+							this.getNameTextRange()
+					)
+			);
+		}
+	}
+
+	protected void validateDuplicateEntityNames(List<IMessage> messages,
+			IReporter reporter) {
+		HashBag<String>  ormEntityNames = new HashBag<String>();
+		CollectionTools.addAll(ormEntityNames, this.getPersistenceUnit().ormEntityNames());
+		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
+		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
+		String  name = this.getName();
+		if ((name != null) && 
+					// Check whether or not this entity name has duplicates among the orm entities
+					((ormEntityNames.count(name) > 1) 
+					    // Check whether or not this entity name has duplicates among
+						// the java entities that are not defined in the mapping files
+					   || (javaEntityNamesExclOverridden.contains(name)))) {
+							messages.add(
+									DefaultJpaValidationMessages.buildMessage(
+											IMessage.HIGH_SEVERITY,
+											JpaValidationMessages.PERSISTENCE_UNIT_ENTITY_NAME_ATTRIBUTE_MISSING,
+											new String[] {name}, 
+											this, 
+											this.getClassTextRange()
+									)
+							);
+			} 
 	}
 
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {

@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.JpaPlatformVariation.Supported;
 import org.eclipse.jpt.core.MappingKeys;
@@ -103,7 +104,9 @@ import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.utility.internal.HashBag;
 import org.eclipse.jpt.utility.internal.NotNullFilter;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
@@ -1324,11 +1327,54 @@ public abstract class AbstractJavaEntity
 		this.queryContainer.validate(messages, reporter, astRoot);
 		this.attributeOverrideContainer.validate(messages, reporter, astRoot);
 		this.associationOverrideContainer.validate(messages, reporter, astRoot);
+		this.validateEntityName(messages, reporter, astRoot);
+		this.validateDuplicateEntityNames(messages, reporter, astRoot);
 	}
 
 	@Override
 	public boolean validatesAgainstDatabase() {
 		return super.validatesAgainstDatabase() && ! this.isAbstractTablePerClass();
+	}
+
+	protected void validateEntityName(List<IMessage> messages,
+			IReporter reporter, CompilationUnit astRoot) {
+		if (StringTools.stringIsEmpty(this.getName())){
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ENTITY_NAME_MISSING,
+							new String[] {this.getPersistentType().getName()}, 
+							this,
+							this.getMappingAnnotation().getNameTextRange(astRoot)
+					)
+			);
+		}
+	}
+
+	protected void validateDuplicateEntityNames(List<IMessage> messages,
+			IReporter reporter, CompilationUnit astRoot) {
+		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
+		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
+		HashBag<String>  ormEntityNames = new HashBag<String>();
+		CollectionTools.addAll(ormEntityNames, this.getPersistenceUnit().ormEntityNames());
+		String  javaEntityName = this.getName(); 
+		if ((javaEntityName != null) 
+				// Check whether or not this entity name has duplicates among 
+				// the java entities that are not overridden by orm entities
+				&& ((javaEntityNamesExclOverridden.count(javaEntityName) > 1)
+						//Check whether or not this entity name has duplicates 
+						//with the names of orm entities
+						|| (ormEntityNames.contains(javaEntityName)))) {
+								messages.add(
+										DefaultJpaValidationMessages.buildMessage(
+												IMessage.HIGH_SEVERITY,
+												JpaValidationMessages.PERSISTENCE_UNIT_ENTITY_NAME_ATTRIBUTE_MISSING,
+												new String[] {javaEntityName}, 
+												this, 
+												this.getMappingAnnotation().getNameTextRange(astRoot)
+										)
+								);
+		}
 	}
 
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {

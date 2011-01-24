@@ -20,6 +20,7 @@ import java.util.ListIterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -464,6 +465,15 @@ public abstract class AbstractPersistenceUnit
 		return this.getMappingFileRefs().iterator();
 	}
 
+	protected Iterator<String> mappingFileRefNames() {
+		return new TransformationIterator<MappingFileRef, String>(this.mappingFileRefs()) {
+			@Override
+			protected String transform(MappingFileRef mappingFileRef) {
+				return mappingFileRef.getFileName();
+			}
+		};
+	}
+	
 	protected ListIterable<MappingFileRef> getMappingFileRefs() {
 		return (this.impliedMappingFileRef == null) ?
 				this.getSpecifiedMappingFileRefs() :
@@ -696,7 +706,16 @@ public abstract class AbstractPersistenceUnit
 	public int jarFileRefsSize() {
 		return this.jarFileRefs.size();
 	}
-
+	
+	protected Iterator<String> jarFileNames() {
+		return new TransformationIterator<JarFileRef, String>(this.jarFileRefs()) {
+			@Override
+			protected String transform(JarFileRef jarFileRef) {
+				return jarFileRef.getFileName();
+			}
+		};
+	}
+	
 	public JarFileRef addJarFileRef(String fileName) {
 		return this.addJarFileRef(this.jarFileRefs.size(), fileName);
 	}
@@ -808,6 +827,15 @@ public abstract class AbstractPersistenceUnit
 		return this.specifiedClassRefs.size() + this.impliedClassRefs.size();
 	}
 
+	protected Iterator<String> classRefNames() {
+		return new TransformationIterator<ClassRef, String>(this.classRefs()) {
+			@Override
+			protected String transform(ClassRef classRef) {
+				return classRef.getClassName();
+			}
+		};
+	}
+	
 	protected Iterable<PersistentType> getNonNullClassRefPersistentTypes() {
 		return new FilteringIterable<PersistentType>(this.getClassRefPersistentTypes(), NotNullFilter.<PersistentType>instance());
 	}
@@ -1640,15 +1668,6 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected Iterator<String> mappingFileRefNames() {
-		return new TransformationIterator<MappingFileRef, String>(this.mappingFileRefs()) {
-			@Override
-			protected String transform(MappingFileRef mappingFileRef) {
-				return mappingFileRef.getFileName();
-			}
-		};
-	}
-
 	protected void validateClassRefs(List<IMessage> messages, IReporter reporter) {
 		this.checkForDuplicateClasses(messages);
 		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
@@ -1657,32 +1676,41 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateClasses(List<IMessage> messages) {
-		HashBag<String> classNames = new HashBag<String>();
-		CollectionTools.addAll(classNames, this.classRefNames());
+		HashBag<String> ormMappedClassNames = new HashBag<String>();
+		CollectionTools.addAll(ormMappedClassNames, this.ormMappedClassNames());
+		for (Iterator<PersistentType> ormMappedClasses = this.getMappingFilePersistentTypes().iterator(); ormMappedClasses.hasNext();){
+			PersistentType ormMappedClass = ormMappedClasses.next();
+			String ormMappedClassName = ormMappedClass.getName();
+		if ((ormMappedClassName != null) && (ormMappedClassNames.count(ormMappedClassName) > 1)) {
+						messages.add(
+							DefaultJpaValidationMessages.buildMessage(
+									IMessage.HIGH_SEVERITY,
+									JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
+									new String[] {ormMappedClassName}, 
+									ormMappedClass,
+									ormMappedClass.getSelectionTextRange()
+							)
+					);
+				}
+			}
+		HashBag<String> javaClassNames = new HashBag<String>();
+		CollectionTools.addAll(javaClassNames, this.classRefNames());
 		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
 			ClassRef classRef = stream.next();
-			String className = classRef.getClassName();
-			if ((className != null) && (classNames.count(className) > 1)) {
-				messages.add(
-					DefaultJpaValidationMessages.buildMessage(
-						IMessage.HIGH_SEVERITY,
-						JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-						new String[] {className},
-						classRef,
-						classRef.getValidationTextRange()
-					)
+			String javaClassName = classRef.getClassName();
+			if ((javaClassName != null) && (!ormMappedClassNames.contains(javaClassName)) 
+					&& (javaClassNames.count(javaClassName) > 1)) {
+					  messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
+								new String[] {javaClassName}, 
+								classRef,
+								classRef.getValidationTextRange()
+						)
 				);
 			}
 		}
-	}
-
-	protected Iterator<String> classRefNames() {
-		return new TransformationIterator<ClassRef, String>(this.classRefs()) {
-			@Override
-			protected String transform(ClassRef classRef) {
-				return classRef.getClassName();
-			}
-		};
 	}
 
 	protected void validateJarFileRefs(List<IMessage> messages, IReporter reporter) {
@@ -1711,16 +1739,6 @@ public abstract class AbstractPersistenceUnit
 		}
 	}
 
-	protected Iterator<String> jarFileNames() {
-		return new TransformationIterator<JarFileRef, String>(this.jarFileRefs()) {
-			@Override
-			protected String transform(JarFileRef jarFileRef) {
-				return jarFileRef.getFileName();
-			}
-		};
-	}
-
-	@SuppressWarnings("unused")
 	protected void validateProperties(List<IMessage> messages, IReporter reporter) {
 		// do nothing by default
 	}
@@ -1728,11 +1746,10 @@ public abstract class AbstractPersistenceUnit
 	public boolean validatesAgainstDatabase() {
 		return this.connectionProfileIsActive();
 	}
-
+	
 	public TextRange getValidationTextRange() {
 		return this.xmlPersistenceUnit.getValidationTextRange();
 	}
-
 
 	// ********** refactoring **********
 
@@ -1881,7 +1898,6 @@ public abstract class AbstractPersistenceUnit
 		);
 	}
 
-
 	// ********** misc **********
 
 	public XmlPersistenceUnit getXmlPersistenceUnit() {
@@ -1909,6 +1925,7 @@ public abstract class AbstractPersistenceUnit
 		return this;
 	}
 
+	// ------------------- all entities -----------------
 	public Iterable<Entity> getEntities() {
 		return new SubIterableWrapper<TypeMapping, Entity>(this.getEntities_());
 	}
@@ -1931,6 +1948,110 @@ public abstract class AbstractPersistenceUnit
 			};
 	}
 
+	protected Iterator<String> ormMappedClassNames() {
+		return new TransformationIterator<PersistentType, String>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected String transform(PersistentType persistentType) {
+				return persistentType.getName();
+			}
+		};
+	}
+
+	// ------------------ orm entities --------------------
+	protected Iterator<String> ormEntityClassNames() {
+		return new TransformationIterator<Entity, String>(this.getOrmEntities()) {
+			@Override
+			protected String transform(Entity ormEntity) {
+				return ormEntity.getPersistentType().getName();
+			}
+		};
+	}
+	
+	public Iterator<String> ormEntityNames() {
+		return new TransformationIterator<Entity, String>(this.getOrmEntities()) {
+			@Override
+			protected String transform(Entity ormEntity) {
+				return ormEntity.getName();
+			}
+		};
+	}
+	
+	public Iterable<Entity> getOrmEntities(){
+		return new SubIterableWrapper<TypeMapping, Entity>(this.getOrmEntities_());
+	}
+	
+	protected Iterable<TypeMapping> getOrmEntities_(){
+		return new FilteringIterable<TypeMapping>(this.getOrmTypeMappings()){
+			@Override
+			protected boolean accept(TypeMapping typeMapping) {
+				return typeMapping instanceof Entity;
+			}
+		};
+	}
+	
+	private Iterable<? extends TypeMapping> getOrmTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
+			@Override
+			protected TypeMapping transform(PersistentType persistentType) {
+				return persistentType.getMapping();
+			}
+		};
+	}
+	
+	//--------------- java entities -----------------
+	protected Iterator<String> javaEntityClassNames(){
+		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
+			@Override
+			protected String transform(Entity javaEntity) {
+				return javaEntity.getPersistentType().getName();
+			}
+		};
+	}
+
+	public Iterator<String> javaEntityNamesExclOverridden() {
+		HashBag<String> ormMappedClassNames = new HashBag<String>();
+		CollectionTools.addAll(ormMappedClassNames, this.ormMappedClassNames());
+		List<String> javaEntityNamesExclOverridden = new ArrayList<String>();
+		for (Iterator<String> javaEntityClassNames = this.javaEntityClassNames(); javaEntityClassNames.hasNext();){
+			String javaEntityClassName = javaEntityClassNames.next();
+			if (!ormMappedClassNames.contains(javaEntityClassName)) {
+				javaEntityNamesExclOverridden.add((this.getEntity(javaEntityClassName)).getName());
+			}
+		}
+		return javaEntityNamesExclOverridden.iterator();
+	}
+
+	public Iterator<String> javaEntityNames(){
+		return new TransformationIterator<Entity, String>(this.getJavaEntities()) {
+			@Override
+			protected String transform(Entity javaEntity) {
+				return javaEntity.getName();
+			}
+		};
+	}
+
+	public Iterable<Entity> getJavaEntities(){
+		return new SubIterableWrapper<TypeMapping, Entity>(this.getJavaEntities_());
+	}
+	
+	protected Iterable<TypeMapping> getJavaEntities_(){
+		return new FilteringIterable<TypeMapping>(this.getJavaTypeMappings()){
+			@Override
+			protected boolean accept(TypeMapping typeMapping) {
+				return typeMapping instanceof Entity;
+			}
+		};
+	}
+	
+	private Iterable<? extends TypeMapping> getJavaTypeMappings() {
+		return new TransformationIterable<PersistentType, TypeMapping>(this.getNonNullClassPersistentTypes()) {
+			@Override
+			protected TypeMapping transform(PersistentType persistentType) {
+				return persistentType.getMapping();
+			}
+		};
+	}	
+	
 	@SuppressWarnings("unchecked")
 	public Iterable<PersistentType> getPersistentTypes() {
 		return new CompositeIterable<PersistentType>(

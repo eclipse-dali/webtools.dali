@@ -148,6 +148,8 @@ public interface XmlTypeMapping extends XmlAccessHolder
 	TextRange getClassTextRange();
 
 	TextRange getAttributesTextRange();
+	
+	TextRange getNameTextRange();
 
 	//TODO not happy with this, or the corresponding one in XmlAttributeMapping
 	String getMappingKey();

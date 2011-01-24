@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.context.persistence;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.IPath;
@@ -729,6 +730,36 @@ public interface PersistenceUnit
 	 */
 	boolean containsOffset(int textOffset);
 
+	/**
+	 * Return all the entities defined in both the implied and specified mapping files
+	 * of a persistence unit
+	 */
+	 Iterable<Entity> getOrmEntities();
+	
+	/**
+	 * Return the entity names of all the entities defined in both the implied and specified mapping files
+	 * of a persistence unit 
+	 */
+	 Iterator<String> ormEntityNames();
+	 
+	/**
+	 * Return all the entities defined with both the implied and specified Java classes
+	 * of a persistence unit 
+	 */
+	 Iterable<Entity> getJavaEntities();
+	
+	/**
+	 * Return the entity names of all the entities defined with both the implied and specified Java classes
+	 * of a persistence unit 
+	 */
+	Iterator<String> javaEntityNames();
+	
+	/**
+	 * Return the entity names of entities only defined with mapped Java classes of a persistence unit.
+	 * The names of Java entities overridden by entities defined in the mapping files are excluded.
+	 */
+	Iterator<String> javaEntityNamesExclOverridden();
+	
 
 	// ********** validation **********
 
@@ -738,7 +769,7 @@ public interface PersistenceUnit
 	 */
 	boolean validatesAgainstDatabase();
 
-
+	
 	// ********** refactoring **********
 
 	/**
@@ -804,4 +835,5 @@ public interface PersistenceUnit
 	 * sure the location does not violate the persistence.xml schema.
 	 */
 	int findInsertLocationForMappingFileRef();
+
 }
