@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -179,7 +179,9 @@ public class Main
 
 		return this.argumentExists("-debug", args);   //$NON-NLS-1$
 	}
-	
+
+	// ********** private methods **********
+
 	private String getArgumentValue(String argName, String[] args) {
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
@@ -225,10 +227,14 @@ public class Main
 class JptSchemaOutputResolver extends SchemaOutputResolver {
 	
 	private String defaultSchemaName;
+
+	// ********** constructor **********
 	
 	protected JptSchemaOutputResolver(String defaultSchemaName) {
 		this.defaultSchemaName = defaultSchemaName;
 	}
+
+	// ********** overrides **********
 
 	 @Override
     public Result createOutput(String namespaceURI, String suggestedFileName) throws IOException {
@@ -245,18 +251,27 @@ class JptSchemaOutputResolver extends SchemaOutputResolver {
         return result;
     }
 
+		// ********** private methods **********
+
 	 private String buildFileNameFrom(String fileName, String suggestedFileName) {
 
 		 fileName = Tools.stripExtension(fileName);
-				 
+
 		 if(Tools.stringIsEmpty(fileName)) {
 			 return suggestedFileName;
 		 }
-		 
 		 String number = Tools.extractFileNumber(suggestedFileName);
-		 number = Tools.appendXsdExtension(number);
-		 
-		return fileName + number;
+
+		 fileName = this.buildFileName(fileName, number);
+		 return Tools.appendXsdExtension(fileName);
+	 }
+
+	 private String buildFileName(String fileName, String number) {
+
+		 if(Tools.stringIsEmpty(number)) {
+			 return fileName;
+		 }
+		 return (number.equals("0")) ? fileName : fileName + number;   //$NON-NLS-1$
 	 }
 
 	 private String modifyFileName(String namespaceURI) throws IOException {
