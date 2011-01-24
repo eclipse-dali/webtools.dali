@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -39,6 +39,7 @@ import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.FileTools;
+import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
@@ -178,7 +179,12 @@ public class SchemaGeneratorWizard extends Wizard implements INewWizard
 			String packageName = javaElement.getParent().getElementName();
 			String elementName = javaElement.getElementName();
 			String className = FileTools.stripExtension(elementName);
-			classNames.add(packageName + '.' + className);
+			if(StringTools.stringIsEmpty(packageName)) {
+				classNames.add(className);
+			}
+			else {
+				classNames.add(packageName + '.' + className);
+			}
 		}
 		
 		return ArrayTools.array(classNames, new String[0]);
