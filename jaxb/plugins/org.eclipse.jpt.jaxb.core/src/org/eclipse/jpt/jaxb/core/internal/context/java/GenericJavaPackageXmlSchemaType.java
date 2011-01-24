@@ -34,11 +34,4 @@ public class GenericJavaPackageXmlSchemaType
 	protected JaxbPackage getJaxbPackage() {
 		return getJaxbPackageInfo().getParent();
 	}
-
-	// ********** namespace **********
-
-	public String getDefaultNamespace() {
-		return getJaxbPackage().getNamespace();
-	}
-
 }

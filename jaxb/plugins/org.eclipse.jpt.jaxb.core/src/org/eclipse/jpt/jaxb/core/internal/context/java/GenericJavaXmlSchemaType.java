@@ -22,20 +22,21 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
+import org.eclipse.xsd.util.XSDUtil;
 
 public abstract class GenericJavaXmlSchemaType
-	extends AbstractJavaContextNode
-	implements XmlSchemaType
-{
-
+		extends AbstractJavaContextNode
+		implements XmlSchemaType {
+	
 	protected final XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation;
-
+	
 	protected String name;
-
+	
 	protected String specifiedNamespace;
-
+	
 	protected String type;
-
+	
+	
 	protected GenericJavaXmlSchemaType(JaxbContextNode parent, XmlSchemaTypeAnnotation xmlSchemaTypeAnnotation) {
 		super(parent);
 		this.xmlSchemaTypeAnnotation = xmlSchemaTypeAnnotation;
@@ -90,26 +91,31 @@ public abstract class GenericJavaXmlSchemaType
 	public String getNamespace() {
 		return getSpecifiedNamespace() == null ? getDefaultNamespace() : getSpecifiedNamespace();
 	}
-
+	
+	public String getDefaultNamespace() {
+		return XSDUtil.SCHEMA_FOR_SCHEMA_URI_2001;
+	}
+	
 	public String getSpecifiedNamespace() {
 		return this.specifiedNamespace;
 	}
-
+	
 	public void setSpecifiedNamespace(String location) {
 		this.xmlSchemaTypeAnnotation.setNamespace(location);
 		this.setNamespace_(location);	
 	}
-
+	
 	protected void setNamespace_(String namespace) {
 		String old = this.specifiedNamespace;
 		this.specifiedNamespace = namespace;
 		this.firePropertyChanged(SPECIFIED_NAMESPACE_PROPERTY, old, namespace);
 	}
-
+	
 	protected String getResourceNamespace() {
 		return this.xmlSchemaTypeAnnotation.getNamespace();
 	}
-
+	
+	
 	// ********** type **********
 
 	public String getType() {

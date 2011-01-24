@@ -44,12 +44,4 @@ public class GenericJavaContainmentMappingXmlSchemaType
 	protected JaxbPackage getJaxbPackage() {
 		return this.getPersistentClass().getJaxbPackage();
 	}
-
-
-	// ********** namespace **********
-
-	public String getDefaultNamespace() {
-		return getJaxbContainmentMapping().getNamespace();
-	}
-
 }
