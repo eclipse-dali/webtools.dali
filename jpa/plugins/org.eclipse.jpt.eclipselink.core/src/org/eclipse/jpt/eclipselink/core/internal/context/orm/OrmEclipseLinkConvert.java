@@ -13,8 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.core.context.orm.OrmConverter;
@@ -31,6 +29,9 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
 import org.eclipse.jpt.utility.internal.Association;
 import org.eclipse.jpt.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -284,6 +285,12 @@ public class OrmEclipseLinkConvert
 			}
 		}
 		
+		for (Iterator<String> names = this.reservedNames(); names.hasNext();){
+			if (converter.equals(names.next())) {
+				return;
+			}
+		}
+
 		messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -295,6 +302,10 @@ public class OrmEclipseLinkConvert
 		);	
 	}
 
+	public Iterator<String> reservedNames() {
+		return new ArrayIterator<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
+	}
+	
 	public TextRange getValidationTextRange() {
 		return this.getXmlConvertibleMapping().getConvertTextRange();
 	}

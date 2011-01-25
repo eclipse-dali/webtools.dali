@@ -32,6 +32,7 @@ import org.eclipse.jpt.utility.internal.Association;
 import org.eclipse.jpt.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -306,6 +307,12 @@ public class JavaEclipseLinkConvert
 			}
 		}
 		
+		for (Iterator<String> names = this.reservedNames(); names.hasNext();){
+			if (converter.equals(names.next())) {
+				return;
+			}
+		}
+		
 		messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
@@ -315,6 +322,10 @@ public class JavaEclipseLinkConvert
 						this.getValidationTextRange(astRoot)
 				)
 		);	
+	}
+	
+	public Iterator<String> reservedNames() {
+		return new ArrayIterator<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
 	public TextRange getValidationTextRange(CompilationUnit astRoot) {
