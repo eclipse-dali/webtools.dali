@@ -30,5 +30,5 @@ public interface OrmJoinColumnRelationship
 {
 	XmlJoinColumnContainer getXmlContainer();
 	
-	OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
 }

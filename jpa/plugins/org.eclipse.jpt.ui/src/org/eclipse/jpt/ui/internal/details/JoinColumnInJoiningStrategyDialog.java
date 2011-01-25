@@ -10,9 +10,9 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Shell;
  * on a relational mapping.
  *
  * @see JoinColumn
- * @see JoinColumnJoiningStrategy
+ * @see JoinColumnRelationshipStrategy
  * @see JoinColumnInJoiningStrategyStateObject
  * @see JoinColumnDialogPane
  *
@@ -41,7 +41,7 @@ public class JoinColumnInJoiningStrategyDialog
 	 */
 	JoinColumnInJoiningStrategyDialog(
 		Shell parent,
-	    ReadOnlyJoinColumnJoiningStrategy joinColumnOwner,
+	    ReadOnlyJoinColumnRelationshipStrategy joinColumnOwner,
 	    ReadOnlyJoinColumn joinColumn) {
 
 		super(parent, joinColumnOwner, joinColumn);
@@ -56,7 +56,7 @@ public class JoinColumnInJoiningStrategyDialog
 	}
 
 	@Override
-	protected JoinColumnJoiningStrategy getOwner() {
-		return (JoinColumnJoiningStrategy) super.getOwner();
+	protected JoinColumnRelationshipStrategy getOwner() {
+		return (JoinColumnRelationshipStrategy) super.getOwner();
 	}
 }

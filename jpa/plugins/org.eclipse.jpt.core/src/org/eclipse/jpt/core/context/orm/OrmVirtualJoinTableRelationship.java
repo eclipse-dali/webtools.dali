@@ -24,5 +24,5 @@ public interface OrmVirtualJoinTableRelationship
 	extends VirtualJoinTableRelationship,
 			OrmVirtualRelationship
 {
-	OrmVirtualJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	OrmVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 }

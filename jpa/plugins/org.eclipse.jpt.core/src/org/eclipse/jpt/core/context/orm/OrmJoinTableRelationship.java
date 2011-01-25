@@ -29,5 +29,5 @@ public interface OrmJoinTableRelationship
 {
 	XmlJoinTableContainer getXmlContainer();
 	
-	OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 }

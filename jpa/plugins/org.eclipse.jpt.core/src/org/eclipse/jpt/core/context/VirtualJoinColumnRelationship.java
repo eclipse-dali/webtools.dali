@@ -22,5 +22,5 @@ public interface VirtualJoinColumnRelationship
 	extends ReadOnlyJoinColumnRelationship,
 			VirtualRelationship
 {
-	VirtualJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	VirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
 }

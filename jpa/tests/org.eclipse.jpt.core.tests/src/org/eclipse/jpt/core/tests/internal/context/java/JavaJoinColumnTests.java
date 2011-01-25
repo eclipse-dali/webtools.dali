@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.java;
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
@@ -94,7 +94,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
@@ -125,7 +125,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
@@ -195,7 +195,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -227,7 +227,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -257,7 +257,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -289,7 +289,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -320,7 +320,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -352,7 +352,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -378,7 +378,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -410,7 +410,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -436,7 +436,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -468,7 +468,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -494,7 +494,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -526,7 +526,7 @@ public class JavaJoinColumnTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaOneToOneMapping oneToOneMapping = (JavaOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinColumnJoiningStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy joinColumns = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();

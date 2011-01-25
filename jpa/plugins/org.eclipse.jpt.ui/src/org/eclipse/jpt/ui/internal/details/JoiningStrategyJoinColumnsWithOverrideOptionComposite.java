@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnRelationship;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.Composite;
  * -------------------------------------------------------------------------</pre>
  *
  * @see JoinColumnRelationship
- * @see JoinColumnJoiningStrategy
+ * @see JoinColumnRelationshipStrategy
  * @see JoinColumnJoiningStrategyPane
  * @see JoinColumnInJoiningStrategyDialog
  *
@@ -45,14 +45,14 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.0
  */
 public class JoiningStrategyJoinColumnsWithOverrideOptionComposite 
-	extends Pane<ReadOnlyJoinColumnJoiningStrategy>
+	extends Pane<ReadOnlyJoinColumnRelationshipStrategy>
 {
 	
 	private JoiningStrategyJoinColumnsComposite joiningStrategyComposite;
 	
 	public JoiningStrategyJoinColumnsWithOverrideOptionComposite(
 			Pane<?> parentPane,
-			PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> subjectHolder,
+			PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
@@ -80,8 +80,8 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 	}
 	
 	ListValueModel<ReadOnlyJoinColumn> buildSpecifiedJoinColumnsListHolder() {
-		return new ListAspectAdapter<ReadOnlyJoinColumnJoiningStrategy, ReadOnlyJoinColumn>(
-				getSubjectHolder(), ReadOnlyJoinColumnJoiningStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
+		return new ListAspectAdapter<ReadOnlyJoinColumnRelationshipStrategy, ReadOnlyJoinColumn>(
+				getSubjectHolder(), ReadOnlyJoinColumnRelationshipStrategy.SPECIFIED_JOIN_COLUMNS_LIST) {
 			@Override
 			protected ListIterator<ReadOnlyJoinColumn> listIterator_() {
 				return new SuperListIteratorWrapper<ReadOnlyJoinColumn>(this.subject.specifiedJoinColumns());
@@ -119,7 +119,7 @@ public class JoiningStrategyJoinColumnsWithOverrideOptionComposite
 			setPopulating(true);
 			
 			try {
-				JoinColumnJoiningStrategy subject = (JoinColumnJoiningStrategy) getSubject();
+				JoinColumnRelationshipStrategy subject = (JoinColumnRelationshipStrategy) getSubject();
 	
 				// Add a join column by creating a specified one using the default
 				// one if it exists

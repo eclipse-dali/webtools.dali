@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.jpa2.context.java;
 
 import org.eclipse.jpt.core.context.java.JavaVirtualOverrideRelationship;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableRelationship;
-import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.jpa2.context.VirtualOverrideRelationship2_0;
 
 /**
@@ -28,5 +28,5 @@ public interface JavaVirtualOverrideRelationship2_0
 			JavaVirtualOverrideRelationship,
 			JavaVirtualJoinTableRelationship
 {
-	JavaVirtualJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	JavaVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 }

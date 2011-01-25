@@ -30,7 +30,7 @@ import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyRelationship;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -364,7 +364,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByJoiningStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
+		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());
@@ -385,7 +385,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByJoiningStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
+		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());

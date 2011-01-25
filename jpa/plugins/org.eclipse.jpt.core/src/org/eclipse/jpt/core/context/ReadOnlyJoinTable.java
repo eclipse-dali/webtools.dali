@@ -23,7 +23,7 @@ import java.util.ListIterator;
 public interface ReadOnlyJoinTable
 	extends ReadOnlyReferenceTable
 {
-	ReadOnlyJoinTableJoiningStrategy getParent();
+	ReadOnlyJoinTableRelationshipStrategy getParent();
 
 	RelationshipMapping getRelationshipMapping();
 

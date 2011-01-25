@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -30,7 +30,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link MappedByRelationship}
- * @see {@link MappedByJoiningStrategy}
+ * @see {@link MappedByRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  * @see {@link OneToManyJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
  * @since 2.1
  */
 public class MappedByJoiningStrategyPane 
-	extends AbstractJoiningStrategyPane<MappedByRelationship, MappedByJoiningStrategy>
+	extends AbstractJoiningStrategyPane<MappedByRelationship, MappedByRelationshipStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByJoiningStrategyPane</code>.
@@ -63,11 +63,11 @@ public class MappedByJoiningStrategyPane
 		return buildUsesMappedByJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<MappedByJoiningStrategy> buildMappedByJoiningStrategyHolder() {
-		return new PropertyAspectAdapter<MappedByRelationship, MappedByJoiningStrategy>(
+	protected PropertyValueModel<MappedByRelationshipStrategy> buildMappedByJoiningStrategyHolder() {
+		return new PropertyAspectAdapter<MappedByRelationship, MappedByRelationshipStrategy>(
 				getSubjectHolder()) {
 			@Override
-			protected MappedByJoiningStrategy buildValue_() {
+			protected MappedByRelationshipStrategy buildValue_() {
 				return this.subject.getMappedByJoiningStrategy();
 			}
 		};

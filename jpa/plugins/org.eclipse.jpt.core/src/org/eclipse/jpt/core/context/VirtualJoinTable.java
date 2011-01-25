@@ -23,7 +23,7 @@ import java.util.ListIterator;
 public interface VirtualJoinTable
 	extends VirtualReferenceTable, ReadOnlyJoinTable
 {
-	VirtualJoinTableJoiningStrategy getParent();
+	VirtualJoinTableRelationshipStrategy getParent();
 
 	ListIterator<? extends VirtualJoinColumn> inverseJoinColumns();
 	ListIterator<? extends VirtualJoinColumn> specifiedInverseJoinColumns();

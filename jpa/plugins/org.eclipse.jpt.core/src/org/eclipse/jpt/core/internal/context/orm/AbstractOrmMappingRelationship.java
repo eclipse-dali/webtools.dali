@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipStrategy;
 import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
@@ -31,7 +31,7 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 	extends AbstractOrmXmlContextNode
 	implements OrmMappingRelationship
 {
-	protected OrmJoiningStrategy strategy;
+	protected OrmRelationshipStrategy strategy;
 
 
 	protected AbstractOrmMappingRelationship(M parent) {
@@ -50,17 +50,17 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** strategy **********
 
-	public OrmJoiningStrategy getPredominantJoiningStrategy() {
+	public OrmRelationshipStrategy getPredominantJoiningStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmJoiningStrategy strategy) {
-		JoiningStrategy old = this.strategy;
+	protected void setStrategy(OrmRelationshipStrategy strategy) {
+		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract OrmJoiningStrategy buildStrategy();
+	protected abstract OrmRelationshipStrategy buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

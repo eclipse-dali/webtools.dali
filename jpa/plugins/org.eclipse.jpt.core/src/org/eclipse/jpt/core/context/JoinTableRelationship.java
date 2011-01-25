@@ -25,10 +25,10 @@ package org.eclipse.jpt.core.context;
 public interface JoinTableRelationship
 	extends ReadOnlyJoinTableRelationship, Relationship
 {
-	JoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	JoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 	
 	/**
-	 * Set the join table joining strategy as the predominant joining strategy
+	 * Set the join table strategy as the strategy
 	 */
 	void setJoinTableJoiningStrategy();
 }

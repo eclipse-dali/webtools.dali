@@ -15,12 +15,12 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVirtualAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmVirtualOverrideJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmVirtualOverrideJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmVirtualOverrideRelationship2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 
@@ -28,12 +28,12 @@ public class GenericOrmVirtualOverrideRelationship
 	extends AbstractOrmXmlContextNode
 	implements OrmVirtualOverrideRelationship2_0
 {
-	protected OrmVirtualJoiningStrategy strategy;
+	protected OrmVirtualRelationshipStrategy strategy;
 
-	protected final OrmVirtualJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final OrmVirtualJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmVirtualJoinTableJoiningStrategy joinTableStrategy;
+	protected final OrmVirtualJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericOrmVirtualOverrideRelationship(OrmVirtualAssociationOverride parent) {
@@ -56,17 +56,17 @@ public class GenericOrmVirtualOverrideRelationship
 
 	// ********** strategy **********
 
-	public OrmVirtualJoiningStrategy getPredominantJoiningStrategy() {
+	public OrmVirtualRelationshipStrategy getPredominantJoiningStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmVirtualJoiningStrategy strategy) {
-		OrmVirtualJoiningStrategy old = this.strategy;
+	protected void setStrategy(OrmVirtualRelationshipStrategy strategy) {
+		OrmVirtualRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected OrmVirtualJoiningStrategy buildStrategy() {
+	protected OrmVirtualRelationshipStrategy buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinColumnStrategy.hasSpecifiedJoinColumns()) {
 				return this.joinColumnStrategy;
@@ -79,7 +79,7 @@ public class GenericOrmVirtualOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public OrmVirtualJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public OrmVirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -91,14 +91,14 @@ public class GenericOrmVirtualOverrideRelationship
 		return false;
 	}
 
-	protected OrmVirtualJoinColumnJoiningStrategy buildJoinColumnStrategy() {
-		return new GenericOrmVirtualOverrideJoinColumnJoiningStrategy(this);
+	protected OrmVirtualJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericOrmVirtualOverrideJoinColumnRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public OrmVirtualJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public OrmVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -110,8 +110,8 @@ public class GenericOrmVirtualOverrideRelationship
 		return this.isVirtual();
 	}
 
-	protected OrmVirtualJoinTableJoiningStrategy buildJoinTableStrategy() {
-		return new GenericOrmVirtualOverrideJoinTableJoiningStrategy2_0(this);
+	protected OrmVirtualJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return new GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0(this);
 	}
 
 

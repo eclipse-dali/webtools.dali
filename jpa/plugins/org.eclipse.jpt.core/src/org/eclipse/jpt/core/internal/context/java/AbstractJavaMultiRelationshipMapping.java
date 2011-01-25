@@ -20,14 +20,14 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.FetchType;
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipStrategy;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.OverrideContainer;
 import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaColumn;
-import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.java.JavaOrderable;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
@@ -37,7 +37,7 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
-import org.eclipse.jpt.core.internal.jpa1.context.JoiningStrategyTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
@@ -159,12 +159,12 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		implements Orderable2_0.Owner
 	{
 		public String getTableName() {
-			return this.getJoinStrategy().getTableName();
+			return this.getRelationshipStrategy().getTableName();
 		}
 		public Table resolveDbTable(String tableName) {
-			return this.getJoinStrategy().resolveDbTable(tableName);
+			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
-		protected JavaJoiningStrategy getJoinStrategy() {
+		protected JavaRelationshipStrategy getRelationshipStrategy() {
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
 		}
 	}
@@ -674,11 +674,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 
 		public String getDefaultTableName() {
-			return this.getJoinStrategy().getTableName();
+			return this.getRelationshipStrategy().getTableName();
 		}
 
 		public Table resolveDbTable(String tableName) {
-			return this.getJoinStrategy().resolveDbTable(tableName);
+			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
 
 		public Iterator<String> candidateTableNames() {
@@ -689,7 +689,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return AbstractJavaMultiRelationshipMapping.this.getValidationTextRange(astRoot);
 		}
 
-		protected JoiningStrategy getJoinStrategy() {
+		protected RelationshipStrategy getRelationshipStrategy() {
 			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
 		}
 	}
@@ -714,11 +714,11 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return this.getJoinStrategy().tableNameIsInvalid(tableName);
+			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyColumnValidator((BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
@@ -774,7 +774,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 		
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyAttributeOverrideColumnValidator((AttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 }

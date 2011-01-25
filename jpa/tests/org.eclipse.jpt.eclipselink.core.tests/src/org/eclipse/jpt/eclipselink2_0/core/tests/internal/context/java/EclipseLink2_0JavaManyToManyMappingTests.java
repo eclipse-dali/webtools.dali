@@ -16,7 +16,7 @@ import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -876,7 +876,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		PersistentType persistentType = getPersistenceUnit().getPersistentType("test.Address");
 		ManyToManyMapping owningManyToManyMapping = (ManyToManyMapping) persistentType.getAttributeNamed("employees").getMapping();
-		((JoinTableJoiningStrategy) owningManyToManyMapping.getRelationship().getPredominantJoiningStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		((JoinTableRelationshipStrategy) owningManyToManyMapping.getRelationship().getPredominantJoiningStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);

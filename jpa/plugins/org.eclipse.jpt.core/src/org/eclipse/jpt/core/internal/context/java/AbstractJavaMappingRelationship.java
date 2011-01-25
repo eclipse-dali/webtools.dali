@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.core.context.Entity;
-import org.eclipse.jpt.core.context.JoiningStrategy;
+import org.eclipse.jpt.core.context.RelationshipStrategy;
 import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaMappingRelationship;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -31,7 +31,7 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 	extends AbstractJavaJpaContextNode
 	implements JavaMappingRelationship
 {
-	protected JavaJoiningStrategy strategy;
+	protected JavaRelationshipStrategy strategy;
 
 
 	public AbstractJavaMappingRelationship(M parent) {
@@ -50,17 +50,17 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 
 	// ********** strategy **********
 
-	public JavaJoiningStrategy getPredominantJoiningStrategy() {
+	public JavaRelationshipStrategy getPredominantJoiningStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(JavaJoiningStrategy strategy) {
-		JoiningStrategy old = this.strategy;
+	protected void setStrategy(JavaRelationshipStrategy strategy) {
+		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected abstract JavaJoiningStrategy buildStrategy();
+	protected abstract JavaRelationshipStrategy buildStrategy();
 
 	/**
 	 * This is called by subclasses when the various supported strategies are

@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -59,7 +59,7 @@ public class GenericOrmJoinTable
 	protected OrmJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmJoinTable(OrmJoinTableJoiningStrategy parent, Owner owner) {
+	public GenericOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.initializeSpecifiedInverseJoinColumns();
@@ -290,11 +290,11 @@ public class GenericOrmJoinTable
 	// ********** misc **********
 
 	@Override
-	public OrmJoinTableJoiningStrategy getParent() {
-		return (OrmJoinTableJoiningStrategy) super.getParent();
+	public OrmJoinTableRelationshipStrategy getParent() {
+		return (OrmJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected OrmJoinTableJoiningStrategy getJoinStrategy() {
+	protected OrmJoinTableRelationshipStrategy getJoinStrategy() {
 		return this.getParent();
 	}
 
@@ -411,7 +411,7 @@ public class GenericOrmJoinTable
 			return this.getPersistentAttribute().getName();
 		}
 
-		protected OrmJoinTableJoiningStrategy getJoinStrategy() {
+		protected OrmJoinTableRelationshipStrategy getJoinStrategy() {
 			return GenericOrmJoinTable.this.getJoinStrategy();
 		}
 	}

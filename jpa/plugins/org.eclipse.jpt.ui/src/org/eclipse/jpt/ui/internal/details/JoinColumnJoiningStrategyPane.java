@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see JoinColumnRelationship
- * @see ReadOnlyJoinColumnJoiningStrategy
+ * @see ReadOnlyJoinColumnRelationshipStrategy
  * @see OneToOneJoiningStrategyPane
  * @see ManyToOneJoiningStrategyPane
  *
@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinColumnJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnJoiningStrategy>
+		<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnRelationshipStrategy>
 {
 	private final boolean includeOverrideCheckBox;
 	
@@ -105,7 +105,7 @@ public class JoinColumnJoiningStrategyPane
 
 	@Override
 	protected Composite buildStrategyDetailsComposite(Composite parent) {
-		PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> joiningStrategyHolder = this.buildJoinColumnJoiningStrategyHolder();
+		PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> joiningStrategyHolder = this.buildJoinColumnJoiningStrategyHolder();
 
 		return this.includeOverrideCheckBox ?
 				new JoiningStrategyJoinColumnsWithOverrideOptionComposite(this, joiningStrategyHolder, parent).getControl() :
@@ -117,12 +117,12 @@ public class JoinColumnJoiningStrategyPane
 		return buildUsesJoinColumnJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<ReadOnlyJoinColumnJoiningStrategy> buildJoinColumnJoiningStrategyHolder() {
+	protected PropertyValueModel<ReadOnlyJoinColumnRelationshipStrategy> buildJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnJoiningStrategy>(
+				<ReadOnlyJoinColumnRelationship, ReadOnlyJoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinColumnJoiningStrategy buildValue_() {
+			protected ReadOnlyJoinColumnRelationshipStrategy buildValue_() {
 				return this.subject.getJoinColumnJoiningStrategy();
 			}
 		};

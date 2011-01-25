@@ -24,5 +24,5 @@ public interface JavaVirtualJoinColumnRelationship
 	extends VirtualJoinColumnRelationship,
 			JavaVirtualRelationship
 {
-	JavaVirtualJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	JavaVirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
 }

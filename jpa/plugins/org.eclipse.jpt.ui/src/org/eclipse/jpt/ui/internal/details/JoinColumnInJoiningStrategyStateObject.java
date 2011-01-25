@@ -11,9 +11,9 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.core.context.ReadOnlyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
@@ -24,7 +24,7 @@ import org.eclipse.jpt.utility.internal.CollectionTools;
  * relationship mapping.
  *
  * @see JoinColumn
- * @see JoinColumnJoiningStrategy
+ * @see JoinColumnRelationshipStrategy
  * @see JoinColumnInJoiningStrategyDialog
  *
  * @version 2.3
@@ -41,15 +41,15 @@ public class JoinColumnInJoiningStrategyStateObject
 	 * used to create a new one
 	 */
 	public JoinColumnInJoiningStrategyStateObject(
-			ReadOnlyJoinColumnJoiningStrategy joiningStrategy,
+			ReadOnlyJoinColumnRelationshipStrategy joiningStrategy,
 		    ReadOnlyJoinColumn joinColumn) {
 		super(joiningStrategy, joinColumn);
 	}
 	
 	
 	@Override
-	public JoinColumnJoiningStrategy getOwner() {
-		return (JoinColumnJoiningStrategy) super.getOwner();
+	public JoinColumnRelationshipStrategy getOwner() {
+		return (JoinColumnRelationshipStrategy) super.getOwner();
 	}
 
 	@Override

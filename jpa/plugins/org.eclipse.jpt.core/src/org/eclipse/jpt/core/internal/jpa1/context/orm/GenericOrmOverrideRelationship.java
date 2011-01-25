@@ -23,16 +23,16 @@ import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.internal.context.orm.GenericOrmOverrideJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.context.orm.NullOrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableJoiningStrategy2_0;
+import org.eclipse.jpt.core.internal.context.orm.GenericOrmOverrideJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.internal.context.orm.NullOrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOverrideRelationship2_0;
 import org.eclipse.jpt.core.resource.orm.XmlAssociationOverride;
 import org.eclipse.jpt.core.utility.TextRange;
@@ -43,12 +43,12 @@ public class GenericOrmOverrideRelationship
 	extends AbstractOrmXmlContextNode
 	implements OrmOverrideRelationship2_0
 {
-	protected OrmJoiningStrategy strategy;
+	protected OrmRelationshipStrategy strategy;
 
-	protected final OrmJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmJoinTableJoiningStrategy joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericOrmOverrideRelationship(OrmAssociationOverride parent) {
@@ -78,17 +78,17 @@ public class GenericOrmOverrideRelationship
 
 	// ********** strategy **********
 
-	public OrmJoiningStrategy getPredominantJoiningStrategy() {
+	public OrmRelationshipStrategy getPredominantJoiningStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(OrmJoiningStrategy strategy) {
-		OrmJoiningStrategy old = this.strategy;
+	protected void setStrategy(OrmRelationshipStrategy strategy) {
+		OrmRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected OrmJoiningStrategy buildStrategy() {
+	protected OrmRelationshipStrategy buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinColumnStrategy.hasSpecifiedJoinColumns()) {
 				return this.joinColumnStrategy;
@@ -101,7 +101,7 @@ public class GenericOrmOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -118,14 +118,14 @@ public class GenericOrmOverrideRelationship
 		return false;
 	}
 
-	protected OrmJoinColumnJoiningStrategy buildJoinColumnStrategy() {
-		return new GenericOrmOverrideJoinColumnJoiningStrategy(this);
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericOrmOverrideJoinColumnRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -142,10 +142,10 @@ public class GenericOrmOverrideRelationship
 		return false;
 	}
 
-	protected OrmJoinTableJoiningStrategy buildJoinTableStrategy() {
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
-				new GenericOrmOverrideJoinTableJoiningStrategy2_0(this) :
-				new NullOrmJoinTableJoiningStrategy(this);
+				new GenericOrmOverrideJoinTableRelationshipStrategy2_0(this) :
+				new NullOrmJoinTableRelationshipStrategy(this);
 	}
 
 

@@ -23,12 +23,12 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
-import org.eclipse.jpt.core.internal.context.java.GenericJavaOverrideJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableJoiningStrategy2_0;
+import org.eclipse.jpt.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.Filter;
@@ -39,12 +39,12 @@ public class GenericJavaOverrideRelationship
 	extends AbstractJavaJpaContextNode
 	implements JavaOverrideRelationship2_0
 {
-	protected JavaJoiningStrategy strategy;
+	protected JavaRelationshipStrategy strategy;
 
-	protected final JavaJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final JavaJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final JavaJoinTableJoiningStrategy joinTableStrategy;
+	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericJavaOverrideRelationship(JavaAssociationOverride parent) {
@@ -74,17 +74,17 @@ public class GenericJavaOverrideRelationship
 
 	// ********** strategy **********
 
-	public JavaJoiningStrategy getPredominantJoiningStrategy() {
+	public JavaRelationshipStrategy getPredominantJoiningStrategy() {
 		return this.strategy;
 	}
 
-	protected void setStrategy(JavaJoiningStrategy strategy) {
-		JavaJoiningStrategy old = this.strategy;
+	protected void setStrategy(JavaRelationshipStrategy strategy) {
+		JavaRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
 		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
 	}
 
-	protected JavaJoiningStrategy buildStrategy() {
+	protected JavaRelationshipStrategy buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinColumnStrategy.hasSpecifiedJoinColumns()) {
 				return this.joinColumnStrategy;
@@ -97,7 +97,7 @@ public class GenericJavaOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public JavaJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -114,14 +114,14 @@ public class GenericJavaOverrideRelationship
 		return false;
 	}
 
-	protected JavaJoinColumnJoiningStrategy buildJoinColumnStrategy() {
-		return new GenericJavaOverrideJoinColumnJoiningStrategy(this);
+	protected JavaJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericJavaOverrideJoinColumnRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public JavaJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -138,10 +138,10 @@ public class GenericJavaOverrideRelationship
 		return this.isVirtual() && this.usesJoinTableJoiningStrategy();
 	}
 
-	protected JavaJoinTableJoiningStrategy buildJoinTableStrategy() {
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
-				new GenericJavaOverrideJoinTableJoiningStrategy2_0(this) :
-				new NullJavaJoinTableJoiningStrategy(this);
+				new GenericJavaOverrideJoinTableRelationshipStrategy2_0(this) :
+				new NullJavaJoinTableRelationshipStrategy(this);
 	}
 
 

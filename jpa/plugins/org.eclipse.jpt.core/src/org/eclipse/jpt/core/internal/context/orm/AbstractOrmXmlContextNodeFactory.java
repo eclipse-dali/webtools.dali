@@ -39,7 +39,7 @@ import org.eclipse.jpt.core.context.orm.OrmGeneratorContainer;
 import org.eclipse.jpt.core.context.orm.OrmIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.context.orm.OrmMappedSuperclass;
@@ -70,7 +70,7 @@ import org.eclipse.jpt.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmVirtualColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmVirtualUniqueConstraint;
@@ -220,11 +220,11 @@ public abstract class AbstractOrmXmlContextNodeFactory
 		return new GenericOrmVirtualPrimaryKeyJoinColumn(parent, owner, javaPrimaryKeyJoinColumn);
 	}
 	
-	public OrmJoinTable buildOrmJoinTable(OrmJoinTableJoiningStrategy parent, Table.Owner owner) {
+	public OrmJoinTable buildOrmJoinTable(OrmJoinTableRelationshipStrategy parent, Table.Owner owner) {
 		return new GenericOrmJoinTable(parent, owner);
 	}
 	
-	public OrmVirtualJoinTable buildOrmVirtualJoinTable(OrmVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable) {
+	public OrmVirtualJoinTable buildOrmVirtualJoinTable(OrmVirtualJoinTableRelationshipStrategy parent, JoinTable overriddenTable) {
 		return new GenericOrmVirtualJoinTable(parent, overriddenTable);
 	}
 	

@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.core.context.MappedByRelationship;
-import org.eclipse.jpt.core.context.ReadOnlyJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
@@ -38,14 +38,14 @@ import org.eclipse.ui.part.PageBook;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see MappedByRelationship
- * @see MappedByJoiningStrategy
+ * @see MappedByRelationshipStrategy
  * @see OneToOneJoiningStrategyPane
  *
  * @version 2.3
  * @since 2.1
  */
 public abstract class AbstractJoiningStrategyPane
-		<R extends ReadOnlyRelationship, S extends ReadOnlyJoiningStrategy> 
+		<R extends ReadOnlyRelationship, S extends ReadOnlyRelationshipStrategy> 
 	extends Pane<R>
 {
 	protected Composite strategyDetailsComposite;

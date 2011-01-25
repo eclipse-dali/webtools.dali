@@ -25,10 +25,10 @@ public interface PrimaryKeyJoinColumnRelationship
 	extends Relationship
 {
 	/**
-	 * Return the aggregate (never null) object used to configure the primary
-	 * key join column joining strategy
+	 * Return the aggregate (never <code>null</code>) object used to configure
+	 * the primary key join column strategy
 	 */
-	PrimaryKeyJoinColumnJoiningStrategy getPrimaryKeyJoinColumnJoiningStrategy();
+	PrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnJoiningStrategy();
 	
 	/**
 	 * Return whether the primary key join column joining strategy is currently 

@@ -24,5 +24,5 @@ public interface JavaVirtualJoinTableRelationship
 	extends VirtualJoinTableRelationship,
 			JavaVirtualRelationship
 {
-	JavaVirtualJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	JavaVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 }

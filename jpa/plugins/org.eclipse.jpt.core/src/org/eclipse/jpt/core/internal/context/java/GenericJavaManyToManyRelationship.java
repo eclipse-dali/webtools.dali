@@ -18,12 +18,12 @@ import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyRelationship;
-import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaMappedByRelationshipStrategy;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -33,9 +33,9 @@ public class GenericJavaManyToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaManyToManyMapping>
 	implements JavaManyToManyRelationship
 {
-	protected final JavaMappedByJoiningStrategy mappedByStrategy;
+	protected final JavaMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaJoinTableJoiningStrategy joinTableStrategy;
+	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericJavaManyToManyRelationship(JavaManyToManyMapping parent) {
@@ -67,7 +67,7 @@ public class GenericJavaManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaJoiningStrategy buildStrategy() {
+	protected JavaRelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -77,7 +77,7 @@ public class GenericJavaManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public JavaMappedByJoiningStrategy getMappedByJoiningStrategy() {
+	public JavaMappedByRelationshipStrategy getMappedByJoiningStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -95,14 +95,14 @@ public class GenericJavaManyToManyRelationship
 		return mappedByMapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected JavaMappedByJoiningStrategy buildMappedByStrategy() {
-		return new GenericJavaMappedByJoiningStrategy(this);
+	protected JavaMappedByRelationshipStrategy buildMappedByStrategy() {
+		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public JavaJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -120,8 +120,8 @@ public class GenericJavaManyToManyRelationship
 		return this.getMappedByJoiningStrategy().getMappedByAttribute() == null;
 	}
 
-	protected JavaJoinTableJoiningStrategy buildJoinTableStrategy() {
-		return new GenericJavaMappingJoinTableJoiningStrategy(this);
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 
 

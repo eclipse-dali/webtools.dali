@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnRelationship;
-import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.PrimaryKeyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link PrimaryKeyJoinColumnRelationship}
- * @see {@link PrimaryKeyJoinColumnJoiningStrategy}
+ * @see {@link PrimaryKeyJoinColumnRelationshipStrategy}
  * @see {@link OneToOneJoiningStrategyPane}
  *
  * @version 2.3
@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class PrimaryKeyJoinColumnJoiningStrategyPane 
 	extends AbstractJoiningStrategyPane
-		<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnJoiningStrategy>
+		<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnRelationshipStrategy>
 {
 	public PrimaryKeyJoinColumnJoiningStrategyPane(
 			Pane<? extends PrimaryKeyJoinColumnRelationship> parentPane, 
@@ -49,12 +49,12 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 		return buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<PrimaryKeyJoinColumnJoiningStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
+	protected PropertyValueModel<PrimaryKeyJoinColumnRelationshipStrategy> buildPrimaryKeyJoinColumnJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnJoiningStrategy>(
+				<PrimaryKeyJoinColumnRelationship, PrimaryKeyJoinColumnRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected PrimaryKeyJoinColumnJoiningStrategy buildValue_() {
+			protected PrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
 				return this.subject.getPrimaryKeyJoinColumnJoiningStrategy();
 			}
 		};

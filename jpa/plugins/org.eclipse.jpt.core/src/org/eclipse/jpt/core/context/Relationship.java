@@ -25,7 +25,7 @@ package org.eclipse.jpt.core.context;
 public interface Relationship
 	extends ReadOnlyRelationship
 {
-	JoiningStrategy getPredominantJoiningStrategy();
+	RelationshipStrategy getPredominantJoiningStrategy();
 
 
 	// ********** conversions **********

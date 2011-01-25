@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaSecondaryTable;
 import org.eclipse.jpt.core.context.orm.OrmAssociationOverride;
@@ -51,7 +51,7 @@ import org.eclipse.jpt.core.context.orm.OrmVirtualAssociationOverride;
 import org.eclipse.jpt.core.context.orm.OrmVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnRelationship;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
@@ -2089,7 +2089,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		ListIterator<OrmVirtualAssociationOverride> virtualOverrides = overrideContainer.virtualOverrides();
 		OrmVirtualAssociationOverride virtualOverride = virtualOverrides.next();
-		OrmVirtualJoinColumnJoiningStrategy joiningStrategy = ((OrmVirtualJoinColumnRelationship) virtualOverride.getRelationship()).getJoinColumnJoiningStrategy();
+		OrmVirtualJoinColumnRelationshipStrategy joiningStrategy = ((OrmVirtualJoinColumnRelationship) virtualOverride.getRelationship()).getJoinColumnJoiningStrategy();
 		
 		assertEquals("oneToOne", virtualOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
@@ -2128,7 +2128,7 @@ public class OrmEntityTests extends ContextModelTestCase
 		
 
 		JavaAssociationOverride javaAssociationOverride = ormEntity.getJavaTypeMapping().getAssociationOverrideContainer().specifiedOverrides().next();
-		JavaJoinColumnJoiningStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
+		JavaJoinColumnRelationshipStrategy javaJoiningStrategy = javaAssociationOverride.getRelationship().getJoinColumnJoiningStrategy();
 		JavaJoinColumn javaJoinColumn = javaJoiningStrategy.joinColumns().next();
 		javaJoinColumn.setSpecifiedName("FOO");
 		javaJoinColumn.setSpecifiedReferencedColumnName("REFERENCE");

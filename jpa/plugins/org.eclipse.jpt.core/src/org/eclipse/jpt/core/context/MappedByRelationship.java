@@ -25,10 +25,10 @@ public interface MappedByRelationship
 	extends Relationship
 {
 	/**
-	 * Return the aggregate (never null) object used to configure the mapped by
-	 * joining strategy
+	 * Return the aggregate (never <code>null</code>) object used to configure
+	 * the "mapped by" strategy
 	 */
-	MappedByJoiningStrategy getMappedByJoiningStrategy();
+	MappedByRelationshipStrategy getMappedByJoiningStrategy();
 	
 	/**
 	 * Return whether the mapped by joining strategy is currently the predominant

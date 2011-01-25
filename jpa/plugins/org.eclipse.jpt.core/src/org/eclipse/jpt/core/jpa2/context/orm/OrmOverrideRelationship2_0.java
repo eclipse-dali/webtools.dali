@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.jpa2.context.orm;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationship;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
@@ -37,7 +37,7 @@ public interface OrmOverrideRelationship2_0
 			OrmOverrideRelationship,
 			OrmJoinTableRelationship
 {
-	OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 
 	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 

@@ -14,9 +14,9 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmManyToOneRelationship2_0;
 import org.eclipse.jpt.core.resource.orm.XmlManyToOne;
@@ -27,10 +27,10 @@ public class GenericOrmManyToOneRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToOneMapping>
 	implements OrmManyToOneRelationship2_0
 {
-	protected final OrmJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
 	// JPA 2.0
-	protected final OrmJoinTableJoiningStrategy joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 	
 	public GenericOrmManyToOneRelationship(OrmManyToOneMapping parent) {
@@ -62,7 +62,7 @@ public class GenericOrmManyToOneRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmJoiningStrategy buildStrategy() {
+	protected OrmRelationshipStrategy buildStrategy() {
 		if (this.isJpa2_0Compatible()) {
 			if (this.joinTableStrategy.getJoinTable() != null){
 				return this.joinTableStrategy;
@@ -74,7 +74,7 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -92,17 +92,17 @@ public class GenericOrmManyToOneRelationship
 		return false;
 	}
 
-	protected OrmJoinTableJoiningStrategy buildJoinTableStrategy() {
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
 		return this.isJpa2_0Compatible() ?
-				new GenericOrmMappingJoinTableJoiningStrategy(this) :
-				new NullOrmJoinTableJoiningStrategy(this);
+				new GenericOrmMappingJoinTableRelationshipStrategy(this) :
+				new NullOrmJoinTableRelationshipStrategy(this);
 	}
 
 
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -121,8 +121,8 @@ public class GenericOrmManyToOneRelationship
 		return this.joinTableStrategy.getJoinTable() == null;
 	}
 
-	protected OrmJoinColumnJoiningStrategy buildJoinColumnStrategy() {
-		return new GenericOrmMappingJoinColumnJoiningStrategy(this);
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
+		return new GenericOrmMappingJoinColumnRelationshipStrategy(this);
 	}
 
 

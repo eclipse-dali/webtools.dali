@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
@@ -64,7 +64,7 @@ public class GenericJavaJoinTable
 	protected JavaJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericJavaJoinTable(JavaJoinTableJoiningStrategy parent, Owner owner) {
+	public GenericJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Owner owner) {
 		super(parent, owner);
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
 		this.initializeSpecifiedInverseJoinColumns();
@@ -99,7 +99,7 @@ public class GenericJavaJoinTable
 
 	@Override
 	public JoinTableAnnotation getTableAnnotation() {
-		return this.getJoinStrategy().getJoinTableAnnotation();
+		return this.getRelationshipStrategy().getJoinTableAnnotation();
 	}
 
 	@Override
@@ -285,17 +285,17 @@ public class GenericJavaJoinTable
 	// ********** misc **********
 
 	@Override
-	public JavaJoinTableJoiningStrategy getParent() {
-		return (JavaJoinTableJoiningStrategy) super.getParent();
+	public JavaJoinTableRelationshipStrategy getParent() {
+		return (JavaJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected JavaJoinTableJoiningStrategy getJoinStrategy() {
+	protected JavaJoinTableRelationshipStrategy getRelationshipStrategy() {
 		return this.getParent();
 	}
 
 	@Override
 	protected String buildDefaultName() {
-		return this.getJoinStrategy().getJoinTableDefaultName();
+		return this.getRelationshipStrategy().getJoinTableDefaultName();
 	}
 
 	public void initializeFrom(ReadOnlyJoinTable oldTable) {
@@ -317,7 +317,7 @@ public class GenericJavaJoinTable
 	}
 
 	public RelationshipMapping getRelationshipMapping() {
-		return this.getJoinStrategy().getRelationship().getMapping();
+		return this.getRelationshipStrategy().getRelationship().getMapping();
 	}
 
 	public PersistentAttribute getPersistentAttribute() {
@@ -352,7 +352,7 @@ public class GenericJavaJoinTable
 	}
 
 	public boolean validatesAgainstDatabase() {
-		return this.getJoinStrategy().validatesAgainstDatabase();
+		return this.getRelationshipStrategy().validatesAgainstDatabase();
 	}
 
 
@@ -369,7 +369,7 @@ public class GenericJavaJoinTable
 		}
 
 		public TypeMapping getTypeMapping() {
-			return GenericJavaJoinTable.this.getJoinStrategy().getRelationship().getTypeMapping();
+			return GenericJavaJoinTable.this.getRelationshipStrategy().getRelationship().getTypeMapping();
 		}
 
 		public PersistentAttribute getPersistentAttribute() {
@@ -430,7 +430,7 @@ public class GenericJavaJoinTable
 		}
 
 		public Entity getRelationshipTarget() {
-			return GenericJavaJoinTable.this.getJoinStrategy().getRelationship().getEntity();
+			return GenericJavaJoinTable.this.getRelationshipStrategy().getRelationship().getEntity();
 		}
 
 		public String getAttributeName() {

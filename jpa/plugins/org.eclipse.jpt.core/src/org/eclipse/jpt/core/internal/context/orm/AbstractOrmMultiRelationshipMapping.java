@@ -32,7 +32,7 @@ import org.eclipse.jpt.core.context.java.JavaAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmAttributeOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmColumn;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMultiRelationshipMapping;
 import org.eclipse.jpt.core.context.orm.OrmOrderable;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
@@ -43,7 +43,7 @@ import org.eclipse.jpt.core.internal.context.MappingTools;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EmbeddableOverrideDescriptionProvider;
-import org.eclipse.jpt.core.internal.jpa1.context.JoiningStrategyTableDescriptionProvider;
+import org.eclipse.jpt.core.internal.jpa1.context.RelationshipStrategyTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyAttributeOverrideValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.MapKeyColumnValidator;
@@ -170,7 +170,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		public Table resolveDbTable(String tableName) {
 			return this.getJoinStrategy().resolveDbTable(tableName);
 		}
-		protected OrmJoiningStrategy getJoinStrategy() {
+		protected OrmRelationshipStrategy getJoinStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
 		}
 	}
@@ -711,7 +711,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		protected OrmJoiningStrategy getJoinStrategy() {
+		protected OrmRelationshipStrategy getJoinStrategy() {
 			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
 		}
 
@@ -756,7 +756,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getJoinStrategy()));
 		}
 	}
 
@@ -807,7 +807,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new JoiningStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getJoinStrategy()));
 		}
 	}
 }

@@ -25,7 +25,7 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmVirtualJoinTable
 	extends VirtualJoinTable, XmlContextNode
 {
-	OrmVirtualJoinTableJoiningStrategy getParent();
+	OrmVirtualJoinTableRelationshipStrategy getParent();
 
 	ListIterator<OrmVirtualUniqueConstraint> uniqueConstraints();
 	OrmVirtualUniqueConstraint getUniqueConstraint(int index);

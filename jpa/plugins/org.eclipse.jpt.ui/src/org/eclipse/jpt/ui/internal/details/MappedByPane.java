@@ -11,7 +11,7 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Iterator;
 
-import org.eclipse.jpt.core.context.MappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
@@ -42,18 +42,18 @@ import com.ibm.icu.text.Collator;
  * @since 1.0
  */
 public class MappedByPane 
-	extends Pane<MappedByJoiningStrategy>
+	extends Pane<MappedByRelationshipStrategy>
 {
 	/**
 	 * Creates a new <code>MappedByPane</code>.
 	 *
 	 * @param parentPane The parent form pane
-	 * @param subjectHolder The PVM for the {@link MappedByJoiningStrategy}
+	 * @param subjectHolder The PVM for the {@link MappedByRelationshipStrategy}
 	 * @param parent The parent container
 	 */
 	public MappedByPane(
 			Pane<?> parentPane,
-			PropertyValueModel<MappedByJoiningStrategy> subjectHolder,
+			PropertyValueModel<MappedByRelationshipStrategy> subjectHolder,
 			Composite parent) {
 		super(parentPane, subjectHolder, parent);
 	}
@@ -72,7 +72,7 @@ public class MappedByPane
 	@SuppressWarnings("unchecked")
 	protected ListValueModel<String> buildCandidateAttributesListValueModel() {
 		return new SortedListValueModelAdapter<String>(
-			new CollectionAspectAdapter<MappedByJoiningStrategy, String>(
+			new CollectionAspectAdapter<MappedByRelationshipStrategy, String>(
 					getSubjectHolder()) {
 				@Override
 				protected Iterator<String> iterator_() {
@@ -84,8 +84,8 @@ public class MappedByPane
 	}
 	
 	protected WritablePropertyValueModel<String> buildAttributePropertyValueModel() {
-		return new PropertyAspectAdapter<MappedByJoiningStrategy, String>(
-				getSubjectHolder(), MappedByJoiningStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY) {
+		return new PropertyAspectAdapter<MappedByRelationshipStrategy, String>(
+				getSubjectHolder(), MappedByRelationshipStrategy.MAPPED_BY_ATTRIBUTE_PROPERTY) {
 			@Override
 			protected String buildValue_() {
 				return this.subject.getMappedByAttribute();

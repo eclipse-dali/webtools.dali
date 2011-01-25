@@ -26,14 +26,13 @@ public interface ReadOnlyJoinColumnRelationship
 	extends ReadOnlyRelationship
 {
 	/**
-	 * Return the aggregate (never null) object used to configure the join column 
-	 * joining strategy
+	 * Return the aggregate (never <code>null</code>) object used to configure
+	 * the join column strategy
 	 */
-	ReadOnlyJoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	ReadOnlyJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
 	
 	/**
-	 * Return whether the join column joining strategy is currently the 
-	 * predominant joining strategy
+	 * Return whether the join column strategy is currently the strategy
 	 */
 	boolean usesJoinColumnJoiningStrategy();
 	

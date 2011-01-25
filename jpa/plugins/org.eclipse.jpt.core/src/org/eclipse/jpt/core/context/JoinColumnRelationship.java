@@ -29,13 +29,13 @@ public interface JoinColumnRelationship
 	extends ReadOnlyJoinColumnRelationship, Relationship
 {
 	/**
-	 * Return the aggregate (never null) object used to configure the join column 
-	 * joining strategy
+	 * Return the aggregate (never <code>null</code>) object used to configure
+	 * the join column strategy
 	 */
-	JoinColumnJoiningStrategy getJoinColumnJoiningStrategy();
+	JoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
 	
 	/**
-	 * Set the join column joining strategy as the predominant joining strategy
+	 * Set the join column strategy as the strategy
 	 */
 	void setJoinColumnJoiningStrategy();
 }

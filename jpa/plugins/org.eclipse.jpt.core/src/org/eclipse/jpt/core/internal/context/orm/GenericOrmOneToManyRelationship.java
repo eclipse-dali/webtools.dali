@@ -17,12 +17,12 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
-import org.eclipse.jpt.core.context.orm.OrmJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmOneToManyMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.NullOrmJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.internal.jpa1.context.orm.NullOrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOneToManyRelationship2_0;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -32,13 +32,13 @@ public class GenericOrmOneToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmOneToManyMapping>
 	implements OrmOneToManyRelationship2_0
 {
-	protected final OrmMappedByJoiningStrategy mappedByStrategy;
+	protected final OrmMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmJoinTableJoiningStrategy joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final OrmJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final OrmJoinColumnRelationshipStrategy joinColumnStrategy;
 
 
 	public GenericOrmOneToManyRelationship(OrmOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -76,7 +76,7 @@ public class GenericOrmOneToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmJoiningStrategy buildStrategy() {
+	protected OrmRelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -91,7 +91,7 @@ public class GenericOrmOneToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByJoiningStrategy getMappedByJoiningStrategy() {
+	public OrmMappedByRelationshipStrategy getMappedByJoiningStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -117,14 +117,14 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmMappedByJoiningStrategy buildMappedByStrategy() {
-		return new GenericOrmMappedByJoiningStrategy(this);
+	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
+		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -144,14 +144,14 @@ public class GenericOrmOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected OrmJoinTableJoiningStrategy buildJoinTableStrategy() {
-		return new GenericOrmMappingJoinTableJoiningStrategy(this);
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -170,10 +170,10 @@ public class GenericOrmOneToManyRelationship
 		return false;
 	}
 
-	protected OrmJoinColumnJoiningStrategy buildJoinColumnStrategy() {
+	protected OrmJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
-				new GenericOrmMappingJoinColumnJoiningStrategy(this, true) :  // true = target foreign key
-				new NullOrmJoinColumnJoiningStrategy(this);
+				new GenericOrmMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
+				new NullOrmJoinColumnRelationshipStrategy(this);
 	}
 
 

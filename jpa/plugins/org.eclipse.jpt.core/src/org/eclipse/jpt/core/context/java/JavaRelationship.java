@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.context.Relationship;
 public interface JavaRelationship
 	extends Relationship, JavaReadOnlyRelationship
 {
-	JavaJoiningStrategy getPredominantJoiningStrategy();
+	JavaRelationshipStrategy getPredominantJoiningStrategy();
 }

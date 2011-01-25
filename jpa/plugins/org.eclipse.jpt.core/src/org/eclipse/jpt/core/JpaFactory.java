@@ -39,7 +39,7 @@ import org.eclipse.jpt.core.context.java.JavaGeneratorContainer;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.core.context.java.JavaJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
@@ -71,7 +71,7 @@ import org.eclipse.jpt.core.context.java.JavaVirtualAttributeOverride;
 import org.eclipse.jpt.core.context.java.JavaVirtualColumn;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaVirtualJoinTable;
-import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -207,9 +207,9 @@ public interface JpaFactory
 
 	JavaTable buildJavaTable(JavaEntity parent, Table.Owner owner);
 	
-	JavaJoinTable buildJavaJoinTable(JavaJoinTableJoiningStrategy parent, Table.Owner owner);
+	JavaJoinTable buildJavaJoinTable(JavaJoinTableRelationshipStrategy parent, Table.Owner owner);
 	
-	JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable);
+	JavaVirtualJoinTable buildJavaVirtualJoinTable(JavaVirtualJoinTableRelationshipStrategy parent, JoinTable overriddenTable);
 	
 	JavaColumn buildJavaColumn(JavaJpaContextNode parent, JavaColumn.Owner owner);
 	

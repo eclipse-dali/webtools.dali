@@ -61,9 +61,9 @@ public interface ReadOnlyRelationship
 	final static String PREDOMINANT_JOINING_STRATEGY_PROPERTY = "predominantStrategy";  //$NON-NLS-1$
 
 	/**
-	 * Return the predominant joining strategy, this is never <code>null</code>.
+	 * Return the current strategy, this is never <code>null</code>.
 	 */
-	ReadOnlyJoiningStrategy getPredominantJoiningStrategy();
+	ReadOnlyRelationshipStrategy getPredominantJoiningStrategy();
 
 	/**
 	 * Return whether the the relationship is virtual.

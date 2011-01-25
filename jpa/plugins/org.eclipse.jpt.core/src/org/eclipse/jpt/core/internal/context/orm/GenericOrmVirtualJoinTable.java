@@ -21,7 +21,7 @@ import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTable;
-import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmVirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmVirtualRelationship;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.MappingTools;
@@ -47,7 +47,7 @@ public class GenericOrmVirtualJoinTable
 	protected OrmVirtualJoinColumn defaultInverseJoinColumn;
 
 
-	public GenericOrmVirtualJoinTable(OrmVirtualJoinTableJoiningStrategy parent, JoinTable overriddenTable) {
+	public GenericOrmVirtualJoinTable(OrmVirtualJoinTableRelationshipStrategy parent, JoinTable overriddenTable) {
 		super(parent);
 		this.overriddenTable = overriddenTable;
 		this.inverseJoinColumnOwner = this.buildInverseJoinColumnOwner();
@@ -200,11 +200,11 @@ public class GenericOrmVirtualJoinTable
 	// ********** misc **********
 
 	@Override
-	public OrmVirtualJoinTableJoiningStrategy getParent() {
-		return (OrmVirtualJoinTableJoiningStrategy) super.getParent();
+	public OrmVirtualJoinTableRelationshipStrategy getParent() {
+		return (OrmVirtualJoinTableRelationshipStrategy) super.getParent();
 	}
 
-	protected OrmVirtualJoinTableJoiningStrategy getJoinStrategy() {
+	protected OrmVirtualJoinTableRelationshipStrategy getJoinStrategy() {
 		return this.getParent();
 	}
 

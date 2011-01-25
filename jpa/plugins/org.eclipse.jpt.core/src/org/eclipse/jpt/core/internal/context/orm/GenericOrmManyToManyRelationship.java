@@ -16,11 +16,11 @@ import org.eclipse.jpt.core.context.MappedByRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
-import org.eclipse.jpt.core.context.orm.OrmJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.orm.OrmJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyMapping;
 import org.eclipse.jpt.core.context.orm.OrmManyToManyRelationship;
-import org.eclipse.jpt.core.context.orm.OrmMappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.orm.OrmMappedByRelationshipStrategy;
 import org.eclipse.jpt.core.resource.orm.XmlManyToMany;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -29,9 +29,9 @@ public class GenericOrmManyToManyRelationship
 	extends AbstractOrmMappingRelationship<OrmManyToManyMapping>
 	implements OrmManyToManyRelationship
 {
-	protected final OrmMappedByJoiningStrategy mappedByStrategy;
+	protected final OrmMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final OrmJoinTableJoiningStrategy joinTableStrategy;
+	protected final OrmJoinTableRelationshipStrategy joinTableStrategy;
 
 
 	public GenericOrmManyToManyRelationship(OrmManyToManyMapping parent) {
@@ -63,7 +63,7 @@ public class GenericOrmManyToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected OrmJoiningStrategy buildStrategy() {
+	protected OrmRelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -73,7 +73,7 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByJoiningStrategy getMappedByJoiningStrategy() {
+	public OrmMappedByRelationshipStrategy getMappedByJoiningStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -91,14 +91,14 @@ public class GenericOrmManyToManyRelationship
 		return mappedByMapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
-	protected OrmMappedByJoiningStrategy buildMappedByStrategy() {
-		return new GenericOrmMappedByJoiningStrategy(this);
+	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
+		return new GenericOrmMappedByRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -116,8 +116,8 @@ public class GenericOrmManyToManyRelationship
 		return this.mappedByStrategy.getMappedByAttribute() == null;
 	}
 
-	protected OrmJoinTableJoiningStrategy buildJoinTableStrategy() {
-		return new GenericOrmMappingJoinTableJoiningStrategy(this);
+	protected OrmJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return new GenericOrmMappingJoinTableRelationshipStrategy(this);
 	}
 
 

@@ -22,5 +22,5 @@ public interface VirtualJoinTableRelationship
 	extends ReadOnlyJoinTableRelationship,
 			VirtualRelationship
 {
-	VirtualJoinTableJoiningStrategy getJoinTableJoiningStrategy();
+	VirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
 }

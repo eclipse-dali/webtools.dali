@@ -26,7 +26,7 @@ import java.util.ListIterator;
 public interface JoinTable
 	extends ReferenceTable, ReadOnlyJoinTable
 {
-	JoinTableJoiningStrategy getParent();
+	JoinTableRelationshipStrategy getParent();
 
 	void initializeFrom(ReadOnlyJoinTable oldJoinTable);
 

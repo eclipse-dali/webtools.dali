@@ -19,13 +19,13 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationship;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
 import org.eclipse.jpt.core.context.RelationshipMapping;
 import org.eclipse.jpt.core.context.Relationship;
-import org.eclipse.jpt.core.context.java.JavaJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaJoiningStrategy;
-import org.eclipse.jpt.core.context.java.JavaMappedByJoiningStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaRelationshipStrategy;
+import org.eclipse.jpt.core.context.java.JavaMappedByRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTableJoiningStrategy;
-import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaJoinColumnJoiningStrategy;
+import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTableRelationshipStrategy;
+import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationship2_0;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.utility.Filter;
@@ -36,13 +36,13 @@ public class GenericJavaOneToManyRelationship
 	extends AbstractJavaMappingRelationship<JavaOneToManyMapping>
 	implements JavaOneToManyRelationship2_0
 {
-	protected final JavaMappedByJoiningStrategy mappedByStrategy;
+	protected final JavaMappedByRelationshipStrategy mappedByStrategy;
 
-	protected final JavaJoinTableJoiningStrategy joinTableStrategy;
+	protected final JavaJoinTableRelationshipStrategy joinTableStrategy;
 
 	// JPA 2.0 or EclipseLink
 	protected final boolean supportsJoinColumnStrategy;
-	protected final JavaJoinColumnJoiningStrategy joinColumnStrategy;
+	protected final JavaJoinColumnRelationshipStrategy joinColumnStrategy;
 
 
 	public GenericJavaOneToManyRelationship(JavaOneToManyMapping parent, boolean supportsJoinColumnStrategy) {
@@ -80,7 +80,7 @@ public class GenericJavaOneToManyRelationship
 	// ********** strategy **********
 
 	@Override
-	protected JavaJoiningStrategy buildStrategy() {
+	protected JavaRelationshipStrategy buildStrategy() {
 		if (this.mappedByStrategy.getMappedByAttribute() != null) {
 			return this.mappedByStrategy;
 		}
@@ -95,7 +95,7 @@ public class GenericJavaOneToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public JavaMappedByJoiningStrategy getMappedByJoiningStrategy() {
+	public JavaMappedByRelationshipStrategy getMappedByJoiningStrategy() {
 		return this.mappedByStrategy;
 	}
 
@@ -121,14 +121,14 @@ public class GenericJavaOneToManyRelationship
 		return false;
 	}
 
-	protected JavaMappedByJoiningStrategy buildMappedByStrategy() {
-		return new GenericJavaMappedByJoiningStrategy(this);
+	protected JavaMappedByRelationshipStrategy buildMappedByStrategy() {
+		return new GenericJavaMappedByRelationshipStrategy(this);
 	}
 
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableJoiningStrategy getJoinTableJoiningStrategy() {
+	public JavaJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
 		return this.joinTableStrategy;
 	}
 
@@ -148,14 +148,14 @@ public class GenericJavaOneToManyRelationship
 				! this.joinColumnStrategy.hasSpecifiedJoinColumns();
 	}
 
-	protected JavaJoinTableJoiningStrategy buildJoinTableStrategy() {
-		return new GenericJavaMappingJoinTableJoiningStrategy(this);
+	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
+		return new GenericJavaMappingJoinTableRelationshipStrategy(this);
 	}
 
 
 	// ********** join column strategy **********
 
-	public JavaJoinColumnJoiningStrategy getJoinColumnJoiningStrategy() {
+	public JavaJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
 		return this.joinColumnStrategy;
 	}
 
@@ -174,10 +174,10 @@ public class GenericJavaOneToManyRelationship
 		return false;
 	}
 
-	protected JavaJoinColumnJoiningStrategy buildJoinColumnStrategy() {
+	protected JavaJoinColumnRelationshipStrategy buildJoinColumnStrategy() {
 		return this.supportsJoinColumnStrategy ?
-				new GenericJavaMappingJoinColumnJoiningStrategy(this, true) :  // true = target foreign key
-				new NullJavaJoinColumnJoiningStrategy(this);
+				new GenericJavaMappingJoinColumnRelationshipStrategy(this, true) :  // true = target foreign key
+				new NullJavaJoinColumnRelationshipStrategy(this);
 	}
 
 

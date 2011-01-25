@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.VirtualJoinTable;
 public interface JavaVirtualJoinTable
 	extends VirtualJoinTable, JavaJpaContextNode
 {
-	JavaVirtualJoinTableJoiningStrategy getParent();
+	JavaVirtualJoinTableRelationshipStrategy getParent();
 
 	ListIterator<JavaVirtualUniqueConstraint> uniqueConstraints();
 	JavaVirtualUniqueConstraint getUniqueConstraint(int index);

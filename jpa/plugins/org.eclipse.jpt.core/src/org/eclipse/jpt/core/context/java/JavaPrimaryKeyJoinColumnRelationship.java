@@ -27,5 +27,5 @@ public interface JavaPrimaryKeyJoinColumnRelationship
 	extends PrimaryKeyJoinColumnRelationship,
 		JavaMappingRelationship
 {
-	JavaPrimaryKeyJoinColumnJoiningStrategy getPrimaryKeyJoinColumnJoiningStrategy();
+	JavaPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnJoiningStrategy();
 }

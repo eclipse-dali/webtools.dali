@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jpt.core.context.JoinTableRelationship;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
  * -----------------------------------------------------------------------------</pre>
  *
  * @see {@link JoinTableRelationship}
- * @see {@link JoinTableJoiningStrategy}
+ * @see {@link JoinTableRelationshipStrategy}
  * @see {@link ManyToOneJoiningStrategyPane}
  * @see {@link ManyToManyJoiningStrategyPane}
  *
@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class JoinTableJoiningStrategyPane
 	extends AbstractJoiningStrategyPane
-		<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableJoiningStrategy>
+		<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableRelationshipStrategy>
 {
 	public JoinTableJoiningStrategyPane(
 			Pane<? extends ReadOnlyJoinTableRelationship> parentPane, 
@@ -69,20 +69,20 @@ public class JoinTableJoiningStrategyPane
 		return buildUsesJoinTableJoiningStrategyHolder(getSubjectHolder());
 	}
 
-	protected PropertyValueModel<ReadOnlyJoinTableJoiningStrategy> buildJoinTableJoiningStrategyHolder() {
+	protected PropertyValueModel<ReadOnlyJoinTableRelationshipStrategy> buildJoinTableJoiningStrategyHolder() {
 		return new PropertyAspectAdapter
-				<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableJoiningStrategy>(
+				<ReadOnlyJoinTableRelationship, ReadOnlyJoinTableRelationshipStrategy>(
 					getSubjectHolder()) {
 			@Override
-			protected ReadOnlyJoinTableJoiningStrategy buildValue_() {
+			protected ReadOnlyJoinTableRelationshipStrategy buildValue_() {
 				return this.subject.getJoinTableJoiningStrategy();
 			}
 		};
 	}
 
 	protected PropertyValueModel<ReadOnlyJoinTable> buildJoinTableHolder() {
-		return new PropertyAspectAdapter<ReadOnlyJoinTableJoiningStrategy, ReadOnlyJoinTable>(
-				this.buildJoinTableJoiningStrategyHolder(), ReadOnlyJoinTableJoiningStrategy.JOIN_TABLE_PROPERTY) {
+		return new PropertyAspectAdapter<ReadOnlyJoinTableRelationshipStrategy, ReadOnlyJoinTable>(
+				this.buildJoinTableJoiningStrategyHolder(), ReadOnlyJoinTableRelationshipStrategy.JOIN_TABLE_PROPERTY) {
 			@Override
 			protected ReadOnlyJoinTable buildValue_() {
 				return this.subject.getJoinTable();

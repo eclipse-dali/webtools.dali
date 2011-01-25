@@ -23,7 +23,7 @@ import org.eclipse.jpt.core.context.EmbeddedIdMapping;
 import org.eclipse.jpt.core.context.EmbeddedMapping;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.JoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.JoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.context.OneToManyMapping;
@@ -32,15 +32,15 @@ import org.eclipse.jpt.core.context.ReadOnlyAttributeOverride;
 import org.eclipse.jpt.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTable;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.TransientMapping;
 import org.eclipse.jpt.core.context.VersionMapping;
 import org.eclipse.jpt.core.context.VirtualAssociationOverride;
 import org.eclipse.jpt.core.context.VirtualAttributeOverride;
 import org.eclipse.jpt.core.context.VirtualJoinColumn;
 import org.eclipse.jpt.core.context.VirtualJoinColumnRelationship;
-import org.eclipse.jpt.core.context.VirtualJoinColumnJoiningStrategy;
-import org.eclipse.jpt.core.context.VirtualJoinTableJoiningStrategy;
+import org.eclipse.jpt.core.context.VirtualJoinColumnRelationshipStrategy;
+import org.eclipse.jpt.core.context.VirtualJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaAssociationOverride;
 import org.eclipse.jpt.core.context.java.JavaBasicMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
@@ -1088,7 +1088,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
-		VirtualJoinColumnJoiningStrategy joiningStrategy = ((VirtualJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
+		VirtualJoinColumnRelationshipStrategy joiningStrategy = ((VirtualJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
 		assertEquals("address", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
 		VirtualJoinColumn virtualJoinColumn = joiningStrategy.joinColumns().next();
@@ -1434,7 +1434,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = CollectionTools.get(overrideContainer.virtualOverrides(), 1);
-		VirtualJoinTableJoiningStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableJoiningStrategy();
+		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) virtualAssociationOverride.getRelationship()).getJoinTableJoiningStrategy();
 		ReadOnlyJoinTable joinTable = joiningStrategy.getJoinTable();
 		assertEquals("addresses", virtualAssociationOverride.getName());
 		assertEquals("AnnotationTestType_Address", joinTable.getName());
@@ -1462,7 +1462,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		
 		JavaPersistentType javaEmbeddable = getPersistenceUnit().specifiedClassRefs().next().getJavaPersistentType(); 
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) javaEmbeddable.getAttributeNamed("addresses").getMapping();
-		JoinTableJoiningStrategy joinTableStrategy = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy();
+		JoinTableRelationshipStrategy joinTableStrategy = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy();
 		joinTableStrategy.getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		JoinColumn joinColumn = joinTableStrategy.getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
@@ -1571,7 +1571,7 @@ public class GenericOrmEmbeddedMapping2_0Tests extends Generic2_0ContextModelTes
 		overrideContainer = virtualEmbeddedMapping.getAssociationOverrideContainer();
 		AssociationOverride associationOverride = overrideContainer.specifiedOverrides().next();
 		assertEquals("addresses", associationOverride.getName());
-		ReadOnlyJoinTableJoiningStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy();
+		ReadOnlyJoinTableRelationshipStrategy strategy = ((ReadOnlyOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy();
 		joinTable = strategy.getJoinTable();
 		assertEquals("JAVA_FOO", joinTable.getName());
 		assertEquals(2, joinTable.joinColumnsSize());
