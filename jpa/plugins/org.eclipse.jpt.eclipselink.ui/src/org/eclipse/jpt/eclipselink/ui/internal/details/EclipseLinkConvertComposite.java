@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
+
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
@@ -61,9 +62,9 @@ public class EclipseLinkConvertComposite
 
 	/**
 	 * A key used to represent the default value, this is required to convert
-	 * the selected item from a combo to <code>null</code>. This key is most
+	 * the selected item from a combo to an empty string. This key is most
 	 * likely never typed the user and it will help to convert the value to
-	 * <code>null</code> when it's time to set the new selected value into the
+	 * an empty string when it's time to set the new selected value into the
 	 * model.
 	 */
 	protected static String DEFAULT_KEY = "?!#!?#?#?default?#?!#?!#?"; //$NON-NLS-1$
@@ -159,11 +160,9 @@ public class EclipseLinkConvertComposite
 
 			@Override
 			protected void setValue_(String value) {
-				// Convert the default value or an empty string to null
-				if ((value != null) &&
-				   ((value.length() == 0) || value.startsWith(DEFAULT_KEY))) {
-
-					value = null;
+				// Convert the default value to an empty string
+				if ((value != null) && (value.startsWith(DEFAULT_KEY))) {
+					value = "";
 				}
 				this.subject.setSpecifiedConverterName(value);
 			}
@@ -263,7 +262,7 @@ public class EclipseLinkConvertComposite
 		return new PropertyAspectAdapter<EclipseLinkConvert, EclipseLinkPersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected EclipseLinkPersistenceUnit buildValue_() {
-				return (EclipseLinkPersistenceUnit) getSubject().getPersistenceUnit();
+				return (EclipseLinkPersistenceUnit) this.subject.getPersistenceUnit();
 			}
 		};
 	}
