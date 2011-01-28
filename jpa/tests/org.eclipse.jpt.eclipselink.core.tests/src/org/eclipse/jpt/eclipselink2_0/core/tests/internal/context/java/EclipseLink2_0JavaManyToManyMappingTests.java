@@ -442,7 +442,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -454,12 +454,12 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -485,7 +485,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -496,12 +496,12 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -778,7 +778,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("MY_TABLE_OTHER_TABLE", jobsOrderColumn.getTable());
 		assertEquals("MY_TABLE_OTHER_TABLE", queuesOrderColumn.getTable());
 		
-		queuesMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		queuesMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		assertEquals("MY_JOIN_TABLE", jobsOrderColumn.getTable());
 		assertEquals("MY_JOIN_TABLE", queuesOrderColumn.getTable());
 	}
@@ -867,8 +867,8 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping2_0 manyToManyMapping = (ManyToManyMapping2_0) persistentAttribute.getMapping();
-		manyToManyMapping.getRelationship().setMappedByJoiningStrategy();
-		manyToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("employees");
+		manyToManyMapping.getRelationship().setStrategyToMappedBy();
+		manyToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("employees");
 		
 		assertNull(manyToManyMapping.getMapKeyColumn().getSpecifiedName());
 		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
@@ -876,7 +876,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		
 		PersistentType persistentType = getPersistenceUnit().getPersistentType("test.Address");
 		ManyToManyMapping owningManyToManyMapping = (ManyToManyMapping) persistentType.getAttributeNamed("employees").getMapping();
-		((JoinTableRelationshipStrategy) owningManyToManyMapping.getRelationship().getPredominantJoiningStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		((JoinTableRelationshipStrategy) owningManyToManyMapping.getRelationship().getStrategy()).getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
@@ -903,7 +903,7 @@ public class EclipseLink2_0JavaManyToManyMappingTests
 		assertEquals("addresses_KEY", manyToManyMapping.getMapKeyColumn().getName());
 		assertEquals(TYPE_NAME + "_Address", manyToManyMapping.getMapKeyColumn().getTable());//join table name
 		
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
 		assertEquals("MY_JOIN_TABLE", manyToManyMapping.getMapKeyColumn().getTable());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);

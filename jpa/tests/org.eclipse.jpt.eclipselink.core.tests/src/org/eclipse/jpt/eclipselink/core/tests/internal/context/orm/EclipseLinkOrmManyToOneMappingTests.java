@@ -269,7 +269,7 @@ public class EclipseLinkOrmManyToOneMappingTests
 		assertEquals(Boolean.FALSE, virtualManyToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", virtualManyToOneMapping.getSpecifiedTargetEntity());
 
-		JoinColumn virtualJoinColumn = virtualManyToOneMapping.getRelationship().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+		JoinColumn virtualJoinColumn = virtualManyToOneMapping.getRelationship().getJoinColumnStrategy().specifiedJoinColumns().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());

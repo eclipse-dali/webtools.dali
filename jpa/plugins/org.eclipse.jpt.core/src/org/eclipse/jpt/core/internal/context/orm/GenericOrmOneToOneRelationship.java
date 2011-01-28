@@ -95,15 +95,15 @@ public class GenericOrmOneToOneRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByRelationshipStrategy getMappedByJoiningStrategy() {
+	public OrmMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
-	public boolean usesMappedByJoiningStrategy() {
+	public boolean strategyIsMappedBy() {
 		return this.strategy == this.mappedByStrategy;
 	}
 
-	public void setMappedByJoiningStrategy() {
+	public void setStrategyToMappedBy() {
 		this.mappedByStrategy.addStrategy();
 		this.joinColumnStrategy.removeStrategy();
 		this.primaryKeyJoinColumnStrategy.removeStrategy();
@@ -111,8 +111,8 @@ public class GenericOrmOneToOneRelationship
 		this.updateStrategy();
 	}
 
-	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
-		return mappedByMapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
+	public boolean mayBeMappedBy(AttributeMapping mapping) {
+		return mapping.getKey() == MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
@@ -122,15 +122,15 @@ public class GenericOrmOneToOneRelationship
 
 	// ********** primary key join column strategy **********
 
-	public OrmPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnJoiningStrategy() {
+	public OrmPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy() {
 		return this.primaryKeyJoinColumnStrategy;
 	}
 
-	public boolean usesPrimaryKeyJoinColumnJoiningStrategy() {
+	public boolean strategyIsPrimaryKeyJoinColumn() {
 		return this.strategy == this.primaryKeyJoinColumnStrategy;
 	}
 
-	public void setPrimaryKeyJoinColumnJoiningStrategy() {
+	public void setStrategyToPrimaryKeyJoinColumn() {
 		this.primaryKeyJoinColumnStrategy.addStrategy();
 		this.mappedByStrategy.removeStrategy();
 		this.joinColumnStrategy.removeStrategy();
@@ -145,15 +145,15 @@ public class GenericOrmOneToOneRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
-	public void setJoinTableJoiningStrategy() {
+	public void setStrategyToJoinTable() {
 		this.joinTableStrategy.addStrategy();
 		this.mappedByStrategy.removeStrategy();
 		this.joinColumnStrategy.removeStrategy();
@@ -174,15 +174,15 @@ public class GenericOrmOneToOneRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
-	public void setJoinColumnJoiningStrategy() {
+	public void setStrategyToJoinColumn() {
 		// join column strategy is the default; so no need to add stuff,
 		// just remove all the others
 		this.mappedByStrategy.removeStrategy();
@@ -214,19 +214,19 @@ public class GenericOrmOneToOneRelationship
 	@Override
 	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
 		super.initializeFromMappedByRelationship(oldRelationship);
-		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByJoiningStrategy());
+		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByStrategy());
 	}
 
 	@Override
 	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 	@Override
 	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
 		super.initializeFromJoinColumnRelationship(oldRelationship);
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
 

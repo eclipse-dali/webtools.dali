@@ -37,8 +37,8 @@ public interface ReadOnlyRelationshipStrategy
 	
 	/**
 	 * Return the table name associated with the strategy's columns.
-	 * The join table name, for instance, or in the case of a bi-directional relationship, 
-	 * the table of the owning relationship.
+	 * The join table name, for instance, or in the case of a bi-directional
+	 * relationship, the table of the owning relationship.
 	 */
 	String getTableName();
 }

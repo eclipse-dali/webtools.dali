@@ -25,7 +25,7 @@ package org.eclipse.jpt.core.context;
 public interface Relationship
 	extends ReadOnlyRelationship
 {
-	RelationshipStrategy getPredominantJoiningStrategy();
+	RelationshipStrategy getStrategy();
 
 
 	// ********** conversions **********
@@ -38,5 +38,5 @@ public interface Relationship
 
 	void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship);
 
-	// we only have a single "implementation" of the primary key relationship (1:1)
+	// we only have a single "client" of the primary key relationship (1:1 mapping)
 }

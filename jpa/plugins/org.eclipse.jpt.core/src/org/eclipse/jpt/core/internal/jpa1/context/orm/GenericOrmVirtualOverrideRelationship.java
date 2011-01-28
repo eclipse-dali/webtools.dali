@@ -56,14 +56,14 @@ public class GenericOrmVirtualOverrideRelationship
 
 	// ********** strategy **********
 
-	public OrmVirtualRelationshipStrategy getPredominantJoiningStrategy() {
+	public OrmVirtualRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(OrmVirtualRelationshipStrategy strategy) {
 		OrmVirtualRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected OrmVirtualRelationshipStrategy buildStrategy() {
@@ -79,11 +79,11 @@ public class GenericOrmVirtualOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public OrmVirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public OrmVirtualJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
@@ -98,11 +98,11 @@ public class GenericOrmVirtualOverrideRelationship
 
 	// ********** join table strategy **********
 
-	public OrmVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public OrmVirtualJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 

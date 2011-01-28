@@ -302,7 +302,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.BASIC_ATTRIBUTE_MAPPING_KEY);
@@ -324,7 +324,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY);
@@ -344,7 +344,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.VERSION_ATTRIBUTE_MAPPING_KEY);
@@ -366,7 +366,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -388,7 +388,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ATTRIBUTE_MAPPING_KEY);
@@ -410,7 +410,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -432,7 +432,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -454,7 +454,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -476,7 +476,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
@@ -498,7 +498,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 		manyToManyMapping.getOrderable().setSpecifiedOrderBy("asdf");
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("FOO");
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("FOO");
 		assertFalse(manyToManyMapping.isDefault());
 		
 		persistentAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
@@ -638,19 +638,19 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
-		assertNull(manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
 				
 		//set mappedByJoiningStrategy in the resource model, verify context model updated
 		manyToMany.setMappedBy("newMappedBy");
 		getJpaProject().synchronizeContextModel();
-		assertEquals("newMappedBy", manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertEquals("newMappedBy", manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertEquals("newMappedBy", manyToMany.getMappedBy());
 	
 		//set mappedByJoiningStrategy to null in the resource model
 		manyToMany.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
-		assertNull(manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
 	}
 	
@@ -665,17 +665,17 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		ManyToManyAnnotation manyToMany = (ManyToManyAnnotation) attributeResource.getAnnotation(ManyToManyAnnotation.ANNOTATION_NAME);
 		
-		assertNull(manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
 				
 		//set mappedBy in the context model, verify resource model updated
-		manyToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("newTargetEntity");
-		assertEquals("newTargetEntity", manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		manyToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("newTargetEntity");
+		assertEquals("newTargetEntity", manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertEquals("newTargetEntity", manyToMany.getMappedBy());
 	
 		//set mappedBy to null in the context model
-		manyToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute(null);
-		assertNull(manyToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		manyToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute(null);
+		assertNull(manyToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertNull(manyToMany.getMappedBy());
 	}
 	
@@ -691,20 +691,20 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
-		rel.setMappedByJoiningStrategy();
+		rel.setStrategyToMappedBy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
-		rel.setJoinTableJoiningStrategy();
+		rel.setStrategyToJoinTable();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -719,36 +719,36 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNotNull(annotation.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		annotation.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
 		assertNull(annotation.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 	
 	public void testCandidateMappedByAttributeNames() throws Exception {
@@ -763,7 +763,7 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -772,12 +772,12 @@ public class JavaManyToManyMappingTests extends ContextModelTestCase
 		
 		manyToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		manyToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			manyToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			manyToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());

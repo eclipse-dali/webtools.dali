@@ -135,7 +135,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -176,7 +176,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -205,7 +205,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		//joinTable default name is null because targetEntity is not in the persistence unit
 		assertNull(joinTable.getDefaultName());
@@ -246,7 +246,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		JoinColumn joinColumn = joinTable.joinColumns().next();
 		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
 		
@@ -311,7 +311,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		JoinColumn joinColumn = joinTable.joinColumns().next();
 		JoinColumn inverseJoinColumn = joinTable.inverseJoinColumns().next();
 		
@@ -375,7 +375,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -416,7 +416,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
@@ -444,7 +444,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -485,7 +485,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 	
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
@@ -513,7 +513,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -555,7 +555,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType resourceType = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute resourceAttribute = resourceType.persistableAttributes().next();
@@ -585,7 +585,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -625,7 +625,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -686,7 +686,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertEquals(0, joinTable.specifiedJoinColumnsSize());
 		
@@ -702,7 +702,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertEquals(1, joinTable.joinColumnsSize());
 		
@@ -717,17 +717,17 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals(1, joinTable.joinColumnsSize());
 
 		// default columns
-		assertNotNull(manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable());
+		assertNotNull(manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable());
 		JavaResourcePersistentAttribute resAttribute = this.getJavaPersistentType().attributes().next().getResourcePersistentAttribute();
 		assertNotNull(resAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().removeStrategy();
+		manyToManyMapping.getRelationship().getJoinTableStrategy().removeStrategy();
 		// default join table
-		assertNotNull(manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable());
+		assertNotNull(manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable());
 		assertNull(resAttribute.getAnnotation(JoinTableAnnotation.ANNOTATION_NAME));
 		
 		//if non-owning side of the relationship then no default join table
-		manyToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("foo");
-		assertNull(manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable());
+		manyToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("foo");
+		assertNull(manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable());
 	}
 	
 	public void testAddSpecifiedInverseJoinColumn() throws Exception {
@@ -735,7 +735,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -777,7 +777,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -807,7 +807,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -847,7 +847,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
@@ -912,7 +912,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertEquals(0, joinTable.specifiedInverseJoinColumnsSize());
 		
@@ -928,7 +928,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertEquals(1, joinTable.inverseJoinColumnsSize());
 		
@@ -943,8 +943,8 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		assertEquals(1, joinTable.inverseJoinColumnsSize());
 		
 		//if non-owning side of the relationship then no default join table
-		manyToManyMapping.getRelationship().setMappedByJoiningStrategy();
-		assertNull(manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable());
+		manyToManyMapping.getRelationship().setStrategyToMappedBy();
+		assertNull(manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable());
 	}
 
 	public void testUniqueConstraints() throws Exception {
@@ -952,7 +952,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		ListIterator<JavaUniqueConstraint> uniqueConstraints = joinTable.uniqueConstraints();
 		assertFalse(uniqueConstraints.hasNext());
@@ -976,7 +976,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		
 		assertEquals(0,  joinTable.uniqueConstraintsSize());
 
@@ -995,7 +995,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		joinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
@@ -1016,7 +1016,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		joinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(0).addColumnName(0, "BAZ");
@@ -1037,7 +1037,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		joinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -1083,7 +1083,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		joinTable.addUniqueConstraint(0).addColumnName(0, "FOO");
 		joinTable.addUniqueConstraint(1).addColumnName(0, "BAR");
 		joinTable.addUniqueConstraint(2).addColumnName(0, "BAZ");
@@ -1124,7 +1124,7 @@ public class JavaJoinTableTests extends ContextModelTestCase
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 
 		JavaManyToManyMapping manyToManyMapping = (JavaManyToManyMapping) getJavaPersistentType().attributes().next().getMapping();
-		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JavaJoinTable joinTable = manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable();
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();
 		JoinTableAnnotation joinTableAnnotation = (JoinTableAnnotation) attributeResource.addAnnotation(JoinTableAnnotation.ANNOTATION_NAME);

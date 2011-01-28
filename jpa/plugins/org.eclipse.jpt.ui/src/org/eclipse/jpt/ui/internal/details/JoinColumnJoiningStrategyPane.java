@@ -123,27 +123,27 @@ public class JoinColumnJoiningStrategyPane
 					getSubjectHolder()) {
 			@Override
 			protected ReadOnlyJoinColumnRelationshipStrategy buildValue_() {
-				return this.subject.getJoinColumnJoiningStrategy();
+				return this.subject.getJoinColumnStrategy();
 			}
 		};
 	}
 
 	public static WritablePropertyValueModel<Boolean> buildUsesJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends ReadOnlyJoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<ReadOnlyJoinColumnRelationship, Boolean>(
-				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return Boolean.valueOf(this.buildBooleanValue());
 			}
 			
 			protected boolean buildBooleanValue() {
-				return (this.subject != null) && this.subject.usesJoinColumnJoiningStrategy();
+				return (this.subject != null) && this.subject.strategyIsJoinColumn();
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					((JoinColumnRelationship) this.subject).setJoinColumnJoiningStrategy();
+					((JoinColumnRelationship) this.subject).setStrategyToJoinColumn();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

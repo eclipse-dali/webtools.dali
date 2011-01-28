@@ -2456,7 +2456,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		VirtualAssociationOverride virtualAssociationOverride = overrideContainer.virtualOverrides().next();
-		ReadOnlyJoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
+		ReadOnlyJoinColumnRelationshipStrategy joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
 		ReadOnlyJoinColumn virtualJoinColumn = joiningStrategy.joinColumns().next();
@@ -2471,7 +2471,7 @@ public class JavaEntityTests extends ContextModelTestCase
 		
 
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) getJavaPersistentType().getAttributeNamed("oneToOne").getMapping();
-		JoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().addSpecifiedJoinColumn(0);
+		JoinColumn joinColumn = oneToOneMapping.getRelationship().getJoinColumnStrategy().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("MY_JOIN_COLUMN");
 		joinColumn.setSpecifiedReferencedColumnName("MY_REFERENCE_COLUMN");
 		joinColumn.setSpecifiedTable("BAR");
@@ -2487,7 +2487,7 @@ public class JavaEntityTests extends ContextModelTestCase
 
 		assertEquals(2, overrideContainer.virtualOverridesSize());
 		virtualAssociationOverride = overrideContainer.virtualOverrides().next();
-		joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnJoiningStrategy();
+		joiningStrategy = ((ReadOnlyJoinColumnRelationship) virtualAssociationOverride.getRelationship()).getJoinColumnStrategy();
 		assertEquals("oneToOne", virtualAssociationOverride.getName());
 		assertEquals(1, joiningStrategy.joinColumnsSize());
 		virtualAssociationOverride = overrideContainer.virtualOverrides().next();

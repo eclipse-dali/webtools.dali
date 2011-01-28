@@ -50,14 +50,14 @@ public abstract class AbstractJavaMappingRelationship<M extends JavaRelationship
 
 	// ********** strategy **********
 
-	public JavaRelationshipStrategy getPredominantJoiningStrategy() {
+	public JavaRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(JavaRelationshipStrategy strategy) {
 		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected abstract JavaRelationshipStrategy buildStrategy();

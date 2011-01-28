@@ -56,14 +56,14 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** strategy **********
 
-	public JavaVirtualRelationshipStrategy getPredominantJoiningStrategy() {
+	public JavaVirtualRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(JavaVirtualRelationshipStrategy strategy) {
 		JavaVirtualRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected JavaVirtualRelationshipStrategy buildStrategy() {
@@ -79,11 +79,11 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public JavaVirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public JavaVirtualJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
@@ -98,11 +98,11 @@ public class GenericJavaVirtualOverrideRelationship
 
 	// ********** join table strategy **********
 
-	public JavaVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public JavaVirtualJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 

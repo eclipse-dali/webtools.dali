@@ -10,7 +10,12 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Join column relationship (1:1, 1:m, m:1, and association override)
+ * Join column relationship<ul>
+ * <li>1:1
+ * <li>1:m
+ * <li>m:1
+ * <li>association override
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -28,14 +33,10 @@ package org.eclipse.jpt.core.context;
 public interface JoinColumnRelationship
 	extends ReadOnlyJoinColumnRelationship, Relationship
 {
-	/**
-	 * Return the aggregate (never <code>null</code>) object used to configure
-	 * the join column strategy
-	 */
-	JoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
+	JoinColumnRelationshipStrategy getJoinColumnStrategy();
 	
 	/**
-	 * Set the join column strategy as the strategy
+	 * Set the relationship's strategy to the join column strategy.
 	 */
-	void setJoinColumnJoiningStrategy();
+	void setStrategyToJoinColumn();
 }

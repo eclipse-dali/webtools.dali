@@ -31,5 +31,5 @@ public interface JavaOverrideRelationship2_0
 			JavaOverrideRelationship,
 			JavaJoinTableRelationship
 {
-	JavaJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
+	JavaJoinTableRelationshipStrategy getJoinTableStrategy();
 }

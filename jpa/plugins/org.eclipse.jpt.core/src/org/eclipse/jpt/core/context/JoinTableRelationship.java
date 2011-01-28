@@ -10,8 +10,13 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Join table relationship (1:1 (JPA 2.0), 1:m, m:1 (JPA 2.0), m:m,
- * and association override (JPA 2.0))
+ * Join table relationship<ul>
+ * <li>1:1 (JPA 2.0)
+ * <li>1:m
+ * <li>m:1 (JPA 2.0)
+ * <li>m:m
+ * <li>association override (JPA 2.0)
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,10 +30,10 @@ package org.eclipse.jpt.core.context;
 public interface JoinTableRelationship
 	extends ReadOnlyJoinTableRelationship, Relationship
 {
-	JoinTableRelationshipStrategy getJoinTableJoiningStrategy();
-	
+	JoinTableRelationshipStrategy getJoinTableStrategy();
+
 	/**
-	 * Set the join table strategy as the strategy
+	 * Set the relationship's strategy to the join table strategy.
 	 */
-	void setJoinTableJoiningStrategy();
+	void setStrategyToJoinTable();
 }

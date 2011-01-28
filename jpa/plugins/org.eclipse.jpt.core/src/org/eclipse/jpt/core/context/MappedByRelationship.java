@@ -10,7 +10,11 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * "Mapped by" relationship
+ * "Mapped by" relationship<ul>
+ * <li>1:1
+ * <li>1:m
+ * <li>m:m
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,24 +29,24 @@ public interface MappedByRelationship
 	extends Relationship
 {
 	/**
-	 * Return the aggregate (never <code>null</code>) object used to configure
-	 * the "mapped by" strategy
+	 * Return the (never <code>null</code>) strategy used to configure
+	 * the relationship's "mapped by" strategy.
 	 */
-	MappedByRelationshipStrategy getMappedByJoiningStrategy();
-	
+	MappedByRelationshipStrategy getMappedByStrategy();
+
 	/**
-	 * Return whether the mapped by joining strategy is currently the predominant
-	 * joining strategy
+	 * Return whether the "mapped by" strategy is the
+	 * relationship's current strategy.
 	 */
-	boolean usesMappedByJoiningStrategy();
-	
+	boolean strategyIsMappedBy();
+
 	/**
-	 * Set the mapped by joining strategy as the predominant joining strategy
+	 * Set the relationship's strategy to the "mapped by" strategy.
 	 */
-	void setMappedByJoiningStrategy();
-	
+	void setStrategyToMappedBy();
+
 	/**
-	 * Validates whether the given mapping may own the relationship
+	 * Return whether the specified mapping may own the relationship.
 	 */
 	boolean mayBeMappedBy(AttributeMapping mapping);
 }

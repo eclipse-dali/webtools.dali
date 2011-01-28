@@ -28,5 +28,5 @@ public interface JavaVirtualOverrideRelationship2_0
 			JavaVirtualOverrideRelationship,
 			JavaVirtualJoinTableRelationship
 {
-	JavaVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
+	JavaVirtualJoinTableRelationshipStrategy getJoinTableStrategy();
 }

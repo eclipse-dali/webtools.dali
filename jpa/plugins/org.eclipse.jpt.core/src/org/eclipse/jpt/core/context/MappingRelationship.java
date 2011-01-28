@@ -10,7 +10,12 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Mapping relationship (1:1, 1:m, m:1, m:m)
+ * Mapping relationship<ul>
+ * <li>1:1
+ * <li>1:m
+ * <li>m:1
+ * <li>m:m
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching

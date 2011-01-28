@@ -24,5 +24,5 @@ public interface OrmVirtualJoinColumnRelationship
 	extends VirtualJoinColumnRelationship,
 			OrmVirtualRelationship
 {
-	OrmVirtualJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
+	OrmVirtualJoinColumnRelationshipStrategy getJoinColumnStrategy();
 }

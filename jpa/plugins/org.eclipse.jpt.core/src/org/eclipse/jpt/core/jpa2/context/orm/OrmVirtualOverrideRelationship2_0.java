@@ -28,5 +28,5 @@ public interface OrmVirtualOverrideRelationship2_0
 			OrmVirtualOverrideRelationship,
 			OrmVirtualJoinTableRelationship
 {
-	OrmVirtualJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
+	OrmVirtualJoinTableRelationshipStrategy getJoinTableStrategy();
 }

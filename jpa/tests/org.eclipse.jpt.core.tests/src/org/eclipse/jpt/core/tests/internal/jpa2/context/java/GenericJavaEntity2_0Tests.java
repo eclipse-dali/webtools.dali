@@ -2062,7 +2062,7 @@ public class GenericJavaEntity2_0Tests extends Generic2_0ContextModelTestCase
 
 		associationOverride = getJavaEntity().getAssociationOverrideContainer().specifiedOverrides().next();
 		assertEquals("a", associationOverride.getName());
-		JoinTable joinTable = ((JavaOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = ((JavaOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy().getJoinTable();
 		assertEquals("FOO", joinTable.getSpecifiedName());
 		assertEquals("BAR", joinTable.inverseJoinColumns().next().getName());
 	}

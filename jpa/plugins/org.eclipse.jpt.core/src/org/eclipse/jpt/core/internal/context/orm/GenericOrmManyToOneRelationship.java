@@ -74,15 +74,15 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
-	public void setJoinTableJoiningStrategy() {
+	public void setStrategyToJoinTable() {
 		this.joinTableStrategy.addStrategy();
 		this.joinColumnStrategy.removeStrategy();
 		this.updateStrategy();
@@ -102,15 +102,15 @@ public class GenericOrmManyToOneRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
-	public void setJoinColumnJoiningStrategy() {
+	public void setStrategyToJoinColumn() {
 		// join column strategy is the default; so no need to add stuff,
 		// just remove all the others
 		this.joinTableStrategy.removeStrategy();
@@ -136,13 +136,13 @@ public class GenericOrmManyToOneRelationship
 	@Override
 	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 	@Override
 	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
 		super.initializeFromJoinColumnRelationship(oldRelationship);
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
 

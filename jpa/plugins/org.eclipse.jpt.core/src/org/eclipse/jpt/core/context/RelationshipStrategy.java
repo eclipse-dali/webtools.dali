@@ -35,21 +35,21 @@ import org.eclipse.jpt.db.Table;
 public interface RelationshipStrategy
 	extends ReadOnlyRelationshipStrategy
 {
-// TODO bjv rename to RelationshipStrategy - move to inside Relationship interface?
 	Relationship getRelationship();
 
 	/**
-	 * Add this strategy to the relationship reference.
+	 * Add this strategy to the relationship.
 	 */
 	void addStrategy();
 	
 	/**
-	 * Remove this strategy from the relationship reference.
+	 * Remove this strategy from the relationship.
 	 */
 	void removeStrategy();
 	
 	/**
-	 * Return whether the mapping can be overridden with an association override.
+	 * Return whether the relationship's mapping can be overridden with an
+	 * association override.
 	 */
 	boolean isOverridable();
 	

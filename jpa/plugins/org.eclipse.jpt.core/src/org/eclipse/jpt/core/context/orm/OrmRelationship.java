@@ -27,5 +27,5 @@ import org.eclipse.jpt.core.context.Relationship;
 public interface OrmRelationship
 	extends Relationship, OrmReadOnlyRelationship
 {
-	OrmRelationshipStrategy getPredominantJoiningStrategy();
+	OrmRelationshipStrategy getStrategy();
 }

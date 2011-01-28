@@ -91,22 +91,22 @@ public class GenericOrmMappedByRelationshipStrategy
 
 	public String getTableName() {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().getTableName();
+		return (owner == null) ? null : owner.getRelationship().getStrategy().getTableName();
 	}
 
 	public Table resolveDbTable(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner == null) ? null : owner.getRelationship().getPredominantJoiningStrategy().resolveDbTable(tableName);
+		return (owner == null) ? null : owner.getRelationship().getStrategy().resolveDbTable(tableName);
 	}
 
 	public boolean tableNameIsInvalid(String tableName) {
 		RelationshipMapping owner = this.getRelationshipOwner();
-		return (owner != null) && owner.getRelationship().getPredominantJoiningStrategy().tableNameIsInvalid(tableName);
+		return (owner != null) && owner.getRelationship().getStrategy().tableNameIsInvalid(tableName);
 	}
 
 	public String getColumnTableNotValidDescription() {
 		// this will not be called if getRelationshipOwner() returns null
-		return this.getRelationshipOwner().getRelationship().getPredominantJoiningStrategy().getColumnTableNotValidDescription();
+		return this.getRelationshipOwner().getRelationship().getStrategy().getColumnTableNotValidDescription();
 	}
 
 	protected RelationshipMapping getRelationshipOwner() {

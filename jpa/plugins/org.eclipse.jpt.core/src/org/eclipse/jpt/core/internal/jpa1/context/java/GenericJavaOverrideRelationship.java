@@ -74,14 +74,14 @@ public class GenericJavaOverrideRelationship
 
 	// ********** strategy **********
 
-	public JavaRelationshipStrategy getPredominantJoiningStrategy() {
+	public JavaRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(JavaRelationshipStrategy strategy) {
 		JavaRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected JavaRelationshipStrategy buildStrategy() {
@@ -97,15 +97,15 @@ public class GenericJavaOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public JavaJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public JavaJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
-	public void setJoinColumnJoiningStrategy() {
+	public void setStrategyToJoinColumn() {
 		this.joinColumnStrategy.addStrategy();
 		this.joinTableStrategy.removeStrategy();
 	}
@@ -121,21 +121,21 @@ public class GenericJavaOverrideRelationship
 
 	// ********** join table strategy **********
 
-	public JavaJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public JavaJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
-	public void setJoinTableJoiningStrategy() {
+	public void setStrategyToJoinTable() {
 		this.joinTableStrategy.addStrategy();
 		this.joinColumnStrategy.removeStrategy();
 	}
 
 	public boolean mayHaveDefaultJoinTable() {
-		return this.isVirtual() && this.usesJoinTableJoiningStrategy();
+		return this.isVirtual() && this.strategyIsJoinTable();
 	}
 
 	protected JavaJoinTableRelationshipStrategy buildJoinTableStrategy() {
@@ -161,11 +161,11 @@ public class GenericJavaOverrideRelationship
 	}
 
 	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
 	public void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship) {
@@ -177,11 +177,11 @@ public class GenericJavaOverrideRelationship
 	}
 
 	public void initializeFromVirtualJoinTableRelationship(ReadOnlyJoinTableRelationship virtualRelationship) {
-		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableStrategy());
 	}
 
 	public void initializeFromVirtualJoinColumnRelationship(ReadOnlyJoinColumnRelationship virtualRelationship) {
-		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnStrategy());
 	}
 
 

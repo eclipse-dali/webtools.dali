@@ -23,5 +23,5 @@ import org.eclipse.jpt.core.context.VirtualRelationship;
 public interface JavaVirtualRelationship
 	extends VirtualRelationship, JavaReadOnlyRelationship
 {
-	JavaVirtualRelationshipStrategy getPredominantJoiningStrategy();
+	JavaVirtualRelationshipStrategy getStrategy();
 }

@@ -10,7 +10,9 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Primary key join column relationship
+ * Primary key join column relationship<ul>
+ * <li>1:1
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -25,20 +27,19 @@ public interface PrimaryKeyJoinColumnRelationship
 	extends Relationship
 {
 	/**
-	 * Return the aggregate (never <code>null</code>) object used to configure
-	 * the primary key join column strategy
+	 * Return the (never <code>null</code>) strategy used to configure
+	 * the relationship's primary key join column strategy.
 	 */
-	PrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnJoiningStrategy();
-	
+	PrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy();
+
 	/**
-	 * Return whether the primary key join column joining strategy is currently 
-	 * the predominant joining strategy
+	 * Return whether the primary key join column strategy is the
+	 * relationship's current strategy.
 	 */
-	boolean usesPrimaryKeyJoinColumnJoiningStrategy();
-	
+	boolean strategyIsPrimaryKeyJoinColumn();
+
 	/**
-	 * Set the primary key join column joining strategy as the predominant 
-	 * joining strategy
+	 * Set the relationship's strategy to the primary key join column strategy.
 	 */
-	void setPrimaryKeyJoinColumnJoiningStrategy();
+	void setStrategyToPrimaryKeyJoinColumn();
 }

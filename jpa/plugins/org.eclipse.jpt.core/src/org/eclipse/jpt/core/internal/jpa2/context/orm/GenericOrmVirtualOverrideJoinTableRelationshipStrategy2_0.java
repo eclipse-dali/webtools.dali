@@ -91,7 +91,7 @@ public class GenericOrmVirtualOverrideJoinTableRelationshipStrategy2_0
 
 	protected JoinTableRelationshipStrategy getOverriddenStrategy() {
 		JoinTableRelationship relationship = this.getOverriddenJoinTableRelationship();
-		return (relationship == null) ? null : relationship.getJoinTableJoiningStrategy();
+		return (relationship == null) ? null : relationship.getJoinTableStrategy();
 	}
 
 	protected JoinTableRelationship getOverriddenJoinTableRelationship() {

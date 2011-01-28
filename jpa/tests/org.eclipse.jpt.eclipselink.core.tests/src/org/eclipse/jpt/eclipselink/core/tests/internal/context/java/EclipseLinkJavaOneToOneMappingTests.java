@@ -319,10 +319,10 @@ public class EclipseLinkJavaOneToOneMappingTests extends EclipseLinkContextModel
 		assertEquals(MappingKeys.ONE_TO_ONE_ATTRIBUTE_MAPPING_KEY, persistentAttribute.getDefaultMappingKey());
 		
 		EclipseLinkOneToOneMapping oneToOneMapping = (EclipseLinkOneToOneMapping) persistentAttribute.getMapping();
-		oneToOneMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("Foo");
+		oneToOneMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("Foo");
 		
 		EclipseLinkOneToOneMapping specifiedOneToOneMapping = (EclipseLinkOneToOneMapping) getJavaPersistentType().attributes().next().getMapping();
-		assertEquals("Foo", specifiedOneToOneMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertEquals("Foo", specifiedOneToOneMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		
 		JavaResourcePersistentType typeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME);
 		JavaResourcePersistentAttribute attributeResource = typeResource.persistableAttributes().next();

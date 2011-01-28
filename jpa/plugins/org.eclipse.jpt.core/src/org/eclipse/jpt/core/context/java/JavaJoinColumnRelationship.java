@@ -26,5 +26,5 @@ import org.eclipse.jpt.core.context.JoinColumnRelationship;
 public interface JavaJoinColumnRelationship
 	extends JoinColumnRelationship, JavaRelationship
 {
-	JavaJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
+	JavaJoinColumnRelationshipStrategy getJoinColumnStrategy();
 }

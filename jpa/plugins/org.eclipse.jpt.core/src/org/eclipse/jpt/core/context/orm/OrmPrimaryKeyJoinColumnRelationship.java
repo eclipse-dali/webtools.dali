@@ -29,5 +29,5 @@ public interface OrmPrimaryKeyJoinColumnRelationship
 {
 	XmlPrimaryKeyJoinColumnContainer getXmlContainer();
 	
-	OrmPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnJoiningStrategy();
+	OrmPrimaryKeyJoinColumnRelationshipStrategy getPrimaryKeyJoinColumnStrategy();
 }

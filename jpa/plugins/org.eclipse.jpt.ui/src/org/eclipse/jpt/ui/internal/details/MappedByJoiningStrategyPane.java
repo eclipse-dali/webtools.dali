@@ -68,24 +68,24 @@ public class MappedByJoiningStrategyPane
 				getSubjectHolder()) {
 			@Override
 			protected MappedByRelationshipStrategy buildValue_() {
-				return this.subject.getMappedByJoiningStrategy();
+				return this.subject.getMappedByStrategy();
 			}
 		};
 	}
 
 	public static WritablePropertyValueModel<Boolean> buildUsesMappedByJoiningStrategyHolder(PropertyValueModel<? extends MappedByRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
-				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.usesMappedByJoiningStrategy());
+					Boolean.valueOf(this.subject.strategyIsMappedBy());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setMappedByJoiningStrategy();
+					this.subject.setStrategyToMappedBy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

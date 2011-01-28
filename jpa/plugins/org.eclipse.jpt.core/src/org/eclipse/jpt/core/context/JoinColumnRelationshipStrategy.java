@@ -46,24 +46,22 @@ public interface JoinColumnRelationshipStrategy
 	JoinColumn getSpecifiedJoinColumn(int index);
 
 	/**
-	 * Add a specified join column to the join table return the object
-	 * representing it.
+	 * Add a specified join column to the relationship.
 	 */
 	JoinColumn addSpecifiedJoinColumn();
 
 	/**
-	 * Add a specified join column to the join table return the object
-	 * representing it.
+	 * Add a specified join column to the relationship.
 	 */
 	JoinColumn addSpecifiedJoinColumn(int index);
 
 	/**
-	 * Remove the specified join column from the join table.
+	 * Remove the specified join column.
 	 */
 	void removeSpecifiedJoinColumn(int index);
 
 	/**
-	 * Remove the specified join column at the index from the join table.
+	 * Remove the specified join column.
 	 */
 	void removeSpecifiedJoinColumn(JoinColumn joinColumn);
 

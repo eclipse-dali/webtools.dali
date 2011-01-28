@@ -165,7 +165,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
 		protected JavaRelationshipStrategy getRelationshipStrategy() {
-			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
+			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
 
@@ -690,7 +690,7 @@ public abstract class AbstractJavaMultiRelationshipMapping<A extends Relationshi
 		}
 
 		protected RelationshipStrategy getRelationshipStrategy() {
-			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
+			return AbstractJavaMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
 

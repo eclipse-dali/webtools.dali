@@ -420,7 +420,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		OneToManyMapping oneToMany = (OneToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
-		JoinTable ormJoinTable = oneToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable ormJoinTable = oneToMany.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("DEP_EMP", ormJoinTable.getName());
 		assertEquals("DEPT_ID", ormJoinTable.specifiedJoinColumns().next().getName());
 		assertEquals("id", ormJoinTable.specifiedJoinColumns().next().getReferencedColumnName());
@@ -434,7 +434,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		oneToMany = (OneToManyMapping) attribute.getMapping();
 		
 		assertEquals(true, attribute.isVirtual());
-		ormJoinTable = oneToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = oneToMany.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("Department_Employee", ormJoinTable.getName());
 		assertEquals("Department_id", ormJoinTable.getDefaultJoinColumn().getName());
 		assertEquals("id", ormJoinTable.getDefaultJoinColumn().getReferencedColumnName());
@@ -446,7 +446,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		attribute = departmentPersistentType.getAttributeNamed("employees");
 		oneToMany = (OneToManyMapping) attribute.getMapping();
 		assertEquals(true, attribute.isVirtual());
-		ormJoinTable = oneToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = oneToMany.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("DEP_EMP", ormJoinTable.getName());
 		assertEquals("DEPT_ID", ormJoinTable.specifiedJoinColumns().next().getName());
 		assertEquals("id", ormJoinTable.specifiedJoinColumns().next().getReferencedColumnName());
@@ -458,7 +458,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		attribute = departmentPersistentType.getAttributeNamed("employees");
 		oneToMany = (OneToManyMapping) attribute.getMapping();
 		assertEquals(false, attribute.isVirtual());
-		ormJoinTable = oneToMany.getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		ormJoinTable = oneToMany.getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("Department_Employee", ormJoinTable.getName());
 		assertEquals(0, ormJoinTable.specifiedJoinColumnsSize());
 		assertEquals("Department_id", ormJoinTable.getDefaultJoinColumn().getName());
@@ -585,33 +585,33 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
-		rel.setJoinColumnJoiningStrategy();
+		rel.setStrategyToJoinColumn();
 		assertFalse(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
-		rel.setMappedByJoiningStrategy();
+		rel.setStrategyToMappedBy();
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
-		rel.setJoinTableJoiningStrategy();
+		rel.setStrategyToJoinTable();
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -626,63 +626,63 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceMapping.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceMapping.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
 		getJpaProject().synchronizeContextModel();
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNotNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceMapping.getJoinColumns().add(OrmFactory.eINSTANCE.createXmlJoinColumn());
 		getJpaProject().synchronizeContextModel();
 		assertFalse(resourceMapping.getJoinColumns().isEmpty());
 		assertNotNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceMapping.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(resourceMapping.getJoinColumns().isEmpty());
 		assertNotNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceMapping.setJoinTable(null);
 		getJpaProject().synchronizeContextModel();
 		assertFalse(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceMapping.getJoinColumns().clear();
 		getJpaProject().synchronizeContextModel();
 		assertTrue(resourceMapping.getJoinColumns().isEmpty());
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 
 	public void testVirtualMappingMetadataCompleteFalse() throws Exception {
@@ -699,7 +699,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertEquals(FetchType.EAGER, virtualOneToManyMapping.getSpecifiedFetch());
 		assertEquals("Address", virtualOneToManyMapping.getSpecifiedTargetEntity());
 		assertNull(virtualOneToManyMapping.getRelationship().
-			getMappedByJoiningStrategy().getMappedByAttribute());
+			getMappedByStrategy().getMappedByAttribute());
 
 		Cascade cascade = virtualOneToManyMapping.getCascade();
 		assertTrue(cascade.isAll());
@@ -730,7 +730,7 @@ public class EclipseLinkOrmOneToManyMappingTests
 		assertEquals("address", virtualOneToManyMapping.getName());
 		assertEquals(FetchType.LAZY, virtualOneToManyMapping.getFetch());
 		assertEquals("test.Address", virtualOneToManyMapping.getTargetEntity());
-		assertNull(virtualOneToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(virtualOneToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 
 		Cascade cascade = virtualOneToManyMapping.getCascade();
 		assertFalse(cascade.isAll());

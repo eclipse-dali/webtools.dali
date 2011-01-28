@@ -50,14 +50,14 @@ public abstract class AbstractOrmMappingRelationship<M extends OrmRelationshipMa
 
 	// ********** strategy **********
 
-	public OrmRelationshipStrategy getPredominantJoiningStrategy() {
+	public OrmRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(OrmRelationshipStrategy strategy) {
 		RelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected abstract OrmRelationshipStrategy buildStrategy();

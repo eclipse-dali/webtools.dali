@@ -28,5 +28,5 @@ import org.eclipse.jpt.core.context.XmlContextNode;
 public interface OrmReadOnlyRelationship
 	extends ReadOnlyRelationship, XmlContextNode
 {
-	OrmReadOnlyRelationshipStrategy getPredominantJoiningStrategy();
+	OrmReadOnlyRelationshipStrategy getStrategy();
 }

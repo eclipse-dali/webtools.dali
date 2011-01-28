@@ -23,5 +23,5 @@ import org.eclipse.jpt.core.context.VirtualRelationship;
 public interface OrmVirtualRelationship
 	extends VirtualRelationship, OrmReadOnlyRelationship
 {
-	OrmVirtualRelationshipStrategy getPredominantJoiningStrategy();
+	OrmVirtualRelationshipStrategy getStrategy();
 }

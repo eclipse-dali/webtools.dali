@@ -501,7 +501,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -512,12 +512,12 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		oneToOneMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToOneMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -542,7 +542,7 @@ public class GenericJavaOneToOneMapping2_0Tests
 		OneToOneMapping oneToOneMapping = (OneToOneMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -553,12 +553,12 @@ public class GenericJavaOneToOneMapping2_0Tests
 		
 		oneToOneMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToOneMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToOneMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToOneMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -728,50 +728,50 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
-		rel.setPrimaryKeyJoinColumnJoiningStrategy();
+		rel.setStrategyToPrimaryKeyJoinColumn();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNotNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
-		rel.setMappedByJoiningStrategy();
+		rel.setStrategyToMappedBy();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertTrue(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
-		rel.setJoinTableJoiningStrategy();
+		rel.setStrategyToJoinTable();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertTrue(rel.strategyIsJoinTable());
 
-		rel.setJoinColumnJoiningStrategy();
+		rel.setStrategyToJoinColumn();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -788,10 +788,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		resourceAttribute.addAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
@@ -799,10 +799,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNotNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertTrue(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertTrue(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		annotation.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
@@ -810,10 +810,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNotNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertTrue(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
@@ -821,10 +821,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNotNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertTrue(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		resourceAttribute.addAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
@@ -832,10 +832,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNotNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(annotation.getMappedBy());
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertTrue(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		resourceAttribute.removeAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
@@ -843,10 +843,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNotNull(annotation.getMappedBy());
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertTrue(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 
 		annotation.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
@@ -854,10 +854,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertTrue(rel.strategyIsJoinTable());
 
 		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
@@ -865,10 +865,10 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertFalse(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());	
-		assertTrue(rel.usesJoinTableJoiningStrategy());
+		assertFalse(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());	
+		assertTrue(rel.strategyIsJoinTable());
 
 		resourceAttribute.removeAnnotation(JPA.JOIN_TABLE);
 		getJpaProject().synchronizeContextModel();
@@ -876,9 +876,9 @@ public class GenericJavaOneToOneMapping2_0Tests
 		assertNull(resourceAttribute.getAnnotation(JPA.PRIMARY_KEY_JOIN_COLUMN));
 		assertNull(annotation.getMappedBy());
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_TABLE));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
-		assertFalse(rel.usesPrimaryKeyJoinColumnJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
+		assertFalse(rel.strategyIsPrimaryKeyJoinColumn());
+		assertFalse(rel.strategyIsMappedBy());
+		assertFalse(rel.strategyIsJoinTable());
 	}
 }

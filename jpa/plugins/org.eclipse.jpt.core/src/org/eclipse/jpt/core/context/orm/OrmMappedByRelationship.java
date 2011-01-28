@@ -29,5 +29,5 @@ public interface OrmMappedByRelationship
 {
 	XmlMappedByMapping getXmlContainer();
 	
-	OrmMappedByRelationshipStrategy getMappedByJoiningStrategy();
+	OrmMappedByRelationshipStrategy getMappedByStrategy();
 }

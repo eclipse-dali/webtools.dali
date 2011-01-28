@@ -218,7 +218,7 @@ public class GenericJavaVirtualOverrideJoinColumnRelationshipStrategy
 
 	protected JoinColumnRelationshipStrategy getOverriddenStrategy() {
 		JoinColumnRelationship relationship = this.getOverriddenJoinColumnRelationship();
-		return (relationship == null) ? null : relationship.getJoinColumnJoiningStrategy();
+		return (relationship == null) ? null : relationship.getJoinColumnStrategy();
 	}
 
 	protected JoinColumnRelationship getOverriddenJoinColumnRelationship() {

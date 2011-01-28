@@ -37,14 +37,12 @@ public interface MappedByRelationshipStrategy
 	String MAPPED_BY_ATTRIBUTE_PROPERTY = "mappedByAttribute"; //$NON-NLS-1$
 	
 	/**
-	 * Return the attribute of this object.  A null indicates that the resource
-	 * element does not exist
+	 * Return the name of the attribute that maps the relationship.
 	 */
 	String getMappedByAttribute();
 	
 	/**
-	 * Set the attribute of this object.  A null will result in removal of the 
-	 * resource element
+	 * Set the name of the attribute that maps the relationship.
 	 */
 	void setMappedByAttribute(String attribute);
 	

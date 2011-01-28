@@ -24,5 +24,5 @@ import org.eclipse.jpt.core.context.ReadOnlyRelationship;
 public interface JavaReadOnlyRelationship
 	extends ReadOnlyRelationship, JavaJpaContextNode
 {
-	JavaReadOnlyRelationshipStrategy getPredominantJoiningStrategy();
+	JavaReadOnlyRelationshipStrategy getStrategy();
 }

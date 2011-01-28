@@ -10,7 +10,12 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Join column relationship (1:1, 1:m, m:1, and association override)
+ * Join column relationship<ul>
+ * <li>1:1
+ * <li>1:m
+ * <li>m:1
+ * <li>association override
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -26,20 +31,23 @@ public interface ReadOnlyJoinColumnRelationship
 	extends ReadOnlyRelationship
 {
 	/**
-	 * Return the aggregate (never <code>null</code>) object used to configure
-	 * the join column strategy
+	 * Return the (never <code>null</code>) strategy used to configure
+	 * the relationship's join column strategy.
 	 */
-	ReadOnlyJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy();
-	
+	ReadOnlyJoinColumnRelationshipStrategy getJoinColumnStrategy();
+
 	/**
-	 * Return whether the join column strategy is currently the strategy
+	 * Return whether the join column strategy is the
+	 * relationship's current strategy.
 	 */
-	boolean usesJoinColumnJoiningStrategy();
-	
+	boolean strategyIsJoinColumn();
+
 	/**
-	 * Return whether this reference may potentially have a default join column.
-	 * (For example, a 1-1 mapping may have one if it does not specify a mappedBy
-	 * or a join table, but a 1-M mapping may not.)
+	 * Return whether this relationship may potentially have a default join
+	 * column. For example, a 1-1 mapping may have a default join column
+	 * if it does not specify a "mapped by" attribute or a join table;
+	 * but a 1-M mapping does not support a default join column in any
+	 * situation.
 	 */
 	boolean mayHaveDefaultJoinColumn();
 }

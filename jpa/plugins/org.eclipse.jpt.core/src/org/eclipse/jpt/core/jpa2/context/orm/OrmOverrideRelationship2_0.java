@@ -37,7 +37,7 @@ public interface OrmOverrideRelationship2_0
 			OrmOverrideRelationship,
 			OrmJoinTableRelationship
 {
-	OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
+	OrmJoinTableRelationshipStrategy getJoinTableStrategy();
 
 	JptValidator buildJoinTableJoinColumnValidator(JoinColumn column, JoinColumn.Owner owner, JoinColumnTextRangeResolver textRangeResolver);
 

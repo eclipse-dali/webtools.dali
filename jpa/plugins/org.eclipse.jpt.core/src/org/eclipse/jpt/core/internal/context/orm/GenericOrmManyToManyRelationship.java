@@ -73,22 +73,22 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** mapped by strategy **********
 
-	public OrmMappedByRelationshipStrategy getMappedByJoiningStrategy() {
+	public OrmMappedByRelationshipStrategy getMappedByStrategy() {
 		return this.mappedByStrategy;
 	}
 
-	public boolean usesMappedByJoiningStrategy() {
+	public boolean strategyIsMappedBy() {
 		return this.strategy == this.mappedByStrategy;
 	}
 
-	public void setMappedByJoiningStrategy() {
+	public void setStrategyToMappedBy() {
 		this.mappedByStrategy.addStrategy();
 		this.joinTableStrategy.removeStrategy();
 		this.updateStrategy();
 	}
 
-	public boolean mayBeMappedBy(AttributeMapping mappedByMapping) {
-		return mappedByMapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
+	public boolean mayBeMappedBy(AttributeMapping mapping) {
+		return mapping.getKey() == MappingKeys.MANY_TO_MANY_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	protected OrmMappedByRelationshipStrategy buildMappedByStrategy() {
@@ -98,15 +98,15 @@ public class GenericOrmManyToManyRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
-	public void setJoinTableJoiningStrategy() {
+	public void setStrategyToJoinTable() {
 		// join table is the default strategy, so no need to add to resource
 		this.mappedByStrategy.removeStrategy();
 		this.updateStrategy();
@@ -131,13 +131,13 @@ public class GenericOrmManyToManyRelationship
 	@Override
 	public void initializeFromMappedByRelationship(MappedByRelationship oldRelationship) {
 		super.initializeFromMappedByRelationship(oldRelationship);
-		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByJoiningStrategy());
+		this.mappedByStrategy.initializeFrom(oldRelationship.getMappedByStrategy());
 	}
 
 	@Override
 	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
 		super.initializeFromJoinTableRelationship(oldRelationship);
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 

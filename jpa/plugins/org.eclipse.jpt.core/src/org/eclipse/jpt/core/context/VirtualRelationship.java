@@ -21,7 +21,7 @@ package org.eclipse.jpt.core.context;
 public interface VirtualRelationship
 	extends ReadOnlyRelationship
 {
-	VirtualRelationshipStrategy getPredominantJoiningStrategy();
+	VirtualRelationshipStrategy getStrategy();
 
 	Relationship resolveOverriddenRelationship();
 }

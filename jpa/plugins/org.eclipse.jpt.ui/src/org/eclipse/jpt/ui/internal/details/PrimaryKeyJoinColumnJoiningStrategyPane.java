@@ -55,7 +55,7 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 					getSubjectHolder()) {
 			@Override
 			protected PrimaryKeyJoinColumnRelationshipStrategy buildValue_() {
-				return this.subject.getPrimaryKeyJoinColumnJoiningStrategy();
+				return this.subject.getPrimaryKeyJoinColumnStrategy();
 			}
 		};
 	}
@@ -67,17 +67,17 @@ public class PrimaryKeyJoinColumnJoiningStrategyPane
 
 	public static WritablePropertyValueModel<Boolean> buildUsesPrimaryKeyJoinColumnJoiningStrategyHolder(PropertyValueModel<? extends PrimaryKeyJoinColumnRelationship> subjectHolder) {
 		return new PropertyAspectAdapter<PrimaryKeyJoinColumnRelationship, Boolean>(
-				subjectHolder, ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				subjectHolder, ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.usesPrimaryKeyJoinColumnJoiningStrategy());
+					Boolean.valueOf(this.subject.strategyIsPrimaryKeyJoinColumn());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setPrimaryKeyJoinColumnJoiningStrategy();
+					this.subject.setStrategyToPrimaryKeyJoinColumn();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

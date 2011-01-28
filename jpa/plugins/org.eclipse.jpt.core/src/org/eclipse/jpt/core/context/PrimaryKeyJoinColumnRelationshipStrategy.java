@@ -35,19 +35,18 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	String PRIMARY_KEY_JOIN_COLUMNS_LIST = "primaryKeyJoinColumns"; //$NON-NLS-1$
 	
 	/**
-	 * Return a list iterator of the primary key join columns.
-	 * This will not be null.
+	 * Return the strategy's primary key join columns.
 	 */
 	ListIterator<? extends PrimaryKeyJoinColumn> primaryKeyJoinColumns();
 	
 	/**
-	 * Return the number of join columns, both specified and default.
+	 * Return the number of primary key join columns.
 	 */
 	int primaryKeyJoinColumnsSize();
 	
 	/**
-	 * Return whether this has any primary key join columns.
-	 * (Equivalent to {@link #primaryKeyJoinColumnsSize()} == 0)
+	 * Return whether the relationship has any primary key join columns.
+	 * (Equivalent to {@link #primaryKeyJoinColumnsSize()} == 0.)
 	 */
 	boolean hasPrimaryKeyJoinColumns();
 
@@ -57,29 +56,27 @@ public interface PrimaryKeyJoinColumnRelationshipStrategy
 	PrimaryKeyJoinColumn getPrimaryKeyJoinColumn(int index);
 	
 	/**
-	 * Add a specified join column to the join table return the object 
-	 * representing it.
+	 * Add a primary key join column.
 	 */
 	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn();
 	
 	/**
-	 * Add a specified join column to the join table return the object 
-	 * representing it.
+	 * Add a primary key join column.
 	 */
 	PrimaryKeyJoinColumn addPrimaryKeyJoinColumn(int index);
 	
 	/**
-	 * Remove the specified join column from the join table.
+	 * Remove the specified primary key join column.
 	 */
 	void removePrimaryKeyJoinColumn(int index);
 	
 	/**
-	 * Remove the specified join column at the index from the join table.
+	 * Remove the specified primary key join column.
 	 */
 	void removePrimaryKeyJoinColumn(PrimaryKeyJoinColumn primaryKeyJoinColumn);
 	
 	/**
-	 * Move the specified join column from the source index to the target index.
+	 * Remove the specified primary key join column.
 	 */
 	void movePrimaryKeyJoinColumn(int targetIndex, int sourceIndex);
 }

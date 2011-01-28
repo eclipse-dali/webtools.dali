@@ -181,7 +181,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -202,7 +202,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -221,7 +221,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -242,7 +242,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -263,7 +263,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -284,7 +284,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -305,7 +305,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -326,7 +326,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -347,7 +347,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -368,7 +368,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		joinColumns.addSpecifiedJoinColumn(0);
 		assertFalse(manyToOneMapping.isDefault());
 		
@@ -504,7 +504,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		ListIterator<? extends JoinColumn> specifiedJoinColumns = joinColumns.specifiedJoinColumns();
 		
@@ -578,7 +578,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		assertEquals(0, joinColumns.specifiedJoinColumnsSize());
 		
@@ -595,7 +595,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		assertEquals(1, joinColumns.joinColumnsSize());
 		
@@ -616,7 +616,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		joinColumns.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joinColumns.addSpecifiedJoinColumn(0).setSpecifiedName("BAR");
@@ -638,7 +638,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		joinColumns.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joinColumns.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
@@ -659,7 +659,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		joinColumns.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joinColumns.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
@@ -708,7 +708,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		joinColumns.addSpecifiedJoinColumn(0).setSpecifiedName("FOO");
 		joinColumns.addSpecifiedJoinColumn(1).setSpecifiedName("BAR");
@@ -749,7 +749,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		JavaResourcePersistentAttribute attributeResource = getJpaProject().getJavaResourcePersistentType(FULLY_QUALIFIED_TYPE_NAME).persistableAttributes().next();
 	
 		((JoinColumnAnnotation) attributeResource.addAnnotation(0, JoinColumnAnnotation.ANNOTATION_NAME, JoinColumnsAnnotation.ANNOTATION_NAME)).setName("FOO");
@@ -803,7 +803,7 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		
 		PersistentAttribute persistentAttribute = getJavaPersistentType().attributes().next();
 		ManyToOneMapping manyToOneMapping = (ManyToOneMapping) persistentAttribute.getMapping();
-		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joinColumns = manyToOneMapping.getRelationship().getJoinColumnStrategy();
 		
 		assertTrue(joinColumns.getDefaultJoinColumn().isDefault());
 		
@@ -824,11 +824,11 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		ManyToOneRelationship rel = mapping.getRelationship();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
 		
-		rel.setJoinColumnJoiningStrategy();
+		rel.setStrategyToJoinColumn();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -841,17 +841,17 @@ public class JavaManyToOneMappingTests extends ContextModelTestCase
 		ManyToOneRelationship rel = mapping.getRelationship();
 		
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
 		
 		resourceAttribute.addAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
 		
 		resourceAttribute.removeAnnotation(JPA.JOIN_COLUMN);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceAttribute.getAnnotation(JPA.JOIN_COLUMN));
-		assertTrue(rel.usesJoinColumnJoiningStrategy());
+		assertTrue(rel.strategyIsJoinColumn());
 	}
 	
 	public void testDefaultTargetEntity() throws Exception {

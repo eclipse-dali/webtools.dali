@@ -87,17 +87,17 @@ public class ManyToManyJoiningStrategyPane
 
 	protected WritablePropertyValueModel<Boolean> buildUsesMappedByStrategyHolder() {
 		return new PropertyAspectAdapter<MappedByRelationship, Boolean>(
-				this.getSubjectHolder(), ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.usesMappedByJoiningStrategy());
+					Boolean.valueOf(this.subject.strategyIsMappedBy());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setMappedByJoiningStrategy();
+					this.subject.setStrategyToMappedBy();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}
@@ -106,17 +106,17 @@ public class ManyToManyJoiningStrategyPane
 
 	protected WritablePropertyValueModel<Boolean> buildUsesJoinTableStrategyHolder() {
 		return new PropertyAspectAdapter<JoinTableRelationship, Boolean>(
-				this.getSubjectHolder(), ReadOnlyRelationship.PREDOMINANT_JOINING_STRATEGY_PROPERTY) {
+				this.getSubjectHolder(), ReadOnlyRelationship.STRATEGY_PROPERTY) {
 			@Override
 			protected Boolean buildValue() {
 				return (this.subject == null) ? Boolean.FALSE :
-					Boolean.valueOf(this.subject.usesJoinTableJoiningStrategy());
+					Boolean.valueOf(this.subject.strategyIsJoinTable());
 			}
 			
 			@Override
 			protected void setValue_(Boolean value) {
 				if (value == Boolean.TRUE) {
-					this.subject.setJoinTableJoiningStrategy();
+					this.subject.setStrategyToJoinTable();
 				}
 				//value == FALSE - selection of another radio button causes this strategy to get unset
 			}

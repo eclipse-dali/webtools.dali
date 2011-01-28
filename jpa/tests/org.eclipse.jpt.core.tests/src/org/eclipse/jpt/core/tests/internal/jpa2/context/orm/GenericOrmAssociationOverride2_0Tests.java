@@ -204,7 +204,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("address", ormAssociationOverride.getName());
 	
 		OrmAssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
-		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnJoiningStrategy();
+		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
@@ -253,7 +253,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("address", ormAssociationOverride.getName());
 	
 		AssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
-		JoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnJoiningStrategy();
+		JoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
@@ -296,7 +296,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("address", ormAssociationOverride.getName());
 	
 		OrmAssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
-		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnJoiningStrategy();
+		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -343,7 +343,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		assertEquals("address", ormAssociationOverride.getName());
 	
 		OrmAssociationOverride specifiedOverride = ormAssociationOverride.convertToSpecified();
-		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnJoiningStrategy();
+		OrmJoinColumnRelationshipStrategy joiningStrategy = specifiedOverride.getRelationship().getJoinColumnStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -431,8 +431,8 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 
 		OrmVirtualAssociationOverride virtualOverride = overrideContainer.virtualOverrides().next();
 		OrmAssociationOverride associationOverride = virtualOverride.convertToSpecified();
-		((OverrideRelationship2_0) associationOverride.getRelationship()).setJoinTableJoiningStrategy();
-		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy();
+		((OverrideRelationship2_0) associationOverride.getRelationship()).setStrategyToJoinTable();
+		JoinTableRelationshipStrategy joiningStrategy = ((OverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -454,8 +454,8 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 
 		OrmVirtualAssociationOverride virtualOverride = overrideContainer.virtualOverrides().next();
 		OrmAssociationOverride associationOverride = virtualOverride.convertToSpecified();
-		((OrmOverrideRelationship2_0) associationOverride.getRelationship()).setJoinTableJoiningStrategy();
-		OrmJoinTableRelationshipStrategy joiningStrategy = ((OrmOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy();
+		((OrmOverrideRelationship2_0) associationOverride.getRelationship()).setStrategyToJoinTable();
+		OrmJoinTableRelationshipStrategy joiningStrategy = ((OrmOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 		
 		XmlEntity entityResource = getXmlEntityMappings().getEntities().get(0);
 		XmlAssociationOverride xmlAssociationOverride = entityResource.getAssociationOverrides().get(0);
@@ -515,7 +515,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		OrmAssociationOverrideContainer overrideContainer = ormEntity.getAssociationOverrideContainer();
 
 		ReadOnlyAssociationOverride associationOverride = overrideContainer.virtualOverrides().next();
-		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableJoiningStrategy();
+		VirtualJoinTableRelationshipStrategy joiningStrategy = ((VirtualOverrideRelationship2_0) associationOverride.getRelationship()).getJoinTableStrategy();
 
 		VirtualJoinTable joinTable = joiningStrategy.getJoinTable();
 		
@@ -528,7 +528,7 @@ public class GenericOrmAssociationOverride2_0Tests extends Generic2_0ContextMode
 		PersistentType mappedSuperclass = ormPersistentType.getSuperPersistentType();
 		((OrmReadOnlyPersistentAttribute)  mappedSuperclass.getAttributeNamed("address")).convertToSpecified();
 		ManyToManyMapping manyToManyMapping = (ManyToManyMapping) mappedSuperclass.getAttributeNamed("address").getMapping();
-		manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("BAR");
-		assertEquals("BAR", manyToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().getName());
+		manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("BAR");
+		assertEquals("BAR", manyToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().getName());
 	}
 }

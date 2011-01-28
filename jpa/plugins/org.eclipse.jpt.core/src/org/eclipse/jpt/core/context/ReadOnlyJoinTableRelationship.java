@@ -10,8 +10,13 @@
 package org.eclipse.jpt.core.context;
 
 /**
- * Join table relationship (1:1 (JPA 2.0), 1:m, m:1 (JPA 2.0), m:m,
- * and association override (JPA 2.0))
+ * Join table relationship<ul>
+ * <li>1:1 (JPA 2.0)
+ * <li>1:m
+ * <li>m:1 (JPA 2.0)
+ * <li>m:m
+ * <li>association override (JPA 2.0)
+ * </ul>
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,20 +28,23 @@ public interface ReadOnlyJoinTableRelationship
 	extends ReadOnlyRelationship
 {
 	/**
-	 * Return the aggregate (never <code>null</code>) object used to configure
-	 * the join table strategy
+	 * Return the (never <code>null</code>) strategy used to configure
+	 * the relationship's join table strategy.
 	 */
-	ReadOnlyJoinTableRelationshipStrategy getJoinTableJoiningStrategy();
+	ReadOnlyJoinTableRelationshipStrategy getJoinTableStrategy();
 
 	/**
-	 * Return whether the join table strategy is currently the strategy
+	 * Return whether the join table strategy is the
+	 * relationship's current strategy.
 	 */
-	boolean usesJoinTableJoiningStrategy();
+	boolean strategyIsJoinTable();
 
 	/**
-	 * Return whether this reference may potentially have a default join table.
-	 * (For example, a M-M mapping may have one if it does not specify a 
-	 * mappedBy)
+	 * Return whether this relationship may potentially have a default join
+	 * table. For example, a M-M mapping may have a default join table
+	 * if it does not specify a "mapped by" attribute or a join table;
+	 * but a M-1 mapping does not support a default join table in any
+	 * situation.
 	 */
 	boolean mayHaveDefaultJoinTable();
 }

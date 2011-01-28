@@ -78,14 +78,14 @@ public class GenericOrmOverrideRelationship
 
 	// ********** strategy **********
 
-	public OrmRelationshipStrategy getPredominantJoiningStrategy() {
+	public OrmRelationshipStrategy getStrategy() {
 		return this.strategy;
 	}
 
 	protected void setStrategy(OrmRelationshipStrategy strategy) {
 		OrmRelationshipStrategy old = this.strategy;
 		this.strategy = strategy;
-		this.firePropertyChanged(PREDOMINANT_JOINING_STRATEGY_PROPERTY, old, strategy);
+		this.firePropertyChanged(STRATEGY_PROPERTY, old, strategy);
 	}
 
 	protected OrmRelationshipStrategy buildStrategy() {
@@ -101,15 +101,15 @@ public class GenericOrmOverrideRelationship
 
 	// ********** join column strategy **********
 
-	public OrmJoinColumnRelationshipStrategy getJoinColumnJoiningStrategy() {
+	public OrmJoinColumnRelationshipStrategy getJoinColumnStrategy() {
 		return this.joinColumnStrategy;
 	}
 
-	public boolean usesJoinColumnJoiningStrategy() {
+	public boolean strategyIsJoinColumn() {
 		return this.strategy == this.joinColumnStrategy;
 	}
 
-	public void setJoinColumnJoiningStrategy() {
+	public void setStrategyToJoinColumn() {
 		this.joinColumnStrategy.addStrategy();
 		this.joinTableStrategy.removeStrategy();
 	}
@@ -125,15 +125,15 @@ public class GenericOrmOverrideRelationship
 
 	// ********** join table strategy **********
 
-	public OrmJoinTableRelationshipStrategy getJoinTableJoiningStrategy() {
+	public OrmJoinTableRelationshipStrategy getJoinTableStrategy() {
 		return this.joinTableStrategy;
 	}
 
-	public boolean usesJoinTableJoiningStrategy() {
+	public boolean strategyIsJoinTable() {
 		return this.strategy == this.joinTableStrategy;
 	}
 
-	public void setJoinTableJoiningStrategy() {
+	public void setStrategyToJoinTable() {
 		this.joinTableStrategy.addStrategy();
 		this.joinColumnStrategy.removeStrategy();
 	}
@@ -165,11 +165,11 @@ public class GenericOrmOverrideRelationship
 	}
 
 	public void initializeFromJoinTableRelationship(ReadOnlyJoinTableRelationship oldRelationship) {
-		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFrom(oldRelationship.getJoinTableStrategy());
 	}
 
 	public void initializeFromJoinColumnRelationship(ReadOnlyJoinColumnRelationship oldRelationship) {
-		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFrom(oldRelationship.getJoinColumnStrategy());
 	}
 
 	public void initializeFromVirtual(ReadOnlyOverrideRelationship virtualRelationship) {
@@ -181,11 +181,11 @@ public class GenericOrmOverrideRelationship
 	}
 
 	public void initializeFromVirtualJoinTableRelationship(ReadOnlyJoinTableRelationship virtualRelationship) {
-		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableJoiningStrategy());
+		this.joinTableStrategy.initializeFromVirtual(virtualRelationship.getJoinTableStrategy());
 	}
 
 	public void initializeFromVirtualJoinColumnRelationship(ReadOnlyJoinColumnRelationship virtualRelationship) {
-		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnJoiningStrategy());
+		this.joinColumnStrategy.initializeFromVirtual(virtualRelationship.getJoinColumnStrategy());
 	}
 
 

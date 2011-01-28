@@ -364,7 +364,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
+		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());
@@ -385,7 +385,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OrmPersistentType ormPersistentType = getEntityMappings().addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, "model.Foo");
 		OrmPersistentAttribute ormPersistentAttribute = ormPersistentType.addSpecifiedAttribute(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY, "oneToManyMapping");
 		OrmOneToManyMapping ormOneToManyMapping = (OrmOneToManyMapping) ormPersistentAttribute.getMapping();
-		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy();
+		OrmMappedByRelationshipStrategy strategy = ormOneToManyMapping.getRelationship().getMappedByStrategy();
 		XmlOneToMany oneToMany = getXmlEntityMappings().getEntities().get(0).getAttributes().getOneToManys().get(0);
 		
 		assertNull(strategy.getMappedByAttribute());
@@ -413,20 +413,20 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
-		rel.setMappedByJoiningStrategy();
+		rel.setStrategyToMappedBy();
 		assertNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
-		rel.setJoinTableJoiningStrategy();
+		rel.setStrategyToJoinTable();
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 	
 	public void testUpdatePredominantJoiningStrategy() throws Exception {
@@ -440,36 +440,36 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceMapping.setMappedBy("foo");
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceMapping.setJoinTable(OrmFactory.eINSTANCE.createXmlJoinTable());
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceMapping.getJoinTable());
 		assertNotNull(resourceMapping.getMappedBy());
-		assertFalse(rel.usesJoinTableJoiningStrategy());
-		assertTrue(rel.usesMappedByJoiningStrategy());
+		assertFalse(rel.strategyIsJoinTable());
+		assertTrue(rel.strategyIsMappedBy());
 		
 		resourceMapping.setMappedBy(null);
 		getJpaProject().synchronizeContextModel();
 		assertNotNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 		
 		resourceMapping.setJoinTable(null);
 		getJpaProject().synchronizeContextModel();
 		assertNull(resourceMapping.getJoinTable());
 		assertNull(resourceMapping.getMappedBy());
-		assertTrue(rel.usesJoinTableJoiningStrategy());
-		assertFalse(rel.usesMappedByJoiningStrategy());
+		assertTrue(rel.strategyIsJoinTable());
+		assertFalse(rel.strategyIsMappedBy());
 	}
 	
 	public void testUpdateMapKey() throws Exception {
@@ -658,7 +658,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.ID_ATTRIBUTE_MAPPING_KEY);
@@ -678,11 +678,11 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedJoinColumn(0);
+		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("name");
 		joinColumn.setSpecifiedReferencedColumnName("referenceName");
-		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
+		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
 		inverseJoinColumn.setSpecifiedName("inverseName");
 		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -704,7 +704,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.TRANSIENT_ATTRIBUTE_MAPPING_KEY);
@@ -724,11 +724,11 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedJoinColumn(0);
+		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("name");
 		joinColumn.setSpecifiedReferencedColumnName("referenceName");
-		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
+		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
 		inverseJoinColumn.setSpecifiedName("inverseName");
 		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -750,7 +750,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		assertFalse(oneToManyMapping.isDefault());	
 		
 		ormPersistentAttribute.setMappingKey(MappingKeys.EMBEDDED_ID_ATTRIBUTE_MAPPING_KEY);
@@ -770,7 +770,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
 		oneToManyMapping.getCascade().setMerge(true);
 		oneToManyMapping.getCascade().setPersist(true);
@@ -785,7 +785,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertEquals("oneToMany", ormPersistentAttribute.getMapping().getName());
 		assertEquals(FetchType.EAGER, ((OneToOneMapping) ormPersistentAttribute.getMapping()).getSpecifiedFetch());
 		assertEquals("TargetEntity", ((OneToOneMapping) ormPersistentAttribute.getMapping()).getSpecifiedTargetEntity());
-		assertEquals("mappedBy", ((OneToOneMapping) ormPersistentAttribute.getMapping()).getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertEquals("mappedBy", ((OneToOneMapping) ormPersistentAttribute.getMapping()).getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertTrue(((OneToOneMapping) ormPersistentAttribute.getMapping()).getCascade().isAll());
 		assertTrue(((OneToOneMapping) ormPersistentAttribute.getMapping()).getCascade().isMerge());
 		assertTrue(((OneToOneMapping) ormPersistentAttribute.getMapping()).getCascade().isPersist());
@@ -808,11 +808,11 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.getCascade().setPersist(true);
 		oneToManyMapping.getCascade().setRefresh(true);
 		oneToManyMapping.getCascade().setRemove(true);
-		oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
-		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedJoinColumn(0);
+		oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().setSpecifiedName("MY_JOIN_TABLE");
+		JoinColumn joinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedJoinColumn(0);
 		joinColumn.setSpecifiedName("name");
 		joinColumn.setSpecifiedReferencedColumnName("referenceName");
-		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableJoiningStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
+		JoinColumn inverseJoinColumn = oneToManyMapping.getRelationship().getJoinTableStrategy().getJoinTable().addSpecifiedInverseJoinColumn(0);
 		inverseJoinColumn.setSpecifiedName("inverseName");
 		inverseJoinColumn.setSpecifiedReferencedColumnName("inverseReferenceName");
 		assertFalse(oneToManyMapping.isDefault());	
@@ -829,7 +829,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertTrue(((ManyToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isPersist());
 		assertTrue(((ManyToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isRefresh());
 		assertTrue(((ManyToManyMapping) ormPersistentAttribute.getMapping()).getCascade().isRemove());
-		JoinTable joinTable = ((ManyToManyMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinTableJoiningStrategy().getJoinTable();
+		JoinTable joinTable = ((ManyToManyMapping) ormPersistentAttribute.getMapping()).getRelationship().getJoinTableStrategy().getJoinTable();
 		assertEquals("MY_JOIN_TABLE", joinTable.getName());
 		assertEquals("name", joinTable.joinColumns().next().getSpecifiedName());
 		assertEquals("referenceName", joinTable.joinColumns().next().getSpecifiedReferencedColumnName());
@@ -847,7 +847,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
 		oneToManyMapping.getCascade().setMerge(true);
 		oneToManyMapping.getCascade().setPersist(true);
@@ -879,7 +879,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		oneToManyMapping.setSpecifiedTargetEntity("TargetEntity");
 		oneToManyMapping.getOrderable().setSpecifiedOrderBy("customOrder");
 		oneToManyMapping.setSpecifiedMapKey("mapKey");
-		oneToManyMapping.getRelationship().getMappedByJoiningStrategy().setMappedByAttribute("mappedBy");
+		oneToManyMapping.getRelationship().getMappedByStrategy().setMappedByAttribute("mappedBy");
 		oneToManyMapping.getCascade().setAll(true);
 		oneToManyMapping.getCascade().setMerge(true);
 		oneToManyMapping.getCascade().setPersist(true);
@@ -912,7 +912,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		OneToManyMapping oneToManyMapping = (OneToManyMapping) persistentAttribute.getMapping();
 
 		Iterator<String> attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -921,12 +921,12 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		
 		oneToManyMapping.setSpecifiedTargetEntity("foo");
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertFalse(attributeNames.hasNext());
 		
 		oneToManyMapping.setSpecifiedTargetEntity(null);
 		attributeNames = 
-			oneToManyMapping.getRelationship().getMappedByJoiningStrategy().candidateMappedByAttributeNames();
+			oneToManyMapping.getRelationship().getMappedByStrategy().candidateMappedByAttributeNames();
 		assertEquals("id", attributeNames.next());
 		assertEquals("city", attributeNames.next());
 		assertEquals("state", attributeNames.next());
@@ -1011,7 +1011,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertEquals(FetchType.EAGER, virtualOneToManyMapping.getSpecifiedFetch());
 		assertEquals("Address", virtualOneToManyMapping.getSpecifiedTargetEntity());
 		assertNull(virtualOneToManyMapping.getRelationship().
-			getMappedByJoiningStrategy().getMappedByAttribute());
+			getMappedByStrategy().getMappedByAttribute());
 
 		Cascade cascade = virtualOneToManyMapping.getCascade();
 		assertTrue(cascade.isAll());
@@ -1043,7 +1043,7 @@ public class OrmOneToManyMappingTests extends ContextModelTestCase
 		assertEquals("address", ormOneToManyMapping.getName());
 		assertEquals(FetchType.LAZY, ormOneToManyMapping.getFetch());
 		assertEquals("test.Address", ormOneToManyMapping.getTargetEntity());
-		assertNull(ormOneToManyMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormOneToManyMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 
 		Cascade cascade = ormOneToManyMapping.getCascade();
 		assertFalse(cascade.isAll());

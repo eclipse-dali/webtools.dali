@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.resource.java.OwnableRelationshipMappingAnnotation;
 public interface JavaMappedByRelationship
 	extends MappedByRelationship, JavaRelationship
 {
-	JavaMappedByRelationshipStrategy getMappedByJoiningStrategy();
+	JavaMappedByRelationshipStrategy getMappedByStrategy();
 
 	OwnableRelationshipMappingAnnotation getMappingAnnotation();
 

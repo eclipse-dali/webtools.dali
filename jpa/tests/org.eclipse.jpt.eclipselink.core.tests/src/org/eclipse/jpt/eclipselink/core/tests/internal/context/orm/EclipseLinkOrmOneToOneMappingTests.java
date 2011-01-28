@@ -329,10 +329,10 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertEquals(Boolean.FALSE, virtualOneToOneMapping.getSpecifiedOptional());
 		assertEquals("Address", virtualOneToOneMapping.getSpecifiedTargetEntity());
 		assertNull(virtualOneToOneMapping.getRelationship().
-			getMappedByJoiningStrategy().getMappedByAttribute());
+			getMappedByStrategy().getMappedByAttribute());
 
 		JoinColumn virtualJoinColumn = 
-			virtualOneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().specifiedJoinColumns().next();
+			virtualOneToOneMapping.getRelationship().getJoinColumnStrategy().specifiedJoinColumns().next();
 		assertEquals("MY_COLUMN", virtualJoinColumn.getSpecifiedName());
 		assertEquals("MY_REFERENCED_COLUMN", virtualJoinColumn.getSpecifiedReferencedColumnName());
 		assertEquals(Boolean.TRUE, virtualJoinColumn.getSpecifiedUnique());
@@ -371,7 +371,7 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());
 		assertEquals("test.Address", ormOneToOneMapping.getTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormOneToOneMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 
 		//TODO default join columns in xml one-to-one
 //		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.specifiedJoinColumns().next();
@@ -413,13 +413,13 @@ public class EclipseLinkOrmOneToOneMappingTests
 		assertNull(ormOneToOneMapping.getSpecifiedFetch());
 		assertNull(ormOneToOneMapping.getSpecifiedOptional());
 		assertNull(ormOneToOneMapping.getSpecifiedTargetEntity());
-		assertNull(ormOneToOneMapping.getRelationship().getMappedByJoiningStrategy().getMappedByAttribute());
+		assertNull(ormOneToOneMapping.getRelationship().getMappedByStrategy().getMappedByAttribute());
 		assertEquals(FetchType.EAGER, ormOneToOneMapping.getFetch());
 		assertEquals(true, ormOneToOneMapping.isOptional());
 		//TODO default target entity in xml
 		//assertEquals("test.Address", ormOneToOneMapping.getDefaultTargetEntity());
 		
-		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnJoiningStrategy().joinColumnsSize() > 0);
+		assertTrue(ormOneToOneMapping.getRelationship().getJoinColumnStrategy().joinColumnsSize() > 0);
 		
 		//TODO default join columns for specified xmlOneToOne mapping
 //		XmlJoinColumn ormJoinColumn = ormOneToOneMapping.defaultJoinColumns().next();

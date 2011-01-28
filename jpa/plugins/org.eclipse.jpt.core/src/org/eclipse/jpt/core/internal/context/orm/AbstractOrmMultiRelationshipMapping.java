@@ -165,13 +165,13 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		implements Orderable2_0.Owner
 	{
 		public String getTableName() {
-			return this.getJoinStrategy().getTableName();
+			return this.getRelationshipStrategy().getTableName();
 		}
 		public Table resolveDbTable(String tableName) {
-			return this.getJoinStrategy().resolveDbTable(tableName);
+			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
-		protected OrmRelationshipStrategy getJoinStrategy() {
-			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
+		protected OrmRelationshipStrategy getRelationshipStrategy() {
+			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 	}
 
@@ -696,11 +696,11 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public String getDefaultTableName() {
-			return this.getJoinStrategy().getTableName();
+			return this.getRelationshipStrategy().getTableName();
 		}
 
 		public Table resolveDbTable(String tableName) {
-			return this.getJoinStrategy().resolveDbTable(tableName);
+			return this.getRelationshipStrategy().resolveDbTable(tableName);
 		}
 
 		public Iterator<String> candidateTableNames() {
@@ -711,8 +711,8 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 			return AbstractOrmMultiRelationshipMapping.this.getValidationTextRange();
 		}
 
-		protected OrmRelationshipStrategy getJoinStrategy() {
-			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getPredominantJoiningStrategy();
+		protected OrmRelationshipStrategy getRelationshipStrategy() {
+			return AbstractOrmMultiRelationshipMapping.this.getRelationship().getStrategy();
 		}
 
 		protected String getMappingName() {
@@ -740,7 +740,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public boolean tableNameIsInvalid(String tableName) {
-			return this.getJoinStrategy().tableNameIsInvalid(tableName);
+			return this.getRelationshipStrategy().tableNameIsInvalid(tableName);
 		}
 
 		public XmlColumn getXmlColumn() {
@@ -756,7 +756,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public JptValidator buildColumnValidator(NamedColumn column, NamedColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyColumnValidator(this.getPersistentAttribute(), (BaseColumn) column, (BaseColumnTextRangeResolver) textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 
@@ -807,7 +807,7 @@ public abstract class AbstractOrmMultiRelationshipMapping<X extends AbstractXmlM
 		}
 
 		public JptValidator buildColumnValidator(Override_ override, BaseColumn column, BaseColumn.Owner owner, BaseColumnTextRangeResolver textRangeResolver) {
-			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getJoinStrategy()));
+			return new MapKeyAttributeOverrideColumnValidator(this.getPersistentAttribute(), (AttributeOverride) override, column, textRangeResolver, new RelationshipStrategyTableDescriptionProvider(this.getRelationshipStrategy()));
 		}
 	}
 }
