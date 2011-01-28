@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm;
 
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -60,7 +61,7 @@ public abstract class EclipseLink2_0OrmContextModelTestCase
 	protected IDataModel buildEclipseLinkOrmConfig(TestJpaProject testJpaProject) {
 		IDataModel dataModel = 
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());		
-		dataModel.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		dataModel.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				testJpaProject.getProject().getFolder("src/META-INF").getFullPath());
 		dataModel.setProperty(JpaFileCreationDataModelProperties.VERSION, EclipseLink2_0.SCHEMA_VERSION);
 		dataModel.setProperty(OrmFileCreationDataModelProperties.ADD_TO_PERSISTENCE_UNIT, Boolean.TRUE);

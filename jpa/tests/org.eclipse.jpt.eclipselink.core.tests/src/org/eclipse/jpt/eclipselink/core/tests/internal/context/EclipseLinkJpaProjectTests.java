@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
@@ -85,7 +85,7 @@ public class EclipseLinkJpaProjectTests extends EclipseLinkContextModelTestCase
 	private void createDefaultOrmXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -101,7 +101,7 @@ public class EclipseLinkJpaProjectTests extends EclipseLinkContextModelTestCase
 	private void createEclipseLinkOrmXmlFile(String fileName) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.setProperty(OrmFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.getDefaultOperation().execute(null, null);

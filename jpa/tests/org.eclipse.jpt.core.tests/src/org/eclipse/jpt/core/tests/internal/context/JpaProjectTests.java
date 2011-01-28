@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProvider;
-import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
 import org.eclipse.jpt.core.platform.GenericPlatform;
@@ -86,7 +86,7 @@ public class JpaProjectTests extends TestCase
 	private void createPersistenceXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new PersistenceFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -113,7 +113,7 @@ public class JpaProjectTests extends TestCase
 	private void createDefaultOrmXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -121,9 +121,9 @@ public class JpaProjectTests extends TestCase
 	private void createOrmXmlFile(String fileName) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(JpaFileCreationDataModelProperties.FILE_NAME, fileName);
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.getDefaultOperation().execute(null, null);
 	}
 

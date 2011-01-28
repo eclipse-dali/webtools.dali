@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2008, 2010  Oracle. 
+ *  Copyright (c) 2008, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.*;
 import static org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties.*;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IContainer;

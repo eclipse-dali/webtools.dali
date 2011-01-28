@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.core.internal.operations;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
+import org.eclipse.jpt.core.internal.operations.AbstractJptFileCreationDataModelProvider;
 
 /**
  *  SchemaFileCreationDataModelProvider
  */
-public class SchemaFileCreationDataModelProvider extends PersistenceFileCreationDataModelProvider 
+public class SchemaFileCreationDataModelProvider extends AbstractJptFileCreationDataModelProvider 
 {
 
 	@Override

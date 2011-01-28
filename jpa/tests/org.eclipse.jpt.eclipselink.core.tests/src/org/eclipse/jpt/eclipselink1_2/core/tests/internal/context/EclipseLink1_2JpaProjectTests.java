@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink1_2.core.tests.internal.context;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -96,7 +97,7 @@ public class EclipseLink1_2JpaProjectTests extends EclipseLink1_2ContextModelTes
 	private void createDefaultOrmXmlFile() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -104,9 +105,9 @@ public class EclipseLink1_2JpaProjectTests extends EclipseLink1_2ContextModelTes
 	private void createDefaultOrmXmlFileWithEclipseLinkContentType() throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(JpaFileCreationDataModelProperties.FILE_NAME, 
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, 
 				JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.lastSegment());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -122,9 +123,9 @@ public class EclipseLink1_2JpaProjectTests extends EclipseLink1_2ContextModelTes
 	private void createEclipseLink1_2OrmXmlFile(String fileName) throws Exception {
 		IDataModel config =
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
-		config.setProperty(JpaFileCreationDataModelProperties.CONTAINER_PATH, 
+		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(JpaFileCreationDataModelProperties.FILE_NAME, fileName);
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.setProperty(JpaFileCreationDataModelProperties.VERSION, EclipseLink1_2.SCHEMA_VERSION);
 		config.getDefaultOperation().execute(null, null);
 	}
