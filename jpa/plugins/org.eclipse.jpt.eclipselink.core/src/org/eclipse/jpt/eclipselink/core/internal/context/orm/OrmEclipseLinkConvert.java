@@ -26,11 +26,11 @@ import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaValidationMessage
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlNamedConverter;
+import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.Association;
 import org.eclipse.jpt.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -274,36 +274,30 @@ public class OrmEclipseLinkConvert
 	}
 	
 	private void validateConvertValue(List<IMessage> messages) {
-		String converter = this.getConverterName();
-				if (converter == null) {
-					return;
-				}
+		String converterName = this.getConverterName();
+		if (converterName == null) {
+			return;
+		}
 
 		for (Iterator<EclipseLinkConverter> converters = this.getPersistenceUnit().allConverters(); converters.hasNext(); ) {
-			if (converter.equals(converters.next().getName())) {
+			if (converterName.equals(converters.next().getName())) {
 				return;
 			}
 		}
-		
-		for (Iterator<String> names = this.reservedNames(); names.hasNext();){
-			if (converter.equals(names.next())) {
-				return;
-			}
+
+		if (ArrayTools.contains(RESERVED_CONVERTER_NAMES, converterName)) {
+			return;
 		}
 
 		messages.add(
 				DefaultEclipseLinkJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						EclipseLinkJpaValidationMessages.ID_MAPPING_UNRESOLVED_CONVERTER_NAME,
-						new String[] {converter, this.getParent().getName()},
+						new String[] {converterName, this.getParent().getName()},
 						this.getParent(),
 						this.getValidationTextRange()
 				)
 		);	
-	}
-
-	public Iterator<String> reservedNames() {
-		return new ArrayIterator<String>(EclipseLinkConvert.RESERVED_CONVERTER_NAMES);
 	}
 	
 	public TextRange getValidationTextRange() {
