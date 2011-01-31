@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -112,10 +113,10 @@ public class EntityNameComposite
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				JptUiDetailsMessages.DefaultWithOneParam,
+				JptCommonUiMessages.DefaultWithOneParam,
 				defaultValue
 			);
 		}
-		return JptUiDetailsMessages.DefaultEmpty;
+		return JptCommonUiMessages.DefaultEmpty;
 	}
 }

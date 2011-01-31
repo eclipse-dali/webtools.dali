@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.ReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmUniqueConstraint
 	extends AbstractOrmReadOnlyUniqueConstraint

@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.logging;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

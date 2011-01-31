@@ -11,12 +11,12 @@
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.internal.persistence.details.ArchiveFileSelectionDialog;
-import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitJarFilesComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.ArchiveFileSelectionDialog.DeploymentPathCalculator;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitJarFilesComposite;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceUnitJarFilesComposite

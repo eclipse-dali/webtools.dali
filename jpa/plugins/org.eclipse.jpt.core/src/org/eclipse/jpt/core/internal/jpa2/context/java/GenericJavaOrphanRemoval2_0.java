@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.OwningRelationshipMapping2_0Annotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java orphan removal

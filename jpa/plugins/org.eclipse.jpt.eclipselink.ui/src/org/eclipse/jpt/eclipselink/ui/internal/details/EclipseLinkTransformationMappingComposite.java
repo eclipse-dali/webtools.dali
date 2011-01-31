@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkTransformationMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

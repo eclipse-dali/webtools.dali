@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.SecondaryTable;
-import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 

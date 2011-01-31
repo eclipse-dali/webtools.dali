@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.DefaultJavaAttributeMappingUiDefinition;
@@ -66,8 +66,8 @@ public abstract class AbstractJavaResourceUiDefinition
 		return this.factory;
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
-		return resourceType.equals(JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE);
+	public boolean providesUi(JptResourceType resourceType) {
+		return resourceType.equals(JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE);
 	}
 
 	public JpaStructureProvider getStructureProvider() {

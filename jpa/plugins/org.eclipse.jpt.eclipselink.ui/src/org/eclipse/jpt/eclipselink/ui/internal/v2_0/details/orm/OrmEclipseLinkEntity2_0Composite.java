@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.AbstractOrmEclipseLinkEntityComposite;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;

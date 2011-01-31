@@ -11,11 +11,12 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 
 /**
@@ -124,9 +125,9 @@ public interface JpaPlatform
 	
 	/**
 	 * Return true if the resource type is supported.  The result of this call is consistent with
-	 * the result of {@link #getResourceDefinition(JpaResourceType)}
+	 * the result of {@link #getResourceDefinition(JptResourceType)}
 	 */
-	boolean supportsResourceType(JpaResourceType resourceType);
+	boolean supportsResourceType(JptResourceType resourceType);
 	
 	/**
 	 * Return a {@link ResourceDefinition} to describe the context model for a file of the given
@@ -136,16 +137,16 @@ public interface JpaPlatform
 	 * @param resourceType The resource type of a potential resource definition
 	 * @return The resource definition that can be used for such a file
 	 */
-	ResourceDefinition getResourceDefinition(JpaResourceType resourceType);
+	ResourceDefinition getResourceDefinition(JptResourceType resourceType);
 	
 	/**
-	 * Return the most recent supported {@link JpaResourceType} for the given content type.
+	 * Return the most recent supported {@link JptResourceType} for the given content type.
 	 * Throw an {@link IllegalArgumentException} if the content type is not supported by the platform.
 	 * 
 	 * @param contentType A content type supported by the platform
 	 * @return The most recent resource type supported by the platform
 	 */
-	JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
 	
 	// ********** database **********

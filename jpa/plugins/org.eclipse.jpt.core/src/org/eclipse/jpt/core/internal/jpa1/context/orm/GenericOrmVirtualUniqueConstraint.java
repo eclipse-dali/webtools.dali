@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmReadOnlyUniqueConstraint;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmVirtualUniqueConstraint
 	extends AbstractOrmReadOnlyUniqueConstraint

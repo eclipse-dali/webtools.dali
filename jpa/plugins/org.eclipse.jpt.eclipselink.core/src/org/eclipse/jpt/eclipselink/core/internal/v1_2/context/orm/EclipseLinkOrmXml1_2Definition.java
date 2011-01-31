@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v1_2.context.orm;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -36,7 +36,7 @@ public class EclipseLinkOrmXml1_2Definition
 	private EclipseLinkOrmXml1_2Definition() {
 		super();
 	}
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_2_RESOURCE_TYPE;
 	}
 

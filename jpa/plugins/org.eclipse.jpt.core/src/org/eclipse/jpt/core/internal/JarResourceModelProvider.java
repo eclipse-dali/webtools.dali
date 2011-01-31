@@ -13,10 +13,10 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPackageFragmentRoot;
 
 /**
@@ -43,7 +43,7 @@ public class JarResourceModelProvider
 	}
 
 	public IContentType getContentType() {
-		return JptCorePlugin.JAR_CONTENT_TYPE;
+		return JptCommonCorePlugin.JAR_CONTENT_TYPE;
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class JarResourceModelProvider
 	 * classpath but the JAR itself is not on the classpath.
 	 * Returning null should be OK.
 	 */
-	public JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
+	public JptResourceModel buildResourceModel(JpaProject jpaProject, IFile file) {
 		IPackageFragmentRoot pfr = JavaCore.createJarPackageFragmentRootFrom(file);
 		return (pfr ==null) ? null : new BinaryPackageFragmentRoot(pfr, jpaProject.getJpaPlatform().getAnnotationProvider());
 	}

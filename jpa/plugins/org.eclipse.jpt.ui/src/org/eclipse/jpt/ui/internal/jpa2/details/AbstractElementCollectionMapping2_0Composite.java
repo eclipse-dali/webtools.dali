@@ -9,6 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.Converter;
@@ -18,7 +21,6 @@ import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.TemporalConverter;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
 import org.eclipse.jpt.core.jpa2.context.ElementCollectionMapping2_0;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.EnumTypeComposite;
@@ -26,8 +28,6 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.OptionalComposite;
 import org.eclipse.jpt.ui.internal.details.TemporalTypeComposite;
-import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;

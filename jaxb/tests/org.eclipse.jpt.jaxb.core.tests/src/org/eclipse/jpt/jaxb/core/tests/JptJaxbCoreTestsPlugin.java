@@ -19,6 +19,7 @@ import org.osgi.framework.BundleContext;
  * configure the core to handle events synchronously when we are
  * running tests
  */
+@SuppressWarnings("nls")
 public class JptJaxbCoreTestsPlugin extends Plugin {
 
 	private static JptJaxbCoreTestsPlugin INSTANCE;
@@ -45,7 +46,7 @@ public class JptJaxbCoreTestsPlugin extends Plugin {
 		super.start(context);
 		JaxbProjectManager jaxbProjectManager = JptJaxbCorePlugin.getProjectManager();
 		ReflectionTools.executeMethod(jaxbProjectManager, "handleEventsSynchronously");
-//		ReflectionTools.executeStaticMethod(JptJaxbCorePlugin.class, "doNotFlushPreferences");
+		ReflectionTools.executeStaticMethod(JptJaxbCorePlugin.class, "doNotFlushPreferences");
 	}
 
 	@Override

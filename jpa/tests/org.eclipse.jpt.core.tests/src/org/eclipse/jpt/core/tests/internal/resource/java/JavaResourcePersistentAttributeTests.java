@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceIdAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceOneToOneAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
@@ -30,8 +32,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;

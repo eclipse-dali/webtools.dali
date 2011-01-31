@@ -15,14 +15,14 @@ import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
-import org.eclipse.jpt.ui.internal.jface.ImageImageDescriptor;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.CompositeIterator;
@@ -147,7 +147,7 @@ public abstract class MapAsContribution<T extends JpaStructureNode>
 	* @return The list of registered {@link MappingUiDefinition}s
 	*/
 	protected abstract Iterator<? extends MappingUiDefinition<T, ?>> 
-		mappingUiDefinitions(JpaPlatformUi platformUi, JpaResourceType resourceType);
+		mappingUiDefinitions(JpaPlatformUi platformUi, JptResourceType resourceType);
 	
 	/**
 	* Creates the default provider responsible for clearing the mapping type.

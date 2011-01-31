@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotation;

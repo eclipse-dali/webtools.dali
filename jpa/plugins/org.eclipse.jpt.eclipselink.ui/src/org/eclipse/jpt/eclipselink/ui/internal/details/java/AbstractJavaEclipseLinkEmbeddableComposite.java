@@ -9,13 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkEmbeddable;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkEmbeddableAdvancedComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
+import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;

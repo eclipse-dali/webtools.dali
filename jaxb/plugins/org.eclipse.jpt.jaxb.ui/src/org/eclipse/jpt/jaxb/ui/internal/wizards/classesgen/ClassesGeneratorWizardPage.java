@@ -12,7 +12,6 @@ package org.eclipse.jpt.jaxb.ui.internal.wizards.classesgen;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -43,12 +42,11 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGenerator;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
@@ -78,7 +76,7 @@ public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
 
-	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.configure_jaxb_class_generation_dialog"; //$NON-NLS-1$
 
 	private SettingsGroup settingsGroup;
 	

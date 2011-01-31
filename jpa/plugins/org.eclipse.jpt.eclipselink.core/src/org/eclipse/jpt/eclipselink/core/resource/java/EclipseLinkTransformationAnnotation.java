@@ -10,9 +10,9 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.FetchType;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the EclipseLink annotation

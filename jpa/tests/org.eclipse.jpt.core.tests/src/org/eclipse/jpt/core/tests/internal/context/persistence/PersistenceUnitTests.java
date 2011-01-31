@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.tests.internal.context.persistence;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AccessType;
@@ -22,8 +23,6 @@ import org.eclipse.jpt.core.context.persistence.ClassRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitTransactionType;
-import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
@@ -1153,7 +1152,7 @@ public class PersistenceUnitTests extends ContextModelTestCase
 			DataModelFactory.createDataModel(new OrmFileCreationDataModelProvider());
 		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(OrmFileCreationDataModelProperties.FILE_NAME, "orm2.xml");
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, "orm2.xml");
 		config.getDefaultOperation().execute(null, null);
 		
 		addXmlMappingFileRef("META-INF/orm2.xml");

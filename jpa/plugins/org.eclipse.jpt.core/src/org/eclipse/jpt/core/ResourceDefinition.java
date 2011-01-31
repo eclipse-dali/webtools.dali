@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
+import org.eclipse.jpt.common.core.JptResourceType;
+
 /**
  * A JPA platform can support multiple resources. Each will
  * have a unique resource type and must be defined with a resource definition.
@@ -27,5 +29,5 @@ public interface ResourceDefinition
 	/**
 	 * Return the definition's resource type.
 	 */
-	JpaResourceType getResourceType();
+	JptResourceType getResourceType();
 }

@@ -9,10 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.AccessHolder;
+import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.AbstractJavaEclipseLinkEmbeddableComposite;
-import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

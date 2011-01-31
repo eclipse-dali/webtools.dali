@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEmbeddable;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

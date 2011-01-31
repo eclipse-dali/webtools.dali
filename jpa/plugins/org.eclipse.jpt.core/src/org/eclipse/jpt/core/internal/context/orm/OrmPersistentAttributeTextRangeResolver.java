@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.PersistentAttributeTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class OrmPersistentAttributeTextRangeResolver
 	implements PersistentAttributeTextRangeResolver

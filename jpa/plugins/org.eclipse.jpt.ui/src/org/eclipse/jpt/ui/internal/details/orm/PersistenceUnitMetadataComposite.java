@@ -11,6 +11,9 @@ package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults;
@@ -21,9 +24,6 @@ import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
-import static org.eclipse.jpt.core.internal.XPointUtil.*;
+import static org.eclipse.jpt.common.core.internal.XPointUtil.*;
 import java.util.ArrayList;
 import java.util.List;
 import org.eclipse.core.resources.IProject;
@@ -18,10 +18,10 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.common.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformManager;

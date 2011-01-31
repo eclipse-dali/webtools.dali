@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
-import org.eclipse.jpt.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.orm.AbstractEntityMappingsDetailsPage;
 import org.eclipse.swt.widgets.Composite;
 

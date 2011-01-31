@@ -11,9 +11,10 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.DialogPane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
@@ -199,12 +200,12 @@ public class BaseJoinColumnDialogPane<T extends BaseJoinColumnStateObject> exten
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiDetailsMessages.DefaultWithOneParam,
+							JptCommonUiMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
 					else {
-						value = JptUiDetailsMessages.DefaultEmpty;
+						value = JptCommonUiMessages.DefaultEmpty;
 					}
 				}
 

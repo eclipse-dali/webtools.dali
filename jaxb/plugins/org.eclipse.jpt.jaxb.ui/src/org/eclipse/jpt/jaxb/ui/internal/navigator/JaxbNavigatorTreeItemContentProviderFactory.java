@@ -12,13 +12,13 @@ package org.eclipse.jpt.jaxb.ui.internal.navigator;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 public class JaxbNavigatorTreeItemContentProviderFactory
 		implements TreeItemContentProviderFactory {

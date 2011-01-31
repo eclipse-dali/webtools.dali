@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlGenerator_2_0;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->

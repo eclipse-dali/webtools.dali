@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;

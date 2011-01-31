@@ -201,7 +201,7 @@ public class EclipseLinkCaching extends EclipseLinkPersistenceUnitProperties
 				return SHARED_CACHE_PROPERTY;
 			}
 		}
-		throw new IllegalArgumentException("Illegal property: " + property.toString());
+		throw new IllegalArgumentException("Illegal property: " + property.toString()); //$NON-NLS-1$
 	}
 	
 	public Entity addEntity(String entityName) {

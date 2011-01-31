@@ -9,9 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen;
 
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.PROJECT;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.FILE_NAME;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.PROJECT;
 import static org.eclipse.jpt.jaxb.ui.internal.wizards.schemagen.SchemaGeneratorWizard.XSD_EXTENSION;
 
 import java.io.File;

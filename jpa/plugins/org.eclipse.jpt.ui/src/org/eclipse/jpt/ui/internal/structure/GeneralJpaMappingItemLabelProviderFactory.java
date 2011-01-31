@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistentAttributeItemLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistentTypeItemLabelProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 
 public abstract class GeneralJpaMappingItemLabelProviderFactory
 	implements ItemLabelProviderFactory

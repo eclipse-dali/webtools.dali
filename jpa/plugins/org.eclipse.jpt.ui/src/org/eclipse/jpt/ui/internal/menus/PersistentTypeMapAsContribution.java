@@ -10,8 +10,8 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaPlatform;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.JpaPlatformUi;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
@@ -50,7 +50,7 @@ public class PersistentTypeMapAsContribution
 	
 	@Override
 	protected Iterator<? extends MappingUiDefinition<PersistentType, ?>> mappingUiDefinitions(
-			JpaPlatformUi jpaPlatformUi, JpaResourceType resourceType) {
+			JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
 		
 		return jpaPlatformUi.typeMappingUiDefinitions(resourceType);
 	}

@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -179,7 +179,7 @@ public abstract class AbstractJpaFactory
 		return new GenericJpaDataSource(jpaProject, connectionProfileName);
 	}
 	
-	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
+	public JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JptResourceModel resourceModel) {
 		return new GenericJpaFile(jpaProject, file, contentType, resourceModel);
 	}
 

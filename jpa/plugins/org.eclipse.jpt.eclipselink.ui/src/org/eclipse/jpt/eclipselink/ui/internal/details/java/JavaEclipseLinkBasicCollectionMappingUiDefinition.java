@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.AbstractEclipseLinkBasicCollectionMappingUiDefinition;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingComposite;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;

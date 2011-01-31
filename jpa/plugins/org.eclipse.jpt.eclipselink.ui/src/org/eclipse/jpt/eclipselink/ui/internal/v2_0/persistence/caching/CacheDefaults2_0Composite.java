@@ -9,14 +9,14 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching;
 
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.options.SharedCacheMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.CacheDefaultsComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.DefaultCacheSizeComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.caching.DefaultCacheTypeComposite;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

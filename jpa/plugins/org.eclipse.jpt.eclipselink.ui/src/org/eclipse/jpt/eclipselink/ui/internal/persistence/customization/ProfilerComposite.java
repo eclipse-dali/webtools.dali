@@ -9,17 +9,16 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.customization;
 
-import com.ibm.icu.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Profiler;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -34,6 +33,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
+import com.ibm.icu.text.Collator;
 
 /**
  *  ProfilerComposite
@@ -188,11 +188,11 @@ public class ProfilerComposite extends ClassChooserComboPane<Customization>
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				EclipseLinkUiMessages.PersistenceXmlCustomizationTab_defaultWithOneParam,
+				JptCommonUiMessages.DefaultWithOneParam,
 				defaultValue
 			);
 		}
-		return EclipseLinkUiMessages.PersistenceXmlCustomizationTab_defaultEmpty;
+		return JptCommonUiMessages.DefaultEmpty;
 	}
 	
 	@Override

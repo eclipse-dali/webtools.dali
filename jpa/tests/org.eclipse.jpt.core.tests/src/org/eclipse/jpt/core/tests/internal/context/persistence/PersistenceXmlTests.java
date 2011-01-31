@@ -15,6 +15,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class PersistenceXmlTests extends ContextModelTestCase
 {
 	public PersistenceXmlTests(String name) {

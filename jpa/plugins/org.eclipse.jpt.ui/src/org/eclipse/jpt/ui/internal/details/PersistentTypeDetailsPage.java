@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.Tracing;
+import org.eclipse.jpt.common.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
-import org.eclipse.jpt.ui.internal.Tracing;
-import org.eclipse.jpt.ui.internal.util.ControlSwitcher;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.Transformer;
 import org.eclipse.jpt.utility.internal.model.value.FilteringPropertyValueModel;

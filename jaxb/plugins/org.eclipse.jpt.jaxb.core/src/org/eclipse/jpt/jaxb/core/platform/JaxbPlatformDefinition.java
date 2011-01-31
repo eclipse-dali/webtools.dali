@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.platform;
 
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
@@ -47,7 +47,7 @@ public interface JaxbPlatformDefinition {
 	/**
 	 * Return the most recent resource type for the given content type supported by this platform
 	 */
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
 //	/**
 //	 * Return the resource definitions supported by this platform.

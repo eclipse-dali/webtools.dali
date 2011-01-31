@@ -8,6 +8,7 @@
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/utility/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/core/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/eclipselink/core/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/ui/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/ui/**"/>
 		</accessrules>
 	</classpathentry>

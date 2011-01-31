@@ -10,14 +10,14 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryGeneratedAnnotation;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceGeneratedAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * javax.annotation.Generated

@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.platform.generic.EntityMappingsItemLabelProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.ItemLabelProvider;
 
 public class OrmItemLabelProviderFactory extends GeneralJpaMappingItemLabelProviderFactory
 {

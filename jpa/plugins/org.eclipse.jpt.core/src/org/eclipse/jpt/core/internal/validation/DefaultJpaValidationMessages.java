@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.validation;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.core.Message;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 

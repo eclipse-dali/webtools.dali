@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.jpa2.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

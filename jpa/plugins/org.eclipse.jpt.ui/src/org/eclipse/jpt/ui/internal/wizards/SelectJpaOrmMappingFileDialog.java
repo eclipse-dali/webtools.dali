@@ -22,7 +22,7 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard;
@@ -139,7 +139,7 @@ public class SelectJpaOrmMappingFileDialog extends ElementTreeSelectionDialog
 			//these are disabled if the tree is empty when the dialog is created.
 			this.messageLabel.setEnabled(true);
 			this.treeWidget.setEnabled(true);
-			IFile file = JptCorePlugin.getPlatformFile(this.project, path);
+			IFile file = JptCommonCorePlugin.getPlatformFile(this.project, path);
 			getTreeViewer().setSelection(new StructuredSelection(file), true);
 		}
 	}

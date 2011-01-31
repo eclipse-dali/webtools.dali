@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.source;
 
+import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableNamedQueryAnnotation;
-import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * <code>javax.persistence.NamedQueries</code>

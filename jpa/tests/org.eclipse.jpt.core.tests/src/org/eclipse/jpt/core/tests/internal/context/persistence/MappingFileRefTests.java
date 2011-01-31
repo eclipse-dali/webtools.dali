@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class MappingFileRefTests extends ContextModelTestCase
 {
 	public MappingFileRefTests(String name) {

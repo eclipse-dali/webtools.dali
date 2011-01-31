@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.orm;
 
 import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
@@ -62,7 +62,7 @@ public class EclipseLinkOrmXml2_0Definition
 		super();
 	}
 
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_0_RESOURCE_TYPE;
 	}
 

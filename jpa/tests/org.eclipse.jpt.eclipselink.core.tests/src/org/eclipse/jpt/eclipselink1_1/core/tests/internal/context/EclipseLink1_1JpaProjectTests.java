@@ -10,9 +10,9 @@
 package org.eclipse.jpt.eclipselink1_1.core.tests.internal.context;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
+import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -107,7 +107,7 @@ public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTes
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
 		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(OrmFileCreationDataModelProperties.FILE_NAME, 
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, 
 				JptCorePlugin.DEFAULT_ORM_XML_RUNTIME_PATH.lastSegment());
 		config.getDefaultOperation().execute(null, null);
 	}
@@ -125,8 +125,8 @@ public class EclipseLink1_1JpaProjectTests extends EclipseLink1_1ContextModelTes
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
 		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(OrmFileCreationDataModelProperties.FILE_NAME, fileName);
-		config.setProperty(OrmFileCreationDataModelProperties.VERSION, EclipseLink1_1.SCHEMA_VERSION);
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, fileName);
+		config.setProperty(JpaFileCreationDataModelProperties.VERSION, EclipseLink1_1.SCHEMA_VERSION);
 		config.getDefaultOperation().execute(null, null);
 	}
 

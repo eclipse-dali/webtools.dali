@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IElementChangedListener;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.SimpleJaxbProjectConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.utility.Command;
@@ -130,7 +130,7 @@ class GenericJaxbProjectManager
 	 * Determine how Resource and Java change events are
 	 * handled (i.e. synchronously or asynchronously).
 	 */
-	private volatile StatefulCommandExecutor eventHandler = new AsynchronousCommandExecutor(JptCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME);
+	private volatile StatefulCommandExecutor eventHandler = new AsynchronousCommandExecutor(JptCommonCoreMessages.DALI_EVENT_HANDLER_THREAD_NAME);
 
 	/**
 	 * Listen for<ul>

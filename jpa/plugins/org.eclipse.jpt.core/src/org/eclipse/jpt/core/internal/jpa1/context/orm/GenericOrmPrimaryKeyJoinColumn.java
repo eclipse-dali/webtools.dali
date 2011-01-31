@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmBaseJoinColumn;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.core.internal.context.orm.OrmPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 

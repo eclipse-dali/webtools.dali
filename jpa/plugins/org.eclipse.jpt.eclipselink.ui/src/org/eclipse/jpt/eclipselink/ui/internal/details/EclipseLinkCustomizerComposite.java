@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -114,8 +114,8 @@ public class EclipseLinkCustomizerComposite extends Pane<EclipseLinkCustomizer>
 		protected String defaultText(EclipseLinkCustomizer customizer) {
 			String defaultClassName = customizer.getDefaultCustomizerClass();
 			return (defaultClassName == null) ?
-					JptUiDetailsMessages.NoneSelected
-					: NLS.bind(JptUiDetailsMessages.DefaultWithOneParam, defaultClassName);
+					JptCommonUiMessages.NoneSelected
+					: NLS.bind(JptCommonUiMessages.DefaultWithOneParam, defaultClassName);
 		}
 
 		@Override

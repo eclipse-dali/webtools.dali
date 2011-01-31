@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.PersistentAttribute;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.InverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableValidator;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmMappingJoinTableRelationshipStrategy
 	extends AbstractOrmJoinTableRelationshipStrategy

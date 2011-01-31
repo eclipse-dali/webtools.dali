@@ -10,21 +10,18 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import java.util.ArrayList;
-import java.util.ListIterator;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkConvert;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnit;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
-import org.eclipse.jpt.ui.WidgetFactory;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SortedListValueModelAdapter;
@@ -166,12 +163,12 @@ public class OrmEclipseLinkConvert1_0Composite extends Pane<EclipseLinkConvert>
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiDetailsMessages.DefaultWithOneParam,
+							JptCommonUiMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
 					else {
-						value = JptUiDetailsMessages.DefaultEmpty;
+						value = JptCommonUiMessages.DefaultEmpty;
 					}
 				}
 

@@ -10,10 +10,10 @@
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 

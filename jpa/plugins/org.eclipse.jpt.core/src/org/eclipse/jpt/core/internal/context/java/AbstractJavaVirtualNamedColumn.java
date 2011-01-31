@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.core.context.VirtualNamedColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java virtual<ul>

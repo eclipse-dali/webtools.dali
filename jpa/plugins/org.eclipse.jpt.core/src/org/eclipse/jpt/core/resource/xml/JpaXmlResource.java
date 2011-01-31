@@ -25,9 +25,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.jem.util.emf.workbench.WorkbenchResourceHelperBase;
 import org.eclipse.jem.util.plugin.JEMUtilPlugin;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.JpaResourceModelListener;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.utility.internal.ListenerList;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -49,7 +49,7 @@ import org.xml.sax.EntityResolver;
  */
 public class JpaXmlResource
 	extends TranslatorResourceImpl
-	implements JpaResourceModel
+	implements JptResourceModel
 {
 	/**
 	 * cache the content type - if the content type changes, the JPA project
@@ -59,8 +59,8 @@ public class JpaXmlResource
 	
 	protected final Translator rootTranslator;
 	
-	protected final ListenerList<JpaResourceModelListener> resourceModelListenerList =
-			new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
+	protected final ListenerList<JptResourceModelListener> resourceModelListenerList =
+			new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	
 	
 	public JpaXmlResource(URI uri, Renderer renderer, IContentType contentType, Translator rootTranslator) {
@@ -81,11 +81,11 @@ public class JpaXmlResource
 	/**
 	 * Build a new resource type every time(?).
 	 */
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		String version = this.getVersion();
 		return ((this.contentType == null) || (version == null)) ?
 			null :
-			new JpaResourceType(this.contentType, version);
+			new JptResourceType(this.contentType, version);
 	}
 	
 	
@@ -259,13 +259,13 @@ public class JpaXmlResource
 	}
 	
 	
-	// ********** JpaResourceModel implementation **********
+	// ********** JptResourceModel implementation **********
 	
-	public void addResourceModelListener(JpaResourceModelListener listener) {
+	public void addResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);
 	}
 	
-	public void removeResourceModelListener(JpaResourceModelListener listener) {
+	public void removeResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.remove(listener);
 	}
 
@@ -273,19 +273,19 @@ public class JpaXmlResource
 	// ********** listener notifications **********
 
 	protected void resourceModelChanged() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged(this);
 		}
 	}
 
 	protected void resourceModelReverted() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelReverted(this);
 		}
 	}
 
 	protected void resourceModelUnloaded() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelUnloaded(this);
 		}
 	}

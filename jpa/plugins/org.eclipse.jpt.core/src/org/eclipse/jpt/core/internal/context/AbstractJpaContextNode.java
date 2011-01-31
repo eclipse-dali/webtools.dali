@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context;
 
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -75,7 +75,7 @@ public abstract class AbstractJpaContextNode
 	 * <li>{@link org.eclipse.jpt.core.internal.jpa1.context.persistence.GenericPersistenceXml#getResourceType() GenericPersistenceXml}
 	 * </ul>
 	 */
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return this.getParent().getResourceType();
 	}
 	

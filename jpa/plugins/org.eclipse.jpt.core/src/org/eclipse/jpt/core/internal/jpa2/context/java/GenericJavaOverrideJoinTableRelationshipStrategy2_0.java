@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.Table;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvi
 import org.eclipse.jpt.core.jpa2.context.java.JavaOverrideRelationship2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.AssociationOverride2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractJavaJoinTableRelationshipStrategy

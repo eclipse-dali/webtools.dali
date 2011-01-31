@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
@@ -78,7 +78,7 @@ public abstract class AbstractJaxbFactory
 		return new GenericJaxbProject(config);
 	}
 	
-	public JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
+	public JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JptResourceModel resourceModel) {
 		return new GenericJaxbFile(jaxbProject, file, contentType, resourceModel);
 	}
 	

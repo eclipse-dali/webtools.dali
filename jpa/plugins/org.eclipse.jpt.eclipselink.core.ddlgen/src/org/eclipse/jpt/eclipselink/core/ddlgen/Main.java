@@ -114,8 +114,8 @@ public class Main
 	private void dispose() {
 
 		if( ! this.isDebugMode) {
-			new File(this.appLocation + "/" + this.createDDLFileName).delete();
-			new File(this.appLocation + "/" + this.dropDDLFileName).delete();
+			new File(this.appLocation + "/" + this.createDDLFileName).delete(); //$NON-NLS-1$
+			new File(this.appLocation + "/" + this.dropDDLFileName).delete(); //$NON-NLS-1$
 			new File(this.eclipseLinkPropertiesPath).delete();
 		}
 	}
@@ -127,7 +127,7 @@ public class Main
 			propertiesSet = this.loadEclipseLinkProperties(eclipseLinkPropertiesPath);
 		}
 		catch (IOException e) {
-			throw new RuntimeException("Missing: " + eclipseLinkPropertiesPath, e);
+			throw new RuntimeException("Missing: " + eclipseLinkPropertiesPath, e); //$NON-NLS-1$
 		}
 		
 		Map<String, String> properties = new HashMap<String, String>();
@@ -151,17 +151,17 @@ public class Main
     
 	private String getPUName(String[] args) {
 
-		return this.getArgumentValue("-pu", args);
+		return this.getArgumentValue("-pu", args); //$NON-NLS-1$
 	}
 	
 	private String getEclipseLinkPropertiesPath(String[] args) {
 
-		return this.getArgumentValue("-p", args);
+		return this.getArgumentValue("-p", args); //$NON-NLS-1$
 	}
 
 	private boolean getDebugMode(String[] args) {
 
-		return this.argumentExists("-debug", args);
+		return this.argumentExists("-debug", args); //$NON-NLS-1$
 	}
 	
 	private String getArgumentValue(String argument, String[] args) {
@@ -208,7 +208,7 @@ public class Main
     protected String getConfigPropertyAsString(String propertyKey, Map<String, String> overrides){
         String value = null;
         if (overrides != null){
-            value = (String)overrides.get(propertyKey);
+            value = overrides.get(propertyKey);
         }
         if (value == null){
             value = System.getProperty(propertyKey);

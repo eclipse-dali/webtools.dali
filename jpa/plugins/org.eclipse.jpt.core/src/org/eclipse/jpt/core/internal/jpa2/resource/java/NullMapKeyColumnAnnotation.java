@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.internal.resource.java.NullBaseColumnAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>javax.persistence.MapKeyColumn</code>

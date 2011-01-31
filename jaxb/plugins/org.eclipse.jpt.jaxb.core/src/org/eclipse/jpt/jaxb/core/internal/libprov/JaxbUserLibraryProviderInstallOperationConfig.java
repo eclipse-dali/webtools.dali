@@ -9,7 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.libprov;
 
-import org.eclipse.jpt.core.internal.libprov.JptUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.common.core.internal.libprov.JptUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 
 public class JaxbUserLibraryProviderInstallOperationConfig

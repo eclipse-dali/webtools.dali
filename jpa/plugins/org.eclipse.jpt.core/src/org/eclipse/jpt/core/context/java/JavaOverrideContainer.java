@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.OverrideContainer;
 import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.VirtualOverride;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java attribute or association override container

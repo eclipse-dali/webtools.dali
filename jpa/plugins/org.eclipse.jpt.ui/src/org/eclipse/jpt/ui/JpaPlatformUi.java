@@ -11,10 +11,11 @@ package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -79,39 +80,39 @@ public interface JpaPlatformUi
 	/**
 	 * Return a resource ui definition for the specified resource type.
 	 */
-	ResourceUiDefinition getResourceUiDefinition(JpaResourceType resourceType);
+	ResourceUiDefinition getResourceUiDefinition(JptResourceType resourceType);
 	
 	
 	// ********** type mappings **********
 	
 	JpaComposite buildTypeMappingComposite(
-			JpaResourceType resourceType, 
+			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<TypeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
 	
 	DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping>
-			getDefaultTypeMappingUiDefinition(JpaResourceType resourceType);
+			getDefaultTypeMappingUiDefinition(JptResourceType resourceType);
 	
 	Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>>
-			typeMappingUiDefinitions(JpaResourceType resourceType);
+			typeMappingUiDefinitions(JptResourceType resourceType);
 	
 	
 	// ********** attribute mappings **********
 	
 	JpaComposite buildAttributeMappingComposite(
-			JpaResourceType resourceType, 
+			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent,
 			PropertyValueModel<AttributeMapping> mappingHolder,
 			WidgetFactory widgetFactory);
 	
 	DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> 
-			getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey);
+			getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey);
 	
 	Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>>
-			attributeMappingUiDefinitions(JpaResourceType resourceType);
+			attributeMappingUiDefinitions(JptResourceType resourceType);
 	
 	
 	// ********** entity generation **********

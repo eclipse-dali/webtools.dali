@@ -12,8 +12,8 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.AbstractJpaContextNode;
@@ -31,8 +31,8 @@ public abstract class AbstractJavaJpaContextNode
 	}
 	
 	@Override
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 	}
 	
 	public Iterator<String> javaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {

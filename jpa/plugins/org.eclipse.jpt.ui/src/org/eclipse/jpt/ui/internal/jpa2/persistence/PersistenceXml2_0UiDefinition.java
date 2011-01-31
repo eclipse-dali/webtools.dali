@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.persistence;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.internal.persistence.details.AbstractPersistenceXmlResourceUiDefinition;
@@ -45,7 +45,7 @@ public class PersistenceXml2_0UiDefinition extends AbstractPersistenceXmlResourc
 		return new Generic2_0PersistenceXmlUiFactory();
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
+	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(JptCorePlugin.PERSISTENCE_XML_2_0_RESOURCE_TYPE);
 	}
 	

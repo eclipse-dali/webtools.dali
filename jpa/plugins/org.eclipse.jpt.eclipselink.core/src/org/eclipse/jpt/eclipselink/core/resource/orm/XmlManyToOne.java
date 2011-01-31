@@ -33,11 +33,11 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlReplicationPartitio
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlRoundRobinPartitioning_2_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlUnionPartitioning_2_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlValuePartitioning_2_2;
-import org.eclipse.jpt.core.internal.utility.translators.EmptyTagBooleanTranslator;
-import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.internal.utility.translators.EmptyTagBooleanTranslator;
+import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.orm.JPA;
 import org.eclipse.jpt.core.resource.orm.OrmPackage;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

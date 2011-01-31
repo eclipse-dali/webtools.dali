@@ -12,19 +12,19 @@ package org.eclipse.jpt.core.internal.resource.java.source;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.core.internal.resource.java.NullAttributeOverrideColumnAnnotation;
-import org.eclipse.jpt.core.internal.utility.jdt.ElementAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.ElementIndexedAnnotationAdapter;
-import org.eclipse.jpt.core.internal.utility.jdt.SimpleDeclarationAnnotationAdapter;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAttributeOverrideAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.IndexedDeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * <code>javax.persistence.AttributeOverride</code>

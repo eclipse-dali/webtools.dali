@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.platform;
 
+import org.eclipse.jpt.common.core.internal.XPointUtil;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformFactory;
-import org.eclipse.jpt.core.internal.XPointUtil;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;

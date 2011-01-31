@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v2_1;
 
 import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.AbstractEclipseLink2_0JpaPlatformProvider;
@@ -28,7 +28,7 @@ public abstract class AbstractEclipseLink2_1JpaPlatformProvider
 	// ********** resource models **********
 
 	@Override
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
 		if (contentType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_CONTENT_TYPE)) {
 			return JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_2_1_RESOURCE_TYPE;
 		}

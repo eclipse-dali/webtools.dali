@@ -36,7 +36,6 @@ import org.eclipse.jpt.jaxb.ui.internal.filters.EmptyInnerPackageFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonArchiveOrExternalElementFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonContainerFilter;
 import org.eclipse.jpt.jaxb.ui.internal.filters.NonJavaElementFilter;
-import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -69,7 +68,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private static final int SIZING_SELECTION_WIDGET_WIDTH = 480;
 	private static final int SIZING_SELECTION_WIDGET_HEIGHT = 150;
 
-	public static final String HELP_CONTEXT_ID = JptUiPlugin.PLUGIN_ID + ".wizard_jaxbschema_classes"; //$NON-NLS-1$
+	public static final String HELP_CONTEXT_ID = "org.eclipse.jpt.ui.wizard_jaxbschema_classes"; //$NON-NLS-1$
 	
 	// ********** constructor **********
 

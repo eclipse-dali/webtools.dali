@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
  * Map a content type to a JAXB resource model.
@@ -38,5 +38,5 @@ public interface JaxbResourceModelProvider
 	 * the appropriate creation method instead of building a provider for the
 	 * same content.
 	 */
-	JpaResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file);
+	JptResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file);
 }

@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.libval;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 public class GenericEclipseLinkBundlesLibraryValidator 

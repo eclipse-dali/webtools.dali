@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.internal.resource.java.NullNamedColumnAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>javax.persistence.OrderColumn</code>

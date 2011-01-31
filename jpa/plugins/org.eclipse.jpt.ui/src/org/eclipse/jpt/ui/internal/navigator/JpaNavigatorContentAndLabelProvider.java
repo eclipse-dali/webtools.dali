@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.navigator;
 
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 
 public class JpaNavigatorContentAndLabelProvider extends DelegatingTreeContentAndLabelProvider
 {

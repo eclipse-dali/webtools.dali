@@ -12,9 +12,9 @@ package org.eclipse.jpt.eclipselink.core.internal.libval;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.internal.libprov.JpaOsgiBundlesLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.internal.libval.AbstractOsgiBundlesLibraryValidator;
-import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.eclipselink.core.platform.EclipseLinkPlatform;
 import org.eclipse.osgi.service.resolver.VersionRange;
@@ -29,73 +29,73 @@ public class EclipseLinkEclipseLinkBundlesLibraryValidator
 		JpaPlatformDescription platform = jpaConfig.getJpaPlatform();
 		if (EclipseLinkPlatform.VERSION_1_0.equals(platform)) {
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.core",
-					new VersionRange[] {new VersionRange("[1.0, 3.0)")});
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.jpa",
-					new VersionRange[] {new VersionRange("[1.0, 3.0)")});
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.asm",
-					new VersionRange[] {new VersionRange("[1.0, 3.0)")});
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.antlr",
-					new VersionRange[] {new VersionRange("[1.0, 3.0)")});
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.0, 3.0)")}); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_1_1.equals(platform)) {
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.core",
-					new VersionRange[] {new VersionRange("[1.1, 3.0)")});
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.jpa",
-					new VersionRange[] {new VersionRange("[1.1, 3.0)")});
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.asm",
-					new VersionRange[] {new VersionRange("[1.1, 3.0)")});
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.antlr",
-					new VersionRange[] {new VersionRange("[1.1, 3.0)")});
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.1, 3.0)")}); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_1_2.equals(platform)) {
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.core",
-					new VersionRange[] {new VersionRange("[1.2, 3.0)")});
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.jpa",
-					new VersionRange[] {new VersionRange("[1.2, 3.0)")});
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.asm",
-					new VersionRange[] {new VersionRange("[1.2, 3.0)")});
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.antlr",
-					new VersionRange[] {new VersionRange("[1.2, 3.0)")});
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[1.2, 3.0)")}); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_2_0.equals(platform)) {
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.core",
-					new VersionRange[] {new VersionRange("[2.0, 3.0)")});
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.jpa",
-					new VersionRange[] {new VersionRange("[2.0, 3.0)")});
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.asm",
-					new VersionRange[] {new VersionRange("[2.0, 3.0)")});
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.antlr",
-					new VersionRange[] {new VersionRange("[2.0, 3.0)")});
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.0, 3.0)")}); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_2_1.equals(platform)) {
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.core",
-					new VersionRange[] {new VersionRange("[2.1, 3.0)")});
+					"org.eclipse.persistence.core", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.jpa",
-					new VersionRange[] {new VersionRange("[2.1, 3.0)")});
+					"org.eclipse.persistence.jpa", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.asm",
-					new VersionRange[] {new VersionRange("[2.1, 3.0)")});
+					"org.eclipse.persistence.asm", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 			bundleVersionRanges.put(
-					"org.eclipse.persistence.antlr",
-					new VersionRange[] {new VersionRange("[2.1, 3.0)")});
+					"org.eclipse.persistence.antlr", //$NON-NLS-1$
+					new VersionRange[] {new VersionRange("[2.1, 3.0)")}); //$NON-NLS-1$
 		}
 		return validate(jpaConfig, bundleVersionRanges);
 	}

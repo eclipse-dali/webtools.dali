@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
-
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
@@ -27,7 +27,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.persistence.general.EclipseLinkPe
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.logging.PersistenceXmlLoggingTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.PersistenceXmlOptionsTab;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation.PersistenceXmlSchemaGenerationTab;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;

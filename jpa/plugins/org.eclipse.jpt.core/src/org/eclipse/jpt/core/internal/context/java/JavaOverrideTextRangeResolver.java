@@ -11,9 +11,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaOverride;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaOverrideTextRangeResolver
 	implements OverrideTextRangeResolver

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaBaseJoinColumn;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaPrimaryKeyJoinColumn;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.PrimaryKeyJoinColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.Filter;

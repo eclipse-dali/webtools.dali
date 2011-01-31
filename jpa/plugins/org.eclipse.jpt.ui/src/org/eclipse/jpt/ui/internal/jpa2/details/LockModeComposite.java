@@ -11,10 +11,10 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.jpa2.context.LockModeType2_0;
 import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**

@@ -12,7 +12,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jdt.core.JavaCore;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
@@ -42,7 +42,7 @@ public class JavaPackageInfoResourceModelProvider
 	}
 
 	public IContentType getContentType() {
-		return JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE;
+		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE;
 	}
 
 	public JavaResourceCompilationUnit buildResourceModel(JaxbProject jaxbProject, IFile file) {

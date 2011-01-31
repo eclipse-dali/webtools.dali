@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;

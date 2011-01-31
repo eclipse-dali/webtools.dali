@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryVersionAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceVersionAnnotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -17,8 +19,6 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.VersionAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 
 /**
  * javax.persistence.Version

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTFieldAttribute;
-import org.eclipse.jpt.core.utility.jdt.FieldAttribute;
-import org.eclipse.jpt.core.utility.jdt.Type;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTFieldAttribute;
+import org.eclipse.jpt.common.core.utility.jdt.FieldAttribute;
+import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;

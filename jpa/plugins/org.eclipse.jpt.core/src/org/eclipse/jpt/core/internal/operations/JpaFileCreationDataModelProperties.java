@@ -10,6 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.operations;
 
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
+
 public interface JpaFileCreationDataModelProperties extends JptFileCreationDataModelProperties
 {
 

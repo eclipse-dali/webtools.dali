@@ -22,6 +22,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -193,7 +194,7 @@ public class JpaMoveFolderParticipant
 	protected Iterable<ReplaceEdit> createPersistenceUnitReplaceEdits(PersistenceUnit persistenceUnit, IFolder folder, IContainer destination) {
 		IProject project = destination.getProject();
 		IPath fullPath = destination.getFullPath().append(folder.getName());
-		IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+		IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
 		return persistenceUnit.createMoveFolderEdits(folder, runtimePath);
 	}
 	

@@ -9,14 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.eclipselink.ui.internal.details.java.EclipseLinkJavaUiFactory;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java.JavaEclipseLinkEmbeddable1_2Composite;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java.JavaEclipseLinkEntity1_2Composite;
-import org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.java.JavaEclipseLinkMappedSuperclass1_2Composite;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

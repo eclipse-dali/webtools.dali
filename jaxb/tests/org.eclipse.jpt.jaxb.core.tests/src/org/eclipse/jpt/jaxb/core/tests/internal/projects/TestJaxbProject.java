@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -23,7 +23,6 @@ import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
  * The JPA project's settings (platform, database connection, etc.) can be
  * controlled by building a data model and passing it into the constructor.
  */
-@SuppressWarnings("nls")
 public class TestJaxbProject extends TestJavaProject {
 	private final JaxbProject jaxbProject;
 

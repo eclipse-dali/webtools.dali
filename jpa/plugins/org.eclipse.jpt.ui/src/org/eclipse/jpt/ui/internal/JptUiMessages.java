@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,12 +14,11 @@ import org.eclipse.osgi.util.NLS;
 /**
  * Localized messages used by Dali UI.
  *
- * @version 2.3
+ * @version 3.0
  * @since 1.0
  */
 public class JptUiMessages {
 
-	public static String ChooserPane_browseButton;
 	public static String AccessTypeComposite_access;
 	public static String AccessTypeComposite_field;
 	public static String AccessTypeComposite_property;
@@ -40,10 +39,6 @@ public class JptUiMessages {
 	public static String AddPersistentClassDialog_noClassError;
 	public static String AddPersistentClassDialog_noMappingKeyError;
 	public static String AddPersistentClassDialog_title;
-	public static String AddRemovePane_AddButtonText;
-	public static String AddRemovePane_RemoveButtonText;
-	public static String ClassChooserPane_dialogMessage;
-	public static String ClassChooserPane_dialogTitle;
 	public static String convertToJpa_convertingProject;
 	public static String convertToJpa_detectingTechnologies;
 	public static String DatabaseSchemaWizardPage_title;
@@ -54,8 +49,6 @@ public class JptUiMessages {
 	public static String DatabaseSchemaWizardPage_schema;
 	public static String DatabaseSchemaWizardPage_connectionInfo;
 	public static String DatabaseSchemaWizardPage_schemaInfo;
-	public static String EnumComboViewer_default;
-	public static String EnumComboViewer_defaultWithDefault;
 	public static String Error_openingEditor;
 	public static String General_browse;
 	public static String General_revert;
@@ -137,8 +130,6 @@ public class JptUiMessages {
 	public static String OrmItemLabelProviderFactory_entityMappingsLabel;
 	public static String OverwriteConfirmerDialog_text;
 	public static String OverwriteConfirmerDialog_title;
-	public static String PackageChooserPane_dialogMessage;
-	public static String PackageChooserPane_dialogTitle;
 	public static String PersistenceItemLabelProviderFactory_persistenceLabel;
 	public static String EntitiesGenerator_jobName;
 	public static String JpaPreferencesPage_Description;
@@ -149,6 +140,7 @@ public class JptUiMessages {
 	public static String JpaProblemSeveritiesPage_Warning;
 	public static String SelectJpaOrmMappingFileDialog_newButton;
 
+	
 	private static final String BUNDLE_NAME = "jpt_ui"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptUiMessages.class;
 	static {

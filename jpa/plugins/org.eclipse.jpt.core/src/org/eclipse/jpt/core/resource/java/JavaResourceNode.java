@@ -13,9 +13,9 @@ import java.util.Iterator;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.model.Model;
 
 /**
@@ -75,7 +75,7 @@ public interface JavaResourceNode
 	/**
 	 * Root of Java resource model containment hierarchy.
 	 */
-	interface Root extends JavaResourceNode, JpaResourceModel {
+	interface Root extends JavaResourceNode, JptResourceModel {
 
 		/**
 		 * Return the root's Java resource persistent types.

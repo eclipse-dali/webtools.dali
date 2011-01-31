@@ -9,12 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.OneToManyMapping;
+import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkOneToManyRelationship;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;

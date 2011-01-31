@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.resource.java.QueryAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**

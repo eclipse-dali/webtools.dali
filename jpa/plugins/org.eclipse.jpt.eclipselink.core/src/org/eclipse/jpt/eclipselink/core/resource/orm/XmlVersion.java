@@ -27,8 +27,8 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLink2_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.EclipseLinkOrmV2_2Package;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlIndex_2_2;
 import org.eclipse.jpt.eclipselink.core.resource.orm.v2_2.XmlVersion_2_2;
-import org.eclipse.jpt.core.internal.utility.translators.SimpleTranslator;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
 /**

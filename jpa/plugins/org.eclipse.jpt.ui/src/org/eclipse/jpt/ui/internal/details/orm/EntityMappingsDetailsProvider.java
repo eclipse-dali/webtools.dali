@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityMappingsDetailsProvider;
@@ -47,7 +47,7 @@ public class EntityMappingsDetailsProvider
 	
 	
 	@Override
-	protected boolean providesDetails(JpaResourceType resourceType) {
+	protected boolean providesDetails(JptResourceType resourceType) {
 		return resourceType.equals(JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE);
 	}
 	

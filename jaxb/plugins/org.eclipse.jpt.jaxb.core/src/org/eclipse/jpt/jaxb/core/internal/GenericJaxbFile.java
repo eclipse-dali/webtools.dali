@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 
@@ -39,7 +39,7 @@ public class GenericJaxbFile
 	/**
 	 * the resource model corresponding to the file
 	 */
-	protected final JpaResourceModel resourceModel;
+	protected final JptResourceModel resourceModel;
 
 //	/**
 //	 * the root structure (context model) nodes corresponding to the resource
@@ -50,7 +50,7 @@ public class GenericJaxbFile
 
 	// ********** construction **********
 
-	public GenericJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
+	public GenericJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JptResourceModel resourceModel) {
 		super(jaxbProject);
 		this.file = file;
 		this.contentType = contentType;
@@ -82,11 +82,11 @@ public class GenericJaxbFile
 		return this.contentType;
 	}
 
-	public JpaResourceModel getResourceModel() {
+	public JptResourceModel getResourceModel() {
 		return this.resourceModel;
 	}
 
-	public JpaResourceModel getResourceModel(IContentType ct) {
+	public JptResourceModel getResourceModel(IContentType ct) {
 		return this.contentType.isKindOf(ct) ? this.resourceModel : null;
 	}
 

@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.EmbeddedIdMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEmbeddedIdMappingComposite;
 import org.eclipse.jpt.ui.internal.details.EmbeddedMappingOverridesComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

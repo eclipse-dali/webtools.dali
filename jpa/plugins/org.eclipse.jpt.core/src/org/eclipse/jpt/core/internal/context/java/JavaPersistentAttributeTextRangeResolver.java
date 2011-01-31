@@ -11,9 +11,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.context.PersistentAttributeTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class JavaPersistentAttributeTextRangeResolver
 	implements PersistentAttributeTextRangeResolver

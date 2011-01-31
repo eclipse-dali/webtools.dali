@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal;
 
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
-import org.eclipse.jpt.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;

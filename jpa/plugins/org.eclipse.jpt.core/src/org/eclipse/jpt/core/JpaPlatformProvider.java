@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core;
 
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
@@ -41,7 +42,7 @@ public interface JpaPlatformProvider
 	/**
 	 * Return the most recent resource type for the given content type supported by this platform
 	 */
-	JpaResourceType getMostRecentSupportedResourceType(IContentType contentType);
+	JptResourceType getMostRecentSupportedResourceType(IContentType contentType);
 	
 	/**
 	 * Return the resource model providers that apply to this platform.

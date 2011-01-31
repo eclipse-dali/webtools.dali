@@ -9,10 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkAlwaysRefreshComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheSizeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheTypeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkDisableHitsComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.orm.OrmEclipseLinkExistenceCheckingComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.EclipseLinkCaching2_0Composite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

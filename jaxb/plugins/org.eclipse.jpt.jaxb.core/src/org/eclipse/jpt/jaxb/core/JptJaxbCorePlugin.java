@@ -13,14 +13,21 @@ import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformManagerImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
@@ -44,6 +51,8 @@ import org.osgi.service.prefs.Preferences;
 public class JptJaxbCorePlugin
 		extends Plugin {
 	
+	private static volatile boolean flushPreferences = true;
+
 	/**
 	 * The plug-in identifier of Dali JAXB core
 	 * (value <code>"org.eclipse.jpt.jaxb.core"</code>).
@@ -141,6 +150,80 @@ public class JptJaxbCorePlugin
 		return JaxbPlatformManagerImpl.instance();
 	}
 	
+	/**
+	 * Return the default Dali preferences
+	 * @see JpaPreferenceInitializer
+	 */
+	public static IEclipsePreferences getDefaultPreferences() {
+		return getPreferences(new DefaultScope());
+	}
+
+	/**
+	 * Return the Dali preferences for the current workspace instance.
+	 */
+	public static IEclipsePreferences getWorkspacePreferences() {
+		return getPreferences(new InstanceScope());
+	}
+	
+	/**
+	 * Return the Dali preferences for the specified context.
+	 */
+	private static IEclipsePreferences getPreferences(IScopeContext context) {
+		return context.getNode(PLUGIN_ID);
+	}
+	
+	/**
+	 * Set the workspace preference.
+	 */
+	public static void setWorkspacePreference(String preferenceKey, String preferenceValue) {
+		IEclipsePreferences prefs = getWorkspacePreferences();
+		prefs.put(preferenceKey, preferenceValue);
+		flush(prefs);
+	}
+
+	/**
+	 * This method is called (via reflection) when the test plug-in is loaded.
+	 * The preferences end up getting flushed after the test case has deleted
+	 * its project, resulting in resource exceptions in the log, e.g.
+	 * <pre>
+	 *     Resource '/JpaProjectManagerTests' is not open.
+	 * </pre>
+	 * See <code>JptJaxbCoreTestsPlugin.start(BundleContext)</code>
+	 */
+	@SuppressWarnings("unused")
+	private static void doNotFlushPreferences() {
+		flushPreferences = false;
+	}
+
+	/**
+	 * Flush preferences in an asynchronous Job because the flush request will
+	 * trigger a lock on the project, which can cause us some deadlocks (e.g.
+	 * when deleting the metamodel source folder).
+	 * Note: the flush will also remove the prefs node if it is empty
+	 */
+	private static void flush(IEclipsePreferences prefs) {
+		if (flushPreferences) {
+			new PreferencesFlushJob(prefs).schedule();
+		}
+	}
+
+	private static class PreferencesFlushJob extends Job {
+		private final IEclipsePreferences prefs;
+		PreferencesFlushJob(IEclipsePreferences prefs) {
+			super(NLS.bind(JptJaxbCoreMessages.PREFERENCES_FLUSH_JOB_NAME, prefs.absolutePath()));
+			this.prefs = prefs;
+		}
+		@Override
+		protected IStatus run(IProgressMonitor monitor) {
+			try {
+				prefs.flush();
+			} catch(BackingStoreException ex) {
+				log(ex);
+			}
+			return Status.OK_STATUS;
+		}
+	}
+	
 	public static Preferences getProjectPreferences(IProject project) {
 		try {
 			IFacetedProject fproj = ProjectFacetsManager.create(project);
@@ -170,7 +253,7 @@ public class JptJaxbCorePlugin
 		else {
 			throw new IllegalArgumentException("Illegal JAXB facet version: " + jaxbFacetVersion); //$NON-NLS-1$
 		}
-		JptCorePlugin.setWorkspacePreference(preferenceKey, platform.getId());
+		setWorkspacePreference(preferenceKey, platform.getId());
 	}
 	
 	/**
@@ -182,11 +265,11 @@ public class JptJaxbCorePlugin
 		JaxbPlatformDescription defaultPlatform = 
 				getDefaultPlatform(
 					jaxbFacetVersion, 
-					JptCorePlugin.getWorkspacePreferences(), 
-					JptCorePlugin.getDefaultPreferences());
+					getWorkspacePreferences(), 
+					getDefaultPreferences());
 		if (defaultPlatform == null) {
 			// if the platform ID stored in the workspace prefs is invalid (i.e. null), look in the default prefs
-			defaultPlatform = getDefaultPlatform(jaxbFacetVersion, JptCorePlugin.getDefaultPreferences());
+			defaultPlatform = getDefaultPlatform(jaxbFacetVersion, getDefaultPreferences());
 		}
 		return defaultPlatform;
 	}

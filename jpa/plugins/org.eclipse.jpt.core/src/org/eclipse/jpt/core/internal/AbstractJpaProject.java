@@ -39,24 +39,25 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.JpaResourceModelListener;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryPersistentTypeCache;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.jpa2.context.JpaRootContextNode2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.JavaResourcePersistentType2_0;
-import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
@@ -149,7 +150,7 @@ public abstract class AbstractJpaProject
 	 * Resource models notify this listener when they change. A project update
 	 * should occur any time a resource model changes.
 	 */
-	protected final JpaResourceModelListener resourceModelListener;
+	protected final JptResourceModelListener resourceModelListener;
 
 	/**
 	 * The root of the model representing the collated resources associated with 
@@ -577,12 +578,12 @@ public abstract class AbstractJpaProject
 	 * pre-condition: content type is not <code>null</code>
 	 */
 	protected boolean contentTypeIsJavaRelated(IContentType contentType) {
-		return contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE) ||
-				contentType.isKindOf(JptCorePlugin.JAR_CONTENT_TYPE);
+		return contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE) ||
+				contentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE);
 	}
 
 	protected boolean fileResourceLocationIsValid(IFile file) {
-		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(this.getProject());
+		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(this.getProject());
 		return resourceLocator.acceptResourceLocation(this.getProject(), file.getParent());
 	}
 
@@ -749,7 +750,7 @@ public abstract class AbstractJpaProject
 	// ********** utility **********
 
 	public IFile getPlatformFile(IPath runtimePath) {
-		return JptCorePlugin.getPlatformFile(this.project, runtimePath);
+		return JptCommonCorePlugin.getPlatformFile(this.project, runtimePath);
 	}
 
 
@@ -775,7 +776,7 @@ public abstract class AbstractJpaProject
 	 * content is a "kind of" the specified content type, return the JPA
 	 * resource model corresponding to the file; otherwise, return null.
 	 */
-	protected JpaResourceModel getResourceModel(IPath runtimePath, IContentType contentType) {
+	protected JptResourceModel getResourceModel(IPath runtimePath, IContentType contentType) {
 		IFile file = this.getPlatformFile(runtimePath);
 		return file.exists() ? this.getResourceModel(file, contentType) :  null;
 	}
@@ -785,7 +786,7 @@ public abstract class AbstractJpaProject
 	 * is a "kind of" the specified content type, return the JPA resource model
 	 * corresponding to the file; otherwise, return null.
 	 */
-	protected JpaResourceModel getResourceModel(IFile file, IContentType contentType) {
+	protected JptResourceModel getResourceModel(IFile file, IContentType contentType) {
 		JpaFile jpaFile = this.getJpaFile(file);
 		return (jpaFile == null) ? null : jpaFile.getResourceModel(contentType);
 	}
@@ -810,7 +811,7 @@ public abstract class AbstractJpaProject
 	 * Return only those valid annotated Java resource persistent types that are
 	 * directly part of the JPA project, ignoring those in JARs referenced in
 	 * <code>persistence.xml</code>.
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	protected Iterable<JavaResourcePersistentType> getInternalAnnotatedSourceJavaResourcePersistentTypes() {
 		return new FilteringIterable<JavaResourcePersistentType>(this.getInternalSourceJavaResourcePersistentTypes()) {
@@ -903,7 +904,7 @@ public abstract class AbstractJpaProject
 	 * Return the JPA project's JPA files with Java source <em>content</em>.
 	 */
 	protected Iterable<JpaFile> getJavaSourceJpaFiles() {
-		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 
@@ -922,7 +923,7 @@ public abstract class AbstractJpaProject
 	/**
 	 * return *all* the "persistable" Java resource persistent types, including those in JARs referenced in
 	 * persistence.xml
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	protected Iterable<JavaResourcePersistentType> getPersistableJavaResourcePersistentTypes() {
 		return new FilteringIterable<JavaResourcePersistentType>(this.getJavaResourcePersistentTypes()) {
@@ -1000,7 +1001,7 @@ public abstract class AbstractJpaProject
 	 * return JPA files with package-info source "content"
 	 */
 	protected Iterable<JpaFile> getPackageInfoSourceJpaFiles() {
-		return this.getJpaFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+		return this.getJpaFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 
@@ -1034,7 +1035,7 @@ public abstract class AbstractJpaProject
 	 * return JPA files with JAR "content"
 	 */
 	public Iterable<JpaFile> getJarJpaFiles() {
-		return this.getJpaFiles(JptCorePlugin.JAR_CONTENT_TYPE);
+		return this.getJpaFiles(JptCommonCorePlugin.JAR_CONTENT_TYPE);
 	}
 
 
@@ -1068,7 +1069,7 @@ public abstract class AbstractJpaProject
 	}
 
 	protected JavaResourceCompilationUnit getJavaResourceCompilationUnit(IFile file) {
-		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return (JavaResourceCompilationUnit) this.getResourceModel(file, JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 	public String getMetamodelSourceFolderName() {
@@ -1492,37 +1493,37 @@ public abstract class AbstractJpaProject
 	
 	// ********** resource model listener **********
 	
-	protected JpaResourceModelListener buildResourceModelListener() {
+	protected JptResourceModelListener buildResourceModelListener() {
 		return new DefaultResourceModelListener();
 	}
 
 	protected class DefaultResourceModelListener 
-		implements JpaResourceModelListener 
+		implements JptResourceModelListener 
 	{
 		protected DefaultResourceModelListener() {
 			super();
 		}
 		
-		public void resourceModelChanged(JpaResourceModel jpaResourceModel) {
+		public void resourceModelChanged(JptResourceModel jpaResourceModel) {
 //			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
 			AbstractJpaProject.this.synchronizeContextModel(jpaResourceModel);
 		}
 		
-		public void resourceModelReverted(JpaResourceModel jpaResourceModel) {
+		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 			AbstractJpaProject.this.addJpaFile(file);
 		}
 		
-		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
+		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
 			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 			AbstractJpaProject.this.removeJpaFile(file);
 		}
 	}
 	
-	protected void synchronizeContextModel(@SuppressWarnings("unused") JpaResourceModel jpaResourceModel) {
+	protected void synchronizeContextModel(@SuppressWarnings("unused") JptResourceModel jpaResourceModel) {
 		this.synchronizeContextModel();
 	}
 
@@ -1673,10 +1674,10 @@ public abstract class AbstractJpaProject
 		if (contentType == null) {
 			return false;
 		}
-		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			return true;
 		}
-		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+		if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
 			return true;
 		}
 		return false;
@@ -1687,10 +1688,10 @@ public abstract class AbstractJpaProject
 		if (contentType == null) {
 			return false;
 		}
-		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			return this.removeExternalJavaResourceCompilationUnit(file);
 		}
-		if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
+		if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
 			return this.externalJavaResourcePersistentTypeCache.removePersistentTypes(file);
 		}
 		return false;

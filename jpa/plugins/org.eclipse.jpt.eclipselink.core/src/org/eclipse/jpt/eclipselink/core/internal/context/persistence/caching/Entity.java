@@ -24,9 +24,9 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	private String name;
 	private Caching parent;
 
-	public static final String CACHE_TYPE_PROPERTY = Caching.CACHE_TYPE_PROPERTY; //$NON-NLS-1$
-	public static final String CACHE_SIZE_PROPERTY = Caching.CACHE_SIZE_PROPERTY; //$NON-NLS-1$
-	public static final String SHARED_CACHE_PROPERTY = Caching.SHARED_CACHE_PROPERTY; //$NON-NLS-1$
+	public static final String CACHE_TYPE_PROPERTY = Caching.CACHE_TYPE_PROPERTY;
+	public static final String CACHE_SIZE_PROPERTY = Caching.CACHE_SIZE_PROPERTY;
+	public static final String SHARED_CACHE_PROPERTY = Caching.SHARED_CACHE_PROPERTY;
 
 	// ********** EclipseLink properties **********
 	private CacheType cacheType;
@@ -94,7 +94,7 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	
 	// ********** name **********
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	// ********** cacheType **********
@@ -130,14 +130,15 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, isShared);
 	}
 
+	@Override
 	public void toString(StringBuilder sb) {
-		sb.append("name: ");
+		sb.append("name: "); //$NON-NLS-1$
 		sb.append(this.name);
-		sb.append(", cacheType: ");
+		sb.append(", cacheType: "); //$NON-NLS-1$
 		sb.append(this.cacheType);
-		sb.append(", cacheSize: ");
+		sb.append(", cacheSize: "); //$NON-NLS-1$
 		sb.append(this.cacheSize);
-		sb.append(", cacheIsShared: ");
+		sb.append(", cacheIsShared: "); //$NON-NLS-1$
 		sb.append(this.cacheIsShared);
 	}
 }

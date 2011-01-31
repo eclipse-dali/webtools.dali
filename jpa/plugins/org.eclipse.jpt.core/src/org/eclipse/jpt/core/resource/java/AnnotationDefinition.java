@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 
 /**
  * Used to build annotations discovered in the Java source code.

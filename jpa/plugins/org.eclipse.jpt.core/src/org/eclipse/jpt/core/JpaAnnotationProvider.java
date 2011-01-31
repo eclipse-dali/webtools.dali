@@ -11,13 +11,13 @@ package org.eclipse.jpt.core;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.common.core.utility.jdt.Attribute;
+import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
-import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * This is used to provide type and attribute annotations.

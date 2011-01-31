@@ -11,11 +11,12 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.InheritanceType;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
@@ -181,7 +182,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 				if (getSubject() == null) {
 					//this is part of a list given to a combo, combos don't take kindly to null
-					return JptUiDetailsMessages.NoneSelected;
+					return JptCommonUiMessages.NoneSelected;
 				}
 
 				if (value == null) {
@@ -201,7 +202,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 
 					if (defaultName.length() > 0) {
 						value = NLS.bind(
-							JptUiDetailsMessages.DefaultWithOneParam,
+							JptCommonUiMessages.DefaultWithOneParam,
 							defaultName
 						);
 					}
@@ -210,7 +211,7 @@ public abstract class AbstractInheritanceComposite<T extends Entity> extends Pan
 					}
 				}
 				if (value.startsWith(NONE_KEY)) {
-					value = JptUiDetailsMessages.NoneSelected;
+					value = JptCommonUiMessages.NoneSelected;
 				}
 				return value;
 			}

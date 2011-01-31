@@ -11,7 +11,7 @@
 
 package org.eclipse.jpt.core.resource.xml;
 
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
 
 
 /**

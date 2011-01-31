@@ -11,10 +11,10 @@ package org.eclipse.jpt.jaxb.core.internal.platform;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
@@ -64,11 +64,11 @@ public final class JaxbPlatformImpl
 	}
 
 	protected JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType) {
-		JpaResourceModel resourceModel = this.buildResourceModel(jaxbProject, file, contentType);
+		JptResourceModel resourceModel = this.buildResourceModel(jaxbProject, file, contentType);
 		return (resourceModel == null) ? null : getFactory().buildJaxbFile(jaxbProject, file, contentType, resourceModel);
 	}
 
-	protected JpaResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file, IContentType contentType) {
+	protected JptResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file, IContentType contentType) {
 		JaxbResourceModelProvider provider = this.getResourceModelProvider(contentType);
 		return (provider == null) ? null : provider.buildResourceModel(jaxbProject, file);
 	}

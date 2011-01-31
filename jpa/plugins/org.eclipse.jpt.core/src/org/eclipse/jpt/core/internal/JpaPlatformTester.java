@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
 

@@ -12,6 +12,7 @@
 package org.eclipse.jpt.core.resource.orm.v2_0;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.orm.EnumType;
 import org.eclipse.jpt.core.resource.orm.FetchType;
 import org.eclipse.jpt.core.resource.orm.MapKey;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.resource.orm.XmlColumn;
 import org.eclipse.jpt.core.resource.orm.XmlConvertibleMapping;
 import org.eclipse.jpt.core.resource.orm.XmlJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlOrderable;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <!-- begin-user-doc -->

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMapping;
@@ -24,7 +25,6 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmOrderable2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlOrderColumn;
 import org.eclipse.jpt.core.resource.orm.XmlOrderable;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;

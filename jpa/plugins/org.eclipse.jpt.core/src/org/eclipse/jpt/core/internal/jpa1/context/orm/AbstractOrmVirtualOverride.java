@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmOverride;
 import org.eclipse.jpt.core.context.orm.OrmOverrideContainer;
 import org.eclipse.jpt.core.context.orm.OrmVirtualOverride;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Virtual <code>orm.xml</code> override

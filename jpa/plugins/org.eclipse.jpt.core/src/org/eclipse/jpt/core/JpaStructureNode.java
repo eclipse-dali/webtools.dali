@@ -9,7 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 
 
 /**
@@ -53,7 +54,7 @@ public interface JpaStructureNode
 	 * Return the content type of the structure node's resource.
 	 * This is used to find the appropriate ui provider for building composites 
 	 */
-	JpaResourceType getResourceType();
+	JptResourceType getResourceType();
 
 	/**
 	 * Dispose of this structureNode and dispose of child structureNodes.

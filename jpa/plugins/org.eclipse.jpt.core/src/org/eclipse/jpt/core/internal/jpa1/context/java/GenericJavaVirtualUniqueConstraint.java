@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaReadOnlyUniqueConstraint;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaVirtualUniqueConstraint
 	extends AbstractJavaReadOnlyUniqueConstraint

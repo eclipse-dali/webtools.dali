@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeDetailsPage;
 import org.eclipse.jpt.ui.internal.details.PersistentAttributeMapAsComposite;
 import org.eclipse.swt.widgets.Composite;

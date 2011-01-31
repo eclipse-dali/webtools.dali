@@ -13,8 +13,8 @@ import java.util.List;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.MappingFileRoot;
 import org.eclipse.jpt.core.context.persistence.Persistence;
@@ -121,7 +121,7 @@ public class GenericRootContextNode
 			// the model is completely whacked in another thread - so wipe our model(?)
 			return null;
 		}
-		JpaResourceType resourceType = xmlResource.getResourceType();
+		JptResourceType resourceType = xmlResource.getResourceType();
 		if (resourceType == null) {
 			return null;
 		}

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTEnumConstant;
-import org.eclipse.jpt.core.utility.jdt.EnumConstant;
-import org.eclipse.jpt.core.utility.jdt.Enum;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTEnumConstant;
+import org.eclipse.jpt.common.core.utility.jdt.Enum;
+import org.eclipse.jpt.common.core.utility.jdt.EnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;

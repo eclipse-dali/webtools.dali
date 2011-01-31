@@ -13,12 +13,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceModelListener;
-import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.ListenerList;
 
@@ -42,7 +42,7 @@ public abstract class SourceCompilationUnit
 	private final CommandExecutor modifySharedDocumentCommandExecutor;
 
 	/** listeners notified whenever the resource model changes */
-	private final ListenerList<JpaResourceModelListener> resourceModelListenerList;
+	private final ListenerList<JptResourceModelListener> resourceModelListenerList;
 
 
 	// ********** construction **********
@@ -57,7 +57,7 @@ public abstract class SourceCompilationUnit
 		this.annotationProvider = annotationProvider;
 		this.annotationEditFormatter = annotationEditFormatter;
 		this.modifySharedDocumentCommandExecutor = modifySharedDocumentCommandExecutor;
-		this.resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
+		this.resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 	}
 
 	public void initialize(CompilationUnit astRoot) {
@@ -114,7 +114,7 @@ public abstract class SourceCompilationUnit
 	// ********** JavaResourceNode.Root implementation **********
 
 	public void resourceModelChanged() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged(this);
 		}
 	}
@@ -140,13 +140,13 @@ public abstract class SourceCompilationUnit
 	}
 
 
-	// ********** JpaResourceModel implementation **********
+	// ********** JptResourceModel implementation **********
 
-	public void addResourceModelListener(JpaResourceModelListener listener) {
+	public void addResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);
 	}
 
-	public void removeResourceModelListener(JpaResourceModelListener listener) {
+	public void removeResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.remove(listener);
 	}
 

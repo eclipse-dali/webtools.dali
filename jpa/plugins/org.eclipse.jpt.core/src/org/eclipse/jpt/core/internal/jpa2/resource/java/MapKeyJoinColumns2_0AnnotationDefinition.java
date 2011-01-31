@@ -10,14 +10,14 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryMapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 
 /**
  * javax.persistence.MapKeyJoinColumns

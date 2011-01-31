@@ -22,11 +22,11 @@ import java.util.zip.ZipFile;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.core.IClasspathEntry;
+import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.osgi.util.NLS;
 
 public class GenericJpaUserLibraryValidator

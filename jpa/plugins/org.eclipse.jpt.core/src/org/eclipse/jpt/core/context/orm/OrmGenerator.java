@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlGenerator;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>orm.xml</code> sequence and table generators

@@ -11,7 +11,6 @@
 package org.eclipse.jpt.ui.internal.wizards.gen;
 
 import java.util.List;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -33,8 +32,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
 import org.eclipse.jpt.gen.internal.ORMGenTable;
 import org.eclipse.jpt.ui.JptUiPlugin;

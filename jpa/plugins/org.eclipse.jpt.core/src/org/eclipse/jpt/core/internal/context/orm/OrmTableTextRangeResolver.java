@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmTable;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class OrmTableTextRangeResolver
 	implements TableTextRangeResolver

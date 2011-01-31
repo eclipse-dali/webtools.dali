@@ -11,10 +11,10 @@ package org.eclipse.jpt.ui.internal.structure;
 
 import java.util.Iterator;
 
+import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.CollectionValueModel;

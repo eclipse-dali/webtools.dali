@@ -9,13 +9,13 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.jpa2.context.NamedQuery2_0;
 import org.eclipse.jpt.ui.internal.details.NamedQueryPropertyComposite;
 import org.eclipse.jpt.ui.internal.details.QueriesComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

@@ -12,8 +12,6 @@ package org.eclipse.jpt.ui.tests;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.ui.tests.internal.platform.JptUiPlatformTests;
-import org.eclipse.jpt.ui.tests.internal.swt.JptUiSWTTests;
-import org.eclipse.jpt.ui.tests.internal.util.JptUiUtilTests;
 
 /**
  * Runs all JPT UI Tests
@@ -23,8 +21,6 @@ public class JptUiTests {
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptUiTests.class.getPackage().getName());
 		suite.addTest(JptUiPlatformTests.suite());
-		suite.addTest(JptUiSWTTests.suite());
-		suite.addTest(JptUiUtilTests.suite());
 		return suite;
 	}
 

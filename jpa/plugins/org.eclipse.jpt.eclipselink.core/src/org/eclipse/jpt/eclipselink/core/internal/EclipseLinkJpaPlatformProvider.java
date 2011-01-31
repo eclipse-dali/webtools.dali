@@ -11,9 +11,10 @@ package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
@@ -74,12 +75,12 @@ public class EclipseLinkJpaPlatformProvider
 
 	// ********* resource models *********
 
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-			return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 		}
-		else if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
-			return JptCorePlugin.JAR_RESOURCE_TYPE;
+		else if (contentType.equals(JptCommonCorePlugin.JAR_CONTENT_TYPE)) {
+			return JptCommonCorePlugin.JAR_RESOURCE_TYPE;
 		}
 		else if (contentType.equals(JptCorePlugin.PERSISTENCE_XML_CONTENT_TYPE)) {
 			return JptCorePlugin.PERSISTENCE_XML_1_0_RESOURCE_TYPE;

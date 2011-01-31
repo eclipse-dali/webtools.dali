@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+	Copyright (c) 2011 Oracle. All rights reserved.
+	This program and the accompanying materials are made available under the
+	terms of the Eclipse Public License v1.0, which accompanies this distribution
+	and is available at http://www.eclipse.org/legal/epl-v10.html.
+	
+	Contributors:
+		Oracle - initial API and implementation
+ -->
+ 
+<plugin>
+
+	<!-- ***** extension points ***** -->
+	
+	<extension-point
+		id="org.eclipse.jpt.common.core.libraryValidators"
+		name="%LIBRARY_VALIDATORS"
+		schema="schema/libraryValidators.exsd"/>
+	
+	
+	<extension-point
+		id="org.eclipse.jpt.common.core.resourceLocators"
+		name="%RESOURCE_LOCATORS"
+		schema="schema/resourceLocators.exsd"/>
+
+
+	<!-- ***** Eclipse core extensions ***** -->
+
+	<extension
+		point="org.eclipse.core.contenttype.contentTypes">
+	
+		<!-- JAR content type -->
+		<content-type
+			id="org.eclipse.jpt.common.core.content.jar"
+			name="%JAR_CONTENT"
+			file-extensions="jar, zip">
+			<describer
+				class="org.eclipse.core.runtime.content.BinarySignatureDescriber">
+				<parameter name="signature" value="50 4B 03 04"/>
+			</describer>
+		</content-type>
+		
+  		<!-- package-info.java content type (for package annotations) -->
+		<content-type
+       		id="org.eclipse.jpt.common.core.content.javaPackageInfo"
+        	name="%JAVA_PACKAGE_INFO_CONTENT"
+        	base-type="org.eclipse.jdt.core.javaSource"
+       	 	file-names="package-info.java"
+        	priority="normal">
+  		</content-type>
+		
+	</extension>
+	<extension
+		point="org.eclipse.core.runtime.adapters">
+		
+		<factory
+			class="org.eclipse.jpt.common.core.internal.ResourceAdapterFactory"
+			adaptableType="org.eclipse.core.resources.IResource">
+			<adapter type="org.eclipse.jpt.common.core.IResourcePart"/>
+		</factory>
+		
+	</extension>
+	<extension 
+		point="org.eclipse.core.expressions.propertyTesters">
+
+		<propertyTester
+			id="org.eclipse.jpt.common.core.propertyTester.libraryProvider"
+			type="org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider"
+			namespace="org.eclipse.jpt.common.core"
+			properties="id, extendsId"
+			class="org.eclipse.jpt.common.core.internal.libprov.LibraryProviderPropertyTester"/>
+		
+	</extension>
+	<extension
+		point="org.eclipse.jpt.common.core.resourceLocators">
+		
+		<resourceLocator
+			id="simpleJavaResourceLocator"
+			class="org.eclipse.jpt.common.core.internal.resource.SimpleJavaResourceLocator"
+			priority="lowest">
+			<enablement>
+				<with variable="project">
+					<test 
+						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+						value="java" 
+						forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</resourceLocator>
+		
+		<resourceLocator
+			id="moduleResourceLocator"
+			class="org.eclipse.jpt.common.core.internal.resource.ModuleResourceLocator"
+			priority="lower">
+			<enablement>
+				<with variable="project">
+					<test 
+						property="org.eclipse.core.resources.projectNature" 
+						value="org.eclipse.wst.common.modulecore.ModuleCoreNature" 
+						forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</resourceLocator>
+		
+		<resourceLocator
+			id="webModuleResourceLocator"
+			class="org.eclipse.jpt.common.core.internal.resource.WebModuleResourceLocator"
+			priority="low">
+			<enablement>
+				<with variable="project">
+					<test 
+						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+						value="jst.web" 
+						forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</resourceLocator>
+		
+		<resourceLocator
+			id="pluginResourceLocator"
+			class="org.eclipse.jpt.common.core.internal.resource.PluginResourceLocator"
+			priority="normal">
+			<enablement>
+				<with variable="project">
+					<test 
+						property="org.eclipse.core.resources.projectNature" 
+						value="org.eclipse.pde.PluginNature" 
+						forcePluginActivation="true"/>
+				</with>
+			</enablement>
+		</resourceLocator>
+		
+	</extension>
+	<extension 
+		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
+		
+		<provider 
+			id="jpt-no-op-library-provider" 
+			extends="no-op-library-provider"
+			abstract="true">
+			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
+
+		</provider>
+
+	</extension>
+	
+
+</plugin>

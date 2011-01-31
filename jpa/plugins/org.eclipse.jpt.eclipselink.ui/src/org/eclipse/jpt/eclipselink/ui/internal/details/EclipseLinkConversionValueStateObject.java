@@ -12,7 +12,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jpt.ui.internal.widgets.NewNameDialog;
+import org.eclipse.jpt.common.ui.internal.widgets.NewNameDialog;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jpt.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.utility.internal.node.Node;

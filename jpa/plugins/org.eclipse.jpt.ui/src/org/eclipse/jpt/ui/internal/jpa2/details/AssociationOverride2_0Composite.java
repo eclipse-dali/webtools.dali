@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.AssociationOverride;
 import org.eclipse.jpt.core.context.ReadOnlyAssociationOverride;
 import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationship;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.ui.internal.details.EntityOverridesComposite;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.details.JoinTableJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

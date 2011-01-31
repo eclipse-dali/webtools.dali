@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.menus;
 
 import java.util.Iterator;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -63,7 +63,7 @@ public class PersistentAttributeMapAsContribution
 	
 	@Override
 	protected Iterator<? extends MappingUiDefinition<ReadOnlyPersistentAttribute, ?>> mappingUiDefinitions(
-			JpaPlatformUi jpaPlatformUi, JpaResourceType resourceType) {
+			JpaPlatformUi jpaPlatformUi, JptResourceType resourceType) {
 		
 		return jpaPlatformUi.attributeMappingUiDefinitions(resourceType);
 	}
@@ -79,7 +79,7 @@ public class PersistentAttributeMapAsContribution
 	}
 	
 	protected DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ?> getDefaultMappingUiDefinition(
-			JpaPlatformUi jpaPlatformUi, String defaultMappingKey, JpaResourceType resourceType) {
+			JpaPlatformUi jpaPlatformUi, String defaultMappingKey, JptResourceType resourceType) {
 		
 		return jpaPlatformUi.getDefaultAttributeMappingUiDefinition(resourceType, defaultMappingKey);
 	}

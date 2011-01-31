@@ -10,9 +10,10 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
-import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.JoinColumn.Owner;
+import org.eclipse.jpt.core.context.ReadOnlyJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.context.java.JavaJoinTable;
 import org.eclipse.jpt.core.context.java.JavaJoinTableRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinTableRelationshipStrategy;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 
 public class NullJavaJoinTableRelationshipStrategy

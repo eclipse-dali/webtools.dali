@@ -11,10 +11,7 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.context.java.JavaEntity;
-import org.eclipse.jpt.core.context.orm.EntityMappings;
-import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
@@ -87,7 +84,7 @@ public interface JaxbFactory  {
 	 * Construct a JAXB file for the specified JAXB project, file, content type,
 	 * and resource model.
 	 */
-	JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JpaResourceModel resourceModel);
+	JaxbFile buildJaxbFile(JaxbProject jaxbProject, IFile file, IContentType contentType, JptResourceModel resourceModel);
 	
 	
 	// ********** Non-resource-specific context nodes **********

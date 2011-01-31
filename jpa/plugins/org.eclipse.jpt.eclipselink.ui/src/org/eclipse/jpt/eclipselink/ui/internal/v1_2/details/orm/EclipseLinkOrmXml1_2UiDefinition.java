@@ -10,7 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v1_2.details.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -68,7 +68,7 @@ public class EclipseLinkOrmXml1_2UiDefinition
 		return new EclipseLinkOrmXml1_1UiFactory();
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
+	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(JptEclipseLinkCorePlugin.ECLIPSELINK_ORM_XML_1_2_RESOURCE_TYPE);
 	}
 	

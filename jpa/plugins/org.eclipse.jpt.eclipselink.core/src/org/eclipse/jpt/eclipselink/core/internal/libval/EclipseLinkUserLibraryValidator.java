@@ -17,9 +17,9 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.util.IClassFileReader;
 import org.eclipse.jdt.core.util.IFieldInfo;
+import org.eclipse.jpt.common.core.libprov.JptLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.core.internal.libprov.JpaUserLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCoreMessages;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -38,9 +38,9 @@ import org.osgi.framework.Version;
 public class EclipseLinkUserLibraryValidator
 	implements LibraryValidator {
 	
-	private final static String VERSION_CLASS_PATH = "org/eclipse/persistence/Version.class";
+	private final static String VERSION_CLASS_PATH = "org/eclipse/persistence/Version.class"; //$NON-NLS-1$
 	
-	private final static String VERSION_FIELD_NAME = "version";
+	private final static String VERSION_FIELD_NAME = "version"; //$NON-NLS-1$
 	
 	
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
@@ -49,19 +49,19 @@ public class EclipseLinkUserLibraryValidator
 		JpaPlatformDescription platform = jpaConfig.getJpaPlatform();
 		Set<VersionRange> versionRanges = new HashSet<VersionRange>();
 		if (EclipseLinkPlatform.VERSION_1_0.equals(platform)) {
-			versionRanges.add(new VersionRange("[1.0, 3.0)"));
+			versionRanges.add(new VersionRange("[1.0, 3.0)")); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_1_1.equals(platform)) {
-			versionRanges.add(new VersionRange("[1.1, 3.0)"));
+			versionRanges.add(new VersionRange("[1.1, 3.0)")); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_1_2.equals(platform)) {
-			versionRanges.add(new VersionRange("[1.2, 3.0)"));
+			versionRanges.add(new VersionRange("[1.2, 3.0)")); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_2_0.equals(platform)) {
-			versionRanges.add(new VersionRange("[2.0, 3.0)"));
+			versionRanges.add(new VersionRange("[2.0, 3.0)")); //$NON-NLS-1$
 		}
 		else if (EclipseLinkPlatform.VERSION_2_1.equals(platform)) {
-			versionRanges.add(new VersionRange("[2.1, 3.0)"));
+			versionRanges.add(new VersionRange("[2.1, 3.0)")); //$NON-NLS-1$
 		}
 		return validate(jpaConfig, versionRanges);
 	}

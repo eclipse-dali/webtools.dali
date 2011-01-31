@@ -10,12 +10,12 @@
 package org.eclipse.jpt.ui.internal.jpa2.persistence.connection;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

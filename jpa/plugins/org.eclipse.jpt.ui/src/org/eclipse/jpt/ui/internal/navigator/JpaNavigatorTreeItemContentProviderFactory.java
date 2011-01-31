@@ -12,12 +12,12 @@ package org.eclipse.jpt.ui.internal.navigator;
 import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.ui.navigator.JpaNavigatorProvider;
 
 public class JpaNavigatorTreeItemContentProviderFactory

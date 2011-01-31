@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.resource.orm.XmlOverride;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>orm.xml</code> override

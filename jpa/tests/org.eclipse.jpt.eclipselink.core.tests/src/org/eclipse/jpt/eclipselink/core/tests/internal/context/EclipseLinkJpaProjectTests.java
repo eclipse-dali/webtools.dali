@@ -10,10 +10,9 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context;
 
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.eclipselink.core.internal.JptEclipseLinkCorePlugin;
@@ -103,7 +102,7 @@ public class EclipseLinkJpaProjectTests extends EclipseLinkContextModelTestCase
 			DataModelFactory.createDataModel(new EclipseLinkOrmFileCreationDataModelProvider());
 		config.setProperty(JptFileCreationDataModelProperties.CONTAINER_PATH, 
 				getJpaProject().getProject().getFolder("src/META-INF").getFullPath());
-		config.setProperty(OrmFileCreationDataModelProperties.FILE_NAME, fileName);
+		config.setProperty(JptFileCreationDataModelProperties.FILE_NAME, fileName);
 		config.getDefaultOperation().execute(null, null);
 	}
 	

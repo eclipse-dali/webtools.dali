@@ -9,11 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.resource.java.source;
 
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.Type;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceNamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.utility.jdt.AnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
-import org.eclipse.jpt.core.utility.jdt.Type;
 
 /**
  * <code>javax.persistence.NamedQuery</code>

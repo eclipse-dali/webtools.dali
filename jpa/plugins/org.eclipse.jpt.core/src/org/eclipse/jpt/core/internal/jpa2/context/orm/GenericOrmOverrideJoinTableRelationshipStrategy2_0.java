@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
@@ -16,7 +17,6 @@ import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmOverrideRelationship2_0;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericOrmOverrideJoinTableRelationshipStrategy2_0
 	extends AbstractOrmJoinTableRelationshipStrategy

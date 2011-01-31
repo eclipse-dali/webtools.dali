@@ -37,6 +37,7 @@ import org.eclipse.jem.util.emf.workbench.EMFWorkbenchContextBase;
 import org.eclipse.jem.util.emf.workbench.FlexibleProjectResourceSet;
 import org.eclipse.jem.util.emf.workbench.IEMFContextContributor;
 import org.eclipse.jem.util.emf.workbench.ProjectResourceSet;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.utility.internal.ListenerList;
@@ -98,7 +99,7 @@ public abstract class AbstractXmlResourceProvider
 		}
 		else {
 			IPath absolutePath = 
-					JptCorePlugin.getResourceLocator(this.project).getResourcePath(this.project, resourcePath);
+				JptCommonCorePlugin.getResourceLocator(this.project).getResourcePath(this.project, resourcePath);
 			resourceUri = URI.createPlatformResourceURI(absolutePath.toString(), false);
 		}
 		

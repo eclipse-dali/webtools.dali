@@ -9,11 +9,12 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -84,11 +85,11 @@ public class CreateDdlFileNameComposite extends Pane<SchemaGeneration>
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultWithOneParam,
+				JptCommonUiMessages.DefaultWithOneParam,
 				defaultValue
 			);
 		}
-		return EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultEmpty;
+		return JptCommonUiMessages.DefaultEmpty;
 	}
 
 	@Override

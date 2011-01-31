@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
 import static org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties.*;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jpt.ui.internal.JptUiMessages;

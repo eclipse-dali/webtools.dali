@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextNode;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
@@ -41,7 +41,7 @@ public abstract class AbstractJaxbContextNode
 		return getParent().getContextRoot();
 	}
 	
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return getParent().getResourceType();
 	}
 }

@@ -28,18 +28,14 @@ import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.libval.LibraryValidatorManager;
 import org.eclipse.jpt.core.internal.platform.JpaPlatformManagerImpl;
 import org.eclipse.jpt.core.internal.prefs.JpaPreferenceInitializer;
-import org.eclipse.jpt.core.internal.resource.ResourceLocatorManager;
-import org.eclipse.jpt.core.libval.JptLibraryProviderInstallOperationConfig;
-import org.eclipse.jpt.core.libval.LibraryValidator;
 import org.eclipse.jpt.core.platform.GenericPlatform;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformManager;
-import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.jst.j2ee.internal.J2EEConstants;
 import org.eclipse.osgi.util.NLS;
@@ -70,7 +66,7 @@ public class JptCorePlugin
 	extends Plugin
 {
 	private volatile GenericJpaProjectManager jpaProjectManager;
-	private volatile ServiceTracker parserTracker;
+	private volatile ServiceTracker<?, SAXParserFactory> parserTracker;
 	private static volatile boolean flushPreferences = true;
 
 
@@ -156,26 +152,6 @@ public class JptCorePlugin
 	public static final String VALIDATOR_ID = PLUGIN_ID_ + "jpaValidator";  //$NON-NLS-1$
 
 	/**
-	 * The content type for Java source code files.
-	 */
-	public static final IContentType JAVA_SOURCE_CONTENT_TYPE = getContentType(JavaCore.JAVA_SOURCE_CONTENT_TYPE);
-	
-	/**
-	 * The resource type for Java source code files
-	 */
-	public static final JpaResourceType JAVA_SOURCE_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_CONTENT_TYPE);
-
-	/**
-	 * The content type for package-info Java code files.
-	 */
-	public static final IContentType JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE = getJpaContentType("javaPackageInfo"); //$NON-NLS-1$
-
-	/**
-	 * The resource type for package-info Java code files
-	 */
-	public static final JpaResourceType JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE = new JpaResourceType(JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
-
-	/**
 	 * The content type for <code>persistence.xml</code> files.
 	 */
 	public static final IContentType PERSISTENCE_XML_CONTENT_TYPE = getJpaContentType("persistence"); //$NON-NLS-1$
@@ -183,14 +159,14 @@ public class JptCorePlugin
 	/**
 	 * The resource type for <code>persistence.xml</code> version 1.0 files
 	 */
-	public static final JpaResourceType PERSISTENCE_XML_1_0_RESOURCE_TYPE = 
-			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.JPA.SCHEMA_VERSION);
+	public static final JptResourceType PERSISTENCE_XML_1_0_RESOURCE_TYPE = 
+			new JptResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.JPA.SCHEMA_VERSION);
 	
 	/**
 	 * The resource type for <code>persistence.xml</code> version 2.0 files
 	 */
-	public static final JpaResourceType PERSISTENCE_XML_2_0_RESOURCE_TYPE = 
-			new JpaResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0.SCHEMA_VERSION);
+	public static final JptResourceType PERSISTENCE_XML_2_0_RESOURCE_TYPE = 
+			new JptResourceType(PERSISTENCE_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0.SCHEMA_VERSION);
 	
 	/**
 	 * The base content type for all mapping files.
@@ -205,24 +181,14 @@ public class JptCorePlugin
 	/**
 	 * The resource type for <code>orm.xml</code> version 1.0 mapping files
 	 */
-	public static final JpaResourceType ORM_XML_1_0_RESOURCE_TYPE = 
-			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.JPA.SCHEMA_VERSION);
+	public static final JptResourceType ORM_XML_1_0_RESOURCE_TYPE = 
+			new JptResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.JPA.SCHEMA_VERSION);
 	
 	/**
 	 * The resource type for <code>orm.xml</code> version 2.0 mapping files
 	 */
-	public static final JpaResourceType ORM_XML_2_0_RESOURCE_TYPE = 
-			new JpaResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION);
-	
-	/**
-	 * The content type for Java archives (JARs).
-	 */
-	public static final IContentType JAR_CONTENT_TYPE = getJpaContentType("jar"); //$NON-NLS-1$
-	
-	/**
-	 * The resource type for Java archives (JARs).
-	 */
-	public static final JpaResourceType JAR_RESOURCE_TYPE = new JpaResourceType(JAR_CONTENT_TYPE);
+	public static final JptResourceType ORM_XML_2_0_RESOURCE_TYPE = 
+			new JptResourceType(ORM_XML_CONTENT_TYPE, org.eclipse.jpt.core.resource.orm.v2_0.JPA2_0.SCHEMA_VERSION);
 	
 	/**
 	 * Web projects have some special exceptions.
@@ -315,29 +281,8 @@ public class JptCorePlugin
 		}
 	}
 	
-	public static Iterable<LibraryValidator> getLibraryValidators(
-			JptLibraryProviderInstallOperationConfig config) {
-		return LibraryValidatorManager.instance().getLibraryValidators(config);
-	}
-	
-	public static ResourceLocator getResourceLocator(IProject project) {
-		return ResourceLocatorManager.instance().getResourceLocator(project);
-	}
-	
-	public static IFile getPlatformFile(IProject project, IPath runtimePath) {
-		ResourceLocator resourceLocator = getResourceLocator(project);
-		if (resourceLocator == null) {
-			return null;
-		}
-		IPath sourcePath = resourceLocator.getResourcePath(project, runtimePath);
-		if (sourcePath == null) {
-			return null;
-		}
-		return project.getWorkspace().getRoot().getFile(sourcePath);
-	}
-	
 	public static JpaFile getJpaFile(IProject project, IPath runtimePath) {
-		IFile xmlFile = getPlatformFile(project, runtimePath);
+		IFile xmlFile = JptCommonCorePlugin.getPlatformFile(project, runtimePath);
 		return xmlFile.exists() ? getJpaFile(xmlFile) : null;
 	}
 	
@@ -620,7 +565,7 @@ public class JptCorePlugin
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			try {
-				prefs.flush();
+				this.prefs.flush();
 			} catch(BackingStoreException ex) {
 				log(ex);
 			}
@@ -807,14 +752,14 @@ public class JptCorePlugin
 	}
 
 	public synchronized SAXParserFactory getSAXParserFactory() {
-		SAXParserFactory factory = (SAXParserFactory) this.getParserTracker().getService();
+		SAXParserFactory factory = this.getParserTracker().getService();
 		if (factory != null) {
 			factory.setNamespaceAware(true);
 		}
 		return factory;
 	}
 
-	private ServiceTracker getParserTracker() {
+	private ServiceTracker<?, SAXParserFactory> getParserTracker() {
 		if (this.parserTracker == null) {
 			this.parserTracker = this.buildParserTracker();
 			this.parserTracker.open();
@@ -822,8 +767,8 @@ public class JptCorePlugin
 		return this.parserTracker;
 	}
 
-	private ServiceTracker buildParserTracker() {
-		return new ServiceTracker(this.getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null); //$NON-NLS-1$
+	private ServiceTracker<?, SAXParserFactory> buildParserTracker() {
+		return new ServiceTracker<Object, SAXParserFactory>(this.getBundle().getBundleContext(), "javax.xml.parsers.SAXParserFactory", null); //$NON-NLS-1$
 	}
 
 }

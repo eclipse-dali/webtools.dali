@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;

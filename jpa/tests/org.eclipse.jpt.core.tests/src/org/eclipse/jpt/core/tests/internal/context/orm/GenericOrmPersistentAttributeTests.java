@@ -22,7 +22,6 @@ import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmIdMapping;
-import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmNullAttributeMapping;
 import org.eclipse.jpt.core.internal.jpa1.context.orm.GenericOrmOneToOneMapping;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;

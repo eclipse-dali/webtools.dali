@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.tests.internal.platform;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.core.tests.extension.resource.TestJavaEntity;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaFactory;
 import org.eclipse.jpt.core.tests.extension.resource.TestJpaPlatformProvider;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;

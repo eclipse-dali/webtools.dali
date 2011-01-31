@@ -23,7 +23,7 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	private String name;
 	private Customization parent;
 
-	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY; //$NON-NLS-1$
+	public static final String DESCRIPTOR_CUSTOMIZER_PROPERTY = Customization.DESCRIPTOR_CUSTOMIZER_PROPERTY;
 
 	// ********** EclipseLink properties **********
 	private String descriptorCustomizer;
@@ -97,10 +97,11 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, descriptorCustomizer);
 	}
 
+	@Override
 	public void toString(StringBuilder sb) {
-		sb.append("name: ");
+		sb.append("name: "); //$NON-NLS-1$
 		sb.append(this.name);
-		sb.append(", descriptorCustomizer: ");
+		sb.append(", descriptorCustomizer: "); //$NON-NLS-1$
 		sb.append(this.descriptorCustomizer);
 	}
 }

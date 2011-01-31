@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
-import org.eclipse.jpt.core.utility.jdt.DeclarationAnnotationAdapter;
+import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 
 /**
  * Interface for dealing with annotations that can be "nested" within arrays.

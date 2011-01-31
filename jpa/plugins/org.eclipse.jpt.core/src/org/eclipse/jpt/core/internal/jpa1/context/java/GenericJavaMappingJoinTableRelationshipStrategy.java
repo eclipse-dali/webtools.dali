@@ -10,22 +10,22 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JoinColumn;
+import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.Table;
-import org.eclipse.jpt.core.context.JoinColumn.Owner;
 import org.eclipse.jpt.core.context.java.JavaMappingJoinTableRelationship;
-import org.eclipse.jpt.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
+import org.eclipse.jpt.core.internal.context.java.AbstractJavaJoinTableRelationshipStrategy;
 import org.eclipse.jpt.core.internal.jpa1.context.InverseJoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinTableValidator;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaMappingJoinTableRelationshipStrategy
 	extends AbstractJavaJoinTableRelationshipStrategy

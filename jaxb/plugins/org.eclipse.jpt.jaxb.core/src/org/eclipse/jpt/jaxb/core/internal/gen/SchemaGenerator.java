@@ -17,7 +17,6 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
@@ -31,8 +30,8 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
-import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 
 /**
@@ -282,7 +281,7 @@ public class SchemaGenerator extends AbstractJptGenerator
 			}
 		}
 		//the existing package fragment was not found
-		throw new IllegalStateException("Java package must exist for source class");
+		throw new IllegalStateException("Java package must exist for source class"); //$NON-NLS-1$
 	}
 
 }

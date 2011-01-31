@@ -12,6 +12,8 @@ Require-Bundle: org.eclipse.core.commands;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.emf.ecore.xmi;bundle-version="[2.4.0,3.0.0)",
  org.eclipse.jdt.core;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.jem.util;bundle-version="[2.0.100,3.0.0)",
+ org.eclipse.jpt.common.core;bundle-version="[1.0.0,2.0.0)",
+ org.eclipse.jpt.common.core.tests;bundle-version="[1.0.0,2.0.0)",
  org.eclipse.jpt.core;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jpt.core.tests.extension.resource;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.jpt.db;bundle-version="[1.2.0,2.0.0)",
@@ -38,7 +40,6 @@ Export-Package: org.eclipse.jpt.core.tests,
  org.eclipse.jpt.core.tests.internal.platform;x-internal:=true,
  org.eclipse.jpt.core.tests.internal.projects;x-friends:="org.eclipse.jpt.ui.tests",
  org.eclipse.jpt.core.tests.internal.resource;x-internal:=true,
- org.eclipse.jpt.core.tests.internal.resource.java;x-internal:=true,
- org.eclipse.jpt.core.tests.internal.utility.jdt;x-internal:=true
+ org.eclipse.jpt.core.tests.internal.resource.java;x-internal:=true
 Bundle-Activator: org.eclipse.jpt.core.tests.JptCoreTestsPlugin
 Bundle-ActivationPolicy: lazy

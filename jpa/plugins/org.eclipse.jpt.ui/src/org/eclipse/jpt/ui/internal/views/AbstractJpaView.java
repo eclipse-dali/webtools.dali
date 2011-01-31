@@ -8,13 +8,13 @@
  ********************************************************************************/
 package org.eclipse.jpt.ui.internal.views;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.FormWidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.PropertySheetWidgetFactory;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.selection.JpaSelection;
 import org.eclipse.jpt.ui.internal.selection.JpaSelectionManager;
 import org.eclipse.jpt.ui.internal.selection.SelectionManagerFactory;
-import org.eclipse.jpt.ui.internal.widgets.FormWidgetFactory;
-import org.eclipse.jpt.ui.internal.widgets.PropertySheetWidgetFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;

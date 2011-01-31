@@ -21,19 +21,7 @@
 	</target>
 
 	<!-- This target defines the tests that need to be run. -->
-	<target name="suite1">
-    	<property file="${testRoot}/testServer.properties"/>
-	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>
-	    <delete dir="${jpt-folder}" quiet="true"/>
-
-		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
-		    <property name="data-dir" value="${jpt-folder}"/>
-			<property name="plugin-name" value="${plugin-name}"/>
-			<property name="classname" value="org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests" />
-			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
-		</ant>
-	</target>
-	<target name="suite2">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>		</ant>	</target>	<target name="suite3">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar}"/>		</ant>	</target>	<target name="suite4">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar}"/>		</ant>	</target>
+	<target name="suite1">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>		</ant>	</target>	<target name="suite2">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar}"/>		</ant>	</target>	<target name="suite3">    	<property file="${testRoot}/testServer.properties"/>	    <property name="jpt-folder" value="${eclipse-home}/jpt_folder"/>	    <delete dir="${jpt-folder}" quiet="true"/>		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">		    <property name="data-dir" value="${jpt-folder}"/>			<property name="plugin-name" value="${plugin-name}"/>			<property name="classname" value="org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests" />			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>			<property name="extraVMargs" value="-Dorg.eclipse.jpt.jpa.jar=${testDir}/${jpt-persistence-jar}"/>		</ant>	</target>
 	<!-- This target holds code to cleanup the testing environment after -->
 	<!-- after all of the tests have been run. You can use this target to -->
 	<!-- delete temporary files that have been created. -->
@@ -42,6 +30,6 @@
 
 	<!-- This target runs the test suite. Any actions that need to happen -->
 	<!-- after all the tests have been run should go here. -->
-	<target name="run" depends="init, suite1, suite2, suite3, suite4, cleanup">
+	<target name="run" depends="init, suite1, suite2, suite3, cleanup">
 	</target>
 </project>

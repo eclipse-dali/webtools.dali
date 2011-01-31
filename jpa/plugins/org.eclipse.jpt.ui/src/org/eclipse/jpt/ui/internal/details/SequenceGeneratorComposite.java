@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.IdMapping;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.SequenceCombo;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

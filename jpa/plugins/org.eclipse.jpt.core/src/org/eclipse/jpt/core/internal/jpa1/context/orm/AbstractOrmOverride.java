@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.ReadOnlyOverride;
 import org.eclipse.jpt.core.context.orm.OrmOverride;
 import org.eclipse.jpt.core.context.orm.OrmOverrideContainer;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.context.orm.OrmOverrideTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.XmlOverride;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

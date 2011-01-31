@@ -9,11 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbElementFactoryMethod;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 
 
 public class JaxbRegistryItemContentProvider

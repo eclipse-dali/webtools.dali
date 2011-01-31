@@ -9,10 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.FolderChooserComboPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.FolderChooserComboPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
@@ -64,7 +65,7 @@ public class DdlGenerationLocationComposite extends Pane<SchemaGeneration>
 
 				if (defaultValue != null) {
 					return NLS.bind(
-						EclipseLinkUiMessages.PersistenceXmlSchemaGenerationTab_defaultWithOneParam,
+						JptCommonUiMessages.DefaultWithOneParam,
 						defaultValue
 					);
 				}

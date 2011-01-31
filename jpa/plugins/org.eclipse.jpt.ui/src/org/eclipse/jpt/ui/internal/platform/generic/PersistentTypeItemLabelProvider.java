@@ -10,10 +10,10 @@
 package org.eclipse.jpt.ui.internal.platform.generic;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jpt.common.ui.internal.jface.AbstractItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.ui.internal.JpaMappingImageHelper;
-import org.eclipse.jpt.ui.internal.jface.AbstractItemLabelProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.graphics.Image;

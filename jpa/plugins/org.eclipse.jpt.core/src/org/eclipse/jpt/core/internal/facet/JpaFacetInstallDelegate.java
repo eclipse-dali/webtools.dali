@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.facet;
 
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.CONTAINER_PATH;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -20,10 +20,11 @@ import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -132,7 +133,7 @@ public class JpaFacetInstallDelegate
 	}
 	
 	protected IPath defaultResourceLocation(IProject project) {
-		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(project);
+		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(project);
 		if (resourceLocator == null) {
 			JptCorePlugin.log("No resource locator for project");
 			return null;

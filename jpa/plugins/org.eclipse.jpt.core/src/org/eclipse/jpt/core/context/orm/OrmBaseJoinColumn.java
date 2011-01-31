@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>orm.xml</code> join column or primary key join column

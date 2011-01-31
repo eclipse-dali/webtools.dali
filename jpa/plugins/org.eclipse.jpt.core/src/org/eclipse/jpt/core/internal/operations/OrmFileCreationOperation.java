@@ -19,6 +19,8 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.SubMonitor;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
@@ -26,7 +28,6 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.internal.resource.orm.OrmXmlResourceProvider;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -89,7 +90,7 @@ public class OrmFileCreationOperation
 				IContainer container = PlatformTools.getContainer(containerPath);
 				IPath filePath = container.getFullPath().append(fileName);
 				IProject project = container.getProject();
-				IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
+				IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
 				for (Iterator<MappingFileRef> stream = pUnit.specifiedMappingFileRefs(); stream.hasNext(); ) {
 					if (runtimePath.equals(stream.next().getFileName())) {
 						return;

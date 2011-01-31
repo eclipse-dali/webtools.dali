@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.Map;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>javax.persistence.Column</code>

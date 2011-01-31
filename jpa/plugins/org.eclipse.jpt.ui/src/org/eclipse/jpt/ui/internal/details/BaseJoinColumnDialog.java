@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.swt.widgets.Shell;
 
 /**

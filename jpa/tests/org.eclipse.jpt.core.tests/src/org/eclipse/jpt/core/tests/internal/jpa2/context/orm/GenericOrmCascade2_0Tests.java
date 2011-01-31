@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
 import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class GenericOrmCascade2_0Tests extends Generic2_0ContextModelTestCase
 {
 	public GenericOrmCascade2_0Tests(String name) {

@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui;
 
 import java.util.Iterator;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.binary.BinaryAssociationOverrides2_0Annotation;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.source.SourceAssociationOverrides2_0Annotation;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -17,8 +19,6 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * javax.persistence.AssociationOverrides

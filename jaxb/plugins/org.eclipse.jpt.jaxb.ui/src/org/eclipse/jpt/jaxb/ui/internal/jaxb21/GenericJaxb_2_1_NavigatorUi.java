@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.jaxb.ui.navigator.JaxbNavigatorUi;
-import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 
 
 public class GenericJaxb_2_1_NavigatorUi

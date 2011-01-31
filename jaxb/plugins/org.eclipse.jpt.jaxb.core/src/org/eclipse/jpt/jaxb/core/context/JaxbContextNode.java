@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.JaxbNode;
 
 /**
@@ -36,7 +36,7 @@ public interface JaxbContextNode
 	/**
 	 * Return the resource type of the context node's resource.
 	 */
-	JpaResourceType getResourceType();
+	JptResourceType getResourceType();
 
 
 	// ********** updating **********

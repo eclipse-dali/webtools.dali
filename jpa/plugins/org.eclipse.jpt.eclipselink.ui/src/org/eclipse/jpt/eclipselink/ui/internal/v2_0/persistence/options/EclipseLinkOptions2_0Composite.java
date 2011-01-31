@@ -9,9 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.persistence.options.EclipseLinkOptionsComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.swt.widgets.Composite;
 
 /**

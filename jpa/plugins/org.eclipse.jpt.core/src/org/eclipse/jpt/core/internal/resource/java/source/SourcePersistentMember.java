@@ -14,10 +14,10 @@ import java.util.Iterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IBinding;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
-import org.eclipse.jpt.core.utility.jdt.Member;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterators.FilteringIterator;
@@ -32,7 +32,7 @@ abstract class SourcePersistentMember<M extends Member>
 	/**
 	 * We can cache this setting because its value is not affected by any API
 	 * calls - it can only be affected by changes to the Java source.
-	 * @see org.eclipse.jpt.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.core.internal.utility.jdt.JPTTools.TypeAdapter)
+	 * @see org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools#typeIsPersistable(org.eclipse.jpt.common.core.internal.utility.jdt.JPTTools.TypeAdapter)
 	 */
 	boolean persistable;
 

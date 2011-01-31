@@ -10,12 +10,12 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.LobConverter;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaLobConverter;
 import org.eclipse.jpt.core.resource.java.LobAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaLobConverter
 	extends AbstractJavaConverter

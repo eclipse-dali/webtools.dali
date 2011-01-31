@@ -25,6 +25,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 /**
  *  PersistenceUnitTestCase
  */
+@SuppressWarnings("nls")
 public abstract class PersistenceUnitTestCase extends ContextModelTestCase
 {
 	protected PropertyChangeEvent propertyChangedEvent;

@@ -34,11 +34,11 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.core.JpaResourceModel;
-import org.eclipse.jpt.core.JpaResourceModelListener;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.resource.ResourceLocator;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -130,7 +130,7 @@ public abstract class AbstractJaxbProject
 	 * Resource models notify this listener when they change. A project update
 	 * should occur any time a resource model changes.
 	 */
-	protected final JpaResourceModelListener resourceModelListener;
+	protected final JptResourceModelListener resourceModelListener;
 
 	/**
 	 * The root of the model representing the collated resources associated with 
@@ -405,13 +405,13 @@ public abstract class AbstractJaxbProject
 	protected boolean isJavaFile(IFile file) {
 		IContentType contentType = PlatformTools.getContentType(file);
 		return contentType != null 
-				&& (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
-					|| contentType.isKindOf(JptCorePlugin.JAR_CONTENT_TYPE));
+				&& (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)
+					|| contentType.isKindOf(JptCommonCorePlugin.JAR_CONTENT_TYPE));
 	}
 	
 	/* (non-java resource) file is in acceptable resource location */
 	protected boolean isInAcceptableResourceLocation(IFile file) {
-		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(getProject());
+		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(getProject());
 		return resourceLocator.acceptResourceLocation(getProject(), file.getParent());
 	}
 	
@@ -572,7 +572,7 @@ public abstract class AbstractJaxbProject
 			return EmptyIterable.instance();
 		}
 		
-		if (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+		if (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
 			try {
 				return new FilteringIterable<JaxbPackageInfo>(
 						new TransformationIterable<IPackageDeclaration, JaxbPackageInfo>(
@@ -589,7 +589,7 @@ public abstract class AbstractJaxbProject
 				return EmptyIterable.instance();
 			}
 		}
-		else if (contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		else if (contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			try {
 				return new FilteringIterable<JaxbType>(
 						new TransformationIterable<IType, JaxbType>(
@@ -725,7 +725,7 @@ public abstract class AbstractJaxbProject
 	 * return JAXB files with Java source "content"
 	 */
 	protected Iterable<JaxbFile> getJavaSourceJaxbFiles() {
-		return this.getJaxbFiles(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
+		return this.getJaxbFiles(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE);
 	}
 
 
@@ -774,7 +774,7 @@ public abstract class AbstractJaxbProject
 	 * return JPA files with package-info source "content"
 	 */
 	protected Iterable<JaxbFile> getPackageInfoSourceJaxbFiles() {
-		return this.getJaxbFiles(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
+		return this.getJaxbFiles(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE);
 	}
 
 	
@@ -1181,37 +1181,37 @@ public abstract class AbstractJaxbProject
 	
 	// ********** resource model listener **********
 	
-	protected JpaResourceModelListener buildResourceModelListener() {
+	protected JptResourceModelListener buildResourceModelListener() {
 		return new DefaultResourceModelListener();
 	}
 
 	protected class DefaultResourceModelListener 
-		implements JpaResourceModelListener 
+		implements JptResourceModelListener 
 	{
 		protected DefaultResourceModelListener() {
 			super();
 		}
 		
-		public void resourceModelChanged(JpaResourceModel jpaResourceModel) {
+		public void resourceModelChanged(JptResourceModel jpaResourceModel) {
 //			String msg = Thread.currentThread() + " resource model change: " + jpaResourceModel;
 //			System.out.println(msg);
 //			new Exception(msg).printStackTrace(System.out);
 			AbstractJaxbProject.this.synchronizeContextModel(jpaResourceModel);
 		}
 		
-		public void resourceModelReverted(JpaResourceModel jpaResourceModel) {
+		public void resourceModelReverted(JptResourceModel jpaResourceModel) {
 //			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 //			AbstractJaxbProject.this.removeJaxbFile(file);
 //			AbstractJaxbProject.this.addJaxbFile(file);
 		}
 		
-		public void resourceModelUnloaded(JpaResourceModel jpaResourceModel) {
+		public void resourceModelUnloaded(JptResourceModel jpaResourceModel) {
 //			IFile file = WorkbenchResourceHelper.getFile((JpaXmlResource)jpaResourceModel);
 //			AbstractJaxbProject.this.removeJaxbFile(file);
 		}
 	}
 
-	protected void synchronizeContextModel(@SuppressWarnings("unused") JpaResourceModel jpaResourceModel) {
+	protected void synchronizeContextModel(@SuppressWarnings("unused") JptResourceModel jpaResourceModel) {
 		this.synchronizeContextModel();
 	}
 

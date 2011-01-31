@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
@@ -35,7 +35,7 @@ public interface JpaContextNode
 	/**
 	 * Return the resource type of the context node's resource.
 	 */
-	JpaResourceType getResourceType();
+	JptResourceType getResourceType();
 
 	/**
 	 * Return the persistence unit if the context node is within a 

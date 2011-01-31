@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.MappingFile;
 import org.eclipse.jpt.core.context.MappingFilePersistenceUnitMetadata;
@@ -159,7 +159,7 @@ public abstract class AbstractMappingFileRef
 			// the model is completely whacked in another thread - so wipe our model(?)
 			return null;
 		}
-		JpaResourceType resourceType = xmlResource.getResourceType();
+		JptResourceType resourceType = xmlResource.getResourceType();
 		if (resourceType == null) {
 			return null;
 		}

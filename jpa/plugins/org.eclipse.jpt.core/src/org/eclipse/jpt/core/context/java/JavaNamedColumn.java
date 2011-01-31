@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.resource.java.NamedColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java

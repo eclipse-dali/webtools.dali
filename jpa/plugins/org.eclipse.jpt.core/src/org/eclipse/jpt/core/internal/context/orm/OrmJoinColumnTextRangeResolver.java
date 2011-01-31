@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JoinColumnTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class OrmJoinColumnTextRangeResolver
 	extends OrmNamedColumnTextRangeResolver

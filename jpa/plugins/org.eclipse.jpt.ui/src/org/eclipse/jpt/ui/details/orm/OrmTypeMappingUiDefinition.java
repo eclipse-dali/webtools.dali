@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

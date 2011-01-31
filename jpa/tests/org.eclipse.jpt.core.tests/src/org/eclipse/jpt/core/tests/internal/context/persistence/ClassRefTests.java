@@ -17,6 +17,7 @@ import org.eclipse.jpt.core.resource.persistence.XmlJavaClassRef;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistenceUnit;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 
+@SuppressWarnings("nls")
 public class ClassRefTests extends ContextModelTestCase
 {
 	public ClassRefTests(String name) {

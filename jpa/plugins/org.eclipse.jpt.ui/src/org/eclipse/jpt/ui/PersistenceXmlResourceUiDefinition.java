@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

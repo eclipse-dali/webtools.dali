@@ -15,10 +15,10 @@ import java.util.ListIterator;
 import java.util.Map;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.common.core.utility.BodySourceWriter;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.core.utility.BodySourceWriter;
 
 import com.ibm.icu.text.Collator;
 

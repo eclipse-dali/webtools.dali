@@ -176,4 +176,40 @@ public interface JavaResourcePersistentType
 	 */
 	Iterator<JavaResourcePersistentAttribute> persistableAttributes(AccessType specifiedAccess);
 	
+	class Tools {
+		// ********** Access type **********
+
+		/**
+		 * Return the access type currently implied by the specified Java source
+		 * code or class file:<ul>
+		 * <li>if any fields are annotated =>
+		 *     {@link AccessType#FIELD FIELD}
+		 * <li>if only properties are annotated =>
+		 *     {@link AccessType#PROPERTY PROPERTY}
+		 * <li>if neither are annotated =>
+		 *     <code>null</code>
+		 *     
+		 * </ul>
+		 */
+		public static AccessType buildAccess(JavaResourcePersistentType jrpType) {
+			for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableFields(); stream.hasNext(); ) {
+				if (stream.next().isAnnotated()) {
+					// any field is annotated => FIELD
+					return AccessType.FIELD;
+				}
+			}
+
+			for (Iterator<JavaResourcePersistentAttribute> stream = jrpType.persistableProperties(); stream.hasNext(); ) {
+				if (stream.next().isAnnotated()) {
+					// none of the fields are annotated and a getter is annotated => PROPERTY
+					return AccessType.PROPERTY;
+				}
+			}
+
+			// nothing is annotated
+			return null;
+		}
+
+	}
+	
 }

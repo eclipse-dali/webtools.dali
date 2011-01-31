@@ -11,14 +11,13 @@
 
 package org.eclipse.jpt.core.resource.xml;
 
-import java.util.Iterator;
 import java.util.Map;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.jpt.core.internal.utility.translators.EnumeratedValueTranslator;
-import org.eclipse.jpt.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.core.internal.utility.translators.EnumeratedValueTranslator;
+import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 import org.eclipse.wst.common.internal.emf.resource.ConstantAttributeTranslator;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 
@@ -299,8 +298,8 @@ public abstract class AbstractJpaRootEObject extends AbstractJpaEObject implemen
 				Translator.DOM_ATTRIBUTE) {
 			
 			@Override
-			protected Iterator<String> enumeratedObjectValues() {
-				return versionsToSchemaLocations.keySet().iterator();
+			protected Iterable<String> getEnumeratedObjectValues() {
+				return versionsToSchemaLocations.keySet();
 			}
 		};
 	}
@@ -323,8 +322,8 @@ public abstract class AbstractJpaRootEObject extends AbstractJpaEObject implemen
 				Translator.DOM_ATTRIBUTE) {
 			
 			@Override
-			protected Iterator<String> enumeratedObjectValues() {
-				return new TransformationIterator<String, String>(versionsToSchemaLocations.values().iterator()) {
+			protected Iterable<String> getEnumeratedObjectValues() {
+				return new TransformationIterable<String, String>(versionsToSchemaLocations.values()) {
 					@Override
 					protected String transform(String next) {
 						return buildSchemaLocationString(namespace, next);

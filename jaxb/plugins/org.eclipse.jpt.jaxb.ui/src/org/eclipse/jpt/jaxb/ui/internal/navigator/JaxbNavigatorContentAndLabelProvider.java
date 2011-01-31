@@ -10,7 +10,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.navigator;
 
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+
 
 public class JaxbNavigatorContentAndLabelProvider
 		extends DelegatingTreeContentAndLabelProvider {

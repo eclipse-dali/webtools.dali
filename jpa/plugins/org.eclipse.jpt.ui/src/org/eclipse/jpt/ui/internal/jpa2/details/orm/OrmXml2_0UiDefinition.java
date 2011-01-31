@@ -10,7 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import java.util.List;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -63,7 +63,7 @@ public class OrmXml2_0UiDefinition extends AbstractOrmXmlResourceUiDefinition
 		return new GenericOrmXml2_0UiFactory();
 	}
 	
-	public boolean providesUi(JpaResourceType resourceType) {
+	public boolean providesUi(JptResourceType resourceType) {
 		return resourceType.equals(JptCorePlugin.ORM_XML_2_0_RESOURCE_TYPE);
 	}
 	

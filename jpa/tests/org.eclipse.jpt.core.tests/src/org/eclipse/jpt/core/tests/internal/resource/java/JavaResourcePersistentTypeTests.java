@@ -13,8 +13,11 @@ import java.util.Iterator;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceEmbeddableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceEntityAnnotation;
+import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.EmbeddableAnnotation;
 import org.eclipse.jpt.core.resource.java.EntityAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
@@ -25,8 +28,6 @@ import org.eclipse.jpt.core.resource.java.MappedSuperclassAnnotation;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
 import org.eclipse.jpt.core.resource.java.SecondaryTableAnnotation;
 import org.eclipse.jpt.core.resource.java.TableAnnotation;
-import org.eclipse.jpt.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement.Editor;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
@@ -115,6 +116,125 @@ public class JavaResourcePersistentTypeTests extends JpaJavaResourceModelTestCas
 				sb.append("@Entity");
 				sb.append(CR);
 				sb.append("@Embeddable");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedField() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityAnnotatedMethod() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityAnnotatedFieldAndMethod() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedNonPersistableMethod() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.ID);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendGetNameMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Id");
+			}
+		});
+	}
+	
+	private ICompilationUnit createTestEntityAnnotatedPersistableMethodNonPersistableField() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY, JPA.COLUMN);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			
+			@Override
+			public void appendIdFieldAnnotationTo(StringBuilder sb) {
+				sb.append("@Column");
+				sb.append("    private transient int notPersistable;").append(CR);
+				sb.append(CR);
+
+			}
+			@Override
+			public void appendGetIdMethodAnnotationTo(StringBuilder sb) {
+				sb.append("@Column");
+			}
+		});
+	}
+
+	private ICompilationUnit createTestEntityNoPersistableFields() throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JPA.ENTITY);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@Entity");
+			}
+			@Override
+			public void appendMemberTypeTo(StringBuilder sb) {
+				sb.delete(sb.indexOf("private int id;"), sb.indexOf("private int id;") + "private int id;".length());
+				sb.delete(sb.indexOf("private String name;"), sb.indexOf("private String name;") + "private String name;".length());
 			}
 		});
 	}
@@ -766,4 +886,52 @@ public class JavaResourcePersistentTypeTests extends JpaJavaResourceModelTestCas
 		assertEquals(0, attributeResource.annotationsSize());
 	}
 
+	public void testGetAccessNoAttributesAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntity();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertNull(JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessFieldsAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityAnnotatedField();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertEquals(AccessType.FIELD, JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessMethodsAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityAnnotatedMethod();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertEquals(AccessType.PROPERTY, JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessFieldsAndMethodsAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityAnnotatedFieldAndMethod();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertEquals(AccessType.FIELD, JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessNonPersistableMethodAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityAnnotatedNonPersistableMethod();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertNull(JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessPersistableMethodAndNonPersistableFieldAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityAnnotatedPersistableMethodNonPersistableField();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertEquals(AccessType.PROPERTY, JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}
+	
+	public void testGetAccessNoPersistableFieldsAnnotated() throws Exception {
+		ICompilationUnit cu = createTestEntityNoPersistableFields();
+		JavaResourcePersistentType persistentType = buildJavaTypeResource(cu);
+		
+		assertNull(JavaResourcePersistentType.Tools.buildAccess(persistentType));
+	}	
 }

@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.core.internal.operations;
 
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.core.internal.operations.AbstractJptFileCreationDataModelProvider;
+import org.eclipse.jpt.common.core.internal.operations.AbstractJptFileCreationDataModelProvider;
 
 /**
  *  SchemaFileCreationDataModelProvider
  */
-public class SchemaFileCreationDataModelProvider extends AbstractJptFileCreationDataModelProvider 
+public class SchemaFileCreationDataModelProvider extends AbstractJptFileCreationDataModelProvider
 {
 
 	@Override

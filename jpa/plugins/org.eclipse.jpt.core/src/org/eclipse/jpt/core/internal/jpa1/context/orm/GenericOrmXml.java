@@ -15,8 +15,9 @@ import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.text.edits.DeleteEdit;
@@ -51,7 +51,7 @@ public class GenericOrmXml
 	 * The resouce type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
-	protected JpaResourceType resourceType;
+	protected JptResourceType resourceType;
 
 	/**
 	 * The root element of the <code>orm.xml</code> file.
@@ -82,7 +82,7 @@ public class GenericOrmXml
 		super.synchronizeWithResourceModel();
 		XmlEntityMappings oldXmlEntityMappings = (this.root == null) ? null : this.root.getXmlEntityMappings();
 		XmlEntityMappings newXmlEntityMappings = (XmlEntityMappings) this.xmlResource.getRootObject();
-		JpaResourceType newResourceType = this.xmlResource.getResourceType();
+		JptResourceType newResourceType = this.xmlResource.getResourceType();
 
 		// If the old and new XML entity mappings are different instances,
 		// we scrap the old context entity mappings and rebuild.
@@ -161,7 +161,7 @@ public class GenericOrmXml
 	}
 
 	@Override
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return this.resourceType;
 	}
 

@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistencexml.details;
 
+import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.ui.internal.platform.generic.GenericNavigatorItemLabelProviderFactory;
-import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
 
 /**
  * EclipseLinkNavigatorItemLabelProviderFactory

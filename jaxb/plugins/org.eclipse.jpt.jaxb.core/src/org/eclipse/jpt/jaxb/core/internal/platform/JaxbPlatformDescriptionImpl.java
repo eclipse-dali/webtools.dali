@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.platform;
 
-import org.eclipse.jpt.core.internal.XPointUtil;
+import org.eclipse.jpt.common.core.internal.XPointUtil;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory;

@@ -11,6 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.Iterator;
 import java.util.List;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.GenerationType;
 import org.eclipse.jpt.core.context.Generator;
 import org.eclipse.jpt.core.context.XmlContextNode;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.core.resource.orm.XmlGeneratedValue;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

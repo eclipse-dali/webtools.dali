@@ -35,10 +35,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
+import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
@@ -362,13 +362,13 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 	private IPath getBundleClasspath(String pluginID) {
 		Bundle bundle = Platform.getBundle(pluginID);
 		if (bundle == null) {
-			throw new RuntimeException(pluginID + " cannot be retrieved from the Platform");
+			throw new RuntimeException(pluginID + " cannot be retrieved from the Platform"); //$NON-NLS-1$
 		}
 		return this.getClassPath(bundle);
 	}
 
 	private IPath getClassPath(Bundle bundle) {
-		String path = (String) bundle.getHeaders().get(BUNDLE_CLASSPATH);
+		String path = bundle.getHeaders().get(BUNDLE_CLASSPATH);
 		if (path == null) {
 			path = ".";	  //$NON-NLS-1$
 		}
@@ -377,7 +377,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 			elements = ManifestElement.parseHeader(BUNDLE_CLASSPATH, path);
 		}
 		catch (BundleException e) {
-			throw new RuntimeException("Error parsing bundle header: " + bundle, e);
+			throw new RuntimeException("Error parsing bundle header: " + bundle, e); //$NON-NLS-1$
 		}
 		if (elements != null) {
 			for (int i = 0; i < elements.length; ++i) {
@@ -402,7 +402,7 @@ public abstract class AbstractEclipseLinkDDLGenerator extends AbstractJptGenerat
 						return new Path(filePath);
 					}
 					catch (IOException e) {
-						throw new RuntimeException("Error locating bundle: " + bundle, e);
+						throw new RuntimeException("Error locating bundle: " + bundle, e); //$NON-NLS-1$
 					}
 				}
 			}

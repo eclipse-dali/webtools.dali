@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.details;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jpt.common.ui.internal.widgets.DialogPane;
+import org.eclipse.jpt.common.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.ui.internal.widgets.DialogPane;
-import org.eclipse.jpt.ui.internal.widgets.ValidatingDialog;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.StaticListValueModel;

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.RelationshipStrategy;
 import org.eclipse.jpt.core.context.MappedByRelationship;
@@ -20,7 +21,6 @@ import org.eclipse.jpt.core.context.orm.OrmRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmMappingRelationship;
 import org.eclipse.jpt.core.context.orm.OrmRelationshipMapping;
 import org.eclipse.jpt.core.resource.orm.AbstractXmlRelationshipMapping;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <strong>NB:</strong> Subclasses will want to set the {@link #strategy} at the

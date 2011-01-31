@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
 import org.eclipse.jpt.core.context.VirtualNamedColumn;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>orm.xml</code> virtual<ul>

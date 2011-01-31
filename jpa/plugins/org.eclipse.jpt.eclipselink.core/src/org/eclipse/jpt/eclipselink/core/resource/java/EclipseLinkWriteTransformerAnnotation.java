@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Corresponds to the Eclipselink annotation

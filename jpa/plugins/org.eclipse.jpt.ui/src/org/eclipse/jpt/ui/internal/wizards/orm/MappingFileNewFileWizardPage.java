@@ -9,7 +9,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jface.viewers.IStructuredSelection;

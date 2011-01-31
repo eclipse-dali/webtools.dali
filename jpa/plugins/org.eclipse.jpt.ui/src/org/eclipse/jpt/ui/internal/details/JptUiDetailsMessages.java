@@ -62,8 +62,6 @@ public class JptUiDetailsMessages {
 	public static String TypeSection_lob;
 	public static String TypeSection_temporal;
 	public static String TypeSection_enumerated;
-	public static String Boolean_False;
-	public static String Boolean_True;
 	public static String CascadeComposite_all;
 	public static String CascadeComposite_cascadeTitle;
 	public static String CascadeComposite_merge;
@@ -87,8 +85,6 @@ public class JptUiDetailsMessages {
 	public static String ColumnComposite_uniqueWithDefault;
 	public static String ColumnComposite_updatable;
 	public static String ColumnComposite_updatableWithDefault;
-	public static String DefaultEmpty;
-	public static String DefaultWithOneParam;
 	public static String ProviderDefault;
 	public static String DiscriminatorColumnComposite_discriminatorType;
 	public static String DiscriminatorColumnComposite_name;
@@ -228,10 +224,7 @@ public class JptUiDetailsMessages {
 	public static String NamedNativeQueryPropertyComposite_resultClass;
 	public static String NamedQueryPropertyComposite_query;
 	public static String NamedQueryPropertyComposite_queryHintsGroupBox;
-	public static String NewNameStateObject_nameAlreadyExists;
-	public static String NewNameStateObject_nameMustBeSpecified;
 	public static String NoNameSet;
-	public static String NoneSelected;
 	public static String NullAttributeMappingUiProvider_label;
 	public static String OptionalComposite_false;
 	public static String OptionalComposite_true;

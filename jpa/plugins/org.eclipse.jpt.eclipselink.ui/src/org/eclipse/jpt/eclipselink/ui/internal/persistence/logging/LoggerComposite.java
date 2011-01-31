@@ -9,16 +9,16 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.logging;
 
-import com.ibm.icu.text.Collator;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logger;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringConverter;
 import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
@@ -33,6 +33,7 @@ import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Composite;
+import com.ibm.icu.text.Collator;
 
 /**
  *  LoggerComposite
@@ -193,11 +194,11 @@ public class LoggerComposite extends ClassChooserComboPane<Logging>
 
 		if (defaultValue != null) {
 			return NLS.bind(
-				EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultWithOneParam,
+				JptCommonUiMessages.DefaultWithOneParam,
 				defaultValue
 			);
 		}
-		return EclipseLinkUiMessages.PersistenceXmlLoggingTab_defaultEmpty;
+		return JptCommonUiMessages.DefaultEmpty;
 	}
 	
 	@Override

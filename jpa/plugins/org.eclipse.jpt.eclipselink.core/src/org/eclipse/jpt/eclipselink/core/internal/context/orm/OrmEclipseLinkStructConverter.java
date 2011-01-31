@@ -10,8 +10,8 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.XmlContextNode;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlConverterHolder;
@@ -52,16 +52,19 @@ public class OrmEclipseLinkStructConverter
 		return EclipseLinkStructConverter.class;
 	}
 
+	@Override
 	public TextRange getConverterClassTextRange() {
 		return this.xmlConverter.getConverterClassTextRange();
 	}
 
 	// ********** refactoring **********
 
+	@Override
 	protected ReplaceEdit createRenameEdit(IType originalType, String newName) {
 		return this.xmlConverter.createRenameEdit(originalType, newName);
 	}
 
+	@Override
 	protected ReplaceEdit createRenamePackageEdit(String newName) {
 		return this.xmlConverter.createRenamePackageEdit(newName);
 	}

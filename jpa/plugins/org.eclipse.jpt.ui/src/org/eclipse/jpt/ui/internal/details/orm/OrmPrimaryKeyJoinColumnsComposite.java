@@ -10,11 +10,11 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.ui.internal.details.AbstractPrimaryKeyJoinColumnsComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
 import org.eclipse.swt.widgets.Composite;

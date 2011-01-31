@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.navigator;
 
-import org.eclipse.jpt.ui.jface.ItemLabelProvider;
-import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 
 /**
  * Defines content and label provider factories for Project Navigator view for a given JAXB project.

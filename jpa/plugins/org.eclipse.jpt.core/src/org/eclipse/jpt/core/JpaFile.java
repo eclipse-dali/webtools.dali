@@ -12,6 +12,7 @@ package org.eclipse.jpt.core;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
  * A JPA Project contains JPA files for all files in the project that
@@ -43,7 +44,7 @@ public interface JpaFile
 	 * Return the resource model corresponding to the JPA file; typically a JPA
 	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
-	JpaResourceModel getResourceModel();
+	JptResourceModel getResourceModel();
 	
 	/**
 	 * Convenience method. Return the resource model corresponding to the JPA
@@ -52,7 +53,7 @@ public interface JpaFile
 	 * JPA file via a file name [and assumed content type].
 	 * @see #getResourceModel()
 	 */
-	JpaResourceModel getResourceModel(IContentType contentType);
+	JptResourceModel getResourceModel(IContentType contentType);
 	
 	
 	// ********** root structure nodes **********

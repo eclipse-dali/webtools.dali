@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.persistence.general;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.persistence.JptUiPersistenceMessages;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitGeneralComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

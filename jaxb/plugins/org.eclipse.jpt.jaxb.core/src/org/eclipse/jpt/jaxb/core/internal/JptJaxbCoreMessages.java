@@ -22,6 +22,9 @@ public class JptJaxbCoreMessages {
 	public static String JaxbFacetConfig_validatePlatformNotSpecified;
 	public static String JaxbFacetConfig_validatePlatformDoesNotSupportFacetVersion;
 	
+
+	public static String PREFERENCES_FLUSH_JOB_NAME;
+	
 	public static String SchemaGenerator_creatingJAXBPropertiesFileTask;
 	
 	

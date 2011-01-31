@@ -18,12 +18,9 @@ public class JptCoreMessages {
 
 	public static String NONE;
 	public static String VALIDATE_JOB;
-	public static String VALIDATE_CONTAINER_NOT_SPECIFIED;
 	public static String VALIDATE_PROJECT_NOT_JPA;
 	public static String VALIDATE_PROJECT_IMPROPER_PLATFORM;
 	public static String VALIDATE_CONTAINER_QUESTIONABLE;
-	public static String VALIDATE_FILE_NAME_NOT_SPECIFIED;
-	public static String VALIDATE_FILE_ALREADY_EXISTS;
 	public static String VALIDATE_FILE_VERSION_NOT_SUPPORTED;
 	public static String VALIDATE_FILE_VERSION_NOT_SUPPORTED_FOR_FACET_VERSION;
 	public static String VALIDATE_PERSISTENCE_UNIT_DOES_NOT_SPECIFIED;
@@ -55,14 +52,10 @@ public class JptCoreMessages {
 	public static String CONTEXT_MODEL_SYNC_JOB_NAME;
 	public static String UPDATE_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
-	public static String DALI_EVENT_HANDLER_THREAD_NAME;
 	public static String PREFERENCES_FLUSH_JOB_NAME;
 	public static String USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION;
-	public static String GENERATION_CREATING_LAUNCH_CONFIG_TASK;
-	public static String GENERATION_SAVING_LAUNCH_CONFIG_TASK;
-	public static String GENERATION_LAUNCHING_CONFIG_TASK;
 	
 	private static final String BUNDLE_NAME = "jpa_core"; //$NON-NLS-1$
 	private static final Class<?> BUNDLE_CLASS = JptCoreMessages.class;

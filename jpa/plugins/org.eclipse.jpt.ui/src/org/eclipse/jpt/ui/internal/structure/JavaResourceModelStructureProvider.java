@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
-import org.eclipse.jpt.ui.jface.ItemLabelProviderFactory;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
 
 public class JavaResourceModelStructureProvider

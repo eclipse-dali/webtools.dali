@@ -13,8 +13,8 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IPackageBinding;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
-import org.eclipse.jpt.core.internal.utility.jdt.JDTPackage;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedPackage;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTPackage;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 

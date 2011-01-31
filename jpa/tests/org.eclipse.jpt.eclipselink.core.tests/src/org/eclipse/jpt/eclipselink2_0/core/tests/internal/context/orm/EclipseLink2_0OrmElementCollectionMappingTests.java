@@ -12,6 +12,7 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm;
 import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeOverride;
 import org.eclipse.jpt.core.context.AttributeOverrideContainer;
@@ -49,7 +50,6 @@ import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
 import org.eclipse.jpt.core.resource.orm.XmlOneToMany;
 import org.eclipse.jpt.core.resource.orm.v2_0.XmlElementCollection_2_0;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
@@ -1040,9 +1040,9 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTable());
 		assertNull(ormColumn.getColumnDefinition());
@@ -1389,9 +1389,9 @@ public class EclipseLink2_0OrmElementCollectionMappingTests extends EclipseLink2
 		assertEquals(true, ormColumn.isDefaultUpdatable());
 		assertEquals(true, ormColumn.isDefaultNullable());
 		assertEquals(false, ormColumn.isDefaultUnique());
-		assertEquals(Column.DEFAULT_LENGTH, ormColumn.getDefaultLength());
-		assertEquals(Column.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
-		assertEquals(Column.DEFAULT_SCALE, ormColumn.getDefaultScale());
+		assertEquals(ReadOnlyColumn.DEFAULT_LENGTH, ormColumn.getDefaultLength());
+		assertEquals(ReadOnlyColumn.DEFAULT_PRECISION, ormColumn.getDefaultPrecision());
+		assertEquals(ReadOnlyColumn.DEFAULT_SCALE, ormColumn.getDefaultScale());
 		assertNull(ormColumn.getSpecifiedName());
 		assertNull(ormColumn.getSpecifiedTable());
 		assertNull(ormColumn.getColumnDefinition());

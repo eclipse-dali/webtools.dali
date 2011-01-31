@@ -10,9 +10,10 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.ClassChooserComboPane;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.IdClassReference;
-import org.eclipse.jpt.ui.internal.widgets.ClassChooserComboPane;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
 import org.eclipse.jpt.utility.model.value.ListValueModel;
@@ -119,8 +120,8 @@ public class IdClassComposite
 		protected String defaultText(IdClassReference idClassReference) {
 			String defaultClassName = idClassReference.getDefaultIdClassName();
 			return (defaultClassName == null) ?
-					JptUiDetailsMessages.NoneSelected
-					: NLS.bind(JptUiDetailsMessages.DefaultWithOneParam, defaultClassName);
+					JptCommonUiMessages.NoneSelected
+					: NLS.bind(JptCommonUiMessages.DefaultWithOneParam, defaultClassName);
 		}
 		
 		@Override

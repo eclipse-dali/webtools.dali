@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.resource.java.source;
 
+import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.core.internal.resource.java.source.SourceAssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
-import org.eclipse.jpt.core.utility.jdt.Member;
 
 /**
  * <code>javax.persistence.AssociationOverrides</code>

@@ -9,12 +9,12 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.details.QueriesComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

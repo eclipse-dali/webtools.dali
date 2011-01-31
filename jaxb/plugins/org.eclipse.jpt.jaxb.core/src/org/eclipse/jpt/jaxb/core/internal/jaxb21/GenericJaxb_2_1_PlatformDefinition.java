@@ -11,8 +11,8 @@ package org.eclipse.jpt.jaxb.core.internal.jaxb21;
 
 import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
 import org.eclipse.jpt.jaxb.core.JaxbFactory;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
@@ -124,12 +124,12 @@ public class GenericJaxb_2_1_PlatformDefinition
 	
 	// ********** resource models **********
 	
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
-		if (contentType.equals(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
-			return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+		if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+			return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 		}
-		else if (contentType.equals(JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
-			return JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+		else if (contentType.equals(JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_CONTENT_TYPE)) {
+			return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
 		}
 //		else if (contentType.equals(JptCorePlugin.JAR_CONTENT_TYPE)) {
 //			return JptCorePlugin.JAR_RESOURCE_TYPE;

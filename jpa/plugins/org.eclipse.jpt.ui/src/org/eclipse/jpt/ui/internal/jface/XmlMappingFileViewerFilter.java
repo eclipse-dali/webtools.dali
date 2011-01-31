@@ -16,6 +16,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -49,7 +50,7 @@ public class XmlMappingFileViewerFilter
 		else if (element instanceof IContainer) {
 			IContainer container = (IContainer) element;
 			IProject project = this.jpaProject.getProject();
-			if (JptCorePlugin.getResourceLocator(project).acceptResourceLocation(project, container)) {
+			if (JptCommonCorePlugin.getResourceLocator(project).acceptResourceLocation(project, container)) {
 				try {
 					for (IResource resource : container.members()) {
 						if (select(viewer, container, resource)) {

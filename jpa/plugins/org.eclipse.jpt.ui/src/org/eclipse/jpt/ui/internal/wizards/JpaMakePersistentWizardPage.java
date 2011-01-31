@@ -34,8 +34,10 @@ import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -45,7 +47,6 @@ import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.ui.JpaPlatformUi;
@@ -53,7 +54,6 @@ import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jface.XmlMappingFileViewerFilter;
 import org.eclipse.jpt.ui.internal.platform.JpaPlatformUiRegistry;
-import org.eclipse.jpt.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.ui.internal.wizards.entity.EntityWizardMsg;
 import org.eclipse.jpt.ui.internal.wizards.orm.MappingFileWizard;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -94,7 +94,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	private final Type[] selectedTypes;
 
 	private final JpaProject jpaProject;
-	private JpaResourceType jpaResourceType;
+	private JptResourceType jptResourceType;
 	
 	private final WritablePropertyValueModel<Boolean> annotateInJavaModel;
 
@@ -108,7 +108,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		this.jpaProject = jpaProject;
 
 		this.selectedTypes = this.buildTypes(selectedTypes);
-		this.jpaResourceType = JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+		this.jptResourceType = JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 		this.helpContextId = helpContextId;
 		this.annotateInJavaModel = new SimplePropertyValueModel<Boolean>(Boolean.TRUE);
 		this.mappingFileModel = new SimplePropertyValueModel<String>();
@@ -161,7 +161,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		javaAnnotationButton.addSelectionListener(new SelectionListener() {
 			public void widgetSelected(SelectionEvent e) {
 				JpaMakePersistentWizardPage.this.annotateInJavaModel.setValue(Boolean.TRUE);
-				JpaMakePersistentWizardPage.this.jpaResourceType = JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+				JpaMakePersistentWizardPage.this.jptResourceType = JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 			}
 			
 			public void widgetDefaultSelected(SelectionEvent e) {
@@ -240,10 +240,10 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			public void propertyChanged(PropertyChangeEvent event) {
 				JpaXmlResource ormXmlResource = getOrmXmlResource();
 				if (ormXmlResource == null) {
-					jpaResourceType = JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE; //just default to 1.0 orm resource type
+					jptResourceType = JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE; //just default to 1.0 orm resource type
 				}
 				else {
-					jpaResourceType = ormXmlResource.getResourceType();
+					jptResourceType = ormXmlResource.getResourceType();
 				}
 				validate();
 			}
@@ -409,7 +409,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 	}
 
 	protected MappingUiDefinition<? extends PersistentType, ?> getMappingUiDefinition(String mappingKey) {
-		for (MappingUiDefinition<? extends PersistentType, ?> provider : typeMappingUiDefinitions(this.jpaResourceType)) {
+		for (MappingUiDefinition<? extends PersistentType, ?> provider : typeMappingUiDefinitions(this.jptResourceType)) {
 			if (provider.getKey() == mappingKey) {
 				return provider;
 			}
@@ -426,7 +426,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		};
 	}
 
-	protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions(JpaResourceType jpaResourceType) {
+	protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions(JptResourceType jpaResourceType) {
 		return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jpaResourceType));
 	}
 
@@ -538,7 +538,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		}
 
 		protected Iterable<? extends MappingUiDefinition<? extends PersistentType, ?>> typeMappingUiDefinitions() {
-			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jpaResourceType));
+			return CollectionTools.iterable(getJpaPlatformUi().typeMappingUiDefinitions(jptResourceType));
 		}
 
 		protected JavaTypeMappingDefinition getJavaTypeMappingDefinition(String key) {

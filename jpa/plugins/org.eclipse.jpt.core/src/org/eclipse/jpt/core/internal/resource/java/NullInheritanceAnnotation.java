@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.java.InheritanceAnnotation;
 import org.eclipse.jpt.core.resource.java.InheritanceType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * <code>javax.persistence.Inheritance</code>

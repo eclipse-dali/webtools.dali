@@ -13,6 +13,7 @@ package org.eclipse.jpt.core.tests.internal.platform;
 import junit.framework.TestCase;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 
+@SuppressWarnings("nls")
 public class BaseJpaPlatformTests extends TestCase
 {
 	protected TestJpaProject jpaProject;

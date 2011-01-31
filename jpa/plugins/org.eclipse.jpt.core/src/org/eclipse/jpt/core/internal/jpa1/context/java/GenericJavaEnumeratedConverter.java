@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.context.EnumType;
 import org.eclipse.jpt.core.context.EnumeratedConverter;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaEnumeratedConverter;
 import org.eclipse.jpt.core.resource.java.EnumeratedAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaEnumeratedConverter
 	extends AbstractJavaConverter

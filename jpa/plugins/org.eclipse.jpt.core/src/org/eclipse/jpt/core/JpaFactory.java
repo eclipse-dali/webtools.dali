@@ -11,6 +11,7 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -146,7 +147,7 @@ public interface JpaFactory
 	 * Construct a JPA file for the specified JPA project, file, content type,
 	 * and resource model.
 	 */
-	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel);
+	JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JptResourceModel resourceModel);
 	
 	
 	// ********** Context Nodes **********

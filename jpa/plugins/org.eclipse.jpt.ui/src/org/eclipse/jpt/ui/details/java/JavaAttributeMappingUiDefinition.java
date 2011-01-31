@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.details.java;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.MappingUiDefinition;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;

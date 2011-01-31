@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.context.orm;
 
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.orm.OrmNamedColumn;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class OrmNamedColumnTextRangeResolver
 	implements NamedColumnTextRangeResolver

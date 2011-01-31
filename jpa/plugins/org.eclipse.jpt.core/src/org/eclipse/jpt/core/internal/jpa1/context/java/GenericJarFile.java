@@ -14,9 +14,10 @@ import java.util.List;
 import java.util.Vector;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JarFile;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceXmlContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
@@ -95,8 +95,8 @@ public class GenericJarFile
 	// ********** JpaContextNode implementation **********
 
 	@Override
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.JAR_RESOURCE_TYPE;
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAR_RESOURCE_TYPE;
 	}
 
 

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.SecondaryTablePrimaryKeyJoinCo
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;

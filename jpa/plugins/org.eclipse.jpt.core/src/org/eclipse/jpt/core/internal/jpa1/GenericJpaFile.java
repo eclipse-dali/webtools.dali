@@ -15,9 +15,9 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
 import org.eclipse.jpt.utility.internal.Tools;
@@ -47,7 +47,7 @@ public class GenericJpaFile
 	/**
 	 * the resource model corresponding to the file
 	 */
-	protected final JpaResourceModel resourceModel;
+	protected final JptResourceModel resourceModel;
 
 	/**
 	 * the root structure (context model) nodes corresponding to the resource
@@ -58,7 +58,7 @@ public class GenericJpaFile
 
 	// ********** construction **********
 
-	public GenericJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JpaResourceModel resourceModel) {
+	public GenericJpaFile(JpaProject jpaProject, IFile file, IContentType contentType, JptResourceModel resourceModel) {
 		super(jpaProject);
 		this.file = file;
 		this.contentType = contentType;
@@ -89,11 +89,11 @@ public class GenericJpaFile
 		return this.contentType;
 	}
 
-	public JpaResourceModel getResourceModel() {
+	public JptResourceModel getResourceModel() {
 		return this.resourceModel;
 	}
 
-	public JpaResourceModel getResourceModel(IContentType ct) {
+	public JptResourceModel getResourceModel(IContentType ct) {
 		return this.contentType.isKindOf(ct) ? this.resourceModel : null;
 	}
 

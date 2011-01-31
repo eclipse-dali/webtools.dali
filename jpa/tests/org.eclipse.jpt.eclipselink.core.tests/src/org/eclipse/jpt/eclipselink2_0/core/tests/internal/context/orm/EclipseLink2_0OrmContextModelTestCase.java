@@ -9,9 +9,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.orm;
 
+import org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.JpaFileCreationDataModelProperties;
-import org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
@@ -24,6 +24,7 @@ import org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.EclipseLink2_0
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 
+@SuppressWarnings("nls")
 public abstract class EclipseLink2_0OrmContextModelTestCase
 	extends EclipseLink2_0ContextModelTestCase
 {

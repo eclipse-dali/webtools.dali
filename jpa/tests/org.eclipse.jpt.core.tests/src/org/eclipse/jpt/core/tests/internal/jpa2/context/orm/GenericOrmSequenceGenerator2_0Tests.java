@@ -16,6 +16,7 @@ import org.eclipse.jpt.core.tests.internal.jpa2.context.Generic2_0ContextModelTe
 /**
  *  Generic2_0OrmSequenceGenerator2_0Tests
  */
+@SuppressWarnings("nls")
 public class GenericOrmSequenceGenerator2_0Tests
 	extends Generic2_0ContextModelTestCase
 {

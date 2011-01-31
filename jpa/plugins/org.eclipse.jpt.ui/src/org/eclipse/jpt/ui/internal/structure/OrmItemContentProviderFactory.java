@@ -9,17 +9,17 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.structure;
 
+import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
+import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.OrmPersistentTypeItemContentProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistentAttributeItemContentProvider;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.ui.jface.TreeItemContentProviderFactory;
 import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;

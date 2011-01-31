@@ -9,16 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.ReadOnlyReferenceTable;
 import org.eclipse.jpt.core.jpa2.context.CollectionTable2_0;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JoinColumnsComposite;
 import org.eclipse.jpt.ui.internal.details.ReferenceTableComposite;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
 import org.eclipse.jpt.ui.internal.details.db.TableCombo;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;

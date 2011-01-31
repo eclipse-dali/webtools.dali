@@ -11,13 +11,13 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.context.UniqueConstraint;
 import org.eclipse.jpt.core.context.VirtualTable;
 import org.eclipse.jpt.core.context.orm.OrmVirtualUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;

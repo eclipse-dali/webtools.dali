@@ -11,6 +11,9 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 import java.util.Iterator;
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.core.context.ReadOnlyColumn;
@@ -19,8 +22,6 @@ import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.details.db.DatabaseObjectCombo;
-import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
@@ -112,8 +113,8 @@ public class ColumnComposite
 			@Override
 			protected String buildNullDefaultValueEntry() {
 				return NLS.bind(
-						JptUiDetailsMessages.DefaultWithOneParam,
-						JptUiDetailsMessages.NoneSelected);
+						JptCommonUiMessages.DefaultWithOneParam,
+						JptCommonUiMessages.NoneSelected);
 			}
 			
 			@Override
@@ -159,7 +160,7 @@ public class ColumnComposite
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_insertableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_insertable;
@@ -205,7 +206,7 @@ public class ColumnComposite
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_nullableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_nullable;
@@ -273,8 +274,8 @@ public class ColumnComposite
 			@Override
 			protected String buildNullDefaultValueEntry() {
 				return NLS.bind(
-						JptUiDetailsMessages.DefaultWithOneParam,
-						JptUiDetailsMessages.NoneSelected);
+						JptCommonUiMessages.DefaultWithOneParam,
+						JptCommonUiMessages.NoneSelected);
 			}
 			
 			@Override
@@ -308,7 +309,7 @@ public class ColumnComposite
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_uniqueWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_unique;
@@ -357,7 +358,7 @@ public class ColumnComposite
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.ColumnComposite_updatableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.ColumnComposite_updatable;

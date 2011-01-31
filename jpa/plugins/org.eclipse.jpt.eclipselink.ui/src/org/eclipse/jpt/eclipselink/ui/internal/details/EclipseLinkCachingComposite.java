@@ -11,12 +11,12 @@ package org.eclipse.jpt.eclipselink.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -139,7 +139,7 @@ public abstract class EclipseLinkCachingComposite<T extends EclipseLinkCaching> 
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_sharedLabelDefault, defaultStringValue);
 				}
 				return EclipseLinkUiDetailsMessages.EclipseLinkCachingComposite_sharedLabel;

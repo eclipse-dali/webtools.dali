@@ -9,10 +9,10 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.resource.java.binary;
 
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceModelListener;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceModelListener;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.utility.internal.ListenerList;
 
@@ -27,7 +27,7 @@ abstract class RootBinaryNode
 	private final JpaAnnotationProvider annotationProvider;
 
 	/** listeners notified whenever the resource model changes */
-	private final ListenerList<JpaResourceModelListener> resourceModelListenerList = new ListenerList<JpaResourceModelListener>(JpaResourceModelListener.class);
+	private final ListenerList<JptResourceModelListener> resourceModelListenerList = new ListenerList<JptResourceModelListener>(JptResourceModelListener.class);
 
 
 	// ********** construction **********
@@ -59,23 +59,23 @@ abstract class RootBinaryNode
 	// ********** JavaResourceNode.Root implementation **********
 
 	public void resourceModelChanged() {
-		for (JpaResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
+		for (JptResourceModelListener listener : this.resourceModelListenerList.getListeners()) {
 			listener.resourceModelChanged(this);
 		}
 	}
 
 
-	// ********** JpaResourceModel implementation **********
+	// ********** JptResourceModel implementation **********
 	
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.JAR_RESOURCE_TYPE;
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAR_RESOURCE_TYPE;
 	}
 
-	public void addResourceModelListener(JpaResourceModelListener listener) {
+	public void addResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.add(listener);
 	}
 
-	public void removeResourceModelListener(JpaResourceModelListener listener) {
+	public void removeResourceModelListener(JptResourceModelListener listener) {
 		this.resourceModelListenerList.remove(listener);
 	}
 

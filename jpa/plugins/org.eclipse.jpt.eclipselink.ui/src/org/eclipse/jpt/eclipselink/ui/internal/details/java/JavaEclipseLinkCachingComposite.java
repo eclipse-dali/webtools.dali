@@ -9,9 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkAlwaysRefreshComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheSizeComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCacheTypeComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkCachingComposite;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkDisableHitsComposite;
+import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 

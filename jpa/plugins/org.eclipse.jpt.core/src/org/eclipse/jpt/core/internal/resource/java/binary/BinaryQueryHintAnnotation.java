@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.QueryHintAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * javax.persistence.QueryHint

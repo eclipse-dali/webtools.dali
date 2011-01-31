@@ -10,7 +10,7 @@
 package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jpt.core.IResourcePart;
+import org.eclipse.jpt.common.core.IResourcePart;
 import org.eclipse.jpt.utility.model.Model;
 
 /**

@@ -13,9 +13,10 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentType;
@@ -26,7 +27,6 @@ import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.MappingResourceUiDefinition;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.details.DefaultMappingUiDefinition;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
@@ -67,11 +67,11 @@ public abstract class BaseJpaPlatformUi
 	// ********** structure providers **********
 	
 	public JpaStructureProvider getStructureProvider(JpaFile jpaFile) {
-		JpaResourceType resourceType = jpaFile.getResourceModel().getResourceType();
+		JptResourceType resourceType = jpaFile.getResourceModel().getResourceType();
 		return (resourceType == null) ? null : this.getStructureProvider(resourceType);
 	}
 	
-	protected JpaStructureProvider getStructureProvider(JpaResourceType resourceType) {
+	protected JpaStructureProvider getStructureProvider(JptResourceType resourceType) {
 		ResourceUiDefinition definition;
 		try {
 			definition = getResourceUiDefinition(resourceType);
@@ -110,7 +110,7 @@ public abstract class BaseJpaPlatformUi
 	// ********** mapping ui definitions **********
 	
 	public JpaComposite buildTypeMappingComposite(
-			JpaResourceType resourceType, 
+			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<TypeMapping> mappingHolder, 
@@ -121,7 +121,7 @@ public abstract class BaseJpaPlatformUi
 	}
 	
 	public JpaComposite buildAttributeMappingComposite(
-			JpaResourceType resourceType, 
+			JptResourceType resourceType, 
 			String mappingKey, 
 			Composite parent, 
 			PropertyValueModel<AttributeMapping> mappingHolder, 
@@ -131,19 +131,19 @@ public abstract class BaseJpaPlatformUi
 				mappingKey, mappingHolder, parent, widgetFactory);
 	}
 	
-	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JpaResourceType resourceType, String mappingKey) {
+	public DefaultMappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping> getDefaultAttributeMappingUiDefinition(JptResourceType resourceType, String mappingKey) {
 		return getMappingResourceUiDefinition(resourceType).getDefaultAttributeMappingUiDefinition(mappingKey);
 	}
 	
-	public Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JpaResourceType resourceType) {
+	public Iterator<MappingUiDefinition<ReadOnlyPersistentAttribute, ? extends AttributeMapping>> attributeMappingUiDefinitions(JptResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).attributeMappingUiDefinitions();
 	}
 	
-	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JpaResourceType resourceType) {
+	public DefaultMappingUiDefinition<PersistentType, ? extends TypeMapping> getDefaultTypeMappingUiDefinition(JptResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).getDefaultTypeMappingUiDefinition();
 	}
 	
-	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> typeMappingUiDefinitions(JpaResourceType resourceType) {
+	public Iterator<MappingUiDefinition<PersistentType, ? extends TypeMapping>> typeMappingUiDefinitions(JptResourceType resourceType) {
 		return getMappingResourceUiDefinition(resourceType).typeMappingUiDefinitions();
 	}
 	
@@ -154,7 +154,7 @@ public abstract class BaseJpaPlatformUi
 		return this.platformUiProvider.resourceUiDefinitions();
 	}
 	
-	public ResourceUiDefinition getResourceUiDefinition(JpaResourceType resourceType) {
+	public ResourceUiDefinition getResourceUiDefinition(JptResourceType resourceType) {
 		for (ResourceUiDefinition definition : CollectionTools.iterable(this.resourceUiDefinitions())) {
 			if (definition.providesUi(resourceType)) {
 				return definition;
@@ -164,7 +164,7 @@ public abstract class BaseJpaPlatformUi
 		throw new IllegalArgumentException("No resource UI definition for the resource type: " + resourceType); //$NON-NLS-1$
 	}
 	
-	public MappingResourceUiDefinition getMappingResourceUiDefinition(JpaResourceType resourceType) {
+	public MappingResourceUiDefinition getMappingResourceUiDefinition(JptResourceType resourceType) {
 		ResourceUiDefinition def = this.getResourceUiDefinition(resourceType);
 		try {
 			return (MappingResourceUiDefinition) def;

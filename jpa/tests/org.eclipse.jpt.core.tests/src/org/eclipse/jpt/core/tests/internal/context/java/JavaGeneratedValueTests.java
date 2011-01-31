@@ -22,6 +22,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.tests.internal.context.ContextModelTestCase;
 import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
 
+@SuppressWarnings("nls")
 public class JavaGeneratedValueTests extends ContextModelTestCase
 {
 	private static final String GENERATOR = "MY_GENERATOR";

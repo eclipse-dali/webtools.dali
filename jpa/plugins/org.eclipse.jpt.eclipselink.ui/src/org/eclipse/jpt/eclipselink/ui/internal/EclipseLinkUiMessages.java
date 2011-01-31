@@ -21,15 +21,6 @@ public class EclipseLinkUiMessages {
 	public static String MappingFileWizardPage_newFile_desc;
 	public static String MappingFileWizardPage_options_title;
 	public static String MappingFileWizardPage_options_desc;
-	
-	public static String Boolean_True;
-	public static String Boolean_False;
-
-	public static String DefaultWithoutValue;
-	public static String DefaultWithValue;
-
-	public static String PersistenceXmlTabFolder_defaultEmpty;
-	public static String PersistenceXmlTabFolder_defaultWithOneParam;
 
 	public static String PersistenceXmlGeneralTab_name;
 	public static String PersistenceXmlGeneralTab_provider;
@@ -63,8 +54,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlConnectionTab_title;
 	public static String PersistenceXmlConnectionTab_sectionTitle;
 	public static String PersistenceXmlConnectionTab_sectionDescription;
-	public static String PersistenceXmlConnectionTab_defaultWithOneParam;
-	public static String PersistenceXmlConnectionTab_defaultEmpty;
 
 	public static String PersistenceXmlConnectionTab_transactionTypeLabel;
 
@@ -123,8 +112,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlSchemaGenerationTab_title;
 	public static String PersistenceXmlSchemaGenerationTab_sectionTitle;
 	public static String PersistenceXmlSchemaGenerationTab_sectionDescription;
-	public static String PersistenceXmlSchemaGenerationTab_defaultWithOneParam;
-	public static String PersistenceXmlSchemaGenerationTab_defaultEmpty;
 	public static String PersistenceXmlSchemaGenerationTab_defaultDot;
 
 	public static String PersistenceXmlSchemaGenerationTab_ddlGenerationTypeLabel;
@@ -199,7 +186,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlCustomizationTab_title;
 	public static String PersistenceXmlCustomizationTab_sectionTitle;
 	public static String PersistenceXmlCustomizationTab_sectionDescription;
-	public static String PersistenceXmlCustomizationTab_defaultWithOneParam;
 
 	public static String PersistenceXmlCustomizationTab_weavingPropertiesGroupBox;
 	public static String PersistenceXmlCustomizationTab_weavingLabel;
@@ -218,7 +204,6 @@ public class EclipseLinkUiMessages {
 
 	public static String PersistenceXmlCustomizationTab_weavingEagerLabelDefault;
 	public static String PersistenceXmlCustomizationTab_weavingEagerLabel;
-	public static String PersistenceXmlCustomizationTab_defaultEmpty;
 	
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabelDefault;
 	public static String PersistenceXmlCustomizationTab_throwExceptionsLabel;
@@ -256,8 +241,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlLoggingTab_title;
 	public static String PersistenceXmlLoggingTab_sectionTitle;
 	public static String PersistenceXmlLoggingTab_sectionDescription;
-	public static String PersistenceXmlLoggingTab_defaultWithOneParam;
-	public static String PersistenceXmlLoggingTab_defaultEmpty;
 	public static String PersistenceXmlLoggingTab_defaultStdout;
 
 	public static String PersistenceXmlLoggingTab_categoryLoggingLevelSectionTitle;
@@ -325,8 +308,6 @@ public class EclipseLinkUiMessages {
 	public static String PersistenceXmlOptionsTab_title;
 	public static String PersistenceXmlOptionsTab_sessionSectionTitle;
 	public static String PersistenceXmlOptionsTab_sessionSectionDescription;
-	public static String PersistenceXmlOptionsTab_defaultWithOneParam;
-	public static String PersistenceXmlOptionsTab_defaultEmpty;
 
 	public static String PersistenceXmlOptionsTab_sessionName;
 	public static String PersistenceXmlOptionsTab_sessionsXml;

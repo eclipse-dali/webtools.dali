@@ -11,6 +11,7 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
  * Map a content type to a JPA resource model.
@@ -37,5 +38,5 @@ public interface JpaResourceModelProvider
 	 * the appropriate creation method instead of building a provider for the
 	 * same content.
 	 */
-	JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
+	JptResourceModel buildResourceModel(JpaProject jpaProject, IFile file);
 }

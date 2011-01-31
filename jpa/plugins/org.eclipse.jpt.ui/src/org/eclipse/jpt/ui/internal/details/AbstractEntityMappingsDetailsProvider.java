@@ -9,7 +9,7 @@
 *******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.orm.OrmStructureNodes;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
@@ -28,5 +28,5 @@ public abstract class AbstractEntityMappingsDetailsProvider
 				&& providesDetails(structureNode.getResourceType());
 	}
 	
-	protected abstract boolean providesDetails(JpaResourceType resourceType);
+	protected abstract boolean providesDetails(JptResourceType resourceType);
 }

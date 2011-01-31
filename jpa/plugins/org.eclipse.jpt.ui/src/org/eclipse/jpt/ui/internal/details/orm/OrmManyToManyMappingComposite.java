@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details.orm;
 
+import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToManyRelationship;
-import org.eclipse.jpt.ui.WidgetFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
 import org.eclipse.jpt.ui.internal.details.CascadeComposite;
 import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;

@@ -19,9 +19,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiDetailsOrmMessages {
 
-	public static String Boolean_False;
-	public static String Boolean_True;
-
 	public static String EntityMappingsSection_title;
 	public static String EntityMappingsDetailsPage_access;
 	public static String EntityMappingsDetailsPage_catalog;

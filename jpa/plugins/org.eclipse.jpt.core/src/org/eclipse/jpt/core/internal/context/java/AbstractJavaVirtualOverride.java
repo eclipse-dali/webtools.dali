@@ -10,10 +10,10 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaOverride;
 import org.eclipse.jpt.core.context.java.JavaOverrideContainer;
 import org.eclipse.jpt.core.context.java.JavaVirtualOverride;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Virtual Java override

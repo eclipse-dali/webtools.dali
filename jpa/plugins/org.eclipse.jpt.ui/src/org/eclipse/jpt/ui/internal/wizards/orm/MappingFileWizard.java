@@ -10,7 +10,7 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.wizards.orm;
 
-import static org.eclipse.jpt.core.internal.operations.JptFileCreationDataModelProperties.*;
+import static org.eclipse.jpt.common.core.internal.operations.JptFileCreationDataModelProperties.*;
 import static org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProperties.*;
 import java.lang.reflect.InvocationTargetException;
 import org.eclipse.core.resources.IContainer;
@@ -31,12 +31,12 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.JpaFacet;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.JptUiIcons;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
@@ -158,7 +158,7 @@ public class MappingFileWizard extends Wizard
 	
 	private IContainer getDefaultContainer(IProject project) {
 		if (JpaFacet.isInstalled(project)) {
-			return JptCorePlugin.getResourceLocator(project).getDefaultResourceLocation(project);
+			return JptCommonCorePlugin.getResourceLocator(project).getDefaultResourceLocation(project);
 		}
 		return project;
 	}
@@ -332,7 +332,7 @@ public class MappingFileWizard extends Wizard
 			IContainer container = PlatformTools.getContainer(containerPath);
 			IPath filePath = container.getFullPath().append(fileName);
 			IProject project = container.getProject();
-			IPath runtimePath = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
+			IPath runtimePath = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, filePath);
 			
 			return runtimePath;
 		}

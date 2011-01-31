@@ -11,17 +11,16 @@
 package org.eclipse.jpt.core.internal.resource.java.source;
 
 import java.util.Iterator;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.PackageDeclaration;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.utility.CommandExecutor;
 import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
@@ -61,10 +60,10 @@ public final class SourcePackageInfoCompilationUnit
 	}
 
 
-	// ********** JpaResourceModel implementation **********
+	// ********** JptResourceModel implementation **********
 
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAVA_SOURCE_PACKAGE_INFO_RESOURCE_TYPE;
 	}
 
 

@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -76,7 +77,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_insertableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.JoinColumnDialogPane_insertable;
@@ -123,7 +124,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_nullableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.JoinColumnDialogPane_nullable;
@@ -168,7 +169,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_uniqueWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.JoinColumnDialogPane_unique;
@@ -210,7 +211,7 @@ public class JoinColumnDialogPane<T extends JoinColumnStateObject> extends BaseJ
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages.JoinColumnDialogPane_updatableWithDefault, defaultStringValue);
 				}
 				return JptUiDetailsMessages.JoinColumnDialogPane_updatable;

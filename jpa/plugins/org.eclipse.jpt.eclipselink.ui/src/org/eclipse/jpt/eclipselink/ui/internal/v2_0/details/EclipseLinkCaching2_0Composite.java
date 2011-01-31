@@ -11,7 +11,9 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCaching;
@@ -23,11 +25,9 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkDisableHitsCom
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkExpiryComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkRefreshOnlyIfNewerComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
+import org.eclipse.jpt.eclipselink.ui.internal.details.java.JavaEclipseLinkEntityComposite;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
-import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.jpa2.details.JptUiDetailsMessages2_0;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
@@ -160,7 +160,7 @@ public abstract class EclipseLinkCaching2_0Composite<T extends EclipseLinkCachin
 			@Override
 			protected String transform(Boolean value) {
 				if (value != null) {
-					String defaultStringValue = value.booleanValue() ? JptUiDetailsMessages.Boolean_True : JptUiDetailsMessages.Boolean_False;
+					String defaultStringValue = value.booleanValue() ? JptCommonUiMessages.Boolean_True : JptCommonUiMessages.Boolean_False;
 					return NLS.bind(JptUiDetailsMessages2_0.Entity_cacheableWithDefaultLabel, defaultStringValue);
 				}
 				return JptUiDetailsMessages2_0.Entity_cacheableLabel;

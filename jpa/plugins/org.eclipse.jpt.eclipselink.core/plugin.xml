@@ -83,7 +83,7 @@
 	
 	
 	<extension
-		point="org.eclipse.jpt.core.libraryValidators">
+		point="org.eclipse.jpt.common.core.libraryValidators">
 		
 		<libraryValidator
 			id="eclipselinkLibraryValidator"
@@ -91,7 +91,7 @@
 			<enablement>
 				<and>
 					<with variable="libraryProvider">
-						<test property="org.eclipse.jpt.core.extendsId" value="jpa-user-library-provider"/>
+						<test property="org.eclipse.jpt.common.core.extendsId" value="jpa-user-library-provider"/>
 					</with>
 					<with variable="config">
 						<test property="org.eclipse.jpt.core.jpaPlatformGroup" value="eclipselink"/>
@@ -106,7 +106,7 @@
 			<enablement>
 				<and>
 					<with variable="libraryProvider">
-						<test property="org.eclipse.jpt.core.extendsId" value="eclipselink-bundles-library-provider"/>
+						<test property="org.eclipse.jpt.common.core.extendsId" value="eclipselink-bundles-library-provider"/>
 					</with>
 					<with variable="config">
 						<test property="org.eclipse.jpt.core.jpaPlatformGroup" value="eclipselink"/>

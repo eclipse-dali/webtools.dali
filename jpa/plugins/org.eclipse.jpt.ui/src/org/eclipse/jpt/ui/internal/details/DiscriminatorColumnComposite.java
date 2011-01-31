@@ -11,6 +11,11 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.Collection;
 
+import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
+import org.eclipse.jpt.common.ui.internal.util.PaneEnabler;
+import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.core.context.DiscriminatorColumn;
 import org.eclipse.jpt.core.context.DiscriminatorType;
 import org.eclipse.jpt.core.context.Entity;
@@ -18,10 +23,6 @@ import org.eclipse.jpt.core.context.NamedColumn;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
-import org.eclipse.jpt.ui.internal.util.PaneEnabler;
-import org.eclipse.jpt.ui.internal.widgets.EnumFormComboViewer;
-import org.eclipse.jpt.ui.internal.widgets.IntegerCombo;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
@@ -151,7 +152,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			
 			@Override
 			protected String buildNullDefaultValueEntry() {
-				return JptUiDetailsMessages.NoneSelected;
+				return JptCommonUiMessages.NoneSelected;
 			}
 		};
 	}
@@ -202,7 +203,7 @@ public class DiscriminatorColumnComposite<T extends Entity> extends Pane<T> {
 			
 			@Override
 			protected String nullDisplayString() {
-				return JptUiDetailsMessages.NoneSelected;
+				return JptCommonUiMessages.NoneSelected;
 			}
 			
 			@Override

@@ -10,12 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.internal.resource.java;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.core.utility.jdt.AnnotatedElement;
-import org.eclipse.jpt.core.utility.jdt.Attribute;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.binary.BinaryEclipseLinkTransformationAnnotation;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.source.SourceEclipseLinkTransformationAnnotation;
 import org.eclipse.jpt.eclipselink.core.resource.java.EclipseLinkTransformationAnnotation;

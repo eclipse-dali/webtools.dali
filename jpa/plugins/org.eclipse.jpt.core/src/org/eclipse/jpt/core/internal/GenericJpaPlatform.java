@@ -11,6 +11,11 @@ package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.JpaFactory;
@@ -19,18 +24,13 @@ import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.core.JpaResourceModel;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.ResourceDefinition;
 import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.db.ConnectionProfileFactory;
 import org.eclipse.jpt.db.JptDbPlugin;
 
@@ -102,11 +102,11 @@ public class GenericJpaPlatform
 	}
 
 	protected JpaFile buildJpaFile(JpaProject jpaProject, IFile file, IContentType contentType) {
-		JpaResourceModel resourceModel = this.buildResourceModel(jpaProject, file, contentType);
+		JptResourceModel resourceModel = this.buildResourceModel(jpaProject, file, contentType);
 		return (resourceModel == null) ? null : this.jpaFactory.buildJpaFile(jpaProject, file, contentType, resourceModel);
 	}
 
-	protected JpaResourceModel buildResourceModel(JpaProject jpaProject, IFile file, IContentType contentType) {
+	protected JptResourceModel buildResourceModel(JpaProject jpaProject, IFile file, IContentType contentType) {
 		JpaResourceModelProvider provider = this.getResourceModelProvider(contentType);
 		return (provider == null) ? null : provider.buildResourceModel(jpaProject, file);
 	}
@@ -156,7 +156,7 @@ public class GenericJpaPlatform
 
 	// ********** resource types and definitions **********
 
-	public boolean supportsResourceType(JpaResourceType resourceType) {
+	public boolean supportsResourceType(JptResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return true;
@@ -165,7 +165,7 @@ public class GenericJpaPlatform
 		return false;
 	}
 
-	public ResourceDefinition getResourceDefinition(JpaResourceType resourceType) {
+	public ResourceDefinition getResourceDefinition(JptResourceType resourceType) {
 		for (ResourceDefinition resourceDefinition : this.platformProvider.getResourceDefinitions()) {
 			if (resourceDefinition.getResourceType().equals(resourceType)) {
 				return resourceDefinition;
@@ -174,7 +174,7 @@ public class GenericJpaPlatform
 		throw new IllegalArgumentException("Illegal resource type: " + resourceType); //$NON-NLS-1$
 	}
 
-	public JpaResourceType getMostRecentSupportedResourceType(IContentType contentType) {
+	public JptResourceType getMostRecentSupportedResourceType(IContentType contentType) {
 		return this.platformProvider.getMostRecentSupportedResourceType(contentType);
 	}
 

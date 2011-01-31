@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.orm;
 
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.text.edits.ReplaceEdit;
 
 /**

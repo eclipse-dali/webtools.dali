@@ -13,7 +13,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.jpt.core.IResourcePart;
+import org.eclipse.jpt.common.core.IResourcePart;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.osgi.service.prefs.BackingStoreException;

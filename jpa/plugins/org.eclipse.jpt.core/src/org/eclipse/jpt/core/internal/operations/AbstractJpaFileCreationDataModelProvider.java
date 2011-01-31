@@ -15,11 +15,13 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.operations.AbstractJptFileCreationDataModelProvider;
+import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.core.resource.ResourceLocator;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 
@@ -89,7 +91,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 				IStatus.ERROR, JptCorePlugin.PLUGIN_ID,
 				JptCoreMessages.VALIDATE_PROJECT_IMPROPER_PLATFORM);
 		}
-		ResourceLocator resourceLocator = JptCorePlugin.getResourceLocator(project);
+		ResourceLocator resourceLocator = JptCommonCorePlugin.getResourceLocator(project);
 		if (resourceLocator != null /* should never be null, but there might be crazy circumstances */
 				&& ! resourceLocator.acceptResourceLocation(project, container)) {
 			return new Status(

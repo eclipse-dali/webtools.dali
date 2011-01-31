@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.0"?>
 <!--
-	Copyright (c) 2007, 2010 Oracle. All rights reserved.
+	Copyright (c) 2007, 2011 Oracle. All rights reserved.
 	This program and the accompanying materials are made available under the
 	terms of the Eclipse Public License v1.0, which accompanies this distribution
 	and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,18 +18,6 @@
 		id="jpaPlatforms"
 		name="%JPA_PLATFORM"
 		schema="schema/jpaPlatforms.exsd"/>
-	
-	
-	<extension-point
-		id="libraryValidators"
-		name="%LIBRARY_VALIDATORS"
-		schema="schema/libraryValidators.exsd"/>
-	
-	
-	<extension-point
-		id="resourceLocators"
-		name="%RESOURCE_LOCATORS"
-		schema="schema/resourceLocators.exsd"/>
 	
 	
 	<!-- ***** Eclipse core extensions ***** -->
@@ -79,26 +67,6 @@
 			</describer>
 		</content-type>
 		
-		<!-- JAR content type -->
-		<content-type
-			id="org.eclipse.jpt.core.content.jar"
-			name="%JAR_CONTENT"
-			file-extensions="jar, zip">
-			<describer
-				class="org.eclipse.core.runtime.content.BinarySignatureDescriber">
-				<parameter name="signature" value="50 4B 03 04"/>
-			</describer>
-		</content-type>
-		
-  		<!-- package-info.java content type (for package annotations) -->
-		<content-type
-       		id="org.eclipse.jpt.core.content.javaPackageInfo"
-        	name="%JAVA_PACKAGE_INFO_CONTENT"
-        	base-type="org.eclipse.jdt.core.javaSource"
-       	 	file-names="package-info.java"
-        	priority="normal">
-  		</content-type>
-		
 	</extension>
 	
 	
@@ -135,7 +103,7 @@
 			
 		<propertyTester
 			id="org.eclipse.jpt.core.propertyTester.jpaLibraryProviderConfig"
-			type="org.eclipse.jpt.core.internal.libprov.JpaLibraryProviderInstallOperationConfig"
+			type="org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig"
 			namespace="org.eclipse.jpt.core"
 			properties="jpaPlatform, jpaPlatformGroup"
 			class="org.eclipse.jpt.core.internal.JpaPlatformTester"/>
@@ -154,13 +122,6 @@
 			properties="isLatestSupportedVersion"
 			class="org.eclipse.jpt.core.internal.resource.xml.JpaXmlResourcePropertyTester"/>
 		
-		<propertyTester
-			id="org.eclipse.jpt.core.propertyTester.libraryProvider"
-			type="org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider"
-			namespace="org.eclipse.jpt.core"
-			properties="id, extendsId"
-			class="org.eclipse.jpt.core.internal.libprov.LibraryProviderPropertyTester"/>
-		
 	</extension>
 	
 	
@@ -177,12 +138,6 @@
 			class="org.eclipse.jpt.core.internal.ProjectAdapterFactory"
 			adaptableType="org.eclipse.jdt.core.IJavaProject">
 			<adapter type="org.eclipse.jpt.core.JpaProject"/>
-		</factory>
-		
-		<factory
-			class="org.eclipse.jpt.core.internal.ResourceAdapterFactory"
-			adaptableType="org.eclipse.core.resources.IResource">
-			<adapter type="org.eclipse.jpt.core.IResourcePart"/>
 		</factory>
 		
 		<factory
@@ -232,14 +187,14 @@
 	
 	
 	<extension
-		point="org.eclipse.jpt.core.libraryValidators">
+		point="org.eclipse.jpt.common.core.libraryValidators">
 		
 		<libraryValidator
 			id="genericUserLibraryValidator"
 			class="org.eclipse.jpt.core.internal.libval.GenericJpaUserLibraryValidator">
 			<enablement>
 				<with variable="libraryProvider">
-					<test property="org.eclipse.jpt.core.extendsId" value="jpa-user-library-provider"/>
+					<test property="org.eclipse.jpt.common.core.extendsId" value="jpa-user-library-provider"/>
 				</with>
 			</enablement>
 		</libraryValidator>
@@ -249,75 +204,14 @@
 			class="org.eclipse.jpt.core.internal.libval.GenericEclipseLinkBundlesLibraryValidator">
 			<enablement>
 				<with variable="libraryProvider">
-					<test property="org.eclipse.jpt.core.extendsId" value="eclipselink-bundles-library-provider"/>
+					<test property="org.eclipse.jpt.common.core.extendsId" value="eclipselink-bundles-library-provider"/>
 				</with>
 			</enablement>
 		</libraryValidator>
 		
 	</extension>
 	
-	
-	<extension
-		point="org.eclipse.jpt.core.resourceLocators">
 		
-		<resourceLocator
-			id="simpleJavaResourceLocator"
-			class="org.eclipse.jpt.core.internal.resource.SimpleJavaResourceLocator"
-			priority="lowest">
-			<enablement>
-				<with variable="project">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="java" 
-						forcePluginActivation="true"/>
-				</with>
-			</enablement>
-		</resourceLocator>
-		
-		<resourceLocator
-			id="moduleResourceLocator"
-			class="org.eclipse.jpt.core.internal.resource.ModuleResourceLocator"
-			priority="lower">
-			<enablement>
-				<with variable="project">
-					<test 
-						property="org.eclipse.core.resources.projectNature" 
-						value="org.eclipse.wst.common.modulecore.ModuleCoreNature" 
-						forcePluginActivation="true"/>
-				</with>
-			</enablement>
-		</resourceLocator>
-		
-		<resourceLocator
-			id="webModuleResourceLocator"
-			class="org.eclipse.jpt.core.internal.resource.WebModuleResourceLocator"
-			priority="low">
-			<enablement>
-				<with variable="project">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jst.web" 
-						forcePluginActivation="true"/>
-				</with>
-			</enablement>
-		</resourceLocator>
-		
-		<resourceLocator
-			id="pluginResourceLocator"
-			class="org.eclipse.jpt.core.internal.resource.PluginResourceLocator"
-			priority="normal">
-			<enablement>
-				<with variable="project">
-					<test 
-						property="org.eclipse.core.resources.projectNature" 
-						value="org.eclipse.pde.PluginNature" 
-						forcePluginActivation="true"/>
-				</with>
-			</enablement>
-		</resourceLocator>
-		
-	</extension>
-	
 	
 	<!--
 	******************************************
@@ -336,14 +230,6 @@
 	
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
-		
-		<provider 
-			id="jpt-no-op-library-provider" 
-			extends="no-op-library-provider"
-			abstract="true">
-			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
-
-		</provider>
 		
 		<provider 
 			id="jpa-legacy-library-provider" 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
 import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
-import org.eclipse.jpt.core.JpaResourceType;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
@@ -58,7 +58,7 @@ public class GenericOrmXmlDefinition
 		super();
 	}
 
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return JptCorePlugin.ORM_XML_1_0_RESOURCE_TYPE;
 	}
 

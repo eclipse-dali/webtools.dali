@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import java.util.ListIterator;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.core.utility.TextRange;
+import org.eclipse.jpt.common.core.utility.TextRange;
 
 /**
  * Corresponds to the JPA annotations:<ul>

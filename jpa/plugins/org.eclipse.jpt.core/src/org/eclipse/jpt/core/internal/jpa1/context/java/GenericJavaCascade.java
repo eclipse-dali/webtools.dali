@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.jpa1.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.java.JavaRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaRelationshipMapping;
 import org.eclipse.jpt.core.jpa2.context.java.JavaCascade2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.RelationshipMapping2_0Annotation;
 import org.eclipse.jpt.core.resource.java.RelationshipMappingAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 public class GenericJavaCascade
 	extends AbstractJavaJpaContextNode

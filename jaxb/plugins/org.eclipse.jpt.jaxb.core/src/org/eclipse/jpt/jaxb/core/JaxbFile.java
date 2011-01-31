@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
-import org.eclipse.jpt.core.JpaResourceModel;
+import org.eclipse.jpt.common.core.JptResourceModel;
 
 /**
  * A JAXB Project contains JAXB files for all files in the project that
@@ -43,7 +43,7 @@ public interface JaxbFile
 	 * Return the resource model corresponding to the JPA file; typically a JPA
 	 * compilation unit, a JPA XML resource, or a JPA package fragment root (JAR).
 	 */
-	JpaResourceModel getResourceModel();
+	JptResourceModel getResourceModel();
 	
 	/**
 	 * Convenience method. Return the resource model corresponding to the JPA
@@ -52,7 +52,7 @@ public interface JaxbFile
 	 * JPA file via a file name [and assumed content type].
 	 * @see #getResourceModel()
 	 */
-	JpaResourceModel getResourceModel(IContentType contentType);
+	JptResourceModel getResourceModel(IContentType contentType);
 	
 	
 	// ********** root structure nodes **********

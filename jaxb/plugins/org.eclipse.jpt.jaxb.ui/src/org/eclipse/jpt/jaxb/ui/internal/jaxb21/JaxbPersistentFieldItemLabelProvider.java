@@ -9,8 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 
+import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
-import org.eclipse.jpt.ui.jface.DelegatingContentAndLabelProvider;
 
 
 public class JaxbPersistentFieldItemLabelProvider

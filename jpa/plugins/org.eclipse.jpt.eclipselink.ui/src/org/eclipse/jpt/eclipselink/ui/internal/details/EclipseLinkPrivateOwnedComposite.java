@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.details;
 
+import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.core.context.BasicMapping;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkPrivateOwned;
-import org.eclipse.jpt.ui.internal.widgets.Pane;
 import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;

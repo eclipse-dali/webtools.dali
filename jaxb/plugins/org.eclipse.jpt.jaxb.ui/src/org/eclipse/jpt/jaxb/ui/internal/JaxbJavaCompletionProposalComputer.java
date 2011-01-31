@@ -24,12 +24,13 @@ import org.eclipse.jdt.ui.text.java.IJavaCompletionProposalComputer;
 import org.eclipse.jdt.ui.text.java.JavaContentAssistInvocationContext;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.jface.text.contentassist.ICompletionProposal;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.core.internal.utility.jdt.ASTTools;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
+import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.jpt.utility.internal.StringTools;
@@ -100,7 +101,7 @@ public class JaxbJavaCompletionProposalComputer
 		IFile file = (cu != null) ? getCorrespondingResource(cu) : null;
 		IContentType contentType = (file != null) ? PlatformTools.getContentType(file) : null;
 		
-		if (contentType == null  || ! contentType.isKindOf(JptCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
+		if (contentType == null  || ! contentType.isKindOf(JptCommonCorePlugin.JAVA_SOURCE_CONTENT_TYPE)) {
 			return Collections.emptyList();
 		}
 		
@@ -152,7 +153,7 @@ public class JaxbJavaCompletionProposalComputer
 		try {
 			return (IFile) cu.getCorrespondingResource();
 		} catch (JavaModelException ex) {
-			JptCorePlugin.log(ex);
+			JptJaxbUiPlugin.log(ex);
 			return null;
 		}
 	}

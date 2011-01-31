@@ -12,8 +12,9 @@ package org.eclipse.jpt.core.internal.jpa1.context.persistence;
 import java.util.List;
 
 import org.eclipse.core.resources.IResource;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.JpaFile;
-import org.eclipse.jpt.core.JpaResourceType;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
@@ -25,7 +26,6 @@ import org.eclipse.jpt.core.jpa2.context.persistence.Persistence2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceXml2_0;
 import org.eclipse.jpt.core.resource.persistence.XmlPersistence;
 import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -46,7 +46,7 @@ public class GenericPersistenceXml
 	 * The resource type will only change if the XML file's version changes
 	 * (since, if the content type changes, we get garbage-collected).
 	 */
-	protected JpaResourceType resourceType;
+	protected JptResourceType resourceType;
 
 	/**
 	 * The root element of the <code>persistence.xml</code> file.
@@ -77,7 +77,7 @@ public class GenericPersistenceXml
 		super.synchronizeWithResourceModel();
 		XmlPersistence oldXmlPersistence = (this.persistence == null) ? null : this.persistence.getXmlPersistence();
 		XmlPersistence newXmlPersistence = (XmlPersistence) this.xmlResource.getRootObject();
-		JpaResourceType newResourceType = this.xmlResource.getResourceType();
+		JptResourceType newResourceType = this.xmlResource.getResourceType();
 
 		// If the old and new XML persistences are different instances,
 		// we scrap the old context persistence and rebuild.
@@ -155,7 +155,7 @@ public class GenericPersistenceXml
 	}
 
 	@Override
-	public JpaResourceType getResourceType() {
+	public JptResourceType getResourceType() {
 		return this.xmlResource.getResourceType();
 	}
 

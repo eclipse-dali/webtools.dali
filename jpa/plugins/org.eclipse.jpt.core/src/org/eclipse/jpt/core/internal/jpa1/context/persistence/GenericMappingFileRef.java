@@ -13,11 +13,11 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractMappingFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlMappingFileRef;
-import org.eclipse.jpt.core.utility.TextRange;
 import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.text.edits.DeleteEdit;
@@ -139,7 +139,7 @@ public class GenericMappingFileRef
 	protected ReplaceEdit createMoveEdit(IFolder originalFolder, IPath runtimeDestination) {
 		IProject project = originalFolder.getProject();
 		IPath fullPath = originalFolder.getFullPath();
-		IPath originalLocation = JptCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
+		IPath originalLocation = JptCommonCorePlugin.getResourceLocator(project).getRuntimePath(project, fullPath);
 		return this.createMoveEdit(originalLocation, runtimeDestination);
 	}
 

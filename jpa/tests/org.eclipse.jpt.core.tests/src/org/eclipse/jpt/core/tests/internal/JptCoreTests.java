@@ -16,7 +16,6 @@ import org.eclipse.jpt.core.tests.internal.context.JptCoreContextModelTests;
 import org.eclipse.jpt.core.tests.internal.model.JptCoreModelTests;
 import org.eclipse.jpt.core.tests.internal.projects.TestJpaProject;
 import org.eclipse.jpt.core.tests.internal.resource.JptCoreResourceModelTests;
-import org.eclipse.jpt.core.tests.internal.utility.jdt.JptCoreUtilityJdtTests;
 
 /**
  * decentralize test creation code
@@ -30,7 +29,6 @@ public class JptCoreTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptCoreTests.class.getPackage().getName());
-		suite.addTest(JptCoreUtilityJdtTests.suite());
 		suite.addTest(JptCoreModelTests.suite());
 		suite.addTest(JptCoreResourceModelTests.suite());
 		suite.addTest(JptCoreContextModelTests.suite());

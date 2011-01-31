@@ -16,9 +16,9 @@ import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.EnumDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
-import org.eclipse.jpt.core.JpaResourceType;
-import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
@@ -93,8 +93,8 @@ public final class SourceTypeCompilationUnit
 
 	// ********** JpaResourceModel implementation **********
 	
-	public JpaResourceType getResourceType() {
-		return JptCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
 	}
 
 

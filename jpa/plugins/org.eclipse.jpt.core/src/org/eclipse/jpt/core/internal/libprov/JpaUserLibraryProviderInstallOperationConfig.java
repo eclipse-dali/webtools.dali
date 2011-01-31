@@ -9,6 +9,8 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.libprov;
 
+import org.eclipse.jpt.common.core.internal.libprov.JptUserLibraryProviderInstallOperationConfig;
+import org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 
 public class JpaUserLibraryProviderInstallOperationConfig

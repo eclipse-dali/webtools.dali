@@ -10,9 +10,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal.platform.generic;
 
+import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
+import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.core.context.PersistentAttribute;
-import org.eclipse.jpt.ui.internal.jface.AbstractTreeItemContentProvider;
-import org.eclipse.jpt.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 
 @SuppressWarnings("unchecked")
 public class PersistentAttributeItemContentProvider extends AbstractTreeItemContentProvider

@@ -19,9 +19,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptUiPersistenceMessages {
 
-	public static String Boolean_False;
-	public static String Boolean_True;
-	
 	public static String ArchiveFileSelectionDialog_jarPathHelpLabel;
 	public static String ArchiveFileSelectionDialog_jarPathLabel;
 

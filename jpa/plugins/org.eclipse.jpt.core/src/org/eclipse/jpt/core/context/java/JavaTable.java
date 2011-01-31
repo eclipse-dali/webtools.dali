@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.context.java;
 
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.core.context.Table;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
-import org.eclipse.jpt.core.utility.TextRange;
 
 /**
  * Java table

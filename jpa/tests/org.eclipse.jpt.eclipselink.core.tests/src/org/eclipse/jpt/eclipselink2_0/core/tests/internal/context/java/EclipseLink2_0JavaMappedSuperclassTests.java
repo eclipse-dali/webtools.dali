@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.java;
 
 import java.util.Iterator;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.core.jpa2.context.Cacheable2_0;
 import org.eclipse.jpt.core.jpa2.context.CacheableHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.core.jpa2.resource.java.Cacheable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.core.tests.internal.projects.TestJavaProject.SourceWriter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTracking;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkChangeTrackingType;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomizer;
@@ -462,7 +462,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		addXmlClassRef(FULLY_QUALIFIED_TYPE_NAME);
 		
 		Cacheable2_0 cacheable = ((CacheableHolder2_0) getJavaPersistentType().getMapping()).getCacheable();
-		PersistenceUnit2_0 persistenceUnit = (PersistenceUnit2_0) getPersistenceUnit();
+		PersistenceUnit2_0 persistenceUnit = getPersistenceUnit();
 		assertEquals(SharedCacheMode.DISABLE_SELECTIVE, persistenceUnit.getSharedCacheMode());
 		assertEquals(true, cacheable.isDefaultCacheable());
 		
@@ -493,7 +493,7 @@ public class EclipseLink2_0JavaMappedSuperclassTests extends EclipseLink2_0Conte
 		assertEquals(true, subCacheable.isDefaultCacheable());
 		assertEquals(true, cacheable.isDefaultCacheable());
 
-		PersistenceUnit2_0 persistenceUnit2_0 = (PersistenceUnit2_0) getPersistenceUnit();
+		PersistenceUnit2_0 persistenceUnit2_0 = getPersistenceUnit();
 		persistenceUnit2_0.setSpecifiedSharedCacheMode(SharedCacheMode.NONE);
 		assertEquals(false, subCacheable.isDefaultCacheable());
 		assertEquals(false, cacheable.isDefaultCacheable());
