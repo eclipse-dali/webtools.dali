@@ -44,6 +44,11 @@
          unpack="false"/>
 
 	<plugin
+         id="org.eclipse.persistence.antlr"
+         version="2.3.0.qualifier"
+         unpack="false"/>
+
+	<plugin
          id="org.eclipse.persistence.asm"
          version="2.3.0.qualifier"
          unpack="false"/>
