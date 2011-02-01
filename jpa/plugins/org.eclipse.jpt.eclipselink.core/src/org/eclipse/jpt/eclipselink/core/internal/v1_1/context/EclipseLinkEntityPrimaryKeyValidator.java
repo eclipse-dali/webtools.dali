@@ -13,7 +13,7 @@ package org.eclipse.jpt.eclipselink.core.internal.v1_1.context;
 import java.util.List;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.internal.context.PrimaryKeyTextRangeResolver;
-import org.eclipse.jpt.core.internal.jpa1.context.GenericEntityPrimaryKeyValidator;
+import org.eclipse.jpt.core.internal.jpa1.context.AbstractEntityPrimaryKeyValidator;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
 import org.eclipse.jpt.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkEntity;
@@ -22,7 +22,7 @@ import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class EclipseLinkEntityPrimaryKeyValidator
-	extends GenericEntityPrimaryKeyValidator
+	extends AbstractEntityPrimaryKeyValidator
 {
 	public EclipseLinkEntityPrimaryKeyValidator(
 			EclipseLinkEntity entity, PrimaryKeyTextRangeResolver textRangeResolver) {
