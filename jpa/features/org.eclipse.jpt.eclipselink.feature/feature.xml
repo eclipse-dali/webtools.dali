@@ -43,31 +43,6 @@
          version="0.0.0"
          unpack="false"/>
 
-	<plugin
-         id="org.eclipse.persistence.antlr"
-         version="2.3.0.qualifier"
-         unpack="false"/>
-
-	<plugin
-         id="org.eclipse.persistence.asm"
-         version="2.3.0.qualifier"
-         unpack="false"/>
-
-	<plugin
-         id="org.eclipse.persistence.core"
-         version="2.3.0.qualifier"
-         unpack="false"/>
-
-	<plugin
-         id="org.eclipse.persistence.dbws"
-         version="2.3.0.qualifier"
-         unpack="false"/>
-
-	<plugin
-         id="org.eclipse.persistence.dbws.builder"
-         version="2.3.0.qualifier"
-         unpack="false"/>
-
    <plugin
          id="org.eclipse.jpt.eclipselink.branding"
          download-size="0"
