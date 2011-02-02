@@ -36,6 +36,14 @@ public class GenericJavaPersistentField
 		return getJavaResourceAttributeType(this.getJavaResourceAttribute());
 	}
 
+	public boolean isJavaResourceAttributeTypeArray() {
+		return typeIsArray(this.getJavaResourceAttribute());
+	}
+
+	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {
+		return typeIsSubTypeOf(this.getJavaResourceAttribute(), typeName);
+	}
+
 	public JavaResourceField getResourceField() {
 		return this.resourceField;
 	}

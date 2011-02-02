@@ -26,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
@@ -535,4 +536,62 @@ public class GenericJavaXmlElementMappingTests extends JaxbContextModelTestCase
 	protected Annotation getXmlElementAnnotation(ModifiedDeclaration declaration) {
 		return declaration.getAnnotationNamed(XmlElementAnnotation.ANNOTATION_NAME);
 	}
+
+
+	public void testModifyXmlElementWrapper() throws Exception {
+		createTypeWithXmlElement();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+
+		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+
+		xmlElementMapping.addXmlElementWrapper();
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlElementMapping.getXmlElementWrapper());
+		assertNotNull(xmlElementWrapperAnnotation);
+
+		xmlElementMapping.removeXmlElementWrapper();
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlElementWrapper() throws Exception {
+		createTypeWithXmlElement();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlElementMapping xmlElementMapping = (XmlElementMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlElementMapping.getParent().getJavaResourceAttribute();
+
+		XmlElementWrapperAnnotation xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+
+
+		//add an XmlElementWrapper annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlElementWrapperAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlElementMapping.getXmlElementWrapper());
+		assertNotNull(xmlElementWrapperAnnotation);
+
+		//remove the XmlJavaTypeAdapter annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlElementMappingTests.this.removeAnnotation(declaration, XmlElementWrapperAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlElementWrapperAnnotation = (XmlElementWrapperAnnotation) resourceAttribute.getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		assertNull(xmlElementMapping.getXmlElementWrapper());
+		assertNull(xmlElementWrapperAnnotation);
+	}
+
 }

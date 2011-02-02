@@ -370,4 +370,11 @@ public abstract class GenericJavaPersistentAttribute
 
 	private static final String COLLECTION_CLASS_NAME = Collection.class.getName();
 
+	protected static boolean typeIsArray(JavaResourceAttribute attribute) {
+		return attribute.typeIsArray();
+	}
+
+	protected static boolean typeIsSubTypeOf(JavaResourceAttribute attribute, String typeName) {
+		return attribute.typeIsSubTypeOf(typeName);
+	}
 }

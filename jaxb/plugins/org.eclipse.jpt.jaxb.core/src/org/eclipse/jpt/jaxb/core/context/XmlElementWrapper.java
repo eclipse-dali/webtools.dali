@@ -9,9 +9,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
+import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
+
 
 /**
- * Represents a JAXB xml element mapping (@XmlElement)
+ * Represents a JAXB XML element wrapper
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,9 +24,21 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.0
  * @since 3.0
  */
-public interface XmlElementMapping
-		extends JaxbContainmentMapping {
+public interface XmlElementWrapper
+		extends JavaContextNode {
 
+
+	String getName();
+	String getDefaultName();
+	String getSpecifiedName();
+	void setSpecifiedName(String name);
+		String SPECIFIED_NAME_PROPERTY = "specifiedName"; //$NON-NLS-1$
+
+	String getNamespace();
+	String getDefaultNamespace();
+	String getSpecifiedNamespace();
+	void setSpecifiedNamespace(String namespace);
+		String SPECIFIED_NAMESPACE_PROPERTY = "specifiedNamespace"; //$NON-NLS-1$
 
 	boolean isNillable();
 	boolean isDefaultNillable();
@@ -33,21 +47,10 @@ public interface XmlElementMapping
 	void setSpecifiedNillable(Boolean specifiedNillable);
 		String SPECIFIED_NILLABLE_PROPERTY = "specifiedNillable"; //$NON-NLS-1$
 
-	String getDefaultValue();
-	void setDefaultValue(String defaultValue);
-		String DEFAULT_VALUE_PROPERTY = "defaultValue"; //$NON-NLS-1$
-
-	String getType();
-	String getDefaultType();
-	String getSpecifiedType();
-	void setSpecifiedType(String type);
-		String SPECIFIED_TYPE_PROPERTY = "specifiedType"; //$NON-NLS-1$
-
-
-	/********** XmlElementWrapper **********/
-	XmlElementWrapper getXmlElementWrapper();
-	XmlElementWrapper addXmlElementWrapper();
-	void removeXmlElementWrapper();
-		String XML_ELEMENT_WRAPPER_PROPERTY = "xmlElementWrapper"; //$NON-NLS-1$
-
+	boolean isRequired();
+	boolean isDefaultRequired();
+		boolean DEFAULT_REQUIRED = false;
+	Boolean getSpecifiedRequired();
+	void setSpecifiedRequired(Boolean specifiedRequired);
+		String SPECIFIED_REQUIRED_PROPERTY = "specifiedRequired"; //$NON-NLS-1$
 }

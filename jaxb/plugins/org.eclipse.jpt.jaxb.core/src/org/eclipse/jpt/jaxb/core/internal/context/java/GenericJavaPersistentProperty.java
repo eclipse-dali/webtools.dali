@@ -42,6 +42,20 @@ public class GenericJavaPersistentProperty
 		return getterMethod == null ? null : getJavaResourceAttributeType(getterMethod);
 	}
 
+	public boolean isJavaResourceAttributeTypeArray() {
+		JavaResourceAttribute getterMethod = getResourceGetterMethod();
+		//it's invalid to have a setter without a getter, so just return false in this case
+		//rather than attempting to use the setter's parameters
+		return getterMethod == null ? false : typeIsArray(getterMethod);
+	}
+
+	public boolean isJavaResourceAttributeTypeSubTypeOf(String typeName) {
+		JavaResourceAttribute getterMethod = getResourceGetterMethod();
+		//it's invalid to have a setter without a getter, so just return false in this case
+		//rather than attempting to use the setter's parameters
+		return getterMethod == null ? false : typeIsSubTypeOf(getterMethod, typeName);
+	}
+
 	public JavaResourceMethod getResourceGetterMethod() {
 		return this.resourceGetter;
 	}

@@ -9,10 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlElementWrapper;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlElementWrapperAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericJavaXmlElementMapping
 	extends GenericJavaContainmentMapping<XmlElementAnnotation>
@@ -25,11 +31,14 @@ public class GenericJavaXmlElementMapping
 
 	protected String specifiedType;
 
+	protected XmlElementWrapper xmlElementWrapper;
+
 	public GenericJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.specifiedNillable = this.buildSpecifiedNillable();
 		this.defaultValue = this.buildDefaultValue();
 		this.specifiedType = this.buildSpecifiedType();
+		this.initializeXmlElementWrapper();			
 	}
 
 	public String getKey() {
@@ -47,8 +56,14 @@ public class GenericJavaXmlElementMapping
 		this.setSpecifiedNillable_(this.buildSpecifiedNillable());
 		this.setDefaultValue_(this.buildDefaultValue());
 		this.setSpecifiedType_(this.buildSpecifiedType());
+		this.syncXmlElementWrapper();
 	}
 
+	@Override
+	public void update() {
+		super.update();
+		this.updateXmlElementWrapper();
+	}
 
 	//************  XmlElement.nillable ***************
 
@@ -129,5 +144,80 @@ public class GenericJavaXmlElementMapping
 
 	protected String buildSpecifiedType() {
 		return getMappingAnnotation() == null ? null : getMappingAnnotation().getType();
+	}
+
+	//************  XmlElementWrapper ***************
+
+	public XmlElementWrapper getXmlElementWrapper() {
+		return this.xmlElementWrapper;
+	}
+
+	public XmlElementWrapper addXmlElementWrapper() {
+		if (this.xmlElementWrapper != null) {
+			throw new IllegalStateException();
+		}
+		XmlElementWrapperAnnotation annotation = (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+
+		XmlElementWrapper xmlElementWrapper = this.buildXmlElementWrapper(annotation);
+		this.setXmlElementWrapper_(xmlElementWrapper);
+		return xmlElementWrapper;
+	}
+
+	protected XmlElementWrapper buildXmlElementWrapper(XmlElementWrapperAnnotation xmlElementWrapperAnnotation) {
+		return new GenericJavaXmlElementWrapper(this, xmlElementWrapperAnnotation);
+	}
+
+	public void removeXmlElementWrapper() {
+		if (this.xmlElementWrapper == null) {
+			throw new IllegalStateException();
+		}
+		this.getJavaResourceAttribute().removeAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+		this.setXmlElementWrapper_(null);
+	}
+
+	protected void initializeXmlElementWrapper() {
+		XmlElementWrapperAnnotation annotation = this.getXmlElementWrapperAnnotation();
+		if (annotation != null) {
+			this.xmlElementWrapper = this.buildXmlElementWrapper(annotation);
+		}
+	}
+
+	protected XmlElementWrapperAnnotation getXmlElementWrapperAnnotation() {
+		return (XmlElementWrapperAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlElementWrapperAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void syncXmlElementWrapper() {
+		XmlElementWrapperAnnotation annotation = this.getXmlElementWrapperAnnotation();
+		if (annotation != null) {
+			if (this.getXmlElementWrapper() != null) {
+				this.getXmlElementWrapper().synchronizeWithResourceModel();
+			}
+			else {
+				this.setXmlElementWrapper_(this.buildXmlElementWrapper(annotation));
+			}
+		}
+		else {
+			this.setXmlElementWrapper_(null);
+		}
+	}
+
+	protected void updateXmlElementWrapper() {
+		if (this.getXmlElementWrapper() != null) {
+			this.getXmlElementWrapper().update();
+		}
+	}
+
+	protected void setXmlElementWrapper_(XmlElementWrapper xmlElementWrapper) {
+		XmlElementWrapper oldXmlElementWrapper = this.xmlElementWrapper;
+		this.xmlElementWrapper = xmlElementWrapper;
+		firePropertyChanged(XML_ELEMENT_WRAPPER_PROPERTY, oldXmlElementWrapper, xmlElementWrapper);
+	}
+
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (this.getXmlElementWrapper() != null) {
+			this.getXmlElementWrapper().validate(messages, reporter, astRoot);
+		}
 	}
 }

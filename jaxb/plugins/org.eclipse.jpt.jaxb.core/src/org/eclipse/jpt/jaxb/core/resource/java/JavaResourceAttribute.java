@@ -71,6 +71,12 @@ public interface JavaResourceAttribute
 		String TYPE_IS_ENUM_PROPERTY = "typeIsEnum"; //$NON-NLS-1$
 
 	/**
+	 * Return whether the attribute type is an array.
+	 */
+	boolean typeIsArray();
+		String TYPE_IS_ARRAY_PROPERTY = "typeIsArray"; //$NON-NLS-1$
+
+	/**
 	 * Return the names of the attribute type's superclasses.
 	 */
 	ListIterable<String> getTypeSuperclassNames();

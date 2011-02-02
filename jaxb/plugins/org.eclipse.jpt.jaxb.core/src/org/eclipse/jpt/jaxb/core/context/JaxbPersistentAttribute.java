@@ -52,6 +52,18 @@ public interface JaxbPersistentAttribute
 	 */
 	String getJavaResourceAttributeTypeName();
 
+	/**
+	 * Return whether the java resource attribute type is an array
+	 * This might not return the same thing as getJavaResourceAttribute().typeIsArray().
+	 */
+	boolean isJavaResourceAttributeTypeArray();
+
+	/**
+	 * Return whether the java resource attribute type is a subtype of the given type
+	 * This might not return the same thing as getJavaResourceAttribute().typeIsSubTypeOf(String).
+	 */
+	boolean isJavaResourceAttributeTypeSubTypeOf(String typeName);
+
 	// ********** mapping **********
 
 	/**

@@ -41,6 +41,8 @@ abstract class SourceAttribute<A extends Attribute>
 
 	private boolean typeIsEnum;
 
+	private boolean typeIsArray;
+
 	private final Vector<String> typeSuperclassNames = new Vector<String>();
 
 	private final Vector<String> typeInterfaceNames = new Vector<String>();
@@ -60,6 +62,7 @@ abstract class SourceAttribute<A extends Attribute>
 		this.typeName = this.buildTypeName(typeBinding);
 		this.typeIsInterface = this.buildTypeIsInterface(typeBinding);
 		this.typeIsEnum = this.buildTypeIsEnum(typeBinding);
+		this.typeIsArray = this.buildTypeIsArray(typeBinding);
 		this.typeSuperclassNames.addAll(this.buildTypeSuperclassNames(typeBinding));
 		this.typeInterfaceNames.addAll(this.buildTypeInterfaceNames(typeBinding));
 		this.typeTypeArgumentNames.addAll(this.buildTypeTypeArgumentNames(typeBinding));
@@ -86,6 +89,7 @@ abstract class SourceAttribute<A extends Attribute>
 		this.syncTypeName(this.buildTypeName(typeBinding));
 		this.syncTypeIsInterface(this.buildTypeIsInterface(typeBinding));
 		this.syncTypeIsEnum(this.buildTypeIsEnum(typeBinding));
+		this.syncTypeIsArray(this.buildTypeIsArray(typeBinding));
 		this.syncTypeSuperclassNames(this.buildTypeSuperclassNames(typeBinding));
 		this.syncTypeInterfaceNames(this.buildTypeInterfaceNames(typeBinding));
 		this.syncTypeTypeArgumentNames(this.buildTypeTypeArgumentNames(typeBinding));
@@ -198,6 +202,21 @@ abstract class SourceAttribute<A extends Attribute>
 
 	private boolean buildTypeIsEnum(ITypeBinding typeBinding) {
 		return (typeBinding != null) && ( ! typeBinding.isArray()) && typeBinding.isEnum();
+	}
+
+	// ***** type is array
+	public boolean typeIsArray() {
+		return this.typeIsArray;
+	}
+
+	private void syncTypeIsArray(boolean astTypeIsArray) {
+		boolean old = this.typeIsArray;
+		this.typeIsArray = astTypeIsArray;
+		this.firePropertyChanged(TYPE_IS_ARRAY_PROPERTY, old, astTypeIsArray);
+	}
+
+	private boolean buildTypeIsArray(ITypeBinding typeBinding) {
+		return (typeBinding != null) && typeBinding.isArray();
 	}
 
 	// ***** type superclass hierarchy
