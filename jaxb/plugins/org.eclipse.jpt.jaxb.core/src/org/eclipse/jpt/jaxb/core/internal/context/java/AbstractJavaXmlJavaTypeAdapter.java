@@ -28,7 +28,7 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 
 	protected String defaultType;
 
-	public AbstractJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resource) {
+	protected AbstractJavaXmlJavaTypeAdapter(JaxbContextNode parent, XmlJavaTypeAdapterAnnotation resource) {
 		super(parent);
 		this.resourceXmlJavaTypeAdapter = resource;
 		this.value = this.getResourceValue();
