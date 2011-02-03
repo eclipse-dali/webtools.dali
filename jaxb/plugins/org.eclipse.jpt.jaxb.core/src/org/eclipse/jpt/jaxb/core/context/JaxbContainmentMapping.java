@@ -62,4 +62,11 @@ public interface JaxbContainmentMapping
 	void removeXmlSchemaType();
 		String XML_SCHEMA_TYPE = "xmlSchemaType"; //$NON-NLS-1$
 
+
+	/********** XmlList **********/
+	XmlList getXmlList();
+	XmlList addXmlList();
+	void removeXmlList();
+		String XML_LIST_PROPERTY = "xmlList"; //$NON-NLS-1$
+
 }

@@ -11,14 +11,16 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
-import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbContainmentAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -41,6 +43,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 
 	protected XmlSchemaType xmlSchemaType;
 
+	protected XmlList xmlList;
+
 	public GenericJavaContainmentMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.specifiedName = buildSpecifiedName();
@@ -48,6 +52,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.xmlAdaptable = buildXmlAdaptable();
 		this.initializeXmlSchemaType();
+		this.initializeXmlList();			
 	}
 
 	@Override
@@ -58,6 +63,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.xmlAdaptable.synchronizeWithResourceModel();
 		this.syncXmlSchemaType();
+		this.syncXmlList();
 	}
 
 	@Override
@@ -65,6 +71,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		super.update();
 		this.xmlAdaptable.update();
 		this.updateXmlSchemaType();
+		this.updateXmlList();
 	}
 
 	//************ XmlAttribute.name ***************
@@ -259,6 +266,73 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		}
 	}
 
+	//************  XmlList ***************
+
+	public XmlList getXmlList() {
+		return this.xmlList;
+	}
+
+	public XmlList addXmlList() {
+		if (this.xmlList != null) {
+			throw new IllegalStateException();
+		}
+		XmlListAnnotation annotation = (XmlListAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+
+		XmlList xmlList = this.buildXmlList(annotation);
+		this.setXmlList_(xmlList);
+		return xmlList;
+	}
+
+	protected XmlList buildXmlList(XmlListAnnotation xmlListAnnotation) {
+		return new GenericJavaXmlList(this, xmlListAnnotation);
+	}
+
+	public void removeXmlList() {
+		if (this.xmlList == null) {
+			throw new IllegalStateException();
+		}
+		this.getJavaResourceAttribute().removeAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		this.setXmlList_(null);
+	}
+
+	protected void initializeXmlList() {
+		XmlListAnnotation annotation = this.getXmlListAnnotation();
+		if (annotation != null) {
+			this.xmlList = this.buildXmlList(annotation);
+		}
+	}
+
+	protected XmlListAnnotation getXmlListAnnotation() {
+		return (XmlListAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void syncXmlList() {
+		XmlListAnnotation annotation = this.getXmlListAnnotation();
+		if (annotation != null) {
+			if (this.getXmlList() != null) {
+				this.getXmlList().synchronizeWithResourceModel();
+			}
+			else {
+				this.setXmlList_(this.buildXmlList(annotation));
+			}
+		}
+		else {
+			this.setXmlList_(null);
+		}
+	}
+
+	protected void updateXmlList() {
+		if (this.getXmlList() != null) {
+			this.getXmlList().update();
+		}
+	}
+
+	protected void setXmlList_(XmlList xmlList) {
+		XmlList oldXmlList = this.xmlList;
+		this.xmlList = xmlList;
+		firePropertyChanged(XML_LIST_PROPERTY, oldXmlList, xmlList);
+	}
+
 
 	// **************** content assist **************
 
@@ -287,6 +361,9 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
 		if (this.xmlSchemaType != null) {
 			this.xmlSchemaType.validate(messages, reporter, astRoot);
+		}
+		if (this.xmlList != null) {
+			this.xmlList.validate(messages, reporter, astRoot);
 		}
 	}
 }

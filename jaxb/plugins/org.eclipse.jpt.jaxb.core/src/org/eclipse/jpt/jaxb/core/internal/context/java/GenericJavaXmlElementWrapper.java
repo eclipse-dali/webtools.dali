@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.Collection;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
@@ -193,14 +194,13 @@ public class GenericJavaXmlElementWrapper
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
-		if (!getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf("java.util.Collection") && !getPersistentAttribute().isJavaResourceAttributeTypeArray()) {
+		if (!getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Collection.class.getName()) && !getPersistentAttribute().isJavaResourceAttributeTypeArray()) {
 			messages.add(
 				DefaultValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
 					JaxbValidationMessages.XML_ELEMENT_WRAPPER_DEFINED_ON_NON_ARRAY_NON_COLLECTION,
 					this,
 					getValidationTextRange(astRoot)));
-			
 		}
 	}
 

@@ -27,6 +27,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -375,6 +376,62 @@ public class GenericJavaXmlAttributeMappingTests extends JaxbContextModelTestCas
 
 	protected Annotation getXmlAttributeAnnotation(ModifiedDeclaration declaration) {
 		return declaration.getAnnotationNamed(XmlAttributeAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testModifyXmlList() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlList());
+		assertNull(xmlListAnnotation);
+
+		xmlAttributeMapping.addXmlList();
+		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlList());
+		assertNotNull(xmlListAnnotation);
+
+		xmlAttributeMapping.removeXmlList();
+		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+	}
+
+	public void testUpdateXmlList() throws Exception {
+		createTypeWithXmlAttribute();
+
+		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
+		JaxbPersistentAttribute persistentAttribute = CollectionTools.get(persistentClass.getAttributes(), 0);
+		XmlAttributeMapping xmlAttributeMapping = (XmlAttributeMapping) persistentAttribute.getMapping();
+		JavaResourceAttribute resourceAttribute = xmlAttributeMapping.getParent().getJavaResourceAttribute();
+
+		XmlListAnnotation xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlList());
+		assertNull(xmlListAnnotation);
+
+
+		//add an XmlList annotation
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceAttribute);
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.addMarkerAnnotation(declaration.getDeclaration(), XmlListAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		assertNotNull(xmlAttributeMapping.getXmlList());
+		assertNotNull(xmlListAnnotation);
+
+		//remove the XmlList annotation
+		annotatedElement.edit(new Member.Editor() {
+			public void edit(ModifiedDeclaration declaration) {
+				GenericJavaXmlAttributeMappingTests.this.removeAnnotation(declaration, XmlListAnnotation.ANNOTATION_NAME);
+			}
+		});
+		xmlListAnnotation = (XmlListAnnotation) resourceAttribute.getAnnotation(XmlListAnnotation.ANNOTATION_NAME);
+		assertNull(xmlAttributeMapping.getXmlList());
+		assertNull(xmlListAnnotation);
 	}
 
 }
