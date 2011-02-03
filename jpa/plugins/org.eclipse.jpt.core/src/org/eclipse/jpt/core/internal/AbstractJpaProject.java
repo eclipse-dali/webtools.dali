@@ -778,7 +778,7 @@ public abstract class AbstractJpaProject
 	 */
 	protected JptResourceModel getResourceModel(IPath runtimePath, IContentType contentType) {
 		IFile file = this.getPlatformFile(runtimePath);
-		return file.exists() ? this.getResourceModel(file, contentType) :  null;
+		return (file != null && file.exists()) ? this.getResourceModel(file, contentType) :  null;
 	}
 
 	/**

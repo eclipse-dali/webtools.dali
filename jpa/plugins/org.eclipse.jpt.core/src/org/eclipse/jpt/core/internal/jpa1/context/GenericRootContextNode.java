@@ -216,7 +216,7 @@ public class GenericRootContextNode
 	protected IMessage buildPersistenceXmlValidationMessage() {
 		int severity = IMessage.HIGH_SEVERITY;
 		IFile file = getPlatformFile();
-		if (file.exists()) {
+		if (file != null && file.exists()) {
 			JpaXmlResource xmlResource = this.jpaProject.getPersistenceXmlResource();
 			if (xmlResource != null 
 					&& ! getJpaPlatform().supportsResourceType(xmlResource.getResourceType())) {
