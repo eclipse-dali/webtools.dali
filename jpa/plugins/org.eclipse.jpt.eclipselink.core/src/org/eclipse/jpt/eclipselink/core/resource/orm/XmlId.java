@@ -1085,7 +1085,6 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 			buildIndexTranslator(),
 			buildGeneratedValueTranslator(),
 			buildTemporalTranslator(),
-			buildEnumeratedTranslator(),
 			buildConvertTranslator(),
 			buildConverterTranslator(),
 			buildTypeConverterTranslator(),
@@ -1137,11 +1136,7 @@ public class XmlId extends org.eclipse.jpt.core.resource.orm.XmlId implements Xm
 	protected static Translator buildAttributeTypeTranslator() {
 		return new Translator(EclipseLink2_1.ATTRIBUTE_TYPE, EclipseLinkOrmV2_1Package.eINSTANCE.getXmlId_2_1_AttributeType(), Translator.DOM_ATTRIBUTE);
 	}
-	
-	protected static Translator buildEnumeratedTranslator() {
-		return new Translator(JPA.ENUMERATED, OrmPackage.eINSTANCE.getXmlConvertibleMapping_Enumerated());
-	}
-	
+
 	protected static Translator buildTableGeneratorTranslator() {
 		return XmlTableGenerator.buildTranslator(JPA.TABLE_GENERATOR, OrmPackage.eINSTANCE.getXmlGeneratorContainer_TableGenerator());
 	}
