@@ -30,6 +30,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
@@ -131,5 +132,7 @@ public interface JaxbFactory  {
 	XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent);
 
 	JaxbAttributeMapping buildJavaXmlTransientMapping(JaxbPersistentAttribute parent);
+
+	XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent);
 
 }

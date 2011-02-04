@@ -24,6 +24,7 @@ import org.eclipse.jpt.jaxb.core.internal.JavaResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlElementMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlTransientMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlValueMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorOrderAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAccessorTypeAnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.XmlAnyAttributeAnnotationDefinition;
@@ -158,6 +159,7 @@ public class GenericJaxb_2_1_PlatformDefinition
 		definitions.add(JavaXmlAttributeMappingDefinition.instance());
 		definitions.add(JavaXmlElementMappingDefinition.instance());
 		definitions.add(JavaXmlTransientMappingDefinition.instance());
+		definitions.add(JavaXmlValueMappingDefinition.instance());
 	}
 
 	@Override

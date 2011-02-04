@@ -34,6 +34,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.context.XmlSchema;
+import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot;
 import org.eclipse.jpt.jaxb.core.internal.context.GenericPackage;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaElementFactoryMethod;
@@ -51,6 +52,7 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlSchema;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlTransientMapping;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlValueMapping;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnumConstant;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
@@ -154,5 +156,9 @@ public abstract class AbstractJaxbFactory
 
 	public XmlElementMapping buildJavaXmlElementMapping(JaxbPersistentAttribute parent) {
 		return new GenericJavaXmlElementMapping(parent);
+	}
+
+	public XmlValueMapping buildJavaXmlValueMapping(JaxbPersistentAttribute parent) {
+		return new GenericJavaXmlValueMapping(parent);
 	}
 }

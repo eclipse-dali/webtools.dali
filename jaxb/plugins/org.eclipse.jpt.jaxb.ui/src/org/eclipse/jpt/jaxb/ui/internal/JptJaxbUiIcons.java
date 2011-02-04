@@ -34,6 +34,7 @@ public class JptJaxbUiIcons
 	public static final String XML_ATTRIBUTE = "full/obj16/xml-attribute";
 	public static final String XML_ELEMENT = "full/obj16/xml-element";
 	public static final String XML_TRANSIENT = "full/obj16/xml-transient";
+	public static final String XML_VALUE = "full/obj16/xml-value";
 	public static final String NULL_ATTRIBUTE_MAPPING = "full/obj16/null-attribute-mapping";
 
 }

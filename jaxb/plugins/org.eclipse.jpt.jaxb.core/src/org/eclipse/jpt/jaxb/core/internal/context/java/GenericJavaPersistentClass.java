@@ -16,6 +16,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -26,6 +27,8 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
@@ -918,8 +921,45 @@ public class GenericJavaPersistentClass
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		this.validateXmlValueMapping(messages, astRoot);
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			attribute.validate(messages, reporter, astRoot);
+		}
+	}
+
+	protected void validateXmlValueMapping(List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlValueMapping = null;
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY) {
+				if (xmlValueMapping != null) {
+					messages.add(
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.MULTIPLE_XML_VALUE_MAPPINGS_DEFINED,
+							new String[] {attribute.getName(), xmlValueMapping},
+							attribute.getMapping(),
+							attribute.getMapping().getValidationTextRange(astRoot)));
+				}
+				else {
+					xmlValueMapping = attribute.getName();
+				}
+			}
+		}
+		if (xmlValueMapping != null) {
+			for (JaxbPersistentAttribute attribute : getAttributes()) {
+				if (attribute.getName() != xmlValueMapping) {
+					if (attribute.getMappingKey() != MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY 
+						&& attribute.getMappingKey() != MappingKeys.XML_TRANSIENT_ATTRIBUTE_MAPPING_KEY) {
+						messages.add(
+							DefaultValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JaxbValidationMessages.XML_VALUE_MAPPING_WITH_NON_XML_ATTRIBUTE_MAPPING_DEFINED,
+								new String[] {attribute.getName(), xmlValueMapping},
+								attribute.getMapping(),
+								attribute.getMapping().getValidationTextRange(astRoot)));					
+					}
+				}
+			}
 		}
 	}
 }
