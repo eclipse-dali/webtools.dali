@@ -20,7 +20,7 @@ import org.eclipse.jpt.core.context.orm.OrmJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationship;
 import org.eclipse.jpt.core.context.orm.OrmJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmXmlContextNode;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Used by

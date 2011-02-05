@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.context;
 
 import java.util.Iterator;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.db.Schema;
 
 /**
  * type mapping:<ul>
@@ -81,7 +81,7 @@ public interface TypeMapping
 	 * Return the type mapping's primary database table.
 	 * Return null if a primary table is not applicable.
 	 */
-	org.eclipse.jpt.db.Table getPrimaryDbTable();
+	org.eclipse.jpt.jpa.db.Table getPrimaryDbTable();
 
 	Schema getDbSchema();
 
@@ -108,7 +108,7 @@ public interface TypeMapping
 	/**
 	 * Return the resolved associated db table with the specified name.
 	 */
-	org.eclipse.jpt.db.Table resolveDbTable(String tableName);
+	org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName);
 
 	/**
 	 * Return whether the specified table is invalid for any annotations

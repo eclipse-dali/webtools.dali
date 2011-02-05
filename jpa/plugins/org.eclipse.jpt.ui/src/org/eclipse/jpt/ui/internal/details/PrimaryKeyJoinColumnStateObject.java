@@ -13,7 +13,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.PrimaryKeyJoinColumn;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * The state object used to create or edit a primary key join column on an

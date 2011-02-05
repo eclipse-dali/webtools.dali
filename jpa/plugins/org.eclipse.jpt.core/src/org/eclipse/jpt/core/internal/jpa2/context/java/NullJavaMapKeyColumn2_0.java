@@ -18,7 +18,7 @@ import org.eclipse.jpt.core.context.java.JavaColumn;
 import org.eclipse.jpt.core.context.java.JavaMultiRelationshipMapping;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.resource.java.ColumnAnnotation;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * 
@@ -243,7 +243,7 @@ public class NullJavaMapKeyColumn2_0
 
 	// ********** database stuff **********
 
-	public org.eclipse.jpt.db.Column getDbColumn() {
+	public org.eclipse.jpt.jpa.db.Column getDbColumn() {
 		return null;
 	}
 

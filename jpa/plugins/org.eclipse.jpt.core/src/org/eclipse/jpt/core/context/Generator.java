@@ -13,9 +13,9 @@ import java.util.Arrays;
 
 import org.eclipse.jpt.core.context.java.JavaGenerator;
 import org.eclipse.jpt.core.context.orm.OrmGenerator;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
  * sequence and table generators

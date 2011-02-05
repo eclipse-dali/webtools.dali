@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
  * Conversions are determined by the <code>delimited-identifiers</code>

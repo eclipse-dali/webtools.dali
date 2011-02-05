@@ -28,8 +28,8 @@ import org.eclipse.jpt.core.JpaPlatformVariation;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Database;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
 
 /**
  * Some common Dali behavior:<ul>

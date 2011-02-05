@@ -17,9 +17,9 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmPersistenceUnitDefaults2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitDefaults;
 import org.eclipse.jpt.core.resource.orm.XmlPersistenceUnitMetadata;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
  * <code>orm.xml</code> file

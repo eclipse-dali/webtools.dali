@@ -23,9 +23,9 @@ import org.eclipse.jpt.core.context.VirtualTable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaVirtualUniqueConstraint;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 public abstract class AbstractJavaVirtualTable<T extends Table>
 	extends AbstractJavaJpaContextNode
@@ -248,7 +248,7 @@ public abstract class AbstractJavaVirtualTable<T extends Table>
 
 	// ********** database stuff **********
 
-	public org.eclipse.jpt.db.Table getDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getName());
 	}

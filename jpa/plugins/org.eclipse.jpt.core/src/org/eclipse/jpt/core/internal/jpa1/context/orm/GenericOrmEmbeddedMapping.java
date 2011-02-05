@@ -265,7 +265,7 @@ public class GenericOrmEmbeddedMapping
 			return this.getTypeMapping().allAssociatedTableNames();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return this.getTypeMapping().resolveDbTable(tableName);
 		}
 

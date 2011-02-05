@@ -23,8 +23,8 @@ import org.eclipse.jpt.core.internal.context.orm.AbstractOrmGenerator;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlTableGenerator;
 import org.eclipse.jpt.core.resource.orm.XmlUniqueConstraint;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * <code>orm.xml</code> table generator
@@ -433,7 +433,7 @@ public class GenericOrmTableGenerator
 	// ********** UniqueConstraint.Owner implementation **********
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
-		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
+		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 

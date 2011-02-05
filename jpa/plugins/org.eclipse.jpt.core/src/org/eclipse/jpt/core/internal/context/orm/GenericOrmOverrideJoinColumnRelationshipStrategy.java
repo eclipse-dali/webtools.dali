@@ -26,7 +26,7 @@ import org.eclipse.jpt.core.context.orm.OrmOverrideRelationship;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmOverrideJoinColumnRelationshipStrategy
 	extends AbstractOrmJoinColumnRelationshipStrategy

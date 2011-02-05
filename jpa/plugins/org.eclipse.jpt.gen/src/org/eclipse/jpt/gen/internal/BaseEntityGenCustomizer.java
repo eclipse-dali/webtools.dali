@@ -12,10 +12,10 @@ package org.eclipse.jpt.gen.internal;
 import java.io.File;
 import java.util.List;
 import java.util.Set;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Schema;
 
 /**
  * Default implementation of ORMGenCustomizer according to JPA specification for

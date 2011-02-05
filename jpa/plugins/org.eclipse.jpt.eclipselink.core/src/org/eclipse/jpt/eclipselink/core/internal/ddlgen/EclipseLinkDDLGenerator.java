@@ -12,8 +12,8 @@ package org.eclipse.jpt.eclipselink.core.internal.ddlgen;
 import java.util.Properties;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
 
 /**
  *  EclipseLinkDLLGenerator launches the EclipseLink DDL generator in a separate VM.

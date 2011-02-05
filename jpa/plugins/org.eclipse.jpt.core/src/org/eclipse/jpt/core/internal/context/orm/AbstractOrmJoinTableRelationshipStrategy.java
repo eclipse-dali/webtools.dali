@@ -162,7 +162,7 @@ public abstract class AbstractOrmJoinTableRelationshipStrategy
 		return (this.joinTable == null) ? null : this.joinTable.getName();
 	}
 
-	public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		return (this.joinTable == null) ? null : this.joinTable.getDbTable();
 	}
 

@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.SequenceGeneratorComposite;

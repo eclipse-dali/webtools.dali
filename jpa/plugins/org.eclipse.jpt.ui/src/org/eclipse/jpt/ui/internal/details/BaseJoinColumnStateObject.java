@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
 import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * The abstract definition of a state object used to edit or create a new

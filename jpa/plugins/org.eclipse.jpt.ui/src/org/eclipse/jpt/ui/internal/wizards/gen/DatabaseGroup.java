@@ -27,13 +27,13 @@ import org.eclipse.jpt.common.utility.internal.SynchronizedBoolean;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.CloneIterator;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionAdapter;
-import org.eclipse.jpt.db.ConnectionListener;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.db.ui.internal.DTPUiTools;
+import org.eclipse.jpt.jpa.db.ConnectionAdapter;
+import org.eclipse.jpt.jpa.db.ConnectionListener;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.swt.SWT;
@@ -191,7 +191,7 @@ public class DatabaseGroup
 	}
 
 	private SortedSet<String> buildSortedConnectionProfileNames() {
-		return CollectionTools.sortedSet(JptDbPlugin.getConnectionProfileFactory().getConnectionProfileNames());
+		return CollectionTools.sortedSet(JptJpaDbPlugin.getConnectionProfileFactory().getConnectionProfileNames());
 	}
 
 	/**
@@ -240,7 +240,7 @@ public class DatabaseGroup
 	}
 
 	private ConnectionProfile buildConnectionProfile(String name) {
-		return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(name);
+		return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(name);
 	}
 
 

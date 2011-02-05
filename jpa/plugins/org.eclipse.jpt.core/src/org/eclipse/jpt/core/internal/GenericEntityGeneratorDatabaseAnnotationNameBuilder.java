@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.jpt.core.EntityGeneratorDatabaseAnnotationNameBuilder;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ForeignKey;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Singleton that delegates to the db object passed in.

@@ -55,10 +55,10 @@ import org.eclipse.jpt.core.jpa2.resource.java.NamedQuery2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.SequenceGenerator2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
 import org.eclipse.jpt.eclipselink.core.EclipseLinkJpaProject;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaFactory;
 import org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java.JavaEclipseLinkElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
  *  EclipseLink 2.0 factory

@@ -134,7 +134,7 @@ import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.resource.orm.XmlSecondaryTable;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -1505,12 +1505,12 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getPrimaryDbTable() {
 		return this.table.getDbTable();
 	}
 
 	@Override
-	public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		// matching database objects and identifiers is database platform-specific
 		return this.getDataSource().selectDatabaseObjectForIdentifier(this.getAllAssociatedDbTables(), tableName);
 	}
@@ -1518,14 +1518,14 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 	/**
 	 * strip out null db tables
 	 */
-	protected Iterable<org.eclipse.jpt.db.Table> getAllAssociatedDbTables() {
-		return new FilteringIterable<org.eclipse.jpt.db.Table>(this.getAllAssociatedDbTables_(), NotNullFilter.<org.eclipse.jpt.db.Table>instance());
+	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables() {
+		return new FilteringIterable<org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedDbTables_(), NotNullFilter.<org.eclipse.jpt.jpa.db.Table>instance());
 	}
 
-	protected Iterable<org.eclipse.jpt.db.Table> getAllAssociatedDbTables_() {
-		return new TransformationIterable<ReadOnlyTable, org.eclipse.jpt.db.Table>(this.getAllAssociatedTables()) {
+	protected Iterable<org.eclipse.jpt.jpa.db.Table> getAllAssociatedDbTables_() {
+		return new TransformationIterable<ReadOnlyTable, org.eclipse.jpt.jpa.db.Table>(this.getAllAssociatedTables()) {
 			@Override
-			protected org.eclipse.jpt.db.Table transform(ReadOnlyTable t) {
+			protected org.eclipse.jpt.jpa.db.Table transform(ReadOnlyTable t) {
 				return t.getDbTable();
 			}
 		};
@@ -2013,7 +2013,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.tableNameIsInvalid(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return AbstractOrmEntity.this.resolveDbTable(tableName);
 		}
 
@@ -2149,7 +2149,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 			return AbstractOrmEntity.this.getPrimaryTableName();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return AbstractOrmEntity.this.resolveDbTable(tableName);
 		}
 
@@ -2165,7 +2165,7 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 		extends NamedColumnOwner
 		implements OrmBaseJoinColumn.Owner
 	{
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity parentEntity = AbstractOrmEntity.this.getParentEntity();
 			return (parentEntity == null) ? null : parentEntity.getPrimaryDbTable();
 		}

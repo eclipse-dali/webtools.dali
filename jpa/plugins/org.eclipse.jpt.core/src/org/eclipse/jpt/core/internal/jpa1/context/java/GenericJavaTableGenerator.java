@@ -27,10 +27,10 @@ import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaGenerator;
 import org.eclipse.jpt.core.resource.java.TableGeneratorAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Java table generator
@@ -432,7 +432,7 @@ public class GenericJavaTableGenerator
 	// ********** UniqueConstraint.Owner implementation **********
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
-		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
+		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 

@@ -398,7 +398,7 @@ public class GenericJavaJoinTable
 			return EmptyIterator.instance();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return Tools.valuesAreEqual(GenericJavaJoinTable.this.getName(), tableName) ?
 					GenericJavaJoinTable.this.getDbTable() :
 					null;
@@ -437,7 +437,7 @@ public class GenericJavaJoinTable
 			return MappingTools.getTargetAttributeName(GenericJavaJoinTable.this.getRelationshipMapping());
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			return this.getTypeMapping().getPrimaryDbTable();
 		}
 
@@ -476,7 +476,7 @@ public class GenericJavaJoinTable
 			return (relationshipMapping == null) ? null : relationshipMapping.getName();
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity relationshipTarget = this.getRelationshipTarget();
 			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 		}

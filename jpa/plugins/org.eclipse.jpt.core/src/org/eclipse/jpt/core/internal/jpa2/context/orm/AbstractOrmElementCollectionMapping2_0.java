@@ -346,7 +346,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 		public String getTableName() {
 			return this.getCollectionTable().getName();
 		}
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return this.getCollectionTable().getDbTable();
 		}
 		protected OrmCollectionTable2_0 getCollectionTable() {
@@ -1359,7 +1359,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			return this.getCollectionTable().getName();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			OrmCollectionTable2_0 table = this.getCollectionTable();
 			return table.getName().equals(tableName) ? table.getDbTable() : null;
 		}

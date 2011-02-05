@@ -24,7 +24,7 @@ import org.eclipse.jpt.core.context.Column;
 import org.eclipse.jpt.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.core.context.ReadOnlyColumn;
 import org.eclipse.jpt.core.context.ReadOnlyNamedColumn;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.details.db.ColumnCombo;
 import org.eclipse.jpt.ui.internal.details.db.DatabaseObjectCombo;

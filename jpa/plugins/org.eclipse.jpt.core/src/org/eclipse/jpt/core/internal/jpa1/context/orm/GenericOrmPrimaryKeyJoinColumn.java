@@ -18,8 +18,8 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmNamedColumn;
 import org.eclipse.jpt.core.internal.context.orm.OrmPrimaryKeyJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.orm.XmlPrimaryKeyJoinColumn;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * <code>orm.xml</code> primary key join column

@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.context;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.core.JpaNode;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
  * Common protocol for JPA objects that have a context, as opposed to

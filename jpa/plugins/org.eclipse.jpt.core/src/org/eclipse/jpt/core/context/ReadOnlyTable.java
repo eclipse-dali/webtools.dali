@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.context;
 
 import java.util.ListIterator;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 
 /**
  * Read-only table
@@ -78,7 +78,7 @@ public interface ReadOnlyTable
 	/**
 	 * Return the corresponding database table.
 	 */
-	org.eclipse.jpt.db.Table getDbTable();
+	org.eclipse.jpt.jpa.db.Table getDbTable();
 
 	/**
 	 * Return the corresponding database schema.

@@ -33,7 +33,7 @@ import org.eclipse.jpt.core.jpa2.context.java.JavaOrderable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOrphanRemovalHolder2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaSingleRelationshipMapping2_0;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
  * JPA 2.0 factory

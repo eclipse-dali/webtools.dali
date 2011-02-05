@@ -420,7 +420,7 @@ public abstract class AbstractOrmOverrideContainer<
 		return this.owner.candidateTableNames();
 	}
 
-	public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		return this.owner.resolveDbTable(tableName);
 	}
 

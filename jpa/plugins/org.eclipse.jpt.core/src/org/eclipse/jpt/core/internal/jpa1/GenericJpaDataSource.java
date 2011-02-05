@@ -13,14 +13,14 @@ import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.AbstractJpaNode;
-import org.eclipse.jpt.db.ConnectionAdapter;
-import org.eclipse.jpt.db.ConnectionListener;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.ConnectionProfileListener;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
-import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.jpa.db.ConnectionAdapter;
+import org.eclipse.jpt.jpa.db.ConnectionListener;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.DatabaseObject;
 
 /**
  * GenericJpaDataSource

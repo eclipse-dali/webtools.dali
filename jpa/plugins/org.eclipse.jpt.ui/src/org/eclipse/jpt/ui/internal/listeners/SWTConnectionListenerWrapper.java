@@ -9,15 +9,15 @@
  ******************************************************************************/
 package org.eclipse.jpt.ui.internal.listeners;
 
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ConnectionListener;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.ForeignKey;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Sequence;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.ConnectionListener;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Sequence;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.swt.widgets.Display;
 
 /**

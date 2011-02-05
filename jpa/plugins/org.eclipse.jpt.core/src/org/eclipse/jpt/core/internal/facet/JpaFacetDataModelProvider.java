@@ -26,13 +26,13 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
@@ -618,7 +618,7 @@ public abstract class JpaFacetDataModelProvider
 	
 	protected ConnectionProfileFactory getConnectionProfileFactory() {
 		// we don't have a JPA project yet, so go to the db plug-in directly to get the factory
-		return JptDbPlugin.getConnectionProfileFactory();
+		return JptJpaDbPlugin.getConnectionProfileFactory();
 	}
 	
 	

@@ -12,4 +12,4 @@ Require-Bundle: org.eclipse.ui;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.datatools.connectivity.ui;bundle-version="[1.1.0,2.0.0)",
  org.eclipse.datatools.sqltools.editor.core;bundle-version="[1.0.0,2.0.0)",
  org.eclipse.datatools.connectivity.db.generic.ui;bundle-version="[1.0.1,2.0.0)"
-Export-Package: org.eclipse.jpt.db.ui.internal; x-friends:="org.eclipse.jpt.ui"
+Export-Package: org.eclipse.jpt.jpa.db.ui.internal;x-friends:="org.eclipse.jpt.ui"

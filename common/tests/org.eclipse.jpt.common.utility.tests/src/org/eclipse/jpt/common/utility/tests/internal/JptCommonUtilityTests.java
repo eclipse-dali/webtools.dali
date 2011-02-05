@@ -21,10 +21,10 @@ import org.eclipse.jpt.common.utility.tests.internal.synchronizers.JptUtilitySyn
 /**
  * decentralize test creation code
  */
-public class JptUtilityTests {
+public class JptCommonUtilityTests {
 
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptUtilityTests.class.getPackage().getName());
+		TestSuite suite = new TestSuite(JptCommonUtilityTests.class.getPackage().getName());
 
 		suite.addTest(JptUtilityEnumerationsTests.suite());
 		suite.addTest(JptUtilityIterablesTests.suite());
@@ -82,7 +82,7 @@ public class JptUtilityTests {
 		return suite;
 	}
 
-	private JptUtilityTests() {
+	private JptCommonUtilityTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

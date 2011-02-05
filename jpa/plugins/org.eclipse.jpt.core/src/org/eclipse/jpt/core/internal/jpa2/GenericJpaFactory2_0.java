@@ -62,7 +62,7 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
-import org.eclipse.jpt.db.DatabaseIdentifierAdapter;
+import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 
 /**

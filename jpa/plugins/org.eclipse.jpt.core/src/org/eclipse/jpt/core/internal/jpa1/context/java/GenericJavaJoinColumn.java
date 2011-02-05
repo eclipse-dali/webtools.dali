@@ -25,8 +25,8 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaBaseColumn;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaNamedColumn;
 import org.eclipse.jpt.core.internal.context.java.JavaJoinColumnTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Java join column

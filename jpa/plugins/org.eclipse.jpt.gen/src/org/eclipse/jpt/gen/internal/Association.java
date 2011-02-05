@@ -11,8 +11,8 @@ package org.eclipse.jpt.gen.internal;
 
 import java.util.List;
 
-import org.eclipse.jpt.db.ForeignKey;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
+import org.eclipse.jpt.jpa.db.ForeignKey;
 
 /**
  * Represents an ORM association.

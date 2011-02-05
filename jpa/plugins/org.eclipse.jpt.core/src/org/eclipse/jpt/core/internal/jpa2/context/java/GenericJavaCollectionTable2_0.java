@@ -108,7 +108,7 @@ public class GenericJavaCollectionTable2_0
 			return GenericJavaCollectionTable2_0.this.getElementCollectionMapping().getTypeMapping();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return Tools.valuesAreEqual(GenericJavaCollectionTable2_0.this.getName(), tableName) ?
 					GenericJavaCollectionTable2_0.this.getDbTable() :
 					null;
@@ -131,7 +131,7 @@ public class GenericJavaCollectionTable2_0
 			return GenericJavaCollectionTable2_0.this.getValidationTextRange(astRoot);
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			return this.getTypeMapping().getPrimaryDbTable();
 		}
 

@@ -25,13 +25,13 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.gen.internal.util.FileUtil;
 import org.eclipse.jpt.gen.internal.util.ForeignKeyInfo;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Contains the information used to customize the database schema to ORM entity 

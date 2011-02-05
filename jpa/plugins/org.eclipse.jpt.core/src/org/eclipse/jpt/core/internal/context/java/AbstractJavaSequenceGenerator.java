@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaSequenceGenerator;
 import org.eclipse.jpt.core.resource.java.SequenceGeneratorAnnotation;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.db.Schema;
 
 /**
  * Java sequence generator

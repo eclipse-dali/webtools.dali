@@ -364,7 +364,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 		public String getTableName() {
 			return this.getCollectionTable().getName();
 		}
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return this.getCollectionTable().getDbTable();
 		}
 		protected JavaCollectionTable2_0 getCollectionTable() {
@@ -1277,7 +1277,7 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 			return this.getCollectionTable().getName();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			JavaCollectionTable2_0 table = this.getCollectionTable();
 			return Tools.valuesAreEqual(table.getName(), tableName) ? table.getDbTable() : null;
 		}

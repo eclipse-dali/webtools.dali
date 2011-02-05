@@ -11,7 +11,7 @@ package org.eclipse.jpt.gen.internal.util;
 
 import java.util.List;
 
-import org.eclipse.jpt.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.ForeignKey;
 
 /**
  * Represents the metadata for a particular foreign key relationship 

@@ -64,8 +64,8 @@ public class GenericJavaTable
 	 *     {@link org.eclipse.jpt.core.context.orm.OrmPersistenceUnitDefaults#getSchema()}
 	 * <li>{@link org.eclipse.jpt.core.JpaProject#getDefaultSchema()}<br>
 	 *     check for user override project setting
-	 * <li>{@link org.eclipse.jpt.db.Catalog#getDefaultSchema()}<br>
-	 *     or {@link org.eclipse.jpt.db.Database#getDefaultSchema()}
+	 * <li>{@link org.eclipse.jpt.jpa.db.Catalog#getDefaultSchema()}<br>
+	 *     or {@link org.eclipse.jpt.jpa.db.Database#getDefaultSchema()}
 	 * </ol>
 	 */
 	@Override

@@ -20,7 +20,7 @@
 	<target name="suite">
 		<ant target="core-test" antfile="${library-file}" dir="${eclipse-home}">
 			<property name="plugin-name" value="${plugin-name}"/>
-			<property name="classname" value="org.eclipse.jpt.common.utility.tests.internal.JptUtilityTests" />
+			<property name="classname" value="org.eclipse.jpt.common.utility.tests.internal.JptCommonUtilityTests" />
 			<property name="plugin-path" value="${eclipse-home}/plugins/${plugin-name}"/>
 		</ant>
 	</target>

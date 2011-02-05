@@ -26,7 +26,7 @@ import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.core.internal.operations.PersistenceFileCreationDataModelProvider;
-import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -71,7 +71,7 @@ public class JpaFacetInstallDelegate
 		}
 		String driverName = dataModel.getStringProperty(DB_DRIVER_NAME);
 		
-		IClasspathContainer container = JptDbPlugin.instance().buildDriverClasspathContainerFor(driverName);
+		IClasspathContainer container = JptJpaDbPlugin.instance().buildDriverClasspathContainerFor(driverName);
 		IClasspathEntry entry = JavaCore.newContainerEntry(container.getPath());
 		this.addClasspathEntryToProject(entry, javaProject, monitor);
 	}

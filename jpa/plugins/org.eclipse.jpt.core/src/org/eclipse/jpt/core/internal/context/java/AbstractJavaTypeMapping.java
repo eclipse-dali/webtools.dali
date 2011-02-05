@@ -38,7 +38,7 @@ import org.eclipse.jpt.core.internal.context.TypeMappingTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.GenericTypeMappingValidator;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -94,7 +94,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return null;
 	}
 
-	public org.eclipse.jpt.db.Table getPrimaryDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getPrimaryDbTable() {
 		return null;
 	}
 
@@ -114,7 +114,7 @@ public abstract class AbstractJavaTypeMapping<A extends Annotation>
 		return EmptyIterator.instance();
 	}
 
-	public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		return null;
 	}
 

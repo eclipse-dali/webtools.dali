@@ -13,9 +13,9 @@ import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 

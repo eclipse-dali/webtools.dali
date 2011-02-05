@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.jpa2.context;
 
 import org.eclipse.jpt.core.context.Orderable;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Multi-valued (1:m, m:m) relationship and element collection mappings support

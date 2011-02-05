@@ -9,4 +9,4 @@
     Oracle - initial API and implementation
  -->
 
-<component  xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jpt.db"><description url=""></description><component-depends unrestricted="true"></component-depends><plugin id="org.eclipse.jpt.db" fragment="false"/></component>
+<component  xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jpt.jpa.db"><description url=""></description><component-depends unrestricted="true"></component-depends><plugin id="org.eclipse.jpt.jpa.db" fragment="false"/></component>

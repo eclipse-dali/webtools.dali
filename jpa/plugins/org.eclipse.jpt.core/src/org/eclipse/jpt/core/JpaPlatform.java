@@ -17,7 +17,7 @@ import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 
 /**
  * This interface is to be implemented by a JPA vendor to provide extensions to 

@@ -11,7 +11,7 @@ package org.eclipse.jpt.eclipselink.ui.internal.ddlgen.wizards;
 
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.wizards.DatabaseSchemaWizardPage;
 

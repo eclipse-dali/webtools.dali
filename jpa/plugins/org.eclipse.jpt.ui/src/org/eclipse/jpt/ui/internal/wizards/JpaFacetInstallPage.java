@@ -12,9 +12,9 @@ package org.eclipse.jpt.ui.internal.wizards;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.core.internal.facet.JpaFacetInstallDataModelProperties;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.ui.internal.DTPUiTools;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.swt.SWT;
@@ -209,7 +209,7 @@ public class JpaFacetInstallPage
 		
 		private ConnectionProfile getConnectionProfile() {
 			// we just use the connection profile to log in, so go to the the db plug-in
-			return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
+			return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(model.getStringProperty(CONNECTION));
 		}
 		
 		private void updateConnectLink(ConnectionProfile cp) {

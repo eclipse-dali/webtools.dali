@@ -39,7 +39,6 @@ import org.eclipse.jpt.common.core.internal.gen.AbstractJptGenerator;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
-import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.Logging;
@@ -47,6 +46,7 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.osgi.util.ManifestElement;
 import org.eclipse.wst.validation.ValidationFramework;
 import org.osgi.framework.Bundle;

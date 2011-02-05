@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ForeignKey;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.db.ForeignKey.ColumnPair;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.db.ForeignKey.ColumnPair;
 
 /**
  * Collection of utility methods to access DTP and other jpt.db APIs 

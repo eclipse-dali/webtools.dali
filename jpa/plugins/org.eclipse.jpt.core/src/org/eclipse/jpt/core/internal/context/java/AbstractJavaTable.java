@@ -35,10 +35,10 @@ import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.TableTextRangeResolver;
 import org.eclipse.jpt.core.resource.java.BaseTableAnnotation;
 import org.eclipse.jpt.core.resource.java.UniqueConstraintAnnotation;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -370,7 +370,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 
 	// ********** database stuff **********
 
-	public org.eclipse.jpt.db.Table getDbTable() {
+	public org.eclipse.jpt.jpa.db.Table getDbTable() {
 		Schema dbSchema = this.getDbSchema();
 		return (dbSchema == null) ? null : dbSchema.getTableForIdentifier(this.getName());
 	}
@@ -420,7 +420,7 @@ public abstract class AbstractJavaTable<A extends BaseTableAnnotation>
 	// ********** UniqueConstraint.Owner implementation **********
 
 	public Iterator<String> candidateUniqueConstraintColumnNames() {
-		org.eclipse.jpt.db.Table dbTable = this.getDbTable();
+		org.eclipse.jpt.jpa.db.Table dbTable = this.getDbTable();
 		return (dbTable != null) ? dbTable.getSortedColumnIdentifiers().iterator() : EmptyIterator.<String>instance();
 	}
 

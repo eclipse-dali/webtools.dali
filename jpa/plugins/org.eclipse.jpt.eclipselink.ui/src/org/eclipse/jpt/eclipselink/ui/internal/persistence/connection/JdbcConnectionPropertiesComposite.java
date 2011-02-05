@@ -24,11 +24,11 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.JptDbPlugin;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.jpa2.persistence.JptUiPersistence2_0Messages;
 import org.eclipse.swt.graphics.Image;
@@ -176,7 +176,7 @@ public class JdbcConnectionPropertiesComposite<T extends Connection>
 		// take the settings from it (user, password, etc.) and give them
 		// to the EclipseLink connection, so we go
 		// to the db plug-in directly to get the factory
-		return JptDbPlugin.getConnectionProfileFactory();
+		return JptJpaDbPlugin.getConnectionProfileFactory();
 	}
 
 	// broaden access a bit

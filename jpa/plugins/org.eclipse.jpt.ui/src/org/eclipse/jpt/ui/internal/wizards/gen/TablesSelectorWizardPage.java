@@ -40,11 +40,11 @@ import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
 import org.eclipse.jpt.common.ui.internal.util.TableLayoutComposite;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaProject;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.ORMGenCustomizer;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
 import org.eclipse.jpt.ui.JptUiPlugin;
 import org.eclipse.jpt.ui.internal.ImageRepository;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
@@ -104,7 +104,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	}
 
 	ConnectionProfile connectionProfileNamed(String profileName) {
-		return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(profileName);
+		return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(profileName);
 	}
 
 	Schema getSchema(){
@@ -514,7 +514,7 @@ class TablesSelectorWizardPage extends WizardPage{
 	        TableItem[] items = this.tableTable.getTable().getItems();
 	        for (int i = 0; i < items.length; ++i) {
 	            TableItem item = items[i];
-	            org.eclipse.jpt.db.Table element = (org.eclipse.jpt.db.Table)item.getData();
+	            org.eclipse.jpt.jpa.db.Table element = (org.eclipse.jpt.jpa.db.Table)item.getData();
 	            if (element != null) {
 	                boolean check = set.contains(element.getName());
 	                // only set if different, to avoid flicker

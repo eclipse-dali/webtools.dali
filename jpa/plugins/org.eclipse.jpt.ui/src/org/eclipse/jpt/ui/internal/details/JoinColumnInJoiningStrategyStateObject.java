@@ -16,8 +16,8 @@ import org.eclipse.jpt.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
-import org.eclipse.jpt.db.Schema;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Schema;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * The state object used to create or edit a primary key join column on a

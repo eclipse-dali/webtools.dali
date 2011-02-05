@@ -69,16 +69,16 @@ import org.eclipse.jpt.core.internal.JptCoreMessages;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
 import org.eclipse.jpt.core.libprov.JpaLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.db.Catalog;
-import org.eclipse.jpt.db.ConnectionAdapter;
-import org.eclipse.jpt.db.ConnectionListener;
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.ConnectionProfileListener;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.JptDbPlugin;
-import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.db.ui.internal.DTPUiTools;
+import org.eclipse.jpt.jpa.db.Catalog;
+import org.eclipse.jpt.jpa.db.ConnectionAdapter;
+import org.eclipse.jpt.jpa.db.ConnectionListener;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
+import org.eclipse.jpt.jpa.db.SchemaContainer;
+import org.eclipse.jpt.jpa.db.ui.internal.DTPUiTools;
 import org.eclipse.jpt.ui.internal.JpaHelpContextIds;
 import org.eclipse.jpt.ui.internal.JptUiMessages;
 import org.eclipse.jpt.ui.internal.jpa2.Jpa2_0ProjectFlagModel;
@@ -910,7 +910,7 @@ public class JpaProjectPropertiesPage
 
 		@Override
 		protected ConnectionProfile transform_(String connectionName) {
-			return JptDbPlugin.getConnectionProfileFactory().buildConnectionProfile(connectionName);
+			return JptJpaDbPlugin.getConnectionProfileFactory().buildConnectionProfile(connectionName);
 		}
 	}
 
@@ -1019,7 +1019,7 @@ public class JpaProjectPropertiesPage
 		}
 
 		private ConnectionProfileFactory getConnectionProfileFactory() {
-			return JptDbPlugin.getConnectionProfileFactory();
+			return JptJpaDbPlugin.getConnectionProfileFactory();
 		}
 	}
 

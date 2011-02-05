@@ -14,7 +14,7 @@ import java.util.ListIterator;
 import org.eclipse.jpt.core.internal.context.BaseColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * attribute or association override container
@@ -199,7 +199,7 @@ public interface OverrideContainer
 		/**
 		 * Return the database table for the specified table name.
 		 */
-		org.eclipse.jpt.db.Table resolveDbTable(String tableName);
+		org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName);
 
 		/**
 		 * Return the table names that are valid for the override's column

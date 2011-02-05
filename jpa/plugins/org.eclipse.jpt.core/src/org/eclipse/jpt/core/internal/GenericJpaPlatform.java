@@ -31,8 +31,8 @@ import org.eclipse.jpt.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
-import org.eclipse.jpt.db.ConnectionProfileFactory;
-import org.eclipse.jpt.db.JptDbPlugin;
+import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
+import org.eclipse.jpt.jpa.db.JptJpaDbPlugin;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once
@@ -182,7 +182,7 @@ public class GenericJpaPlatform
 	// ********** database **********
 
 	public ConnectionProfileFactory getConnectionProfileFactory() {
-		return JptDbPlugin.getConnectionProfileFactory();
+		return JptJpaDbPlugin.getConnectionProfileFactory();
 	}
 
 	public EntityGeneratorDatabaseAnnotationNameBuilder getEntityGeneratorDatabaseAnnotationNameBuilder() {

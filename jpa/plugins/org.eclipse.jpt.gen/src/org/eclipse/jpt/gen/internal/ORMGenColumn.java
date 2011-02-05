@@ -12,11 +12,11 @@ package org.eclipse.jpt.gen.internal;
 import java.util.Collections;
 import java.util.Iterator;
 
-import org.eclipse.jpt.db.Column;
-import org.eclipse.jpt.db.ForeignKey;
-import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.util.EntityGenTools;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
+import org.eclipse.jpt.jpa.db.Column;
+import org.eclipse.jpt.jpa.db.ForeignKey;
+import org.eclipse.jpt.jpa.db.Table;
 
 
 /**

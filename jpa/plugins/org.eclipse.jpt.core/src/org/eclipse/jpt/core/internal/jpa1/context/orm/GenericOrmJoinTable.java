@@ -385,7 +385,7 @@ public class GenericOrmJoinTable
 			return EmptyIterator.instance();
 		}
 
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 			return Tools.valuesAreEqual(GenericOrmJoinTable.this.getName(), tableName) ?
 					GenericOrmJoinTable.this.getDbTable() :
 					null;
@@ -437,12 +437,12 @@ public class GenericOrmJoinTable
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.resolveDbTable(tableName);
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
+			org.eclipse.jpt.jpa.db.Table dbTable = super.resolveDbTable(tableName);
 			return (dbTable != null) ? dbTable : this.getTypeMapping().resolveDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			return this.getTypeMapping().getPrimaryDbTable();
 		}
 
@@ -482,8 +482,8 @@ public class GenericOrmJoinTable
 		}
 
 		@Override
-		public org.eclipse.jpt.db.Table resolveDbTable(String tableName) {
-			org.eclipse.jpt.db.Table dbTable = super.resolveDbTable(tableName);
+		public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
+			org.eclipse.jpt.jpa.db.Table dbTable = super.resolveDbTable(tableName);
 			if (dbTable != null) {
 				return dbTable;
 			}
@@ -491,7 +491,7 @@ public class GenericOrmJoinTable
 			return (relationshipTarget == null) ? null : relationshipTarget.resolveDbTable(tableName);
 		}
 
-		public org.eclipse.jpt.db.Table getReferencedColumnDbTable() {
+		public org.eclipse.jpt.jpa.db.Table getReferencedColumnDbTable() {
 			Entity relationshipTarget = this.getRelationshipTarget();
 			return (relationshipTarget == null) ? null : relationshipTarget.getPrimaryDbTable();
 		}

@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.JpaNode;
-import org.eclipse.jpt.db.Schema;
+import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.swt.widgets.Composite;
 
 /**

@@ -27,7 +27,7 @@ import org.eclipse.jpt.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.core.internal.jpa1.context.JoinColumnValidator;
 import org.eclipse.jpt.core.internal.validation.JpaValidationDescriptionMessages;
-import org.eclipse.jpt.db.Table;
+import org.eclipse.jpt.jpa.db.Table;
 
 public class GenericOrmMappingJoinColumnRelationshipStrategy
 	extends AbstractOrmJoinColumnRelationshipStrategy

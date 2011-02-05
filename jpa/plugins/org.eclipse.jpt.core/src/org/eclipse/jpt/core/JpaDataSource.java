@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core;
 
-import org.eclipse.jpt.db.ConnectionProfile;
-import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.db.DatabaseObject;
+import org.eclipse.jpt.jpa.db.ConnectionProfile;
+import org.eclipse.jpt.jpa.db.Database;
+import org.eclipse.jpt.jpa.db.DatabaseObject;
 
 /**
  * Interface to the connection profile.
