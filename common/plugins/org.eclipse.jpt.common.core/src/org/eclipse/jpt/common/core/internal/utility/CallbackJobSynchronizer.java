@@ -12,8 +12,8 @@ package org.eclipse.jpt.common.core.internal.utility;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.utility.internal.ListenerList;
-import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.internal.ListenerList;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
 
 /**
  * Extend the job synchronizer to notify listeners
@@ -93,7 +93,7 @@ public class CallbackJobSynchronizer
 	 * initiate another synchronization until the synchronizer's listeners have been
 	 * notified. Note also, the synchronizer's listeners can, themselves,
 	 * trigger another synchronization (by directly or indirectly calling
-	 * {@link org.eclipse.jpt.utility.synchronizers.Synchronizer#synchronize()});
+	 * {@link org.eclipse.jpt.common.utility.synchronizers.Synchronizer#synchronize()});
 	 * but this synchronization will not occur until <em>after</em> all the
 	 * listeners have been notified.
 	 */

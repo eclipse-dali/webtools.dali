@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.internal.jpa2.context.java.AbstractJavaIdMappingDefinition2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMappingDefinition;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.Tools;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 public class JavaEclipseLinkIdMappingDefinition2_0
 	extends AbstractJavaIdMappingDefinition2_0

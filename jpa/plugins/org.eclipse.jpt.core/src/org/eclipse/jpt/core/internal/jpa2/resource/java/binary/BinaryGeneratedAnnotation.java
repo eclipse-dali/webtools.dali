@@ -13,10 +13,10 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.GeneratedAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.annotation.Generated

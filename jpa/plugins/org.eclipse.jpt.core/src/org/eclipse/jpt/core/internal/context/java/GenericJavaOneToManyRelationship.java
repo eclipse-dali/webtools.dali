@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.context.java;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.MappedByRelationship;
@@ -28,7 +29,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaMappingJoinTab
 import org.eclipse.jpt.core.internal.jpa1.context.java.NullJavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOneToManyRelationship2_0;
 import org.eclipse.jpt.core.resource.java.OneToManyAnnotation;
-import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

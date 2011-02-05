@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.widgets;
 
-import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.node.Node;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

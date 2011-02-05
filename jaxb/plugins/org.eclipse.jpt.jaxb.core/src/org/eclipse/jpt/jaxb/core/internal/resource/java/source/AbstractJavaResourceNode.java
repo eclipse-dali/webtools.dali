@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.java.source;
 
 import org.eclipse.core.resources.IFile;
+import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
+import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
  * Java resource containment hierarchy

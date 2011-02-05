@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.java.JavaManyToManyMapping;
 import org.eclipse.jpt.core.context.java.JavaManyToManyRelationship;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaManyToManyMapping2_0Composite

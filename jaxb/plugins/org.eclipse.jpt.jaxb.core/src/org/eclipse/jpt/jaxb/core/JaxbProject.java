@@ -17,6 +17,9 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
@@ -24,9 +27,6 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -92,7 +92,7 @@ public interface JaxbProject
 
 	/** 
 	 * ID string used when the JAXB project's collection of JAXB files changes.
-	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
 	 */
 	String JAXB_FILES_COLLECTION = "jaxbFiles"; //$NON-NLS-1$
 
@@ -118,7 +118,7 @@ public interface JaxbProject
 //	/** 
 //	 * ID string used when the JPA project's collection of external Java
 //	 * resource compilation units changes.
-//	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+//	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
 //	 */
 //	String EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION = "externalJavaResourceCompilationUnits"; //$NON-NLS-1$
 //

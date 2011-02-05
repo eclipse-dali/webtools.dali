@@ -19,6 +19,17 @@ import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelPro
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.FilteringCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ItemPropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.core.context.JpaContextNode;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.context.MappingFile;
@@ -33,17 +44,6 @@ import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceXml;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.FilteringCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ItemPropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.TransformationListValueModel;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class GenericNavigatorItemContentProviderFactory
 	implements TreeItemContentProviderFactory

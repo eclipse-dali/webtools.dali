@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core.internal.utility;
 
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * A job scheduling rule that conflicts only with itself.

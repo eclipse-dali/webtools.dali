@@ -14,6 +14,10 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
+import org.eclipse.jpt.common.utility.model.event.StateChangeEvent;
+import org.eclipse.jpt.common.utility.model.listener.StateChangeListener;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.AccessType;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
@@ -32,10 +36,6 @@ import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentMember;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.core.resource.java.NestableAnnotation;
-import org.eclipse.jpt.utility.MethodSignature;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
-import org.eclipse.jpt.utility.model.event.StateChangeEvent;
-import org.eclipse.jpt.utility.model.listener.StateChangeListener;
 
 /**
  * <em>virtual</em> <code>orm.xml</code> persistent attribute

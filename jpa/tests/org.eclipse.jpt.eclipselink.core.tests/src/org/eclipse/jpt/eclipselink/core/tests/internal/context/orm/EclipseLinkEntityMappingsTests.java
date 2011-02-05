@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.orm;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkCustomConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkStructConverter;
@@ -23,7 +24,6 @@ import org.eclipse.jpt.eclipselink.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlObjectTypeConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlStructConverter;
 import org.eclipse.jpt.eclipselink.core.resource.orm.XmlTypeConverter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 @SuppressWarnings("nls")
 public class EclipseLinkEntityMappingsTests extends EclipseLinkOrmContextModelTestCase

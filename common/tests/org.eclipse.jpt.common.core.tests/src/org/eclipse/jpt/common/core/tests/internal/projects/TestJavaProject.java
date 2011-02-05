@@ -18,7 +18,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
-import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 
 /**
  * This builds and holds a "Java" project.

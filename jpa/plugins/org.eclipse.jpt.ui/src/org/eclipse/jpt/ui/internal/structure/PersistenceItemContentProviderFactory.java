@@ -18,6 +18,15 @@ import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelPro
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeListValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.persistence.ClassRef;
@@ -25,15 +34,6 @@ import org.eclipse.jpt.core.context.persistence.JarFileRef;
 import org.eclipse.jpt.core.context.persistence.MappingFileRef;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.CompositeListValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
 
 public class PersistenceItemContentProviderFactory
 	implements TreeItemContentProviderFactory

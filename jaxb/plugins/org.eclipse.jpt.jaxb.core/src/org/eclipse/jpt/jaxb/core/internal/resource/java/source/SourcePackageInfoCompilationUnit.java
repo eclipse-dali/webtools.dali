@@ -16,13 +16,13 @@ import org.eclipse.jdt.core.dom.PackageDeclaration;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 /**
  * @author Dmitry Geraskov

@@ -19,7 +19,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Enum;
 import org.eclipse.jpt.common.core.utility.jdt.EnumConstant;
-import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.CommandExecutor;
 
 /**
  * Adapt and extend a JDT enum constant.

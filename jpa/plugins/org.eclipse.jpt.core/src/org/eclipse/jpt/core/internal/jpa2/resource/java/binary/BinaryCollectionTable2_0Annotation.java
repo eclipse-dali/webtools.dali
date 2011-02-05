@@ -13,13 +13,13 @@ import java.util.ListIterator;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryBaseTableAnnotation;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryJoinColumnAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  * javax.persistence.CollectionTable

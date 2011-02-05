@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.OneToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.OneToOneRelationship2_0;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToOneMappingComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractOneToOneMapping2_0Composite<T extends OneToOneMapping, R extends OneToOneRelationship2_0>

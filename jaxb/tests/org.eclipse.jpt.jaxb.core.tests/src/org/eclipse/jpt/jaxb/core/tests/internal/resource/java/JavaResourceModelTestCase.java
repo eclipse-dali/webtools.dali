@@ -17,6 +17,11 @@ import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jpt.common.core.internal.utility.jdt.NullAnnotationEditFormatter;
 import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.internal.BitTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
@@ -32,11 +37,6 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.internal.BitTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 @SuppressWarnings("nls")
 public abstract class JavaResourceModelTestCase

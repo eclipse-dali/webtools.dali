@@ -10,12 +10,12 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyBaseColumn;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * The state object used to edit a <code>JoinColumn</code>.

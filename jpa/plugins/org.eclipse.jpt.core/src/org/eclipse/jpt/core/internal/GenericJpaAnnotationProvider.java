@@ -14,6 +14,9 @@ import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedPackage;
 import org.eclipse.jpt.common.core.utility.jdt.Attribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.JpaAnnotationProvider;
 import org.eclipse.jpt.core.resource.java.Annotation;
@@ -21,9 +24,6 @@ import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Delegate to annotation definition providers.

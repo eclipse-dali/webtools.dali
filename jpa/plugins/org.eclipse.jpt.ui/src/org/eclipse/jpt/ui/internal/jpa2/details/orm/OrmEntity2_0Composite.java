@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.GeneratorContainer;
 import org.eclipse.jpt.core.context.QueryContainer;
 import org.eclipse.jpt.core.context.orm.OrmEntity;
@@ -26,8 +28,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.Cacheable2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Entity2_0OverridesComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Generation2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.Queries2_0Composite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

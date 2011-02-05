@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.java.JavaEmbeddable;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.java.JavaEmbeddedMapping;
@@ -27,7 +28,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.ElementCollectionMapping2_0Compo
 import org.eclipse.jpt.ui.internal.jpa2.details.EmbeddedIdMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.persistence.details.GenericPersistenceXmlUiFactory;
 import org.eclipse.jpt.ui.jpa2.details.java.JavaUiFactory2_0;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

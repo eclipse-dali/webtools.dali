@@ -10,12 +10,12 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence.schema.generation;
 
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.EclipseLinkPersistenceUnitProperties;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * EclipseLinkSchemaGeneration encapsulates EclipseLink SchemaGeneration

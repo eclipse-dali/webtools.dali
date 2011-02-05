@@ -10,8 +10,8 @@
 package org.eclipse.jpt.gen.internal.util;
 
 import java.util.Collection;
-import org.eclipse.jpt.utility.internal.NameTools;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.NameTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Utility methods for entity generation.

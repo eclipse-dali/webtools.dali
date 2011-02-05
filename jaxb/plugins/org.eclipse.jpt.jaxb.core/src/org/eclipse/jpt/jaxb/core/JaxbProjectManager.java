@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.Model;
 
 
 /**

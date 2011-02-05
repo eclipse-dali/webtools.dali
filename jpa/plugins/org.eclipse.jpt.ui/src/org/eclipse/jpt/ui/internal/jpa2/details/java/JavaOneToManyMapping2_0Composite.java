@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovable2_0;
 import org.eclipse.jpt.core.jpa2.context.OrphanRemovalHolder2_0;
@@ -21,8 +23,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.ui.internal.jpa2.details.OneToManyJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaOneToManyMapping2_0Composite

@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa1.context.java;
 import java.util.ListIterator;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.RelationshipMapping;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationship;
 import org.eclipse.jpt.core.context.java.JavaJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * Used by

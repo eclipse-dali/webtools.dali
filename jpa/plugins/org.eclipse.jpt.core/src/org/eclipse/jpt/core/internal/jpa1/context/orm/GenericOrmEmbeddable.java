@@ -8,11 +8,11 @@
  *******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa1.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.internal.context.orm.AbstractOrmEmbeddable;
 import org.eclipse.jpt.core.internal.jpa1.context.java.GenericJavaEmbeddable;
 import org.eclipse.jpt.core.resource.orm.XmlEmbeddable;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 
 /**
  * <code>orm.xml</code> embeddable type mapping

@@ -14,14 +14,14 @@ import java.util.List;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.utility.internal.iterators.SuperListIteratorWrapper;
+import org.eclipse.jpt.common.utility.internal.model.value.CompositeCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.core.context.orm.OrmReadOnlyPersistentAttribute;
-import org.eclipse.jpt.utility.internal.iterators.SuperListIteratorWrapper;
-import org.eclipse.jpt.utility.internal.model.value.CompositeCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class OrmPersistentTypeItemContentProvider
 	extends AbstractTreeItemContentProvider<OrmReadOnlyPersistentAttribute>

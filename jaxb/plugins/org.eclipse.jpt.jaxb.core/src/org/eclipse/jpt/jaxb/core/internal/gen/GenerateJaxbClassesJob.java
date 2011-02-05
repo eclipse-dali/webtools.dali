@@ -18,8 +18,8 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  *  GenerateJaxbClassesJob

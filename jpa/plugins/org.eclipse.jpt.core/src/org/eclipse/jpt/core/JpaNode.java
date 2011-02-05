@@ -11,7 +11,7 @@ package org.eclipse.jpt.core;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.core.IResourcePart;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.Model;
 
 /**
  * JPA-specific protocol. All JPA objects belong to a JPA project, are
@@ -45,9 +45,9 @@ public interface JpaNode
 	 * to any JPA node in a JPA project will trigger the JPA project to fire a
 	 * state change event.
 	 * 
-	 * @see Model#addStateChangeListener(org.eclipse.jpt.utility.model.listener.StateChangeListener)
-	 * @see org.eclipse.jpt.utility.model.event.StateChangeEvent
-	 * @see org.eclipse.jpt.utility.model.listener.StateChangeListener
+	 * @see Model#addStateChangeListener(org.eclipse.jpt.common.utility.model.listener.StateChangeListener)
+	 * @see org.eclipse.jpt.common.utility.model.event.StateChangeEvent
+	 * @see org.eclipse.jpt.common.utility.model.listener.StateChangeListener
 	 */
 	void stateChanged();
 }

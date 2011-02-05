@@ -11,8 +11,8 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 
 import java.util.ListIterator;
 import org.eclipse.jface.dialogs.IMessageProvider;
-import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.jpt.utility.internal.node.Problem;
+import org.eclipse.jpt.common.utility.internal.node.Node;
+import org.eclipse.jpt.common.utility.internal.node.Problem;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

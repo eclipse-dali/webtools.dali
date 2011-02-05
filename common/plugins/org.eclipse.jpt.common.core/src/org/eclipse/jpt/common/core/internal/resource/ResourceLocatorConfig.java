@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.XPointUtil;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 public class ResourceLocatorConfig 
 		implements Comparable<ResourceLocatorConfig> {

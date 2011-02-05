@@ -12,9 +12,9 @@ package org.eclipse.jpt.core.internal.context;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.Tools;
 
 /**
  * Utility methods for manipulating context containers.

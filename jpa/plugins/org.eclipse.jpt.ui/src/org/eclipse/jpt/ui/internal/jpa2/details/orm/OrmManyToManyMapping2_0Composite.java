@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.ManyToManyMapping;
 import org.eclipse.jpt.core.context.ManyToManyRelationship;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToManyMappingComposite;
@@ -19,7 +20,6 @@ import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.ui.internal.jpa2.details.Ordering2_0Composite;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmManyToManyMapping2_0Composite

@@ -12,10 +12,10 @@ package org.eclipse.jpt.ui.internal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayListIterator;
 import org.eclipse.jpt.ui.JpaPlatformUiProvider;
 import org.eclipse.jpt.ui.ResourceUiDefinition;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
 
 /**
  * All the state in the JPA platform ui provider should be "static" (i.e. unchanging once

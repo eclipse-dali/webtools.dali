@@ -9,11 +9,11 @@
 *******************************************************************************/
 package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence;
 
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.connection.Connection2_0;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  *  EclipseLink2_0ConnectionTests

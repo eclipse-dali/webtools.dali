@@ -12,6 +12,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.persistence;
 import java.util.ArrayList;
 import java.util.ListIterator;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
 import org.eclipse.jpt.eclipselink.core.context.persistence.connection.Connection;
@@ -30,8 +32,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.persistence.schema.generation.Per
 import org.eclipse.jpt.ui.details.JpaPageComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceUnitPropertiesComposite;
 import org.eclipse.jpt.ui.internal.persistence.details.PersistenceXmlUiFactory;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLinkPersistenceXmlUiFactory implements PersistenceXmlUiFactory

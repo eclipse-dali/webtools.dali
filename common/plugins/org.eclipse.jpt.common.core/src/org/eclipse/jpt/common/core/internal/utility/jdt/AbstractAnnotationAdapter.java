@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Adapt an annotated element and a declaration annotation adapter.

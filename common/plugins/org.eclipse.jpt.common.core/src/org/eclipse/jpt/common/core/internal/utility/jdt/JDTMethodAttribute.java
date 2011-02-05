@@ -22,11 +22,11 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.JavaType;
-import org.eclipse.jpt.utility.MethodSignature;
-import org.eclipse.jpt.utility.internal.NameTools;
-import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.JavaType;
+import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.NameTools;
+import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
 
 /**
  * Adapt and extend a JDT method.

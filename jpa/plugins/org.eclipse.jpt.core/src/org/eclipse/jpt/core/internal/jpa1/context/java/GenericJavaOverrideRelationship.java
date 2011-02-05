@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.core.context.OverrideRelationship;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.MappedByRelationship;
@@ -31,7 +32,6 @@ import org.eclipse.jpt.core.internal.context.java.AbstractJavaJpaContextNode;
 import org.eclipse.jpt.core.internal.context.java.GenericJavaOverrideJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.internal.jpa2.context.java.GenericJavaOverrideJoinTableRelationshipStrategy2_0;
 import org.eclipse.jpt.core.jpa2.context.java.JavaOverrideRelationship2_0;
-import org.eclipse.jpt.utility.Filter;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

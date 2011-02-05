@@ -11,6 +11,7 @@ package org.eclipse.jpt.eclipselink.core.internal.context.orm;
 
 import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
@@ -30,7 +31,6 @@ import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.EclipseLinkJpaPlatformProvider;
 import org.eclipse.jpt.eclipselink.core.resource.orm.EclipseLinkOrmFactory;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public abstract class AbstractEclipseLinkOrmXmlDefinition
 	extends AbstractOrmXmlDefinition

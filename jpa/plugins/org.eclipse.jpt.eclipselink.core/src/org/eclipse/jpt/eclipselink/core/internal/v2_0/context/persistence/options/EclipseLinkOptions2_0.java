@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 
+import org.eclipse.jpt.common.utility.internal.iterators.CloneListIterator;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.options.EclipseLinkOptions;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
-import org.eclipse.jpt.utility.internal.iterators.CloneListIterator;
 
 /**
  *  EclipseLinkOptions2_0

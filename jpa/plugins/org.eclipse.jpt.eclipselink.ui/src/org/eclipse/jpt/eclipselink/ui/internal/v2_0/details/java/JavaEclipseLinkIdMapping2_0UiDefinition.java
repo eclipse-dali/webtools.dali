@@ -9,12 +9,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaIdMapping;
 import org.eclipse.jpt.ui.details.java.JavaAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.internal.details.java.JavaIdMappingUiDefinition;
-import org.eclipse.jpt.utility.internal.Tools;
 
 public class JavaEclipseLinkIdMapping2_0UiDefinition
 	extends JavaIdMappingUiDefinition

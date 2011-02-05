@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.core.JpaStructureNode;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.core.context.java.JavaStructureNodes;
 import org.eclipse.jpt.ui.details.JpaDetailsPage;
 import org.eclipse.jpt.ui.details.JpaDetailsProvider;
-import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.swt.widgets.Composite;
 
 /**

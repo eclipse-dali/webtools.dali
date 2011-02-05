@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.JptCommonCoreMessages;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.wst.common.frameworks.datamodel.AbstractDataModelProvider;
 
 public abstract class AbstractJptFileCreationDataModelProvider

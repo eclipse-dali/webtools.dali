@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal.jpa2;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.jpa2.resource.java.Access2_0AnnotationDefinition;
@@ -67,7 +68,6 @@ import org.eclipse.jpt.core.internal.resource.java.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Support for existing JPA 1.0 annotations, new JPA 2.0 annotations, and

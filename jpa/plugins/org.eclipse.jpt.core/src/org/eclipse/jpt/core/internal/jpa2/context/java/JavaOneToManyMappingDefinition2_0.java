@@ -9,6 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaOneToManyMappingDefinition;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyClass2_0Annotation;
@@ -20,8 +22,6 @@ import org.eclipse.jpt.core.jpa2.resource.java.MapKeyTemporal2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.OrderColumn2_0Annotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverrideAnnotation;
 import org.eclipse.jpt.core.resource.java.AttributeOverridesAnnotation;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 public class JavaOneToManyMappingDefinition2_0
 	extends AbstractJavaOneToManyMappingDefinition

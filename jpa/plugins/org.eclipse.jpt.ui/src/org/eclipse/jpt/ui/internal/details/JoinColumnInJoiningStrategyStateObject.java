@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.ReadOnlyJoinColumn;
@@ -17,7 +18,6 @@ import org.eclipse.jpt.core.context.ReadOnlyJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * The state object used to create or edit a primary key join column on a

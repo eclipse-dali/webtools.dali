@@ -22,13 +22,13 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.eclipse.jpt.common.core.internal.utility.translators.BooleanTranslator;
 import org.eclipse.jpt.common.core.internal.utility.translators.SimpleTranslator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.resource.persistence.v2_0.JPA2_0;
 import org.eclipse.jpt.core.resource.persistence.v2_0.PersistenceV2_0Package;
 import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitCachingType_2_0;
 import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnitValidationModeType_2_0;
 import org.eclipse.jpt.core.resource.persistence.v2_0.XmlPersistenceUnit_2_0;
 import org.eclipse.jpt.core.resource.xml.AbstractJpaEObject;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 

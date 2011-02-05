@@ -13,12 +13,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jface.dialogs.IMessageProvider;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.common.utility.internal.node.Node;
+import org.eclipse.jpt.common.utility.internal.node.Problem;
 import org.eclipse.jpt.core.context.Query;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.utility.internal.node.Node;
-import org.eclipse.jpt.utility.internal.node.Problem;
 
 /**
  * This is the state object used by the <code>AddQueryDialog</code>, which stores

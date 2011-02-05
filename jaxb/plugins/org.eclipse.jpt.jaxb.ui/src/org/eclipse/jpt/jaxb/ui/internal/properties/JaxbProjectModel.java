@@ -1,14 +1,14 @@
 package org.eclipse.jpt.jaxb.ui.internal.properties;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.utility.internal.model.value.AspectPropertyValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeAdapter;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.utility.internal.model.value.AspectPropertyValueModelAdapter;
-import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeAdapter;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 /**
  * Treat the JAXB project as an "aspect" of the Eclipse project (IProject);

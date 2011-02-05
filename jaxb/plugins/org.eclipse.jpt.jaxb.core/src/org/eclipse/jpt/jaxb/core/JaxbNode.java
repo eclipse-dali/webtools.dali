@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jpt.common.core.IResourcePart;
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.Model;
 
 /**
  * JAXB-specific protocol. All JAXB objects belong to a JAXB project, are

@@ -12,9 +12,9 @@ package org.eclipse.jpt.common.ui.internal.util;
 import java.util.Collection;
 import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.TransformationIterator;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterators.TransformationIterator;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
  * This <code>PaneVisibilityEnabler</code> keeps the "visible" state of a

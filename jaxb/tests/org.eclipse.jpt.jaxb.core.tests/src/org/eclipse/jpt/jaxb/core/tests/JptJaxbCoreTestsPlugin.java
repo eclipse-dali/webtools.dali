@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.tests;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jaxb.core.JaxbProjectManager;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.osgi.framework.BundleContext;
 
 /**

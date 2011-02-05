@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.core.internal;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.AbstractJpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
@@ -33,7 +34,6 @@ import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTransf
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkTypeConverterAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkVariableOneToOneAnnotationDefinition;
 import org.eclipse.jpt.eclipselink.core.internal.resource.java.EclipseLinkWriteTransformerAnnotationDefinition;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Provides annotations for 1.0 EclipseLink platform

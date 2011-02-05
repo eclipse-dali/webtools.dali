@@ -10,10 +10,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.ui.internal;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.jpa2.MappingKeys2_0;
 import org.eclipse.jpt.ui.JptUiPlugin;
-import org.eclipse.jpt.utility.internal.Tools;
 import org.eclipse.swt.graphics.Image;
 
 public class JpaMappingImageHelper

@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaPlatformProvider;
 import org.eclipse.jpt.core.JpaResourceModelProvider;
 import org.eclipse.jpt.core.JptCorePlugin;
@@ -43,7 +44,6 @@ import org.eclipse.jpt.core.internal.jpa2.context.java.JavaOneToManyMappingDefin
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaOneToOneMappingDefinition2_0;
 import org.eclipse.jpt.core.internal.jpa2.context.orm.GenericOrmXml2_0Definition;
 import org.eclipse.jpt.core.internal.jpa2.context.persistence.Generic2_0PersistenceXmlDefinition;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * All the state in the JPA platform should be "static" (i.e. unchanging once

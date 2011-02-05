@@ -11,7 +11,7 @@ package org.eclipse.jpt.core.resource.java;
 
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.eclipse.jpt.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.MethodSignature;
 
 /**
  * Java source code or binary persistent attribute (field or property)

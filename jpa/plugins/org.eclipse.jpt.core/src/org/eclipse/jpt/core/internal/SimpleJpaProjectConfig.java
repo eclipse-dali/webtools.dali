@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.core.JpaPlatform;
 import org.eclipse.jpt.core.jpa2.JpaProject2_0;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JPA project config.

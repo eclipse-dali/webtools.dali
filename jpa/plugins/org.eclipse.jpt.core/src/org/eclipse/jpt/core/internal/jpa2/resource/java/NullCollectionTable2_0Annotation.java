@@ -11,11 +11,11 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.core.internal.resource.java.NullBaseTableAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.CollectionTable2_0Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * <code>javax.persistence.CollectionTable</code>

@@ -13,8 +13,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 
 /**
  * This synchronizer will perform synchronizations in an Eclipse job on a

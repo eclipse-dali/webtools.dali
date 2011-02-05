@@ -10,14 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.context.java.DefaultJavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.NestableAnnotationDefinition;
-import org.eclipse.jpt.utility.internal.iterables.ArrayListIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * All the state in the JAXB platform definition should be "static" 

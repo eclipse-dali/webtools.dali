@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.ui.internal.details.GeneratorComposite;
 import org.eclipse.jpt.ui.internal.details.GeneratorComposite.GeneratorBuilder;
 import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsGeneratorsComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.SequenceGenerator2_0Composite;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.internal.v2_0.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.internal.context.java.AbstractJavaManyToOneMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa2.context.java.JavaManyToOneMappingDefinition2_0;
 import org.eclipse.jpt.eclipselink.core.internal.context.java.JavaEclipseLinkManyToOneMappingDefinition;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 public class JavaEclipseLinkManyToOneMappingDefinition2_0
 	extends AbstractJavaManyToOneMappingDefinition

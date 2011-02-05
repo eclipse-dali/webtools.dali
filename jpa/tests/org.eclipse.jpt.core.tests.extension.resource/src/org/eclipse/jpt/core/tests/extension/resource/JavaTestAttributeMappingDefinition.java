@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaAttributeMapping;
 import org.eclipse.jpt.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.java.JavaPersistentAttribute;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 public class JavaTestAttributeMappingDefinition
 	implements JavaAttributeMappingDefinition

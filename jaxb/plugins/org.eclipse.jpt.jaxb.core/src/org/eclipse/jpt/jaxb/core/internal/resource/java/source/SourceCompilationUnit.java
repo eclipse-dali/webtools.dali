@@ -17,10 +17,10 @@ import org.eclipse.jpt.common.core.JptResourceModelListener;
 import org.eclipse.jpt.common.core.internal.utility.jdt.ASTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.internal.ListenerList;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.internal.ListenerList;
 
 /**
  * Java compilation unit (source file)

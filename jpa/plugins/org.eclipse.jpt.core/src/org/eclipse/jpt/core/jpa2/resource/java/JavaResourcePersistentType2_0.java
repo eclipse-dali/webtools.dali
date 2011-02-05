@@ -10,11 +10,11 @@
 package org.eclipse.jpt.core.jpa2.resource.java;
 
 import org.eclipse.jdt.core.IPackageFragmentRoot;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.SimpleFilter;
 import org.eclipse.jpt.core.resource.java.AccessType;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentType;
-import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.internal.SimpleFilter;
 
 /**
  * JPA 2.0 Java source code or binary persistent type.

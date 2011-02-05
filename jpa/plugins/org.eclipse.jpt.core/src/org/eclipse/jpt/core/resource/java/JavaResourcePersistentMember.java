@@ -10,7 +10,7 @@
 package org.eclipse.jpt.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.utility.Filter;
+import org.eclipse.jpt.common.utility.Filter;
 
 /**
  * Java source code or binary persistent member.

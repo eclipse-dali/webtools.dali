@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.ManyToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.DerivedIdentity2_0;
 import org.eclipse.jpt.core.jpa2.context.ManyToOneMapping2_0;
 import org.eclipse.jpt.core.jpa2.context.ManyToOneRelationship2_0;
 import org.eclipse.jpt.ui.internal.details.AbstractManyToOneMappingComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractManyToOneMapping2_0Composite<T extends ManyToOneMapping, R extends ManyToOneRelationship2_0>

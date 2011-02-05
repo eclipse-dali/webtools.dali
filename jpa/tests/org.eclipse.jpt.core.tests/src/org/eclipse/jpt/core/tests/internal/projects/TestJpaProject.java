@@ -11,15 +11,15 @@ package org.eclipse.jpt.core.tests.internal.projects;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
+import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.core.JpaFacet;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
-import org.eclipse.jpt.utility.internal.synchronizers.SynchronousSynchronizer;
-import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 

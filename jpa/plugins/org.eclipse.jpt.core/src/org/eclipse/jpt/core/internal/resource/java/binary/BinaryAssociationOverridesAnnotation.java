@@ -12,11 +12,11 @@ package org.eclipse.jpt.core.internal.resource.java.binary;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.core.resource.java.AssociationOverridesAnnotation;
 import org.eclipse.jpt.core.resource.java.JPA;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.NestableAssociationOverrideAnnotation;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * javax.persistence.AssociationOverrides

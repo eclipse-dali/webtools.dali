@@ -17,13 +17,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeSet;
 
-import org.eclipse.jpt.utility.Filter;
-import org.eclipse.jpt.utility.IndentingPrintWriter;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.Transformer;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.IndentingPrintWriter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 import com.ibm.icu.text.Collator;
 

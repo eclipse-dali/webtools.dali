@@ -24,7 +24,7 @@
          version="0.0.0"/>
 
    <plugin
-         id="org.eclipse.jpt.utility.tests"
+         id="org.eclipse.jpt.common.utility.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"/>

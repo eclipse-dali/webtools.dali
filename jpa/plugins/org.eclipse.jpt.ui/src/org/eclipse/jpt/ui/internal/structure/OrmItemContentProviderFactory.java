@@ -14,16 +14,16 @@ import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelPro
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProviderFactory;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.model.value.ListAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.core.context.orm.OrmPersistentType;
 import org.eclipse.jpt.ui.internal.platform.generic.OrmPersistentTypeItemContentProvider;
 import org.eclipse.jpt.ui.internal.platform.generic.PersistentAttributeItemContentProvider;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.model.value.ListAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
 
 public class OrmItemContentProviderFactory implements TreeItemContentProviderFactory
 {

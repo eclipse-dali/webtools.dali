@@ -13,7 +13,7 @@ Require-Bundle:
  org.eclipse.jpt.common.core.tests,
  org.eclipse.jpt.core.tests,
  org.eclipse.jpt.core.tests.extension.resource,
- org.eclipse.jpt.utility,
+ org.eclipse.jpt.common.utility,
  org.eclipse.jpt.core,
  org.eclipse.jpt.ui,
  org.eclipse.ui.navigator;bundle-version="3.4.0",

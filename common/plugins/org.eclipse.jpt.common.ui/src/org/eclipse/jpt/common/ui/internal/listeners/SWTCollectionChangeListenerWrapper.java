@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
-import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
-import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
 import org.eclipse.swt.widgets.Display;
 
 /**

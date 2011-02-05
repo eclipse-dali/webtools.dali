@@ -10,13 +10,13 @@
 package org.eclipse.jpt.core.internal.jpa1.context;
 
 import java.util.List;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.context.OverrideContainer;
 import org.eclipse.jpt.core.context.Override_;
 import org.eclipse.jpt.core.context.PersistentAttribute;
 import org.eclipse.jpt.core.internal.context.JptValidator;
 import org.eclipse.jpt.core.internal.context.OverrideTextRangeResolver;
 import org.eclipse.jpt.core.internal.validation.DefaultJpaValidationMessages;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 

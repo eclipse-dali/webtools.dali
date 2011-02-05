@@ -11,12 +11,12 @@ package org.eclipse.jpt.jaxb.core.internal.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlNsForm;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaAnnotation;
-import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * javax.xml.bind.annotation.XmlSchema

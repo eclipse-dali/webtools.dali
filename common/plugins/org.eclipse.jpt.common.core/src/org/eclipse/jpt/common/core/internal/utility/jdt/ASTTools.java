@@ -27,10 +27,10 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.Name;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.TypeLiteral;
-import org.eclipse.jpt.utility.JavaType;
-import org.eclipse.jpt.utility.MethodSignature;
-import org.eclipse.jpt.utility.internal.SimpleJavaType;
-import org.eclipse.jpt.utility.internal.SimpleMethodSignature;
+import org.eclipse.jpt.common.utility.JavaType;
+import org.eclipse.jpt.common.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
+import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
 
 /**
  * Convenience methods for dealing with JDT ASTs.

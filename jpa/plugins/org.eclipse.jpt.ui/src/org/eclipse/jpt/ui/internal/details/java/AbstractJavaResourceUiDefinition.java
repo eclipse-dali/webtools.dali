@@ -16,6 +16,10 @@ import java.util.ListIterator;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayListIterator;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
@@ -30,10 +34,6 @@ import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.structure.JavaResourceModelStructureProvider;
 import org.eclipse.jpt.ui.structure.JpaStructureProvider;
-import org.eclipse.jpt.utility.internal.Tools;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.utility.internal.iterators.ArrayListIterator;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

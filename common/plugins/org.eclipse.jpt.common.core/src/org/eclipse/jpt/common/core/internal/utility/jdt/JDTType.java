@@ -21,7 +21,7 @@ import org.eclipse.jdt.core.dom.MethodDeclaration;
 import org.eclipse.jdt.core.dom.TypeDeclaration;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.CommandExecutor;
 
 /**
  * Adapt and extend a JDT type.

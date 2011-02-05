@@ -10,16 +10,16 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.Transformer;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.AttributeMapping;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.core.jpa2.context.SingleRelationshipMapping2_0;
-import org.eclipse.jpt.utility.internal.Transformer;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.SubIterableWrapper;
-import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
 
 /**
  * Gather some of the behavior common to the Java and XML models. :-(

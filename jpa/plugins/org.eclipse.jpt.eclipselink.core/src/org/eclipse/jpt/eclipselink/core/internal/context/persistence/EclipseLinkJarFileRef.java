@@ -10,10 +10,10 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractJarFileRef;
 import org.eclipse.jpt.core.resource.persistence.XmlJarFileRef;
-import org.eclipse.jpt.utility.internal.ArrayTools;
 
 public class EclipseLinkJarFileRef 
 	extends AbstractJarFileRef

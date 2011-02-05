@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.resource.java;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 import org.eclipse.jpt.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.core.resource.java.JoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JoinTableAnnotation;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
 
 /**
  * <code>javax.persistence.JoinTable</code>

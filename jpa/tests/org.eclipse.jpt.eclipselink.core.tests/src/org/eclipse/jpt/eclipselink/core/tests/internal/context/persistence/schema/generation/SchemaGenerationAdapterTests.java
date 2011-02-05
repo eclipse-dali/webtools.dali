@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.schema.generation;
 
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.DdlGenerationType;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.OutputMode;
 import org.eclipse.jpt.eclipselink.core.context.persistence.schema.generation.SchemaGeneration;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * Tests the update of OutputMode model object by the SchemaGeneration adapter

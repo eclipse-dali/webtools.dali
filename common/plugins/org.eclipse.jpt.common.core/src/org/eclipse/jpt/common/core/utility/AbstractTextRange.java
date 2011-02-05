@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.core.utility;
 
-import org.eclipse.jpt.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 
 /**
  * Partial implementation of text range.

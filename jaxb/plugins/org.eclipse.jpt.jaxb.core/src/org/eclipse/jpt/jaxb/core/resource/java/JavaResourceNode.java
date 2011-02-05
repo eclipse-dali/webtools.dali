@@ -13,8 +13,8 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.model.Model;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
-import org.eclipse.jpt.utility.model.Model;
 
 /**
  * Common interface for Java resource nodes (source code or binary).

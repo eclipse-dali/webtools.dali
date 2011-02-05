@@ -11,6 +11,8 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 
 import java.util.Iterator;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.Tools;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.NamedColumn;
@@ -31,8 +33,6 @@ import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.core.resource.orm.XmlCollectionTable;
 import org.eclipse.jpt.core.resource.orm.XmlElementCollection;
-import org.eclipse.jpt.utility.internal.Tools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 
 /**
  * <code>orm.xml</code> collection table

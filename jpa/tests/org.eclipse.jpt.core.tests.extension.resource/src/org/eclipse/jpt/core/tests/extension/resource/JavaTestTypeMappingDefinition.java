@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.tests.extension.resource;
 
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.core.context.java.JavaTypeMappingDefinition;
 import org.eclipse.jpt.core.resource.java.Annotation;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
 
 public class JavaTestTypeMappingDefinition
 	implements JavaTypeMappingDefinition

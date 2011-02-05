@@ -18,12 +18,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
+import org.eclipse.jpt.common.utility.JavaType;
 import org.eclipse.jpt.db.Column;
 import org.eclipse.jpt.db.Table;
 import org.eclipse.jpt.gen.internal.util.DTPUtil;
 import org.eclipse.jpt.gen.internal.util.EntityGenTools;
 import org.eclipse.jpt.gen.internal.util.StringUtil;
-import org.eclipse.jpt.utility.JavaType;
 
 /**
  * Represents the ORM generation properties for a database table.

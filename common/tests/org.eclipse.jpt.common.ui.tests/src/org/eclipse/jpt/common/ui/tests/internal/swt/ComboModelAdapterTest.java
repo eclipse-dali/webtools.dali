@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.ui.tests.internal.swt;
 
 import org.eclipse.jpt.common.ui.internal.swt.AbstractComboModelAdapter;
 import org.eclipse.jpt.common.ui.internal.swt.ComboModelAdapter;
-import org.eclipse.jpt.utility.internal.swing.SimpleDisplayable;
+import org.eclipse.jpt.common.utility.internal.swing.SimpleDisplayable;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Combo;
 import org.junit.After;

@@ -9,9 +9,9 @@
 *******************************************************************************/
 package org.eclipse.jpt.core.tests.internal.jpa2.context.persistence;
 
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.core.jpa2.context.persistence.connection.JpaConnection2_0;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  *  GenericConnection2_0Tests

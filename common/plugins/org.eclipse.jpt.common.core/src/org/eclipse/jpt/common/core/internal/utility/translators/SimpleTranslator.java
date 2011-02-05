@@ -11,7 +11,7 @@ package org.eclipse.jpt.common.core.internal.utility.translators;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.jpt.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.wst.common.internal.emf.resource.Translator;
 import org.eclipse.wst.common.internal.emf.resource.TranslatorPath;
 

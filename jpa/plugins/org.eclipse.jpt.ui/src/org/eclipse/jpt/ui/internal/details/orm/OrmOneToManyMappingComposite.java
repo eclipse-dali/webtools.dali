@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.OneToManyMapping;
 import org.eclipse.jpt.core.context.OneToManyRelationship;
 import org.eclipse.jpt.ui.internal.details.AbstractOneToManyMappingComposite;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.details.JoinTableComposite;
 import org.eclipse.jpt.ui.internal.details.OrderingComposite;
 import org.eclipse.jpt.ui.internal.details.TargetEntityComposite;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

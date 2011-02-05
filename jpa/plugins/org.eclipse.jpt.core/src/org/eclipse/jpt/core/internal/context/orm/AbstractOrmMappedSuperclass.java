@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyIterator;
 import org.eclipse.jpt.core.MappingKeys;
 import org.eclipse.jpt.core.context.ReadOnlyTable;
 import org.eclipse.jpt.core.context.java.JavaIdClassReference;
@@ -27,8 +29,6 @@ import org.eclipse.jpt.core.internal.jpa1.context.GenericMappedSuperclassPrimary
 import org.eclipse.jpt.core.resource.orm.XmlEntityMappings;
 import org.eclipse.jpt.core.resource.orm.XmlIdClassContainer;
 import org.eclipse.jpt.core.resource.orm.XmlMappedSuperclass;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
-import org.eclipse.jpt.utility.internal.iterators.EmptyIterator;
 import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;

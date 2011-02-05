@@ -34,7 +34,7 @@ public interface JpaProject2_0
 
 	/**
 	 * ID string used when metamodelSourceFolderName property is changed.
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String METAMODEL_SOURCE_FOLDER_NAME_PROPERTY = "metamodelSourceFolderName"; //$NON-NLS-1$
 

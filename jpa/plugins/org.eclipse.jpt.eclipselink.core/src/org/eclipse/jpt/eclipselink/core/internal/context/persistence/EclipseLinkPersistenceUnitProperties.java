@@ -10,9 +10,9 @@
 package org.eclipse.jpt.eclipselink.core.internal.context.persistence;
 
 import java.util.Set;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.internal.context.persistence.AbstractPersistenceUnitProperties;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * EclipseLinkPersistenceUnitProperties

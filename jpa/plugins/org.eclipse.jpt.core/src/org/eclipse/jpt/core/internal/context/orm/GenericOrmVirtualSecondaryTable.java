@@ -11,6 +11,11 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.core.context.TypeMapping;
@@ -20,11 +25,6 @@ import org.eclipse.jpt.core.context.orm.OrmEntity;
 import org.eclipse.jpt.core.context.orm.OrmVirtualPrimaryKeyJoinColumn;
 import org.eclipse.jpt.core.context.orm.OrmVirtualSecondaryTable;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.utility.internal.iterables.SingleElementListIterable;
 
 /**
  * <code>orm.xml</code> virtual secondary table

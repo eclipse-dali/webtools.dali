@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context;
 
-import org.eclipse.jpt.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.Model;
 
 /**
  * Common interface that can be used by clients interested only in a type

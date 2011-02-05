@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.eclipselink.core.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.core.context.JpaContextNode;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
  * EclipseLink converter:<ul>

@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
 import org.eclipse.jpt.core.context.XmlContextNode;
 import org.eclipse.jpt.core.context.orm.OrmReadOnlyUniqueConstraint;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
 
 public abstract class AbstractOrmReadOnlyUniqueConstraint
 	extends AbstractOrmXmlContextNode

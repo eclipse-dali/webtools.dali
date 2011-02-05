@@ -11,10 +11,10 @@ package org.eclipse.jpt.core.internal.platform;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
 import org.eclipse.jpt.core.platform.JpaPlatformDescription;
 import org.eclipse.jpt.core.platform.JpaPlatformGroupDescription;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.SuperIterableWrapper;
 
 public class JpaPlatformGroupDescriptionImpl
 		implements JpaPlatformGroupDescription {

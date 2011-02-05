@@ -11,6 +11,15 @@ package org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.cust
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
+import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.common.utility.model.event.ListEvent;
+import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Customization;
@@ -19,15 +28,6 @@ import org.eclipse.jpt.eclipselink.core.context.persistence.customization.Weavin
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.EclipseLinkCustomization;
 import org.eclipse.jpt.eclipselink.core.internal.context.persistence.customization.Entity;
 import org.eclipse.jpt.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
-import org.eclipse.jpt.utility.model.event.ListAddEvent;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.ListClearEvent;
-import org.eclipse.jpt.utility.model.event.ListEvent;
-import org.eclipse.jpt.utility.model.event.ListMoveEvent;
-import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
-import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  * Tests the update of model objects by the Customization adapter when the

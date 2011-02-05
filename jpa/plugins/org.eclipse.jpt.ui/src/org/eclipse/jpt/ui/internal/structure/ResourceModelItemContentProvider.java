@@ -13,12 +13,12 @@ import java.util.Iterator;
 
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.JpaFile;
 import org.eclipse.jpt.core.JpaStructureNode;
-import org.eclipse.jpt.utility.internal.model.value.CollectionAspectAdapter;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 
 public class ResourceModelItemContentProvider extends AbstractTreeItemContentProvider<JpaStructureNode>
 {

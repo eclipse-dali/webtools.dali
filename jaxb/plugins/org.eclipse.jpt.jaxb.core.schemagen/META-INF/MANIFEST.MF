@@ -7,4 +7,5 @@ Bundle-Version: 1.0.100.qualifier
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Import-Package: javax.xml.bind
-Export-Package: org.eclipse.jpt.jaxb.core.schemagen
+Export-Package: org.eclipse.jpt.jaxb.core.schemagen,
+ org.eclipse.jpt.jaxb.core.schemagen.internal;x-internal:=true

@@ -10,8 +10,8 @@
 package org.eclipse.jpt.core.internal.context;
 
 import java.util.Iterator;
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
  * Gather some of the behavior common to the Java and XML models. :-(

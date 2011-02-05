@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkCaching;
 import org.eclipse.jpt.eclipselink.core.context.java.JavaEclipseLinkConverterContainer;
@@ -19,8 +21,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessa
 import org.eclipse.jpt.ui.internal.details.AbstractEntityComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaInheritanceComposite;
 import org.eclipse.jpt.ui.internal.details.java.JavaSecondaryTablesComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

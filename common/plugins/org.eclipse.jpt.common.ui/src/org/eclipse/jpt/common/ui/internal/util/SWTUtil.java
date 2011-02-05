@@ -17,7 +17,7 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.widgets.NullPostExecution;
 import org.eclipse.jpt.common.ui.internal.widgets.PostExecution;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;

@@ -15,6 +15,10 @@ import java.util.Set;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
+import org.eclipse.jpt.common.utility.internal.model.AspectChangeSupport;
+import org.eclipse.jpt.common.utility.internal.model.ChangeSupport;
 import org.eclipse.jpt.core.JpaDataSource;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.JpaFile;
@@ -26,10 +30,6 @@ import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.jpa2.JpaFactory2_0;
 import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.Database;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.utility.internal.model.AspectChangeSupport;
-import org.eclipse.jpt.utility.internal.model.ChangeSupport;
 
 /**
  * Some common Dali behavior:<ul>

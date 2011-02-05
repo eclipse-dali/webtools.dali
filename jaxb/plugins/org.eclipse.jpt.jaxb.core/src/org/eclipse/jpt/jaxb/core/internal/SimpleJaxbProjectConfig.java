@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jaxb.core.internal;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Straightforward implementation of the JAXB project config.

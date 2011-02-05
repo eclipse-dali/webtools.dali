@@ -17,12 +17,12 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.core.internal.XPointUtil.XPointException;
+import org.eclipse.jpt.common.utility.internal.KeyedSet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUiManager;
-import org.eclipse.jpt.utility.internal.KeyedSet;
 
 public class JaxbPlatformUiManagerImpl
 		implements JaxbPlatformUiManager {

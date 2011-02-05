@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.jpa2.context.java.JavaElementCollectionMapping2_0;
 import org.eclipse.jpt.eclipselink.core.context.EclipseLinkJoinFetch;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.EclipseLinkElementCollectionMapping2_0;
@@ -18,8 +20,6 @@ import org.eclipse.jpt.ui.internal.details.FetchTypeComposite;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.CollectionTable2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.TargetClassComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEclipseLinkElementCollectionMapping2_0Composite extends AbstractElementCollectionMapping2_0Composite<JavaElementCollectionMapping2_0>

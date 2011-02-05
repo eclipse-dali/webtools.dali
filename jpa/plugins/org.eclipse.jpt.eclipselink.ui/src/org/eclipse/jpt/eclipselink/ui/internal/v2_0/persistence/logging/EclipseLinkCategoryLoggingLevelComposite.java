@@ -12,10 +12,10 @@ package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.logging;
 import java.util.Collection;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.eclipselink.core.context.persistence.logging.LoggingLevel;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.logging.Logging2_0;
 import org.eclipse.jpt.eclipselink.ui.internal.EclipseLinkUiMessages;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.eclipse.swt.widgets.Composite;
 
 /**

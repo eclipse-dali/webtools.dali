@@ -12,11 +12,11 @@ package org.eclipse.jpt.common.ui.internal.widgets;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.model.value.SimpleListValueModel;
-import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.model.value.SimpleListValueModel;
+import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 

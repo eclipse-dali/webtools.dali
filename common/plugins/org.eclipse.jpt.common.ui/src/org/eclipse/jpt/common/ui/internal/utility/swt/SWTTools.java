@@ -11,15 +11,15 @@ package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.Arrays;
 
-import org.eclipse.jpt.utility.internal.BitTools;
-import org.eclipse.jpt.utility.internal.StringConverter;
-import org.eclipse.jpt.utility.internal.model.value.StaticCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.WritablePropertyCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.utility.model.value.WritableCollectionValueModel;
-import org.eclipse.jpt.utility.model.value.WritablePropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.BitTools;
+import org.eclipse.jpt.common.utility.internal.StringConverter;
+import org.eclipse.jpt.common.utility.internal.model.value.StaticCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.WritablePropertyCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritableCollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;

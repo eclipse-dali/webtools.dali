@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Java source code or binary annotated element.

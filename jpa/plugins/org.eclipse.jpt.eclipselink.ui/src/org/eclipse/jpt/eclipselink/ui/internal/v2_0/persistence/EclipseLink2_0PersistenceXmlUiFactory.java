@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.core.jpa2.context.persistence.PersistenceUnit2_0;
 import org.eclipse.jpt.eclipselink.core.context.persistence.caching.Caching;
@@ -26,8 +28,6 @@ import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.caching.Persiste
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.customization.PersistenceXmlCustomization2_0Tab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.logging.PersistenceXmlLogging2_0Tab;
 import org.eclipse.jpt.eclipselink.ui.internal.v2_0.persistence.options.PersistenceXmlOptions2_0Tab;
-import org.eclipse.jpt.utility.internal.model.value.TransformationPropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class EclipseLink2_0PersistenceXmlUiFactory extends EclipseLinkPersistenceXmlUiFactory

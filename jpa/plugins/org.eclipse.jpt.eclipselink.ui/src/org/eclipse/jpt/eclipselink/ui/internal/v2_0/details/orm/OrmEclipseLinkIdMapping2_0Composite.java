@@ -10,6 +10,7 @@
 package org.eclipse.jpt.eclipselink.ui.internal.v2_0.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.IdMapping;
 import org.eclipse.jpt.eclipselink.ui.internal.details.EclipseLinkMutableComposite;
 import org.eclipse.jpt.eclipselink.ui.internal.v1_1.details.orm.OrmEclipseLinkIdMapping1_1Composite;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.ui.internal.details.ColumnComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmMappingNameChooser;
 import org.eclipse.jpt.ui.internal.jpa2.details.IdMapping2_0MappedByRelationshipPane;
 import org.eclipse.jpt.ui.internal.jpa2.details.IdMappingGeneration2_0Composite;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmEclipseLinkIdMapping2_0Composite

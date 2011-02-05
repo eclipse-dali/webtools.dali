@@ -12,6 +12,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 import java.util.ListIterator;
 import java.util.Vector;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinColumnRelationship;
@@ -28,12 +34,6 @@ import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnRelationship;
 import org.eclipse.jpt.core.context.orm.OrmVirtualJoinColumnRelationshipStrategy;
 import org.eclipse.jpt.core.context.orm.OrmVirtualOverrideRelationship;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.EmptyIterable;
-import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.utility.internal.iterables.SingleElementListIterable;
 
 public class GenericOrmVirtualOverrideJoinColumnRelationshipStrategy
 	extends AbstractOrmXmlContextNode

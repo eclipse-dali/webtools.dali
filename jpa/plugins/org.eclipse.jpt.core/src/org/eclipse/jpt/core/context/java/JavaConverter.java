@@ -9,12 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import org.eclipse.jpt.common.utility.internal.ClassName;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.core.JpaFactory;
 import org.eclipse.jpt.core.context.Converter;
 import org.eclipse.jpt.core.resource.java.Annotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.ClassName;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Java converter

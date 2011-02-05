@@ -9,13 +9,13 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.utility.model.event.ListAddEvent;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.ListClearEvent;
-import org.eclipse.jpt.utility.model.event.ListMoveEvent;
-import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
-import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
+import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
 import org.eclipse.swt.widgets.Display;
 
 /**

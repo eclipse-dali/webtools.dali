@@ -38,6 +38,7 @@ import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.persistence.Persistence;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnit;
@@ -45,7 +46,6 @@ import org.eclipse.jpt.core.resource.xml.JpaXmlResource;
 import org.eclipse.jpt.gen.internal.util.CompilationUnitModifier;
 import org.eclipse.jpt.gen.internal.util.FileUtil;
 import org.eclipse.jpt.gen.internal.util.UrlUtil;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.Bundle;
 

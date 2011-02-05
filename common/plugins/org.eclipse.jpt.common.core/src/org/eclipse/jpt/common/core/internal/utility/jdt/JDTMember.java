@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
-import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.CommandExecutor;
 
 /**
  * Adapt and extend a JDT member with simplified annotation handling.

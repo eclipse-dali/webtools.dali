@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.java;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.core.context.NamedQuery;
 import org.eclipse.jpt.core.resource.java.NamedQueryAnnotation;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * Java named query

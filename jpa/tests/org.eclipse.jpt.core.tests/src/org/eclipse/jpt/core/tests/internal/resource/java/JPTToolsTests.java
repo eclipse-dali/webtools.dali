@@ -16,7 +16,7 @@ import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.FieldAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.MethodAttribute;
 import org.eclipse.jpt.common.core.utility.jdt.Type;
-import org.eclipse.jpt.utility.internal.iterators.ArrayIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 
 @SuppressWarnings("nls")
 public class JPTToolsTests extends JpaJavaResourceModelTestCase {

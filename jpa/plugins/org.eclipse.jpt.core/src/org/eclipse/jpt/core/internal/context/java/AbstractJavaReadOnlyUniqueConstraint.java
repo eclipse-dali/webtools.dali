@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.core.context.java.JavaJpaContextNode;
 import org.eclipse.jpt.core.context.java.JavaReadOnlyUniqueConstraint;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 public abstract class AbstractJavaReadOnlyUniqueConstraint
 	extends AbstractJavaJpaContextNode

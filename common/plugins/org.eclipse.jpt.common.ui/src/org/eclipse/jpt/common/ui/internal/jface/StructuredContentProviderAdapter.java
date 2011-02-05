@@ -13,18 +13,18 @@ import org.eclipse.jface.viewers.AbstractListViewer;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTListChangeListenerWrapper;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.StringTools;
-import org.eclipse.jpt.utility.internal.model.value.CollectionListValueModelAdapter;
-import org.eclipse.jpt.utility.model.event.ListAddEvent;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.ListClearEvent;
-import org.eclipse.jpt.utility.model.event.ListMoveEvent;
-import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
-import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.model.value.CollectionListValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
+import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 
 /**
  * This adapter can be used to keep an AbstractListViewer

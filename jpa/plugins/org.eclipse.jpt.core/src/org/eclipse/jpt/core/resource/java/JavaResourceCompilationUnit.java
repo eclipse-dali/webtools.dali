@@ -12,7 +12,7 @@ package org.eclipse.jpt.core.resource.java;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
-import org.eclipse.jpt.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.CommandExecutor;
 
 /**
  * Dali resource for JDT compilation unit.

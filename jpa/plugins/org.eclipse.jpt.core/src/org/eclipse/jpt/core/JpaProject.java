@@ -18,6 +18,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.jdt.core.ElementChangedEvent;
 import org.eclipse.jdt.core.IJavaProject;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
+import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
 import org.eclipse.jpt.core.context.JpaRootContextNode;
 import org.eclipse.jpt.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.core.resource.java.JavaResourcePackageFragmentRoot;
@@ -29,9 +32,6 @@ import org.eclipse.jpt.db.Catalog;
 import org.eclipse.jpt.db.ConnectionProfile;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.synchronizers.CallbackSynchronizer;
-import org.eclipse.jpt.utility.synchronizers.Synchronizer;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -97,7 +97,7 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when the JPA project's collection of JPA files changes.
-	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
 	 */
 	String JPA_FILES_COLLECTION = "jpaFiles"; //$NON-NLS-1$
 
@@ -123,7 +123,7 @@ public interface JpaProject
 	/** 
 	 * ID string used when the JPA project's collection of external Java
 	 * resource compilation units changes.
-	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.utility.model.listener.CollectionChangeListener)
+	 * @see #addCollectionChangeListener(String, org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener)
 	 */
 	String EXTERNAL_JAVA_RESOURCE_COMPILATION_UNITS_COLLECTION = "externalJavaResourceCompilationUnits"; //$NON-NLS-1$
 
@@ -392,7 +392,7 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when the JPA project's user override default catalog changes.
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String USER_OVERRIDE_DEFAULT_CATALOG_PROPERTY = "userOverrideDefaultCatalog"; //$NON-NLS-1$
 
@@ -419,7 +419,7 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when the JPA project's user override default schema changes.
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String USER_OVERRIDE_DEFAULT_SCHEMA_PROPERTY = "userOverrideDefaultSchema"; //$NON-NLS-1$
 
@@ -446,7 +446,7 @@ public interface JpaProject
 
 	/** 
 	 * ID string used when discoversAnnotatedClasses property is changed.
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String DISCOVERS_ANNOTATED_CLASSES_PROPERTY = "discoversAnnotatedClasses"; //$NON-NLS-1$
 

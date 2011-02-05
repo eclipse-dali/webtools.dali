@@ -10,6 +10,7 @@
 package org.eclipse.jpt.core.internal;
 
 import java.util.ArrayList;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JpaAnnotationDefinitionProvider;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverrideAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.AssociationOverridesAnnotationDefinition;
@@ -54,7 +55,6 @@ import org.eclipse.jpt.core.internal.resource.java.TemporalAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.TransientAnnotationDefinition;
 import org.eclipse.jpt.core.internal.resource.java.VersionAnnotationDefinition;
 import org.eclipse.jpt.core.resource.java.AnnotationDefinition;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class GenericJpaAnnotationDefinitionProvider
 	extends AbstractJpaAnnotationDefinitionProvider

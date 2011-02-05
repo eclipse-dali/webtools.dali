@@ -19,14 +19,14 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.core.internal.XPointUtil.XPointException;
+import org.eclipse.jpt.common.utility.internal.KeyedSet;
+import org.eclipse.jpt.common.utility.internal.iterables.SuperIterableWrapper;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformManager;
-import org.eclipse.jpt.utility.internal.KeyedSet;
-import org.eclipse.jpt.utility.internal.iterables.SuperIterableWrapper;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 

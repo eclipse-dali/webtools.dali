@@ -12,6 +12,7 @@ package org.eclipse.jpt.ui.internal.jpa2.details;
 import java.util.Collection;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SequenceGenerator;
 import org.eclipse.jpt.core.jpa2.context.SequenceGenerator2_0;
@@ -21,7 +22,6 @@ import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.SequenceGeneratorComposite;
 import org.eclipse.jpt.ui.internal.details.db.CatalogCombo;
 import org.eclipse.jpt.ui.internal.details.db.SchemaCombo;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

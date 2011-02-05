@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import org.eclipse.core.runtime.Assert;
-import org.eclipse.jpt.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Shell;
 

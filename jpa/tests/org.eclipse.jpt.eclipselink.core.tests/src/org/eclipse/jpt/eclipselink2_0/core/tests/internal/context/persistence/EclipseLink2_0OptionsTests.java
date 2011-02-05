@@ -11,16 +11,16 @@ package org.eclipse.jpt.eclipselink2_0.core.tests.internal.context.persistence;
 
 import java.util.ListIterator;
 
+import org.eclipse.jpt.common.utility.model.event.ListAddEvent;
+import org.eclipse.jpt.common.utility.model.event.ListChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.ListClearEvent;
+import org.eclipse.jpt.common.utility.model.event.ListMoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListRemoveEvent;
+import org.eclipse.jpt.common.utility.model.event.ListReplaceEvent;
+import org.eclipse.jpt.common.utility.model.listener.ListChangeListener;
+import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.eclipselink.core.v2_0.context.persistence.options.Options2_0;
-import org.eclipse.jpt.utility.model.event.ListAddEvent;
-import org.eclipse.jpt.utility.model.event.ListChangeEvent;
-import org.eclipse.jpt.utility.model.event.ListClearEvent;
-import org.eclipse.jpt.utility.model.event.ListMoveEvent;
-import org.eclipse.jpt.utility.model.event.ListRemoveEvent;
-import org.eclipse.jpt.utility.model.event.ListReplaceEvent;
-import org.eclipse.jpt.utility.model.listener.ListChangeListener;
-import org.eclipse.jpt.utility.model.listener.PropertyChangeListener;
 
 /**
  *  EclipseLinkOptions2_0Tests

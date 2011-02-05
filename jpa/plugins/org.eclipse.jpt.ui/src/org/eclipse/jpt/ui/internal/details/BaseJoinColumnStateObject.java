@@ -11,13 +11,13 @@ package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ArrayList;
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
+import org.eclipse.jpt.common.utility.internal.node.AbstractNode;
+import org.eclipse.jpt.common.utility.internal.node.Node;
 import org.eclipse.jpt.core.context.BaseJoinColumn;
 import org.eclipse.jpt.core.context.ReadOnlyBaseJoinColumn;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterators.EmptyListIterator;
-import org.eclipse.jpt.utility.internal.node.AbstractNode;
-import org.eclipse.jpt.utility.internal.node.Node;
 
 /**
  * The abstract definition of a state object used to edit or create a new

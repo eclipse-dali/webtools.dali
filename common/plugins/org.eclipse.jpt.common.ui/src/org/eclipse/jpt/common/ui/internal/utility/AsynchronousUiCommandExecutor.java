@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.utility;
 
-import org.eclipse.jpt.utility.Command;
-import org.eclipse.jpt.utility.CommandExecutor;
-import org.eclipse.jpt.utility.internal.CommandRunnable;
+import org.eclipse.jpt.common.utility.Command;
+import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.internal.CommandRunnable;
 import org.eclipse.swt.widgets.Display;
 
 /**

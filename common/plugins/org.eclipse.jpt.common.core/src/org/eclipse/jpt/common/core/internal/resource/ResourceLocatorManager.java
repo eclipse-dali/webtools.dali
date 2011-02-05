@@ -30,9 +30,9 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorConfig.Priority;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
-import org.eclipse.jpt.utility.internal.KeyedSet;
-import org.eclipse.jpt.utility.internal.iterables.FilteringIterable;
-import org.eclipse.jpt.utility.internal.iterables.TransformationIterable;
+import org.eclipse.jpt.common.utility.internal.KeyedSet;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 public class ResourceLocatorManager {
 	

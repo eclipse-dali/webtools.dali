@@ -16,7 +16,7 @@ import static org.junit.Assert.fail;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jpt.common.ui.internal.util.ControlAligner;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;

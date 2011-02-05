@@ -35,7 +35,7 @@ public interface JpaRootContextNode
 
 	/**
 	 * String constant associated with changes to the persistence XML property
-	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see #addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	public final static String PERSISTENCE_XML_PROPERTY = "persistenceXml"; //$NON-NLS-1$
 

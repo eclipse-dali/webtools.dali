@@ -10,12 +10,12 @@
 package org.eclipse.jpt.ui.internal.details;
 
 import java.util.ListIterator;
+import org.eclipse.jpt.common.utility.internal.iterators.SingleElementListIterator;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
 import org.eclipse.jpt.core.context.ReferenceTable;
 import org.eclipse.jpt.core.context.TypeMapping;
 import org.eclipse.jpt.db.Table;
-import org.eclipse.jpt.utility.internal.iterators.SingleElementListIterator;
 
 /**
  * The state object used to create or edit a primary key join column on a

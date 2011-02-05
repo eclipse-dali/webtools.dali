@@ -12,12 +12,12 @@ package org.eclipse.jpt.core.internal.jpa2.resource.java.binary;
 import java.util.Vector;
 
 import org.eclipse.jdt.core.IAnnotation;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.core.internal.resource.java.binary.BinaryContainerAnnotation;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
 import org.eclipse.jpt.core.jpa2.resource.java.MapKeyJoinColumns2_0Annotation;
 import org.eclipse.jpt.core.jpa2.resource.java.NestableMapKeyJoinColumnAnnotation;
 import org.eclipse.jpt.core.resource.java.JavaResourcePersistentAttribute;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneIterable;
 
 /**
  * javax.persistence.MapKeyJoinColumns

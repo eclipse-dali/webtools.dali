@@ -10,6 +10,7 @@
 package org.eclipse.jpt.ui.internal.jpa2;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.orm.OrmBasicMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedIdMapping;
 import org.eclipse.jpt.core.context.orm.OrmEmbeddedMapping;
@@ -37,7 +38,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToManyMapping2_0Compos
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmOneToOneMapping2_0Composite;
 import org.eclipse.jpt.ui.internal.jpa2.details.orm.OrmVersionMapping2_0Composite;
 import org.eclipse.jpt.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class GenericOrmXml2_0UiFactory 

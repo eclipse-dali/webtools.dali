@@ -10,6 +10,8 @@
 package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.Embeddable;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
@@ -21,8 +23,6 @@ import org.eclipse.jpt.ui.internal.details.AbstractEmbeddableComposite;
 import org.eclipse.jpt.ui.internal.details.AccessTypeComposite;
 import org.eclipse.jpt.ui.internal.details.orm.MetadataCompleteComposite;
 import org.eclipse.jpt.ui.internal.details.orm.OrmJavaClassChooser;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

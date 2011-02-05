@@ -11,10 +11,10 @@ package org.eclipse.jpt.jaxb.core.tests.internal.context;
 
 import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.tests.internal.JaxbTestCase;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 
 @SuppressWarnings("nls")
 public abstract class JaxbContextModelTestCase

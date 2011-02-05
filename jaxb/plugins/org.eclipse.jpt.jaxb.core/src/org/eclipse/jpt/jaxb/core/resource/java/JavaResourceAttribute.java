@@ -9,7 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 
 /**
  * Java source code or binary attribute (field/method)

@@ -42,7 +42,7 @@ public interface JpaDataSource
 
 	/**
 	 * ID string used when connectionProfileName property is changed
-	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see org.eclipse.jpt.common.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String CONNECTION_PROFILE_NAME_PROPERTY = "connectionProfileName"; //$NON-NLS-1$
 
@@ -53,7 +53,7 @@ public interface JpaDataSource
 
 	/**
 	 * ID string used when connectionProfile property is changed
-	 * @see org.eclipse.jpt.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.utility.model.listener.PropertyChangeListener)
+	 * @see org.eclipse.jpt.common.utility.model.Model#addPropertyChangeListener(String, org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener)
 	 */
 	String CONNECTION_PROFILE_PROPERTY = "connectionProfile"; //$NON-NLS-1$
 

@@ -9,10 +9,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model;
 
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.CompositeIterable;
 
 public class JaxbFacetVersionChangeDataModelProvider
 		extends JaxbFacetDataModelProvider 

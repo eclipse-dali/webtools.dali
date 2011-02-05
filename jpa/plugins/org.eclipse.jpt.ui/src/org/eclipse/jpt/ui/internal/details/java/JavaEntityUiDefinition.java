@@ -10,13 +10,13 @@
 package org.eclipse.jpt.ui.internal.details.java;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.PersistentType;
 import org.eclipse.jpt.core.context.java.JavaEntity;
 import org.eclipse.jpt.ui.details.JpaComposite;
 import org.eclipse.jpt.ui.details.java.JavaTypeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.java.JavaUiFactory;
 import org.eclipse.jpt.ui.internal.details.AbstractEntityUiDefinition;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class JavaEntityUiDefinition

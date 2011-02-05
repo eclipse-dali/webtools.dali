@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.internal.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.jpa2.context.MetamodelField;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 /**
  * Straightforward implementation.

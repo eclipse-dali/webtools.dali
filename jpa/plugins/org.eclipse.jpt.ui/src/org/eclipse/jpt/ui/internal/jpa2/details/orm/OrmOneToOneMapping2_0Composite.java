@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.AccessHolder;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.jpa2.context.OneToOneRelationship2_0;
@@ -24,8 +26,6 @@ import org.eclipse.jpt.ui.internal.jpa2.details.AbstractOneToOneMapping2_0Compos
 import org.eclipse.jpt.ui.internal.jpa2.details.CascadePane2_0;
 import org.eclipse.jpt.ui.internal.jpa2.details.OneToOneJoiningStrategy2_0Pane;
 import org.eclipse.jpt.ui.internal.jpa2.details.OrphanRemoval2_0Composite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmOneToOneMapping2_0Composite

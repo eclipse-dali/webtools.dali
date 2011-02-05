@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.resource.java;
 
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.core.jpa2.resource.java.JPA2_0;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.StringTools;
 
 /**
  * Corresponds to the JPA 1.0/2.0 enum

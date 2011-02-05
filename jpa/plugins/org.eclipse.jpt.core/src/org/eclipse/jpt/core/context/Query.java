@@ -11,9 +11,9 @@ package org.eclipse.jpt.core.context;
 
 import java.util.Arrays;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.core.context.java.JavaQuery;
 import org.eclipse.jpt.core.context.orm.OrmQuery;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * named and named native queries

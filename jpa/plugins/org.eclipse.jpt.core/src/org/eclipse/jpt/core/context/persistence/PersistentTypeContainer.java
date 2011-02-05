@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.persistence;
 
+import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.core.context.PersistentType;
-import org.eclipse.jpt.utility.internal.Transformer;
 
 /**
  * Interface used by persistence unit to gather up persistent types.

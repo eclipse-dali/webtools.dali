@@ -9,8 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.jpa2.context;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.core.context.AttributeMapping;
-import org.eclipse.jpt.utility.internal.iterables.ArrayIterable;
 
 /**
  * JPA 2.0 attribute mapping

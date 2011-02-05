@@ -11,12 +11,12 @@ package org.eclipse.jpt.core.internal.context.orm;
 
 import java.util.ArrayList;
 
+import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmTypeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmXmlContextNodeFactory;
 import org.eclipse.jpt.core.context.orm.OrmXmlDefinition;
 import org.eclipse.jpt.core.context.orm.UnsupportedOrmAttributeMappingDefinition;
-import org.eclipse.jpt.utility.internal.Tools;
 
 /**
  * All the state in the definition should be "static"

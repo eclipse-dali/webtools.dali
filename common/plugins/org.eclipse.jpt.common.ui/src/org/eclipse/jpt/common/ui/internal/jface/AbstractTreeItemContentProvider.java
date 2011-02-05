@@ -12,19 +12,19 @@ package org.eclipse.jpt.common.ui.internal.jface;
 import java.util.Iterator;
 
 import org.eclipse.jpt.common.ui.jface.TreeItemContentProvider;
-import org.eclipse.jpt.utility.internal.ArrayTools;
-import org.eclipse.jpt.utility.internal.model.value.ListCollectionValueModelAdapter;
-import org.eclipse.jpt.utility.internal.model.value.NullCollectionValueModel;
-import org.eclipse.jpt.utility.internal.model.value.PropertyListValueModelAdapter;
-import org.eclipse.jpt.utility.model.Model;
-import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
-import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
-import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.ListValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
+import org.eclipse.jpt.common.utility.internal.model.value.ListCollectionValueModelAdapter;
+import org.eclipse.jpt.common.utility.internal.model.value.NullCollectionValueModel;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyListValueModelAdapter;
+import org.eclipse.jpt.common.utility.model.Model;
+import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.ListValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 
 /**
  * Implementation of {@link TreeItemContentProvider} that provides updating

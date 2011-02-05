@@ -39,21 +39,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.utility"
+         id="org.eclipse.jpt.common.utility"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.db"
+         id="org.eclipse.jpt.jpa.db"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.db.ui"
+         id="org.eclipse.jpt.jpa.db.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -10,6 +10,8 @@
 package org.eclipse.jpt.ui.internal.jpa2.details;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
+import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.OneToOneMapping;
 import org.eclipse.jpt.core.context.OneToOneRelationship;
 import org.eclipse.jpt.core.jpa2.context.OneToOneRelationship2_0;
@@ -19,8 +21,6 @@ import org.eclipse.jpt.ui.internal.details.JptUiDetailsMessages;
 import org.eclipse.jpt.ui.internal.details.MappedByJoiningStrategyPane;
 import org.eclipse.jpt.ui.internal.details.OneToOneMappingComposite;
 import org.eclipse.jpt.ui.internal.details.PrimaryKeyJoinColumnJoiningStrategyPane;
-import org.eclipse.jpt.utility.internal.model.value.SimplePropertyValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

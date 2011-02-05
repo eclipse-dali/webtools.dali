@@ -10,7 +10,7 @@
 package org.eclipse.jpt.common.core.tests.internal.utility.jdt;
 
 import org.eclipse.jpt.common.core.internal.utility.jdt.DefaultAnnotationEditFormatter;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 
 @SuppressWarnings("nls")
 public class DefaultAnnotationEditFormatterTests extends AnnotationTestCase {

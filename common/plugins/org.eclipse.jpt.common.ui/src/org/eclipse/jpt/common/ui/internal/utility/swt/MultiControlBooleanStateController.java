@@ -11,14 +11,14 @@ package org.eclipse.jpt.common.ui.internal.utility.swt;
 
 import java.util.HashSet;
 
-import org.eclipse.jpt.utility.internal.iterables.SnapshotCloneIterable;
-import org.eclipse.jpt.utility.model.event.CollectionAddEvent;
-import org.eclipse.jpt.utility.model.event.CollectionChangeEvent;
-import org.eclipse.jpt.utility.model.event.CollectionClearEvent;
-import org.eclipse.jpt.utility.model.event.CollectionRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.CollectionChangeListener;
-import org.eclipse.jpt.utility.model.value.CollectionValueModel;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
+import org.eclipse.jpt.common.utility.model.event.CollectionAddEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionClearEvent;
+import org.eclipse.jpt.common.utility.model.event.CollectionRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.CollectionChangeListener;
+import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Control;
 
 /**

@@ -11,6 +11,8 @@ package org.eclipse.jpt.eclipselink.ui.internal.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
+import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.orm.EntityMappings;
 import org.eclipse.jpt.eclipselink.core.context.orm.EclipseLinkEntityMappings;
 import org.eclipse.jpt.eclipselink.core.context.orm.OrmEclipseLinkConverterContainer;
@@ -22,8 +24,6 @@ import org.eclipse.jpt.ui.internal.details.orm.EntityMappingsGeneratorsComposite
 import org.eclipse.jpt.ui.internal.details.orm.OrmPackageChooser;
 import org.eclipse.jpt.ui.internal.details.orm.OrmQueriesComposite;
 import org.eclipse.jpt.ui.internal.details.orm.PersistenceUnitMetadataComposite;
-import org.eclipse.jpt.utility.internal.model.value.PropertyAspectAdapter;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 /**

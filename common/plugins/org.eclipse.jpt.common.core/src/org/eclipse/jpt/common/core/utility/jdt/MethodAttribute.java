@@ -12,7 +12,7 @@ package org.eclipse.jpt.common.core.utility.jdt;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.IMethodBinding;
 import org.eclipse.jdt.core.dom.MethodDeclaration;
-import org.eclipse.jpt.utility.MethodSignature;
+import org.eclipse.jpt.common.utility.MethodSignature;
 
 /**
  * Method attribute: just some covariant overrides.

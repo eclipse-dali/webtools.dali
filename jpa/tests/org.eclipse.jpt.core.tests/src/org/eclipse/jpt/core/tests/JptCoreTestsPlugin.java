@@ -10,9 +10,9 @@
 package org.eclipse.jpt.core.tests;
 
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.core.JpaProjectManager;
 import org.eclipse.jpt.core.JptCorePlugin;
-import org.eclipse.jpt.utility.internal.ReflectionTools;
 import org.osgi.framework.BundleContext;
 
 /**

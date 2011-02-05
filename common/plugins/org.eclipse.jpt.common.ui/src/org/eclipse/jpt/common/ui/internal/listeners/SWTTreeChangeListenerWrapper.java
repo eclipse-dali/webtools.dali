@@ -9,11 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.common.ui.internal.listeners;
 
-import org.eclipse.jpt.utility.model.event.TreeAddEvent;
-import org.eclipse.jpt.utility.model.event.TreeChangeEvent;
-import org.eclipse.jpt.utility.model.event.TreeClearEvent;
-import org.eclipse.jpt.utility.model.event.TreeRemoveEvent;
-import org.eclipse.jpt.utility.model.listener.TreeChangeListener;
+import org.eclipse.jpt.common.utility.model.event.TreeAddEvent;
+import org.eclipse.jpt.common.utility.model.event.TreeChangeEvent;
+import org.eclipse.jpt.common.utility.model.event.TreeClearEvent;
+import org.eclipse.jpt.common.utility.model.event.TreeRemoveEvent;
+import org.eclipse.jpt.common.utility.model.listener.TreeChangeListener;
 import org.eclipse.swt.widgets.Display;
 
 /**

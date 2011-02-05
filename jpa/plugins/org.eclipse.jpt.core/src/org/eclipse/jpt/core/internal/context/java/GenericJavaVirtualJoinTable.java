@@ -11,6 +11,11 @@ package org.eclipse.jpt.core.internal.context.java;
 
 import java.util.ListIterator;
 import java.util.Vector;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementListIterable;
 import org.eclipse.jpt.core.context.Entity;
 import org.eclipse.jpt.core.context.JoinColumn;
 import org.eclipse.jpt.core.context.JoinTable;
@@ -25,11 +30,6 @@ import org.eclipse.jpt.core.context.java.JavaVirtualJoinTableRelationshipStrateg
 import org.eclipse.jpt.core.context.java.JavaVirtualRelationship;
 import org.eclipse.jpt.core.internal.context.ContextContainerTools;
 import org.eclipse.jpt.core.internal.context.MappingTools;
-import org.eclipse.jpt.utility.internal.CollectionTools;
-import org.eclipse.jpt.utility.internal.iterables.EmptyListIterable;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
-import org.eclipse.jpt.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.utility.internal.iterables.SingleElementListIterable;
 
 /**
  * Java virtual join table

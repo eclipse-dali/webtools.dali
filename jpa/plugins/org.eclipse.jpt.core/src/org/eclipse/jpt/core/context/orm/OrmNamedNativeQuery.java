@@ -9,9 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.core.context.orm;
 
+import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.core.context.NamedNativeQuery;
 import org.eclipse.jpt.core.resource.orm.XmlNamedNativeQuery;
-import org.eclipse.jpt.utility.internal.iterables.ListIterable;
 
 /**
  * <code>orm.xml</code> named native query

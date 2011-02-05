@@ -12,6 +12,7 @@ package org.eclipse.jpt.core.internal.jpa2.context.orm;
 import java.util.ArrayList;
 import org.eclipse.emf.ecore.EFactory;
 import org.eclipse.jpt.common.core.JptResourceType;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.context.orm.NullOrmAttributeMappingDefinition;
 import org.eclipse.jpt.core.context.orm.OrmAttributeMappingDefinition;
@@ -34,7 +35,6 @@ import org.eclipse.jpt.core.internal.context.orm.OrmTransientMappingDefinition;
 import org.eclipse.jpt.core.internal.context.orm.OrmVersionMappingDefinition;
 import org.eclipse.jpt.core.internal.jpa2.Generic2_0JpaPlatformProvider;
 import org.eclipse.jpt.core.resource.orm.OrmFactory;
-import org.eclipse.jpt.utility.internal.CollectionTools;
 
 public class GenericOrmXml2_0Definition
 	extends AbstractOrmXmlDefinition

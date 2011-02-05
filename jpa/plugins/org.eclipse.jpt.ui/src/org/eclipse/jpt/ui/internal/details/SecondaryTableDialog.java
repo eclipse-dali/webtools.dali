@@ -11,12 +11,12 @@ package org.eclipse.jpt.ui.internal.details;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.context.SecondaryTable;
 import org.eclipse.jpt.db.Database;
 import org.eclipse.jpt.db.Schema;
 import org.eclipse.jpt.db.SchemaContainer;
-import org.eclipse.jpt.utility.internal.StringTools;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;

@@ -11,6 +11,7 @@
 package org.eclipse.jpt.ui.internal.jpa2.details.orm;
 
 import org.eclipse.jpt.common.ui.WidgetFactory;
+import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.core.jpa2.context.orm.OrmElementCollectionMapping2_0;
 import org.eclipse.jpt.ui.details.JpaComposite;
@@ -18,7 +19,6 @@ import org.eclipse.jpt.ui.details.orm.OrmAttributeMappingUiDefinition;
 import org.eclipse.jpt.ui.details.orm.OrmXmlUiFactory;
 import org.eclipse.jpt.ui.internal.jpa2.details.AbstractElementCollectionMapping2_0UiDefinition;
 import org.eclipse.jpt.ui.jpa2.details.orm.OrmXmlUiFactory2_0;
-import org.eclipse.jpt.utility.model.value.PropertyValueModel;
 import org.eclipse.swt.widgets.Composite;
 
 public class OrmElementCollectionMapping2_0UiDefinition
