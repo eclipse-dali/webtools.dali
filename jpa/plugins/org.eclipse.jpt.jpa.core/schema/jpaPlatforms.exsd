@@ -1,0 +1,210 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Schema file written by PDE -->
+<schema targetNamespace="org.eclipse.jpt.jpa.core" xmlns="http://www.w3.org/2001/XMLSchema">
+<annotation>
+      <appInfo>
+         <meta.schema plugin="org.eclipse.jpt.jpa.core" id="jpaPlatforms" name="JPA Platforms"/>
+      </appInfo>
+      <documentation>
+         Defines JPA platforms and JPA platform groups.
+      </documentation>
+   </annotation>
+
+   <element name="extension">
+      <annotation>
+         <appInfo>
+            <meta.element />
+         </appInfo>
+      </annotation>
+      <complexType>
+         <choice minOccurs="0" maxOccurs="unbounded">
+            <element ref="jpaPlatformGroup"/>
+            <element ref="jpaPlatform"/>
+         </choice>
+         <attribute name="point" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="id" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="name" type="string">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jpaPlatformGroup">
+      <annotation>
+         <documentation>
+            Declares a JPA platform group.  Acts as a sort of &quot;super&quot; platform.  Most useful for enabling functionality for a set of platforms without having to enable the functionality for each platform separately.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The unique identifier for a JPA platform group.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A translatable string representation of the JPA platform group.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <element name="jpaPlatform">
+      <annotation>
+         <documentation>
+            Declares a JPA platform.  One JPA platform will be selected per JPA-faceted project. See &lt;samp&gt;org.eclipse.jpt.jpa.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.  Also see the org.eclipse.jpt.jpa.ui.jpaPlatformUis extension point.
+         </documentation>
+      </annotation>
+      <complexType>
+         <attribute name="id" type="string" use="required">
+            <annotation>
+               <documentation>
+                  
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="label" type="string" use="required">
+            <annotation>
+               <documentation>
+                  A translatable string representation of the platform.
+               </documentation>
+               <appInfo>
+                  <meta.attribute translatable="true"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="factoryClass" type="string" use="required">
+            <annotation>
+               <documentation>
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.jpa.core.JpaPlatformFactory&lt;/samp&gt;.
+               </documentation>
+               <appInfo>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.jpa.core.JpaPlatformFactory"/>
+               </appInfo>
+            </annotation>
+         </attribute>
+         <attribute name="group" type="string">
+            <annotation>
+               <documentation>
+                  Declares which JPA platform group this platform belongs to, if any.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="jpaFacetVersion" type="string">
+            <annotation>
+               <documentation>
+                  Declares the JPA facet version for which this platform may be used. If no JPA facet version is specified, this platform is available for all JPA facet versions.
+               </documentation>
+            </annotation>
+         </attribute>
+         <attribute name="default" type="boolean" use="default" value="false">
+            <annotation>
+               <documentation>
+                  Declares whether this platform should be used as a default JPA platform for new JPA project content.  Note that if a workspace contains more than one default platform for a JPA facet version, one of them will be chosen at random.  By default, a platform is not a default platform.
+               </documentation>
+            </annotation>
+         </attribute>
+      </complexType>
+   </element>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="since"/>
+      </appInfo>
+      <documentation>
+         JPT 1.0
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="examples"/>
+      </appInfo>
+      <documentation>
+         &lt;br&gt;
+&lt;p&gt;
+The following example is the included generic JPA 1.0 platform and its platform group 
+&lt;p&gt;
+&lt;pre&gt;
+&lt;extension point=&quot;org.eclipse.jpt.jpa.core.jpaPlatforms&quot;&gt;
+   
+   &lt;jpaPlatformGroup
+      id=&quot;myJpaPlatformGroup&quot;
+      label=&quot;My JPA Platform&quot;/&gt;
+      
+   &lt;jpaPlatform
+      id=&quot;generic&quot;
+      label=&quot;%GENERIC_1_0_PLATFORM_LABEL&quot;
+      factoryClass=&quot;org.eclipse.jpt.jpa.core.internal.GenericJpaPlatformFactory&quot;
+      jpaFacetVersion=&quot;1.0&quot;
+      default=&quot;false&quot;&gt;
+   &lt;/jpaPlatform&gt;
+   
+&lt;/extension&gt;
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="apiinfo"/>
+      </appInfo>
+      <documentation>
+         Provisional API: This interface is part of an interim API that is still
+under development and expected to change significantly before reaching
+stability. It is available at this early stage to solicit feedback from
+pioneering adopters on the understanding that any code that uses this API
+will almost certainly be broken (repeatedly) as the API evolves.
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="implementation"/>
+      </appInfo>
+      <documentation>
+         [Enter information about supplied implementation of this extension point.]
+      </documentation>
+   </annotation>
+
+   <annotation>
+      <appInfo>
+         <meta.section type="copyright"/>
+      </appInfo>
+      <documentation>
+         Copyright (c) 2006, 2010 Oracle. All rights reserved.
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License v1.0, which accompanies this distribution
+and is available at http://www.eclipse.org/legal/epl-v10.html.
+ 
+Contributors:
+Oracle - initial API and implementation
+      </documentation>
+   </annotation>
+
+</schema>
