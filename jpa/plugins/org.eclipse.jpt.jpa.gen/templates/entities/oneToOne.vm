@@ -1,0 +1,22 @@
+##included template. Generates the @OneToOne annotation.
+##Assumes that the context has a "role" object representing the generated AssociationRole
+##
+#if ($role.association.bidirectional && !$role.isReferrerRole())##the owning side (either side for one-to-one)
+#set ($members = $customizer.appendAnnotation("", "mappedBy", $role.oppositeRole.propertyName, true))
+#set ($members = $customizer.appendAnnotation($members, "cascade", $customizer.genCascades($role), false))
+#if( $customizer.genFetch($role.referrerTable)!="" && $customizer.genFetch($role.referrerTable)!="FetchType.EAGER" )
+#set ($members = $customizer.appendAnnotation($members, "fetch", $customizer.genFetch($role.referrerTable), false))
+#end
+	@OneToOne($members)
+#else
+#set ($members = $customizer.appendAnnotation("", "cascade", $customizer.genCascades($role), false))
+#if( $customizer.genFetch($role.referrerTable)!="" && $customizer.genFetch($role.referrerTable)!="FetchType.EAGER" )
+#set ($members = $customizer.appendAnnotation($members, "fetch", $customizer.genFetch($role.referrerTable), false))
+#end
+#if($members!="")
+	@OneToOne($members)
+#else
+	@OneToOne
+#end
+#parse("join.vm")
+#end
