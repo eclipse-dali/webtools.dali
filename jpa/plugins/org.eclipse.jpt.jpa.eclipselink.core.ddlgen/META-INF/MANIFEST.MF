@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %pluginName
+Bundle-Vendor: %providerName
+Bundle-SymbolicName: org.eclipse.jpt.jpa.eclipselink.core.ddlgen;singleton:=true
+Bundle-Version: 1.0.300.qualifier
+Bundle-ClassPath: lib/persistence.jar
+Bundle-Localization: plugin
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.eclipse.jpt.jpa.eclipselink.core;bundle-version="[1.0.0,2.0.0)"
+Export-Package: javax.persistence,
+ javax.persistence.spi,
+ org.eclipse.jpt.jpa.eclipselink.core.ddlgen
