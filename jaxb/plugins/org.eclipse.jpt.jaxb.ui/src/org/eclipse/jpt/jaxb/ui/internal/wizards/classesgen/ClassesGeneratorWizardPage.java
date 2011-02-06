@@ -72,7 +72,7 @@ import org.osgi.framework.Bundle;
  *  ClassesGeneratorWizardPage
  */
 public class ClassesGeneratorWizardPage extends NewTypeWizardPage {
-	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
+	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
 	static public String XML_FILTER = "*.xml";   //$NON-NLS-1$
 	static public String BINDINGS_FILE_FILTER = "*.xjb;*.xml;*.xbd";   //$NON-NLS-1$
 

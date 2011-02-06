@@ -60,21 +60,21 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.gen"
+         id="org.eclipse.jpt.jpa.gen"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.core"
+         id="org.eclipse.jpt.jpa.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.ui"
+         id="org.eclipse.jpt.jpa.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"

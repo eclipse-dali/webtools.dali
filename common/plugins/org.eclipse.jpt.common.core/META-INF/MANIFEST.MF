@@ -28,32 +28,32 @@ Require-Bundle: org.eclipse.core.expressions;bundle-version="[3.4.0,4.0.0)",
  org.eclipse.wst.validation;bundle-version="[1.2.0,2.0.0)"
 Export-Package: org.eclipse.jpt.common.core,
  org.eclipse.jpt.common.core.internal;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.gen;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.libprov;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.libval;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.operations;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.resource;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.utility;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.utility.jdt;
   x-friends:="org.eclipse.jpt.common.ui,
-   org.eclipse.jpt.core,
+   org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.utility.translators;
-  x-friends:="org.eclipse.jpt.core,
+  x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.libprov,
  org.eclipse.jpt.common.core.libval,

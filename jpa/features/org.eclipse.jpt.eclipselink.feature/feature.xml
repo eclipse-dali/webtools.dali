@@ -23,21 +23,21 @@
    </requires>
 
    <plugin
-         id="org.eclipse.jpt.eclipselink.core"
+         id="org.eclipse.jpt.jpa.eclipselink.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.eclipselink.ui"
+         id="org.eclipse.jpt.jpa.eclipselink.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.eclipselink.core.ddlgen"
+         id="org.eclipse.jpt.jpa.eclipselink.core.ddlgen"
          download-size="0"
          install-size="0"
          version="0.0.0"

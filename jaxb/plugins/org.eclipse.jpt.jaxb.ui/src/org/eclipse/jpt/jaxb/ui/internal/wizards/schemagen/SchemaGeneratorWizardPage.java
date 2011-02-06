@@ -62,7 +62,7 @@ public class SchemaGeneratorWizardPage extends AbstractJarDestinationWizardPage 
 	private Button usesMoxyCheckBox;
 	private boolean usesMoxy;
 
-	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.eclipselink.ui";   //$NON-NLS-1$
+	static public String JPT_ECLIPSELINK_UI_PLUGIN_ID = "org.eclipse.jpt.jpa.eclipselink.ui";   //$NON-NLS-1$
 
 	// other constants
 	private static final int SIZING_SELECTION_WIDGET_WIDTH = 480;

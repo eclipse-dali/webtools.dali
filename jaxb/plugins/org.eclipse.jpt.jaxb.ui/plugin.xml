@@ -154,12 +154,12 @@
 			
 			<!--
 			<actionProvider
-				class="org.eclipse.jpt.ui.internal.navigator.JpaNavigatorActionProvider"
-				id="org.eclipse.jpt.ui.jpaActionProvider">
+				class="org.eclipse.jpt.jpa.ui.internal.navigator.JpaNavigatorActionProvider"
+				id="org.eclipse.jpt.jpa.ui.jpaActionProvider">
 				<enablement>
 					<and>
 						<instanceof
-							value="org.eclipse.jpt.core.context.JpaContextNode"/>
+							value="org.eclipse.jpt.jpa.core.context.JpaContextNode"/>
 					</and>
 				</enablement>
 			</actionProvider>
@@ -194,7 +194,7 @@
 
 		<!-- contributions to the "Generate" submenu -->
 		<objectContribution
-			id="org.eclipse.jpt.ui.xsdFileActions"
+			id="org.eclipse.jpt.jpa.ui.xsdFileActions"
 			objectClass="org.eclipse.core.resources.IFile"
 			nameFilter="*.xsd">
 			<filter
@@ -218,7 +218,7 @@
 		<!-- no actual preferences yet
 		<page
 			id="org.eclipse.jpt.jaxb.ui.jaxbPreferences"
-			category="org.eclipse.jpt.ui.preferences"
+			category="org.eclipse.jpt.jpa.ui.preferences"
 			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbPreferencesPage"
 			name="%jaxbNode"/>
 		-->
@@ -269,7 +269,7 @@
 		
 		<!--
 		<page
-			id="org.eclipse.jpt.ui.jaxbProblemSeveritiesProperties"
+			id="org.eclipse.jpt.jpa.ui.jaxbProblemSeveritiesProperties"
 			name="%jaxbProblemSeveritiesNode"
 			category="org.eclipse.jpt.jaxb.ui.jaxbProjectProperties"
 			class="org.eclipse.jpt.jaxb.ui.internal.preferences.JaxbProblemSeveritiesPage">
