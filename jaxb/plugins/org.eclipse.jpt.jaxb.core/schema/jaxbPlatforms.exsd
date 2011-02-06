@@ -78,7 +78,7 @@
    <element name="jaxbPlatform">
       <annotation>
          <documentation>
-            Declares a JAXB platform.  One JAXB platform will be selected per JAXB-faceted project. See &lt;samp&gt;org.eclipse.jpt.jaxb.core.JpaPlatform&lt;/samp&gt; for more information on JPA platforms.  Also see the org.eclipse.jpt.ui.jpaPlatforms extension point.
+            Declares a JAXB platform.  One JAXB platform will be selected per JAXB-faceted project. See &lt;samp&gt;org.eclipse.jpt.jaxb.core.JaxbPlatform&lt;/samp&gt; for more information on JAXB platforms.  Also see the org.eclipse.jpt.jaxb.ui.jaxbPlatformUis extension point.
          </documentation>
       </annotation>
       <complexType>
@@ -102,10 +102,10 @@
          <attribute name="factoryClass" type="string" use="required">
             <annotation>
                <documentation>
-                  The class that implements &lt;samp&gt;org.eclipse.jpt.jaxb.core.JpaPlatformDefinitionFactory&lt;/samp&gt;.
+                  The class that implements &lt;samp&gt;org.eclipse.jpt.jaxb.core.JaxbPlatformDefinitionFactory&lt;/samp&gt;.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.jaxb.core.JpaPlatformDefinitionFactory"/>
+                  <meta.attribute kind="java" basedOn=":org.eclipse.jpt.jaxb.core.JaxbPlatformDefinitionFactory"/>
                </appinfo>
             </annotation>
          </attribute>
