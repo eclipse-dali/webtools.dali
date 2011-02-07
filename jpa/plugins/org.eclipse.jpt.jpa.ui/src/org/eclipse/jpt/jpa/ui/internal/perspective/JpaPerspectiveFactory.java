@@ -39,13 +39,13 @@ public class JpaPerspectiveFactory implements IPerspectiveFactory {
 		outputFolder.addPlaceholder(IProgressConstants.PROGRESS_VIEW_ID);
 
 		//JPA Details (Split with Problems/Console area)
-		layout.addView("org.eclipse.jpt.jpa.ui.jpaDetailsView", //$NON-NLS-1$
+		layout.addView("org.eclipse.jpt.ui.jpaDetailsView", //$NON-NLS-1$
 				IPageLayout.RIGHT, (float) .60, "bottom"); //$NON-NLS-1$
 		
 		//JPA Structure area
 		IFolderLayout outlineFolder = layout.createFolder(
 				"right", IPageLayout.RIGHT, (float) 0.75, editorArea); //$NON-NLS-1$
-		outlineFolder.addView("org.eclipse.jpt.jpa.ui.jpaStructureView"); //$NON-NLS-1$
+		outlineFolder.addView("org.eclipse.jpt.ui.jpaStructureView"); //$NON-NLS-1$
 		outlineFolder.addView(IPageLayout.ID_OUTLINE);
 	}
 }

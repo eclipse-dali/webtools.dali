@@ -57,6 +57,6 @@ public class JpaProjectWizard
 	
 	@Override
 	protected String getFinalPerspectiveID() {
-		return "org.eclipse.jpt.jpa.ui.jpaPerspective";
+		return "org.eclipse.jpt.ui.jpaPerspective";
 	}
 }

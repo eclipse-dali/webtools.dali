@@ -30,7 +30,7 @@
 			<with
 				variable="activePartId">
 				<equals
-					value="org.eclipse.jpt.jpa.ui.jpaStructureView"/>
+					value="org.eclipse.jpt.ui.jpaStructureView"/>
 			</with>
 		</definition>
 		
@@ -474,7 +474,7 @@
 		
 		<!-- contributions to objects in the JPA structure view -->
 		<menuContribution
-			locationURI="popup:org.eclipse.jpt.jpa.ui.jpaStructureView">
+			locationURI="popup:org.eclipse.jpt.ui.jpaStructureView">
 			<command
 				commandId="org.eclipse.jpt.jpa.ui.entityMappingsAddPersistentClass">
 				<visibleWhen>
@@ -737,7 +737,7 @@
 			icon="icons/full/etool16/new_jpaproject_wiz.gif"
 			category="org.eclipse.jpt.jpa"
 			project="true"
-			finalPerspective="org.eclipse.jpt.jpa.ui.jpaPerspective">
+			finalPerspective="org.eclipse.jpt.ui.jpaPerspective">
 			<description>%newJpaProjectWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.ui.internal.wizards.proj.JpaProjectWizard"> 
 				<parameter name="menuIndex" value="35"/> 
@@ -793,7 +793,7 @@
 		<perspective
 			class="org.eclipse.jpt.jpa.ui.internal.perspective.JpaPerspectiveFactory"
 			icon="icons/full/eview16/jpa_perspective.gif"
-			id="org.eclipse.jpt.jpa.ui.jpaPerspective"
+			id="org.eclipse.jpt.ui.jpaPerspective"
 			name="%jpaPerspective">
 			<description>%jpaPerspectiveDescription</description>
 		</perspective>
@@ -804,7 +804,7 @@
 		point="org.eclipse.ui.perspectiveExtensions">
 		
 		<perspectiveExtension
-			targetID="org.eclipse.jpt.jpa.ui.jpaPerspective">
+			targetID="org.eclipse.jpt.ui.jpaPerspective">
 			
 			<newWizardShortcut id="org.eclipse.jpt.jpa.ui.wizard.newJpaProject"/>
 			<newWizardShortcut id="org.eclipse.jpt.jpa.ui.wizard.newEntity"/>
@@ -839,8 +839,8 @@
 			<viewShortcut id="org.eclipse.ui.views.ContentOutline"/>
 			<viewShortcut id="org.eclipse.ui.views.ProblemView"/>
 			<viewShortcut id="org.eclipse.ui.views.ResourceNavigator"/>
-			<viewShortcut id="org.eclipse.jpt.jpa.ui.jpaStructureView"/>
-			<viewShortcut id="org.eclipse.jpt.jpa.ui.jpaDetailsView"/>
+			<viewShortcut id="org.eclipse.jpt.ui.jpaStructureView"/>
+			<viewShortcut id="org.eclipse.jpt.ui.jpaDetailsView"/>
 			<viewShortcut id="org.eclipse.datatools.connectivity.DataSourceExplorerNavigator"/>
 			
 		</perspectiveExtension>
@@ -848,7 +848,7 @@
 		<perspectiveExtension
 			targetID="org.eclipse.jst.j2ee.J2EEPerspective">
 			<newWizardShortcut id="org.eclipse.jpt.jpa.ui.wizard.newJpaProject"/>
-			<perspectiveShortcut id="org.eclipse.jpt.jpa.ui.jpaPerspective"/>
+			<perspectiveShortcut id="org.eclipse.jpt.ui.jpaPerspective"/>
 		</perspectiveExtension>
 		
 	</extension>
@@ -995,18 +995,18 @@
 		point="org.eclipse.ui.views">
 		
 		<category
-			id="org.eclipse.jpt.jpa.ui"
+			id="org.eclipse.jpt.jpa.uia.ui"
 			name="%jpaPerspective"/>
 		
 		<view
-	        id="org.eclipse.jpt.jpa.ui.jpaStructureView"
-	        category="org.eclipse.jpt.jpa.ui"
+	        id="org.eclipse.jpt.ui.jpaStructureView"
+	        category="org.eclipse.jpt.jpa.uia.ui"
 	        class="org.eclipse.jpt.jpa.ui.internal.views.structure.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
 	        name="%jpaStructure"/>
 			
 		<view
-			id="org.eclipse.jpt.jpa.ui.jpaDetailsView"
+			id="org.eclipse.jpt.ui.jpaDetailsView"
 			category="org.eclipse.jpt.jpa.ui"
 	        class="org.eclipse.jpt.jpa.ui.internal.views.JpaDetailsView"
 	        icon="icons/full/eview16/jpa_details.gif"

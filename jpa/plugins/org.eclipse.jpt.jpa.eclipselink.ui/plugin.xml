@@ -107,7 +107,7 @@
 		point="org.eclipse.ui.perspectiveExtensions">
 		
 		<perspectiveExtension
-			targetID="org.eclipse.jpt.jpa.ui.jpaPerspective">
+			targetID="org.eclipse.jpt.ui.jpaPerspective">
 			<newWizardShortcut
 				id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newEclipseLinkMappingFile">
 			</newWizardShortcut>
