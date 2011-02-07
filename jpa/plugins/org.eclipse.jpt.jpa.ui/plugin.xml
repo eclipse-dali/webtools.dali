@@ -728,7 +728,7 @@
 		point="org.eclipse.ui.newWizards">
 		
 		<category
-			id="org.eclipse.jpt"
+			id="org.eclipse.jpt.jpa"
 			name="%jpaWizardCategoryName"/>
 		
 		<wizard
