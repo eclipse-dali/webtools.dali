@@ -22,10 +22,10 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.v2_0.context.JptEclip
  *    -Dorg.eclipse.jpt.jpa.jar=<jpa.jar path>
  *    -Dorg.eclipse.jpt.eclipselink.jar=<eclipselink.jar path>
  */
-public class JptEclipseLinkCoreContextModelTests extends TestCase
+public class JptJpaEclipseLinkCoreContextModelTests extends TestCase
 {
 	public static Test suite() {
-		TestSuite suite = new TestSuite(JptEclipseLinkCoreContextModelTests.class.getName());
+		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreContextModelTests.class.getName());
 		if(JptJpaEclipseLinkCoreTests.requiredJarsExists()) {
 			suite.addTest(JptEclipseLink1_0CoreContextModelTests.suite());
 			suite.addTest(JptEclipseLink1_1CoreContextModelTests.suite());
@@ -38,7 +38,7 @@ public class JptEclipseLinkCoreContextModelTests extends TestCase
 		return suite;
 	}
 
-	private JptEclipseLinkCoreContextModelTests() {
+	private JptJpaEclipseLinkCoreContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();
 	}

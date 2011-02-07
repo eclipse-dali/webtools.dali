@@ -13,7 +13,7 @@ import java.io.File;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import org.eclipse.jpt.jpa.core.tests.internal.projects.TestJpaProject;
-import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptEclipseLinkCoreContextModelTests;
+import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.JptJpaEclipseLinkCoreContextModelTests;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.resource.JptJpaEclipselinkCoreResourceModelTests;
 
 /**
@@ -32,7 +32,7 @@ public class JptJpaEclipseLinkCoreTests
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JptJpaEclipseLinkCoreTests.class.getPackage().getName());
 		suite.addTest(JptJpaEclipselinkCoreResourceModelTests.suite());
-		suite.addTest(JptEclipseLinkCoreContextModelTests.suite());
+		suite.addTest(JptJpaEclipseLinkCoreContextModelTests.suite());
 		return suite;
 	}
 
