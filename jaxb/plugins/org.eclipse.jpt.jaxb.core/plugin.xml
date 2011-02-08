@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <!--
-     Copyright (c) 2010  Oracle. All rights reserved.
+     Copyright (c) 2010, 2011  Oracle. All rights reserved.
      This program and the accompanying materials are made available under the
      terms of the Eclipse Public License v1.0, which accompanies this distribution
      and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -68,6 +68,44 @@
 	</extension>
 	
 	
+	<extension
+		point="org.eclipse.jpt.common.core.libraryValidators">
+		
+		<libraryValidator
+			id="jaxbJreLibraryValidator"
+			class="org.eclipse.jpt.jaxb.core.internal.libval.JaxbJreLibraryValidator">
+			<enablement>
+				<with variable="libraryProvider">
+					<test property="org.eclipse.jpt.common.core.extendsId" value="jaxb-jre-library-provider"/>
+				</with>
+			</enablement>
+		</libraryValidator>
+		
+		<libraryValidator
+			id="genericJaxbUserLibraryValidator"
+			class="org.eclipse.jpt.jaxb.core.internal.libval.GenericJaxbUserLibraryValidator">
+			<enablement>
+				<with variable="libraryProvider">
+					<test property="org.eclipse.jpt.common.core.extendsId" value="jaxb-user-library-provider"/>
+				</with>
+			</enablement>
+		</libraryValidator>
+		
+		<!--
+		<libraryValidator
+			id="genericEclipselinkBundlesLibraryValidator"
+			class="org.eclipse.jpt.core.internal.libval.GenericEclipseLinkBundlesLibraryValidator">
+			<enablement>
+				<with variable="libraryProvider">
+					<test property="org.eclipse.jpt.core.extendsId" value="eclipselink-bundles-library-provider"/>
+				</with>
+			</enablement>
+		</libraryValidator>
+		-->
+		
+	</extension>
+	
+	
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
@@ -85,6 +123,28 @@
 		</provider>
 		
 		<provider
+			id="jaxb-jre-library-provider">
+			<label>%JAXB_JRE_LIBRARY_PROVIDER_LABEL</label>
+			<priority>900</priority>
+			<param name="message" value="%JAXB_JRE_LIBRARY_PROVIDER_MESSAGE"/>
+      		<enablement>
+      			<and>
+					<with variable="requestingProjectFacet">
+						<test property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+							value="jpt.jaxb" forcePluginActivation="true"/>
+					</with>
+				</and>
+			</enablement>
+			<action type="INSTALL">
+				<config class="org.eclipse.jpt.jaxb.core.internal.libprov.JaxbJreLibraryProviderInstallOperationConfig"/>
+				<operation class="org.eclipse.jst.common.project.facet.core.libprov.NoOpLibraryProviderOperation"/>
+			</action>
+			<action type="UNINSTALL">
+				<operation class="org.eclipse.jst.common.project.facet.core.libprov.NoOpLibraryProviderOperation"/>
+			</action>
+		</provider>
+		
+		<provider
 			id="jaxb-user-library-provider"
 			extends="wtp-user-library-provider">
 			<enablement>
@@ -99,6 +159,7 @@
 			</action>
 		</provider>
 		
+		<!--
 		<provider 
 			id="jaxb-osgi-bundles-library-provider"
 			extends="wtp-osgi-bundles-library-provider"
@@ -114,6 +175,12 @@
 				<operation class="org.eclipse.jst.j2ee.internal.common.classpath.WtpOsgiBundlesLibraryProviderInstallOperation"/>
 			</action>
 		</provider>
+		
+		<provider
+			id="jaxb-eclipselink-bundles-library-provider"
+			extends="jaxb-osgi-bundles-library-provider"
+			abstract="true"/>
+		-->
 		
 	</extension>
 	
@@ -156,12 +223,12 @@
 		</template>
 		
 		<action facet="jpt.jaxb" type="install" id="jpt.jaxb.install">
-			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfigFactory"/>
+			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDelegate"/>
 		</action>
 		
 		<action facet="jpt.jaxb" type="version-change" id="jpt.jaxb.version-change">
-			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeConfigFactory"/>
+			<config-factory class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeDataModelProvider"/>
 			<delegate class="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeDelegate"/>
 		</action>
 		

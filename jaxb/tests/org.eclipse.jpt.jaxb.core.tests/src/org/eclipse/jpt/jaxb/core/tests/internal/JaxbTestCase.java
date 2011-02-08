@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -14,9 +14,13 @@ import org.eclipse.jpt.common.core.tests.internal.utility.jdt.AnnotationTestCase
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
+import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
+import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 
@@ -36,15 +40,15 @@ public class JaxbTestCase
 	}
 	
 	protected TestJaxbProject buildJaxbProject(
-			String projectName, boolean autoBuild, JaxbFacetInstallConfig jaxbConfig) 
+			String projectName, boolean autoBuild, IDataModel jaxbConfig) 
 			throws Exception {
 		return TestJaxbProject.buildJaxbProject(projectName, autoBuild, jaxbConfig);
 	}
 	
-	protected JaxbFacetInstallConfig buildJaxbFacetInstallConfig() {
-		JaxbFacetInstallConfig config = new JaxbFacetInstallConfig();
-		config.setProjectFacetVersion(getProjectFacetVersion());
-		config.setPlatform(getPlatform());
+	protected IDataModel buildJaxbFacetInstallConfig() {
+		IDataModel config = DataModelFactory.createDataModel(new JaxbFacetInstallDataModelProvider());		
+		config.setProperty(IFacetDataModelProperties.FACET_VERSION, getProjectFacetVersion());
+		config.setProperty(JaxbFacetDataModelProperties.PLATFORM, getPlatform());
 		return config;
 	}
 	

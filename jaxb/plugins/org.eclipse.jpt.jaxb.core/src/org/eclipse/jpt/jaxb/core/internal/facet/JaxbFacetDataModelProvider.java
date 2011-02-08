@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -7,22 +7,26 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model;
+package org.eclipse.jpt.jaxb.core.internal.facet;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetConfig;
+import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.IPropertyChangeListener;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderOperationConfig;
 import org.eclipse.wst.common.componentcore.datamodel.FacetInstallDataModelProvider;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelPropertyDescriptor;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -47,82 +51,33 @@ public abstract class JaxbFacetDataModelProvider
 			};
 	
 	
-	private JaxbFacetConfig config;
 	
-	private PropertyChangeListener configListener;
+	// listens to primary runtime changing
+	private IFacetedProjectListener fprojListener;
 	
-	private IPropertyChangeListener libraryInstallDelegateListener;
+	private LibraryInstallDelegate defaultLibraryInstallDelegate;
 	
 	
-	protected JaxbFacetDataModelProvider(JaxbFacetConfig config) {
+	protected JaxbFacetDataModelProvider() {
 		super();
-		this.config = config;
-		this.configListener = buildConfigListener();
-		this.config.addPropertyChangeListener(this.configListener);
-		this.libraryInstallDelegateListener = buildLibraryInstallDelegateListener();
+		this.fprojListener = buildFprojListener();
 	}
 	
 	
-	protected PropertyChangeListener buildConfigListener() {
-		return new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getPropertyName().equals(JaxbFacetConfig.FACETED_PROJECT_WORKING_COPY_PROPERTY)) {
-					
-				}
-				else if (evt.getPropertyName().equals(JaxbFacetConfig.PROJECT_FACET_VERSION_PROPERTY)) {
-					if (! isPropertySet(PLATFORM)) {
-						JaxbFacetDataModelProvider.this.config.setPlatform(getDefaultPlatform());
-					}
-				}
-				else if (evt.getPropertyName().equals(JaxbFacetConfig.LIBRARY_INSTALL_DELEGATE_PROPERTY)) {
-					LibraryInstallDelegate oldLid = (LibraryInstallDelegate) evt.getOldValue();
-					if (oldLid != null) {
-						oldLid.removeListener(JaxbFacetDataModelProvider.this.libraryInstallDelegateListener);
-					}
-					LibraryInstallDelegate newLid = (LibraryInstallDelegate) evt.getNewValue();
-					if (newLid != null) {
-						newLid.addListener(JaxbFacetDataModelProvider.this.libraryInstallDelegateListener);
-					}
-					setLibraryInstallDelegate(newLid);
-				}
+	protected IFacetedProjectListener buildFprojListener() {
+		return new IFacetedProjectListener() {
+			public void handleEvent(IFacetedProjectEvent event) {
+				getLibraryInstallDelegate().refresh();
 			}
 		};
-	}
-	
-	protected IPropertyChangeListener buildLibraryInstallDelegateListener() {
-		return new IPropertyChangeListener() {
-				public void propertyChanged(String property, Object oldValue, Object newValue ) {
-					JaxbFacetDataModelProvider.this.getDataModel().notifyPropertyChange(
-							LIBRARY_INSTALL_DELEGATE, IDataModel.VALUE_CHG);
-				}
-			};
 	}
 	
 	@Override
 	public Set getPropertyNames() {
 		Set names = super.getPropertyNames();
-		names.add(JAXB_FACET_INSTALL_CONFIG);
 		names.add(PLATFORM);
 		names.add(LIBRARY_INSTALL_DELEGATE);
 		return names;
-	}
-	
-	@Override
-	public void init() {
-		super.init();
-		getDataModel().setProperty(JAXB_FACET_INSTALL_CONFIG, this.config);
-		
-		if (this.config.getPlatform() != null) {
-			getDataModel().setProperty(PLATFORM, this.config.getPlatform());
-		}
-		else {
-			this.config.setPlatform(getDefaultPlatform());
-		}
-		
-		if (this.config.getLibraryInstallDelegate() != null) {
-			getDataModel().setProperty(LIBRARY_INSTALL_DELEGATE, this.config.getLibraryInstallDelegate());
-			this.config.getLibraryInstallDelegate().addListener(this.libraryInstallDelegateListener);
-		}
 	}
 	
 	@Override
@@ -134,10 +89,7 @@ public abstract class JaxbFacetDataModelProvider
 			return getDefaultPlatform();
 		}
 		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
-			// means that library install delegate has not been initialized
-			LibraryInstallDelegate lid = this.config.getLibraryInstallDelegate();
-			setLibraryInstallDelegate(lid);
-			return lid;
+			return getDefaultLibraryInstallDelegate();
 		}
 		
 		return super.getDefaultProperty(propertyName);
@@ -147,35 +99,81 @@ public abstract class JaxbFacetDataModelProvider
 		return JptJaxbCorePlugin.getDefaultPlatform(getProjectFacetVersion());
 	}
 	
+	protected LibraryInstallDelegate getDefaultLibraryInstallDelegate() {
+		// delegate itself changes only when facet version changes
+		if (this.defaultLibraryInstallDelegate == null) {
+			this.defaultLibraryInstallDelegate = buildDefaultLibraryInstallDelegate();
+		}
+		else if (! this.defaultLibraryInstallDelegate.getProjectFacetVersion().equals(getProjectFacetVersion())) {
+			this.defaultLibraryInstallDelegate.dispose();
+			this.defaultLibraryInstallDelegate = buildDefaultLibraryInstallDelegate();
+		}
+		return defaultLibraryInstallDelegate;
+	}
+	
+	protected LibraryInstallDelegate buildDefaultLibraryInstallDelegate() {
+		IFacetedProjectWorkingCopy fpjwc = getFacetedProjectWorkingCopy();
+		IProjectFacetVersion pfv = getProjectFacetVersion();
+		if (fpjwc == null || pfv == null) {
+			return null;
+		}
+		LibraryInstallDelegate lid = new LibraryInstallDelegate(fpjwc, pfv);
+		lid.addListener(buildLibraryInstallDelegateListener());
+		return lid;
+	}
+	
+	protected IPropertyChangeListener buildLibraryInstallDelegateListener() {
+		return new IPropertyChangeListener() {
+				public void propertyChanged(String property, Object oldValue, Object newValue ) {
+					if (LibraryInstallDelegate.PROP_AVAILABLE_PROVIDERS.equals(property)) {
+						adjustLibraryInstallDelegate();
+					}
+					getDataModel().notifyPropertyChange(LIBRARY_INSTALL_DELEGATE, IDataModel.VALUE_CHG);
+				}
+			};
+	}
+	
+	protected void adjustLibraryInstallDelegate() {
+		LibraryInstallDelegate lid = this.getLibraryInstallDelegate();
+		if (lid != null) {
+			List<JaxbLibraryProviderInstallOperationConfig> jaxbConfigs 
+					= new ArrayList<JaxbLibraryProviderInstallOperationConfig>();
+			// add the currently selected one first
+			JaxbLibraryProviderInstallOperationConfig currentJaxbConfig = null;
+			LibraryProviderOperationConfig config = lid.getLibraryProviderOperationConfig();
+			if (config instanceof JaxbLibraryProviderInstallOperationConfig) {
+				currentJaxbConfig = (JaxbLibraryProviderInstallOperationConfig) config;
+				jaxbConfigs.add(currentJaxbConfig);
+			}
+			for (ILibraryProvider lp : lid.getLibraryProviders()) {
+				config = lid.getLibraryProviderOperationConfig(lp);
+				if (config instanceof JaxbLibraryProviderInstallOperationConfig
+						&& ! config.equals(currentJaxbConfig)) {
+					jaxbConfigs.add((JaxbLibraryProviderInstallOperationConfig) config);
+				}
+			}
+			for (JaxbLibraryProviderInstallOperationConfig jaxbConfig : jaxbConfigs) {
+				jaxbConfig.setJaxbPlatform(getPlatform());
+			}
+		}
+	}
+	
 	@Override
 	public boolean propertySet(String propertyName, Object propertyValue) {
 		boolean ok = super.propertySet(propertyName, propertyValue);
 		
-		if (propertyName.equals(FACET_VERSION)) {
+		if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)) {
+			// should only be done once
+			IFacetedProjectWorkingCopy fproj = (IFacetedProjectWorkingCopy) propertyValue;
+			fproj.addListener(this.fprojListener, IFacetedProjectEvent.Type.PRIMARY_RUNTIME_CHANGED);
+		}
+		else if (propertyName.equals(FACET_VERSION)) {
+			adjustLibraryInstallDelegate();
 			this.model.notifyPropertyChange(PLATFORM, IDataModel.DEFAULT_CHG);
-		}
-		else if (propertyName.equals(FACETED_PROJECT_WORKING_COPY)) {
-			getFacetedProjectWorkingCopy().addListener(
-				new IFacetedProjectListener() {
-					public void handleEvent(IFacetedProjectEvent event) {
-						LibraryInstallDelegate lid = getLibraryInstallDelegate();
-						if (lid != null) {
-							// may be null while model is being built up
-							// ... or in tests
-							lid.refresh();
-						}
-					}
-				},
-				IFacetedProjectEvent.Type.PRIMARY_RUNTIME_CHANGED);
-		}
-		else if (propertyName.equals(JAXB_FACET_INSTALL_CONFIG)) {
-			return false;
+			this.model.notifyPropertyChange(LIBRARY_INSTALL_DELEGATE, IDataModel.DEFAULT_CHG);
 		}
 		else if (propertyName.equals(PLATFORM)) {
-			this.config.setPlatform((JaxbPlatformDescription) propertyValue);
-		}
-		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
-			this.config.setLibraryInstallDelegate((LibraryInstallDelegate) propertyValue);
+			adjustLibraryInstallDelegate();
 		}
 		
 		return ok;
@@ -225,17 +223,42 @@ public abstract class JaxbFacetDataModelProvider
 		return new DataModelPropertyDescriptor(desc, desc.getLabel());
 	}
 	
+	// ********** validation **********
+	
+	protected static IStatus OK_STATUS = Status.OK_STATUS;
+	
+	protected static IStatus buildErrorStatus(String message) {
+		return buildStatus(IStatus.ERROR, message);
+	}
+	
+	protected static IStatus buildStatus(int severity, String message) {
+		return new Status(severity, JptJaxbCorePlugin.PLUGIN_ID, message);
+	}
+	
 	@Override
 	public IStatus validate(String propertyName) {
-		return this.config.validate();
+		if (propertyName.equals(PLATFORM)) {
+			return this.validatePlatform();
+		}
+		else if (propertyName.equals(LIBRARY_INSTALL_DELEGATE)) {
+			return getLibraryInstallDelegate().validate();
+		}
+		
+		return super.validate(propertyName);
+	}
+	
+	protected IStatus validatePlatform() {
+		return (getPlatform() == null) ? 
+				buildErrorStatus(JptJaxbCoreMessages.JaxbFacetConfig_validatePlatformNotSpecified) 
+				: OK_STATUS;
 	}
 	
 	protected IFacetedProjectWorkingCopy getFacetedProjectWorkingCopy() {
-		return (IFacetedProjectWorkingCopy) this.config.getFacetedProjectWorkingCopy();
+		return (IFacetedProjectWorkingCopy) getProperty(FACETED_PROJECT_WORKING_COPY);
 	}
 	
 	protected IProjectFacetVersion getProjectFacetVersion() {
-		return (IProjectFacetVersion) this.config.getProjectFacetVersion();
+		return (IProjectFacetVersion) getProperty(FACET_VERSION);
 	}
 	
 	protected JaxbPlatformDescription getPlatform() {
@@ -246,16 +269,9 @@ public abstract class JaxbFacetDataModelProvider
 		return (LibraryInstallDelegate) getProperty(LIBRARY_INSTALL_DELEGATE);
 	}
 	
-	protected void setLibraryInstallDelegate(LibraryInstallDelegate lid) {
-		getDataModel().setProperty(LIBRARY_INSTALL_DELEGATE, lid);
-	}
-	
 	@Override
 	public void dispose() {
 		super.dispose();
-		this.config.removePropertyChangeListener(this.configListener);
-		if (this.config.getLibraryInstallDelegate() != null) {
-			this.config.getLibraryInstallDelegate().removeListener(this.libraryInstallDelegateListener);
-		}
+		getFacetedProjectWorkingCopy().removeListener(this.fprojListener);
 	}
 }

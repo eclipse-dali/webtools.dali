@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,7 +14,9 @@ import org.eclipse.jpt.common.core.tests.internal.projects.TestJavaProject;
 import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
-import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
+import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
+import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
  * This builds and holds a "JAXB" project.
@@ -23,41 +25,44 @@ import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig;
  * The JPA project's settings (platform, database connection, etc.) can be
  * controlled by building a data model and passing it into the constructor.
  */
-public class TestJaxbProject extends TestJavaProject {
+public class TestJaxbProject
+		extends TestJavaProject {
+	
 	private final JaxbProject jaxbProject;
-
-
+	
+	
 	// ********** builders **********
-
-	public static TestJaxbProject buildJaxbProject(String baseProjectName, boolean autoBuild, JaxbFacetInstallConfig config)
+	
+	public static TestJaxbProject buildJaxbProject(
+			String baseProjectName, boolean autoBuild, IDataModel config)
 			throws CoreException {
 		return new TestJaxbProject(baseProjectName, autoBuild, config);
 	}
-
+	
+	
 	// ********** constructors/initialization **********
-
+	
 	public TestJaxbProject(String projectName) throws CoreException {
 		this(projectName, false);
 	}
-
+	
 	public TestJaxbProject(String projectName, boolean autoBuild) throws CoreException {
 		this(projectName, autoBuild, null);
 	}
-
-	public TestJaxbProject(String projectName, boolean autoBuild, JaxbFacetInstallConfig config) throws CoreException {
+	
+	public TestJaxbProject(String projectName, boolean autoBuild, IDataModel config) throws CoreException {
 		super(projectName, autoBuild);
-		String jaxbFacetVersion = config.getProjectFacetVersion().getVersionString();
+		String jaxbFacetVersion = 
+				((IProjectFacetVersion) config.getProperty(IFacetDataModelProperties.FACET_VERSION)).getVersionString();
 		this.installFacet(JaxbFacet.ID, jaxbFacetVersion, config);
 		this.jaxbProject = JptJaxbCorePlugin.getJaxbProject(this.getProject());
 //		this.jaxbProject.setUpdater(new SynchronousJpaProjectUpdater(this.jaxbProject));
 	}
-
-
-
+	
+	
 	// ********** public methods **********
-
+	
 	public JaxbProject getJaxbProject() {
 		return this.jaxbProject;
 	}
-
 }

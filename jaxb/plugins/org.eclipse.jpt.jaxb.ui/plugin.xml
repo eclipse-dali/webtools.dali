@@ -17,24 +17,6 @@
 		schema="schema/jaxbPlatformUis.exsd"/>
 	
 	
-	<extension 
-		point="org.eclipse.core.runtime.adapters">
-		
-		<factory 
-			class="org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model.JaxbFacetInstallConfigToDataModelAdapterFactory" 
-			adaptableType="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallConfig">
-			<adapter type="org.eclipse.wst.common.frameworks.datamodel.IDataModel"/>
-		</factory>
-		
-		<factory 
-			class="org.eclipse.jpt.jaxb.ui.internal.wizards.facet.model.JaxbFacetVersionChangeConfigToDataModelAdapterFactory" 
-			adaptableType="org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetVersionChangeConfig">
-			<adapter type="org.eclipse.wst.common.frameworks.datamodel.IDataModel"/>
-		</factory>
-		
-	</extension>
-  
-  
 	<extension
 		point="org.eclipse.ui.newWizards">
 
@@ -116,6 +98,16 @@
 			jaxbPlatform="generic_2_2"
 			class="org.eclipse.jpt.jaxb.ui.internal.jaxb22.GenericJaxb_2_2_PlatformUi"/>
 		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.jst.common.project.facet.ui.libraryProviderActionPanels">
+		
+		<panel 
+			provider="jaxb-jre-library-provider"
+			class="org.eclipse.jst.common.project.facet.ui.libprov.SimpleMessageLibraryProviderInstallPanel"/>
+	
 	</extension>
 	
 	

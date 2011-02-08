@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -10,18 +10,29 @@
 package org.eclipse.jpt.jaxb.core.internal.facet;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 
-
-public class JaxbFacetVersionChangeConfig
-		extends JaxbFacetConfig {
+public class JaxbFacetVersionChangeDataModelProvider
+		extends JaxbFacetDataModelProvider 
+		implements JaxbFacetVersionChangeDataModelProperties {
 	
-	public JaxbFacetVersionChangeConfig() {
+	public JaxbFacetVersionChangeDataModelProvider() {
 		super();
 	}
 	
 	
-	// **************** validation ********************************************
+	@Override
+	protected Iterable<JaxbPlatformDescription> buildValidPlatformDescriptions() {
+		// add existing platform to list of choices
+		Iterable<JaxbPlatformDescription> validPlatformDescs = super.buildValidPlatformDescriptions();
+		if (! CollectionTools.contains(validPlatformDescs, getPlatform())) {
+			validPlatformDescs = new CompositeIterable(getPlatform(), validPlatformDescs);
+		}
+		return validPlatformDescs;
+	}
 	
 	@Override
 	protected IStatus validatePlatform() {
