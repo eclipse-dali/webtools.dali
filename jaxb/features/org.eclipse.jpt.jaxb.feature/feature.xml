@@ -18,9 +18,26 @@
       %license
    </license>
 
-   <requires>
-      <import feature="org.eclipse.jpt.feature" version="2.3.0"/>
-   </requires>
+   <plugin
+         id="org.eclipse.jpt.common.utility"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jpt.common.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.jpt.common.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.jpt.jaxb.core"
@@ -49,5 +66,5 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
 </feature>
