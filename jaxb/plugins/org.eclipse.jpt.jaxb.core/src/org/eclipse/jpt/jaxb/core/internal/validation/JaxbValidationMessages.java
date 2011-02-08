@@ -17,6 +17,7 @@ public interface JaxbValidationMessages {
 	
 	// validation on project
 	public static final String NO_JAXB_PROJECT = "NO_JAXB_PROJECT"; 
+	public static final String PROJECT_INVALID_LIBRARY_PROVIDER = "PROJECT_INVALID_LIBRARY_PROVIDER";
 	
 	// validation on package
 	public static final String PACKAGE_NO_SCHEMA_FOR_NAMESPACE = "PACKAGE_NO_SCHEMA_FOR_NAMESPACE";

@@ -34,9 +34,9 @@ import org.eclipse.jdt.core.IPackageDeclaration;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceModel;
 import org.eclipse.jpt.common.core.JptResourceModelListener;
-import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.Command;
@@ -55,6 +55,7 @@ import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronous
 import org.eclipse.jpt.common.utility.internal.synchronizers.SynchronousSynchronizer;
 import org.eclipse.jpt.common.utility.synchronizers.CallbackSynchronizer;
 import org.eclipse.jpt.common.utility.synchronizers.Synchronizer;
+import org.eclipse.jpt.jaxb.core.JaxbFacet;
 import org.eclipse.jpt.jaxb.core.JaxbFile;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
@@ -65,6 +66,9 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformImpl;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
@@ -72,7 +76,13 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
+import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
+import org.eclipse.wst.common.project.facet.core.IFacetedProject;
+import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
+import org.eclipse.wst.common.project.facet.core.ProjectFacetsManager;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -1139,29 +1149,32 @@ public abstract class AbstractJaxbProject
 		if (reporter.isCancelled()) {
 			throw new ValidationCancelledException();
 		}
-		//validateLibraryProvider(messages);
+		validateLibraryProvider(messages);
 		this.contextRoot.validate(messages, reporter);
 	}
 	
-//	protected void validateLibraryProvider(List<IMessage> messages) {
-//		try {
-//			ILibraryProvider libraryProvider = LibraryProviderFramework.getCurrentProvider(getProject(), JpaFacet.FACET);
-//			IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
-//			IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JpaFacet.FACET);
-//			if (! libraryProvider.isEnabledFor(
-//					facetedProject, facetVersion)) {
-//				messages.add(
-//						DefaultValidationMessages.buildMessage(
-//							IMessage.HIGH_SEVERITY,
-//							JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
-//							this));
-//			}
-//		}
-//		catch (CoreException ce) {
-//			// fall through
-//			JptCorePlugin.log(ce);
-//		}
-//	}
+	protected void validateLibraryProvider(List<IMessage> messages) {
+		try {
+			IFacetedProject facetedProject = ProjectFacetsManager.create(getProject());
+			IProjectFacetVersion facetVersion = facetedProject.getInstalledVersion(JaxbFacet.FACET);
+			LibraryInstallDelegate lid = new LibraryInstallDelegate(facetedProject, facetVersion);
+			ILibraryProvider lp = lid.getLibraryProvider();
+			if (lid.getLibraryProviderOperationConfig() instanceof JaxbLibraryProviderInstallOperationConfig) {
+				((JaxbLibraryProviderInstallOperationConfig) lid.getLibraryProviderOperationConfig()).setJaxbPlatform(getPlatform().getDescription());
+			}
+			if (! lp.isEnabledFor(facetedProject, facetVersion) || ! lid.validate().isOK()) {
+				messages.add(
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.PROJECT_INVALID_LIBRARY_PROVIDER,
+							this));
+			}
+		}
+		catch (CoreException ce) {
+			// fall through
+			JptJaxbCorePlugin.log(ce);
+		}
+	}
 	
 	
 	// ********** dispose **********
