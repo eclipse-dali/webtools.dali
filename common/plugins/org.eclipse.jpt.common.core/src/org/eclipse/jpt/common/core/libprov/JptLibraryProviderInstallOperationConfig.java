@@ -10,6 +10,7 @@
 package org.eclipse.jpt.common.core.libprov;
 
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
+import org.eclipse.wst.common.project.facet.core.IFacetedProjectBase;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
 
 /**
@@ -24,6 +25,8 @@ import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
  * @since 3.0
  */
 public interface JptLibraryProviderInstallOperationConfig {
+	
+	IFacetedProjectBase getFacetedProject();
 	
 	ILibraryProvider getLibraryProvider();
 	
