@@ -24,11 +24,11 @@
    </url>
 
    <includes
-         id="org.eclipse.jpt_sdk.feature"
+         id="org.eclipse.jpt.jpa_sdk.feature"
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.jpt.eclipselink_sdk.feature"
+         id="org.eclipse.jpt.jpa.eclipselink_sdk.feature"
          version="0.0.0"/>
 
    <includes
