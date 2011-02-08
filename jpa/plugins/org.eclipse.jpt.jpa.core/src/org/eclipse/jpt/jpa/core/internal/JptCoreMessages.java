@@ -53,7 +53,6 @@ public class JptCoreMessages {
 	public static String UPDATE_JOB_NAME;
 	public static String PLATFORM_ID_DOES_NOT_EXIST;
 	public static String PREFERENCES_FLUSH_JOB_NAME;
-	public static String USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__BUNDLE_NOT_FOUND;
 	public static String OSGI_BUNDLES_LIBRARY_VALIDATOR__IMPROPER_BUNDLE_VERSION;
 	

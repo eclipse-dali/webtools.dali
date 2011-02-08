@@ -27,6 +27,7 @@ public class JptCommonCoreMessages {
 	public static String REGISTRY_FAILED_CLASS_LOAD;
 	public static String REGISTRY_FAILED_INTERFACE_ASSIGNMENT;
 	public static String REGISTRY_FAILED_INSTANTIATION;
+	public static String USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND;;
 	public static String VALIDATE_CONTAINER_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_NAME_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_ALREADY_EXISTS;
