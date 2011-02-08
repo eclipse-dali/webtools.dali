@@ -27,7 +27,7 @@
 
 
 	<!-- ***** Eclipse core extensions ***** -->
-
+	
 	<extension
 		point="org.eclipse.core.contenttype.contentTypes">
 	
@@ -52,6 +52,8 @@
   		</content-type>
 		
 	</extension>
+	
+	
 	<extension
 		point="org.eclipse.core.runtime.adapters">
 		
@@ -62,9 +64,11 @@
 		</factory>
 		
 	</extension>
+	
+	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
-
+		
 		<propertyTester
 			id="org.eclipse.jpt.common.core.propertyTester.libraryProvider"
 			type="org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider"
@@ -73,6 +77,8 @@
 			class="org.eclipse.jpt.common.core.internal.libprov.LibraryProviderPropertyTester"/>
 		
 	</extension>
+	
+	
 	<extension
 		point="org.eclipse.jpt.common.core.resourceLocators">
 		
@@ -133,6 +139,8 @@
 		</resourceLocator>
 		
 	</extension>
+	
+	
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
@@ -141,10 +149,8 @@
 			extends="no-op-library-provider"
 			abstract="true">
 			<param name="warning" value="%NO_OP_LIBRARY_PROVIDER_WARNING"/>
-
 		</provider>
-
+	
 	</extension>
 	
-
 </plugin>
