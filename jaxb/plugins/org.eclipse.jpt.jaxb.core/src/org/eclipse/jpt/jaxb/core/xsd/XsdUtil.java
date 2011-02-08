@@ -30,7 +30,9 @@ import org.eclipse.wst.xsd.contentmodel.internal.util.XSDSchemaLocatorAdapterFac
 import org.eclipse.xsd.XSDComplexTypeDefinition;
 import org.eclipse.xsd.XSDElementDeclaration;
 import org.eclipse.xsd.XSDSchema;
+import org.eclipse.xsd.XSDSchemaContent;
 import org.eclipse.xsd.XSDSimpleTypeDefinition;
+import org.eclipse.xsd.impl.XSDImportImpl;
 import org.eclipse.xsd.impl.XSDSchemaImpl;
 import org.eclipse.xsd.util.XSDConstants;
 import org.eclipse.xsd.util.XSDResourceImpl;
@@ -115,11 +117,30 @@ public class XsdUtil {
 				resource.load(inputStream, null);         
 				xsdSchema = resource.getSchema();      
 			}
+			handleImports(xsdSchema);
 		}
 		catch (Exception e) {
 			JptJaxbCorePlugin.log(e);
 		}
 		return xsdSchema;
+	}
+	
+	private static void handleImports(XSDSchema xsdSchema) {
+		if (xsdSchema != null) {
+			for (XSDSchemaContent content : xsdSchema.getContents()) {
+				if (content instanceof XSDImportImpl) {
+					XSDImportImpl anImport = (XSDImportImpl) content;
+					try {
+						if (anImport.getSchemaLocation() != null) {
+							anImport.importSchema();
+						}
+					}
+					catch (Exception e) {
+						JptJaxbCorePlugin.log(e);
+					}
+				}
+			}
+		}
 	}
 	
 	public static Object getAdapter(Notifier notifier) {

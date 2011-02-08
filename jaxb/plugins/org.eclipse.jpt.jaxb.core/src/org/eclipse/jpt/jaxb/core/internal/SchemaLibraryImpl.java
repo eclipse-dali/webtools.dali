@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -20,7 +20,6 @@ import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.SchemaLibrary;
 import org.eclipse.jpt.jaxb.core.xsd.XsdUtil;
-import org.eclipse.wst.xsd.contentmodel.internal.XSDImpl;
 import org.eclipse.xsd.XSDSchema;
 import org.eclipse.xsd.util.XSDResourceImpl;
 
@@ -70,7 +69,7 @@ public class SchemaLibraryImpl
 	}
 	
 	protected XSDSchema addSchema(String namespace, String resolvedUri) {
-		XSDSchema schema = XSDImpl.buildXSDModel(resolvedUri);
+		XSDSchema schema = XsdUtil.buildXSDModel(resolvedUri);
 		XSDResourceImpl schemaResource = (XSDResourceImpl) schema.eResource();
 		if (schemaResource != null) {
 			schemaResource.eAdapters().add(this.schemaResourceAdapter);
