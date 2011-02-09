@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+  Copyright (c) 2011 Oracle. All rights reserved.
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0, which accompanies this distribution
+  and is available at http://www.eclipse.org/legal/epl-v10.html.
+
+  Contributors:
+    Oracle - initial API and implementation
+ -->
+ 
+<plugin>
+	
+	<!--
+	******************************************
+	* Library Provider Framework Integration *
+	******************************************
+	-->
+	
+	<extension point="org.eclipse.jst.common.project.facet.core.downloadableLibraries">
+		
+		<import-definitions 
+			url="http://www.eclipse.org/webtools/dali/dev/eclipselink/eclipselink-downloadable-libs.xml">
+			<enablement>
+				<with variable="requestingProjectFacet">
+					<or>
+						<test 
+							property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+							value="jpt.jaxb" 
+							forcePluginActivation="true"/>
+						<test 
+							property="org.eclipse.wst.common.project.facet.core.projectFacet" 
+							value="jpt.jpa" 
+							forcePluginActivation="true"/>
+					</or>	
+				</with>
+			</enablement>
+		</import-definitions>
+		
+	</extension>
+	
+</plugin>
