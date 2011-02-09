@@ -995,12 +995,12 @@
 		point="org.eclipse.ui.views">
 		
 		<category
-			id="org.eclipse.jpt.jpa.uia.ui"
+			id="org.eclipse.jpt.jpa.ui"
 			name="%jpaPerspective"/>
 		
 		<view
 	        id="org.eclipse.jpt.ui.jpaStructureView"
-	        category="org.eclipse.jpt.jpa.uia.ui"
+	        category="org.eclipse.jpt.jpa.ui"
 	        class="org.eclipse.jpt.jpa.ui.internal.views.structure.JpaStructureView"
 	        icon="icons/full/eview16/jpa_structure.gif"
 	        name="%jpaStructure"/>
