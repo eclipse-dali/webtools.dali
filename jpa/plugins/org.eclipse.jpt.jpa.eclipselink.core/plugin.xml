@@ -118,29 +118,6 @@
 	</extension>
 	
 	
-	<!--
-	******************************************
-	* Library Provider Framework Integration *
-	******************************************
-	-->
-	
-	<extension point="org.eclipse.jst.common.project.facet.core.downloadableLibraries">
-		
-		<import-definitions 
-			url="http://www.eclipse.org/webtools/dali/dev/eclipselink/eclipselink-downloadable-libs.xml">
-			<enablement>
-				<with variable="requestingProjectFacet">
-					<test 
-						property="org.eclipse.wst.common.project.facet.core.projectFacet" 
-						value="jpt.jpa" 
-						forcePluginActivation="true"/>
-				</with>
-			</enablement>
-		</import-definitions>
-		
-	</extension>
-	
-	
 	<extension 
 		point="org.eclipse.jst.common.project.facet.core.libraryProviders">
 		
