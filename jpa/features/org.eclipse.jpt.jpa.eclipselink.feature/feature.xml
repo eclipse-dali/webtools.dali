@@ -19,7 +19,7 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.jpt.feature" version="2.3.0"/>
+      <import feature="org.eclipse.jpt.jpa.feature" version="3.0.0"/>
    </requires>
 
    <plugin
