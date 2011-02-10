@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins">
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/ui/**"/>
-			<accessrule kind="accessible" pattern="org/eclipse/jpt/utility/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>

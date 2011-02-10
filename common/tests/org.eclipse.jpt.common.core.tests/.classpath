@@ -6,7 +6,7 @@
 		<accessrules>
 			<accessrule kind="accessible" pattern="org/eclipse/wst/**"/>
 			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/core/**"/>
-			<accessrule kind="accessible" pattern="org/eclipse/jpt/utility/**"/>
+			<accessrule kind="accessible" pattern="org/eclipse/jpt/common/utility/**"/>
 		</accessrules>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
