@@ -29,14 +29,6 @@ public class GenericJavaXmlList
 
 	protected final XmlListAnnotation resourceXmlList;
 
-	protected String specifiedName;
-
-	protected Boolean specifiedRequired;
-
-	protected String specifiedNamespace;
-
-	protected Boolean specifiedNillable;
-
 	public GenericJavaXmlList(JaxbAttributeMapping parent, XmlListAnnotation resource) {
 		super(parent);
 		this.resourceXmlList = resource;
