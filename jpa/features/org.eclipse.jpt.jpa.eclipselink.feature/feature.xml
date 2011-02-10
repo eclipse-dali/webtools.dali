@@ -4,7 +4,7 @@
       label="%featureName"
       version="3.0.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.jpt.eclipselink.branding">
+      plugin="org.eclipse.jpt.jpa.eclipselink.branding">
 
    <description>
       %description
@@ -21,6 +21,13 @@
    <requires>
       <import feature="org.eclipse.jpt.jpa.feature" version="3.0.0"/>
    </requires>
+
+   <plugin
+         id="org.eclipse.jpt.common.eclipselink.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.jpt.jpa.eclipselink.core"
@@ -44,7 +51,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.eclipselink.branding"
+         id="org.eclipse.jpt.jpa.eclipselink.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
