@@ -21,6 +21,8 @@ import org.eclipse.jpt.jaxb.core.context.java.JavaAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.AbstractJaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.internal.JavaPackageInfoResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.internal.JavaResourceModelProvider;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAnyAttributeMappingDefinition;
+import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAnyElementMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlAttributeMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlElementMappingDefinition;
 import org.eclipse.jpt.jaxb.core.internal.context.java.JavaXmlTransientMappingDefinition;
@@ -156,6 +158,8 @@ public class GenericJaxb_2_1_PlatformDefinition
 	
 	@Override
 	protected void addSpecifiedJavaAttributeMappingDefinitionsTo(ArrayList<JavaAttributeMappingDefinition> definitions) {
+		definitions.add(JavaXmlAnyAttributeMappingDefinition.instance());
+		definitions.add(JavaXmlAnyElementMappingDefinition.instance());
 		definitions.add(JavaXmlAttributeMappingDefinition.instance());
 		definitions.add(JavaXmlElementMappingDefinition.instance());
 		definitions.add(JavaXmlTransientMappingDefinition.instance());

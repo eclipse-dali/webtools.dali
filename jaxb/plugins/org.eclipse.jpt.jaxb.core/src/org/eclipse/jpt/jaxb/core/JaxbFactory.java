@@ -25,6 +25,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -126,6 +128,10 @@ public interface JaxbFactory  {
 	JaxbPersistentProperty buildJavaPersistentProperty(JaxbPersistentClass parent, JavaResourceMethod resourceGetter, JavaResourceMethod resourceSetter);
 
 	JaxbAttributeMapping buildJavaNullAttributeMapping(JaxbPersistentAttribute parent);
+
+	XmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent);
+
+	XmlAnyElementMapping buildJavaXmlAnyElementMapping(JaxbPersistentAttribute parent);
 
 	XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent);
 

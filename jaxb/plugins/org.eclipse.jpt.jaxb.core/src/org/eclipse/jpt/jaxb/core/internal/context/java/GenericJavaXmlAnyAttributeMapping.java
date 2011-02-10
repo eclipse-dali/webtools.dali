@@ -9,23 +9,31 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.internal.context.java;
 
+import java.util.List;
+import java.util.Map;
+import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
-import org.eclipse.jpt.jaxb.core.context.XmlValueMapping;
+import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
+import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlAnyAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.XmlValueAnnotation;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public class GenericJavaXmlValueMapping
-	extends AbstractJavaAttributeMapping<XmlValueAnnotation>
-	implements XmlValueMapping
+public class GenericJavaXmlAnyAttributeMapping
+	extends AbstractJavaAttributeMapping<XmlAnyAttributeAnnotation>
+	implements XmlAnyAttributeMapping
 {
+
 	protected final XmlAdaptable xmlAdaptable;
 
 
-	public GenericJavaXmlValueMapping(JaxbPersistentAttribute parent) {
+	public GenericJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.xmlAdaptable = buildXmlAdaptable();
 	}
@@ -43,12 +51,12 @@ public class GenericJavaXmlValueMapping
 	}
 
 	public String getKey() {
-		return MappingKeys.XML_VALUE_ATTRIBUTE_MAPPING_KEY;
+		return MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY;
 	}
 
 	@Override
 	protected String getAnnotationName() {
-		return XmlValueAnnotation.ANNOTATION_NAME;
+		return XmlAnyAttributeAnnotation.ANNOTATION_NAME;
 	}
 
 	//****************** XmlJavaTypeAdapter *********************
@@ -59,10 +67,10 @@ public class GenericJavaXmlValueMapping
 				return getJavaResourceAttribute();
 			}
 			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-				return GenericJavaXmlValueMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
+				return GenericJavaXmlAnyAttributeMapping.this.buildXmlJavaTypeAdapter(adapterAnnotation);
 			}
 			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-				GenericJavaXmlValueMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
+				GenericJavaXmlAnyAttributeMapping.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
 			}
 		});
 	}
@@ -82,4 +90,19 @@ public class GenericJavaXmlValueMapping
 	public void removeXmlJavaTypeAdapter() {
 		this.xmlAdaptable.removeXmlJavaTypeAdapter();
 	}
+
+	//************* validation ****************
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		super.validate(messages, reporter, astRoot);
+		if (!getPersistentAttribute().isJavaResourceAttributeTypeSubTypeOf(Map.class.getName())) {
+			messages.add(
+				DefaultValidationMessages.buildMessage(
+					IMessage.HIGH_SEVERITY,
+					JaxbValidationMessages.XML_ANY_ATTRIBUTE_MAPPING_DEFINED_ON_NON_MAP,
+					this,
+					getValidationTextRange(astRoot)));
+		}
+	}
+
 }

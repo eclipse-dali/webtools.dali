@@ -31,6 +31,8 @@ public class JptJaxbUiIcons
 	public static final String JAXB_WIZ_BANNER = "full/wizban/new_jaxb_prj_wiz";
 
 
+	public static final String XML_ANY_ATTRIBUTE = "full/obj16/xml-any-attribute";
+	public static final String XML_ANY_ELEMENT = "full/obj16/xml-any-element";
 	public static final String XML_ATTRIBUTE = "full/obj16/xml-attribute";
 	public static final String XML_ELEMENT = "full/obj16/xml-element";
 	public static final String XML_TRANSIENT = "full/obj16/xml-transient";

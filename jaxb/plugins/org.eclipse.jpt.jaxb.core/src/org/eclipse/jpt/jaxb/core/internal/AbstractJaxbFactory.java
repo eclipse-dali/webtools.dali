@@ -29,6 +29,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.context.XmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlElementMapping;
 import org.eclipse.jpt.jaxb.core.context.XmlNs;
@@ -46,6 +48,8 @@ import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentEnum
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentField;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaPersistentProperty;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaRegistry;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyAttributeMapping;
+import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAnyElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlAttributeMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlElementMapping;
 import org.eclipse.jpt.jaxb.core.internal.context.java.GenericJavaXmlNs;
@@ -148,6 +152,14 @@ public abstract class AbstractJaxbFactory
 
 	public JaxbAttributeMapping buildJavaXmlTransientMapping(JaxbPersistentAttribute parent) {
 		return new GenericJavaXmlTransientMapping(parent);
+	}
+
+	public XmlAnyAttributeMapping buildJavaXmlAnyAttributeMapping(JaxbPersistentAttribute parent) {
+		return new GenericJavaXmlAnyAttributeMapping(parent);
+	}
+
+	public XmlAnyElementMapping buildJavaXmlAnyElementMapping(JaxbPersistentAttribute parent) {
+		return new GenericJavaXmlAnyElementMapping(parent);
 	}
 
 	public XmlAttributeMapping buildJavaXmlAttributeMapping(JaxbPersistentAttribute parent) {

@@ -921,6 +921,8 @@ public class GenericJavaPersistentClass
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
 		this.xmlAdaptable.validate(messages, reporter, astRoot);
+		this.validateXmlAnyAttributeMapping(messages, astRoot);
+		this.validateXmlAnyElementMapping(messages, astRoot);
 		this.validateXmlValueMapping(messages, astRoot);
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			attribute.validate(messages, reporter, astRoot);
@@ -958,6 +960,46 @@ public class GenericJavaPersistentClass
 								attribute.getMapping(),
 								attribute.getMapping().getValidationTextRange(astRoot)));					
 					}
+				}
+			}
+		}
+	}
+
+	protected void validateXmlAnyAttributeMapping(List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlAnyAttributeMapping = null;
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY) {
+				if (xmlAnyAttributeMapping != null) {
+					messages.add(
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.MULTIPLE_XML_ANY_ATTRIBUTE_MAPPINGS_DEFINED,
+							new String[] {attribute.getName(), xmlAnyAttributeMapping},
+							attribute.getMapping(),
+							attribute.getMapping().getValidationTextRange(astRoot)));
+				}
+				else {
+					xmlAnyAttributeMapping = attribute.getName();
+				}
+			}
+		}
+	}
+
+	protected void validateXmlAnyElementMapping(List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlAnyElementMapping = null;
+		for (JaxbPersistentAttribute attribute : getAttributes()) {
+			if (attribute.getMappingKey() == MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY) {
+				if (xmlAnyElementMapping != null) {
+					messages.add(
+						DefaultValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JaxbValidationMessages.MULTIPLE_XML_ANY_ELEMENT_MAPPINGS_DEFINED,
+							new String[] {attribute.getName(), xmlAnyElementMapping},
+							attribute.getMapping(),
+							attribute.getMapping().getValidationTextRange(astRoot)));
+				}
+				else {
+					xmlAnyElementMapping = attribute.getName();
 				}
 			}
 		}

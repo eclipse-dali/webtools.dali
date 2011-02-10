@@ -45,6 +45,12 @@ public class JaxbMappingImageHelper
 		if (MappingKeys.NULL_ATTRIBUTE_MAPPING_KEY == mappingKey) {
 			return JptJaxbUiIcons.NULL_ATTRIBUTE_MAPPING;
 		}
+		else if (MappingKeys.XML_ANY_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiIcons.XML_ANY_ATTRIBUTE;
+		}
+		else if (MappingKeys.XML_ANY_ELEMENT_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
+			return JptJaxbUiIcons.XML_ANY_ELEMENT;
+		}
 		else if (MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY.equals(mappingKey)) {
 			return JptJaxbUiIcons.XML_ATTRIBUTE;
 		}
