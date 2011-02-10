@@ -87,14 +87,10 @@ public class XmlId extends AbstractXmlAttributeMapping implements ColumnMapping,
 	 */
 	protected TemporalType temporal = TEMPORAL_EDEFAULT;
 	/**
-	 * The default value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getEnumerated()
-	 * @generated
-	 * @ordered
+	 * changed this to null and removed the generated flag so emf won't generate over it
+	 * we don't want a default for enums, just null if the tag does not exist
 	 */
-	protected static final EnumType ENUMERATED_EDEFAULT = EnumType.ORDINAL;
+	protected static final EnumType ENUMERATED_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getEnumerated() <em>Enumerated</em>}' attribute.
 	 * <!-- begin-user-doc -->
