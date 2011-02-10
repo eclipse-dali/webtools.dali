@@ -18,6 +18,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.persistence.connection.
 /**
  *  EclipseLink2_0ConnectionTests
  */
+@SuppressWarnings("nls")
 public class EclipseLink2_0ConnectionTests extends EclipseLink2_0PersistenceUnitTestCase
 {
 	private Connection2_0 connection;

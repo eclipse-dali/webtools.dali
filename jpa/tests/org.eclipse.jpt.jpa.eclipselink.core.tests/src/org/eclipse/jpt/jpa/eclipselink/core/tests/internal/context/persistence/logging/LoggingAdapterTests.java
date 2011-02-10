@@ -21,6 +21,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence.E
  * Tests the update of model objects by the Logging adapter when the
  * PersistenceUnit changes.
  */
+@SuppressWarnings("nls")
 public class LoggingAdapterTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Logging logging;

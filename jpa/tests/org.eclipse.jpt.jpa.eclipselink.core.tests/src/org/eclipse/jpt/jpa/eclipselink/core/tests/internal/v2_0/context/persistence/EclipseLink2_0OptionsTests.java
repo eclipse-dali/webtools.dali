@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.persistence.options.Opt
 /**
  *  EclipseLinkOptions2_0Tests
  */
+@SuppressWarnings("nls")
 public class EclipseLink2_0OptionsTests extends EclipseLink2_0PersistenceUnitTestCase
 {
 	private Options2_0 options;

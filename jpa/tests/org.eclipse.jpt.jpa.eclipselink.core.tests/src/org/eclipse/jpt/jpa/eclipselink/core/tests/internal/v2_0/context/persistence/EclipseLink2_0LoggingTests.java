@@ -17,6 +17,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.v2_0.context.persistence.logging.Log
 /**
  *  EclipseLink2_0LoggingTests
  */
+@SuppressWarnings("nls")
 public class EclipseLink2_0LoggingTests extends EclipseLink2_0PersistenceUnitTestCase
 {
 	private Logging2_0 logging;

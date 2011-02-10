@@ -12,6 +12,7 @@ package org.eclipse.jpt.common.utility.tests.internal;
 import junit.framework.TestCase;
 import org.eclipse.jpt.common.utility.internal.KeyedSet;
 
+@SuppressWarnings("nls")
 public class KeyedSetTests
 		extends TestCase {
 	

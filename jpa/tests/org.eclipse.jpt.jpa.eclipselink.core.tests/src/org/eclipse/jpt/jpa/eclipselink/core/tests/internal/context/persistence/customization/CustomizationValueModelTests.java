@@ -24,6 +24,7 @@ import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence.E
 /**
  * CustomizationValueModelTests
  */
+@SuppressWarnings("nls")
 public class CustomizationValueModelTests extends EclipseLinkPersistenceUnitTestCase
 {
 	private Customization customization;
