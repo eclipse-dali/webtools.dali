@@ -80,10 +80,17 @@ public class JptJpaCorePlugin
 	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 
 	/**
+	 * The legacy plug-in identifier of the persistence support, used for project preferences
+	 * (value <code>"org.eclipse.jpt.core"</code>).
+	 */
+	public static final String LEGACY_PLUGIN_ID = "org.eclipse.jpt.core";  //$NON-NLS-1$
+	public static final String LEGACY_PLUGIN_ID_ = LEGACY_PLUGIN_ID + '.';
+
+	/**
 	 * The key for storing a JPA project's platform ID in the Eclipse
 	 * project's preferences.
 	 */
-	private static final String JPA_PLATFORM_PREF_KEY = PLUGIN_ID_ + "platform";  //$NON-NLS-1$
+	private static final String JPA_PLATFORM_PREF_KEY = LEGACY_PLUGIN_ID_ + "platform";  //$NON-NLS-1$
 
 	/**
 	 * The old key for storing the default JPA platform ID in the workspace preferences.
@@ -394,7 +401,7 @@ public class JptJpaCorePlugin
 	 * Return the Dali preferences for the specified context.
 	 */
 	private static IEclipsePreferences getPreferences(IScopeContext context) {
-		return context.getNode(PLUGIN_ID);
+		return context.getNode(LEGACY_PLUGIN_ID);
 	}
 	
 	/**
