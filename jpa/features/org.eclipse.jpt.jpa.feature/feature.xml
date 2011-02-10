@@ -4,7 +4,7 @@
       label="%featureName"
       version="3.0.0.qualifier"
       provider-name="%providerName"
-      plugin="org.eclipse.jpt.branding">
+      plugin="org.eclipse.jpt.jpa.branding">
 
    <description>
       %description
@@ -123,7 +123,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.eclipse.jpt.branding"
+         id="org.eclipse.jpt.jpa.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
