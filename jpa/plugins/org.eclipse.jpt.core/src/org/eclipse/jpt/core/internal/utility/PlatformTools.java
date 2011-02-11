@@ -11,8 +11,13 @@ package org.eclipse.jpt.core.internal.utility;
 
 import java.io.IOException;
 import java.io.InputStream;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.content.IContentTypeManager;
@@ -23,6 +28,21 @@ import org.eclipse.jpt.core.JptCorePlugin;
  */
 public class PlatformTools {
 
+	/**
+	 * Return the {@link IContainer} with the workspace relative "full" path
+	 */
+	public static IContainer getContainer(IPath fullContainerPath) {
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		// changed to handle non-workspace projects
+		String projectName = fullContainerPath.segment(0).toString();
+		IPath projectRelativePath = fullContainerPath.removeFirstSegments(1);
+		IProject project = root.getProject(projectName);
+		if (projectRelativePath.isEmpty()) {
+			return project;
+		}
+		return project.getFolder(projectRelativePath);
+	}
+	
 	/**
 	 * Return the specified file's content type,
 	 * using the Eclipse platform's content type manager.

@@ -15,7 +15,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -26,6 +25,7 @@ import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
 import org.eclipse.jpt.core.internal.AbstractJpaProject;
 import org.eclipse.jpt.core.internal.JptCoreMessages;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.utility.Filter;
 import org.eclipse.jpt.utility.internal.ArrayTools;
 import org.eclipse.jpt.utility.internal.CollectionTools;
@@ -262,13 +262,11 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		if (project == null) {
 			return false;
 		}
-		try {
-			IWorkspaceRoot root = project.getWorkspace().getRoot();
-			return root.getContainerForLocation(root.getLocation().append(new Path(containerPath))) == null;
-		}
-		catch (IllegalArgumentException e) {
+		IContainer container = PlatformTools.getContainer(new Path(containerPath));
+		if (container == null) {
 			return true;
 		}
+		return false;
 	}
 	
 	/**
@@ -279,14 +277,8 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		if (project == null) {
 			return false;
 		}
-		IFolder folder;
-		try {
-			folder = project.getWorkspace().getRoot().getFolder(new Path(folderPath));
-		}
-		catch (IllegalArgumentException e) {
-			return false;
-		}
-		return ! project.equals(folder.getProject());
+		IContainer container = PlatformTools.getContainer(new Path(folderPath));
+		return ! project.equals(container.getProject());
 	}
 	
 	/**
@@ -299,14 +291,7 @@ public abstract class AbstractJpaFileCreationDataModelProvider
 		if (project == null) {
 			return null;
 		}
-		IContainer container;
-		try {
-			IWorkspaceRoot root = project.getWorkspace().getRoot();
-			container = root.getContainerForLocation(root.getLocation().append(new Path(folderPath)));
-		}
-		catch (IllegalArgumentException e) {
-			return null;
-		}
+		IContainer container = PlatformTools.getContainer(new Path(folderPath));
 		if (container == null || ! container.exists()) {
 			return null;
 		}

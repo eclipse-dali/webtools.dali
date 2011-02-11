@@ -14,7 +14,6 @@ import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,6 +23,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
 import org.eclipse.jem.util.emf.workbench.ProjectUtilities;
 import org.eclipse.jpt.core.JpaProject;
 import org.eclipse.jpt.core.JptCorePlugin;
+import org.eclipse.jpt.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.core.resource.AbstractXmlResourceProvider;
 import org.eclipse.wst.common.componentcore.ComponentCore;
 import org.eclipse.wst.common.componentcore.resources.IVirtualFolder;
@@ -88,8 +88,7 @@ public abstract class AbstractJpaFileCreationOperation
 		// Get the source folder name from the data model
 		String folderPath = model.getStringProperty(SOURCE_FOLDER);
 		IProject project = getProject();
-		IWorkspaceRoot root = project.getWorkspace().getRoot();
-		IContainer container = root.getContainerForLocation(root.getLocation().append(new Path(folderPath)));
+		IContainer container = PlatformTools.getContainer(new Path(folderPath));
 		boolean createVirtualReference = ComponentCore.createFolder(project, new Path("")).exists();
 		if (container instanceof IFolder) {
 			IFolder folder = (IFolder) container;
