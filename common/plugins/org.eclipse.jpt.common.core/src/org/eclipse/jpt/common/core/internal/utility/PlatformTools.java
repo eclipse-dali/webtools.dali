@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -32,7 +33,14 @@ public class PlatformTools {
 	 */
 	public static IContainer getContainer(IPath fullContainerPath) {
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		return root.getContainerForLocation(root.getLocation().append(fullContainerPath));
+		// changed to handle non-workspace projects
+		String projectName = fullContainerPath.segment(0).toString();
+		IPath projectRelativePath = fullContainerPath.removeFirstSegments(1);
+		IProject project = root.getProject(projectName);
+		if (projectRelativePath.isEmpty()) {
+			return project;
+		}
+		return project.getFolder(projectRelativePath);
 	}
 	
 	/**
