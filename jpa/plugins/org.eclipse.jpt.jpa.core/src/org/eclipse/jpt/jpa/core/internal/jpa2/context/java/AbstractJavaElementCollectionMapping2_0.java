@@ -12,7 +12,10 @@ package org.eclipse.jpt.jpa.core.internal.jpa2.context.java;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.Association;
@@ -1157,7 +1160,9 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void validateTargetClass(List<IMessage> messages, CompilationUnit astRoot) {
-		if (this.getTargetClass() == null) {
+		String targetClass = getFullyQualifiedTargetClass();
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (StringTools.stringIsEmpty(targetClass)) {
 			messages.add(
 				DefaultJpaValidationMessages.buildMessage(
 					IMessage.HIGH_SEVERITY,
@@ -1167,21 +1172,30 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 					this.getValidationTextRange(astRoot)
 				)
 			);
-		}
-		//TODO this does not give an error for unmapped, unlisted types that aren't basic - bug 310464
-		if (this.getResolvedTargetType() != null) {
-			if (this.getResolvedTargetEmbeddable() == null) {
+		} else if(targetClassExists(javaProject)) {
+			if (!JDTTools.typeIsBasic(javaProject, targetClass) && getResolvedTargetEmbeddable() == null) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
 						IMessage.HIGH_SEVERITY,
 						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
-						new String[] {this.getTargetClass()},
-						this,
+						new String[] {targetClass}, 
+						this, 
 						this.getTargetClassTextRange(astRoot)
 					)
 				);
 			}
 		}
+	}
+
+	private boolean targetClassExists(IJavaProject javaProject) {
+		String targetClass = getFullyQualifiedTargetClass();
+		if (!StringTools.stringIsEmpty(targetClass)) 
+		{
+			if (JDTTools.getJDTType(javaProject, targetClass) != null) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	protected TextRange getTargetClassTextRange(CompilationUnit astRoot) {

@@ -13,10 +13,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.Transformer;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -1214,7 +1217,9 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	protected void validateTargetClass(List<IMessage> messages) {
-		if (this.getTargetClass() == null) {
+		String targetClass = getTargetClass();
+		IJavaProject javaProject = getJpaProject().getJavaProject();
+		if (StringTools.stringIsEmpty(targetClass)) {
 			if (this.isVirtual()) {
 				messages.add(
 					DefaultJpaValidationMessages.buildMessage(
@@ -1236,10 +1241,30 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 					)
 				);
 			}
-		}
-		//TODO this does not give an error for unmapped, unlisted types that aren't basic - bug 310464
-		if (this.getResolvedTargetType() != null) {
-			if (this.getResolvedTargetEmbeddable() == null) {
+		} else if (!targetClassExists(javaProject)) {
+			if (this.isVirtual()) {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
+						new String[] {this.name},
+						this,
+						this.getTargetClassTextRange()
+					)
+				);
+			} else {
+				messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JpaValidationMessages.ELEMENT_COLLECTION_TARGET_CLASS_DOES_NOT_EXIST,
+						new String[] {this.name},
+						this,
+						this.getTargetClassTextRange()
+					)
+				);
+			}
+		} else {
+			if (!JDTTools.typeIsBasic(javaProject, targetClass) && getResolvedTargetEmbeddable() == null) {
 				if (this.isVirtual()) {
 					messages.add(
 						DefaultJpaValidationMessages.buildMessage(
@@ -1247,7 +1272,7 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 							JpaValidationMessages.VIRTUAL_ATTRIBUTE_ELEMENT_COLLECTION_TARGET_CLASS_MUST_BE_EMBEDDABLE_OR_BASIC_TYPE,
 							new String[] {this.name, this.getTargetClass()},
 							this,
-							this.getValidationTextRange()
+							this.getTargetClassTextRange()
 						)
 					);
 				} else {
@@ -1264,7 +1289,18 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 			}
 		}
 	}
-
+	
+	private boolean targetClassExists(IJavaProject javaProject) {
+		String targetClass = getTargetClass();
+		if (!StringTools.stringIsEmpty(targetClass)) 
+		{
+			if (JDTTools.getJDTType(javaProject, targetClass) != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	protected TextRange getTargetClassTextRange() {
 		return this.xmlAttributeMapping.getTargetClassTextRange();
 	}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,11 +11,12 @@ package org.eclipse.jpt.jpa.core.internal.context.java;
 
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Modifier;
+import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
-import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
@@ -447,7 +448,7 @@ public abstract class AbstractJavaPersistentAttribute
 
 		if (arrayDepth == 1) {
 			String elementTypeName = ReflectionTools.getElementTypeNameForTypeDeclaration(typeName, 1);
-			return this.elementTypeIsValidForBasicArray(elementTypeName);
+			return JDTTools.elementTypeIsValidForBasicArray(elementTypeName);
 		}
 
 		// arrayDepth == 0
@@ -457,7 +458,7 @@ public abstract class AbstractJavaPersistentAttribute
 		if (ClassName.isVariablePrimitiveWrapper(typeName)) {
 			return true;  // any primitive wrapper but 'java.lang.Void'
 		}
-		if (this.typeIsOtherValidBasicType(typeName)) {
+		if (JDTTools.typeIsOtherValidBasicType(typeName)) {
 			return true;
 		}
 		if (this.resourcePersistentAttribute.typeIsEnum()) {
@@ -468,45 +469,6 @@ public abstract class AbstractJavaPersistentAttribute
 		}
 		return false;
 	}
-
-	/**
-	 * Return whether the specified type is a valid element type for
-	 * a one-dimensional array that can default to a basic mapping:<ul>
-	 * <li><code>byte</code>
-	 * <li><code>java.lang.Byte</code>
-	 * <li><code>char</code>
-	 * <li><code>java.lang.Character</code>
-	 * </ul>
-	 */
-	protected boolean elementTypeIsValidForBasicArray(String elementTypeName) {
-		return ArrayTools.contains(VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES, elementTypeName);
-	}
-
-	protected static final String[] VALID_BASIC_ARRAY_ELEMENT_TYPE_NAMES = {
-		byte.class.getName(),
-		char.class.getName(),
-		java.lang.Byte.class.getName(),
-		java.lang.Character.class.getName()
-	};
-
-	/**
-	 * Return whether the specified type is among the various "other" types
-	 * that can default to a basic mapping.
-	 */
-	protected boolean typeIsOtherValidBasicType(String typeName) {
-		return ArrayTools.contains(OTHER_VALID_BASIC_TYPE_NAMES, typeName);
-	}
-
-	protected static final String[] OTHER_VALID_BASIC_TYPE_NAMES = {
-		java.lang.String.class.getName(),
-		java.math.BigInteger.class.getName(),
-		java.math.BigDecimal.class.getName(),
-		java.util.Date.class.getName(),
-		java.util.Calendar.class.getName(),
-		java.sql.Date.class.getName(),
-		java.sql.Time.class.getName(),
-		java.sql.Timestamp.class.getName(),
-	};
 
 	protected static final String SERIALIZABLE_TYPE_NAME = java.io.Serializable.class.getName();
 
