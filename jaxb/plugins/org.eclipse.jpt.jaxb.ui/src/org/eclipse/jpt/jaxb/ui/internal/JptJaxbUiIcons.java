@@ -20,6 +20,7 @@ public class JptJaxbUiIcons
 	public static final String PERSISTENT_CLASS = "full/obj16/persistent_class";
 	public static final String PERSISTENT_ENUM = "full/obj16/persistent_enum";
 	public static final String TRANSIENT_CLASS = "full/obj16/transient_class";
+	public static final String REGISTRY = "full/obj16/registry";
 	
 	public static final String PERSISTENT_FIELD = "full/obj16/persistent_field";
 	public static final String PERSISTENT_PROPERTY = "full/obj16/persistent_property";

@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011  Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -15,10 +15,12 @@ import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbEnumConstant;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
-import org.eclipse.jpt.jaxb.core.context.JaxbType;
+import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.JaxbTransientType;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -50,11 +52,17 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		else if (item instanceof JaxbPackage) {
 			return new JaxbPackageItemLabelProvider((JaxbPackage) item, contentAndLabelProvider);
 		}
+		else if (item instanceof JaxbRegistry) {
+			return new JaxbRegistryItemLabelProvider((JaxbRegistry) item, contentAndLabelProvider);
+		}
+		else if (item instanceof JaxbPersistentClass) {
+			return new JaxbPersistentClassItemLabelProvider((JaxbPersistentClass) item, contentAndLabelProvider);
+		}
 		else if (item instanceof JaxbPersistentEnum) {
 			return new JaxbPersistentEnumItemLabelProvider((JaxbPersistentEnum) item, contentAndLabelProvider);
 		}
-		else if (item instanceof JaxbType) {
-			return new JaxbTypeItemLabelProvider((JaxbType) item, contentAndLabelProvider);
+		else if (item instanceof JaxbTransientType) {
+			return new JaxbTransientTypeItemLabelProvider((JaxbTransientType) item, contentAndLabelProvider);
 		}
 		else if (item instanceof JaxbPersistentField) {
 			return new JaxbPersistentFieldItemLabelProvider((JaxbPersistentField) item, contentAndLabelProvider);

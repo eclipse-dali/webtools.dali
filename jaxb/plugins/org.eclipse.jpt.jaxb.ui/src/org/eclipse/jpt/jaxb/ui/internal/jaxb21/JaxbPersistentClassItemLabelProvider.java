@@ -12,23 +12,23 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
+import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.swt.graphics.Image;
 
 
-public class JaxbPersistentEnumItemLabelProvider
+public class JaxbPersistentClassItemLabelProvider
 		extends JaxbTypeItemLabelProvider {
 	
-	public JaxbPersistentEnumItemLabelProvider(
-			JaxbPersistentEnum jaxbEnum, DelegatingContentAndLabelProvider labelProvider) {
+	public JaxbPersistentClassItemLabelProvider(
+			JaxbPersistentClass jaxbPersistentClass, DelegatingContentAndLabelProvider labelProvider) {
 		
-		super(jaxbEnum, labelProvider);
+		super(jaxbPersistentClass, labelProvider);
 	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new StaticPropertyValueModel<Image>(JptJaxbUiPlugin.getImage(JptJaxbUiIcons.PERSISTENT_ENUM));
+		return new StaticPropertyValueModel<Image>(JptJaxbUiPlugin.getImage(JptJaxbUiIcons.PERSISTENT_CLASS));
 	}
 }

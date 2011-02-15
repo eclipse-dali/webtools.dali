@@ -99,8 +99,23 @@ public interface JaxbContextRoot
 	 * (There should typically be a max of 1, but there are invalid states ...)
 	 */
 	Iterable<JaxbRegistry> getRegistries(JaxbPackage jaxbPackage);
-	
-	
+
+	/**
+	 * The set of transient types.
+	 */
+	Iterable<JaxbTransientType> getTransientTypes();
+
+	/**
+	 * Return the set of transient types that are in the given package
+	 */
+	Iterable<JaxbTransientType> getTransientTypes(JaxbPackage jaxbPackage);
+
+	/**
+	 * Return the transient type with the given fully qualified name
+	 */
+	JaxbTransientType getTransientType(String fullyQualifiedTypeName);
+
+
 	// **************** validation ********************************************
 	
 	/**

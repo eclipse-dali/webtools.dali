@@ -28,6 +28,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
+import org.eclipse.jpt.jaxb.core.context.JaxbTransientType;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbType.Kind;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
@@ -82,6 +83,8 @@ public class GenericContextRoot
 		// (registries can be determined purely by resource model)
 		final Set<JavaResourceType> registries = calculateRegistries();
 		
+		final Set<JavaResourceType> initialTransientClasses = calculateInitialTransientClasses();
+
 		// determine initial set of persistent classes
 		// (persistent classes that can be determined purely by resource model)
 		final Set<JavaResourceType> initialPersistentClasses = calculateInitialPersistentClasses();
@@ -89,6 +92,7 @@ public class GenericContextRoot
 		final Set<JavaResourceEnum> initialPersistentEnums = calculateInitialPersistentEnums();
 		
 		final Set<AbstractJavaResourceType> initialTypes = new HashSet<AbstractJavaResourceType>(registries);
+		initialTypes.addAll(initialTransientClasses);
 		initialTypes.addAll(initialPersistentClasses);
 		initialTypes.addAll(initialPersistentEnums);
 		
@@ -101,6 +105,10 @@ public class GenericContextRoot
 		
 		for (JavaResourceType resourceType : registries) {
 			this.types.put(resourceType.getName(), buildRegistry(resourceType));
+		}
+		
+		for (JavaResourceType resourceType : initialTransientClasses) {
+			this.types.put(resourceType.getName(), buildTransientType(resourceType));
 		}
 		
 		for (JavaResourceType resourceType : initialPersistentClasses) {
@@ -126,6 +134,8 @@ public class GenericContextRoot
 		// (registries can be determined purely by resource model)
 		final Set<JavaResourceType> registries = calculateRegistries();
 		
+		final Set<JavaResourceType> initialTransientClasses = calculateInitialTransientClasses();
+
 		// determine initial set of persistent classes
 		// (persistent classes that can be determined purely by resource model)
 		final Set<JavaResourceType> initialPersistentClasses = calculateInitialPersistentClasses();
@@ -134,6 +144,7 @@ public class GenericContextRoot
 		final Set<AbstractJavaResourceType> initialTypes = new HashSet<AbstractJavaResourceType>(registries);
 		initialTypes.addAll(initialPersistentClasses);
 		initialTypes.addAll(initialPersistentEnums);
+		initialTypes.addAll(initialTransientClasses);
 		
 		// determine initial set of packages
 		final Set<String> initialPackages = calculateInitialPackageNames(initialTypes);
@@ -167,6 +178,23 @@ public class GenericContextRoot
 			}
 			else {
 				this.addType(buildRegistry(resourceType));
+			}
+		}
+		
+		for (JavaResourceType resourceType : initialTransientClasses) {
+			String className = resourceType.getQualifiedName();
+			typesToRemove.remove(className);
+			if (this.types.containsKey(className)) {
+				if (this.types.get(className).getKind() == Kind.TRANSIENT) {
+					typesToUpdate.add(className);
+				}
+				else {
+					this.removeType(className); // this will remove a type of another kind
+					this.addType(buildTransientType(resourceType));
+				}
+			}
+			else {
+				this.addType(buildTransientType(resourceType));
 			}
 		}
 		
@@ -244,6 +272,23 @@ public class GenericContextRoot
 	}
 	
 	/*
+	 * Calculate set of transient types, those annotated with @XmlTransient.
+	 * If an type annotated with @XmlTransient also contains other JAXB annotations, 
+	 * this will be a validation error
+	 */
+	protected Set<JavaResourceType> calculateInitialTransientClasses() {
+		return CollectionTools.set(
+				new FilteringIterable<JavaResourceType>(
+						getJaxbProject().getJavaSourceResourceTypes()) {
+					@Override
+					protected boolean accept(JavaResourceType o) {
+						return o.getAnnotation(JAXB.XML_TRANSIENT) != null
+							&& o.getAnnotation(JAXB.XML_REGISTRY) == null;
+					}
+				});
+	}
+	
+	/*
 	 * Calculate set of persistent classes that can be determined purely by resource model
 	 * (so far, this should be all resource types with the @XmlType annotation)
 	 * If both @XmlType and @XmlRegistry exist on a class, we will let @XmlRegistry take precedence
@@ -254,7 +299,9 @@ public class GenericContextRoot
 						getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceType o) {
-						return o.getAnnotation(JAXB.XML_TYPE) != null && o.getAnnotation(JAXB.XML_REGISTRY) == null && o.getAnnotation(JAXB.XML_ENUM) == null;
+						return o.getAnnotation(JAXB.XML_TYPE) != null 
+							&& o.getAnnotation(JAXB.XML_REGISTRY) == null
+							&& o.getAnnotation(JAXB.XML_TRANSIENT) == null;
 					}
 				});
 	}
@@ -270,7 +317,9 @@ public class GenericContextRoot
 						getJaxbProject().getJavaSourceResourceEnums()) {
 					@Override
 					protected boolean accept(JavaResourceEnum o) {
-						return ((o.getAnnotation(JAXB.XML_ENUM) != null) || (o.getAnnotation(JAXB.XML_TYPE) != null)) && o.getAnnotation(JAXB.XML_REGISTRY) == null;
+						return ((o.getAnnotation(JAXB.XML_ENUM) != null) || (o.getAnnotation(JAXB.XML_TYPE) != null)) 
+							&& o.getAnnotation(JAXB.XML_REGISTRY) == null
+							&& o.getAnnotation(JAXB.XML_TRANSIENT) == null;
 					}
 				});
 	}
@@ -425,8 +474,42 @@ public class GenericContextRoot
 			}
 		};
 	}
+
+
+	// ********** transient types **********
 	
+	public Iterable<JaxbTransientType> getTransientTypes() {
+		return new SubIterableWrapper<JaxbType, JaxbTransientType>(
+				new FilteringIterable<JaxbType>(getTypes()) {
+					@Override
+					protected boolean accept(JaxbType o) {
+						return o.getKind() == Kind.TRANSIENT;
+					}
+				});
+	}
 	
+	protected JaxbTransientType buildTransientType(JavaResourceType resourceType) {
+		return this.getFactory().buildJavaTransientType(this, resourceType);
+	}
+	
+	public Iterable<JaxbTransientType> getTransientTypes(final JaxbPackage jaxbPackage) {
+		return new FilteringIterable<JaxbTransientType>(getTransientTypes()) {
+			@Override
+			protected boolean accept(JaxbTransientType o) {
+				return o.getPackageName().equals(jaxbPackage.getName());
+			}
+		};
+	}
+
+	public JaxbTransientType getTransientType(String className) {
+		for (JaxbTransientType jaxbClass : this.getTransientTypes()) {
+			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
+				return jaxbClass;
+			}
+		}
+		return null;
+	}
+
 	// ********** persistent classes **********
 	
 	public Iterable<JaxbPersistentClass> getPersistentClasses() {
