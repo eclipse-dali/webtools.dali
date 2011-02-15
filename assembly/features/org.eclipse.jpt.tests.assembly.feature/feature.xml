@@ -22,7 +22,11 @@
    </url>
 
    <includes
-         id="org.eclipse.jpt.tests.feature"
+         id="org.eclipse.jpt.jpa.tests.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.jpt.jpa.eclipselink.tests.feature"
          version="0.0.0"/>
 
    <includes
