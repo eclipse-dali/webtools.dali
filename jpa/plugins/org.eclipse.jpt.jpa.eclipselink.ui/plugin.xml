@@ -59,7 +59,7 @@
             id="org.eclipse.jpt.jpa.eclipselink.ui.wizard.newEclipseLinkMappingFile"
 			name="%newEclipseLinkMappingFileWizardName"
 			icon="platform:/plugin/org.eclipse.jpt.jpa.ui/icons/full/etool16/new_jpa_file_wiz.gif"
-			category="org.eclipse.jpt/org.eclipse.jpt.jpa.eclipselink">
+			category="org.eclipse.jpt.jpa/org.eclipse.jpt.jpa.eclipselink">
 			<description>%newEclipseLinkJpaMappingFileWizardDesc</description>
 			<class class="org.eclipse.jpt.jpa.eclipselink.ui.internal.wizards.EclipseLinkMappingFileWizard"> 
 				<parameter name="javaeeartifact" value="true"/> 
