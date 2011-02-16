@@ -27,16 +27,19 @@ public class PersistentAttributeItemLabelProvider
 		super(persistentAttribute, labelProvider);
 	}
 	
-	
+	@Override
+	public ReadOnlyPersistentAttribute getModel() {
+		return (ReadOnlyPersistentAttribute) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, Image>(
 				new String[] {ReadOnlyPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY, ReadOnlyPersistentAttribute.MAPPING_PROPERTY}, 
-				(ReadOnlyPersistentAttribute) model()) {
+				getModel()) {
 			@Override
 			protected Image buildValue_() {
-				if (((ReadOnlyPersistentAttribute) model()).isVirtual()) {
+				if (getModel().isVirtual()) {
 					return JptUiIcons.ghost(JpaMappingImageHelper.iconKeyForAttributeMapping(this.subject.getMappingKey()));
 				}
 				return JpaMappingImageHelper.imageForAttributeMapping(this.subject.getMappingKey());
@@ -46,17 +49,17 @@ public class PersistentAttributeItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, (ReadOnlyPersistentAttribute) model()) {
+		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getName();
+				return this.subject.getName();
 			}
 		};
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, (ReadOnlyPersistentAttribute) model()) {
+		return new PropertyAspectAdapter<ReadOnlyPersistentAttribute, String>(ReadOnlyPersistentAttribute.NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
 				StringBuilder sb = new StringBuilder();

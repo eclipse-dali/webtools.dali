@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2009  Oracle. 
+ *  Copyright (c) 2009, 2011  Oracle. 
  *  All rights reserved.  This program and the accompanying materials are 
  *  made available under the terms of the Eclipse Public License v1.0 which 
  *  accompanies this distribution, and is available at 
@@ -27,13 +27,17 @@ public class JarFileRefItemLabelProvider extends AbstractItemLabelProvider
 		super(jarFileRef, labelProvider);
 	}
 	
+	@Override
+	public JarFileRef getModel() {
+		return (JarFileRef) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<JarFileRef, String>(JarFileRef.FILE_NAME_PROPERTY, (JarFileRef) model()) {
+		return new PropertyAspectAdapter<JarFileRef, String>(JarFileRef.FILE_NAME_PROPERTY, getModel()) {
 			 @Override
 			protected String buildValue_() {
-				return subject.getFileName();
+				return this.subject.getFileName();
 			}
 		};
 	}
@@ -45,12 +49,16 @@ public class JarFileRefItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<JarFileRef, String>(JarFileRef.FILE_NAME_PROPERTY, (JarFileRef) model()) {
+		return new PropertyAspectAdapter<JarFileRef, String>(JarFileRef.FILE_NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPersistenceUnit().getName() 
-				+ "/\"" + subject.getFileName()
-				+ "\" - " + subject.getResource().getFullPath().makeRelative();
+				StringBuilder sb = new StringBuilder();
+				sb.append(this.subject.getPersistenceUnit().getName());
+				sb.append("/\"");  //$NON-NLS-1$
+				sb.append(this.subject.getFileName());
+				sb.append("\" - "); //$NON-NLS-1$
+				sb.append(this.subject.getResource().getFullPath().makeRelative());
+				return sb.toString();
 			}
 		};
 	}

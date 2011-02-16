@@ -26,6 +26,10 @@ public class JarFileItemLabelProvider extends AbstractItemLabelProvider
 		super(jarFile, labelProvider);
 	}
 	
+	@Override
+	public JarFile getModel() {
+		return (JarFile) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
@@ -34,14 +38,15 @@ public class JarFileItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(((JarFile) model()).getResource().getName());
+		return new StaticPropertyValueModel<String>(getModel().getResource().getName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		JarFile jarFile = (JarFile) model();
-		return new StaticPropertyValueModel<String>(
-			jarFile.getResource().getName()
-			+ " - " + jarFile.getResource().getParent().getFullPath().makeRelative().toString());
+		StringBuilder sb = new StringBuilder();
+		sb.append(getModel().getResource().getName());
+		sb.append(" - ");  //$NON-NLS-1$
+		sb.append(getModel().getResource().getParent().getFullPath().makeRelative());
+		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 }

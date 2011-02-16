@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
+ *  Copyright (c) 2010, 2011 Oracle. All rights reserved.
  *  This program and the accompanying materials are made available under the
  *  terms of the Eclipse Public License v1.0, which accompanies this distribution
  *  and is available at http://www.eclipse.org/legal/epl-v10.html
@@ -31,8 +31,8 @@ public class JaxbContextRootItemLabelProvider
 	
 	
 	@Override
-	public JaxbContextRoot model() {
-		return (JaxbContextRoot) super.model();
+	public JaxbContextRoot getModel() {
+		return (JaxbContextRoot) super.getModel();
 	}
 	
 	@Override
@@ -47,8 +47,10 @@ public class JaxbContextRootItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new StaticPropertyValueModel<String>(
-				JptJaxbUiMessages.JaxbContent_label
-						+ " - " + model().getResource().getFullPath().makeRelative());
+		StringBuilder sb = new StringBuilder();
+		sb.append(JptJaxbUiMessages.JaxbContent_label);
+		sb.append(" - ");  //$NON-NLS-1$
+		sb.append(getModel().getResource().getFullPath().makeRelative());
+		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 }

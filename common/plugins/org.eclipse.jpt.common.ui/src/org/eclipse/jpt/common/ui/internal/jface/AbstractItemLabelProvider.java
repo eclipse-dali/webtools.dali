@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -65,7 +65,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	protected PropertyChangeListener buildLabelChangeListener() {
 		return new PropertyChangeListener() {
 			public void propertyChanged(PropertyChangeEvent event) {
-				labelProvider().updateLabel(model());
+				getLabelProvider().updateLabel(getModel());
 			}
 		};
 	}
@@ -74,7 +74,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * Return the image value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected synchronized PropertyValueModel<Image> imageModel() {
+	protected synchronized PropertyValueModel<Image> getImageModel() {
 		if (this.imageModel == null) {
 			this.imageModel = buildImageModel();
 			engageImageModel();
@@ -107,7 +107,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * Return the text value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected synchronized PropertyValueModel<String> textModel() {
+	protected synchronized PropertyValueModel<String> getTextModel() {
 		if (this.textModel == null) {
 			this.textModel = buildTextModel();
 			engageTextModel();
@@ -140,7 +140,7 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	 * Return the description value model
 	 * (lazy and just-in-time initialized)
 	 */
-	protected synchronized PropertyValueModel<String> descriptionModel() {
+	protected synchronized PropertyValueModel<String> getDescriptionModel() {
 		if (this.descriptionModel == null) {
 			this.descriptionModel = buildDescriptionModel();
 			engageDescriptionModel();
@@ -172,27 +172,27 @@ public abstract class AbstractItemLabelProvider implements ItemLabelProvider
 	/**
 	 * Return the model object represented by this item
 	 */
-	public Model model() {
+	public Model getModel() {
 		return this.model;
 	}
 	
 	/**
 	 * Return the label provider that delegates to this item
 	 */
-	public DelegatingContentAndLabelProvider labelProvider() {
+	public DelegatingContentAndLabelProvider getLabelProvider() {
 		return this.labelProvider;
 	}
 	
 	public Image getImage() {
-		return imageModel().getValue();
+		return getImageModel().getValue();
 	}
 	
 	public String getText() {
-		return textModel().getValue();
+		return getTextModel().getValue();
 	}
 	
 	public String getDescription() {
-		return descriptionModel().getValue();
+		return getDescriptionModel().getValue();
 	}
 	
 	public void dispose() {

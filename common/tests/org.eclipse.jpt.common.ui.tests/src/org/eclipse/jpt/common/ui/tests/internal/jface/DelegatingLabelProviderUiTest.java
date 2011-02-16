@@ -382,7 +382,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		@Override
 		protected PropertyValueModel<Image> buildImageModel() {
 			return new PropertyAspectAdapter<Vehicle, Image>(
-					new StaticPropertyValueModel<Vehicle>((Vehicle) model()), 
+					new StaticPropertyValueModel<Vehicle>((Vehicle) getModel()), 
 					Vehicle.COLOR_PROPERTY, Vehicle.GREYED_PROPERTY, Vehicle.TRANSLUCENT_PROPERTY) {
 				@Override
 				protected Image buildValue_() {
@@ -394,7 +394,7 @@ public class DelegatingLabelProviderUiTest extends ApplicationWindow
 		@Override
 		protected PropertyValueModel<String> buildTextModel() {
 			return new PropertyAspectAdapter<Vehicle, String>(
-					new StaticPropertyValueModel<Vehicle>((Vehicle) model()), 
+					new StaticPropertyValueModel<Vehicle>((Vehicle) getModel()), 
 					Vehicle.VEHICLE_TYPE_PROPERTY, Vehicle.COLOR_PROPERTY) {
 				@Override
 				protected String buildValue_() {

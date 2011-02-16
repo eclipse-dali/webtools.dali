@@ -26,21 +26,21 @@ public abstract class JaxbTypeItemLabelProvider
 	}
 	
 	@Override
-	public JaxbType model() {
-		return (JaxbType) super.model();
+	public JaxbType getModel() {
+		return (JaxbType) super.getModel();
 	}
 
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(model().getTypeQualifiedName());
+		return new StaticPropertyValueModel<String>(getModel().getTypeQualifiedName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(model().getFullyQualifiedName());
+		sb.append(getModel().getFullyQualifiedName());
 		sb.append(" - ");  //$NON-NLS-1$
-		sb.append(model().getResource().getFullPath().makeRelative());
+		sb.append(getModel().getResource().getFullPath().makeRelative());
 		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 }

@@ -28,7 +28,10 @@ public class JaxbPackageItemLabelProvider
 		super(jaxbPackage, labelProvider);
 	}
 	
-	
+	@Override
+	public JaxbPackage getModel() {
+		return (JaxbPackage) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
@@ -37,13 +40,15 @@ public class JaxbPackageItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel(((JaxbPackage) model()).getName());
+		return new StaticPropertyValueModel<String>(getModel().getName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		JaxbPackage jaxbPackage = (JaxbPackage) model();
-		return new StaticPropertyValueModel(
-				jaxbPackage.getName() + " - " + jaxbPackage.getResource().getFullPath().makeRelative());
+		StringBuilder sb = new StringBuilder();
+		sb.append(getModel().getName());
+		sb.append(" - ");  //$NON-NLS-1$
+		sb.append(getModel().getResource().getFullPath().makeRelative());
+		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,11 +26,15 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 		super(classRef, labelProvider);
 	}
 	
-	
+	@Override
+	public ClassRef getModel() {
+		return (ClassRef) super.getModel();
+	}
+
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		Image image;
-		if (((ClassRef) model()).isVirtual()) {
+		if (getModel().isVirtual()) {
 			image = JptUiIcons.ghost(JptUiIcons.CLASS_REF);
 		}
 		else {
@@ -41,10 +45,10 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
+		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, getModel()) {
 			 @Override
 			protected String buildValue_() {
-				return subject.getClassName();
+				return this.subject.getClassName();
 			}
 		};
 	}
@@ -52,12 +56,16 @@ public class ClassRefItemLabelProvider extends AbstractItemLabelProvider
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
 		//TODO also need to listen to the PersistenceUnit name property since this value depends on it
-		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, (ClassRef) model()) {
+		return new PropertyAspectAdapter<ClassRef, String>(ClassRef.CLASS_NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPersistenceUnit().getName() 
-				+ "/\"" + subject.getClassName()
-				+ "\" - " + subject.getResource().getFullPath().makeRelative();
+				StringBuilder sb = new StringBuilder();
+				sb.append(this.subject.getPersistenceUnit().getName());
+				sb.append("/\"");  //$NON-NLS-1$
+				sb.append(this.subject.getClassName());
+				sb.append("\" - "); //$NON-NLS-1$
+				sb.append(this.subject.getResource().getFullPath().makeRelative());
+				return sb.toString();
 			}
 		};
 	}

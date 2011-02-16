@@ -30,8 +30,8 @@ public class JaxbEnumConstantItemLabelProvider
 	
 	
 	@Override
-	public JaxbEnumConstant model() {
-		return (JaxbEnumConstant) super.model();
+	public JaxbEnumConstant getModel() {
+		return (JaxbEnumConstant) super.getModel();
 	}
 	
 	@Override
@@ -41,11 +41,11 @@ public class JaxbEnumConstantItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(model().getName());
+		return new StaticPropertyValueModel<String>(getModel().getName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new StaticPropertyValueModel<String>(model().getName());
+		return new StaticPropertyValueModel<String>(getModel().getName());
 	}
 }

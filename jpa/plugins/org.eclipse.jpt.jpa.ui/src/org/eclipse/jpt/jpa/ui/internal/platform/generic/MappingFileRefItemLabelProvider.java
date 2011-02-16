@@ -26,11 +26,15 @@ public class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
 		super(mappingFileRef, labelProvider);
 	}
 	
+	@Override
+	public MappingFileRef getModel() {
+		return (MappingFileRef) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		Image image;
-		if (((MappingFileRef) model()).isImplied()) {
+		if (getModel().isImplied()) {
 			image = JptUiIcons.ghost(JptUiIcons.MAPPING_FILE_REF);
 		}
 		else {
@@ -41,22 +45,26 @@ public class MappingFileRefItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, (MappingFileRef) model()) {
+		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, getModel()) {
 			 @Override
 			protected String buildValue_() {
-				return subject.getFileName();
+				return this.subject.getFileName();
 			}
 		};
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, (MappingFileRef) model()) {
+		return new PropertyAspectAdapter<MappingFileRef, String>(MappingFileRef.FILE_NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getPersistenceUnit().getName() 
-				+ "/\"" + subject.getFileName() + "\""
-				+ " - " + subject.getResource().getFullPath().makeRelative();
+				StringBuilder sb = new StringBuilder();
+				sb.append(this.subject.getPersistenceUnit().getName());
+				sb.append("/\"");  //$NON-NLS-1$
+				sb.append(this.subject.getFileName());
+				sb.append("\" - "); //$NON-NLS-1$
+				sb.append(this.subject.getResource().getFullPath().makeRelative());
+				return sb.toString();
 			}
 		};
 	}

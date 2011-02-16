@@ -30,15 +30,15 @@ public abstract class JaxbPersistentAttributeItemLabelProvider
 	
 	
 	@Override
-	public JaxbPersistentAttribute model() {
-		return (JaxbPersistentAttribute) super.model();
+	public JaxbPersistentAttribute getModel() {
+		return (JaxbPersistentAttribute) super.getModel();
 	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		return new PropertyAspectAdapter<JaxbPersistentAttribute, Image>(
 				new String[] {JaxbPersistentAttribute.DEFAULT_MAPPING_KEY_PROPERTY, JaxbPersistentAttribute.MAPPING_PROPERTY}, 
-				model()) {
+				getModel()) {
 			@Override
 			protected Image buildValue_() {
 				return JaxbMappingImageHelper.imageForAttributeMapping(this.subject.getMappingKey());
@@ -48,11 +48,11 @@ public abstract class JaxbPersistentAttributeItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(model().getName());
+		return new StaticPropertyValueModel<String>(getModel().getName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new StaticPropertyValueModel<String>(model().getName());
+		return new StaticPropertyValueModel<String>(getModel().getName());
 	}
 }

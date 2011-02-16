@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,11 @@ public class PersistenceUnitItemLabelProvider extends AbstractItemLabelProvider
 		super(persistenceUnit, labelProvider);
 	}
 	
-	
+	@Override
+	public PersistenceUnit getModel() {
+		return (PersistenceUnit) super.getModel();
+	}
+
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
 		return new StaticPropertyValueModel<Image>(JptJpaUiPlugin.getImage(JptUiIcons.PERSISTENCE_UNIT));
@@ -34,21 +38,24 @@ public class PersistenceUnitItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, (PersistenceUnit) model()) {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, getModel()) {
 			 @Override
 			protected String buildValue_() {
-				return subject.getName();
+				return this.subject.getName();
 			}
 		};
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, (PersistenceUnit) model()) {
+		return new PropertyAspectAdapter<PersistenceUnit, String>(PersistenceUnit.NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getName()
-				+ " - " + subject.getResource().getFullPath().makeRelative();
+				StringBuilder sb = new StringBuilder();
+				sb.append(this.subject.getName());
+				sb.append(" - ");  //$NON-NLS-1$
+				sb.append(this.subject.getResource().getFullPath().makeRelative());
+				return sb.toString();
 			}
 		};
 	}

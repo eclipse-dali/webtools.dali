@@ -24,8 +24,8 @@ public class JaxbPersistentFieldItemLabelProvider
 	
 	
 	@Override
-	public JaxbPersistentField model() {
-		return (JaxbPersistentField) super.model();
+	public JaxbPersistentField getModel() {
+		return (JaxbPersistentField) super.getModel();
 	}
 
 }

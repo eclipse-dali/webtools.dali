@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,6 +25,10 @@ public class OrmXmlItemLabelProvider extends AbstractItemLabelProvider
 		super(ormXml, labelProvider);
 	}
 	
+	@Override
+	public OrmXml getModel() {
+		return (OrmXml) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
@@ -33,14 +37,15 @@ public class OrmXmlItemLabelProvider extends AbstractItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(((OrmXml) model()).getResource().getName());
+		return new StaticPropertyValueModel<String>(getModel().getResource().getName());
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		OrmXml ormXml = (OrmXml) model();
-		return new StaticPropertyValueModel<String>(
-			ormXml.getResource().getName()
-			+ " - " + ormXml.getResource().getParent().getFullPath().makeRelative().toString());
+		StringBuilder sb = new StringBuilder();
+		sb.append(getModel().getResource().getName());
+		sb.append(" - ");  //$NON-NLS-1$
+		sb.append(getModel().getResource().getParent().getFullPath().makeRelative());
+		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -25,30 +25,34 @@ public class PersistentTypeItemLabelProvider extends AbstractItemLabelProvider
 		super(persistentType, labelProvider);
 	}
 	
+	@Override
+	public PersistentType getModel() {
+		return (PersistentType) super.getModel();
+	}
 	
 	@Override
 	protected PropertyValueModel<Image> buildImageModel() {
-		return new PropertyAspectAdapter<PersistentType, Image>(PersistentType.MAPPING_PROPERTY, (PersistentType) model()) {
+		return new PropertyAspectAdapter<PersistentType, Image>(PersistentType.MAPPING_PROPERTY, getModel()) {
 			@Override
 			protected Image buildValue_() {
-				return JpaMappingImageHelper.imageForTypeMapping(subject.getMappingKey());
+				return JpaMappingImageHelper.imageForTypeMapping(this.subject.getMappingKey());
 			}
 		};
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, (PersistentType) model()) {
+		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
-				return subject.getSimpleName();
+				return this.subject.getSimpleName();
 			}
 		};
 	}
 	
 	@Override
 	protected PropertyValueModel<String> buildDescriptionModel() {
-		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, (PersistentType) model()) {
+		return new PropertyAspectAdapter<PersistentType, String>(PersistentType.NAME_PROPERTY, getModel()) {
 			@Override
 			protected String buildValue_() {
 				StringBuilder sb = new StringBuilder();
