@@ -28,7 +28,7 @@ import org.eclipse.osgi.service.resolver.VersionRange;
  * union of calculated version ranges, depending on the platform specified in the config.
  */
 public class EclipseLinkUserLibraryValidator
-	implements LibraryValidator {
+		implements LibraryValidator {
 	
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
 		JpaUserLibraryProviderInstallOperationConfig jpaConfig 
