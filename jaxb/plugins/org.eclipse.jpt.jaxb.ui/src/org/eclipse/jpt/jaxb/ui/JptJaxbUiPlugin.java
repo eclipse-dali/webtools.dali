@@ -35,6 +35,7 @@ public class JptJaxbUiPlugin extends AbstractUIPlugin
 {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "org.eclipse.jpt.jaxb.ui";
+	public static final String PLUGIN_ID_ = PLUGIN_ID + '.';
 
 	public static final String USER_CATALOG_ID = XMLCorePlugin.USER_CATALOG_ID; //$NON-NLS-1$
 	public static final String DEFAULT_CATALOG_ID = XMLCorePlugin.DEFAULT_CATALOG_ID; //$NON-NLS-1$

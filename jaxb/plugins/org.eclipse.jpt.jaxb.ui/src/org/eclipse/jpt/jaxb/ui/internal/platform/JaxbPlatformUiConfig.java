@@ -11,7 +11,6 @@ package org.eclipse.jpt.jaxb.ui.internal.platform;
 
 import org.eclipse.jpt.common.core.internal.XPointUtil;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
 
 public class JaxbPlatformUiConfig {
@@ -63,7 +62,7 @@ public class JaxbPlatformUiConfig {
 	public JaxbPlatformUi getPlatformUi() {
 		if (this.platformUi == null) {
 			this.platformUi = XPointUtil.instantiate(
-					JptJaxbUiPlugin.PLUGIN_ID, JaxbPlatformUiManagerImpl.QUALIFIED_EXTENSION_POINT_ID,
+					this.pluginId, JaxbPlatformUiManagerImpl.QUALIFIED_EXTENSION_POINT_ID,
 					this.className, JaxbPlatformUi.class);
 		}
 		return this.platformUi;

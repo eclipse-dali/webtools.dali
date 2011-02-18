@@ -28,7 +28,7 @@ public class JaxbPlatformUiManagerImpl
 		implements JaxbPlatformUiManager {
 	
 	static final String EXTENSION_POINT_ID = "jaxbPlatformUis"; //$NON-NLS-1$
-	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbCorePlugin.PLUGIN_ID_ + EXTENSION_POINT_ID; //$NON-NLS-1$
+	static final String QUALIFIED_EXTENSION_POINT_ID = JptJaxbUiPlugin.PLUGIN_ID_ + EXTENSION_POINT_ID; //$NON-NLS-1$
 	static final String PLATFORM_UI_ELEMENT = "jaxbPlatformUi"; //$NON-NLS-1$
 	static final String ID_ATTRIBUTE = "id"; //$NON-NLS-1$	
 	static final String PLATFORM_ATTRIBUTE = "jaxbPlatform"; //$NON-NLS-1$	
