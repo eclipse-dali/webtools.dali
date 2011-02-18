@@ -35,11 +35,11 @@ import org.eclipse.ui.navigator.ICommonContentProvider;
 
 /**
  * This extension of navigator content provider delegates to the platform UI
- * (see the org.eclipse.jpt.ui.jpaPlatform extension point) for navigator content.
+ * (see the org.eclipse.jpt.jaxb.ui.jaxbPlatformUis extension point) for navigator content.
  * 
  * If there is a platform UI for the given project, this content provider will
- * provide a root "JPA Content" node (child of the project), otherwise there
- * will be no content.  For children of the "JPA Content" node (or for any other
+ * provide a root "JAXB Content" node (child of the project), otherwise there
+ * will be no content.  For children of the "JAXB Content" node (or for any other
  * sub-node), this provider will delegate to the content provider returned by the 
  * platform UI implementation.
  */
