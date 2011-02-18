@@ -22,6 +22,39 @@
 	
 	<!-- ***** extensions ***** -->
 	
+	<extension 
+		point="org.eclipse.core.expressions.propertyTesters">
+		
+		<propertyTester
+			id="org.eclipse.jpt.jaxb.core.propertyTester.platformResource"
+			type="org.eclipse.core.resources.IResource"
+			namespace="org.eclipse.jpt.jaxb.core"
+			properties="jaxbPlatform, jaxbPlatformGroup"
+			class="org.eclipse.jpt.jaxb.core.internal.JaxbPlatformTester"/>
+		
+		<propertyTester
+			id="org.eclipse.jpt.jaxb.core.propertyTester.javaElement"
+			type="org.eclipse.jdt.core.IJavaElement"
+			namespace="org.eclipse.jpt.jaxb.core"
+			properties="jaxbPlatform, jaxbPlatformGroup"
+			class="org.eclipse.jpt.jaxb.core.internal.JaxbPlatformTester"/>
+		
+		<propertyTester
+			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbPlatformDescription"
+			type="org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription"
+			namespace="org.eclipse.jpt.jaxb.core"
+			properties="jaxbPlatform, jaxbPlatformGroup"
+			class="org.eclipse.jpt.jaxb.core.internal.JaxbPlatformTester"/>
+			
+		<propertyTester
+			id="org.eclipse.jpt.jaxb.core.propertyTester.jaxbLibraryProviderConfig"
+			type="org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig"
+			namespace="org.eclipse.jpt.jaxb.core"
+			properties="jaxbPlatform, jaxbPlatformGroup"
+			class="org.eclipse.jpt.jaxb.core.internal.JaxbPlatformTester"/>
+			
+	</extension>
+			
 	<!-- =================================================================================== -->
 	<!-- Extension: JAXB Problem Marker                                                       -->
 	<!-- **** Do NOT qualify the marker id with org.eclipse.jpt.jaxb.core, see bug 252891 		 -->
