@@ -10,13 +10,14 @@
 package org.eclipse.jpt.jaxb.core.internal.jaxb22;
 
 import org.eclipse.jpt.jaxb.core.GenericJaxbPlatform;
-import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_PlatformDefinition;
+import org.eclipse.jpt.jaxb.core.JaxbFactory;
+import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 
 
 public class GenericJaxb_2_2_PlatformDefinition
-		extends GenericJaxb_2_1_PlatformDefinition {
+		extends AbstractJaxb_2_2_PlatformDefinition {
 	
 	// singleton
 	private static final JaxbPlatformDefinition INSTANCE = new GenericJaxb_2_2_PlatformDefinition();
@@ -33,8 +34,11 @@ public class GenericJaxb_2_2_PlatformDefinition
 	}
 	
 	
-	@Override
 	public JaxbPlatformDescription getDescription() {
 		return GenericJaxbPlatform.VERSION_2_2;
+	}
+	
+	public JaxbFactory getFactory() {
+		return GenericJaxb_2_1_Factory.instance();
 	}
 }
