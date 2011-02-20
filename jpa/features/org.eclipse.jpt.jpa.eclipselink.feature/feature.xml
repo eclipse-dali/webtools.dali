@@ -25,11 +25,6 @@
    <!-- ========== -->
 
 	<plugin
-         id="org.eclipse.emf.transaction"
-         version="1.4.0.qualifier"
-         unpack="false"/>
-
-	<plugin
          id="org.eclipse.graphiti"
          version="0.7.1.qualifier"
          unpack="false"/>
