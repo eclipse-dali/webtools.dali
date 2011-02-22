@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2011 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -22,10 +22,10 @@ package org.eclipse.jpt.jpa.eclipselink.core.context;
  * @since 2.4
  */
 
-public interface EclipseLinkConverterClassConverter extends
-		EclipseLinkConverter {
-
+public interface EclipseLinkConverterClassConverter
+	extends EclipseLinkConverter
+{
 	String getConverterClass();	
-	void setConverterClass(String converterClass);
 		String CONVERTER_CLASS_PROPERTY = "converterClass"; //$NON-NLS-1$
+	void setConverterClass(String converterClass);
 }

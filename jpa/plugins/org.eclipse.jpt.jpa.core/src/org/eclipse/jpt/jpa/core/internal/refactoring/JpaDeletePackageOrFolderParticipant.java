@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2010 Oracle. All rights reserved.
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,8 +26,8 @@ import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
@@ -112,8 +112,7 @@ public class JpaDeletePackageOrFolderParticipant
 
 	protected void addPackageFragmentRoot(IPackageFragmentRoot root) {
 		if (JDTTools.packageFragmentRootIsSourceFolder(root)) {
-			IJavaElement[] children = JDTTools.getJDTChildren(root);
-			for (IJavaElement child : children) {
+			for (IJavaElement child : JDTTools.getChildren(root)) {
 				this.addPackageFragment((IPackageFragment) child);
 			}
 		}

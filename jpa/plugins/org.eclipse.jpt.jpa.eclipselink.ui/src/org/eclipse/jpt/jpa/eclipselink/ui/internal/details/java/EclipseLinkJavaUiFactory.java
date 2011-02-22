@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,10 +21,10 @@ import org.eclipse.jpt.jpa.core.context.java.JavaMappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToManyMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaOneToOneMapping;
 import org.eclipse.jpt.jpa.core.context.java.JavaVersionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicCollectionMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkBasicMapMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkTransformationMapping;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicCollectionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkBasicMapMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkTransformationMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicCollectionMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMapMappingComposite;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkBasicMappingComposite;
@@ -129,28 +129,28 @@ public class EclipseLinkJavaUiFactory extends BaseJavaUiFactory
 	}
 	
 	public JpaComposite createJavaEclipseLinkBasicMapMappingComposite(
-			PropertyValueModel<JavaEclipseLinkBasicMapMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicMapMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkBasicMapMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaEclipseLinkBasicCollectionMappingComposite(
-			PropertyValueModel<JavaEclipseLinkBasicCollectionMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkBasicCollectionMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkBasicCollectionMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaEclipseLinkVariableOneToOneMappingComposite(
-			PropertyValueModel<JavaEclipseLinkVariableOneToOneMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);
 	}
 	
 	public JpaComposite createJavaEclipseLinkTransformationMappingComposite(
-			PropertyValueModel<JavaEclipseLinkTransformationMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkTransformationMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkTransformationMappingComposite(subjectHolder, parent, widgetFactory);

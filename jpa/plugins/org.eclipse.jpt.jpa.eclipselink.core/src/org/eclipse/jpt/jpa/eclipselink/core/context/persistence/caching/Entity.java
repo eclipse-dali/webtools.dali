@@ -1,20 +1,18 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.caching;
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching;
 
 import java.io.Serializable;
 
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.CacheType;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
 
 /**
  *  Entity
@@ -55,17 +53,22 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	// ********** behaviors **********
 	@Override
 	public boolean equals(Object o) {
-		if(o == null) {
+		if ( ! (o instanceof Entity)) {
 			return false;
 		}
-		Entity entity = (Entity) o;
+		Entity other = (Entity) o;
 		return (
 			(this.cacheType == null ?
-				entity.cacheType == null : this.cacheType.equals(entity.cacheType)) &&
+				other.cacheType == null : this.cacheType.equals(other.cacheType)) &&
 			(this.cacheIsShared == null ?
-				entity.cacheIsShared == null : this.cacheIsShared.equals(entity.cacheIsShared)) &&
+				other.cacheIsShared == null : this.cacheIsShared.equals(other.cacheIsShared)) &&
 			(this.cacheSize == null ?
-				entity.cacheSize == null : this.cacheSize.equals(entity.cacheSize)));
+				other.cacheSize == null : this.cacheSize.equals(other.cacheSize)));
+	}
+
+	@Override
+	public int hashCode() {
+		return (this.cacheType == null) ? 0 : this.cacheType.hashCode();
 	}
 	
 	 @Override
@@ -98,33 +101,33 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	}
 
 	// ********** cacheType **********
-	protected CacheType getCacheType() {
+	public CacheType getCacheType() {
 		return this.cacheType;
 	}
 
-	protected void setCacheType(CacheType cacheType) {
+	public void setCacheType(CacheType cacheType) {
 		CacheType old = this.cacheType;
 		this.cacheType = cacheType;
 		this.firePropertyChanged(CACHE_TYPE_PROPERTY, old, cacheType);
 	}
 
 	// ********** cacheSize **********
-	protected Integer getCacheSize() {
+	public Integer getCacheSize() {
 		return this.cacheSize;
 	}
 
-	protected void setCacheSize(Integer cacheSize) {
+	public void setCacheSize(Integer cacheSize) {
 		Integer old = this.cacheSize;
 		this.cacheSize = cacheSize;
 		this.firePropertyChanged(CACHE_SIZE_PROPERTY, old, cacheSize);
 	}
 
 	// ********** cacheIsShared **********
-	protected Boolean cacheIsShared() {
+	public Boolean cacheIsShared() {
 		return this.cacheIsShared;
 	}
 
-	protected void setSharedCache(Boolean isShared) {
+	public void setSharedCache(Boolean isShared) {
 		Boolean old = this.cacheIsShared;
 		this.cacheIsShared = isShared;
 		this.firePropertyChanged(SHARED_CACHE_PROPERTY, old, isShared);

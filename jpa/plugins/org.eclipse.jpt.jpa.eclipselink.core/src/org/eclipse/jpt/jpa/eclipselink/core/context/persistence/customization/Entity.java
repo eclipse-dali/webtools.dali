@@ -1,19 +1,17 @@
 /*******************************************************************************
-* Copyright (c) 2009 Oracle. All rights reserved.
-* This program and the accompanying materials are made available under the
-* terms of the Eclipse Public License v1.0, which accompanies this distribution
-* and is available at http://www.eclipse.org/legal/epl-v10.html.
-* 
-* Contributors:
-*     Oracle - initial API and implementation
-*******************************************************************************/
-package org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization;
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
+package org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization;
 
 import java.io.Serializable;
-
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.model.AbstractModel;
-import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
 
 /**
  *  Entity
@@ -50,7 +48,7 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 	// ********** behaviors **********
 	@Override
 	public boolean equals(Object o) {
-		if(o == null) {
+		if ( ! (o instanceof Entity)) {
 			return false;
 		}
 		Entity customizer = (Entity) o;
@@ -58,6 +56,11 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 			(this.descriptorCustomizer == null ?
 				customizer.descriptorCustomizer == null : 
 				this.descriptorCustomizer.equals(customizer.descriptorCustomizer)));
+	}
+	
+	@Override
+	public int hashCode() {
+		return (this.descriptorCustomizer == null) ? 0 : this.descriptorCustomizer.hashCode();
 	}
 	
 	 @Override
@@ -87,11 +90,11 @@ public class Entity extends AbstractModel implements Cloneable, Serializable
 		return this.name;
 	}
 
-	protected String getDescriptorCustomizer() {
+	public String getDescriptorCustomizer() {
 		return this.descriptorCustomizer;
 	}
 
-	protected void setDescriptorCustomizer(String descriptorCustomizer) {
+	public void setDescriptorCustomizer(String descriptorCustomizer) {
 		String old = this.descriptorCustomizer;
 		this.descriptorCustomizer = descriptorCustomizer;
 		this.firePropertyChanged(DESCRIPTOR_CUSTOMIZER_PROPERTY, old, descriptorCustomizer);

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,8 +21,8 @@ import org.eclipse.jpt.common.utility.model.listener.PropertyChangeListener;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnitProperties;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.CacheType;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Caching;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.Entity;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.caching.FlushClearCache;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.caching.Entity;
 import org.eclipse.jpt.jpa.eclipselink.core.tests.internal.context.persistence.EclipseLinkPersistenceUnitTestCase;
 
 /**

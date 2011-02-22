@@ -128,14 +128,21 @@ public class JptCommonCorePlugin
 	 * Log the specified message.
 	 */
 	public static void log(String msg) {
-        log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, null));
+        log(msg, null);
     }
 
 	/**
 	 * Log the specified exception or error.
 	 */
 	public static void log(Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
+		log(throwable.getLocalizedMessage(), throwable);
+	}
+
+	/**
+	 * Log the specified message and exception or error.
+	 */
+	public static void log(String msg, Throwable throwable) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
 	}
 
 

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.core.internal.context.java;
 import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.dom.CompilationUnit;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.context.java.JavaJpaContextNode;
@@ -120,23 +120,13 @@ public class JavaEclipseLinkStructConverter
 	}
 	
 	private boolean converterClassExists(IJavaProject javaProject) {
-		if (this.converterClass != null) 
-		{
-			if (JDTTools.getJDTType(javaProject, this.converterClass) != null) {
-				return true;
-			}
-		}
-		return false;
+		return (this.converterClass != null) &&
+				(JDTTools.findType(javaProject, this.converterClass) != null);
 	}
 
 	private boolean converterClassImplementsInterface(IJavaProject javaProject, String interfaceName) {
-		if (this.converterClass != null) 
-		{
-			if (JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName)) {
-				return true;
-			}
-		}
-		return false;
+		return (this.converterClass != null) &&
+				JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName);
 	}
 	
 	protected TextRange getConverterClassTextRange(CompilationUnit astRoot) {

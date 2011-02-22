@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,7 +13,7 @@ import org.eclipse.jpt.common.ui.WidgetFactory;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.eclipselink.core.EclipseLinkMappingKeys;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.java.JavaEclipseLinkVariableOneToOneMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVariableOneToOneMapping;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkUiDetailsMessages;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.details.EclipseLinkVariableOneToOneMappingComposite;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
@@ -26,8 +26,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 
 public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
-	extends AbstractMappingUiDefinition<ReadOnlyPersistentAttribute, JavaEclipseLinkVariableOneToOneMapping>
-	implements DefaultJavaAttributeMappingUiDefinition<JavaEclipseLinkVariableOneToOneMapping>
+	extends AbstractMappingUiDefinition<ReadOnlyPersistentAttribute, EclipseLinkVariableOneToOneMapping>
+	implements DefaultJavaAttributeMappingUiDefinition<EclipseLinkVariableOneToOneMapping>
 {
 	// singleton
 	private static final DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition INSTANCE = 
@@ -36,7 +36,7 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	/**
 	 * Return the singleton.
 	 */
-	public static DefaultJavaAttributeMappingUiDefinition<JavaEclipseLinkVariableOneToOneMapping> instance() {
+	public static DefaultJavaAttributeMappingUiDefinition<EclipseLinkVariableOneToOneMapping> instance() {
 		return INSTANCE;
 	}
 	
@@ -70,7 +70,7 @@ public class DefaultJavaEclipseLinkVariableOneToOneMappingUiDefinition
 	
 	public JpaComposite buildAttributeMappingComposite(
 			JavaUiFactory factory,
-			PropertyValueModel<JavaEclipseLinkVariableOneToOneMapping> subjectHolder,
+			PropertyValueModel<EclipseLinkVariableOneToOneMapping> subjectHolder,
 			Composite parent,
 			WidgetFactory widgetFactory) {
 		return new EclipseLinkVariableOneToOneMappingComposite(subjectHolder, parent, widgetFactory);

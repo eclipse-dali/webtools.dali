@@ -1,15 +1,15 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.platform;
 
-import org.eclipse.jpt.common.core.internal.XPointUtil;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
 import org.eclipse.jpt.jpa.core.JpaPlatform;
 import org.eclipse.jpt.jpa.core.JpaPlatformFactory;
@@ -96,7 +96,7 @@ public class JpaPlatformDescriptionImpl
 	}
 	
 	public JpaPlatform buildJpaPlatform() {
-		JpaPlatformFactory factory = (JpaPlatformFactory) XPointUtil.instantiate(
+		JpaPlatformFactory factory = (JpaPlatformFactory) XPointTools.instantiate(
 				this.pluginId, JpaPlatformManagerImpl.QUALIFIED_EXTENSION_POINT_ID, 
 				this.factoryClassName, JpaPlatformFactory.class);
 		return factory.buildJpaPlatform(getId());

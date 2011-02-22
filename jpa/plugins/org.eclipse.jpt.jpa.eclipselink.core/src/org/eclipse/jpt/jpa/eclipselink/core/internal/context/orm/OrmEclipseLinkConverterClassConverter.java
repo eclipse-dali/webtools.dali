@@ -13,7 +13,7 @@ import java.util.List;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -28,10 +28,10 @@ import org.eclipse.text.edits.ReplaceEdit;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
-public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedConverter>  extends OrmEclipseLinkConverter<X>
+public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedConverter>
+	extends OrmEclipseLinkConverter<X>
 	implements EclipseLinkCustomConverter 
 {
-	
 	protected String converterClass;
 
 	protected JavaResourcePersistentType converterPersistentType;
@@ -108,33 +108,33 @@ public abstract class OrmEclipseLinkConverterClassConverter<X extends XmlNamedCo
 	}
 	
 	private boolean converterClassExists(IJavaProject javaProject) {
-		if (this.converterClass != null) 
-		{
-			String globalPackage = getEntityMappings().getPackage();
-			IType type = JDTTools.getJDTType(javaProject, this.converterClass);
-			if (type != null) {
-				return true;
-			} else if (StringTools.stringIsNotEmpty(globalPackage)) {
-				type = JDTTools.getJDTType(javaProject, globalPackage + "." + this.converterClass);
-				if (type != null) {
-					return true;
-				}
-			}
+		if (this.converterClass == null) {
+			return false;
 		}
-		return false;
+
+		if (JDTTools.findType(javaProject, this.converterClass) != null) {
+			return true;
+		}
+
+		String globalPackage = this.getEntityMappings().getPackage();
+		if (StringTools.stringIsEmpty(globalPackage)) {
+			return false;
+		}
+		return JDTTools.findType(javaProject, globalPackage + '.' + this.converterClass) != null;
 	}
 
 	private boolean converterClassImplementsInterface(IJavaProject javaProject, String interfaceName) {
-		if (this.converterClass != null) 
-		{
-			String globalPackage = getEntityMappings().getPackage();
-			boolean implementFound = JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName);
-			if (!implementFound && StringTools.stringIsNotEmpty(globalPackage)) {
-				implementFound = JDTTools.typeNamedImplementsInterfaceNamed(javaProject, globalPackage + "." + this.converterClass, interfaceName);
-			}
-			return implementFound;
+		if (this.converterClass == null) {
+			return false;
 		}
-		return false;
+		if (JDTTools.typeNamedImplementsInterfaceNamed(javaProject, this.converterClass, interfaceName)) {
+			return true;
+		}
+		String globalPackage = this.getEntityMappings().getPackage();
+		if (StringTools.stringIsEmpty(globalPackage)) {
+			return false;
+		}
+		return JDTTools.typeNamedImplementsInterfaceNamed(javaProject, globalPackage + '.' + this.converterClass, interfaceName);
 	}
 	
 	public abstract TextRange getConverterClassTextRange();

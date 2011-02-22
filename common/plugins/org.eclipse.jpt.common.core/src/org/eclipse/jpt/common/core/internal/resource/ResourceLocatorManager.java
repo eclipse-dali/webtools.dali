@@ -1,18 +1,18 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
-import static org.eclipse.jpt.common.core.internal.XPointUtil.findRequiredAttribute;
-import static org.eclipse.jpt.common.core.internal.XPointUtil.log;
-import static org.eclipse.jpt.common.core.internal.XPointUtil.logDuplicateExtension;
-import static org.eclipse.jpt.common.core.internal.XPointUtil.logInvalidValue;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.findRequiredAttribute;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.log;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.logDuplicateExtension;
+import static org.eclipse.jpt.common.core.internal.utility.XPointTools.logInvalidValue;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,8 +27,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.XPointUtil.XPointException;
 import org.eclipse.jpt.common.core.internal.resource.ResourceLocatorConfig.Priority;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools.XPointException;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.KeyedSet;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;

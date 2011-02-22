@@ -12,7 +12,7 @@ package org.eclipse.jpt.jpa.eclipselink.ui.internal.persistence.customization;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Entity;
 import org.eclipse.swt.widgets.Composite;
 
 /**

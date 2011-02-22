@@ -29,7 +29,7 @@ import org.eclipse.jdt.ui.wizards.NewClassWizardPage;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
+import org.eclipse.jpt.common.core.internal.utility.JDTTools;
 import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -357,7 +357,12 @@ public abstract class ClassChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		return JDTTools.getCodeCompletionContextRoot(getJavaProject());
+		try {
+			return this.getJavaProject().getPackageFragmentRoots()[0];
+		} catch (JavaModelException ex) {
+			JptCommonUiPlugin.log(ex);
+			return null;
+		}
 	}
 
 	@Override

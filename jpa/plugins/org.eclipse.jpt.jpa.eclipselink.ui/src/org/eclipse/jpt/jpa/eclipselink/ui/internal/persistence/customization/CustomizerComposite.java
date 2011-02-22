@@ -16,7 +16,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkCustomizer;
 import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Customization;
-import org.eclipse.jpt.jpa.eclipselink.core.internal.context.persistence.customization.Entity;
+import org.eclipse.jpt.jpa.eclipselink.core.context.persistence.customization.Entity;
 import org.eclipse.jpt.jpa.eclipselink.ui.internal.EclipseLinkUiMessages;
 import org.eclipse.swt.widgets.Composite;
 

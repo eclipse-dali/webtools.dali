@@ -19,7 +19,6 @@ import org.eclipse.jdt.ui.JavaElementLabelProvider;
 import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.ui.JptCommonUiPlugin;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
@@ -226,7 +225,12 @@ public abstract class PackageChooserPane<T extends Model> extends ChooserPane<T>
 	}
 
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		return JDTTools.getCodeCompletionContextRoot(getJavaProject());
+		try {
+			return this.getJavaProject().getPackageFragmentRoots()[0];
+		} catch (JavaModelException ex) {
+			JptCommonUiPlugin.log(ex);
+			return null;
+		}
 	}
 
 	@Override

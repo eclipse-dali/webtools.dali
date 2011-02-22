@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,10 +14,10 @@ import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.jpt.common.core.IResourcePart;
 
 /**
- * Factory to build adapters for Eclipse resources:
- *   - resource part
- * 
- * See org.eclipse.jpt.common.core plugin.xml.
+ * Factory to build adapters for converting Eclipse resources to Dali
+ * resource parts.
+ * <p>
+ * See <code>org.eclipse.jpt.common.core plugin.xml</code>.
  */
 public class ResourceAdapterFactory
 	implements IAdapterFactory
@@ -28,7 +28,7 @@ public class ResourceAdapterFactory
 		return ADAPTER_LIST;
 	}
 
-	public Object getAdapter(Object adaptableObject, @SuppressWarnings("unchecked") Class adapterType) {
+	public Object getAdapter(Object adaptableObject, @SuppressWarnings("rawtypes") Class adapterType) {
 		if (adaptableObject instanceof IResource) {
 			return this.getAdapter((IResource) adaptableObject, adapterType);
 		}
@@ -45,5 +45,4 @@ public class ResourceAdapterFactory
 		}
 		return null;
 	}
-
 }

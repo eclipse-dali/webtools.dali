@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -32,7 +32,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.window.Window;
-import org.eclipse.jpt.common.core.internal.utility.jdt.JDTTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
@@ -192,7 +191,12 @@ public class AddPersistentClassDialog extends StatusDialog
 	}
 
 	protected IPackageFragmentRoot getPackageFragmentRoot() {
-		return JDTTools.getCodeCompletionContextRoot(getJpaProject().getJavaProject());
+		try {
+			return this.getJpaProject().getJavaProject().getPackageFragmentRoots()[0];
+		} catch (JavaModelException ex) {
+			JptJpaUiPlugin.log(ex);
+			return null;
+		}
 	}
 
 	

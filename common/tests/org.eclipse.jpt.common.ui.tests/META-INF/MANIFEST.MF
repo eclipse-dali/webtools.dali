@@ -14,7 +14,7 @@ Require-Bundle:
  org.eclipse.ui.forms;bundle-version="[3.5.100,4.0.0)",
  org.eclipse.ui.workbench;bundle-version="[3.7.0,4.0.0)",
  org.eclipse.ui.navigator;bundle-version="[3.5.0,4.0.0)"
-Export-Package: org.eclipse.jpt.common.ui.tests,
+Export-Package: org.eclipse.jpt.common.ui.tests;x-internal:=true,
  org.eclipse.jpt.common.ui.tests.internal.jface;x-internal:=true,
  org.eclipse.jpt.common.ui.tests.internal.swt;x-internal:=true,
  org.eclipse.jpt.common.ui.tests.internal.util;x-internal:=true,

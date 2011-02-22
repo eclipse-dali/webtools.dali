@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2010  Oracle. All rights reserved.
- *  This program and the accompanying materials are made available under the
- *  terms of the Eclipse Public License v1.0, which accompanies this distribution
- *  and is available at http://www.eclipse.org/legal/epl-v10.html
- *  
- *  Contributors: 
- *  	Oracle - initial API and implementation
- *******************************************************************************/
+ * Copyright (c) 2010, 2011 Oracle. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0, which accompanies this distribution
+ * and is available at http://www.eclipse.org/legal/epl-v10.html.
+ * 
+ * Contributors:
+ *     Oracle - initial API and implementation
+ ******************************************************************************/
 package org.eclipse.jpt.common.core.internal.resource;
 
 import static org.eclipse.jst.common.project.facet.core.internal.FacetedProjectFrameworkJavaPlugin.log;
@@ -16,7 +16,7 @@ import org.eclipse.core.expressions.Expression;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
-import org.eclipse.jpt.common.core.internal.XPointUtil;
+import org.eclipse.jpt.common.core.internal.utility.XPointTools;
 import org.eclipse.jpt.common.core.resource.ResourceLocator;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 
@@ -78,7 +78,7 @@ public class ResourceLocatorConfig
 	}
 	
 	public ResourceLocator getResourceLocator() {
-		return XPointUtil.instantiate(
+		return XPointTools.instantiate(
 				JptCommonCorePlugin.PLUGIN_ID, ResourceLocatorManager.QUALIFIED_EXTENSION_POINT_ID, 
 				this.className, ResourceLocator.class);
 	}
