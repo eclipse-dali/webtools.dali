@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -26,7 +26,6 @@ import org.eclipse.jpt.common.utility.internal.iterators.EmptyListIterator;
 public final class NullList<E>
 	implements List<E>, Serializable
 {
-
 	// singleton
 	@SuppressWarnings("rawtypes")
 	private static final NullList INSTANCE = new NullList();
@@ -141,7 +140,7 @@ public final class NullList<E>
 
 	@Override
 	public String toString() {
-		return StringTools.buildToStringFor(this);
+		return this.getClass().getSimpleName();
 	}
 
 	private static final long serialVersionUID = 1L;
@@ -149,5 +148,4 @@ public final class NullList<E>
 		// replace this object with the singleton
 		return INSTANCE;
 	}
-
 }
