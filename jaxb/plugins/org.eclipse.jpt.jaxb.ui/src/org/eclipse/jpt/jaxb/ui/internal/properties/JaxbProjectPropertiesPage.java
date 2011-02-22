@@ -64,10 +64,11 @@ public class JaxbProjectPropertiesPage
 	private BufferedWritablePropertyValueModel<JaxbPlatformDescription> platformModel;
 	private PropertyChangeListener platformListener;
 	
-	
-	@SuppressWarnings("unchecked")
-	/* private */ static final Comparator<String> STRING_COMPARATOR = Collator.getInstance();
-	
+	/* private */ static final Comparator<String> STRING_COMPARATOR = new Comparator<String>() {
+		public int compare(String string1, String string2){
+			return Collator.getInstance().compare(string1, string2);
+		}
+	};
 	
 	// ************ construction ************
 	

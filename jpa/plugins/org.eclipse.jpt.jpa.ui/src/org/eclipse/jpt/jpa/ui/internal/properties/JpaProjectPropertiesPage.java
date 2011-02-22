@@ -143,10 +143,11 @@ public class JpaProjectPropertiesPage
 	
 	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
 	
-
-	@SuppressWarnings("unchecked")
-	/* private */ static final Comparator<String> STRING_COMPARATOR = Collator.getInstance();
-
+	/* private */ static final Comparator<String> STRING_COMPARATOR = new Comparator<String>() {
+		public int compare(String string1, String string2){
+			return Collator.getInstance().compare(string1, string2);
+		}
+	};
 
 	// ************ construction ************
 

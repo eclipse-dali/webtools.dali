@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
+import java.util.Comparator;
 import java.util.Iterator;
 
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
@@ -69,7 +70,6 @@ public class MappedByPane
 			JpaHelpContextIds.MAPPING_MAPPED_BY);
 	}
 	
-	@SuppressWarnings("unchecked")
 	protected ListValueModel<String> buildCandidateAttributesListValueModel() {
 		return new SortedListValueModelAdapter<String>(
 			new CollectionAspectAdapter<MappedByRelationshipStrategy, String>(
@@ -79,7 +79,11 @@ public class MappedByPane
 					return this.subject.candidateMappedByAttributeNames();
 				}
 			},
-			Collator.getInstance()
+			new Comparator<String>() {
+				public int compare(String string1, String string2){
+					return Collator.getInstance().compare(string1, string2);
+				}
+			}
 		);
 	}
 	
