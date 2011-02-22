@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,7 +16,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public class JptCommonCoreMessages {
 
-
 	public static String DALI_EVENT_HANDLER_THREAD_NAME;
 	public static String GENERATION_CREATING_LAUNCH_CONFIG_TASK;
 	public static String GENERATION_SAVING_LAUNCH_CONFIG_TASK;
@@ -27,7 +26,7 @@ public class JptCommonCoreMessages {
 	public static String REGISTRY_FAILED_CLASS_LOAD;
 	public static String REGISTRY_FAILED_INTERFACE_ASSIGNMENT;
 	public static String REGISTRY_FAILED_INSTANTIATION;
-	public static String USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND;;
+	public static String USER_LIBRARY_VALIDATOR__CLASS_NOT_FOUND;
 	public static String VALIDATE_CONTAINER_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_NAME_NOT_SPECIFIED;
 	public static String VALIDATE_FILE_ALREADY_EXISTS;
@@ -41,5 +40,4 @@ public class JptCommonCoreMessages {
 	private JptCommonCoreMessages() {
 		throw new UnsupportedOperationException();
 	}
-
 }
