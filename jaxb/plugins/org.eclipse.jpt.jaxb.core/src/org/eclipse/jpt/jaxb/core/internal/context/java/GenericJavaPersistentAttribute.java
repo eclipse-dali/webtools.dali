@@ -53,11 +53,15 @@ public abstract class GenericJavaPersistentAttribute
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.syncMapping();
 	}
 
+	@Override
 	public void update() {
+		super.update();
 		this.updateMapping();
 	}
 

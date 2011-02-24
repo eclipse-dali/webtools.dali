@@ -37,16 +37,6 @@ public class GenericJavaXmlMixed
 		return getParent().getParent();
 	}
 
-	// ********** synchronize/update **********
-
-	public void synchronizeWithResourceModel() {
-		//nothing yet
-	}
-
-	public void update() {
-		//nothing yet
-	}
-
 
 	//************* validation ****************
 

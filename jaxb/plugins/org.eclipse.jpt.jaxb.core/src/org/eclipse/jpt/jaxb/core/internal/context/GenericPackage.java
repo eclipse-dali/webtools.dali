@@ -42,7 +42,9 @@ public class GenericPackage
 	}
 	
 	
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		if (this.packageInfo != null) { 
 			this.packageInfo.synchronizeWithResourceModel();
 		}
@@ -50,7 +52,9 @@ public class GenericPackage
 
 	//Building/removing of the packageInfo is in the update because this is dependent
 	//on a JaxbFile being added/removed which only causes an update of the model.
+	@Override
 	public void update() {
+		super.update();
 		JavaResourcePackage jrp = getJaxbProject().getAnnotatedJavaResourcePackage(this.name);
 		if (jrp == null) {
 			this.setPackageInfo_(null);

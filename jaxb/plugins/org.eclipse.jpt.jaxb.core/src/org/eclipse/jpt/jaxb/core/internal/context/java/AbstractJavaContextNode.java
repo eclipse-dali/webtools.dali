@@ -11,6 +11,8 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
+import org.eclipse.jpt.common.core.JptCommonCorePlugin;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.Filter;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -32,6 +34,11 @@ public abstract class AbstractJavaContextNode
 		super(parent);
 	}
 	
+	
+	@Override
+	public JptResourceType getResourceType() {
+		return JptCommonCorePlugin.JAVA_SOURCE_RESOURCE_TYPE;
+	}
 	
 	// **************** content assist ****************************************
 	

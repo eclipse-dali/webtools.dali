@@ -30,13 +30,12 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.updateDefault();
 	}
 
-	public void update() {
-		//do nothing
-	}
 
 	// ********** annotation **********
 

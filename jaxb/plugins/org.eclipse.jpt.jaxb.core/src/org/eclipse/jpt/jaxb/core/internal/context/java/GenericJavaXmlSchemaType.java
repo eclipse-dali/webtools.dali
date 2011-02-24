@@ -48,14 +48,12 @@ public abstract class GenericJavaXmlSchemaType
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setName_(this.getResourceName());
 		this.setNamespace_(this.getResourceNamespace());
 		this.setType_(this.getResourceTypeString());
-	}
-
-	public void update() {
-		//nothing yet
 	}
 
 

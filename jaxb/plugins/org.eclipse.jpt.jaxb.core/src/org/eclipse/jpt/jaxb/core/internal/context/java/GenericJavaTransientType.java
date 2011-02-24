@@ -31,14 +31,6 @@ public class GenericJavaTransientType
 		return (JavaResourceType) super.getJavaResourceType();
 	}
 
-	// ********** synchronize/update **********
-
-	public void synchronizeWithResourceModel() {
-	}
-
-	public void update() {
-	}
-
 
 	// ********** xml transient annotation **********
 

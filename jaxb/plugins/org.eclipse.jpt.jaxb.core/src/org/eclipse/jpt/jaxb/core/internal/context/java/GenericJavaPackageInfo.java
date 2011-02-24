@@ -77,7 +77,9 @@ public class GenericJavaPackageInfo
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.xmlSchema.synchronizeWithResourceModel();
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
@@ -85,7 +87,9 @@ public class GenericJavaPackageInfo
 		this.syncXmlJavaTypeAdapters();
 	}
 
+	@Override
 	public void update() {
+		super.update();
 		this.xmlSchema.update();
 	}
 

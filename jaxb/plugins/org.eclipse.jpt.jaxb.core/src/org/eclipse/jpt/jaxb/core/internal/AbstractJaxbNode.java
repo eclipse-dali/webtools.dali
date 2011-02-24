@@ -130,12 +130,6 @@ public abstract class AbstractJaxbNode
 		return this.getJaxbProject().getJaxbFile(file);
 	}
 
-	protected void updateNodes(Iterable<? extends JaxbContextNode> nodes) {
-		for (JaxbContextNode node : nodes) {
-			node.update();
-		}
-	}
-
 
 	// ********** CallbackChangeSupport.Listener support **********
 

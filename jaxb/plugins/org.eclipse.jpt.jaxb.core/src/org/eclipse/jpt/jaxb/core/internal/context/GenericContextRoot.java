@@ -120,7 +120,9 @@ public class GenericContextRoot
 		}
 	}
 	
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		for (JaxbPackage each : getPackages()) {
 			each.synchronizeWithResourceModel();
 		}
@@ -129,7 +131,9 @@ public class GenericContextRoot
 		}
 	}
 	
+	@Override
 	public void update() {
+		super.update();
 		// determine set of registries
 		// (registries can be determined purely by resource model)
 		final Set<JavaResourceType> registries = calculateRegistries();

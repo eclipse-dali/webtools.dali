@@ -40,13 +40,11 @@ public class GenericJavaXmlNs
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setNamespaceURI_(this.getResourceNamespaceURI());
 		this.setPrefix_(this.getResourcePrefix());
-	}
-
-	public void update() {
-		//nothing yet
 	}
 
 

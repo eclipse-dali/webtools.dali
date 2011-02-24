@@ -34,11 +34,15 @@ class GenericJavaXmlAdaptable
 		this.initializeXmlJavaTypeAdapter();			
 	}
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.syncXmlJavaTypeAdapter();
 	}
 
+	@Override
 	public void update() {
+		super.update();
 		this.updateXmlJavaTypeAdapter();
 	}
 

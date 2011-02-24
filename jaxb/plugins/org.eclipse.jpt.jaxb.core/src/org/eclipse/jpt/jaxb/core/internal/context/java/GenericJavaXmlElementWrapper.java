@@ -57,15 +57,13 @@ public class GenericJavaXmlElementWrapper
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		setSpecifiedName_(buildSpecifiedName());
 		setSpecifiedNamespace_(buildSpecifiedNamespace());
 		setSpecifiedRequired_(buildSpecifiedRequired());
 		this.setSpecifiedNillable_(this.buildSpecifiedNillable());
-	}
-
-	public void update() {
-		//nothing yet
 	}
 
 

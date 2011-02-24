@@ -26,22 +26,62 @@ public abstract class AbstractJaxbContextNode
 		super(parent);
 	}
 	
+
+	// ********** synchronize/update **********
+
+	public void synchronizeWithResourceModel() {
+		// NOP
+	}
+
+	/**
+	 * convenience method
+	 */
+	protected void synchronizeNodesWithResourceModel(Iterable<? extends JaxbContextNode> nodes) {
+		for (JaxbContextNode node : nodes) {
+			node.synchronizeWithResourceModel();
+		}
+	}
+
+	public void update() {
+		// NOP
+	}
+
+	/**
+	 * convenience method
+	 */
+	protected void updateNodes(Iterable<? extends JaxbContextNode> nodes) {
+		for (JaxbContextNode node : nodes) {
+			node.update();
+		}
+	}
 	
-	// ********** JaxbNode implentation **********
+	// ********** containment hierarchy **********
 	
+	/**
+	 * covariant override
+	 */
 	@Override
 	public JaxbContextNode getParent() {
 		return (JaxbContextNode) super.getParent();	
 	}
 	
-	
-	// ********** JaxbContextNode implementation **********
-	
-	public JaxbContextRoot getContextRoot() {
-		return getParent().getContextRoot();
-	}
-	
+	/**
+	 * Overridden in:<ul>
+	 * <li>{@link org.eclipse.jpt.jaxb.core.internal.context.java.AbstractJavaContextNode#getResourceType() AbstractJavaContextNode}
+	 * </ul>
+	 */
 	public JptResourceType getResourceType() {
 		return getParent().getResourceType();
 	}
+	
+	/**
+	 * Overridden in:<ul>
+	 * <li>{@link org.eclipse.jpt.jaxb.core.internal.context.GenericContextRoot#getContextRoot() GenericContextRoot}
+	 * to return itself>
+	 * </ul>
+	 */
+	public JaxbContextRoot getContextRoot() {
+		return getParent().getContextRoot();
+	}
+
 }

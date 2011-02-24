@@ -52,7 +52,9 @@ public class GenericJavaXmlSchema
 	
 	// ********** synchronize/update **********
 	
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setSpecifiedNamespace_(this.getResourceNamespace());
 		this.setLocation_(this.getResourceLocation());
 		this.setAttributeFormDefault_(this.getResourceAttributeFormDefault());
@@ -60,7 +62,9 @@ public class GenericJavaXmlSchema
 		this.syncXmlNsPrefixes();
 	}
 	
+	@Override
 	public void update() {
+		super.update();
 		this.updateXmlNsPrefixes();
 	}
 	

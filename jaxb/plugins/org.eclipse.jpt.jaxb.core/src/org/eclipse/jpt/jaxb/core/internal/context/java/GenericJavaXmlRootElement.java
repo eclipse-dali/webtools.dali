@@ -51,13 +51,11 @@ public class GenericJavaXmlRootElement
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setSpecifiedName_(this.getResourceName());
 		this.setSpecifiedNamespace_(this.getResourceNamespace());
-	}
-
-	public void update() {
-		//nothing yet
 	}
 
 

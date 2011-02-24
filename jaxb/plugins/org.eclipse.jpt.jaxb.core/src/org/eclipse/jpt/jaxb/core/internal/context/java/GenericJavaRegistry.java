@@ -52,11 +52,15 @@ public class GenericJavaRegistry
 	
 	// ********** synchronize/update **********
 	
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.elementFactoryMethodContainer.synchronizeWithResourceModel();
 	}
 	
+	@Override
 	public void update() {
+		super.update();
 		this.elementFactoryMethodContainer.update();
 	}
 

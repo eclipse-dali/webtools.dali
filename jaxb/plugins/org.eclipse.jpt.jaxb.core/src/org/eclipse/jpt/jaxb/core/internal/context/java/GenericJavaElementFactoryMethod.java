@@ -45,7 +45,9 @@ public class GenericJavaElementFactoryMethod
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setElementName_(this.getResourceElementName());
 		this.setDefaultValue_(this.getResourceDefaultValue());
 		this.setNamespace_(this.getResourceNamespace());
@@ -54,9 +56,6 @@ public class GenericJavaElementFactoryMethod
 		this.setSubstitutionHeadNamespace_(this.getResourceSubstitutionHeadNamespace());
 	}
 
-	public void update() {
-		// nothing yet
-	}
 
 	// ********** xml enum value annotation **********
 

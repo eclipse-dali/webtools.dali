@@ -39,14 +39,12 @@ public abstract class AbstractJavaXmlJavaTypeAdapter
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setValue_(this.getResourceValue());
 		this.setSpecifiedType_(this.getResourceTypeString());
 		this.setDefaultType(this.buildDefaultType());
-	}
-
-	public void update() {
-		//nothing yet
 	}
 
 

@@ -43,19 +43,9 @@ public class GenericJavaXmlList
 		return getParent().getParent();
 	}
 
-	// ********** synchronize/update **********
-
-	public void synchronizeWithResourceModel() {
-		//nothing yet
-	}
-
-	public void update() {
-		//nothing yet
-	}
-
-
 
 	//************* validation ****************
+
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);

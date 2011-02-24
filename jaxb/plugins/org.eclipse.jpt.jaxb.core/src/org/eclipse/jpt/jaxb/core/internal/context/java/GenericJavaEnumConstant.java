@@ -36,12 +36,10 @@ public class GenericJavaEnumConstant
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setSpecifiedValue_(this.getResourceEnumValue());
-	}
-
-	public void update() {
-		// nothing yet
 	}
 
 

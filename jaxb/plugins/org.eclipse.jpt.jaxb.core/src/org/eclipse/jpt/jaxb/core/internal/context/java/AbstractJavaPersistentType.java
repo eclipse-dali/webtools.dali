@@ -67,7 +67,9 @@ public abstract class AbstractJavaPersistentType
 
 	// ********** synchronize/update **********
 
+	@Override
 	public void synchronizeWithResourceModel() {
+		super.synchronizeWithResourceModel();
 		this.setFactoryClass_(getResourceFactoryClass());
 		this.setFactoryMethod_(getResourceFactoryMethod());
 		this.setSpecifiedXmlTypeName_(getResourceXmlTypeName());
@@ -75,10 +77,7 @@ public abstract class AbstractJavaPersistentType
 		this.syncPropOrder();
 		this.syncRootElement();
 	}
-	
-	public void update() {
-		//nothing yet
-	}
+
 
 	// ********** xml type annotation **********
 

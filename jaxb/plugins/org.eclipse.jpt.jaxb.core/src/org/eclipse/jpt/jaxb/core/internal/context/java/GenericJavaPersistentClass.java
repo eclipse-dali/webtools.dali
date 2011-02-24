@@ -93,6 +93,7 @@ public class GenericJavaPersistentClass
 
 	@Override
 	public void update() {
+		super.update();
 		this.setSuperPersistentClass(this.buildSuperPersistentClass());
 		this.setDefaultAccessType(this.buildDefaultAccessType());
 		this.setDefaultAccessOrder(this.buildDefaultAccessOrder());
