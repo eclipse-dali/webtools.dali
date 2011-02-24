@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2005, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2005, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -77,6 +77,7 @@ public interface JpaValidationMessages {
 	public static final String ENTITY_NAME_MISSING = "ENTITY_NAME_MISSING";
 	public static final String ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED = "ENTITY_NON_ROOT_DISCRIMINATOR_COLUMN_DEFINED";
 	public static final String ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED = "ENTITY_TABLE_PER_CLASS_DISCRIMINATOR_COLUMN_DEFINED";
+	public static final String PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE = "PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE";
 	public static final String PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME = "PERSISTENT_ATTRIBUTE_UNSPECIFIED_NAME";
 	public static final String PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME = "PERSISTENT_ATTRIBUTE_UNRESOLVED_NAME";
 	public static final String PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED = "PERSISTENT_ATTRIBUTE_INHERITED_ATTRIBUTES_NOT_SUPPORTED";
@@ -84,6 +85,8 @@ public interface JpaValidationMessages {
 	public static final String PERSISTENT_ATTRIBUTE_FINAL_GETTER = "PERSISTENT_ATTRIBUTE_FINAL_GETTER";
 	public static final String PERSISTENT_ATTRIBUTE_PUBLIC_FIELD = "PERSISTENT_ATTRIBUTE_PUBLIC_FIELD";
 	public static final String PERSISTENT_ATTRIBUTE_INVALID_MAPPING = "PERSISTENT_ATTRIBUTE_INVALID_MAPPING";
+	public static final String PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE = "PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE";
+	public static final String PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE = "PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE";
 	public static final String MAPPING_UNRESOLVED_MAPPED_BY = "MAPPING_UNRESOLVED_MAPPED_BY";
 	public static final String MAPPING_INVALID_MAPPED_BY = "MAPPING_INVALID_MAPPED_BY";
 	public static final String MAPPING_MAPPED_BY_ON_BOTH_SIDES = "MAPPING_MAPPED_BY_ON_BOTH_SIDES";

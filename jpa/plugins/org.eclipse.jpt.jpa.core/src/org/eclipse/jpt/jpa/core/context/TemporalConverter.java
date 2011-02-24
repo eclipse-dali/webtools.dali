@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -24,6 +24,8 @@ package org.eclipse.jpt.jpa.core.context;
 public interface TemporalConverter
 	extends Converter
 {
+	static final String[] TEMPORAL_MAPPING_SUPPORTED_TYPES = {"java.util.Date", "java.util.Calendar", "java.util.GregorianCalendar"}; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+	
 	TemporalType getTemporalType();
 	void setTemporalType(TemporalType temporalType);
 		String TEMPORAL_TYPE_PROPERTY = "temporalType"; //$NON-NLS-1$

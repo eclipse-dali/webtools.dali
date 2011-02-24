@@ -1227,12 +1227,12 @@ public abstract class AbstractJavaElementCollectionMapping2_0
 	}
 
 	protected void validateValue(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		this.converter.validate(messages, reporter, astRoot);
 		//TODO should we handle validation when the type is embeddable,
 		//but a value column is specified, or things like that if that is invalid?
 		switch (this.valueType) {
 			case BASIC_TYPE :
 				this.valueColumn.validate(messages, reporter, astRoot);
-				this.converter.validate(messages, reporter, astRoot);
 				break;
 			case EMBEDDABLE_TYPE :
 				this.valueAttributeOverrideContainer.validate(messages, reporter, astRoot);

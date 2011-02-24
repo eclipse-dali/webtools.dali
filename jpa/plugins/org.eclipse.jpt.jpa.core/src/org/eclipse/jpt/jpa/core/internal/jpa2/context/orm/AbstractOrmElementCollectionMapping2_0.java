@@ -1336,12 +1336,12 @@ public abstract class AbstractOrmElementCollectionMapping2_0<X extends XmlElemen
 	}
 
 	public void validateValue(List<IMessage> messages, IReporter reporter) {
+		this.converter.validate(messages, reporter);
 		//TODO should we handle validation when the type is embeddable,
 		//but a value column is specified, or things like that if that is invalid?
 		switch (this.valueType) {
 			case BASIC_TYPE :
 				this.valueColumn.validate(messages, reporter);
-				this.converter.validate(messages, reporter);
 				break;
 			case EMBEDDABLE_TYPE :
 				this.valueAttributeOverrideContainer.validate(messages, reporter);

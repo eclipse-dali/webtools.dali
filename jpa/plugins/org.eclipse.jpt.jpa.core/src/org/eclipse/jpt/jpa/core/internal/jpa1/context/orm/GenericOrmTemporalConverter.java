@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,16 +9,24 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core.internal.jpa1.context.orm;
 
+import java.util.List;
 import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jpa.core.context.Converter;
 import org.eclipse.jpt.jpa.core.context.TemporalConverter;
 import org.eclipse.jpt.jpa.core.context.TemporalType;
 import org.eclipse.jpt.jpa.core.context.orm.OrmAttributeMapping;
 import org.eclipse.jpt.jpa.core.context.orm.OrmTemporalConverter;
+import org.eclipse.jpt.jpa.core.internal.jpa2.context.orm.AbstractOrmElementCollectionMapping2_0;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
+import org.eclipse.jpt.jpa.core.jpa2.MappingKeys2_0;
 import org.eclipse.text.edits.ReplaceEdit;
+import org.eclipse.wst.validation.internal.provisional.core.IMessage;
+import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
 public class GenericOrmTemporalConverter
 	extends AbstractOrmConverter
@@ -82,6 +90,44 @@ public class GenericOrmTemporalConverter
 
 
 	// ********** validation **********
+	
+	@Override
+	public void validate(List<IMessage> messages, IReporter reporter) {
+		super.validate(messages, reporter);
+		this.validateAttributeTypeWithTemporal(messages, reporter);
+	}
+	
+	protected void validateAttributeTypeWithTemporal(List<IMessage> messages, IReporter reporter) {
+		if (this.getAttributeMapping().getKey() == MappingKeys2_0.ELEMENT_COLLECTION_ATTRIBUTE_MAPPING_KEY) {
+			@SuppressWarnings("rawtypes")
+			String typeName = ((AbstractOrmElementCollectionMapping2_0) this.getAttributeMapping()).getTargetClass();
+			if (!ArrayTools.contains(TEMPORAL_MAPPING_SUPPORTED_TYPES, typeName)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.PERSISTENT_ATTRIBUTE_ELEMENT_COLLECTION_INVALID_VALUE_TYPE,
+								new String[] {},
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+		} else {
+			String typeName = this.getAttributeMapping().getPersistentAttribute().getTypeName();
+			if (!ArrayTools.contains(TEMPORAL_MAPPING_SUPPORTED_TYPES, typeName)) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.HIGH_SEVERITY,
+								JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_TEMPORAL_MAPPING_TYPE,
+								new String[] {},
+								this,
+								this.getValidationTextRange()
+						)
+				);
+			}
+
+		}
+	}
 
 	public TextRange getValidationTextRange() {
 		return this.getXmlConvertibleMapping().getTemporalTextRange();
