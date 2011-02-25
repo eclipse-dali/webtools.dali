@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.utility.Filter;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.Association;
 import org.eclipse.jpt.common.utility.internal.SimpleAssociation;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -32,6 +33,8 @@ import org.eclipse.jpt.jpa.core.internal.context.NamedColumnTextRangeResolver;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.EntityTableDescriptionProvider;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.NamedColumnValidator;
 import org.eclipse.jpt.jpa.core.internal.jpa1.context.java.NullJavaConverter;
+import org.eclipse.jpt.jpa.core.internal.validation.DefaultJpaValidationMessages;
+import org.eclipse.jpt.jpa.core.internal.validation.JpaValidationMessages;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
 import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
@@ -272,5 +275,20 @@ public abstract class AbstractJavaVersionMapping
 		super.validate(messages, reporter, astRoot);
 		this.column.validate(messages, reporter, astRoot);
 		this.converter.validate(messages, reporter, astRoot);
+		this.validateAttributeType(messages, reporter, astRoot);
+	}
+	
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
+		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.NORMAL_SEVERITY,
+							JpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
+							new String[] {this.getName()},
+							this,
+							this.getValidationTextRange(astRoot)
+					)
+			);
+		}
 	}
 }

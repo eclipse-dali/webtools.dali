@@ -24,5 +24,8 @@ package org.eclipse.jpt.jpa.core.context;
 public interface VersionMapping
 	extends ColumnMapping, ConvertibleMapping
 {
+	static final String[] VERSION_MAPPING_SUPPORTED_TYPES = 
+								{"int", "java.lang.Integer", "short", "java.lang.Short", "long", "java.lang.Long", "java.sql.Timestamp"};
+
 	// combine various interfaces
 }

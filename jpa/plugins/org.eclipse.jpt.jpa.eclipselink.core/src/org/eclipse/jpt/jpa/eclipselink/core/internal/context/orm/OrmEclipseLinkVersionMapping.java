@@ -10,12 +10,16 @@
 package org.eclipse.jpt.jpa.eclipselink.core.internal.context.orm;
 
 import java.util.List;
+
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.jpa.core.context.orm.OrmConverter;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentAttribute;
 import org.eclipse.jpt.jpa.core.internal.context.orm.AbstractOrmVersionMapping;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkMutable;
 import org.eclipse.jpt.jpa.eclipselink.core.context.EclipseLinkVersionMapping;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.DefaultEclipseLinkJpaValidationMessages;
+import org.eclipse.jpt.jpa.eclipselink.core.internal.EclipseLinkJpaValidationMessages;
 import org.eclipse.jpt.jpa.eclipselink.core.resource.orm.XmlVersion;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -72,5 +76,20 @@ public class OrmEclipseLinkVersionMapping
 	public void validate(List<IMessage> messages, IReporter reporter) {
 		super.validate(messages, reporter);
 		// TODO mutable validation
+	}
+
+	@Override
+	protected void validateAttributeType(List<IMessage> messages, IReporter reporter) {
+		if (!ArrayTools.contains(VERSION_MAPPING_SUPPORTED_TYPES, this.getPersistentAttribute().getTypeName())) {
+			messages.add(
+					DefaultEclipseLinkJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							EclipseLinkJpaValidationMessages.PERSISTENT_ATTRIBUTE_INVALID_VERSION_MAPPING_TYPE,
+							new String[] {this.getName()},
+							this,
+							this.getNameTextRange()
+					)
+			);
+		}
 	}
 }
