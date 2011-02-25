@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<!--
+  Copyright (c) 2011 Oracle. All rights reserved.
+  This program and the accompanying materials are made available under the
+  terms of the Eclipse Public License v1.0, which accompanies this distribution
+  and is available at http://www.eclipse.org/legal/epl-v10.html.
+
+  Contributors:
+    Oracle - initial API and implementation
+ -->
+
+<plugin>
+	
+	<extension
+		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
+		
+		<jaxbPlatformGroup
+        	id="moxy"
+        	label="%MOXY_PLATFORM_GROUP_LABEL"/>
+		
+		<jaxbPlatform
+			id="moxy_2_3"
+			label="%MOXY_2_3_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.Moxy_2_3_PlatformDefinitionFactory"
+			group="moxy"
+			jaxbFacetVersion="2.2"
+			default="false"/>
+		
+	</extension>
+	
+	
+	<extension
+		point="org.eclipse.jpt.common.core.libraryValidators">
+		
+		<libraryValidator
+			id="moxyUserLibraryValidator"
+			class="org.eclipse.jpt.jaxb.eclipselink.core.internal.libval.MoxyUserLibraryValidator">
+			<enablement>
+				<and>
+					<with variable="libraryProvider">
+						<test property="org.eclipse.jpt.common.core.extendsId" value="jaxb-user-library-provider"/>
+					</with>
+					<with variable="config">
+						<test property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup" value="moxy"/>
+					</with>
+				</and>
+			</enablement>
+		</libraryValidator>
+		
+	</extension>
+	
+</plugin>
