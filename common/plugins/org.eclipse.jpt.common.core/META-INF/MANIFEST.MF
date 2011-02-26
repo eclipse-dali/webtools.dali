@@ -32,7 +32,8 @@ Export-Package: org.eclipse.jpt.common.core,
    org.eclipse.jpt.jaxb.core",
  org.eclipse.jpt.common.core.internal.gen;
   x-friends:="org.eclipse.jpt.jpa.core,
-   org.eclipse.jpt.jaxb.core",
+   org.eclipse.jpt.jaxb.core,
+   org.eclipse.jpt.dbws.eclipselink.ui",
  org.eclipse.jpt.common.core.internal.libprov;
   x-friends:="org.eclipse.jpt.jpa.core,
    org.eclipse.jpt.jaxb.core",
@@ -48,6 +49,7 @@ Export-Package: org.eclipse.jpt.common.core,
  org.eclipse.jpt.common.core.internal.utility;
   x-friends:="org.eclipse.jpt.common.ui,
    org.eclipse.jpt.common.eclipselink.core,
+   org.eclipse.jpt.dbws.eclipselink.ui,
    org.eclipse.jpt.jaxb.core,
    org.eclipse.jpt.jaxb.ui,
    org.eclipse.jpt.jpa.core,
