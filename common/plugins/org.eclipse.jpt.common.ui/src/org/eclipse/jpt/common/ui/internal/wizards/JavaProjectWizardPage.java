@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,7 +7,7 @@
 * Contributors:
 *     Oracle - initial API and implementation
 *******************************************************************************/
-package org.eclipse.jpt.jaxb.ui.internal.wizards;
+package org.eclipse.jpt.common.ui.internal.wizards;
 
 import java.util.Iterator;
 
@@ -28,7 +28,6 @@ import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
-import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,6 +47,7 @@ import org.eclipse.ui.PlatformUI;
 public class JavaProjectWizardPage extends WizardPage {
 
 	private IJavaProject javaProject;
+	private String destinationLabel;
 	private Table projectTable;
 	private TableViewer projectTableViewer;
 	
@@ -70,7 +70,7 @@ public class JavaProjectWizardPage extends WizardPage {
 		layout.numColumns = 1;
 		composite.setLayout(layout);
 
-		this.buildLabel(composite, JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
+		this.buildLabel(composite, this.destinationLabel);
 		
 		this.projectTable = this.buildProjectTable(composite, this.buildProjectTableSelectionListener());
 		
@@ -126,6 +126,10 @@ public class JavaProjectWizardPage extends WizardPage {
 		return this.javaProject;
 	}
 
+	public void setDestinationLabel(String destinationLabel) {
+		this.destinationLabel = destinationLabel;
+	}
+
 	// ********** protected methods **********
 
 	protected void setTableSelection(IJavaProject javaProject) {
@@ -168,7 +172,7 @@ public class JavaProjectWizardPage extends WizardPage {
 			new String[0]);
 	}
 	
-	private Iterable<IProject> getJavaProjects() {
+	protected Iterable<IProject> getJavaProjects() {
 	   return new FilteringIterable<IProject>(CollectionTools.collection(this.getProjects())) {
 	      @Override
 	      protected boolean accept(IProject next) {
@@ -182,7 +186,7 @@ public class JavaProjectWizardPage extends WizardPage {
 	   };
 	}
 
-	private Iterator<IProject> getProjects() {
+	protected Iterator<IProject> getProjects() {
 		return new ArrayIterator<IProject>(ResourcesPlugin.getWorkspace().getRoot().getProjects());
 	}
 
@@ -217,7 +221,7 @@ public class JavaProjectWizardPage extends WizardPage {
 	}
 
 	// ********** UI components **********
-
+	
 	private ITableLabelProvider buildProjectTableLabelProvider() {
 		return new ProjectTableLabelProvider();
 	}

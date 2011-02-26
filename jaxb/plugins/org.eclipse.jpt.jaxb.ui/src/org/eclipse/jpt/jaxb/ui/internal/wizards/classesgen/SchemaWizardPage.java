@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;

@@ -1,5 +1,5 @@
 /*******************************************************************************
-* Copyright (c) 2010 Oracle. All rights reserved.
+* Copyright (c) 2010, 2011 Oracle. All rights reserved.
 * This program and the accompanying materials are made available under the
 * terms of the Eclipse Public License v1.0, which accompanies this distribution
 * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,13 +23,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jpt.common.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorExtensionOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.ClassesGeneratorOptions;
 import org.eclipse.jpt.jaxb.core.internal.gen.GenerateJaxbClassesJob;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiMessages;
-import org.eclipse.jpt.jaxb.ui.internal.wizards.JavaProjectWizardPage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
@@ -96,6 +96,7 @@ public class ClassesGeneratorWizard extends Wizard implements IWorkbenchWizard {
 			this.projectWizardPage = new JavaProjectWizardPage(this.javaProject);
 			this.projectWizardPage.setTitle(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_title);
 			this.projectWizardPage.setDescription(JptJaxbUiMessages.ClassesGeneratorProjectWizardPage_desc);
+			this.projectWizardPage.setDestinationLabel(JptJaxbUiMessages.JavaProjectWizardPage_destinationProject);
 			this.addPage(this.projectWizardPage);
 
 			// SchemaWizardPage
