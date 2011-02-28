@@ -22,6 +22,6 @@ package org.eclipse.jpt.jaxb.core.context;
  * @version 3.0
  * @since 3.0
  */
-public interface JaxbTransientType extends JaxbType {
+public interface JaxbTransientClass extends JaxbClass {
 
 }

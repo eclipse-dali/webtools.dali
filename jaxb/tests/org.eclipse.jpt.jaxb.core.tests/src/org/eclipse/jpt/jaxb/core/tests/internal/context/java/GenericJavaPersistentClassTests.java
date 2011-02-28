@@ -633,7 +633,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
 		JaxbPersistentClass childPersistentClass = getContextRoot().getPersistentClass(PACKAGE_NAME + ".AnnotationTestTypeChild");
 
-		assertEquals(persistentClass, childPersistentClass.getSuperPersistentClass());
+		assertEquals(persistentClass, childPersistentClass.getSuperClass());
 
 		//This test will change when we no longer depend on there being an @XmlType annotation for something to be persistent
 		AnnotatedElement annotatedElement = this.annotatedElement(persistentClass.getJavaResourceType());
@@ -642,7 +642,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 				GenericJavaPersistentClassTests.this.removeAnnotation(declaration, XmlTypeAnnotation.ANNOTATION_NAME);
 			}
 		});
-		assertNull(childPersistentClass.getSuperPersistentClass());
+		assertNull(childPersistentClass.getSuperClass());
 	}
 
 	public void testModifyAccessOrder() throws Exception {

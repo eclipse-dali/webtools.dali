@@ -97,7 +97,7 @@ public interface JaxbType
 		REGISTRY,
 		
 		/**
-		 * A JaxbType of {@link Kind} REGISTRY may safely be cast as a {@link JaxbTransientType}
+		 * A JaxbType of {@link Kind} TRANSIENT may safely be cast as a {@link JaxbTransientClass}
 		 */
 		TRANSIENT
 	}

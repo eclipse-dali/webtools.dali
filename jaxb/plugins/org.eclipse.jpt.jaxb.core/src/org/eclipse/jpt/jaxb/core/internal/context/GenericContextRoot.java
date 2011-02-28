@@ -23,12 +23,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
+import org.eclipse.jpt.jaxb.core.context.JaxbClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.context.JaxbType.Kind;
 import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
@@ -108,7 +109,7 @@ public class GenericContextRoot
 		}
 		
 		for (JavaResourceType resourceType : initialTransientClasses) {
-			this.types.put(resourceType.getName(), buildTransientType(resourceType));
+			this.types.put(resourceType.getName(), buildTransientClass(resourceType));
 		}
 		
 		for (JavaResourceType resourceType : initialPersistentClasses) {
@@ -194,11 +195,11 @@ public class GenericContextRoot
 				}
 				else {
 					this.removeType(className); // this will remove a type of another kind
-					this.addType(buildTransientType(resourceType));
+					this.addType(buildTransientClass(resourceType));
 				}
 			}
 			else {
-				this.addType(buildTransientType(resourceType));
+				this.addType(buildTransientClass(resourceType));
 			}
 		}
 		
@@ -482,8 +483,8 @@ public class GenericContextRoot
 
 	// ********** transient types **********
 	
-	public Iterable<JaxbTransientType> getTransientTypes() {
-		return new SubIterableWrapper<JaxbType, JaxbTransientType>(
+	public Iterable<JaxbTransientClass> getTransientClasses() {
+		return new SubIterableWrapper<JaxbType, JaxbTransientClass>(
 				new FilteringIterable<JaxbType>(getTypes()) {
 					@Override
 					protected boolean accept(JaxbType o) {
@@ -492,21 +493,21 @@ public class GenericContextRoot
 				});
 	}
 	
-	protected JaxbTransientType buildTransientType(JavaResourceType resourceType) {
-		return this.getFactory().buildJavaTransientType(this, resourceType);
+	protected JaxbTransientClass buildTransientClass(JavaResourceType resourceType) {
+		return this.getFactory().buildJavaTransientClass(this, resourceType);
 	}
 	
-	public Iterable<JaxbTransientType> getTransientTypes(final JaxbPackage jaxbPackage) {
-		return new FilteringIterable<JaxbTransientType>(getTransientTypes()) {
+	public Iterable<JaxbTransientClass> getTransientClasses(final JaxbPackage jaxbPackage) {
+		return new FilteringIterable<JaxbTransientClass>(getTransientClasses()) {
 			@Override
-			protected boolean accept(JaxbTransientType o) {
+			protected boolean accept(JaxbTransientClass o) {
 				return o.getPackageName().equals(jaxbPackage.getName());
 			}
 		};
 	}
 
-	public JaxbTransientType getTransientType(String className) {
-		for (JaxbTransientType jaxbClass : this.getTransientTypes()) {
+	public JaxbTransientClass getTransientClass(String className) {
+		for (JaxbTransientClass jaxbClass : this.getTransientClasses()) {
 			if (StringTools.stringsAreEqual(jaxbClass.getFullyQualifiedName(), className)) {
 				return jaxbClass;
 			}
@@ -547,7 +548,12 @@ public class GenericContextRoot
 		}
 		return null;
 	}
-	
+
+	public JaxbClass getClass(String fullyQualifiedTypeName) {
+		JaxbPersistentClass jaxbClass= this.getPersistentClass(fullyQualifiedTypeName);
+		return jaxbClass != null ? jaxbClass : this.getTransientClass(fullyQualifiedTypeName);
+	}
+
 	// ********** persistent enums **********
 	
 	public Iterable<JaxbPersistentEnum> getPersistentEnums() {

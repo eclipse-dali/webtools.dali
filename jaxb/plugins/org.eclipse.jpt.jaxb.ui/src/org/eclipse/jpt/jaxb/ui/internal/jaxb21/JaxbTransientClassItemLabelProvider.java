@@ -12,17 +12,17 @@ package org.eclipse.jpt.jaxb.ui.internal.jaxb21;
 import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.StaticPropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 import org.eclipse.jpt.jaxb.ui.JptJaxbUiPlugin;
 import org.eclipse.jpt.jaxb.ui.internal.JptJaxbUiIcons;
 import org.eclipse.swt.graphics.Image;
 
 
-public class JaxbTransientTypeItemLabelProvider
+public class JaxbTransientClassItemLabelProvider
 		extends JaxbTypeItemLabelProvider {
 
-	public JaxbTransientTypeItemLabelProvider(
-		JaxbTransientType jaxbTransientType, DelegatingContentAndLabelProvider labelProvider) {
+	public JaxbTransientClassItemLabelProvider(
+		JaxbTransientClass jaxbTransientType, DelegatingContentAndLabelProvider labelProvider) {
 
 		super(jaxbTransientType, labelProvider);
 	}

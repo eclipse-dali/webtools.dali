@@ -101,20 +101,25 @@ public interface JaxbContextRoot
 	Iterable<JaxbRegistry> getRegistries(JaxbPackage jaxbPackage);
 
 	/**
-	 * The set of transient types.
+	 * The set of transient classes.
 	 */
-	Iterable<JaxbTransientType> getTransientTypes();
+	Iterable<JaxbTransientClass> getTransientClasses();
 
 	/**
-	 * Return the set of transient types that are in the given package
+	 * Return the set of transient classes that are in the given package
 	 */
-	Iterable<JaxbTransientType> getTransientTypes(JaxbPackage jaxbPackage);
+	Iterable<JaxbTransientClass> getTransientClasses(JaxbPackage jaxbPackage);
 
 	/**
-	 * Return the transient type with the given fully qualified name
+	 * Return the transient class with the given fully qualified name
 	 */
-	JaxbTransientType getTransientType(String fullyQualifiedTypeName);
+	JaxbTransientClass getTransientClass(String fullyQualifiedTypeName);
 
+
+	/**
+	 * Return the persistent class or transient type with the given fully qualified name
+	 */
+	JaxbClass getClass(String fullyQualifiedTypeName);
 
 	// **************** validation ********************************************
 	

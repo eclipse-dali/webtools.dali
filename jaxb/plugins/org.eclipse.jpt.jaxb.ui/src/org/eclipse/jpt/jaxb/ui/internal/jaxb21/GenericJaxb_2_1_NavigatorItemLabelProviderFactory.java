@@ -20,7 +20,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
-import org.eclipse.jpt.jaxb.core.context.JaxbTransientType;
+import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 
 
 public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
@@ -61,8 +61,8 @@ public class GenericJaxb_2_1_NavigatorItemLabelProviderFactory
 		else if (item instanceof JaxbPersistentEnum) {
 			return new JaxbPersistentEnumItemLabelProvider((JaxbPersistentEnum) item, contentAndLabelProvider);
 		}
-		else if (item instanceof JaxbTransientType) {
-			return new JaxbTransientTypeItemLabelProvider((JaxbTransientType) item, contentAndLabelProvider);
+		else if (item instanceof JaxbTransientClass) {
+			return new JaxbTransientClassItemLabelProvider((JaxbTransientClass) item, contentAndLabelProvider);
 		}
 		else if (item instanceof JaxbPersistentField) {
 			return new JaxbPersistentFieldItemLabelProvider((JaxbPersistentField) item, contentAndLabelProvider);

@@ -48,7 +48,13 @@ public abstract class JaxbPersistentAttributeItemLabelProvider
 	
 	@Override
 	protected PropertyValueModel<String> buildTextModel() {
-		return new StaticPropertyValueModel<String>(getModel().getName());
+		StringBuffer sb = new StringBuffer();
+		if (getModel().isInherited()) {
+			sb.append(getModel().getInheritedJavaResourceAttributeOwningTypeName());
+			sb.append('.');
+		}
+		sb.append(getModel().getName());
+		return new StaticPropertyValueModel<String>(sb.toString());
 	}
 	
 	@Override

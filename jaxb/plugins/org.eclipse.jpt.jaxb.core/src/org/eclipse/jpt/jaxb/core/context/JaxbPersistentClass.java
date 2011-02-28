@@ -9,8 +9,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jaxb.core.context;
 
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
-
 /**
  * Represents a JAXB persistent class.  
  * (A class with either an explicit or implicit @XmlType annotation)
@@ -25,31 +23,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
  * @since 3.0
  */
 public interface JaxbPersistentClass
-		extends JaxbPersistentType, XmlAccessTypeHolder, XmlAccessOrderHolder, XmlAdaptable {
-
-	/**
-	 * covariant override
-	 */
-	JavaResourceType getJavaResourceType();
-
-	JaxbPersistentClass getSuperPersistentClass();
-		String SUPER_PERSISTENT_CLASS_PROPERTY = "superPersistentClass"; //$NON-NLS-1$
-
-	/**
-	 * Return the persistent type's "persistence" inheritance hierarchy,
-	 * <em>including</em> the persistent type itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
-	 */
-	Iterable<JaxbPersistentClass> getInheritanceHierarchy();
-
-	/**
-	 * Return the persistent type's "persistence" inheritance hierarchy,
-	 * <em>excluding</em> the persistent type itself.
-	 * The returned iterator will return elements infinitely if the hierarchy
-	 * has a loop.
-	 */
-	Iterable<JaxbPersistentClass> getAncestors();
+		extends JaxbPersistentType, JaxbClass, XmlAdaptable {
 
 
 	/********** attributes **********/
@@ -57,5 +31,31 @@ public interface JaxbPersistentClass
 	Iterable<JaxbPersistentAttribute> getAttributes();
 	int getAttributesSize();
 		String ATTRIBUTES_COLLECTION = "attributes"; //$NON-NLS-1$
+
+
+	/********** inherited attributes **********/
+
+	/**
+	 * Inherited attributes come from any superclasses that are mapped as @XmlTransient.
+	 * @see JaxbClass#getSuperClass()
+	 * @see JaxbClass#getInheritanceHierarchy()
+	 */
+	Iterable<JaxbPersistentAttribute> getInheritedAttributes();
+	int getInheritedAttributesSize();
+		String INHERITED_ATTRIBUTES_COLLECTION = "inheritedAttributes"; //$NON-NLS-1$
+
+	
+	/**
+	 * Return true if the given attribute is one of the inherited attributes.
+	 */
+	boolean isInherited(JaxbPersistentAttribute attribute);
+
+	/**
+	 * Only ask this of inherited persistent attributes. Returns the simple
+	 * type name of the attribute's resource type.
+	 * 
+	 * @see JaxbPersistentAttribute#isInherited()
+	 */
+	String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute);
 
 }

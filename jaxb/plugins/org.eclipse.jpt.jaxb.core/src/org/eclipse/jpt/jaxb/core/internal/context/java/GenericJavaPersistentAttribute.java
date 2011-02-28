@@ -43,6 +43,14 @@ public abstract class GenericJavaPersistentAttribute
 		return (JaxbPersistentClass) super.getParent();
 	}
 
+	public boolean isInherited() {
+		return getParent().isInherited(this);
+	}
+
+	public String getInheritedJavaResourceAttributeOwningTypeName() {
+		return getParent().getJavaResourceAttributeOwningTypeName(this);
+	}
+
 	/**
 	 * subclasses must call this method in their constructor
 	 */

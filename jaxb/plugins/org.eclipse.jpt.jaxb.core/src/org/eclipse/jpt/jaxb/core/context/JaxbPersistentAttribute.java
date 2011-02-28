@@ -32,6 +32,20 @@ public interface JaxbPersistentAttribute
 
 	JaxbPersistentClass getParent();
 
+	/**
+	 * Return true if this JaxbPersistentAttribute is inherited from one of the
+	 * superclasses of the parent JaxbPersistentClass.
+	 */
+	boolean isInherited();
+
+	/**
+	 * Only ask this of inherited persistent attributes. Returns the simple
+	 * type name of the attribute's resource type.
+	 * 
+	 * @see JaxbPersistentAttribute#isInherited()
+	 */
+	String getInheritedJavaResourceAttributeOwningTypeName();
+
 	// ********** name **********
 
 	/**
