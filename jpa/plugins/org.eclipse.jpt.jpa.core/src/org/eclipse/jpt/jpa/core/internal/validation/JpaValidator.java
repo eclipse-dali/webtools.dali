@@ -16,7 +16,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jpt.common.core.IResourcePart;
-import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
@@ -100,7 +99,7 @@ public class JpaValidator extends AbstractValidator implements IValidator {
 	private Iterable<IMessage> getValidationMessages(IReporter reporter, IProject project) {
 		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(project);
 		if (jpaProject != null) {
-			return CollectionTools.iterable(jpaProject.validationMessages(reporter));
+			return jpaProject.getValidationMessages(reporter);
 		}
 		return new SingleElementIterable<IMessage>(
 			DefaultJpaValidationMessages.buildMessage(

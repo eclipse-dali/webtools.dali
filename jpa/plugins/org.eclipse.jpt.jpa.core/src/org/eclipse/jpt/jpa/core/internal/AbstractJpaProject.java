@@ -56,6 +56,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.synchronizers.CallbackSynchronousSynchronizer;
@@ -498,15 +499,11 @@ public abstract class AbstractJpaProject
 	
 	// ********** JPA files **********
 
-	public Iterator<JpaFile> jpaFiles() {
-		return this.getJpaFiles().iterator();
-	}
-
-	protected Iterable<JpaFile> getJpaFiles() {
+	public Iterable<JpaFile> getJpaFiles() {
 		return new LiveCloneIterable<JpaFile>(this.jpaFiles);  // read-only
 	}
 
-	public int jpaFilesSize() {
+	public int getJpaFilesSize() {
 		return this.jpaFiles.size();
 	}
 
@@ -679,15 +676,11 @@ public abstract class AbstractJpaProject
 
 	// ********** external Java resource compilation units (source) **********
 
-	public Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits() {
-		return this.getExternalJavaResourceCompilationUnits().iterator();
-	}
-
-	protected Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
+	public Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits() {
 		return new LiveCloneIterable<JavaResourceCompilationUnit>(this.externalJavaResourceCompilationUnits);  // read-only
 	}
 
-	public int externalJavaResourceCompilationUnitsSize() {
+	public int getExternalJavaResourceCompilationUnitsSize() {
 		return this.externalJavaResourceCompilationUnits.size();
 	}
 
@@ -794,11 +787,7 @@ public abstract class AbstractJpaProject
 
 	// ********** annotated Java source classes **********
 
-	public Iterator<String> annotatedJavaSourceClassNames() {
-		return this.getAnnotatedJavaSourceClassNames().iterator();
-	}
-
-	protected Iterable<String> getAnnotatedJavaSourceClassNames() {
+	public Iterable<String> getAnnotatedJavaSourceClassNames() {
 		return new TransformationIterable<JavaResourcePersistentType, String>(this.getInternalAnnotatedSourceJavaResourcePersistentTypes()) {
 			@Override
 			protected String transform(JavaResourcePersistentType jrpType) {
@@ -1401,10 +1390,10 @@ public abstract class AbstractJpaProject
 
 	// ********** validation **********
 	
-	public Iterator<IMessage> validationMessages(IReporter reporter) {
+	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
 		this.validate(messages, reporter);
-		return messages.iterator();
+		return new SnapshotCloneIterable<IMessage>(messages);
 	}
 	
 	protected void validate(List<IMessage> messages, IReporter reporter) {

@@ -40,14 +40,14 @@ public class OrmXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddEntityMappings() throws Exception {
-		assertEquals(2, getJpaProject().jpaFilesSize());
+		assertEquals(2, getJpaProject().getJpaFilesSize());
 		JpaXmlResource ormResource = getOrmXmlResource();
 		ormResource.getContents().clear();
 		ormResource.save(null);
 		
 		//the ContentType of the orm.xml file is no longer orm, so the jpa file is removed
 		assertNull(getOrmXml());
-		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the persistence.xml file
+		assertEquals(1, getJpaProject().getJpaFilesSize()); //should only be the persistence.xml file
 		
 		XmlEntityMappings xmlEntityMappings = OrmFactory.eINSTANCE.createXmlEntityMappings();
 		xmlEntityMappings.setVersion("1.0");
@@ -55,7 +55,7 @@ public class OrmXmlTests extends ContextModelTestCase
 		ormResource.save(null);
 		
 		assertNotNull(getOrmXml().getRoot());
-		assertEquals(2, getJpaProject().jpaFilesSize());
+		assertEquals(2, getJpaProject().getJpaFilesSize());
 	}
 	
 	public void testUpdateRemoveEntityMappings() throws Exception {

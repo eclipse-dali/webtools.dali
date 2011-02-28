@@ -280,7 +280,7 @@ public class EntityDataModelProvider extends NewJavaClassDataModelProvider imple
 							IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
 							EntityWizardMsg.INVALID_XML_NAME);
 				}
-				else if (getTargetJpaProject().getJpaFile(ormXmlResource.getFile()).rootStructureNodesSize() == 0) {
+				else if (getTargetJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
 					return new Status(
 						IStatus.ERROR, JptJpaUiPlugin.PLUGIN_ID,
 						EntityWizardMsg.MAPPING_FILE_NOT_LISTED_ERROR);

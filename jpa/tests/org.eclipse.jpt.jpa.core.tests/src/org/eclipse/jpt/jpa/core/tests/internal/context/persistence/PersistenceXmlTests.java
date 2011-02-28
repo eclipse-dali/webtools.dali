@@ -27,14 +27,14 @@ public class PersistenceXmlTests extends ContextModelTestCase
 	}
 	
 	public void testUpdateAddPersistence() throws Exception {
-		assertEquals(2, getJpaProject().jpaFilesSize());
+		assertEquals(2, getJpaProject().getJpaFilesSize());
 		JpaXmlResource prm = getPersistenceXmlResource();
 		prm.getContents().clear();
 		prm.save(null);
 		
 		//the ContentType of the persistence.xml file is no longer persistence, so the jpa file is removed
 		assertNull(getPersistenceXml());
-		assertEquals(1, getJpaProject().jpaFilesSize()); //should only be the orm.xml file
+		assertEquals(1, getJpaProject().getJpaFilesSize()); //should only be the orm.xml file
 		
 		XmlPersistence xmlPersistence = PersistenceFactory.eINSTANCE.createXmlPersistence();
 		xmlPersistence.setVersion("1.0");
@@ -42,7 +42,7 @@ public class PersistenceXmlTests extends ContextModelTestCase
 		prm.save(null);
 		
 		assertNotNull(getPersistenceXml().getPersistence());
-		assertEquals(2, getJpaProject().jpaFilesSize());	
+		assertEquals(2, getJpaProject().getJpaFilesSize());	
 	}
 	
 	public void testUpdateRemovePersistence() throws Exception {

@@ -133,7 +133,7 @@ public class JpaProjectManagerTests extends TestCase {
 		assertTrue(this.testProject.getProject().isOpen());
 		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull("JpaProject is null", jpaProject);
-		assertEquals(4, jpaProject.jpaFilesSize());
+		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 
@@ -162,7 +162,7 @@ public class JpaProjectManagerTests extends TestCase {
 		assertTrue(JpaFacet.isInstalled(project));
 		jpaProject = JptJpaCorePlugin.getJpaProject(project);
 		assertNotNull(jpaProject);
-		assertEquals(4, jpaProject.jpaFilesSize());
+		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
@@ -176,7 +176,7 @@ public class JpaProjectManagerTests extends TestCase {
 		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-		assertEquals(4, jpaProject.jpaFilesSize());
+		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 
@@ -211,7 +211,7 @@ public class JpaProjectManagerTests extends TestCase {
 		JpaProject jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
 		// persistence.xml and orm.xml do not get created in this situation (?)
-		assertEquals(2, jpaProject.jpaFilesSize());
+		assertEquals(2, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 //		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));
@@ -253,7 +253,7 @@ public class JpaProjectManagerTests extends TestCase {
 		assertEquals(1, JptJpaCorePlugin.getJpaProjectManager().getJpaProjectsSize());
 		jpaProject = JptJpaCorePlugin.getJpaProject(this.testProject.getProject());
 		assertNotNull(jpaProject);
-		assertEquals(4, jpaProject.jpaFilesSize());
+		assertEquals(4, jpaProject.getJpaFilesSize());
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/test/pkg/TestEntity2.java")));
 		assertNotNull(jpaProject.getJpaFile(this.getFile(this.testProject, "src/META-INF/persistence.xml")));

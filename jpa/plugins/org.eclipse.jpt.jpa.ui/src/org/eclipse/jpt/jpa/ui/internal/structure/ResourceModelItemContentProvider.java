@@ -9,8 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.structure;
 
-import java.util.Iterator;
-
 import org.eclipse.jpt.common.ui.internal.jface.AbstractTreeItemContentProvider;
 import org.eclipse.jpt.common.ui.internal.jface.DelegatingTreeContentAndLabelProvider;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
@@ -43,8 +41,8 @@ public class ResourceModelItemContentProvider extends AbstractTreeItemContentPro
 		return new CollectionAspectAdapter<JpaFile, JpaStructureNode>(
 			buildJpaFileValueModel(), JpaFile.ROOT_STRUCTURE_NODES_COLLECTION) {
 			@Override
-			protected Iterator<JpaStructureNode> iterator_() {
-				return subject.rootStructureNodes();
+			protected Iterable<JpaStructureNode> getIterable() {
+				return this.subject.getRootStructureNodes();
 			}
 		};
 	}

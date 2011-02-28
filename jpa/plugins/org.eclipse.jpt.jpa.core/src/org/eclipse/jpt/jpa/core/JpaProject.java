@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResourceDelta;
@@ -104,12 +103,12 @@ public interface JpaProject
 	/**
 	 * Return the JPA project's JPA files.
 	 */
-	Iterator<JpaFile> jpaFiles();
+	Iterable<JpaFile> getJpaFiles();
 
 	/**
 	 * Return the size of the JPA project's JPA files.
 	 */
-	int jpaFilesSize();
+	int getJpaFilesSize();
 
 	/**
 	 * Return the JPA file corresponding to the specified file.
@@ -130,12 +129,12 @@ public interface JpaProject
 	/**
 	 * Return the JPA project's external Java resource compilation units.
 	 */
-	Iterator<JavaResourceCompilationUnit> externalJavaResourceCompilationUnits();
+	Iterable<JavaResourceCompilationUnit> getExternalJavaResourceCompilationUnits();
 
 	/**
 	 * Return the size of the JPA project's external Java resource compilation units.
 	 */
-	int externalJavaResourceCompilationUnitsSize();
+	int getExternalJavaResourceCompilationUnitsSize();
 
 
 	// ********** external Java resource persistent types **********
@@ -182,7 +181,7 @@ public interface JpaProject
 	 * Return the names of the JPA project's annotated Java classes
 	 * (ignoring classes in JARs referenced in the <code>persistence.xml</code>).
 	 */
-	Iterator<String> annotatedJavaSourceClassNames();
+	Iterable<String> getAnnotatedJavaSourceClassNames();
 	
 	/**
 	 * Return only the names of those valid <em>mapped</em> (i.e. annotated with
@@ -334,7 +333,7 @@ public interface JpaProject
 	/**
 	 * Return JPA project's validation messages.
 	 */
-	Iterator<IMessage> validationMessages(IReporter reporter);
+	Iterable<IMessage> getValidationMessages(IReporter reporter);
 
 
 	// ********** database **********

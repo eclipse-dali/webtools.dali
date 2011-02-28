@@ -111,7 +111,7 @@ public class JpaJavaCompletionProposalComputer implements IJavaCompletionProposa
 			return Collections.emptyList();
 		}
 		
-		Collection<JpaStructureNode> rootStructureNodes = CollectionTools.collection(jpaFile.rootStructureNodes());
+		Collection<JpaStructureNode> rootStructureNodes = CollectionTools.collection(jpaFile.getRootStructureNodes());
 		if (rootStructureNodes.isEmpty()) {
 			return Collections.emptyList();
 		}

@@ -207,7 +207,7 @@ public class JpaArtifactFactory {
 			OneToManyAnnotation annotation = ((JavaOneToManyMapping)mapping).getMappingAnnotation();
 			if (annotation == null) {
 				JpaArtifactFactory.instance().refreshEntityModel(null, singleSideJPT);
-				mapping = (JavaOneToManyMapping)resolvedSingleSideAttribute.getMapping();
+				mapping = resolvedSingleSideAttribute.getMapping();
 				annotation = ((JavaOneToManyMapping)mapping).getMappingAnnotation();
 			}
 			
@@ -245,17 +245,17 @@ public class JpaArtifactFactory {
 		
 		refreshEntityModel(fp, manySideJPT);
 		
-		JavaPersistentAttribute resolvedManySideAttribute = (JavaPersistentAttribute) manySideJPT.getAttributeNamed(manySideAttribute.getName());
+		JavaPersistentAttribute resolvedManySideAttribute = manySideJPT.getAttributeNamed(manySideAttribute.getName());
 		resolvedManySideAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
 		
 		if (direction == JPAEditorConstants.RELATION_TYPE_UNIDIRECTIONAL) 
 			return;
 		
-		JavaPersistentAttribute resolvedSingleSideAttribute = (JavaPersistentAttribute) singleSideJPT.getAttributeNamed(singleSideAttibute.getName());
+		JavaPersistentAttribute resolvedSingleSideAttribute = singleSideJPT.getAttributeNamed(singleSideAttibute.getName());
 		resolvedSingleSideAttribute.setMappingKey(MappingKeys.ONE_TO_MANY_ATTRIBUTE_MAPPING_KEY);
 		refreshEntityModel(fp, singleSideJPT);
 		JavaOneToManyMapping mapping = (JavaOneToManyMapping)resolvedSingleSideAttribute.getMapping();
-		OneToManyAnnotation a = (OneToManyAnnotation)mapping.getMappingAnnotation();
+		OneToManyAnnotation a = mapping.getMappingAnnotation();
 		if (a == null) 
 			return;
 		a.setMappedBy(manySideAttribute.getName());
@@ -1281,7 +1281,7 @@ public class JpaArtifactFactory {
 	 */
 	public Set<JavaPersistentAttribute> getRelatedAttributes(JavaPersistentType jpt) {
 		Set<JavaPersistentAttribute> res = new HashSet<JavaPersistentAttribute>();
-		Iterator<JpaFile> it = jpt.getJpaProject().jpaFiles();
+		Iterator<JpaFile> it = jpt.getJpaProject().getJpaFiles().iterator();
 		PersistenceUnit pu = JpaArtifactFactory.INSTANCE.getPersistenceUnit(jpt.getJpaProject());
 		while (it.hasNext()) {
 			JpaFile jpaFile = it.next();
@@ -1400,7 +1400,7 @@ public class JpaArtifactFactory {
 			c++;
 			try {
 				Thread.sleep(PAUSE_DURATION);
-				newAt = (JavaPersistentAttribute) jpt.getAttributeNamed(newName);
+				newAt = jpt.getAttributeNamed(newName);
 				if (newAt == null)
 					newAt = (JavaPersistentAttribute) jpt
 							.resolveAttribute(JPAEditorUtil
@@ -1643,12 +1643,12 @@ public class JpaArtifactFactory {
 		Hashtable<JavaPersistentAttribute, Annotation> ht = getRelAttributeAnnotation(
 				persistentAttribite, relJPT);
 		if (ht == null) {
-			return (AbstractRelation) produceUniDirRelation((JavaPersistentType)persistentAttribite
+			return produceUniDirRelation((JavaPersistentType)persistentAttribite
 					.getParent(), persistentAttribite, an, relJPT, fp);
 		} else {
 			JavaPersistentAttribute relAt = ht.keys().nextElement();
 			Annotation relAn = ht.get(relAt);
-			return (IRelation) produceBiDirRelation((JavaPersistentType)persistentAttribite
+			return produceBiDirRelation((JavaPersistentType)persistentAttribite
 					.getParent(), persistentAttribite, an, relJPT,
 					relAt, relAn, fp);
 		}

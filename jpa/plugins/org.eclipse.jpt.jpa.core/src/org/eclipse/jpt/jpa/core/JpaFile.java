@@ -9,7 +9,6 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.core;
 
-import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.jpt.common.core.JptResourceModel;
@@ -61,13 +60,13 @@ public interface JpaFile
 	/**
 	 * Return the JPA file's root structure nodes.
 	 */
-	Iterator<JpaStructureNode> rootStructureNodes();
+	Iterable<JpaStructureNode> getRootStructureNodes();
 		String ROOT_STRUCTURE_NODES_COLLECTION = "rootStructureNodes"; //$NON-NLS-1$
 
 	/**
 	 * Return the count of the JPA file's root context model objects.
 	 */
-	int rootStructureNodesSize();
+	int getRootStructureNodesSize();
 
 	/**
 	 * Add a root structure node.

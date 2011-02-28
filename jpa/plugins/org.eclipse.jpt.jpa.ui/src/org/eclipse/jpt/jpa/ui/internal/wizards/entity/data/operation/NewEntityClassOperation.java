@@ -52,7 +52,6 @@ import org.eclipse.jpt.jpa.core.context.InheritanceType;
 import org.eclipse.jpt.jpa.core.context.MappedSuperclass;
 import org.eclipse.jpt.jpa.core.context.orm.EntityMappings;
 import org.eclipse.jpt.jpa.core.context.orm.OrmPersistentType;
-import org.eclipse.jpt.jpa.core.context.orm.OrmReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.orm.OrmFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.PersistenceFactory;
 import org.eclipse.jpt.jpa.core.resource.persistence.XmlJavaClassRef;
@@ -392,7 +391,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
-				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).rootStructureNodes().next();
+				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 				OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.ENTITY_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
 				Entity entity = (Entity) persistentType.getMapping();
 				if (model.isInheritanceSet()) {
@@ -445,7 +444,7 @@ public class NewEntityClassOperation extends AbstractDataModelOperation {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				final JpaXmlResource xmlResource = getOrmXmlResource(model, project);
-				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).rootStructureNodes().next();
+				EntityMappings entityMappings = (EntityMappings) JptJpaCorePlugin.getJpaProject(project).getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 				OrmPersistentType persistentType = entityMappings.addPersistentType(MappingKeys.MAPPED_SUPERCLASS_TYPE_MAPPING_KEY, model.getQualifiedJavaClassName());
 				MappedSuperclass mappedSuperclass = (MappedSuperclass) persistentType.getMapping();
 				

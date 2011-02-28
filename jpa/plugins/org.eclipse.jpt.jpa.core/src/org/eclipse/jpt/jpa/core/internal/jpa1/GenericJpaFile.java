@@ -100,15 +100,11 @@ public class GenericJpaFile
 
 	// ********** root structure nodes **********
 
-	public Iterator<JpaStructureNode> rootStructureNodes() {
-		return this.getRootStructureNodes().iterator();
-	}
-
-	protected Iterable<JpaStructureNode> getRootStructureNodes() {
+	public Iterable<JpaStructureNode> getRootStructureNodes() {
 		return new LiveCloneIterable<JpaStructureNode>(this.rootStructureNodes.values());
 	}
 
-	public int rootStructureNodesSize() {
+	public int getRootStructureNodesSize() {
 		return this.rootStructureNodes.size();
 	}
 

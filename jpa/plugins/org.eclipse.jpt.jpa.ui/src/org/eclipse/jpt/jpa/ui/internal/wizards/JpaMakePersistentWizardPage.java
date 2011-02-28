@@ -136,7 +136,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 		return new FilteringIterable<IType>(selectedTypes) {
 			@Override
 			protected boolean accept(IType jdtType) {
-				return getJpaProject().getJpaFile((IFile) jdtType.getResource()).rootStructureNodesSize() == 0;
+				return getJpaProject().getJpaFile((IFile) jdtType.getResource()).getRootStructureNodesSize() == 0;
 			}
 		};
 	}
@@ -440,7 +440,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 			if (ormXmlResource == null) {
 				errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileDoesNotExistError;
 			}
-			else if (getJpaProject().getJpaFile(ormXmlResource.getFile()).rootStructureNodesSize() == 0) {
+			else if (getJpaProject().getJpaFile(ormXmlResource.getFile()).getRootStructureNodesSize() == 0) {
 				errorMessage = JptUiMessages.JpaMakePersistentWizardPage_mappingFileNotListedInPersistenceXmlError;
 			}
 		}
@@ -474,7 +474,7 @@ public class JpaMakePersistentWizardPage extends WizardPage {
 
 	protected EntityMappings getEntityMappings() {
 		JpaXmlResource xmlResource = getOrmXmlResource();
-		return (EntityMappings) getJpaProject().getJpaFile(xmlResource.getFile()).rootStructureNodes().next();
+		return (EntityMappings) getJpaProject().getJpaFile(xmlResource.getFile()).getRootStructureNodes().iterator().next();
 	}
 	
 	protected boolean isListInPersistenceXml() {

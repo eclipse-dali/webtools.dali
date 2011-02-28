@@ -336,7 +336,7 @@ public interface JaxbProject
 	/**
 	 * Return project's validation messages.
 	 */
-	Iterable<IMessage> validationMessages(IReporter reporter);
+	Iterable<IMessage> getValidationMessages(IReporter reporter);
 	
 	
 	// ********** modifying shared documents **********

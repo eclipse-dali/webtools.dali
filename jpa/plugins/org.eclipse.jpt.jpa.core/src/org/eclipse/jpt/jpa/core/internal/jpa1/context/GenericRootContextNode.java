@@ -250,7 +250,7 @@ public class GenericRootContextNode
 		}
 
 		PersistenceUnit persistenceUnit = persistence.persistenceUnits().next();
-		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.annotatedJavaSourceClassNames());
+		HashBag<String> annotatedClassNames = CollectionTools.bag(this.jpaProject.getAnnotatedJavaSourceClassNames());
 		HashBag<String> orphans = annotatedClassNames.clone();
 		for (String annotatedClassName : annotatedClassNames) {
 			if (persistenceUnit.specifiesPersistentType(annotatedClassName)) {

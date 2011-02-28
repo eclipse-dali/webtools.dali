@@ -1139,7 +1139,7 @@ public abstract class AbstractJaxbProject
 
 	// ********** validation **********
 	
-	public Iterable<IMessage> validationMessages(IReporter reporter) {
+	public Iterable<IMessage> getValidationMessages(IReporter reporter) {
 		List<IMessage> messages = new ArrayList<IMessage>();
 		this.validate(messages, reporter);
 		return new SnapshotCloneIterable<IMessage>(messages);

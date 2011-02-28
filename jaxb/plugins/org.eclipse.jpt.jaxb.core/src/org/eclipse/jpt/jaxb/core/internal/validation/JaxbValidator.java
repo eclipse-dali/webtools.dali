@@ -103,7 +103,7 @@ public class JaxbValidator
 	private Iterable<IMessage> getValidationMessages(IReporter reporter, IProject project) {
 		JaxbProject jaxbProject = JptJaxbCorePlugin.getJaxbProject(project);
 		if (jaxbProject != null) {
-			return jaxbProject.validationMessages(reporter);
+			return jaxbProject.getValidationMessages(reporter);
 		}
 		return new SingleElementIterable<IMessage>(
 				DefaultValidationMessages.buildMessage(
