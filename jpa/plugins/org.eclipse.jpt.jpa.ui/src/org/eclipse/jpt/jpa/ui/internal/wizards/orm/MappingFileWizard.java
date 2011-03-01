@@ -34,8 +34,11 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.internal.utility.PlatformTools;
 import org.eclipse.jpt.jpa.core.JpaFacet;
+import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.context.JpaContextNode;
+import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
+import org.eclipse.jpt.jpa.core.context.persistence.PersistenceXml;
 import org.eclipse.jpt.jpa.core.internal.operations.OrmFileCreationDataModelProvider;
 import org.eclipse.jpt.jpa.ui.JptJpaUiPlugin;
 import org.eclipse.jpt.jpa.ui.internal.JptUiIcons;
@@ -119,6 +122,20 @@ public class MappingFileWizard extends Wizard
 			JpaContextNode node = (JpaContextNode) ((IAdaptable) selection).getAdapter(JpaContextNode.class);
 			if (node != null) {
 				return node.getPersistenceUnit();
+			}
+		}
+		
+		//also get the persistence unit for a given jpa project selection
+		if (selection instanceof IAdaptable) {
+			JpaProject jpaProject = (JpaProject) ((IAdaptable) selection).getAdapter(JpaProject.class);
+			if (jpaProject != null) {
+				PersistenceXml persistenceXml = jpaProject.getRootContextNode().getPersistenceXml();
+				if (persistenceXml != null){
+					Persistence persistence = persistenceXml.getPersistence();
+					if (persistence != null && persistence.persistenceUnitsSize() > 0) {
+						return persistence.persistenceUnits().next();
+					}
+				}
 			}
 		}
 		return null;
