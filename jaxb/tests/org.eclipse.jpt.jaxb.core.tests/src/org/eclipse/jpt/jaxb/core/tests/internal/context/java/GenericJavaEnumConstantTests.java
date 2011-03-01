@@ -39,11 +39,11 @@ public class GenericJavaEnumConstantTests extends JaxbContextModelTestCase
 		return createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_ENUM);
+				return new ArrayIterator<String>(JAXB.XML_TYPE);
 			}
 			@Override
 			public void appendEnumAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlEnum").append(CR);
+				sb.append("@XmlType").append(CR);
 			}
 		});
 	}

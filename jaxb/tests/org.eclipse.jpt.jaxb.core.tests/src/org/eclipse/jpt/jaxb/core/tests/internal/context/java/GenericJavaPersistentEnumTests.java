@@ -40,21 +40,21 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 		super(name);
 	}
 
-	private ICompilationUnit createEnumWithXmlEnum() throws Exception {
+	private ICompilationUnit createEnumWithXmlType() throws Exception {
 		return createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_ENUM);
+				return new ArrayIterator<String>(JAXB.XML_TYPE, JAXB.XML_ENUM);
 			}
 			@Override
 			public void appendEnumAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlEnum");
+				sb.append("@XmlType @XmlEnum");
 			}
 		});
 	}
 
 	public void testModifyFactoryClass() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -76,7 +76,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateFactoryClass() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -105,7 +105,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyFactoryMethod() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -132,7 +132,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateFactoryMethod() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -161,7 +161,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifySchemaTypeName() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -194,7 +194,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateSchemaTypeName() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -227,7 +227,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyNamespace() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -259,7 +259,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateNamespace() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -291,7 +291,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetPropOrder() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -318,7 +318,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetPropOrderSize() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -336,7 +336,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testAddProp() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -354,7 +354,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testAddProp2() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -372,7 +372,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testRemoveProp() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -400,7 +400,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testMoveProp() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -439,7 +439,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testSyncXmlNsPrefixes() throws Exception {
-		this.createEnumWithXmlEnum();
+		this.createEnumWithXmlType();
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
 
@@ -562,7 +562,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyXmlRootElement() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -584,7 +584,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testUpdateXmlRootElement() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -615,7 +615,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyEnumType() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -639,7 +639,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateEnumType() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 		
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
@@ -667,7 +667,7 @@ public class GenericJavaPersistentEnumTests extends JaxbContextModelTestCase
 	}
 
 	public void testUpdateEnumConstants() throws Exception {
-		createEnumWithXmlEnum();
+		createEnumWithXmlType();
 
 		JaxbPersistentEnum contextEnum = CollectionTools.get(getContextRoot().getPersistentEnums(), 0);
 		JavaResourceEnum resourceEnum = contextEnum.getJavaResourceType();
