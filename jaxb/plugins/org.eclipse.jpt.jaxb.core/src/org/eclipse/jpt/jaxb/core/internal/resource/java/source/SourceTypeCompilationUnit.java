@@ -20,11 +20,10 @@ import org.eclipse.jpt.common.core.JptCommonCorePlugin;
 import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.CommandExecutor;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 
 /**
  * Java compilation unit (source file)
@@ -41,7 +40,7 @@ public final class SourceTypeCompilationUnit
 	 * the constructor in a package class (which is what all top-level,
 	 * non-primary classes must be).
 	 */
-	private AbstractJavaResourceType type;	
+	private JavaResourceAbstractType type;	
 
 
 	// ********** construction **********
@@ -55,7 +54,7 @@ public final class SourceTypeCompilationUnit
 		this.type = this.buildType();
 	}
 
-	private AbstractJavaResourceType buildType() {
+	private JavaResourceAbstractType buildType() {
 		this.openCompilationUnit();
 		CompilationUnit astRoot = this.buildASTRoot();
 		this.closeCompilationUnit();
@@ -75,22 +74,13 @@ public final class SourceTypeCompilationUnit
 	/**
 	 * NB: return *all* the types since we build them all
 	 */
-	public Iterable<JavaResourceType> getTypes() {
+	public Iterable<JavaResourceAbstractType> getTypes() {
 		return (this.type == null) ?
-				EmptyIterable.<JavaResourceType>instance() :
-				this.type.getAllTypes();
+				EmptyIterable.<JavaResourceAbstractType>instance() :
+				new CompositeIterable<JavaResourceAbstractType>(this.type.getAllTypes(), this.type.getAllEnums());
 	}
-
-	/**
-	 * NB: return *all* the enums since we build them all
-	 */
-	public Iterable<JavaResourceEnum> getEnums() {
-		return (this.type == null) ?
-				EmptyIterable.<JavaResourceEnum>instance() :
-				this.type.getAllEnums();
-	}
-
-
+	
+	
 	// ********** JpaResourceModel implementation **********
 	
 	public JptResourceType getResourceType() {
@@ -109,7 +99,7 @@ public final class SourceTypeCompilationUnit
 
 	// ********** persistent type **********
 
-	private AbstractJavaResourceType buildPersistentType(CompilationUnit astRoot) {
+	private JavaResourceAbstractType buildPersistentType(CompilationUnit astRoot) {
 		AbstractTypeDeclaration td = this.getPrimaryTypeDeclaration(astRoot);
 		return (td == null) ? null : this.buildType(astRoot, td);
 	}
@@ -128,8 +118,8 @@ public final class SourceTypeCompilationUnit
 		}
 	}
 
-	private void syncType_(AbstractJavaResourceType astType) {
-		AbstractJavaResourceType old = this.type;
+	private void syncType_(JavaResourceAbstractType astType) {
+		JavaResourceAbstractType old = this.type;
 		this.type = astType;
 		this.firePropertyChanged(TYPES_COLLECTION, old, astType);
 	}
@@ -137,7 +127,7 @@ public final class SourceTypeCompilationUnit
 
 	// ********** internal **********
 
-	private AbstractJavaResourceType buildType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
+	private JavaResourceAbstractType buildType(CompilationUnit astRoot, AbstractTypeDeclaration typeDeclaration) {
 		if (typeDeclaration.getNodeType() == ASTNode.TYPE_DECLARATION) {
 			return SourceType.newInstance(this, (TypeDeclaration) typeDeclaration, astRoot);
 		}

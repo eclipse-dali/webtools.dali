@@ -20,6 +20,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbTransientClass;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
@@ -124,7 +125,7 @@ public class GenericJavaTransientClass
 		if (typeName == null) {
 			return null;
 		}
-		JavaResourceType resourceType = this.getJaxbProject().getJavaResourceType(typeName);
+		JavaResourceType resourceType = (JavaResourceType) getJaxbProject().getJavaResourceType(typeName, JavaResourceAbstractType.Kind.TYPE);
 		if ((resourceType == null) || visited.contains(resourceType)) {
 			return null;
 		}

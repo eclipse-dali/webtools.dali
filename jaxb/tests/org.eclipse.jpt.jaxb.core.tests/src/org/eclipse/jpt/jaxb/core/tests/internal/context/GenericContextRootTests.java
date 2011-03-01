@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.tests.internal.context;
 
 import java.util.Iterator;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
@@ -24,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentClass;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 
@@ -47,7 +48,7 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		return createTestPackageInfo(packageName);
 	}
 
-	private ICompilationUnit createTypeWithXmlRegistry() throws Exception {
+	private ICompilationUnit createAnnotatedRegistry() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -60,7 +61,7 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		});
 	}
 
-	private ICompilationUnit createTypeWithXmlType() throws Exception {
+	private ICompilationUnit createAnnotatedPersistentClass() throws Exception {
 		return this.createTestType(new DefaultAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
@@ -73,24 +74,41 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		});
 	}
 	
-	private ICompilationUnit createUnannotatedTestTypeNamed(String typeName) throws Exception {
+	private ICompilationUnit createAnnotatedPersistentClassWithSuperclassNamed(final String superclassName) throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType");
+			}
+			@Override
+			public void appendExtendsImplementsTo(StringBuilder sb) {
+				sb.append("extends " + superclassName);
+			}
+		});
+	}
+	
+	private ICompilationUnit createUnannotatedClassNamed(String typeName) throws Exception {
 		return this.createTestType(PACKAGE_NAME, typeName + ".java", typeName, new DefaultAnnotationWriter());
 	}
 
-	private ICompilationUnit createTestXmlEnum() throws Exception {
+	private ICompilationUnit createAnnotatedEnum() throws Exception {
 		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
 			@Override
 			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_ENUM);
+				return new ArrayIterator<String>(JAXB.XML_TYPE);
 			}
 			@Override
 			public void appendEnumAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlEnum");
+				sb.append("@XmlType");
 			}
 		});
 	}
 
-	private ICompilationUnit createTestXmlEnumNoAnnotation(String enumName) throws Exception {
+	private ICompilationUnit createUnannotatedEnumNamed(String enumName) throws Exception {
 		return this.createTestEnum(PACKAGE_NAME, enumName + ".java", enumName, new DefaultEnumAnnotationWriter());
 	}
 
@@ -150,21 +168,21 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetRegistries() throws Exception {
-		createTypeWithXmlRegistry();
+		createAnnotatedRegistry();
 		Iterator<JaxbRegistry> registries = getContextRoot().getRegistries().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, registries.next().getFullyQualifiedName());
 		assertFalse(registries.hasNext());
 		
 		//add an unannotated class and make sure it's not added to the context root
-		createUnannotatedTestTypeNamed("Foo");
+		createUnannotatedClassNamed("Foo");
 		registries = getContextRoot().getRegistries().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getRegistries()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, registries.next().getFullyQualifiedName());
 		assertFalse(registries.hasNext());
 		
 		//annotate the class with @XmlRegistry and test it's added to the root context node
-		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		JavaResourceAbstractType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
@@ -200,21 +218,21 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 	}
 	
 	public void testGetPersistentClasses() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		Iterator<JaxbPersistentClass> persistentClasses = this.getContextRoot().getPersistentClasses().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 		
 		//add an unannotated class and make sure it's not added to the context root
-		createUnannotatedTestTypeNamed("Foo");
+		createUnannotatedClassNamed("Foo");
 		persistentClasses = this.getContextRoot().getPersistentClasses().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentClasses.next().getFullyQualifiedName());
 		assertFalse(persistentClasses.hasNext());
 
 		//annotate the class with @XmlType and test it's added to the context root
-		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		JavaResourceAbstractType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
@@ -250,26 +268,26 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetPersistentEnums() throws Exception {
-		this.createTestXmlEnum();
+		this.createAnnotatedEnum();
 		Iterator<JaxbPersistentEnum> persistentEnums = this.getContextRoot().getPersistentEnums().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
 		assertFalse(persistentEnums.hasNext());
 		
 		//add an unannotated class and make sure it's not added to the context root
-		createTestXmlEnumNoAnnotation("Foo");
+		createUnannotatedEnumNamed("Foo");
 		persistentEnums = this.getContextRoot().getPersistentEnums().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
 		assertFalse(persistentEnums.hasNext());
 
 		//annotate the class with @XmlEnum and test it's added to the context root
-		JavaResourceEnum fooResourceType = getJaxbProject().getJavaResourceEnum("test.Foo");
+		JavaResourceEnum fooResourceType = (JavaResourceEnum) getJaxbProject().getJavaResourceType("test.Foo", JavaResourceAbstractType.Kind.ENUM);
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
 					public void edit(ModifiedDeclaration declaration) {
-						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ENUM);
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TYPE);
 					}
 				});
 		
@@ -289,7 +307,7 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		annotatedElement.edit(
 				new Member.Editor() {
 					public void edit(ModifiedDeclaration declaration) {
-						removeAnnotation(declaration, JAXB.XML_ENUM);
+						removeAnnotation(declaration, JAXB.XML_TYPE);
 					}
 				});
 		
@@ -300,9 +318,9 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 	}
 	
 	public void testChangeTypeKind() throws Exception {
-		createTypeWithXmlRegistry();
-		createUnannotatedTestTypeNamed("Foo");
-		AbstractJavaResourceType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
+		createAnnotatedRegistry();
+		createUnannotatedClassNamed("Foo");
+		JavaResourceAbstractType fooResourceType = getJaxbProject().getJavaResourceType("test.Foo");
 		AnnotatedElement annotatedElement = annotatedElement(fooResourceType);
 		annotatedElement.edit(
 				new Member.Editor() {
@@ -340,5 +358,29 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		assertEquals(2, getContextRoot().getTypesSize());
 		assertEquals(2, CollectionTools.size(getContextRoot().getRegistries()));
 		assertEquals(0, CollectionTools.size(getContextRoot().getPersistentClasses()));
+	}
+	
+	public void testDirectReferencedSuperclass() throws Exception {
+		String superclassName = "Super" + TYPE_NAME;
+		String fqSuperclassName = PACKAGE_NAME_ + superclassName;
+		createUnannotatedClassNamed(superclassName);
+		
+		// make sure unannotated superclass is not in context
+		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
+		
+		createAnnotatedPersistentClassWithSuperclassNamed(superclassName);
+		Iterable<JaxbPersistentClass> persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(2, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqSuperclassName));
+		
+		// remove annotated class - both classes removed from context
+		IFile file = (IFile) getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME).getResource();
+		file.delete(true, null);
+		
+		persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(0, CollectionTools.size(persistentClasses));
+		assertNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNull(getContextRoot().getPersistentClass(fqSuperclassName));
 	}
 }

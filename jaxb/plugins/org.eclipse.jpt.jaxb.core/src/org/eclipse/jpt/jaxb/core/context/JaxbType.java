@@ -11,7 +11,7 @@ package org.eclipse.jpt.jaxb.core.context;
 
 import java.util.List;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -38,7 +38,7 @@ public interface JaxbType
 	/**
 	 * Return the associated java resource type
 	 */
-	AbstractJavaResourceType getJavaResourceType();
+	JavaResourceAbstractType getJavaResourceType();
 	
 	/**
 	 * Returns the fully qualified name of this type, including qualification for any 
@@ -66,6 +66,12 @@ public interface JaxbType
 	 * Return the {@link JaxbPackage} associated with this type
 	 */
 	JaxbPackage getJaxbPackage();
+	
+	/**
+	 * Return all directly referenced types, fully qualified.
+	 * (Used for constructing Jaxb context)
+	 */
+	Iterable<String> getDirectlyReferencedTypeNames();
 	
 	
 	// **************** validation ********************************************

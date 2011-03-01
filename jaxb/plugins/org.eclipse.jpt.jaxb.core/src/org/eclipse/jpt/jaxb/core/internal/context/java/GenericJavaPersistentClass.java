@@ -22,6 +22,7 @@ import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
@@ -36,6 +37,7 @@ import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
@@ -123,9 +125,17 @@ public class GenericJavaPersistentClass
 		return Kind.PERSISTENT_CLASS;
 	}
 	
-
+	@Override
+	public Iterable<String> getDirectlyReferencedTypeNames() {
+		String superclassName = getJavaResourceType().getSuperclassQualifiedName();
+		return (superclassName == null) ? 
+				EmptyIterable.instance()
+				: new SingleElementIterable(superclassName);
+	}
+	
+	
 	// ********** super class **********
-
+	
 	public JaxbClass getSuperClass() {
 		return this.superClass;
 	}
@@ -148,7 +158,7 @@ public class GenericJavaPersistentClass
 		}
 		return spc;
 	}
-
+	
 	/**
 	 * The JPA spec allows non-persistent types in a persistent type's
 	 * inheritance hierarchy. We check for a persistent type with the
@@ -164,7 +174,7 @@ public class GenericJavaPersistentClass
 		if (typeName == null) {
 			return null;
 		}
-		JavaResourceType resourceType = this.getJaxbProject().getJavaResourceType(typeName);
+		JavaResourceType resourceType = (JavaResourceType) this.getJaxbProject().getJavaResourceType(typeName, JavaResourceAbstractType.Kind.TYPE);
 		if ((resourceType == null) || visited.contains(resourceType)) {
 			return null;
 		}
@@ -176,8 +186,8 @@ public class GenericJavaPersistentClass
 	protected JaxbClass getClass(String fullyQualifiedTypeName) {
 		return this.getParent().getClass(fullyQualifiedTypeName);
 	}
-
-
+	
+	
 	// ********** inheritance **********
 
 	public Iterable<JaxbClass> getInheritanceHierarchy() {

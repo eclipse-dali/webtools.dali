@@ -70,15 +70,14 @@ import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
 import org.eclipse.jpt.jaxb.core.libprov.JaxbLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType.Kind;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
-import org.eclipse.jst.common.project.facet.core.libprov.LibraryProviderFramework;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.common.project.facet.core.IFacetedProject;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
@@ -662,21 +661,14 @@ public abstract class AbstractJaxbProject
 
 	// ********** annotated Java source classes **********
 	
-	/**
-	 * Return all {@link JavaResourceType}s that are represented by java source within this project
-	 */
-	public Iterable<JavaResourceType> getJavaSourceResourceTypes() {
-		return new CompositeIterable<JavaResourceType>(this.getInternalJavaSourceResourceTypeSets());
+	public Iterable<JavaResourceAbstractType> getJavaSourceResourceTypes() {
+		return new CompositeIterable<JavaResourceAbstractType>(this.getInternalJavaSourceResourceTypeSets());
 	}
 	
-	/**
-	 * Return all {@link JavaResourceType}s that are represented by java source within this project,
-	 * that are also annotated with a recognized annotation
-	 */
-	public Iterable<JavaResourceType> getAnnotatedJavaSourceResourceTypes() {
-		return new FilteringIterable<JavaResourceType>(getJavaSourceResourceTypes()) {
+	public Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes() {
+		return new FilteringIterable<JavaResourceAbstractType>(getJavaSourceResourceTypes()) {
 			@Override
-			protected boolean accept(JavaResourceType type) {
+			protected boolean accept(JavaResourceAbstractType type) {
 				return type.isAnnotated();
 			}
 		};
@@ -694,10 +686,11 @@ public abstract class AbstractJaxbProject
 	/*
 	 * Return the sets of {@link JavaResourceType}s that are represented by java source within this project
 	 */
-	protected Iterable<Iterable<JavaResourceType>> getInternalJavaSourceResourceTypeSets() {
-		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceType>>(this.getInternalJavaResourceCompilationUnits()) {
+	protected Iterable<Iterable<JavaResourceAbstractType>> getInternalJavaSourceResourceTypeSets() {
+		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceAbstractType>>(
+				this.getInternalJavaResourceCompilationUnits()) {
 			@Override
-			protected Iterable<JavaResourceType> transform(JavaResourceCompilationUnit compilationUnit) {
+			protected Iterable<JavaResourceAbstractType> transform(JavaResourceCompilationUnit compilationUnit) {
 				return compilationUnit.getTypes();
 			}
 		};
@@ -711,26 +704,7 @@ public abstract class AbstractJaxbProject
 			}
 		};
 	}
-
-	/**
-	 * Return all {@link JavaResourceType}s that are represented by java source within this project
-	 */
-	public Iterable<JavaResourceEnum> getJavaSourceResourceEnums() {
-		return new CompositeIterable<JavaResourceEnum>(this.getInternalJavaSourceResourceEnumSets());
-	}
-
-	/*
-	 * Return the sets of {@link JavaResourceType}s that are represented by java source within this project
-	 */
-	protected Iterable<Iterable<JavaResourceEnum>> getInternalJavaSourceResourceEnumSets() {
-		return new TransformationIterable<JavaResourceCompilationUnit, Iterable<JavaResourceEnum>>(this.getInternalJavaResourceCompilationUnits()) {
-			@Override
-			protected Iterable<JavaResourceEnum> transform(JavaResourceCompilationUnit compilationUnit) {
-				return compilationUnit.getEnums();
-			}
-		};
-	}
-
+	
 	/**
 	 * return JAXB files with Java source "content"
 	 */
@@ -791,8 +765,8 @@ public abstract class AbstractJaxbProject
 	// ********** Java resource type look-up **********
 	
 	
-	public JavaResourceType getJavaResourceType(String typeName) {
-		for (JavaResourceType type : this.getJavaResourceTypes()) {
+	public JavaResourceAbstractType getJavaResourceType(String typeName) {
+		for (JavaResourceAbstractType type : this.getJavaResourceTypes()) {
 			if (type.getQualifiedName().equals(typeName)) {
 				return type;
 			}
@@ -801,39 +775,29 @@ public abstract class AbstractJaxbProject
 //		// if we don't have a type already, try to build new one from the project classpath
 //		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
 	}
-
-	public JavaResourceEnum getJavaResourceEnum(String enumName) {
-		for (JavaResourceEnum enum_ : this.getJavaSourceResourceEnums()) {
-			if (enum_.getQualifiedName().equals(enumName)) {
-				return enum_;
-			}
+	
+	public JavaResourceAbstractType getJavaResourceType(String typeName, Kind kind) {
+		JavaResourceAbstractType resourceType = getJavaResourceType(typeName);
+		if (resourceType == null || resourceType.getKind() != kind) {
+			return null;
 		}
-		return null;
-//		// if we don't have a type already, try to build new one from the project classpath
-//		return this.buildPersistableExternalJavaResourcePersistentType(typeName);
+		return resourceType;
 	}
 
-	/**
-	 * return *all* the Java resource persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 */
-	protected Iterable<JavaResourceType> getJavaResourceTypes() {
-		return new CompositeIterable<JavaResourceType>(this.getJavaResourceTypeSets());
+	protected Iterable<JavaResourceAbstractType> getJavaResourceTypes() {
+		return new CompositeIterable<JavaResourceAbstractType>(this.getJavaResourceTypeSets());
 	}
-
-	/**
-	 * return *all* the Java resource persistent types, including those in JARs referenced in
-	 * persistence.xml
-	 */
-	protected Iterable<Iterable<JavaResourceType>> getJavaResourceTypeSets() {
-		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourceType>>(this.getJavaResourceNodeRoots()) {
+	
+	protected Iterable<Iterable<JavaResourceAbstractType>> getJavaResourceTypeSets() {
+		return new TransformationIterable<JavaResourceNode.Root, Iterable<JavaResourceAbstractType>>(
+				this.getJavaResourceNodeRoots()) {
 			@Override
-			protected Iterable<JavaResourceType> transform(JavaResourceNode.Root root) {
+			protected Iterable<JavaResourceAbstractType> transform(JavaResourceNode.Root root) {
 				return root.getTypes();
 			}
 		};
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	protected Iterable<JavaResourceNode.Root> getJavaResourceNodeRoots() {
 		return new CompositeIterable<JavaResourceNode.Root>(

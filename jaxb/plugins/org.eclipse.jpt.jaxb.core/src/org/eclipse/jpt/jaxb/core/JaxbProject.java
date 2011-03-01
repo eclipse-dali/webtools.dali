@@ -24,9 +24,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.java.JavaContextNode;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -175,15 +174,15 @@ public interface JaxbProject
 //	JavaResourcePackageFragmentRoot getJavaResourcePackageFragmentRoot(String jarFileName);
 	
 	/**
-	 * Return all {@link JavaResourceType}s that are represented by java source within this project
+	 * Return all {@link JavaResourceAbstractType}s that are represented by java source within this project
 	 */
-	Iterable<JavaResourceType> getJavaSourceResourceTypes();
+	Iterable<JavaResourceAbstractType> getJavaSourceResourceTypes();
 	
 	/**
-	 * Return all {@link JavaResourceType}s that are represented by java source within this project,
+	 * Return all {@link JavaResourceAbstractType}s that are represented by java source within this project,
 	 * that are also annotated with a recognized annotation (and are persistable) 
 	 */
-	Iterable<JavaResourceType> getAnnotatedJavaSourceResourceTypes();
+	Iterable<JavaResourceAbstractType> getAnnotatedJavaSourceResourceTypes();
 	
 //	/**
 //	 * Return the names of the JAXB project's annotated Java classes
@@ -191,21 +190,17 @@ public interface JaxbProject
 //	Iterable<String> getAnnotatedJavaSourceClassNames();
 	
 	/**
-	 * Return the Java resource type with the specified type name.
-	 * Return null if invalid or absent.
+	 * Return the {@link JavaResourceAbstractType} with the specified type name, regardless of 
+	 * what kind it is.
+	 * Return null if absent.
 	 */
-	JavaResourceType getJavaResourceType(String typeName);
+	JavaResourceAbstractType getJavaResourceType(String typeName);
 	
 	/**
-	 * Return all {@link JavaResourceEnum}s that are represented by java source within this project
+	 * Return the {@link JavaResourceAbstractType} with the specified type name and kind.
+	 * Return null if invalid or absent or if the kind does not match.
 	 */
-	Iterable<JavaResourceEnum> getJavaSourceResourceEnums();
-
-	/**
-	 * Return the Java resource enum with the specified enum name.
-	 * Return null if invalid or absent.
-	 */
-	JavaResourceEnum getJavaResourceEnum(String enumName);
+	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
 	
 	
 	// **************** context model *****************************************

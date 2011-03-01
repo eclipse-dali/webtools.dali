@@ -114,7 +114,12 @@ final class SourceEnum
 
 
 	// ******** JavaResourceEnum implementation ********
-
+	
+	public Kind getKind() {
+		return Kind.ENUM;
+	}
+	
+	
 	// ********** enum constants **********
 
 	public Iterable<JavaResourceEnumConstant> getEnumConstants() {

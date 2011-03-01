@@ -69,32 +69,25 @@ public interface JavaResourceNode
 	/**
 	 * Root of Java resource model containment hierarchy.
 	 */
-	interface Root extends JavaResourceNode, JptResourceModel {
-
+	interface Root
+			extends JavaResourceNode, JptResourceModel {
+		
 		/**
-		 * Return the root's Java resource types.
+		 * Return the root's Java resource "abstract" types.
 		 */
-		Iterable<JavaResourceType> getTypes();
+		Iterable<JavaResourceAbstractType> getTypes();
 			String TYPES_COLLECTION = "types"; //$NON-NLS-1$
-
-		/**
-		 * Return the root's Java resource enums.
-		 */
-		Iterable<JavaResourceEnum> getEnums();
-			String ENUMS_COLLECTION = "enums"; //$NON-NLS-1$
-
+		
 		/**
 		 * Called (via a hook in change notification) whenever anything in the
 		 * Java resource model changes. Forwarded to listeners.
 		 */
 		void resourceModelChanged();
-
+		
 		/**
 		 * Return the annotation provider that supplies the annotations found
 		 * in the Java resource model.
 		 */
 		AnnotationProvider getAnnotationProvider();
-
 	}
-
 }

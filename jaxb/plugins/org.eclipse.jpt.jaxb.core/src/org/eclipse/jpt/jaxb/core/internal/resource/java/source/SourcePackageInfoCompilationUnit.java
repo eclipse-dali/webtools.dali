@@ -19,10 +19,9 @@ import org.eclipse.jpt.common.core.utility.jdt.AnnotationEditFormatter;
 import org.eclipse.jpt.common.utility.CommandExecutor;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.AnnotationProvider;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 
 /**
  * @author Dmitry Geraskov
@@ -55,14 +54,11 @@ public final class SourcePackageInfoCompilationUnit
 
 	// ********** JavaResourceNode.Root implementation **********
 
-	public Iterable<JavaResourceType> getTypes() {
+	public Iterable<JavaResourceAbstractType> getTypes() {
 		return EmptyIterable.instance();
 	}
-
-	public Iterable<JavaResourceEnum> getEnums() {
-		return EmptyIterable.instance();
-	}
-
+	
+	
 	// ********** JptResourceModel implementation **********
 
 	public JptResourceType getResourceType() {

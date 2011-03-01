@@ -14,11 +14,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
 import org.eclipse.jpt.jaxb.core.context.JaxbType;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceNode;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
@@ -28,10 +29,10 @@ public abstract class AbstractJavaType
 		extends AbstractJavaContextNode
 		implements JaxbType {
 	
-	protected final AbstractJavaResourceType resourceType;
+	protected final JavaResourceAbstractType resourceType;
 
 	
-	protected AbstractJavaType(JaxbContextRoot parent, AbstractJavaResourceType resourceType) {
+	protected AbstractJavaType(JaxbContextRoot parent, JavaResourceAbstractType resourceType) {
 		super(parent);
 		this.resourceType = resourceType;
 		
@@ -48,7 +49,7 @@ public abstract class AbstractJavaType
 	
 	// *********** JaxbType impl ***********
 	
-	public AbstractJavaResourceType getJavaResourceType() {
+	public JavaResourceAbstractType getJavaResourceType() {
 		return this.resourceType;
 	}
 	
@@ -71,6 +72,10 @@ public abstract class AbstractJavaType
 	
 	public JaxbPackage getJaxbPackage() {
 		return getContextRoot().getPackage(getPackageName());
+	}
+	
+	public Iterable<String> getDirectlyReferencedTypeNames() {
+		return EmptyIterable.instance();
 	}
 	
 	
