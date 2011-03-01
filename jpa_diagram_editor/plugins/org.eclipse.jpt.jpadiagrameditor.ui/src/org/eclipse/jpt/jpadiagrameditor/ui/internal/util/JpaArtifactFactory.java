@@ -16,6 +16,7 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -47,10 +48,14 @@ import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.JavaModelException;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.ui.refactoring.RenameSupport;
+import org.eclipse.jpt.common.core.JptResourceModel;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.jpt.jpa.core.JpaFile;
 import org.eclipse.jpt.jpa.core.JpaProject;
 import org.eclipse.jpt.jpa.core.JptJpaCorePlugin;
 import org.eclipse.jpt.jpa.core.MappingKeys;
+import org.eclipse.jpt.jpa.core.context.AttributeMapping;
+import org.eclipse.jpt.jpa.core.context.Embeddable;
 import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
 import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
@@ -65,10 +70,19 @@ import org.eclipse.jpt.jpa.core.context.java.JavaTypeMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.ClassRef;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.core.resource.java.Annotation;
+import org.eclipse.jpt.jpa.core.resource.java.AttributeOverrideAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.AttributeOverridesAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.ColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.EmbeddedIdAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.IdAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentAttribute;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.JoinColumnsAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.ManyToManyAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableAttributeOverrideAnnotation;
+import org.eclipse.jpt.jpa.core.resource.java.NestableJoinColumnAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToManyAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OneToOneAnnotation;
 import org.eclipse.jpt.jpa.core.resource.java.OwnableRelationshipMappingAnnotation;
@@ -81,9 +95,10 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.UpdateAttributeFeatu
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.BidirectionalRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToManyBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToManyUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.ManyToOneBiDirRelation;
@@ -92,10 +107,6 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToManyUniDirRel
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneBiDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.UnidirectionalRelation;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
-import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelType;
-import org.eclipse.jpt.common.core.JptResourceModel;
-import org.eclipse.jpt.common.utility.internal.iterables.ArrayListIterable;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchWindow;
 
@@ -227,8 +238,103 @@ public class JpaArtifactFactory {
 			JavaPersistentAttribute resolvedManySideAttribute = (JavaPersistentAttribute) manySideJPT
 					.resolveAttribute(manySideAttribute.getName());
 			resolvedManySideAttribute.setMappingKey(MappingKeys.MANY_TO_ONE_ATTRIBUTE_MAPPING_KEY);
+		} else {
+			addJoinColumnIfNecessary(resolvedSingleSideAttribute, singleSideJPT, fp);
 		}		
 	}
+	
+	private void addJoinColumnIfNecessary(JavaPersistentAttribute jpa,
+			JavaPersistentType jpt, IFeatureProvider fp) {
+
+		if (JPAEditorUtil.checkJPAFacetVersion(jpa.getJpaProject(), "1.0") || //$NON-NLS-1$
+				JPADiagramPropertyPage.shouldOneToManyUnidirBeOldStyle(jpa
+						.getJpaProject().getProject()))
+			return;
+		JavaPersistentAttribute[] ids = getIds(jpt);
+		if (ids.length == 0)
+			return;
+		final String tableName = getTableName(jpt);
+		if (ids.length == 1) {
+			if (isSimpleId(ids[0])) {
+				JoinColumnAnnotation an = (JoinColumnAnnotation) jpa
+						.getResourcePersistentAttribute().addAnnotation(
+								JoinColumnAnnotation.ANNOTATION_NAME);
+				String idColName = getColumnName(ids[0]);
+				an.setName(tableName + "_" + idColName); //$NON-NLS-1$
+				an.setReferencedColumnName(idColName);
+			} else {
+				Hashtable<String, String> atNameToColName = getOverriddenColNames(ids[0]);
+				JoinColumnsAnnotation an = (JoinColumnsAnnotation) jpa
+						.getResourcePersistentAttribute().addAnnotation(
+								JoinColumnsAnnotation.ANNOTATION_NAME);
+				PersistenceUnit pu = getPersistenceUnit(jpt);
+				String embeddableTypeName = ids[0].getTypeName();
+				Embeddable emb = pu.getEmbeddable(embeddableTypeName);
+				Iterator<AttributeMapping> amIt = emb.allAttributeMappings();
+				while (amIt.hasNext()) {
+					AttributeMapping am = amIt.next();
+					NestableJoinColumnAnnotation jc = an.addNestedAnnotation();
+					JavaPersistentAttribute at = (JavaPersistentAttribute) am
+							.getPersistentAttribute();
+					String idColName = atNameToColName.get(at.getName());
+					idColName = (idColName != null) ? idColName
+							: getColumnName(at);
+					jc.setName(tableName + "_" + idColName); //$NON-NLS-1$
+					jc.setReferencedColumnName(idColName);
+				}
+			}
+		} else {
+			JoinColumnsAnnotation an = (JoinColumnsAnnotation) jpa
+					.getResourcePersistentAttribute().addAnnotation(
+							JoinColumnsAnnotation.ANNOTATION_NAME);
+			for (JavaPersistentAttribute idAt : ids) {
+				NestableJoinColumnAnnotation jc = an.addNestedAnnotation();
+				String idColName = getColumnName(idAt);
+				jc.setName(tableName + "_" + idColName); //$NON-NLS-1$
+				jc.setReferencedColumnName(idColName);
+			}
+		}
+	}
+
+	private Hashtable<String, String> getOverriddenColNames(
+			JavaPersistentAttribute embIdAt) {
+		Hashtable<String, String> res = new Hashtable<String, String>();
+		AttributeOverrideAnnotation aon = (AttributeOverrideAnnotation) embIdAt
+				.getResourcePersistentAttribute().getAnnotation(
+						AttributeOverrideAnnotation.ANNOTATION_NAME);
+		if (aon != null) {
+			ColumnAnnotation colAn = aon.getColumn();
+			if (colAn == null)
+				return res;
+			String colName = colAn.getName();
+			if (colName == null)
+				return res;
+			res.put(aon.getName(), colName);
+			return res;
+		}
+		AttributeOverridesAnnotation aosn = (AttributeOverridesAnnotation) embIdAt
+				.getResourcePersistentAttribute().getAnnotation(
+						AttributeOverridesAnnotation.ANNOTATION_NAME);
+		if (aosn == null)
+			return res;
+		Iterable<NestableAttributeOverrideAnnotation> it = aosn
+				.getNestedAnnotations();
+		if (it == null)
+			return res;
+		Iterator<NestableAttributeOverrideAnnotation> iter = it.iterator();
+		while (iter.hasNext()) {
+			NestableAttributeOverrideAnnotation an = iter.next();
+			ColumnAnnotation colAn = an.getColumn();
+			if (colAn == null)
+				continue;
+			String colName = colAn.getName();
+			if (colName == null)
+				continue;
+			res.put(an.getName(), colName);
+		}
+		return res;
+	}	
+	
 	
 	public void addManyToOneUnidirectionalRelation(IFeatureProvider fp, JavaPersistentType jpt, 
 												   JavaPersistentAttribute attribute) {
@@ -2142,5 +2248,44 @@ public class JpaArtifactFactory {
 	public JpaProject getJpaProject(IProject project) throws CoreException {
 		return JptJpaCorePlugin.getJpaProject(project);
 	}
+	
+	public JavaPersistentAttribute[] getIds(JavaPersistentType jpt) {
+		ListIterator<JavaPersistentAttribute> attribsIter = jpt.attributes();
+		ArrayList<JavaPersistentAttribute> res = new ArrayList<JavaPersistentAttribute>();
+		while (attribsIter.hasNext()) {
+			JavaPersistentAttribute at = attribsIter.next();
+			if (isId(at))
+				res.add(at);
+		}
+		JavaPersistentAttribute[] ret = new JavaPersistentAttribute[res.size()];
+		return res.toArray(ret);
+	}
+	
+	public boolean isId(JavaPersistentAttribute jpa) {
+		return isSimpleId(jpa) || isEmbeddedId(jpa);
+	}
+	
+	public boolean isSimpleId(JavaPersistentAttribute jpa) {
+		IdAnnotation an = (IdAnnotation)jpa.getResourcePersistentAttribute().getAnnotation(IdAnnotation.ANNOTATION_NAME);
+		return (an != null);
+	}
+	
+	public boolean isEmbeddedId(JavaPersistentAttribute jpa) {
+		EmbeddedIdAnnotation an = (EmbeddedIdAnnotation)jpa.getResourcePersistentAttribute().getAnnotation(EmbeddedIdAnnotation.ANNOTATION_NAME);
+		return (an != null);
+	}	
+	
+	public String getColumnName(JavaPersistentAttribute jpa) {
+		String columnName= null;
+		ColumnAnnotation an = (ColumnAnnotation)jpa.
+									getResourcePersistentAttribute().
+										getAnnotation(ColumnAnnotation.ANNOTATION_NAME);
+		if (an != null) 
+			columnName = an.getName();
+		if (columnName == null) 
+			columnName = jpa.getName();		
+		return columnName; 
+	}
+	
 
 }

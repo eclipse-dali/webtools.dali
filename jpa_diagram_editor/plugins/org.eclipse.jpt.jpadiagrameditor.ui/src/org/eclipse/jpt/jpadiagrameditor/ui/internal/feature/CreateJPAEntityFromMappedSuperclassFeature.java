@@ -1,7 +1,6 @@
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
  
 import java.util.List;
-import java.util.Properties;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -56,12 +55,11 @@ public class CreateJPAEntityFromMappedSuperclassFeature extends
 			targetProject = jpaProject.getProject();
 		}
 		
-		Properties props = JPADiagramPropertyPage.loadProperties(jpaProject.getProject());
 		String mappedSuperclassName = getFeatureProvider()
 				.getJPAEditorUtil()
 				.generateUniqueMappedSuperclassName(
 						jpaProject,
-						JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject(), props),
+						JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()),
 						getFeatureProvider());
 		
 		if (!JptJpaCorePlugin.discoverAnnotatedClasses(jpaProject.getProject())) {

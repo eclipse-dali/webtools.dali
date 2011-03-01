@@ -510,6 +510,53 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		}
 		return editorProps;
 	}
+	
+	public static String getDefaultFolder(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return getDefaultFolder(project, props);
+	}
+	
+	public static String getDefaultPackage(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return getDefaultPackage(project, props);
+	}
+	
+	public static String getDefaultTablePrefixName(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return getDefaultTablePrefixName(project, props);
+	}
+	
+	public static boolean doesDirecteEditingAffectClassNameByDefault(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return doesDirecteEditingAffectClassNameByDefault(project, props);
+	}
+	
+	public static boolean isAccessFieldBased(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return isAccessFieldBased(project, props);
+	}	
+	
+	public static boolean isCollectionType(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return isCollectionType(project, props);
+	}
+	
+	public static boolean isListType(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return isListType(project, props);
+	}
+	
+	public static boolean isSetType(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return isSetType(project, props);
+	}
+	
+	public static boolean shouldOneToManyUnidirBeOldStyle(IProject project) {
+		Properties props = JPADiagramPropertyPage.loadProperties(project);
+		return shouldOneToManyUnidirBeOldStyle(project, props);
+	}	
+
+//---------------------------------------------------------------------------------------------------
 
 	public static String getDefaultFolder(IProject project, Properties props) {
 		return props.getProperty(PROP_DEFAULT_DIAGRAM_FOLDER.getLocalName());
@@ -546,4 +593,9 @@ public class JPADiagramPropertyPage extends PropertyPage {
 		String accessType = props.getProperty(PROP_COLLECTION_TYPE.getLocalName());
 		return accessType.equals("set");	//$NON-NLS-1$;
 	}
+	
+	public static boolean shouldOneToManyUnidirBeOldStyle(IProject project, Properties props) {
+		return Boolean.parseBoolean(props.getProperty(PROP_ONE_TO_MANY_OLD_STYLE.getLocalName()));
+	}
+
 }

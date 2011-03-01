@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Properties;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -116,10 +115,9 @@ public class CreateJPAEntityFeature extends AbstractCreateFeature {
 			jpaProject = jpt.getJpaProject();
 			targetProject = jpaProject.getProject();
 		}    	
-		Properties props = JPADiagramPropertyPage.loadProperties(jpaProject.getProject());
 		String entityName = getFeatureProvider().getJPAEditorUtil().
 								generateUniqueEntityName(jpaProject, 
-														 JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject(), props), 
+														 JPADiagramPropertyPage.getDefaultPackage(jpaProject.getProject()), 
 														 getFeatureProvider()); 
 
 		if(!checkIsSetPersistenceProviderLibrary(jpaProject)){

@@ -251,7 +251,7 @@ public class JPAEditorUtil {
     		return null;
     	StringBuilder res = new StringBuilder(strIt.next());    	
 	    while (strIt.hasNext()) {
-	    	res.append(" ,");									//$NON-NLS-1$
+	    	res.append(", ");									//$NON-NLS-1$
 	    	res.append(strIt.next());
 	    }
     	return res.toString();    	
@@ -1111,8 +1111,7 @@ public class JPAEditorUtil {
 		IFile file = folder.getFile(mappedSuperclassShortName + ".java"); //$NON-NLS-1$
 
 		if (!file.exists()) {
-			Properties props = JPADiagramPropertyPage.loadProperties(project);
-			String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project, props) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
+			String content = "package " + JPADiagramPropertyPage.getDefaultPackage(project) + ";\n\n" //$NON-NLS-1$	//$NON-NLS-2$
 					+ "import javax.persistence.*;\n\n" //$NON-NLS-1$
 					+ "@MappedSuperclass \n" //$NON-NLS-1$
 					+ "public class " + mappedSuperclassShortName + " {\n\n" //$NON-NLS-1$ //$NON-NLS-2$
@@ -1153,8 +1152,7 @@ public class JPAEditorUtil {
 		}
 
 		IPackageFragmentRoot packageFragmentRoot = packageFragmentRoots[0];
-		Properties props = JPADiagramPropertyPage.loadProperties(project);
-		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(JPADiagramPropertyPage.getDefaultPackage(project, props));
+		IPackageFragment packageFragment = packageFragmentRoot.getPackageFragment(JPADiagramPropertyPage.getDefaultPackage(project));
 		if(!packageFragment.exists()) 
 			return false;
 		IFolder folder = null;
@@ -1361,20 +1359,24 @@ public class JPAEditorUtil {
 		return checkJPAFacetVersion(jpaProject.getProject(), version);
 	}	
 	
+	
 	static public boolean checkJPAFacetVersion(IProject project, String version) {
 		IFacetedProject fproj = null;
 		try {
 			fproj = ProjectFacetsManager.create(project);
 		} catch (CoreException e) {
+			System.err.println("Could not create faceted project from " + project.getName());			 //$NON-NLS-1$	
+			e.printStackTrace();
 		}
 		Set<IProjectFacetVersion> projFacets = fproj.getProjectFacets();
 		Iterator<IProjectFacetVersion> it = projFacets.iterator();
 		while (it.hasNext()) {
 			IProjectFacetVersion fv = it.next();
-			if (fv.getProjectFacet().getId().equals("jpt.jpa")) 	//$NON-NLS-1$
-				return fv.getVersionString().equals(version);			
+			if (fv.getProjectFacet().getId().equals("jpt.jpa")) {	//$NON-NLS-1$
+				return fv.getVersionString().equals(version);	
+			}
 		}
 		return false;
-	}	
-
+	}
+	
 }
