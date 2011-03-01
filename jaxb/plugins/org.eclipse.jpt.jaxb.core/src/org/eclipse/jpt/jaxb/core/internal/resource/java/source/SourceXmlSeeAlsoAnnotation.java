@@ -24,7 +24,7 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
@@ -41,7 +41,7 @@ public final class SourceXmlSeeAlsoAnnotation
 	private final AnnotationElementAdapter<String[]> valueAdapter;
 	private final Vector<String> classes = new Vector<String>();
 
-	public SourceXmlSeeAlsoAnnotation(AbstractJavaResourceType parent, AbstractType type) {
+	public SourceXmlSeeAlsoAnnotation(JavaResourceAbstractType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueDeclarationAdapter = buildArrayAnnotationElementAdapter(DECLARATION_ANNOTATION_ADAPTER, JAXB.XML_SEE_ALSO__VALUE);
 		this.valueAdapter = this.buildArrayAnnotationElementAdapter(this.valueDeclarationAdapter);

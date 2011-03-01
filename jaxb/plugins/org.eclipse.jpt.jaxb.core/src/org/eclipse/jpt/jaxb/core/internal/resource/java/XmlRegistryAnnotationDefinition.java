@@ -14,7 +14,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.binary.BinaryXmlRegistryAnnotation;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceXmlRegistryAnnotation;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
@@ -44,7 +44,7 @@ public final class XmlRegistryAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, AnnotatedElement annotatedElement) {
-		return new SourceXmlRegistryAnnotation((AbstractJavaResourceType) parent, (AbstractType) annotatedElement);
+		return new SourceXmlRegistryAnnotation((JavaResourceAbstractType) parent, (AbstractType) annotatedElement);
 	}
 
 	public Annotation buildNullAnnotation(JavaResourceAnnotatedElement parent) {
@@ -52,7 +52,7 @@ public final class XmlRegistryAnnotationDefinition
 	}
 
 	public Annotation buildAnnotation(JavaResourceAnnotatedElement parent, IAnnotation jdtAnnotation) {
-		return new BinaryXmlRegistryAnnotation((AbstractJavaResourceType) parent, jdtAnnotation);
+		return new BinaryXmlRegistryAnnotation((JavaResourceAbstractType) parent, jdtAnnotation);
 	}
 
 	public String getAnnotationName() {

@@ -17,7 +17,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.SimpleIntReference;
 import org.eclipse.jpt.common.utility.internal.StringTools;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 
 /**
@@ -25,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
  */
 abstract class SourceAbstractType<A extends AbstractType>
 	extends SourceMember<A>
-	implements AbstractJavaResourceType
+	implements JavaResourceAbstractType
 {
 	private String name;
 

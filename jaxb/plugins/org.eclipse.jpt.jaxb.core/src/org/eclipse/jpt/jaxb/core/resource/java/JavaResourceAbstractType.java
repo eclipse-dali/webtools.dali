@@ -10,9 +10,11 @@
 package org.eclipse.jpt.jaxb.core.resource.java;
 
 import org.eclipse.jdt.core.IPackageFragment;
+import org.eclipse.jdt.core.dom.AbstractTypeDeclaration;
 
 /**
- * Java source code or binary type.
+ * Java source code or binary type.  This corresponds to a {@link AbstractTypeDeclaration}
+ * (which is why the name is somewhat wonky.)
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,9 +25,9 @@ import org.eclipse.jdt.core.IPackageFragment;
  * @version 3.0
  * @since 3.0
  */
-public interface AbstractJavaResourceType
-	extends JavaResourceMember
-{
+public interface JavaResourceAbstractType
+		extends JavaResourceMember {
+	
 	/**
 	 * Property change String for the unqualified (short) type name.
 	 * @see JavaResourceMember#getName()
@@ -89,5 +91,30 @@ public interface AbstractJavaResourceType
 	 * etc.
 	 */
 	Iterable<JavaResourceEnum> getAllEnums();
-
+	
+	/**
+	 * Return the kind of java type this corresponds to
+	 */
+	Kind getKind();
+	
+	
+	/**
+	 * The kind of java type.
+	 */
+	public enum Kind {
+		
+		/**
+		 * Represents a class or interface.
+		 * An {@link JavaResourceAbstractType} of {@link Kind} TYPE may safely be cast as a 
+		 * {@link JavaResourceType}
+		 */
+		TYPE,
+		
+		/**
+		 * Represents an enum.
+		 * An {@link JavaResourceAbstractType} of {@link Kind} ENUM may safely be cast as a 
+		 * {@link JavaResourceEnum}
+		 */
+		ENUM
+	}
 }

@@ -25,7 +25,7 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentType;
 import org.eclipse.jpt.jaxb.core.context.XmlRootElement;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.xsd.XsdSchema;
@@ -45,7 +45,7 @@ public abstract class AbstractJavaPersistentType
 
 	protected XmlRootElement rootElement;
 
-	public AbstractJavaPersistentType(JaxbContextRoot parent, AbstractJavaResourceType resourceType) {
+	public AbstractJavaPersistentType(JaxbContextRoot parent, JavaResourceAbstractType resourceType) {
 		super(parent, resourceType);
 		this.factoryClass = this.getResourceFactoryClass();
 		this.factoryMethod = this.getResourceFactoryMethod();

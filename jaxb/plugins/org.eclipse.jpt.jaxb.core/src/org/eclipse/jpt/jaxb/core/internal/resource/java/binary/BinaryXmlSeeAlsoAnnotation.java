@@ -13,7 +13,7 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
@@ -27,7 +27,7 @@ public final class BinaryXmlSeeAlsoAnnotation
 	private final Vector<String> classes;
 
 
-	public BinaryXmlSeeAlsoAnnotation(AbstractJavaResourceType parent, IAnnotation jdtAnnotation) {
+	public BinaryXmlSeeAlsoAnnotation(JavaResourceAbstractType parent, IAnnotation jdtAnnotation) {
 		super(parent, jdtAnnotation);
 		this.classes = this.buildClasses();
 	}

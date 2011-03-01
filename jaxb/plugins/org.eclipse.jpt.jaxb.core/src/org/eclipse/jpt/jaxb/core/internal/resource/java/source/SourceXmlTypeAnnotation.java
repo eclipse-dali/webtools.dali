@@ -27,7 +27,7 @@ import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 
@@ -62,7 +62,7 @@ public final class SourceXmlTypeAnnotation
 	private final AnnotationElementAdapter<String[]> propOrderAdapter;
 	private final Vector<String> propOrder = new Vector<String>();
 
-	public SourceXmlTypeAnnotation(AbstractJavaResourceType parent, AbstractType type) {
+	public SourceXmlTypeAnnotation(JavaResourceAbstractType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.factoryClassAdapter = this.buildAnnotationElementAdapter(FACTORY_CLASS_ADAPTER);
 		this.factoryMethodAdapter = this.buildAnnotationElementAdapter(FACTORY_METHOD_ADAPTER);

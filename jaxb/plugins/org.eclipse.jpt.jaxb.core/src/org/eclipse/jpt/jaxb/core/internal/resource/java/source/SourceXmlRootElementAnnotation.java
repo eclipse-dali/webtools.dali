@@ -18,7 +18,7 @@ import org.eclipse.jpt.common.core.utility.jdt.AbstractType;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
 
@@ -39,7 +39,7 @@ public final class SourceXmlRootElementAnnotation
 	private final AnnotationElementAdapter<String> namespaceAdapter;
 	private String namespace;
 
-	public SourceXmlRootElementAnnotation(AbstractJavaResourceType parent, AbstractType type) {
+	public SourceXmlRootElementAnnotation(JavaResourceAbstractType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.nameAdapter = this.buildAnnotationElementAdapter(NAME_ADAPTER);
 		this.namespaceAdapter = this.buildAnnotationElementAdapter(NAMESPACE_ADAPTER);

@@ -26,7 +26,7 @@ import org.eclipse.jpt.jaxb.core.AnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.GenericAnnotationProvider;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourcePackageInfoCompilationUnit;
 import org.eclipse.jpt.jaxb.core.internal.resource.java.source.SourceTypeCompilationUnit;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.AnnotationDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
@@ -154,7 +154,7 @@ public abstract class JavaResourceModelTestCase
 		return (JavaResourceEnum) this.buildJavaResourceType_(cu);
 	}
 
-	private AbstractJavaResourceType buildJavaResourceType_(ICompilationUnit cu) {
+	private JavaResourceAbstractType buildJavaResourceType_(ICompilationUnit cu) {
 		this.javaResourceCompilationUnit = this.buildJavaResourceCompilationUnit(cu);
 		this.javaResourceCompilationUnit.resolveTypes();
 		return this.hackJavaResourceType();
@@ -172,8 +172,8 @@ public abstract class JavaResourceModelTestCase
 		return CollectionTools.get(resourceEnum.getEnumConstants(), index);
 	}
 
-	protected AbstractJavaResourceType hackJavaResourceType() {
-		return (AbstractJavaResourceType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "type");
+	protected JavaResourceAbstractType hackJavaResourceType() {
+		return (JavaResourceAbstractType) ReflectionTools.getFieldValue(this.javaResourceCompilationUnit, "type");
 	}
 
 	protected JavaResourceCompilationUnit buildJavaResourceCompilationUnit(ICompilationUnit cu) {

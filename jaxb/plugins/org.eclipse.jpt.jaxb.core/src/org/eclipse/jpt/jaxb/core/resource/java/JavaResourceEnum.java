@@ -9,8 +9,9 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.resource.java;
 
+
 /**
- * Java source code or binary type.
+ * Java source code or binary enum.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -22,7 +23,7 @@ package org.eclipse.jpt.jaxb.core.resource.java;
  * @since 3.0
  */
 public interface JavaResourceEnum
-	extends AbstractJavaResourceType
+	extends JavaResourceAbstractType
 {
 
 

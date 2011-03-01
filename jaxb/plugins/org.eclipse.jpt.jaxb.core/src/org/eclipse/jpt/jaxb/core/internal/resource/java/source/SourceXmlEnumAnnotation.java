@@ -22,7 +22,7 @@ import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.DeclarationAnnotationElementAdapter;
 import org.eclipse.jpt.common.core.utility.jdt.ExpressionConverter;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
-import org.eclipse.jpt.jaxb.core.resource.java.AbstractJavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlEnumAnnotation;
 
 /**
@@ -40,7 +40,7 @@ public final class SourceXmlEnumAnnotation
 	
 	private String fullyQualifiedValueClassName;
 
-	public SourceXmlEnumAnnotation(AbstractJavaResourceType parent, AbstractType type) {
+	public SourceXmlEnumAnnotation(JavaResourceAbstractType parent, AbstractType type) {
 		super(parent, type, DECLARATION_ANNOTATION_ADAPTER);
 		this.valueAdapter = this.buildAnnotationElementAdapter(VALUE_ADAPTER);
 	}
