@@ -2143,9 +2143,11 @@ public class JpaArtifactFactory {
 			return null; 
 		TableAnnotation tan = (TableAnnotation)jrpt.getAnnotation("javax.persistence.Table"); //$NON-NLS-1$
 		String tableName = null;
-		if (tan == null)
+		if (tan == null){
 			tableName = JPAEditorUtil.cutFromLastDot(jpt.getName());
-		tableName = tan.getName();		
+		} else {
+			tableName = tan.getName();		
+		}		
 		if (tableName == null)
 			tableName = JPAEditorUtil.cutFromLastDot(jpt.getName());
 		return tableName;
