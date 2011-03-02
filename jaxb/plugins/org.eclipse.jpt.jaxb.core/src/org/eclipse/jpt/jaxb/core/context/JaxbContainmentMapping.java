@@ -76,4 +76,18 @@ public interface JaxbContainmentMapping
 	void removeXmlID();
 		String XML_ID_PROPERTY = "xmlID"; //$NON-NLS-1$
 
+
+	/********** XmlIDREF **********/
+	XmlIDREF getXmlIDREF();
+	XmlIDREF addXmlIDREF();
+	void removeXmlIDREF();
+		String XML_IDREF_PROPERTY = "xmlIDREF"; //$NON-NLS-1$
+
+
+	/********** XmlAttachmentRef **********/
+	XmlAttachmentRef getXmlAttachmentRef();
+	XmlAttachmentRef addXmlAttachmentRef();
+	void removeXmlAttachmentRef();
+		String XML_ATTACHMENT_REF_PROPERTY = "xmlAttachmentRef"; //$NON-NLS-1$
+
 }

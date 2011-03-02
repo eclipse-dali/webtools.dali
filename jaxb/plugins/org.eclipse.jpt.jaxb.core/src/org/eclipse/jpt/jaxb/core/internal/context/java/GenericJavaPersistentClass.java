@@ -688,4 +688,8 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
+
+	public boolean containsXmlId() {
+		return !CollectionTools.isEmpty(getContainmentMappingsWithXmlID());
+	}
 }

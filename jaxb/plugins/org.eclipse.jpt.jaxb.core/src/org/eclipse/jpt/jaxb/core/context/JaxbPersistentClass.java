@@ -58,4 +58,10 @@ public interface JaxbPersistentClass
 	 */
 	String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute);
 
+	/**
+	 * Return true if 1 or more attributes include the @XmlId annotation
+	 */
+	boolean containsXmlId();
+
+
 }

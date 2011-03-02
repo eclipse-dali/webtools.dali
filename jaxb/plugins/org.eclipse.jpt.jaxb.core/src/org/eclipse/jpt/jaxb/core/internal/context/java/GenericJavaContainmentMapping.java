@@ -17,13 +17,17 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
+import org.eclipse.jpt.jaxb.core.context.XmlAttachmentRef;
 import org.eclipse.jpt.jaxb.core.context.XmlID;
+import org.eclipse.jpt.jaxb.core.context.XmlIDREF;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbContainmentAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlAttachmentRefAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlIDREFAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -49,6 +53,10 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 
 	protected XmlID xmlID;
 
+	protected XmlIDREF xmlIDREF;
+
+	protected XmlAttachmentRef xmlAttachmentRef;
+
 	public GenericJavaContainmentMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.specifiedName = buildSpecifiedName();
@@ -58,6 +66,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.initializeXmlSchemaType();
 		this.initializeXmlList();
 		this.initializeXmlID();
+		this.initializeXmlIDREF();
+		this.initializeXmlAttachmentRef();
 	}
 
 	@Override
@@ -70,6 +80,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.syncXmlSchemaType();
 		this.syncXmlList();
 		this.syncXmlID();
+		this.syncXmlIDREF();
+		this.syncXmlAttachmentRef();
 	}
 
 	@Override
@@ -79,6 +91,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.updateXmlSchemaType();
 		this.updateXmlList();
 		this.updateXmlID();
+		this.updateXmlIDREF();
+		this.updateXmlAttachmentRef();
 	}
 	
 
@@ -406,7 +420,143 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	protected void setXmlID_(XmlID xmlID) {
 		XmlID oldXmlID = this.xmlID;
 		this.xmlID = xmlID;
-		firePropertyChanged(XML_LIST_PROPERTY, oldXmlID, xmlID);
+		firePropertyChanged(XML_ID_PROPERTY, oldXmlID, xmlID);
+	}
+
+	
+	//************  XmlIDREF ***************
+
+	public XmlIDREF getXmlIDREF() {
+		return this.xmlIDREF;
+	}
+
+	public XmlIDREF addXmlIDREF() {
+		if (this.xmlIDREF != null) {
+			throw new IllegalStateException();
+		}
+		XmlIDREFAnnotation annotation = (XmlIDREFAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+
+		XmlIDREF xmlIDREF = this.buildXmlIDREF(annotation);
+		this.setXmlIDREF_(xmlIDREF);
+		return xmlIDREF;
+	}
+
+	protected XmlIDREF buildXmlIDREF(XmlIDREFAnnotation xmlIDREFAnnotation) {
+		return new GenericJavaXmlIDREF(this, xmlIDREFAnnotation);
+	}
+
+	public void removeXmlIDREF() {
+		if (this.xmlIDREF == null) {
+			throw new IllegalStateException();
+		}
+		this.getJavaResourceAttribute().removeAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+		this.setXmlIDREF_(null);
+	}
+
+	protected void initializeXmlIDREF() {
+		XmlIDREFAnnotation annotation = this.getXmlIDREFAnnotation();
+		if (annotation != null) {
+			this.xmlIDREF = this.buildXmlIDREF(annotation);
+		}
+	}
+
+	protected XmlIDREFAnnotation getXmlIDREFAnnotation() {
+		return (XmlIDREFAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlIDREFAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void syncXmlIDREF() {
+		XmlIDREFAnnotation annotation = this.getXmlIDREFAnnotation();
+		if (annotation != null) {
+			if (this.getXmlIDREF() != null) {
+				this.getXmlIDREF().synchronizeWithResourceModel();
+			}
+			else {
+				this.setXmlIDREF_(this.buildXmlIDREF(annotation));
+			}
+		}
+		else {
+			this.setXmlIDREF_(null);
+		}
+	}
+
+	protected void updateXmlIDREF() {
+		if (this.getXmlIDREF() != null) {
+			this.getXmlIDREF().update();
+		}
+	}
+
+	protected void setXmlIDREF_(XmlIDREF xmlIDREF) {
+		XmlIDREF oldXmlIDREF = this.xmlIDREF;
+		this.xmlIDREF = xmlIDREF;
+		firePropertyChanged(XML_IDREF_PROPERTY, oldXmlIDREF, xmlIDREF);
+	}
+
+
+	//************  XmlAttachmentRef ***************
+
+	public XmlAttachmentRef getXmlAttachmentRef() {
+		return this.xmlAttachmentRef;
+	}
+
+	public XmlAttachmentRef addXmlAttachmentRef() {
+		if (this.xmlAttachmentRef != null) {
+			throw new IllegalStateException();
+		}
+		XmlAttachmentRefAnnotation annotation = (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+
+		XmlAttachmentRef xmlAttachmentRef = this.buildXmlAttachmentRef(annotation);
+		this.setXmlAttachmentRef_(xmlAttachmentRef);
+		return xmlAttachmentRef;
+	}
+
+	protected XmlAttachmentRef buildXmlAttachmentRef(XmlAttachmentRefAnnotation xmlAttachmentRefAnnotation) {
+		return new GenericJavaXmlAttachmentRef(this, xmlAttachmentRefAnnotation);
+	}
+
+	public void removeXmlAttachmentRef() {
+		if (this.xmlAttachmentRef == null) {
+			throw new IllegalStateException();
+		}
+		this.getJavaResourceAttribute().removeAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+		this.setXmlAttachmentRef_(null);
+	}
+
+	protected void initializeXmlAttachmentRef() {
+		XmlAttachmentRefAnnotation annotation = this.getXmlAttachmentRefAnnotation();
+		if (annotation != null) {
+			this.xmlAttachmentRef = this.buildXmlAttachmentRef(annotation);
+		}
+	}
+
+	protected XmlAttachmentRefAnnotation getXmlAttachmentRefAnnotation() {
+		return (XmlAttachmentRefAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlAttachmentRefAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void syncXmlAttachmentRef() {
+		XmlAttachmentRefAnnotation annotation = this.getXmlAttachmentRefAnnotation();
+		if (annotation != null) {
+			if (this.getXmlAttachmentRef() != null) {
+				this.getXmlAttachmentRef().synchronizeWithResourceModel();
+			}
+			else {
+				this.setXmlAttachmentRef_(this.buildXmlAttachmentRef(annotation));
+			}
+		}
+		else {
+			this.setXmlAttachmentRef_(null);
+		}
+	}
+
+	protected void updateXmlAttachmentRef() {
+		if (this.getXmlAttachmentRef() != null) {
+			this.getXmlAttachmentRef().update();
+		}
+	}
+
+	protected void setXmlAttachmentRef_(XmlAttachmentRef xmlAttachmentRef) {
+		XmlAttachmentRef oldXmlAttachmentRef = this.xmlAttachmentRef;
+		this.xmlAttachmentRef = xmlAttachmentRef;
+		firePropertyChanged(XML_ATTACHMENT_REF_PROPERTY, oldXmlAttachmentRef, xmlAttachmentRef);
 	}
 
 
@@ -443,6 +593,12 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		}
 		if (this.xmlID != null) {
 			this.xmlID.validate(messages, reporter, astRoot);
+		}
+		if (this.xmlIDREF != null) {
+			this.xmlIDREF.validate(messages, reporter, astRoot);
+		}
+		if (this.xmlAttachmentRef != null) {
+			this.xmlAttachmentRef.validate(messages, reporter, astRoot);
 		}
 	}
 }
