@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component  xmlns="http://eclipse.org/wtp/releng/tools/component-model" name="org.eclipse.jpt.jpadiagrameditor.branding">
+<description url=""></description>
+<component-depends unrestricted="true"></component-depends>
+<plugin id="org.eclipse.jpt.jpadiagrameditor.branding" fragment="false"/>
+<plugin id="org.eclipse.jpt.jpadiagrameditor.ui" fragment="false"/>
+</component>
