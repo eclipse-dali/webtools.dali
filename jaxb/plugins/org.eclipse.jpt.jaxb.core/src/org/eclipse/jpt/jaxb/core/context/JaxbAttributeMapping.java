@@ -27,20 +27,26 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
  */
 public interface JaxbAttributeMapping
 		extends JavaContextNode {
-
+	
 	JaxbPersistentAttribute getParent();
-
+	
 	JavaResourceAttribute getJavaResourceAttribute();
-
+	
 	String getKey();
-
+	
 	/**
 	 * Return whether the mapping is its attribute's <em>default</em> mapping
 	 * (as opposed to its <em>specified</em> mapping).
 	 */
 	boolean isDefault();
 		String DEFAULT_PROPERTY = "default"; //$NON-NLS-1$
-
+	
 	void updateDefault();
-
+	
+	/**
+	 * Return all directly referenced types, fully qualified.
+	 * (Used for constructing Jaxb context)
+	 * Nulls and empty strings are to be expected.
+	 */
+	Iterable<String> getDirectlyReferencedTypeNames();
 }

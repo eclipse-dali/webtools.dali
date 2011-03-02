@@ -11,6 +11,7 @@ package org.eclipse.jpt.jaxb.core.internal.context.java;
 
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jpt.common.core.utility.TextRange;
+import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
@@ -113,5 +114,13 @@ public abstract class AbstractJavaAttributeMapping<A extends Annotation>
 
 	public String getJavaResourceAttributeType() {
 		return this.getPersistentAttribute().getJavaResourceAttributeTypeName();
+	}
+	
+	public String getAttributeTypeName() {
+		return getJavaResourceAttributeType();
+	}
+	
+	public Iterable<String> getDirectlyReferencedTypeNames() {
+		return new SingleElementIterable(getPersistentAttribute().getJavaResourceAttributeTypeName());
 	}
 }

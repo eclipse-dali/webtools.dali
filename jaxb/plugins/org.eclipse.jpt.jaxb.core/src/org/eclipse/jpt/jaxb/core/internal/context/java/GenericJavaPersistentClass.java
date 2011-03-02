@@ -127,10 +127,15 @@ public class GenericJavaPersistentClass
 	
 	@Override
 	public Iterable<String> getDirectlyReferencedTypeNames() {
-		String superclassName = getJavaResourceType().getSuperclassQualifiedName();
-		return (superclassName == null) ? 
-				EmptyIterable.instance()
-				: new SingleElementIterable(superclassName);
+		return new CompositeIterable<String>(
+				new SingleElementIterable(getJavaResourceType().getSuperclassQualifiedName()),
+				new CompositeIterable<String>(
+						new TransformationIterable<JaxbPersistentAttribute, Iterable<String>>(getAttributes()) {
+							@Override
+							protected Iterable<String> transform(JaxbPersistentAttribute o) {
+								return o.getMapping().getDirectlyReferencedTypeNames();
+							}
+						}));
 	}
 	
 	

@@ -215,7 +215,7 @@ public class GenericContextRoot
 				JaxbType jaxbType = getType(typeToScan);
 				if (jaxbType != null) {
 					for (String referencedTypeName : jaxbType.getDirectlyReferencedTypeNames()) {
-						if (! totalTypes.contains(referencedTypeName)) {
+						if (! StringTools.stringIsEmpty(referencedTypeName) && ! totalTypes.contains(referencedTypeName)) {
 							JavaResourceAbstractType referencedType = getJaxbProject().getJavaResourceType(referencedTypeName);
 							if (referencedType != null) {
 								resourceTypesToProcess.add(referencedType);

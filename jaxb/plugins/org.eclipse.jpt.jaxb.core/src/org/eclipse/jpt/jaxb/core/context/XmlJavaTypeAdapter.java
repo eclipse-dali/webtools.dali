@@ -25,10 +25,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
  * @since 3.0
  */
 public interface XmlJavaTypeAdapter
-	extends 
-		JavaContextNode
-{
-
+		extends JavaContextNode {
+	
 	XmlJavaTypeAdapterAnnotation getResourceXmlJavaTypeAdapter();
 
 	/**************** value *****************/

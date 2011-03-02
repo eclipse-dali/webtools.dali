@@ -17,6 +17,8 @@ import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetDataModelProperties;
 import org.eclipse.jpt.jaxb.core.internal.facet.JaxbFacetInstallDataModelProvider;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.tests.internal.projects.TestJaxbProject;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
@@ -67,5 +69,14 @@ public class JaxbTestCase
 	
 	protected JaxbProject getJaxbProject() {
 		return this.getJavaProject().getJaxbProject();
+	}
+	
+	protected JavaResourceAttribute getFieldNamed(JavaResourceType resourceType, String attributeName) {
+		for (JavaResourceAttribute attribute : resourceType.getFields()) {
+			if (attribute.getName().equals(attributeName)) {
+				return attribute;
+			}
+		}
+		return null;
 	}
 }

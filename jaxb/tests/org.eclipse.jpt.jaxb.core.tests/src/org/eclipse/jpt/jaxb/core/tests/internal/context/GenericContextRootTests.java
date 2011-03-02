@@ -26,13 +26,15 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentEnum;
 import org.eclipse.jpt.jaxb.core.context.JaxbRegistry;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAttribute;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 
 
 @SuppressWarnings("nls")
-public class GenericContextRootTests extends JaxbContextModelTestCase
-{
+public class GenericContextRootTests
+		extends JaxbContextModelTestCase {
 	
 	public GenericContextRootTests(String name) {
 		super(name);
@@ -87,6 +89,44 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 			@Override
 			public void appendExtendsImplementsTo(StringBuilder sb) {
 				sb.append("extends " + superclassName);
+			}
+		});
+	}
+	
+	private ICompilationUnit createAnnotatedPersistentClassWithAttributeAndTypeNamed(
+			final String attributeName, final String typeName) throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>(JAXB.XML_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType");
+			}
+			@Override
+			public void appendNameFieldAnnotationTo(StringBuilder sb) {
+				sb.append("public " + typeName + " " + attributeName + ";" + CR);
+				sb.append(CR);
+			}
+		});
+	}
+	
+	private ICompilationUnit createAnnotatedPersistentClassWithAttributeAndElementTypeNamed(
+			final String attributeName, final String typeName) throws Exception {
+		return this.createTestType(new DefaultAnnotationWriter() {
+			@Override
+			public Iterator<String> imports() {
+				return new ArrayIterator<String>("java.util.List", JAXB.XML_TYPE);
+			}
+			@Override
+			public void appendTypeAnnotationTo(StringBuilder sb) {
+				sb.append("@XmlType");
+			}
+			@Override
+			public void appendNameFieldAnnotationTo(StringBuilder sb) {
+				sb.append("public List<" + typeName + "> " + attributeName + ";" + CR);
+				sb.append(CR);
 			}
 		});
 	}
@@ -382,5 +422,99 @@ public class GenericContextRootTests extends JaxbContextModelTestCase
 		assertEquals(0, CollectionTools.size(persistentClasses));
 		assertNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
 		assertNull(getContextRoot().getPersistentClass(fqSuperclassName));
+	}
+	
+	public void testDirectReferencedAttribute() throws Exception {
+		String otherClassName = "Other" + TYPE_NAME;
+		String fqOtherClassName = PACKAGE_NAME_ + otherClassName;
+		String attributeName = "other";
+		createUnannotatedClassNamed(otherClassName);
+		
+		// make sure unannotated other class is not in context
+		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
+		
+		createAnnotatedPersistentClassWithAttributeAndTypeNamed(attributeName, otherClassName);
+		JavaResourceType thisType = (JavaResourceType) getJaxbProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceAttribute attribute = getFieldNamed(thisType, attributeName);
+		AnnotatedElement annotatedAttribute = annotatedElement(attribute);
+		
+		Iterable<JaxbPersistentClass> persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(2, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// add an @XmlElement
+		annotatedAttribute.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT);
+					}
+				});
+		
+		persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(2, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// change to @XmlTransient
+		annotatedAttribute.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_ELEMENT);
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TRANSIENT);
+					}
+				});
+		
+		persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(1, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNull(getContextRoot().getPersistentClass(fqOtherClassName));
+	}
+	
+	public void testDirectReferencedListAttribute() throws Exception {
+		String otherClassName = "Other" + TYPE_NAME;
+		String fqOtherClassName = PACKAGE_NAME_ + otherClassName;
+		String attributeName = "other";
+		createUnannotatedClassNamed(otherClassName);
+		
+		// make sure unannotated other class is not in context
+		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
+		
+		createAnnotatedPersistentClassWithAttributeAndElementTypeNamed(attributeName, otherClassName);
+		JavaResourceType thisType = (JavaResourceType) getJaxbProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceAttribute attribute = getFieldNamed(thisType, attributeName);
+		AnnotatedElement annotatedAttribute = annotatedElement(attribute);
+		
+		Iterable<JaxbPersistentClass> persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(2, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// add an @XmlElement
+		annotatedAttribute.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_ELEMENT);
+					}
+				});
+		
+		persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(2, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// change to @XmlTransient
+		annotatedAttribute.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_ELEMENT);
+						addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_TRANSIENT);
+					}
+				});
+		
+		persistentClasses = this.getContextRoot().getPersistentClasses();
+		assertEquals(1, CollectionTools.size(persistentClasses));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNull(getContextRoot().getPersistentClass(fqOtherClassName));
 	}
 }

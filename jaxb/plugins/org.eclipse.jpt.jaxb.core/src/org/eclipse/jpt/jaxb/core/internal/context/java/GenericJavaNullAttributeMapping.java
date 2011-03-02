@@ -16,9 +16,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.Annotation;
 
 
 public class GenericJavaNullAttributeMapping
-	extends AbstractJavaAttributeMapping<Annotation>
-	implements JaxbAttributeMapping
-{
+		extends AbstractJavaAttributeMapping<Annotation> {
+	
 	public GenericJavaNullAttributeMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 	}

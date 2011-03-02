@@ -73,6 +73,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.updateXmlSchemaType();
 		this.updateXmlList();
 	}
+	
 
 	//************ XmlAttribute.name ***************
 	public String getName() {
