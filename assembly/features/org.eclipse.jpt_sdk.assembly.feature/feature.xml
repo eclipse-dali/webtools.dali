@@ -46,7 +46,7 @@
          version="0.0.0"/>
 
    <includes
-         id="org.eclipse.jpt.ui.diagrameditor_sdk.feature"
+         id="org.eclipse.jpt.jpadiagrameditor_sdk.feature"
          version="0.0.0"/>
 
 </feature>
