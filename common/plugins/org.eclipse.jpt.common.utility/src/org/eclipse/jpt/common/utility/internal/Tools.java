@@ -72,6 +72,13 @@ public final class Tools {
 		return osIs("Linux");
 	}
 
+	/**
+	 * Return whether the current operating system is Mac OS X.
+	 */
+	public static boolean osIsMac() {
+		return osIs("Mac");
+	}
+
 	private static boolean osIs(String osName) {
 		return System.getProperty("os.name").indexOf(osName) != -1;
 	}
