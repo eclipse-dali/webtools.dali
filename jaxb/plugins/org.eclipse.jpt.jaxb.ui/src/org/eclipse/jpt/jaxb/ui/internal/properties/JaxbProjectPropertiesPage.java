@@ -15,6 +15,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.utility.swt.SWTTools;
 import org.eclipse.jpt.common.utility.internal.StringConverter;
@@ -49,7 +50,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import com.ibm.icu.text.Collator;
 
 /**
  * Way more complicated UI than you would think....
@@ -64,11 +64,7 @@ public class JaxbProjectPropertiesPage
 	private BufferedWritablePropertyValueModel<JaxbPlatformDescription> platformModel;
 	private PropertyChangeListener platformListener;
 	
-	/* private */ static final Comparator<String> STRING_COMPARATOR = new Comparator<String>() {
-		public int compare(String string1, String string2){
-			return Collator.getInstance().compare(string1, string2);
-		}
-	};
+	/* private */ static final Comparator<String> STRING_COMPARATOR = new ICUStringCollator();
 	
 	// ************ construction ************
 	

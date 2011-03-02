@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,9 +9,8 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.ui.internal.details;
 
-import java.util.Comparator;
 import java.util.Iterator;
-
+import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
@@ -23,8 +22,6 @@ import org.eclipse.jpt.jpa.core.context.MappedByRelationshipStrategy;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
 import org.eclipse.swt.widgets.Composite;
 
-import com.ibm.icu.text.Collator;
-
 /**
  * Here the layout of this pane:
  * <pre>
@@ -34,7 +31,6 @@ import com.ibm.icu.text.Collator;
  * |            -------------------------------------------------------------- |
  * -----------------------------------------------------------------------------</pre>
  *
- * @see NonOwningMapping
  * @see ManyToManyMappingComposite - A container of this pane
  * @see OneToManyMappingComposite - A container of this pane
  * @see OneToOneMappingComposite - A container of this pane
@@ -79,11 +75,7 @@ public class MappedByPane
 					return this.subject.candidateMappedByAttributeNames();
 				}
 			},
-			new Comparator<String>() {
-				public int compare(String string1, String string2){
-					return Collator.getInstance().compare(string1, string2);
-				}
-			}
+			new ICUStringCollator()
 		);
 	}
 	

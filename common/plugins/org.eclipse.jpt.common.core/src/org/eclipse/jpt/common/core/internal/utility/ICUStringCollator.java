@@ -7,21 +7,22 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.common.utility.internal;
+package org.eclipse.jpt.common.core.internal.utility;
 
-import java.text.Collator;
 import java.util.Comparator;
 import java.util.Locale;
+import org.eclipse.jpt.common.utility.internal.StringTools;
+import com.ibm.icu.text.Collator;
 
 /**
- * This collator simply wraps a Java text collator and implements a
+ * This collator simply wraps an ICU4J collator and implements a
  * {@link String} {@link Comparator} (instead of an {@link Object}
- * {@link Comparator}, which is what {@link Collator} does, possibly for
- * backward-compatibility reasons(?)).
+ * {@link Comparator}, which is what {@link Collator} does, mimicking the
+ * JDK(?)).
  * 
  * @see Collator
  */
-public class StringCollator
+public class ICUStringCollator
 	implements Comparator<String>
 {
 	private final Collator collator;
@@ -31,7 +32,7 @@ public class StringCollator
 	 * Wrap the default collator.
 	 * @see Collator#getInstance()
 	 */
-	public StringCollator() {
+	public ICUStringCollator() {
 		this(Collator.getInstance());
 	}
 
@@ -39,14 +40,14 @@ public class StringCollator
 	 * Wrap the collator for the specified locale.
 	 * @see Collator#getInstance(Locale)
 	 */
-	public StringCollator(Locale locale) {
+	public ICUStringCollator(Locale locale) {
 		this(Collator.getInstance(locale));
 	}
 
 	/**
 	 * Wrap the specified collator.
 	 */
-	public StringCollator(Collator collator) {
+	public ICUStringCollator(Collator collator) {
 		super();
 		this.collator = collator;
 	}

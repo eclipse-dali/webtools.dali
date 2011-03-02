@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -23,6 +23,7 @@ import org.eclipse.jdt.core.IJavaElement;
 import org.eclipse.jdt.core.IJavaElementDelta;
 import org.eclipse.jdt.core.IJavaProject;
 import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jpt.common.core.internal.utility.ICUStringCollator;
 import org.eclipse.jpt.common.ui.internal.listeners.SWTPropertyChangeListenerWrapper;
 import org.eclipse.jpt.common.ui.internal.properties.JptProjectPropertiesPage;
 import org.eclipse.jpt.common.ui.internal.util.SWTUtil;
@@ -102,7 +103,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.preferences.IWorkbenchPreferenceContainer;
 import org.eclipse.wst.common.project.facet.core.IProjectFacetVersion;
-import com.ibm.icu.text.Collator;
 
 /**
  * Way more complicated UI than you would think....
@@ -143,11 +143,7 @@ public class JpaProjectPropertiesPage
 	
 	private static final String BUILD_PATHS_PROPERTY_PAGE_ID = "org.eclipse.jdt.ui.propertyPages.BuildPathsPropertyPage"; //$NON-NLS-1$
 	
-	/* private */ static final Comparator<String> STRING_COMPARATOR = new Comparator<String>() {
-		public int compare(String string1, String string2){
-			return Collator.getInstance().compare(string1, string2);
-		}
-	};
+	/* private */ static final Comparator<String> STRING_COMPARATOR = new ICUStringCollator();
 
 	// ************ construction ************
 
