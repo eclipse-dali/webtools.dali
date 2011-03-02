@@ -2061,7 +2061,11 @@ public class JpaArtifactFactory {
 	private JavaPersistentAttribute getAttributeFromEntity(
 			JavaPersistentType jpt, String attributeName) {
 		this.refreshEntityModel(null, jpt);
-		PersistentAttribute at = jpt.getAttributeNamed(attributeName);;
+		PersistentAttribute at = jpt.getAttributeNamed(attributeName);
+		if (at == null) {
+			jpt.getResourcePersistentType().synchronizeWith(jpt.getResourcePersistentType().getJavaResourceCompilationUnit().buildASTRoot());
+			jpt.update();
+		}
 		int c = 0;
 		while ((at == null) && (c < MAX_NUM_OF_ITERATIONS)) {		
 			try {
@@ -2070,7 +2074,7 @@ public class JpaArtifactFactory {
 				System.err.println("Cannot get the attribute " + //$NON-NLS-1$
 						attributeName + " from " + jpt.getName()); //$NON-NLS-1$
 				e.printStackTrace();
-			} 
+			}
 			at = jpt.getAttributeNamed(attributeName);
 			c++;
 		}

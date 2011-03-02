@@ -92,6 +92,8 @@ public class JPACheckSum {
 	}
 	
 	public boolean isEntityModelChanged(Shape sh, JpaProject jpaProject) {
+		if (sh == null)
+			return true; 
 		PersistenceUnit pu = JpaArtifactFactory.instance().getPersistenceUnit(jpaProject);
 		String name = Graphiti.getPeService().getPropertyValue(sh, JPAEditorConstants.PROP_ENTITY_CLASS_NAME);
 		JavaPersistentType jpt = JpaArtifactFactory.instance().getJPT(name, pu);
