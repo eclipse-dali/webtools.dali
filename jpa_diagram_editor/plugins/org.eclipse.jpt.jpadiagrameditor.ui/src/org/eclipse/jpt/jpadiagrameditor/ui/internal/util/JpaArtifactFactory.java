@@ -571,7 +571,7 @@ public class JpaArtifactFactory {
 		gje.setSpecifiedName(newName);	
 	}
 	
-	public JavaPersistentAttribute addAttribute(IFeatureProvider fp, JavaPersistentType jpt, 
+	public JavaPersistentAttribute addAttribute(IJPAEditorFeatureProvider fp, JavaPersistentType jpt, 
 			JavaPersistentType attributeType, String attributeName,
 			String actName, boolean isCollection, ICompilationUnit cu1,
 			ICompilationUnit cu2) {
@@ -587,7 +587,7 @@ public class JpaArtifactFactory {
 			}
 			if (isCollection) {
 				IProject project = jpt.getJpaProject().getProject();
-				Properties props = JPADiagramPropertyPage.loadProperties(project);
+				Properties props = fp.loadProperties(project);
 
 				if(JPADiagramPropertyPage.isCollectionType(project, props)){
 					createContentType(attributeType, actName, cu1, type, COLLECTION_TYPE);

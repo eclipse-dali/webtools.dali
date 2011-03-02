@@ -15,17 +15,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 public class ManyToOneBiDirRelation  extends ManyToOneRelation implements BidirectionalRelation{
 
-	public ManyToOneBiDirRelation(IFeatureProvider fp, JavaPersistentType owner, 
+	public ManyToOneBiDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 								  JavaPersistentType inverse, 
 								  String ownerAttributeName,
 								  String inverseAttributeName,
@@ -56,7 +56,7 @@ public class ManyToOneBiDirRelation  extends ManyToOneRelation implements Bidire
 		this.inverseAnnotatedAttribute = inverseAnnotatedAttribute;
 	}
 
-	private void createRelation(IFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
+	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU, ICompilationUnit inverseCU) {
 		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
 		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));
 		String nameWithNonCapitalLetter = JPAEditorUtil.decapitalizeFirstLetter(name);

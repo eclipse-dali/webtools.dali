@@ -15,17 +15,17 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.relations;
 
-import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 
 public class ManyToManyUniDirRelation extends ManyToManyRelation implements UnidirectionalRelation {
 
-	public ManyToManyUniDirRelation(IFeatureProvider fp, JavaPersistentType owner, 
+	public ManyToManyUniDirRelation(IJPAEditorFeatureProvider fp, JavaPersistentType owner, 
 									JavaPersistentType inverse,
 									String ownerAttributeName,
 									boolean createAttribs,
@@ -45,7 +45,7 @@ public class ManyToManyUniDirRelation extends ManyToManyRelation implements Unid
 		this.ownerAnnotatedAttribute = annotatedAttribute;
 	}	
 	
-	private void createRelation(IFeatureProvider fp, ICompilationUnit ownerCU,
+	private void createRelation(IJPAEditorFeatureProvider fp, ICompilationUnit ownerCU,
 								ICompilationUnit inverseCU) {
 		String name = JPAEditorUtil.cutFromLastDot(inverse.getName());
 		String actName = JPAEditorUtil.cutFromLastDot(JpaArtifactFactory.instance().getEntityName(inverse));

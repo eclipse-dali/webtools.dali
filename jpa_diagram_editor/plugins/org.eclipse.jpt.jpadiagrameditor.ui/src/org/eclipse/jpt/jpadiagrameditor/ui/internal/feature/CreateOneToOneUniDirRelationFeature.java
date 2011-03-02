@@ -15,10 +15,10 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.mm.pictograms.PictogramElement;
 import org.eclipse.jpt.jpa.core.context.java.JavaPersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.i18n.JPAEditorMessages;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.JPAEditorImageProvider;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.OneToOneUniDirRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JPAEditorUtil;
@@ -28,13 +28,13 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
 
 public class CreateOneToOneUniDirRelationFeature extends CreateOneToOneRelationFeature {
 	
-	public CreateOneToOneUniDirRelationFeature(IFeatureProvider fp) {
+	public CreateOneToOneUniDirRelationFeature(IJPAEditorFeatureProvider fp) {
 		super(fp, JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureName, 
 				JPAEditorMessages.CreateOneToOneUniDirRelationFeature_oneToOneUniDirFeatureDescription); 
 	}
 		
 	@Override
-	public OneToOneUniDirRelation createRelation(IFeatureProvider fp, PictogramElement source, 
+	public OneToOneUniDirRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
 														PictogramElement target) {
 		
 		JavaPersistentType owner = (JavaPersistentType)(getBusinessObjectForPictogramElement(source));

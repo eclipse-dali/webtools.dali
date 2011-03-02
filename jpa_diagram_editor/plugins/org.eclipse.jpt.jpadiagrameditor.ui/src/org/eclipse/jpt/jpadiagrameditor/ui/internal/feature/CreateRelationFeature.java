@@ -15,7 +15,6 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import org.eclipse.graphiti.features.IFeatureProvider;
 import org.eclipse.graphiti.features.context.ICreateConnectionContext;
 import org.eclipse.graphiti.features.context.impl.AddConnectionContext;
 import org.eclipse.graphiti.features.impl.AbstractCreateConnectionFeature;
@@ -30,7 +29,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
 
 abstract public class CreateRelationFeature extends AbstractCreateConnectionFeature {
 
-	public CreateRelationFeature(IFeatureProvider fp, String name, String description) {
+	public CreateRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
 		super(fp, name, description);
 	}
 
@@ -84,7 +83,7 @@ abstract public class CreateRelationFeature extends AbstractCreateConnectionFeat
 	/**
 	 * Creates a new OneToOneRelation between two PersistentType classes.
 	 */
-	abstract protected AbstractRelation createRelation(IFeatureProvider fp, PictogramElement source, 
+	abstract protected AbstractRelation createRelation(IJPAEditorFeatureProvider fp, PictogramElement source, 
 															   PictogramElement target);
 	
 	public IJPAEditorFeatureProvider getFeatureProvider() {

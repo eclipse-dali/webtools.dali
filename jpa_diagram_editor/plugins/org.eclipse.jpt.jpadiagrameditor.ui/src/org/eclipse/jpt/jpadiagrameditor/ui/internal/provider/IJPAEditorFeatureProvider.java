@@ -15,6 +15,9 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.provider;
 
+import java.util.Properties;
+
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.graphiti.features.IDeleteFeature;
 import org.eclipse.graphiti.features.IFeatureProvider;
@@ -93,5 +96,7 @@ public interface IJPAEditorFeatureProvider extends IFeatureProvider{
 	public void addAttribForUpdate(PersistenceUnit pu, String entAtMappedBy);
 	
 	public TransactionalEditingDomain getTransactionalEditingDomain();
+	
+	public Properties loadProperties(IProject project);
 
 }

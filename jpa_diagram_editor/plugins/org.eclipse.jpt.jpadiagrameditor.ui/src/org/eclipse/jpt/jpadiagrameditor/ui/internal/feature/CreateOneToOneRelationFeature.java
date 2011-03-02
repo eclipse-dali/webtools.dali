@@ -15,12 +15,12 @@
  *******************************************************************************/
 package org.eclipse.jpt.jpadiagrameditor.ui.internal.feature;
 
-import org.eclipse.graphiti.features.IFeatureProvider;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.provider.IJPAEditorFeatureProvider;
 
 abstract class CreateOneToOneRelationFeature 
 		extends CreateRelationFeature {
 	
-	public CreateOneToOneRelationFeature(IFeatureProvider fp, String name, String description) {
+	public CreateOneToOneRelationFeature(IJPAEditorFeatureProvider fp, String name, String description) {
 		super(fp, name, description);
 	}
 }

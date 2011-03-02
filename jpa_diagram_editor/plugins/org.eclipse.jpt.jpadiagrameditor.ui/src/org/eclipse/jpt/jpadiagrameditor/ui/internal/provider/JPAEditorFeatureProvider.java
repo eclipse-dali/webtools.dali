@@ -20,7 +20,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Properties;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.emf.transaction.RecordingCommand;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.emf.transaction.util.TransactionUtil;
@@ -105,6 +107,7 @@ import org.eclipse.jpt.jpadiagrameditor.ui.internal.feature.ResizeJPAEntityFeatu
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.IModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtil;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.modelintegration.util.ModelIntegrationUtilImpl;
+import org.eclipse.jpt.jpadiagrameditor.ui.internal.propertypage.JPADiagramPropertyPage;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.AbstractRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.relations.IRelation.RelDir;
@@ -630,6 +633,9 @@ public class JPAEditorFeatureProvider extends DefaultFeatureProvider implements 
 		*/
 		return pe;
 	}
-		
+	
+	public Properties loadProperties(IProject project) {
+		return JPADiagramPropertyPage.loadProperties(project);
+	}
 
 }
