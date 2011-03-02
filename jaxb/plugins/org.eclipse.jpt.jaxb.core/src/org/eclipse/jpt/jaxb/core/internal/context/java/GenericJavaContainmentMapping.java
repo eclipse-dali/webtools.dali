@@ -17,11 +17,13 @@ import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
+import org.eclipse.jpt.jaxb.core.context.XmlID;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
 import org.eclipse.jpt.jaxb.core.context.XmlList;
 import org.eclipse.jpt.jaxb.core.context.XmlSchemaType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JaxbContainmentAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlIDAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlListAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSchemaTypeAnnotation;
@@ -45,6 +47,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 
 	protected XmlList xmlList;
 
+	protected XmlID xmlID;
+
 	public GenericJavaContainmentMapping(JaxbPersistentAttribute parent) {
 		super(parent);
 		this.specifiedName = buildSpecifiedName();
@@ -52,7 +56,8 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.specifiedRequired = buildSpecifiedRequired();
 		this.xmlAdaptable = buildXmlAdaptable();
 		this.initializeXmlSchemaType();
-		this.initializeXmlList();			
+		this.initializeXmlList();
+		this.initializeXmlID();
 	}
 
 	@Override
@@ -64,6 +69,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.xmlAdaptable.synchronizeWithResourceModel();
 		this.syncXmlSchemaType();
 		this.syncXmlList();
+		this.syncXmlID();
 	}
 
 	@Override
@@ -72,6 +78,7 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		this.xmlAdaptable.update();
 		this.updateXmlSchemaType();
 		this.updateXmlList();
+		this.updateXmlID();
 	}
 	
 
@@ -335,6 +342,74 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 	}
 
 
+	//************  XmlID ***************
+
+	public XmlID getXmlID() {
+		return this.xmlID;
+	}
+
+	public XmlID addXmlID() {
+		if (this.xmlID != null) {
+			throw new IllegalStateException();
+		}
+		XmlIDAnnotation annotation = (XmlIDAnnotation) this.getJavaResourceAttribute().addAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+
+		XmlID xmlID = this.buildXmlID(annotation);
+		this.setXmlID_(xmlID);
+		return xmlID;
+	}
+
+	protected XmlID buildXmlID(XmlIDAnnotation xmlIDAnnotation) {
+		return new GenericJavaXmlID(this, xmlIDAnnotation);
+	}
+
+	public void removeXmlID() {
+		if (this.xmlID == null) {
+			throw new IllegalStateException();
+		}
+		this.getJavaResourceAttribute().removeAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+		this.setXmlID_(null);
+	}
+
+	protected void initializeXmlID() {
+		XmlIDAnnotation annotation = this.getXmlIDAnnotation();
+		if (annotation != null) {
+			this.xmlID = this.buildXmlID(annotation);
+		}
+	}
+
+	protected XmlIDAnnotation getXmlIDAnnotation() {
+		return (XmlIDAnnotation) this.getJavaResourceAttribute().getAnnotation(XmlIDAnnotation.ANNOTATION_NAME);
+	}
+
+	protected void syncXmlID() {
+		XmlIDAnnotation annotation = this.getXmlIDAnnotation();
+		if (annotation != null) {
+			if (this.getXmlID() != null) {
+				this.getXmlID().synchronizeWithResourceModel();
+			}
+			else {
+				this.setXmlID_(this.buildXmlID(annotation));
+			}
+		}
+		else {
+			this.setXmlID_(null);
+		}
+	}
+
+	protected void updateXmlID() {
+		if (this.getXmlID() != null) {
+			this.getXmlID().update();
+		}
+	}
+
+	protected void setXmlID_(XmlID xmlID) {
+		XmlID oldXmlID = this.xmlID;
+		this.xmlID = xmlID;
+		firePropertyChanged(XML_LIST_PROPERTY, oldXmlID, xmlID);
+	}
+
+
 	// **************** content assist **************
 
 	@Override
@@ -365,6 +440,9 @@ public abstract class GenericJavaContainmentMapping<A extends JaxbContainmentAnn
 		}
 		if (this.xmlList != null) {
 			this.xmlList.validate(messages, reporter, astRoot);
+		}
+		if (this.xmlID != null) {
+			this.xmlID.validate(messages, reporter, astRoot);
 		}
 	}
 }

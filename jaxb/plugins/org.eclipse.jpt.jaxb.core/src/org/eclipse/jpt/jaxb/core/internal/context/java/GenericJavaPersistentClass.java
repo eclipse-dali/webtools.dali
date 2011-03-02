@@ -21,12 +21,16 @@ import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ChainIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SingleElementIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.SubIterableWrapper;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jaxb.core.MappingKeys;
+import org.eclipse.jpt.jaxb.core.context.JaxbAttributeMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbAttributesContainer;
 import org.eclipse.jpt.jaxb.core.context.JaxbClass;
+import org.eclipse.jpt.jaxb.core.context.JaxbContainmentMapping;
 import org.eclipse.jpt.jaxb.core.context.JaxbContextRoot;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackageInfo;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentAttribute;
@@ -553,6 +557,7 @@ public class GenericJavaPersistentClass
 		this.validateXmlAnyAttributeMapping(messages, astRoot);
 		this.validateXmlAnyElementMapping(messages, astRoot);
 		this.validateXmlValueMapping(messages, astRoot);
+		this.validateXmlIDs(messages, astRoot);
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
 			attribute.validate(messages, reporter, astRoot);
 		}
@@ -632,5 +637,55 @@ public class GenericJavaPersistentClass
 				}
 			}
 		}
+	}
+
+	protected void validateXmlIDs(List<IMessage> messages, CompilationUnit astRoot) {
+		String xmlIdMapping = null;
+		for (JaxbContainmentMapping containmentMapping : getContainmentMappingsWithXmlID()) {
+			if (xmlIdMapping != null) {
+				messages.add(
+					DefaultValidationMessages.buildMessage(
+						IMessage.HIGH_SEVERITY,
+						JaxbValidationMessages.MULTIPLE_XML_IDS_DEFINED,
+						new String[] {containmentMapping.getParent().getName(), xmlIdMapping},
+						containmentMapping,
+						containmentMapping.getValidationTextRange(astRoot)));
+			}
+			else {
+				xmlIdMapping = containmentMapping.getParent().getName();
+			}
+		}
+	}
+
+	protected Iterable<JaxbContainmentMapping> getContainmentMappingsWithXmlID(){
+		return new FilteringIterable<JaxbContainmentMapping>(this.getContainmentMappings()){
+			@Override
+			protected boolean accept(JaxbContainmentMapping containmentMapping) {
+				return containmentMapping.getXmlID() != null;
+			}
+		};
+	}
+
+	protected Iterable<JaxbContainmentMapping> getContainmentMappings() {
+		return new SubIterableWrapper<JaxbAttributeMapping, JaxbContainmentMapping>(this.getContainmentMappings_());
+	}
+
+	protected Iterable<JaxbAttributeMapping> getContainmentMappings_(){
+		return new FilteringIterable<JaxbAttributeMapping>(this.getAttributeMappings()){
+			@Override
+			protected boolean accept(JaxbAttributeMapping attributeMapping) {
+				return (attributeMapping.getKey() == MappingKeys.XML_ELEMENT_ATTRIBUTE_MAPPING_KEY
+					|| attributeMapping.getKey() == MappingKeys.XML_ATTRIBUTE_ATTRIBUTE_MAPPING_KEY);
+			}
+		};
+	}
+
+	private Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
+		return new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(this.getAttributes()) {
+			@Override
+			protected JaxbAttributeMapping transform(JaxbPersistentAttribute attribute) {
+				return attribute.getMapping();
+			}
+		};
 	}
 }
