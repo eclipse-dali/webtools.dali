@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.core.internal.jpa2;
 
 import java.util.Iterator;
 
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.jpa.core.JpaDataSource;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
 import org.eclipse.jpt.jpa.core.context.persistence.Persistence;
@@ -38,15 +39,8 @@ public class GenericJpaDatabaseIdentifierAdapter
 	/**
 	 * If the flag is set, "identifiers" are treated as "names".
 	 */
-	public String convertIdentifierToName(String identifier, DefaultCallback defaultCallback) {
-		return this.getDefaultDelimitedIdentifiers() ? identifier : defaultCallback.convertIdentifierToName(identifier);
-	}
-
-	/**
-	 * If the flag is set, "names" are treated as "identifiers".
-	 */
-	public String convertNameToIdentifier(String name, DefaultCallback defaultCallback) {
-		return this.getDefaultDelimitedIdentifiers() ? name : defaultCallback.convertNameToIdentifier(name);
+	 public boolean treatIdentifiersAsDelimited() {
+		return this.getDefaultDelimitedIdentifiers();
 	}
 
 	protected boolean getDefaultDelimitedIdentifiers() {
@@ -77,4 +71,8 @@ public class GenericJpaDatabaseIdentifierAdapter
 		return (rcn == null) ? null : rcn.getPersistenceXml();
 	}
 
+	@Override
+	public String toString() {
+		return StringTools.buildToStringFor(this, Boolean.valueOf(this.treatIdentifiersAsDelimited()));
+	}
 }

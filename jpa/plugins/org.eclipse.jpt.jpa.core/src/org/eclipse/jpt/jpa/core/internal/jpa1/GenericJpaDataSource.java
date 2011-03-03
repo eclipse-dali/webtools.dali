@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,7 +20,7 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileFactory;
 import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
-import org.eclipse.jpt.jpa.db.DatabaseObject;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * GenericJpaDataSource
@@ -117,9 +117,9 @@ public class GenericJpaDataSource
 		return (cp == null) ? null : cp.getDatabase();
 	}
 
-	public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier) {
+	public Table selectTableForIdentifier(Iterable<Table> tables, String identifier) {
 		Database db = this.getDatabase();
-		return (db == null) ? null : db.selectDatabaseObjectForIdentifier(databaseObjects, identifier);
+		return (db == null) ? null : db.selectTableForIdentifier(tables, identifier);
 	}
 
 	public void dispose() {

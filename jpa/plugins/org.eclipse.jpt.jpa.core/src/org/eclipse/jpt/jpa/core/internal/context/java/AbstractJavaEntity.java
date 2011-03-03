@@ -1078,7 +1078,7 @@ public abstract class AbstractJavaEntity
 	@Override
 	public org.eclipse.jpt.jpa.db.Table resolveDbTable(String tableName) {
 		// matching database objects and identifiers is database platform-specific
-		return this.getDataSource().selectDatabaseObjectForIdentifier(this.getAllAssociatedDbTables(), tableName);
+		return this.getDataSource().selectTableForIdentifier(this.getAllAssociatedDbTables(), tableName);
 	}
 
 	/**

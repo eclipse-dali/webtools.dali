@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,7 +11,7 @@ package org.eclipse.jpt.jpa.core;
 
 import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.Database;
-import org.eclipse.jpt.jpa.db.DatabaseObject;
+import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * Interface to the connection profile.
@@ -69,9 +69,9 @@ public interface JpaDataSource
 	Database getDatabase();
 
 	/**
-	 * Select and return the database object with the specified identifier.
+	 * Select and return the table with the specified identifier.
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier);
+	Table selectTableForIdentifier(Iterable<Table> tables, String identifier);
 
 	/**
 	 * Dispose the data source.
