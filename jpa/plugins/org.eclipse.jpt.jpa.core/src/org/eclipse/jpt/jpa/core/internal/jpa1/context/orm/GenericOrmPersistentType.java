@@ -182,6 +182,9 @@ public class GenericOrmPersistentType
 	// ********** name **********
 
 	public String getName() {
+		if (this.javaPersistentType != null) {
+			return this.javaPersistentType.getName();
+		}
 		return this.convertMappingClassName(this.mapping.getClass_());
 	}
 
