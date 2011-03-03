@@ -13,6 +13,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 
 import org.eclipse.emf.common.util.EList;
@@ -1798,27 +1800,25 @@ public abstract class AbstractOrmEntity<X extends XmlEntity>
 
 	protected void validateDuplicateEntityNames(List<IMessage> messages,
 			IReporter reporter) {
-		HashBag<String>  ormEntityNames = new HashBag<String>();
-		CollectionTools.addAll(ormEntityNames, this.getPersistenceUnit().ormEntityNames());
 		HashBag<String>  javaEntityNamesExclOverridden = new HashBag<String>();
 		CollectionTools.addAll(javaEntityNamesExclOverridden, this.getPersistenceUnit().javaEntityNamesExclOverridden());
-		String  name = this.getName();
-		if ((name != null) && 
-					// Check whether or not this entity name has duplicates among the orm entities
-					((ormEntityNames.count(name) > 1) 
-					    // Check whether or not this entity name has duplicates among
-						// the java entities that are not defined in the mapping files
-					   || (javaEntityNamesExclOverridden.contains(name)))) {
-							messages.add(
-									DefaultJpaValidationMessages.buildMessage(
-											IMessage.HIGH_SEVERITY,
-											JpaValidationMessages.PERSISTENCE_UNIT_ENTITY_NAME_ATTRIBUTE_MISSING,
-											new String[] {name}, 
-											this, 
-											this.getClassTextRange()
-									)
-							);
-			} 
+		Map<String, Set<String>> map =this.getPersistenceUnit().mapEntityNameToClassNames();
+		Set<String> classNames = map.get(this.getName());
+		// Check whether or not this entity name has duplicates among the orm entities defined with different classes
+		if (((classNames  != null) && (classNames.size() > 1)) || 
+				// Check whether or not this entity name has duplicates among
+				// the java entities that are not defined in the mapping files
+				(javaEntityNamesExclOverridden.contains(this.getName()))) {
+			messages.add(
+					DefaultJpaValidationMessages.buildMessage(
+							IMessage.HIGH_SEVERITY,
+							JpaValidationMessages.ENTITY_NAME_DUPLICATED,
+							new String[] {this.getName()},
+							this,
+							this.getNameTextRange()
+					)
+			);
+		}
 	}
 
 	protected void validatePrimaryKey(List<IMessage> messages, IReporter reporter) {

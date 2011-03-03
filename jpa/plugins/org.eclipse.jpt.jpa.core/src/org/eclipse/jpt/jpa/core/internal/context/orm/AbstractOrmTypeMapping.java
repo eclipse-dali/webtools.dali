@@ -15,6 +15,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
@@ -459,6 +460,20 @@ public abstract class AbstractOrmTypeMapping<X extends XmlTypeMapping>
 					this.getClassTextRange()
 				)
 			);
+		} else {
+			HashBag<String> ormMappedClassNames = new HashBag<String>();
+			CollectionTools.addAll(ormMappedClassNames, this.getPersistenceUnit().getOrmMappedClassNames());
+			if (ormMappedClassNames.count(this.class_) > 1) {
+				messages.add(
+						DefaultJpaValidationMessages.buildMessage(
+								IMessage.NORMAL_SEVERITY,
+								JpaValidationMessages.PERSISTENT_TYPE_DUPLICATE_CLASS,
+								new String[] {this.class_}, 
+								this,
+								this.getClassTextRange()
+						)
+				);
+			}
 			return;
 		}
 		this.buildTypeMappingValidator().validate(messages, reporter);

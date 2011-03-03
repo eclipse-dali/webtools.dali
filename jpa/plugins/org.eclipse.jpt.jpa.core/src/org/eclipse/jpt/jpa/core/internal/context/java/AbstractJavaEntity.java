@@ -1368,7 +1368,7 @@ public abstract class AbstractJavaEntity
 								messages.add(
 										DefaultJpaValidationMessages.buildMessage(
 												IMessage.HIGH_SEVERITY,
-												JpaValidationMessages.PERSISTENCE_UNIT_ENTITY_NAME_ATTRIBUTE_MISSING,
+												JpaValidationMessages.ENTITY_NAME_DUPLICATED,
 												new String[] {javaEntityName}, 
 												this, 
 												this.getMappingAnnotation().getNameTextRange(astRoot)

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,8 @@ package org.eclipse.jpt.jpa.core.context.persistence;
 
 import java.util.Iterator;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -730,6 +732,17 @@ public interface PersistenceUnit
 	 */
 	boolean containsOffset(int textOffset);
 
+	/**
+	 * Return a map with entity names as the key and class names as the value.
+	 * Duplicate class names are eliminated.
+	 */
+	Map<String, Set<String>> mapEntityNameToClassNames();
+	
+	/**
+	 * Return the class names of all the mapped orm classes cross the persistent unit
+	 */
+	Iterable<String> getOrmMappedClassNames();
+	
 	/**
 	 * Return all the entities defined in both the implied and specified mapping files
 	 * of a persistence unit

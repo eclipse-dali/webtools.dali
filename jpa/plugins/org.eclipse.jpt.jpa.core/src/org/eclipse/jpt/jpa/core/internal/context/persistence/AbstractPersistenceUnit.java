@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -33,6 +33,7 @@ import org.eclipse.jpt.common.core.utility.TextRange;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.HashBag;
 import org.eclipse.jpt.common.utility.internal.NotNullFilter;
+import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.CompositeListIterable;
@@ -1663,30 +1664,12 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	protected void checkForDuplicateClasses(List<IMessage> messages) {
-		HashBag<String> ormMappedClassNames = new HashBag<String>();
-		CollectionTools.addAll(ormMappedClassNames, this.ormMappedClassNames());
-		for (Iterator<PersistentType> ormMappedClasses = this.getMappingFilePersistentTypes().iterator(); ormMappedClasses.hasNext();){
-			PersistentType ormMappedClass = ormMappedClasses.next();
-			String ormMappedClassName = ormMappedClass.getName();
-		if ((ormMappedClassName != null) && (ormMappedClassNames.count(ormMappedClassName) > 1)) {
-						messages.add(
-							DefaultJpaValidationMessages.buildMessage(
-									IMessage.HIGH_SEVERITY,
-									JpaValidationMessages.PERSISTENCE_UNIT_DUPLICATE_CLASS,
-									new String[] {ormMappedClassName}, 
-									ormMappedClass,
-									ormMappedClass.getSelectionTextRange()
-							)
-					);
-				}
-			}
 		HashBag<String> javaClassNames = new HashBag<String>();
 		CollectionTools.addAll(javaClassNames, this.classRefNames());
 		for (Iterator<ClassRef> stream = this.classRefs(); stream.hasNext(); ) {
 			ClassRef classRef = stream.next();
 			String javaClassName = classRef.getClassName();
-			if ((javaClassName != null) && (!ormMappedClassNames.contains(javaClassName)) 
-					&& (javaClassNames.count(javaClassName) > 1)) {
+			if ((javaClassName != null)	&& (javaClassNames.count(javaClassName) > 1)) {
 					  messages.add(
 						DefaultJpaValidationMessages.buildMessage(
 								IMessage.HIGH_SEVERITY,
@@ -1935,8 +1918,8 @@ public abstract class AbstractPersistenceUnit
 			};
 	}
 
-	protected Iterator<String> ormMappedClassNames() {
-		return new TransformationIterator<PersistentType, String>(this.getMappingFilePersistentTypes()) {
+	public Iterable<String> getOrmMappedClassNames() {
+		return new TransformationIterable<PersistentType, String>(this.getMappingFilePersistentTypes()) {
 			@Override
 			protected String transform(PersistentType persistentType) {
 				return persistentType.getName();
@@ -1945,42 +1928,78 @@ public abstract class AbstractPersistenceUnit
 	}
 
 	// ------------------ orm entities --------------------
-	protected Iterator<String> ormEntityClassNames() {
-		return new TransformationIterator<Entity, String>(this.getOrmEntities()) {
+	public Map<String, Set<String>> mapEntityNameToClassNames() {
+		HashSet<String> classNames = new HashSet<String>();
+		Map<String, Set<String>> map = new HashMap<String, Set<String>>();
+		for (String entityName : this.getFilteredEntityNames()) {
+			CollectionTools.addAll(classNames, getFilteredOrmClassNames(entityName));
+			map.put(entityName, classNames);
+		}
+		return map;
+	}
+	
+	private Iterable<String> getFilteredOrmClassNames(String entityName){
+		List<String> classNames = new ArrayList<String>();
+		for (PersistentType persistentType: this.getFilteredOrmPersistentTypes()) {
+			if (StringTools.stringsAreEqual(persistentType.getMapping().getName(), entityName)) {
+				classNames.add(persistentType.getName());
+			}
+		}
+		return classNames;
+	}
+	
+	private Iterable<String> getFilteredEntityNames() {
+		return new TransformationIterable<PersistentType, String>(this.getFilteredOrmPersistentTypes()) {
 			@Override
-			protected String transform(Entity ormEntity) {
-				return ormEntity.getPersistentType().getName();
+			protected String transform(PersistentType persistentType) {
+				return persistentType.getMapping().getName();
+			}
+		};
+	}
+	
+	private Iterable<PersistentType> getFilteredOrmPersistentTypes(){
+		List<PersistentType> filteredPersistentType = new ArrayList<PersistentType>();
+		HashBag<String> ormEntityNames = new HashBag<String>();
+		CollectionTools.addAll(ormEntityNames, this.ormEntityNames());
+		for (PersistentType persistentType : this.getOrmEntityPersistentTypes()) {
+			if (ormEntityNames.count(persistentType.getMapping().getName()) > 1) {
+				filteredPersistentType.add(persistentType);
+			}
+		}
+		return filteredPersistentType;
+	}
+
+	protected Iterator<String> ormEntityClassNames() {
+		return new TransformationIterator<PersistentType, String>(this.getOrmEntityPersistentTypes()) {
+			@Override
+			protected String transform(PersistentType persistentType) {
+				return persistentType.getName();
 			}
 		};
 	}
 	
 	public Iterator<String> ormEntityNames() {
-		return new TransformationIterator<Entity, String>(this.getOrmEntities()) {
+		return new TransformationIterator<PersistentType, String>(this.getOrmEntityPersistentTypes()) {
 			@Override
-			protected String transform(Entity ormEntity) {
-				return ormEntity.getName();
+			protected String transform(PersistentType persistentType) {
+				return persistentType.getMapping().getName();
 			}
 		};
 	}
 	
 	public Iterable<Entity> getOrmEntities(){
-		return new SubIterableWrapper<TypeMapping, Entity>(this.getOrmEntities_());
+		return new SubIterableWrapper<PersistentType, Entity>(this.getOrmEntityPersistentTypes());
 	}
 	
-	protected Iterable<TypeMapping> getOrmEntities_(){
-		return new FilteringIterable<TypeMapping>(this.getOrmTypeMappings()){
-			@Override
-			protected boolean accept(TypeMapping typeMapping) {
-				return typeMapping instanceof Entity;
-			}
-		};
+	private Iterable<PersistentType> getOrmEntityPersistentTypes() {
+		return (this.getOrmPersistentTypes(org.eclipse.jpt.jpa.core.MappingKeys.ENTITY_TYPE_MAPPING_KEY));
 	}
-	
-	private Iterable<? extends TypeMapping> getOrmTypeMappings() {
-		return new TransformationIterable<PersistentType, TypeMapping>(this.getMappingFilePersistentTypes()) {
+
+	protected Iterable<PersistentType> getOrmPersistentTypes(final String mappingKey) {
+		return new FilteringIterable<PersistentType>(this.getMappingFilePersistentTypes()) {
 			@Override
-			protected TypeMapping transform(PersistentType persistentType) {
-				return persistentType.getMapping();
+			protected boolean accept(PersistentType persistentType) {
+				return persistentType.getMappingKey() == mappingKey;
 			}
 		};
 	}
@@ -1997,7 +2016,7 @@ public abstract class AbstractPersistenceUnit
 
 	public Iterator<String> javaEntityNamesExclOverridden() {
 		HashBag<String> ormMappedClassNames = new HashBag<String>();
-		CollectionTools.addAll(ormMappedClassNames, this.ormMappedClassNames());
+		CollectionTools.addAll(ormMappedClassNames, this.getOrmMappedClassNames());
 		List<String> javaEntityNamesExclOverridden = new ArrayList<String>();
 		for (Iterator<String> javaEntityClassNames = this.javaEntityClassNames(); javaEntityClassNames.hasNext();){
 			String javaEntityClassName = javaEntityClassNames.next();
