@@ -13,8 +13,8 @@ import org.eclipse.jpt.common.ui.jface.DelegatingContentAndLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProvider;
 import org.eclipse.jpt.common.ui.jface.ItemLabelProviderFactory;
 import org.eclipse.jpt.jpa.core.context.JpaRootContextNode;
-import org.eclipse.jpt.jpa.core.context.PersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.PersistentType;
+import org.eclipse.jpt.jpa.core.context.ReadOnlyPersistentAttribute;
 import org.eclipse.jpt.jpa.core.context.java.JarFile;
 import org.eclipse.jpt.jpa.core.context.orm.OrmXml;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
@@ -40,8 +40,8 @@ public class GenericNavigatorItemLabelProviderFactory
 		else if (item instanceof PersistentType) {
 			return new PersistentTypeItemLabelProvider((PersistentType) item, contentAndLabelProvider);	
 		}
-		else if (item instanceof PersistentAttribute) {
-			return new PersistentAttributeItemLabelProvider((PersistentAttribute) item, contentAndLabelProvider);	
+		else if (item instanceof ReadOnlyPersistentAttribute) {
+			return new PersistentAttributeItemLabelProvider((ReadOnlyPersistentAttribute) item, contentAndLabelProvider);	
 		}
 		else if (item instanceof JarFile) {
 			return new JarFileItemLabelProvider((JarFile) item, contentAndLabelProvider);
