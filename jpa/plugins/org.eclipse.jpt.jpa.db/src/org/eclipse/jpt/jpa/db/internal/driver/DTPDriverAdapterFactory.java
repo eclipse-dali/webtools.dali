@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2011 Oracle. All rights reserved.
+ * Copyright (c) 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,23 +7,21 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.db.internal;
+package org.eclipse.jpt.jpa.db.internal.driver;
 
-import org.eclipse.jpt.jpa.db.DatabaseObject;
+import org.eclipse.jpt.jpa.db.Database;
 
 /**
- * Internal interface: DTP database object.
+ * Factory interface.
  */
-interface DTPDatabaseObject
-	extends DatabaseObject
-{
+interface DTPDriverAdapterFactory {
 	/**
-	 * covariant override
+	 * Return the vendors supported by the factory's adapter.
 	 */
-	DTPConnectionProfileWrapper getConnectionProfile();
+	String[] getSupportedVendors();
 
 	/**
-	 * covariant override
+	 * Build a new DTP driver adapter for the specified Dali database.
 	 */
-	public DTPDatabaseWrapper getDatabase();
+	DTPDriverAdapter buildAdapter(Database database);
 }

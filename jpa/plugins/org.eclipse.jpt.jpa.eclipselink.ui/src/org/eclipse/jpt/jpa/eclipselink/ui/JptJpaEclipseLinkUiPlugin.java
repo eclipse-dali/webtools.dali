@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -44,17 +44,34 @@ public class JptJpaEclipseLinkUiPlugin extends AbstractUIPlugin
 		return INSTANCE;
 	}
 
+	/**
+	 * Log the specified message.
+	 */
+	public static void log(String msg) {
+        log(msg, null);
+    }
+
+	/**
+	 * Log the specified exception or error.
+	 */
+	public static void log(Throwable throwable) {
+		log(throwable.getLocalizedMessage(), throwable);
+	}
+
+	/**
+	 * Log the specified message and exception or error.
+	 */
+	public static void log(String msg, Throwable throwable) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+	}
+
+	/**
+	 * Log the specified status.
+	 */
 	public static void log(IStatus status) {
         INSTANCE.getLog().log(status);
     }
 
-	public static void log(String msg) {
-        log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, null));
-    }
-
-	public static void log(Throwable throwable) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, throwable.getLocalizedMessage(), throwable));
-	}
 
 	// ********** Image API **********
 	/**

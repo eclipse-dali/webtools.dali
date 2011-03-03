@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,13 +9,14 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal;
 
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.jpa.db.Sequence;
 
 /**
  *  Wrap a DTP Sequence
  */
 final class DTPSequenceWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPDatabaseObjectWrapper<DTPSchemaWrapper>
 	implements Sequence
 {
 	/** the wrapped DTP sequence */
@@ -25,12 +26,17 @@ final class DTPSequenceWrapper
 	// ********** constructor **********
 
 	DTPSequenceWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.schema.Sequence dtpSequence) {
-		super(schema, dtpSequence);
+		super(schema);
 		this.dtpSequence = dtpSequence;
 	}
 
 
-	// ********** DTPWrapper implementation **********
+	// ********** DTPDatabaseObjectWrapper implementation **********
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpSequence;
+	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -46,7 +52,7 @@ final class DTPSequenceWrapper
 	}
 
 	public DTPSchemaWrapper getSchema() {
-		return (DTPSchemaWrapper) this.getParent();
+		return this.parent;
 	}
 
 

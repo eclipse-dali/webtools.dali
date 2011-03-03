@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal;
 
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.dbdefinition.PredefinedDataTypeDefinition;
 import org.eclipse.datatools.modelbase.sql.datatypes.CharacterStringDataType;
 import org.eclipse.datatools.modelbase.sql.datatypes.DataType;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Column;
  *  Wrap a DTP Column
  */
 final class DTPColumnWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPDatabaseObjectWrapper<DTPTableWrapper>
 	implements Column
 {
 	/** the wrapped DTP column */
@@ -35,12 +36,17 @@ final class DTPColumnWrapper
 	// ********** constructor **********
 
 	DTPColumnWrapper(DTPTableWrapper table, org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
-		super(table, dtpColumn);
+		super(table);
 		this.dtpColumn = dtpColumn;
 	}
 
 
-	// ********** DTPWrapper implementation **********
+	// ********** DTPDatabaseObjectWrapper implementation **********
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpColumn;
+	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -56,7 +62,7 @@ final class DTPColumnWrapper
 	}
 
 	public DTPTableWrapper getTable() {
-		return (DTPTableWrapper) this.getParent();
+		return this.parent;
 	}
 
 	public boolean isPartOfPrimaryKey() {

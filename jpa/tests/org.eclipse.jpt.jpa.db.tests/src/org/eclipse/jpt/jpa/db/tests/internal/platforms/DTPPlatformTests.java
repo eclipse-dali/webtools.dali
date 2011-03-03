@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -16,22 +16,22 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
-
 import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.datatools.connectivity.ConnectionProfileException;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
-import org.eclipse.datatools.connectivity.IManagedConnection;
 import org.eclipse.datatools.connectivity.ProfileManager;
 import org.eclipse.datatools.connectivity.drivers.IDriverMgmtConstants;
 import org.eclipse.datatools.connectivity.drivers.IPropertySet;
@@ -39,9 +39,9 @@ import org.eclipse.datatools.connectivity.drivers.PropertySetImpl;
 import org.eclipse.datatools.connectivity.drivers.XMLFileManager;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.internal.ConnectivityPlugin;
-import org.eclipse.datatools.connectivity.sqm.core.connection.ConnectionInfo;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.common.utility.IndentingPrintWriter;
+import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.ReflectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.iterators.ResultSetIterator;
@@ -59,7 +59,6 @@ import org.eclipse.jpt.jpa.db.Schema;
 import org.eclipse.jpt.jpa.db.SchemaContainer;
 import org.eclipse.jpt.jpa.db.Sequence;
 import org.eclipse.jpt.jpa.db.Table;
-import org.eclipse.jpt.jpa.db.ForeignKey.ColumnPair;
 import org.eclipse.jpt.jpa.db.tests.internal.JptJpaDbTestsPlugin;
 
 /**
@@ -618,10 +617,6 @@ public abstract class DTPPlatformTests extends TestCase {
 		return (IConnectionProfile) ReflectionTools.getFieldValue(cp, "dtpConnectionProfile");
 	}
 
-	protected IManagedConnection getDTPManagedConnection() {
-		return (IManagedConnection) ReflectionTools.getFieldValue(this.connectionProfile, "dtpManagedConnection");
-	}
-
 	protected org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
 		return getDTPDatabase(this.connectionProfile.getDatabase());
 	}
@@ -681,7 +676,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected void dump(String sql) throws SQLException {
-		this.dump(sql, 20);
+		this.dump(sql, 30);
 	}
 
 	protected void dump(String sql, int columnWidth) throws SQLException {
@@ -695,47 +690,54 @@ public abstract class DTPPlatformTests extends TestCase {
 
 	protected void dumpOn(String sql, IndentingPrintWriter pw, int columnWidth) throws SQLException {
 		pw.println(sql);
-		for (ArrayList<Object> row : this.execute(sql)) {
-			for (Object columnValue : row) {
-				StringTools.padOrTruncateOn(String.valueOf(columnValue), columnWidth, pw);
+		for (HashMap<String, Object> row : this.execute(sql)) {
+			for (Map.Entry<String, Object> field : row.entrySet()) {
+				StringTools.padOrTruncateOn(String.valueOf(field.getKey()), columnWidth/2, pw);
+				pw.print('=');
+				StringTools.padOrTruncateOn(String.valueOf(field.getValue()), columnWidth/2, pw);
 				pw.print(' ');
 			}
 			pw.println();
 		}
 	}
 
-	protected ArrayList<ArrayList<Object>> execute(String sql) throws SQLException {
+	protected ArrayList<HashMap<String, Object>> execute(String sql) throws SQLException {
 		Statement jdbcStatement = this.createJDBCStatement();
 		jdbcStatement.execute(sql);
-		ArrayList<ArrayList<Object>> rows = this.buildRows(jdbcStatement.getResultSet());
+		ArrayList<HashMap<String, Object>> rows = this.buildRows(jdbcStatement.getResultSet());
 		jdbcStatement.close();
 		return rows;
 	}
 
-	protected ArrayList<ArrayList<Object>> buildRows(ResultSet resultSet) throws SQLException {
-		ArrayList<ArrayList<Object>> rows = new ArrayList<ArrayList<Object>>();
-		for (Iterator<ArrayList<Object>> stream = this.buildArrayIterator(resultSet); stream.hasNext(); ) {
-			rows.add(stream.next());
-		}
+	protected ArrayList<HashMap<String, Object>> buildRows(ResultSet resultSet) throws SQLException {
+		ArrayList<HashMap<String, Object>> rows = new ArrayList<HashMap<String, Object>>();
+		CollectionTools.addAll(rows, this.buildResultSetIterator(resultSet));
 		return rows;
 	}
 
-	protected Iterator<ArrayList<Object>> buildArrayIterator(ResultSet resultSet) throws SQLException {
-		return new ResultSetIterator<ArrayList<Object>>(resultSet, new ListResultSetIteratorAdapter(resultSet.getMetaData().getColumnCount()));
+	protected Iterator<HashMap<String, Object>> buildResultSetIterator(ResultSet resultSet) throws SQLException {
+		return new ResultSetIterator<HashMap<String, Object>>(resultSet, new MapResultSetIteratorAdapter(resultSet.getMetaData()));
 	}
 
-	public static class ListResultSetIteratorAdapter implements ResultSetIterator.Adapter<ArrayList<Object>> {
+	public static class MapResultSetIteratorAdapter
+		implements ResultSetIterator.Adapter<HashMap<String, Object>>
+	{
 		private final int columnCount;
-		public ListResultSetIteratorAdapter(int columnCount) {
+		private final String[] columnNames;
+		public MapResultSetIteratorAdapter(ResultSetMetaData rsMetaData) throws SQLException {
 			super();
-			this.columnCount = columnCount;
-		}
-		public ArrayList<Object> buildNext(ResultSet rs) throws SQLException {
-			ArrayList<Object> list = new ArrayList<Object>(this.columnCount);
+			this.columnCount = rsMetaData.getColumnCount();
+			this.columnNames = new String[this.columnCount + 1];  // leave zero slot empty
 			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
-				list.add(rs.getObject(i));
+				this.columnNames[i] = rsMetaData.getColumnName(i);
 			}
-			return list;
+		}
+		public HashMap<String, Object> buildNext(ResultSet rs) throws SQLException {
+			HashMap<String, Object> row = new HashMap<String, Object>(this.columnCount);
+			for (int i = 1; i <= this.columnCount; i++) {  // NB: ResultSet index/subscript is 1-based
+				row.put(this.columnNames[i], rs.getObject(i));
+			}
+			return row;
 		}
 	}
 
@@ -744,7 +746,7 @@ public abstract class DTPPlatformTests extends TestCase {
 	}
 
 	protected Connection getJDBCConnection() {
-		return ((ConnectionInfo) this.getDTPManagedConnection().getConnection().getRawConnection()).getSharedConnection();
+		return this.connectionProfile.getJDBCConnection();
 	}
 
 	protected DatabaseMetaData getDatabaseMetaData() throws SQLException {
@@ -862,8 +864,8 @@ public abstract class DTPPlatformTests extends TestCase {
 		pw.print("=>");
 		pw.print(foreignKey.getReferencedTable().getName());
 		pw.print(" (");
-		for (Iterator<ColumnPair> stream = foreignKey.getColumnPairs().iterator(); stream.hasNext(); ) {
-			ColumnPair cp = stream.next();
+		for (Iterator<ForeignKey.ColumnPair> stream = foreignKey.getColumnPairs().iterator(); stream.hasNext(); ) {
+			ForeignKey.ColumnPair cp = stream.next();
 			pw.print(cp.getBaseColumn().getName());
 			pw.print("=>");
 			pw.print(cp.getReferencedColumn().getName());
@@ -895,9 +897,10 @@ public abstract class DTPPlatformTests extends TestCase {
 	protected void dumpJDBCCatalogsOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC catalogs: ");
 		pw.indent();
-			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getDatabaseMetaData().getCatalogs());
-			for (Iterator<ArrayList<Object>> stream = rows.iterator(); stream.hasNext(); ) {
-				pw.println(stream.next().get(0));
+			ArrayList<HashMap<String, Object>> rows = this.buildRows(this.getDatabaseMetaData().getCatalogs());
+			for (Iterator<HashMap<String, Object>> stream = rows.iterator(); stream.hasNext(); ) {
+				HashMap<String, Object> row = stream.next();
+				pw.println(row.get("TABLE_CAT"));
 			}
 		pw.undent();
 	}
@@ -914,14 +917,14 @@ public abstract class DTPPlatformTests extends TestCase {
 	protected void dumpJDBCSchemataOn(IndentingPrintWriter pw) throws SQLException {
 		pw.println("JDBC schemata: ");
 		pw.indent();
-			ArrayList<ArrayList<Object>> rows = this.buildRows(this.getDatabaseMetaData().getSchemas());
-			for (ArrayList<Object> row : rows) {
+			ArrayList<HashMap<String, Object>> rows = this.buildRows(this.getDatabaseMetaData().getSchemas());
+			for (HashMap<String, Object> row : rows) {
 				if (row.size() == 2) {  // catalogs were added in jdk 1.4
-					Object catalog = row.get(1);
+					Object catalog = row.get("TABLE_CATALOG");
 					pw.print(catalog);
 					pw.print('.');
 				}
-				Object schema = row.get(0);
+				Object schema = row.get("TABLE_SCHEM");
 				pw.println(schema);
 			}
 		pw.undent();

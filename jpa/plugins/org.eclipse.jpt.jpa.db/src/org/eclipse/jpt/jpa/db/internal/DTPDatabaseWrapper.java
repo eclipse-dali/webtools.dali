@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -13,6 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
@@ -21,14 +22,15 @@ import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.jpa.db.Catalog;
 import org.eclipse.jpt.jpa.db.Database;
 import org.eclipse.jpt.jpa.db.DatabaseObject;
-import org.eclipse.jpt.jpa.db.internal.vendor.Vendor;
-import org.eclipse.jpt.jpa.db.internal.vendor.VendorRepository;
+import org.eclipse.jpt.jpa.db.Table;
+import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapter;
+import org.eclipse.jpt.jpa.db.internal.driver.DTPDriverAdapterManager;
 
 /**
  * Wrap a DTP Database.
  * <p>
  * Catalogs vs. Schemata:<br>
- * Typically, if a DTP database does not support "catalogs",
+ * Typically, if a DTP database does not support <em>catalogs</em>,
  * o.e.datatools.modelbase.sql.schema.Database#getCatalogs() will return a
  * single catalog without a name (actually, it's an empty string). This catalog
  * will contain all the database's schemata. We try to ignore this catalog and
@@ -36,34 +38,34 @@ import org.eclipse.jpt.jpa.db.internal.vendor.VendorRepository;
  * <p>
  * Catalog Note 1:<br>
  * As of Jan 2009, the DTP MySQL driver is not consistent with this pattern.
- * A DTP MySQL database has *no* catalogs; it holds a single schema
+ * A DTP MySQL database has <em>no</em> catalogs; it holds a single schema
  * directly, and that schema has the same name as the database. See bug 249013.
  * <p>
  * Catalog Note 2:<br>
  * As of Jan 2009, the PostgreSQL JDBC driver complicates this pattern a bit.
- * Even though PostgreSQL does not support "catalogs", its JDBC driver
+ * Even though PostgreSQL does not support <em>catalogs</em>, its JDBC driver
  * returns a single catalog that has the same name as the database specified
  * in the JDBC connection URL. The DTP PostgreSQL driver simply replicates this
  * behavior. Unfortunately, this catalog can be unnamed; i.e. its name is an
  * empty string....
  * <p>
  * (Yet Another) Note:<br>
- * We use "name" when dealing with the unmodified name of a database object
+ * We use <em>name</em> when dealing with the unmodified name of a database object
  * as supplied by the database itself (i.e. it is not delimited and it is always
  * case-sensitive).
- * We use "identifier" when dealing with a string representation of a database
+ * We use <em>identifier</em> when dealing with a string representation of a database
  * object name (i.e. it may be delimited and, depending on the vendor, it may
  * be case-insensitive).
  */
 final class DTPDatabaseWrapper
-	extends DTPSchemaContainerWrapper
+	extends DTPSchemaContainerWrapper<DTPConnectionProfileWrapper>
 	implements Database
 {
 	/** the wrapped DTP database */
 	private final org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase;
 
-	/** vendor-specific behavior */
-	private final Vendor vendor;
+	/** database-specific behavior */
+	private final DTPDriverAdapter dtpDriverAdapter;
 
 	/** lazy-initialized, sorted */
 	private DTPCatalogWrapper[] catalogs;
@@ -72,13 +74,18 @@ final class DTPDatabaseWrapper
 	// ********** constructor **********
 
 	DTPDatabaseWrapper(DTPConnectionProfileWrapper connectionProfile, org.eclipse.datatools.modelbase.sql.schema.Database dtpDatabase) {
-		super(connectionProfile, dtpDatabase);
+		super(connectionProfile);
 		this.dtpDatabase = dtpDatabase;
-		this.vendor = VendorRepository.instance().getVendor(this.getVendorName());
+		this.dtpDriverAdapter = DTPDriverAdapterManager.instance().buildAdapter(this.getVendorName(), this);
 	}
 
 
-	// ********** DTPWrapper implementation **********
+	// ********** DTPDatabaseObjectWrapper implementation **********
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpDatabase;
+	}
 
 	/* TODO
 	 * We might want to listen to the "virtual" catalog; but that's probably
@@ -100,8 +107,8 @@ final class DTPDatabaseWrapper
 	// ********** DTPSchemaContainerWrapper implementation **********
 
 	@Override
-	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemata() {
-		return this.vendor.getSchemas(this.dtpDatabase);
+	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemas() {
+		return this.dtpDriverAdapter.getDTPSchemas();
 	}
 
 	@Override
@@ -109,13 +116,17 @@ final class DTPDatabaseWrapper
 		return this.getSchema_(dtpSchema);
 	}
 
+	/**
+	 * This is only called from a catalog, so we know we have catalogs;
+	 * i.e. the search has to descend through catalogs, then to schemata.
+	 */
 	DTPSchemaWrapper getSchemaFromCatalogs(org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
 		return this.getCatalog(dtpSchema.getCatalog()).getSchema_(dtpSchema);
 	}
 
 	/**
-	 * this is only called from a schema when the database is the schema
-	 * container, so we know we don't have any catalogs
+	 * This is only called from a schema when the database is the schema
+	 * container, so we know we don't have any catalogs.
 	 */
 	@Override
 	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
@@ -123,16 +134,16 @@ final class DTPDatabaseWrapper
 	}
 
 	/**
-	 * this is only called from a catalog, so we know we have catalogs;
-	 * i.e. the search has to descend through catalogs, then to schemata
+	 * This is only called from a catalog, so we know we have catalogs;
+	 * i.e. the search has to descend through catalogs, then to schemata.
 	 */
 	DTPTableWrapper getTableFromCatalogs(org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
 		return this.getCatalog(dtpTable.getSchema().getCatalog()).getTable_(dtpTable);
 	}
 
 	/**
-	 * this is only called from a schema when the database is the schema
-	 * container, so we know we don't have any catalogs
+	 * This is only called from a schema when the database is the schema
+	 * container, so we know we don't have any catalogs.
 	 */
 	@Override
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
@@ -140,41 +151,18 @@ final class DTPDatabaseWrapper
 	}
 
 	/**
-	 * this is only called from a catalog, so we know we have catalogs;
-	 * i.e. the search has to descend through catalogs, then to schemata
+	 * This is only called from a catalog, so we know we have catalogs;
+	 * i.e. the search has to descend through catalogs, then to schemata.
 	 */
 	DTPColumnWrapper getColumnFromCatalogs(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		return this.getCatalog(dtpColumn.getTable().getSchema().getCatalog()).getColumn_(dtpColumn);
 	}
 
 
-	// ********** DatabaseObject implementation **********
-
-	public String getName() {
-		return this.dtpDatabase.getName();
-	}
-
-
-	// ********** Database implementation **********
-
-	public String getVendorName() {
-		return this.dtpDatabase.getVendor();
-	}
-
-	public String getVersion() {
-		return this.dtpDatabase.getVersion();
-	}
-
-	// override to make method public since it's in the Database interface
-	@Override
-	public <T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier) {
-		return super.selectDatabaseObjectForIdentifier(databaseObjects, identifier);
-	}
-
-	// ***** catalogs
+	// ********** catalogs **********
 
 	public boolean supportsCatalogs() {
-		return this.vendor.supportsCatalogs(this.dtpDatabase);
+		return this.dtpDriverAdapter.supportsCatalogs();
 	}
 
 	public Iterable<Catalog> getCatalogs() {
@@ -202,7 +190,7 @@ final class DTPDatabaseWrapper
 	}
 
 	private List<org.eclipse.datatools.modelbase.sql.schema.Catalog> getDTPCatalogs() {
-		return this.vendor.getCatalogs(this.dtpDatabase);
+		return this.dtpDriverAdapter.getDTPCatalogs();
 	}
 
 	public int getCatalogsSize() {
@@ -210,7 +198,7 @@ final class DTPDatabaseWrapper
 	}
 
 	/**
-	 * return the catalog for the specified DTP catalog
+	 * Return the catalog for the specified DTP catalog.
 	 */
 	DTPCatalogWrapper getCatalog(org.eclipse.datatools.modelbase.sql.schema.Catalog dtpCatalog) {
 		for (DTPCatalogWrapper catalog : this.getCatalogArray()) {
@@ -235,8 +223,8 @@ final class DTPDatabaseWrapper
 		return new TransformationIterable<DatabaseObject, String>(this.getCatalogWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
-	public DTPCatalogWrapper getCatalogForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getCatalogWrappers(), identifier);
+	public Catalog getCatalogForIdentifier(String identifier) {
+		return this.dtpDriverAdapter.selectCatalogForIdentifier(this.getCatalogs(), identifier);
 	}
 
 	public synchronized DTPCatalogWrapper getDefaultCatalog() {
@@ -244,7 +232,7 @@ final class DTPDatabaseWrapper
 	}
 
 	private Iterable<String> getDefaultCatalogNames() {
-		return this.vendor.getDefaultCatalogNames(this.dtpDatabase, this.getConnectionProfile().getUserName());
+		return this.dtpDriverAdapter.getDefaultCatalogNames();
 	}
 
 	/**
@@ -276,12 +264,6 @@ final class DTPDatabaseWrapper
 		return stream.hasNext() ? this.convertNameToIdentifier(CollectionTools.last(stream)) : null;
 	}
 
-	// ***** schemata
-
-	Iterable<String> getDefaultSchemaNames() {
-		return this.vendor.getDefaultSchemaNames(this.dtpDatabase, this.getConnectionProfile().getUserName());
-	}
-
 
 	// ********** names vs. identifiers **********
 
@@ -291,37 +273,33 @@ final class DTPDatabaseWrapper
 		return super.convertNameToIdentifier(name);
 	}
 
-	/**
-	 * Delegate to the vendor.
-	 */
-	String convertNameToIdentifier_(String name) {
-		return this.vendor.convertNameToIdentifier(name);
+
+	// ********** misc **********
+
+	public org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase() {
+		return this.dtpDatabase;
 	}
 
-	/**
-	 * Delegate to the vendor.
-	 */
-	String convertIdentifierToName_(String identifier) {
-		return this.vendor.convertIdentifierToName(identifier);
+	public String getName() {
+		return this.dtpDatabase.getName();
 	}
 
-	/**
-	 * Convert the specified name to an identifier. Return null if the resulting
-	 * identifier matches the specified default name.
-	 * <p>
-	 * This is used by the old entity generation code to determine whether
-	 * a generated annotation must explicitly identify a database object
-	 * (e.g. a table) or the specified default adequately identifies the
-	 * specified database object (taking into consideration case-sensitivity
-	 * and special characters).
-	 */
-	// TODO add to database identifier adapter? currently not used...
-	String convertNameToIdentifier(String name, String defaultName) {
-		return this.vendor.convertNameToIdentifier(name, defaultName);
+	public String getVendorName() {
+		return this.dtpDatabase.getVendor();
 	}
 
+	public String getVersion() {
+		return this.dtpDatabase.getVersion();
+	}
 
-	// ********** internal methods **********
+	@Override
+	DTPDriverAdapter getDTPDriverAdapter() {
+		return this.dtpDriverAdapter;
+	}
+
+	public Table selectTableForIdentifier(Iterable<Table> tables, String identifier) {
+		return this.dtpDriverAdapter.selectTableForIdentifier(tables, identifier);
+	}
 
 	DatabaseDefinition getDTPDefinition() {
 		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
@@ -376,5 +354,4 @@ final class DTPDatabaseWrapper
 		}
 		this.catalogs = null;
 	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.db.internal;
 import java.util.Arrays;
 import java.util.List;
 
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jpa.db.ForeignKey;
  *  Wrap a DTP ForeignKey
  */
 final class DTPForeignKeyWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPDatabaseObjectWrapper<DTPTableWrapper>
 	implements ForeignKey
 {
 	/** the wrapped DTP foreign key */
@@ -45,12 +46,17 @@ final class DTPForeignKeyWrapper
 	// ********** constructor **********
 
 	DTPForeignKeyWrapper(DTPTableWrapper baseTable, org.eclipse.datatools.modelbase.sql.constraints.ForeignKey dtpForeignKey) {
-		super(baseTable, dtpForeignKey);
+		super(baseTable);
 		this.dtpForeignKey = dtpForeignKey;
 	}
 
 
-	// ********** DTPWrapper implementation **********
+	// ********** DTPDatabaseObjectWrapper implementation **********
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpForeignKey;
+	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -71,7 +77,7 @@ final class DTPForeignKeyWrapper
 	}
 
 	public DTPTableWrapper getBaseTable() {
-		return (DTPTableWrapper) this.getParent();
+		return this.parent;
 	}
 
 	public synchronized DTPTableWrapper getReferencedTable() {
@@ -277,7 +283,7 @@ final class DTPForeignKeyWrapper
 	public String getJoinColumnAnnotationIdentifier(String attributeName) {
 		String baseColumnName = this.getColumnPair().getBaseColumn().getName();
 		String defaultBaseColumnName = attributeName + '_' + this.getReferencedTable().getPrimaryKeyColumn().getName();
-		return this.getDatabase().convertNameToIdentifier(baseColumnName, defaultBaseColumnName);
+		return this.getDTPDriverAdapter().convertNameToIdentifier(baseColumnName, defaultBaseColumnName);
 	}
 
 

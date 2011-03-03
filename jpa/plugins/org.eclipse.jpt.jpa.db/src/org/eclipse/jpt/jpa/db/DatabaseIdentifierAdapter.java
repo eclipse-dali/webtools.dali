@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,9 +10,9 @@
 package org.eclipse.jpt.jpa.db;
 
 /**
- * This interface allows clients of the Dali db package to plug in a custom
- * strategy for converting a database identifier to a database name and vice
- * versa.
+ * This interface allows clients of the Dali db package to control whether
+ * database identifiers are to be treated as though they are delimited, which,
+ * most significantly, usually means the identifiers are case-sensitive.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -23,35 +23,15 @@ package org.eclipse.jpt.jpa.db;
 public interface DatabaseIdentifierAdapter {
 
 	/**
-	 * Convert the specified "identifier" to a "name".
+	 * Return whether identifiers are to be treated as though they were
+	 * delimited.
 	 */
-	String convertIdentifierToName(String identifier, DefaultCallback defaultCallback);
+	boolean treatIdentifiersAsDelimited();
+
 
 	/**
-	 * Convert the specified "name" to an "identifier".
-	 */
-	String convertNameToIdentifier(String name, DefaultCallback defaultCallback);
-
-	/**
-	 * The client-provided finder is passed a "default" callback that can be
-	 * used if appropriate.
-	 */
-	interface DefaultCallback {
-
-		/**
-		 * Convert the specified "identifier" to a "name".
-		 */
-		String convertIdentifierToName(String identifier);
-
-		/**
-		 * Convert the specified "name" to an "identifier".
-		 */
-		String convertNameToIdentifier(String name);
-
-	}
-
-	/**
-	 * This adapter simply uses the passed in default callback.
+	 * This adapter simply returns <code>false</code>, which is compatible
+	 * with JPA 1.0.
 	 */
 	final class Default implements DatabaseIdentifierAdapter {
 		public static final DatabaseIdentifierAdapter INSTANCE = new Default();
@@ -62,18 +42,12 @@ public interface DatabaseIdentifierAdapter {
 		private Default() {
 			super();
 		}
-		// simply use the default callback
-		public String convertIdentifierToName(String identifier, DefaultCallback defaultCallback) {
-			return defaultCallback.convertIdentifierToName(identifier);
-		}
-		// simply use the default callback
-		public String convertNameToIdentifier(String name, DefaultCallback defaultCallback) {
-			return defaultCallback.convertNameToIdentifier(name);
+		public boolean treatIdentifiersAsDelimited() {
+			return false;  // JPA 1.0
 		}
 		@Override
 		public String toString() {
-			return "DatabaseIdentifierAdapter.Default"; //$NON-NLS-1$
+			return this.getClass().getDeclaringClass().getSimpleName() + '.' + this.getClass().getSimpleName();
 		}
 	}
-
 }

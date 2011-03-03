@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,9 @@ package org.eclipse.jpt.jpa.db;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class ConnectionAdapter implements ConnectionListener {
-
+public class ConnectionAdapter
+	implements ConnectionListener
+{
 	public void aboutToClose(ConnectionProfile profile) {
 		// do nothing
 	}
@@ -67,5 +68,4 @@ public class ConnectionAdapter implements ConnectionListener {
 	public void foreignKeyChanged(ConnectionProfile profile, ForeignKey foreignKey) {
 		// do nothing
 	}
-
 }

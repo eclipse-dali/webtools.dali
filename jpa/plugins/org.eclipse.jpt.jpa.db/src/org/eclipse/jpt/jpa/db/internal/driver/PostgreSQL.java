@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2009 Oracle. All rights reserved.
+ * Copyright (c) 2009, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -7,53 +7,34 @@
  * Contributors:
  *     Oracle - initial API and implementation
  ******************************************************************************/
-package org.eclipse.jpt.jpa.db.internal.vendor;
+package org.eclipse.jpt.jpa.db.internal.driver;
 
 import java.util.ArrayList;
-
 import org.eclipse.datatools.modelbase.sql.schema.Catalog;
-import org.eclipse.datatools.modelbase.sql.schema.Database;
+import org.eclipse.jpt.jpa.db.Database;
 
 class PostgreSQL
-	extends AbstractVendor
+	extends AbstractDTPDriverAdapter
 {
-	// singleton
-	private static final Vendor INSTANCE = new PostgreSQL();
-
-	/**
-	 * Return the singleton.
-	 */
-	static Vendor instance() {
-		return INSTANCE;
-	}
-
-	/**
-	 * Ensure single instance.
-	 */
-	private PostgreSQL() {
-		super();
-	}
-
-	@Override
-	public String getDTPVendorName() {
-		return "postgres"; //$NON-NLS-1$
+	PostgreSQL(Database database) {
+		super(database);
 	}
 
 	/**
 	 * The PostgreSQL JDBC driver returns a single catalog from the call to
-	 * DatabaseMetaData.getCatalogs() that has the same name as the
+	 * {@link java.sql.DatabaseMetaData#getCatalogs()} that has the same name as the
 	 * database initially specified by the connection (in the JDBC URL).
 	 * DTP uses this configuration unmodified. Unfortunately, the DTP
 	 * database's name is not the same as the PostgreSQL database's
 	 * name.
 	 */
 	@Override
-	CatalogStrategy getCatalogStrategy() {
-		return SimpleCatalogStrategy.instance();
+	CatalogStrategy buildCatalogStrategy() {
+		return new SimpleCatalogStrategy(this.database.getDTPDatabase());
 	}
 
 	@Override
-	FoldingStrategy getFoldingStrategy() {
+	FoldingStrategy buildFoldingStrategy() {
 		return LowerCaseFoldingStrategy.instance();
 	}
 
@@ -62,22 +43,24 @@ class PostgreSQL
 	 * the database.
 	 */
 	@Override
-	void addDefaultCatalogNamesTo(Database database, String userName, ArrayList<String> names) {
-		names.add(this.buildDefaultCatalogName(database));
+	void addDefaultCatalogNamesTo(ArrayList<String> names) {
+		names.add(this.buildDefaultCatalogName());
 	}
 
-	private String buildDefaultCatalogName(Database database) {
-		return ((Catalog) database.getCatalogs().get(0)).getName();
+	private String buildDefaultCatalogName() {
+		return ((Catalog) this.database.getDTPDatabase().getCatalogs().get(0)).getName();
 	}
 
 	/**
-	 * PostgreSQL has a "schema search path". The default is:
+	 * PostgreSQL has a "schema search path". The default is:<br><code>
 	 *     "$user",public
-	 * If the "$user" schema is not found, use the "public" schema.
+	 * </code><br>
+	 * If the <code>"$user"</code> schema is not found, use the
+	 * <code>"public"</code> schema.
 	 */
 	@Override
-	void addDefaultSchemaNamesTo(Database database, String userName, ArrayList<String> names) {
-		super.addDefaultSchemaNamesTo(database, userName, names);
+	void addDefaultSchemaNamesTo(ArrayList<String> names) {
+		super.addDefaultSchemaNamesTo(names);
 		names.add(PUBLIC_SCHEMA_NAME);
 	}
 	private static final String PUBLIC_SCHEMA_NAME = "public";  //$NON-NLS-1$
@@ -94,4 +77,18 @@ class PostgreSQL
 	}
 	private static final char[] EXTENDED_REGULAR_NAME_PART_CHARACTERS = new char[] { '$' };
 
+
+	// ********** factory **********
+
+	static class Factory implements DTPDriverAdapterFactory {
+		private static final String[] VENDORS = {
+				"postgres" //$NON-NLS-1$
+			};
+		public String[] getSupportedVendors() {
+			return VENDORS;
+		}
+		public DTPDriverAdapter buildAdapter(Database database) {
+			return new PostgreSQL(database);
+		}
+	}
 }

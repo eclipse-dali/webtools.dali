@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -20,8 +20,9 @@ import org.eclipse.jpt.common.utility.JavaType;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Column extends DatabaseObject {
-
+public interface Column
+	extends DatabaseObject
+{
 	/**
 	 * Return the column's table.
 	 */
@@ -116,5 +117,4 @@ public interface Column extends DatabaseObject {
 	 * primary key field.
 	 */
 	JavaType getPrimaryKeyJavaType();
-
 }

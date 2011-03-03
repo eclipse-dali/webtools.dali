@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -10,13 +10,11 @@
 package org.eclipse.jpt.jpa.db;
 
 import java.util.Comparator;
-
 import org.eclipse.jpt.common.utility.internal.Transformer;
-
 import com.ibm.icu.text.Collator;
 
 /**
- * Common behavior to all database objects
+ * Behavior common to all database objects.
  * <p>
  * Provisional API: This interface is part of an interim API that is still
  * under development and expected to change significantly before reaching
@@ -32,27 +30,28 @@ public interface DatabaseObject {
 	String getName();
 
 	/**
-	 * Return the database object's "identifier", which is the object's name
-	 * modified so it can be used in an SQL statement (e.g. if the name contains
-	 * special characters or is mixed case, it will be delimited, typically by
-	 * double-quotes).
-	 * Return null if the database object's identifier matches the specified
-	 * "default name".
-	 * <p>
-	 * This is used by the old entity generation code to determine whether
-	 * a generated annotation must explicitly identify a database object
-	 * (e.g. a table) or the specified default adequately identifies the database object
-	 * (taking into consideration case-sensitivity and special characters).
-	 */
-	String getIdentifier(String defaultName);
-
-	/**
-	 * Return the database object's "identifier", which is the object's name
+	 * Return the database object's <em>identifier</em>, which is the object's name
 	 * modified so it can be used in an SQL statement (e.g. if the name contains
 	 * special characters or is mixed case, it will be delimited, typically by
 	 * double-quotes).
 	 */
 	String getIdentifier();
+
+	/**
+	 * Return the database object's <em>identifier</em>, which is the object's name
+	 * modified so it can be used in an SQL statement (e.g. if the name contains
+	 * special characters or is mixed case, it will be delimited, typically by
+	 * double-quotes).
+	 * Return <code>null</code> if the database object's identifier matches the
+	 * specified default name.
+	 * <p>
+	 * This is used by the Dali entity generation code to determine whether
+	 * a generated annotation must explicitly identify a database object
+	 * (e.g. a table) or the default (as specified here) adequately identifies
+	 * the database object (taking into consideration case-sensitivity,
+	 * special characters, etc.).
+	 */
+	String getIdentifier(String defaultName);
 
 	/**
 	 * Return the database object's database.
@@ -65,6 +64,9 @@ public interface DatabaseObject {
 	ConnectionProfile getConnectionProfile();
 
 
+	/**
+	 * Sort by name.
+	 */
 	Comparator<DatabaseObject> DEFAULT_COMPARATOR =
 			new Comparator<DatabaseObject>() {
 				public int compare(DatabaseObject dbObject1, DatabaseObject dbObject2) {
@@ -72,7 +74,7 @@ public interface DatabaseObject {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseObject.DEFAULT_COMPARATOR"; //$NON-NLS-1$
+					return this.getClass().getEnclosingClass().getSimpleName() + ".DEFAULT_COMPARATOR"; //$NON-NLS-1$
 				}
 			};
 
@@ -83,7 +85,7 @@ public interface DatabaseObject {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseObject.NAME_TRANSFORMER"; //$NON-NLS-1$
+					return this.getClass().getEnclosingClass().getSimpleName() + ".NAME_TRANSFORMER"; //$NON-NLS-1$
 				}
 			};
 
@@ -94,8 +96,7 @@ public interface DatabaseObject {
 				}
 				@Override
 				public String toString() {
-					return "DatabaseObject.IDENTIFIER_TRANSFORMER"; //$NON-NLS-1$
+					return this.getClass().getEnclosingClass().getSimpleName() + ".IDENTIFIER_TRANSFORMER"; //$NON-NLS-1$
 				}
 			};
-
 }

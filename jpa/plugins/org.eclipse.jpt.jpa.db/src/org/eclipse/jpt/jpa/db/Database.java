@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -8,7 +8,6 @@
  *     Oracle - initial API and implementation
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
-
 
 /**
  * Database
@@ -19,7 +18,14 @@ package org.eclipse.jpt.jpa.db;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Database extends SchemaContainer {
+public interface Database
+	extends SchemaContainer
+{
+	/**
+	 * Return the database's DTP database.
+	 */
+	org.eclipse.datatools.modelbase.sql.schema.Database getDTPDatabase();
+
 
 	// ********** properties **********
 
@@ -54,7 +60,6 @@ public interface Database extends SchemaContainer {
 	 * This is complicated by the presence of a "default" catalog that clients can
 	 * use to allow the specification of a catalog to be optional; but clients
 	 * must manage this explicitly.
-	 * 
 	 * @see #getCatalogs()
 	 * @see #getSchemata()
 	 */
@@ -85,9 +90,9 @@ public interface Database extends SchemaContainer {
 	Iterable<String> getSortedCatalogNames();
 
 	/**
-	 * Return the catalog with specified name. The name must be an exact match
+	 * Return the catalog with the specified name. The name must be an exact match
 	 * of the catalog's name.
-	 * Return null if the database does not support catalogs.
+	 * Return <code>null</code> if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 * @see #getSortedCatalogNames()
 	 * @see #getCatalogForIdentifier(String)
@@ -108,7 +113,7 @@ public interface Database extends SchemaContainer {
 	 * Return the catalog for the specified identifier. The identifier should
 	 * be an SQL identifier (i.e. quoted when case-sensitive or containing
 	 * special characters, unquoted otherwise).
-	 * Return null if the database does not support catalogs.
+	 * Return <code>null</code> if the database does not support catalogs.
 	 * @see #supportsCatalogs()
 	 * @see #getSortedCatalogIdentifiers()
 	 * @see #getCatalogNamed(String)
@@ -116,18 +121,18 @@ public interface Database extends SchemaContainer {
 	Catalog getCatalogForIdentifier(String identifier);
 
 	/**
-	 * Return the database's "default" catalog, as defined by the database vendor.
+	 * Return the database's default catalog, as defined by the database vendor.
 	 * In most cases the default catalog's name will match the user name.
-	 * Return null if the database does not support catalogs or if the default
-	 * catalog does not exist (e.g. the database has no catalog whose name
-	 * matches the user name).
+	 * Return <code>null</code> if the database does not support catalogs or
+	 * if the default catalog does not exist (e.g. the database has no catalog
+	 * whose name matches the user name).
 	 * @see #supportsCatalogs()
 	 * @see #getDefaultCatalogIdentifier()
 	 */
 	Catalog getDefaultCatalog();
 
 	/**
-	 * Return the database's "default" catalog identifier.
+	 * Return the database's default catalog identifier.
 	 * The database may or may not have a catalog with a matching name.
 	 * @see #supportsCatalogs()
 	 * @see #getDefaultCatalog()
@@ -138,16 +143,18 @@ public interface Database extends SchemaContainer {
 	// ********** utility methods **********
 
 	/**
-	 * Select and return from the specified list of database objects the
-	 * database object identified by the specified identifier.
-	 * The identifier should be an SQL identifier (i.e. delimited when
-	 * non-"normal").
+	 * Select and return from the specified list of tables the
+	 * table identified by the specified identifier.
+	 * The identifier should be an SQL identifier (i.e. delimited as
+	 * appropriate).
 	 */
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifier(Iterable<T> databaseObjects, String identifier);
+	Table selectTableForIdentifier(Iterable<Table> tables, String identifier);
 
 	/**
-	 * Convert the specified name to a database-appropriate SQL identifier.
+	 * Convert the specified name to a database-appropriate SQL identifier
+	 * (i.e. delimit the name as appropriate).
 	 */
+	// it seems we don't need database object-specific conversions here;
+	// i.e. separate methods for tables, columns, etc.
 	String convertNameToIdentifier(String name);
-
 }

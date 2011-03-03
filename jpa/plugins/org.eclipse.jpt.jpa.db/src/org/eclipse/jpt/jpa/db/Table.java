@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,9 @@ package org.eclipse.jpt.jpa.db;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Table extends DatabaseObject {
-
+public interface Table
+	extends DatabaseObject
+{
 	/**
 	 * Return the table's schema.
 	 */
@@ -39,7 +40,7 @@ public interface Table extends DatabaseObject {
 	int getColumnsSize();
 
 	/**
-	 * Return the column with specified name. The name must be an exact match
+	 * Return the column with the specified name. The name must be an exact match
 	 * of the column's name.
 	 * @see #getColumnForIdentifier(String)
 	 */
@@ -96,31 +97,30 @@ public interface Table extends DatabaseObject {
 	// ********** join table support **********
 
 	/**
-	 * Return whether the table is possibly a "join" table
+	 * Return whether the table is possibly a <em>join</em> table
 	 * (i.e. it contains only 2 foreign keys). Whether the table <em>actually</em> is
-	 * a "join" table is determined by the semantics of the database design.
+	 * a <em>join</em> table is determined by the semantics of the database design.
 	 */
 	boolean isPossibleJoinTable();
 
 	/**
-	 * Assuming the table is a "join" table, return the foreign key to the
-	 * "owning" table.
+	 * Assuming the table is a <em>join</em> table, return the foreign key to the
+	 * <em>owning</em> table.
 	 * @see #isPossibleJoinTable()
 	 */
 	ForeignKey getJoinTableOwningForeignKey();
 
 	/**
-	 * Assuming the table is a "join" table, return the foreign key to the
-	 * "non-owning" table.
+	 * Assuming the table is a <em>join</em> table, return the foreign key to the
+	 * <em>non-owning</em> table.
 	 * @see #isPossibleJoinTable()
 	 */
 	ForeignKey getJoinTableNonOwningForeignKey();
 
 	/**
-	 * Assuming the table is a "join" table, return whether its name matches
+	 * Assuming the table is a <em>join</em> table, return whether its name matches
 	 * the JPA default (i.e. <code>"OWNINGTABLE_NONOWNINGTABLE"</code>).
 	 * @see #isPossibleJoinTable()
 	 */
 	boolean joinTableNameIsDefault();
-
 }

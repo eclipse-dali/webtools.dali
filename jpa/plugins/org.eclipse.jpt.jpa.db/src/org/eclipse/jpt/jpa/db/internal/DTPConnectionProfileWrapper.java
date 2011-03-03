@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.internal;
 
+import java.sql.Connection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.ConnectEvent;
 import org.eclipse.datatools.connectivity.IConnectionProfile;
@@ -26,7 +27,7 @@ import org.eclipse.jpt.jpa.db.ConnectionProfile;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
- *  Wrap a DTP ConnectionProfile
+ *  Wrap a DTP {@link IConnectionProfile}
  */
 final class DTPConnectionProfileWrapper
 	implements DTPDatabaseObject, ConnectionProfile
@@ -34,11 +35,8 @@ final class DTPConnectionProfileWrapper
 	/** the wrapped DTP connection profile */
 	private final IConnectionProfile dtpConnectionProfile;
 
-	/** adapter supplied by the client (determines identifier delimiters, etc.) */
+	/** adapter supplied by the client (determines identifier delimiters) */
 	private final DatabaseIdentifierAdapter identifierAdapter;
-
-	/** callback passed to the identifier adapter */
-	private final DatabaseIdentifierAdapter.DefaultCallback identifierAdapterCallback;
 
 	/** the DTP managed connection we listen to */
 	private final IManagedConnection dtpManagedConnection;
@@ -55,7 +53,7 @@ final class DTPConnectionProfileWrapper
 
 	// ********** constants **********
 
-	private static final String LIVE_DTP_CONNECTION_TYPE = "java.sql.Connection";  //$NON-NLS-1$
+	private static final String LIVE_DTP_CONNECTION_TYPE = java.sql.Connection.class.getName();
 
 	private static final String OFFLINE_DTP_CONNECTION_TYPE = ConnectionInfo.class.getName();
 
@@ -64,20 +62,23 @@ final class DTPConnectionProfileWrapper
 
 	// ********** constructor **********
 
-	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile, DatabaseIdentifierAdapter adapter) {
+	DTPConnectionProfileWrapper(IConnectionProfile dtpConnectionProfile, DatabaseIdentifierAdapter identifierAdapter) {
 		super();
 		this.dtpConnectionProfile = dtpConnectionProfile;
-		this.identifierAdapter = adapter;
-		this.identifierAdapterCallback = new IdentifierAdapterCallback();
+		this.identifierAdapter = identifierAdapter;
 		this.dtpManagedConnection = this.buildDTPManagedConnection();
 		this.connectionListener = new LocalConnectionListener();
 		// don't listen to the managed connection yet
 	}
 
 	private IManagedConnection buildDTPManagedConnection() {
-		String connectionType = this.dtpConnectionProfile.supportsWorkOfflineMode() ?
-				OFFLINE_DTP_CONNECTION_TYPE : LIVE_DTP_CONNECTION_TYPE;
-		return this.dtpConnectionProfile.getManagedConnection(connectionType);
+		return this.dtpConnectionProfile.getManagedConnection(this.getDTPConnectionType());
+	}
+
+	private String getDTPConnectionType() {
+		return this.dtpConnectionProfile.supportsWorkOfflineMode() ?
+				OFFLINE_DTP_CONNECTION_TYPE :
+				LIVE_DTP_CONNECTION_TYPE;
 	}
 
 
@@ -147,19 +148,16 @@ final class DTPConnectionProfileWrapper
 		return this.getProperty(IJDBCDriverDefinitionConstants.URL_PROP_ID);
 	}
 
-	/**
-	 * Returns the user name.
-	 * Allows user name composed by more than one word.
-	 * If the user name contains a keyword, it returns the first word only.
-	 */
 	public String getUserName() {
 		String userName = this.getProperty(IJDBCDriverDefinitionConstants.USERNAME_PROP_ID);
-		userName = userName.trim(); 
-		String[] names =  userName.split("\\s+");	//$NON-NLS-1$
-		if(names.length == 3) { // 208946 handle username like "sys as sysdba" on Oracle
-		    if(this.nameIsKeyword(names[1])) {
-		    	return names[0];
-		    }
+		return this.extractUserName(userName.trim());
+	}
+
+	private String extractUserName(String userName) {
+		String[] strings = userName.split("\\s+"); //$NON-NLS-1$
+		// bug 208946 handle username like "sys as sysdba" on Oracle
+		if ((strings.length == 3) && strings[1].equalsIgnoreCase("as")) { //$NON-NLS-1$
+	    	return strings[0];
 		}
 		return userName;
 	}
@@ -206,6 +204,10 @@ final class DTPConnectionProfileWrapper
 	
 	public void disconnect() {
 		this.checkStatus(this.dtpConnectionProfile.disconnect());
+	}
+
+	public Connection getJDBCConnection() {
+		return this.getConnectionInfo().getSharedConnection();
 	}
 
 	// ***** off-line support
@@ -286,22 +288,31 @@ final class DTPConnectionProfileWrapper
 	}
 
 	private DTPDatabaseWrapper buildDatabase() {
-		if (this.isInactive()) {
-			return null;
-		}
+		return this.isInactive() ? null : new DTPDatabaseWrapper(this, this.buildDTPDatabase());
+	}
 
-		if (this.isWorkingOffline()) {
-			ConnectionInfo connectionInfo = (ConnectionInfo) this.dtpManagedConnection.getConnection().getRawConnection();
-			return new DTPDatabaseWrapper(this, connectionInfo.getSharedDatabase());
-		}
+	private org.eclipse.datatools.modelbase.sql.schema.Database buildDTPDatabase() {
+		return this.isWorkingOffline() ?
+				this.buildOfflineDTPDatabase() :
+				this.buildLiveDTPDatabase();
+	}
 
+	private org.eclipse.datatools.modelbase.sql.schema.Database buildOfflineDTPDatabase() {
+		return this.getConnectionInfo().getSharedDatabase();
+	}
+
+	private ConnectionInfo getConnectionInfo() {
+		return (ConnectionInfo) this.dtpManagedConnection.getConnection().getRawConnection();
+	}
+
+	private org.eclipse.datatools.modelbase.sql.schema.Database buildLiveDTPDatabase() {
 		// TODO see DTP bug 202306
 		// pass connect=true in to ProfileUtil.getDatabase()
 		// there is a bug mentioned in a comment: 
 		//     "during the profile connected event notification, 
 		//     IManagedConnection is connected while IConnectionProfile is not"
 		// so, some hackery here to handle hackery there
-		return new DTPDatabaseWrapper(this, ProfileUtil.getDatabase(new DatabaseIdentifier(this.getName(), this.getDatabaseName()), true));
+		return ProfileUtil.getDatabase(new DatabaseIdentifier(this.getName(), this.getDatabaseName()), true);
 	}
 
 	synchronized void clearDatabase() {
@@ -313,44 +324,8 @@ final class DTPConnectionProfileWrapper
 		}
 	}
 
-	/**
-	 * This is called whenever we need to convert an identifier to a name
-	 * (e.g. {@link org.eclipse.jpt.jpa.db.Table#getColumnForIdentifier(String)}).
-	 * We channel all the calls to here and then we delegate to the
-	 * client-supplied "database identifier adapter".
-	 */
-	String convertIdentifierToName(String identifier) {
-		return this.identifierAdapter.convertIdentifierToName(identifier, this.identifierAdapterCallback);
-	}
-
-	/**
-	 * The default "database identifier adapter" calls back to here so we can delegate to
-	 * the database, which contains all the information necessary to properly
-	 * convert identifiers.
-	 */
-	String convertIdentifierToName_(String identifier) {
-		// the database should not be null here - call its internal method
-		return this.database.convertIdentifierToName_(identifier);
-	}
-
-	/**
-	 * This is called whenever we need to convert a name to an identifier
-	 * (e.g. {@link org.eclipse.jpt.jpa.db.Table#getColumnForIdentifier(String)}).
-	 * We channel all the calls to here and then we delegate to the
-	 * client-supplied "database identifier adapter".
-	 */
-	String convertNameToIdentifier(String name) {
-		return this.identifierAdapter.convertNameToIdentifier(name, this.identifierAdapterCallback);
-	}
-
-	/**
-	 * The default "database identifier adapter" calls back to here so we can delegate to
-	 * the database, which contains all the information necessary to properly
-	 * convert names.
-	 */
-	String convertNameToIdentifier_(String name) {
-		// the database should not be null here - call its internal method
-		return this.database.convertNameToIdentifier_(name);
+	public boolean treatIdentifiersAsDelimited() {
+		return this.identifierAdapter.treatIdentifiersAsDelimited();
 	}
 
 	void databaseChanged(DTPDatabaseWrapper db) {
@@ -385,10 +360,6 @@ final class DTPConnectionProfileWrapper
 		return this.dtpConnectionProfile.getBaseProperties().getProperty(propertyName);
 	}
 
-	private boolean nameIsKeyword(String name) {
-		return name.equalsIgnoreCase("as");  //$NON-NLS-1$
-	}
-
 
 	// ********** overrides **********
 
@@ -401,10 +372,16 @@ final class DTPConnectionProfileWrapper
 	// ********** DTP connection listener **********
 
 	/**
-	 * This listener translates and forwards {@link org.eclipse.datatools.connectivity.IManagedConnectionListener} and
-	 * {@link IManagedConnectionOfflineListener} events to {@link ConnectionListener}s.
+	 * This listener translates and forwards
+	 * {@link org.eclipse.datatools.connectivity.IManagedConnectionListener} and
+	 * {@link IManagedConnectionOfflineListener} events to
+	 * {@link ConnectionListener}s. Also, the connection profile delegates to
+	 * this listener when notifying {@link ConnectionListener}s of changes to
+	 * the database objects (catalogs, schemata, tables, etc.).
 	 */
-	class LocalConnectionListener implements IManagedConnectionOfflineListener {
+	private class LocalConnectionListener
+		implements IManagedConnectionOfflineListener
+	{
 		private ListenerList<ConnectionListener> listenerList = new ListenerList<ConnectionListener>(ConnectionListener.class);
 
 		LocalConnectionListener() {
@@ -442,8 +419,8 @@ final class DTPConnectionProfileWrapper
 		/**
 		 * This method is never called from the base DTP code.
 		 * Perhaps DTP extenders call it....
-		 * @see ManagedConnection#fireModifiedEvent(Object)
-		 *     which is never called...
+		 * See {@link org.eclipse.datatools.connectivity.internal.ManagedConnection#fireModifiedEvent(Object)},
+		 * which is never called...
 		 */
 		public void modified(ConnectEvent event) {
 			// forward event to listeners
@@ -554,21 +531,5 @@ final class DTPConnectionProfileWrapper
 				listener.foreignKeyChanged(DTPConnectionProfileWrapper.this, foreignKey);
 			}
 		}
-
 	}
-
-
-	// ********** default DatabaseFinder **********
-
-	class IdentifierAdapterCallback implements DatabaseIdentifierAdapter.DefaultCallback {
-		public String convertIdentifierToName(String identifier) {
-			// call back to the internal method
-			return DTPConnectionProfileWrapper.this.convertIdentifierToName_(identifier);
-		}
-		public String convertNameToIdentifier(String name) {
-			// call back to the internal method
-			return DTPConnectionProfileWrapper.this.convertNameToIdentifier_(name);
-		}
-	}
-
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -21,7 +21,7 @@ import org.eclipse.jpt.jpa.db.ConnectionProfileListener;
 import org.eclipse.jpt.jpa.db.DatabaseIdentifierAdapter;
 
 /**
- * Wrap the DTP ProfileManager in yet another singleton.
+ * Wrap the DTP {@link ProfileManager} in yet another singleton.
  */
 public final class DTPConnectionProfileFactory
 	implements ConnectionProfileFactory
@@ -40,7 +40,7 @@ public final class DTPConnectionProfileFactory
 	}
 
 	/**
-	 * 'private' to ensure singleton
+	 * Access is <code>private</code> to ensure singleton
 	 */
 	private DTPConnectionProfileFactory() {
 		super();
@@ -73,10 +73,14 @@ public final class DTPConnectionProfileFactory
 	public synchronized ConnectionProfile buildConnectionProfile(String name, DatabaseIdentifierAdapter adapter) {
 		for (IConnectionProfile dtpProfile : this.dtpProfileManager.getProfiles()) {
 			if (dtpProfile.getName().equals(name)) {
-				return new DTPConnectionProfileWrapper(dtpProfile, adapter);
+				return this.buildConnectionProfile(dtpProfile, adapter);
 			}
 		}
 		return null;
+	}
+
+	private ConnectionProfile buildConnectionProfile(IConnectionProfile dtpProfile, DatabaseIdentifierAdapter adapter) {
+		return new DTPConnectionProfileWrapper(dtpProfile, adapter);
 	}
 
 	public ConnectionProfile buildConnectionProfile(String name) {
@@ -113,8 +117,10 @@ public final class DTPConnectionProfileFactory
 	/**
 	 * Forward events to the factory's listeners.
 	 */
-	private static class LocalProfileListener implements IProfileListener1 {
-		private ListenerList<ConnectionProfileListener> listenerList = new ListenerList<ConnectionProfileListener>(ConnectionProfileListener.class);
+	private static class LocalProfileListener
+		implements IProfileListener1
+	{
+		private final ListenerList<ConnectionProfileListener> listenerList = new ListenerList<ConnectionProfileListener>(ConnectionProfileListener.class);
 
 		LocalProfileListener() {
 			super();
@@ -127,6 +133,7 @@ public final class DTPConnectionProfileFactory
 		void removeConnectionProfileListener(ConnectionProfileListener listener) {
 			this.listenerList.remove(listener);
 		}
+
 
 		// ********** IProfileListener implementation **********
 
@@ -157,7 +164,5 @@ public final class DTPConnectionProfileFactory
 				listener.connectionProfileRemoved(name);
 			}
 		}
-
 	}
-
 }

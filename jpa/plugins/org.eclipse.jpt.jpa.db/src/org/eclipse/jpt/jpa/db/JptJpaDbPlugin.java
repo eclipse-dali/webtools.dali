@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2010 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,14 +9,16 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
 
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.datatools.enablement.jdt.classpath.DriverClasspathContainer;
 import org.eclipse.jdt.core.IClasspathContainer;
 import org.eclipse.jpt.jpa.db.internal.DTPConnectionProfileFactory;
 import org.osgi.framework.BundleContext;
 
 /**
- * The JPT DB plug-in lifecycle implementation.
+ * The Dali JPA DB plug-in lifecycle implementation.
  * Globally available connection profile factory.
  * <p>
  * Provisional API: This class is part of an interim API that is still
@@ -25,10 +27,15 @@ import org.osgi.framework.BundleContext;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public class JptJpaDbPlugin extends Plugin {
+public class JptJpaDbPlugin
+	extends Plugin
+{
+	// lazy-initialized
 	private DTPConnectionProfileFactory connectionProfileFactory;
 
 	private static JptJpaDbPlugin INSTANCE;  // sorta-final
+
+	public static final String PLUGIN_ID = "org.eclipse.jpt.jpa.db";  //$NON-NLS-1$
 
 	/**
 	 * Return the singleton JPT DB plug-in.
@@ -37,11 +44,44 @@ public class JptJpaDbPlugin extends Plugin {
 		return INSTANCE;
 	}
 
+
 	// ********** public static methods **********
 
 	public static ConnectionProfileFactory getConnectionProfileFactory() {
 		return INSTANCE.getConnectionProfileFactory_();
 	}
+
+
+	// ********** logging **********
+
+	/**
+	 * Log the specified message.
+	 */
+	public static void log(String msg) {
+        log(msg, null);
+    }
+
+	/**
+	 * Log the specified exception or error.
+	 */
+	public static void log(Throwable throwable) {
+		log(throwable.getLocalizedMessage(), throwable);
+	}
+
+	/**
+	 * Log the specified message and exception or error.
+	 */
+	public static void log(String msg, Throwable throwable) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, IStatus.OK, msg, throwable));
+	}
+
+	/**
+	 * Log the specified status.
+	 */
+	public static void log(IStatus status) {
+        INSTANCE.getLog().log(status);
+    }
+
 
 	// ********** plug-in implementation **********
 
@@ -63,6 +103,7 @@ public class JptJpaDbPlugin extends Plugin {
 	@Override
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		// the connection profile factory is lazy-initialized...
 	}
 
 	/**
@@ -80,7 +121,7 @@ public class JptJpaDbPlugin extends Plugin {
 
 	private synchronized ConnectionProfileFactory getConnectionProfileFactory_() {
 		if (this.connectionProfileFactory == null) {
-			this.connectionProfileFactory = buildConnectionProfileFactory();
+			this.connectionProfileFactory = this.buildConnectionProfileFactory();
 	        this.connectionProfileFactory.start();			
 		}
 		return this.connectionProfileFactory;
@@ -96,5 +137,4 @@ public class JptJpaDbPlugin extends Plugin {
 	public IClasspathContainer buildDriverClasspathContainerFor(String driverName) {
 		return new DriverClasspathContainer(driverName);
 	}
-
 }

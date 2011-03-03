@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,6 +9,7 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db;
 
+import java.sql.Connection;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 
@@ -21,13 +22,14 @@ import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionCons
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface ConnectionProfile extends DatabaseObject {
-
+public interface ConnectionProfile
+	extends DatabaseObject
+{
 	// ********** properties **********
 
 	/**
 	 * Return the connection profile's database.
-	 * Return null if the connection profile is inactive.
+	 * Return <code>null</code> if the connection profile is inactive.
 	 */
 	Database getDatabase();
 
@@ -97,20 +99,31 @@ public interface ConnectionProfile extends DatabaseObject {
 	 */
 	String getDriverName();
 
+
+	// ********** identifiers **********
+
+	/**
+	 * Return whether all identifiers are to be treated as though they were
+	 * delimited. This is determined by the client-supplied database
+	 * identifier adapter.
+	 */
+	boolean treatIdentifiersAsDelimited();
+
+
 	// ********** connection **********
 
 	/**
 	 * Return whether the profile is either connected to a live database
 	 * session or working off-line (i.e. it has access to meta-data).
-	 * @see isConnected()
-	 * @see isWorkingOffline()
+	 * @see #isConnected()
+	 * @see #isWorkingOffline()
 	 */
 	boolean isActive();
 
 	/**
 	 * Return whether the profile is neither connected to a live database
 	 * session nor working off-line (i.e. it has access to meta-data).
-	 * @see isActive()
+	 * @see #isActive()
 	 */
 	boolean isInactive();
 
@@ -141,6 +154,11 @@ public interface ConnectionProfile extends DatabaseObject {
 	 * @see #connect()
 	 */
 	void disconnect();
+
+	/**
+	 * Return the JDBC connection.
+	 */
+	Connection getJDBCConnection();
 
 
 	// ********** off-line support **********
@@ -198,5 +216,4 @@ public interface ConnectionProfile extends DatabaseObject {
 	String DRIVER_DEFINITION_TYPE_PROP_ID = "org.eclipse.datatools.connectivity.drivers.defnType";  //$NON-NLS-1$
 	String DRIVER_JAR_LIST_PROP_ID = "jarList";  //$NON-NLS-1$
 	String DATABASE_SAVE_PWD_PROP_ID = IJDBCDriverDefinitionConstants.PROP_PREFIX + "savePWD";  //$NON-NLS-1$
-
 }

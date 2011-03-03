@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -11,6 +11,7 @@ package org.eclipse.jpt.jpa.db.internal;
 
 import java.util.List;
 
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.sql.constraints.PrimaryKey;
 import org.eclipse.datatools.modelbase.sql.tables.BaseTable;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
@@ -25,7 +26,7 @@ import org.eclipse.jpt.jpa.db.Table;
  *  Wrap a DTP Table
  */
 final class DTPTableWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPDatabaseObjectWrapper<DTPSchemaWrapper>
 	implements Table
 {
 	/** the wrapped DTP table */
@@ -48,31 +49,12 @@ final class DTPTableWrapper
 	// ********** constructor **********
 
 	DTPTableWrapper(DTPSchemaWrapper schema, org.eclipse.datatools.modelbase.sql.tables.Table dtpTable) {
-		super(schema, dtpTable);
+		super(schema);
 		this.dtpTable = dtpTable;
 	}
 
 
-	// ********** DTPWrapper implementation **********
-
-	@Override
-	synchronized void catalogObjectChanged() {
-		super.catalogObjectChanged();
-		this.getConnectionProfile().tableChanged(this);
-	}
-
-
-	// ********** Table implementation **********
-
-	public String getName() {
-		return this.dtpTable.getName();
-	}
-
-	public DTPSchemaWrapper getSchema() {
-		return (DTPSchemaWrapper) this.getParent();
-	}
-
-	// ***** columns
+	// ********** columns **********
 
 	public Iterable<Column> getColumns() {
 		return new ArrayIterable<Column>(this.getColumnArray());
@@ -113,7 +95,7 @@ final class DTPTableWrapper
 	}
 
 	/**
-	 * return the column for the specified DTP column
+	 * Return the column for the specified DTP column.
 	 */
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		// try to short-circuit the search
@@ -123,7 +105,7 @@ final class DTPTableWrapper
 	}
 
 	/**
-	 * assume the table contains the specified column
+	 * Pre-condition: The table contains the specified column.
 	 */
 	DTPColumnWrapper getColumn_(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		for (DTPColumnWrapper column : this.getColumnArray()) {
@@ -139,11 +121,12 @@ final class DTPTableWrapper
 		return new TransformationIterable<DatabaseObject, String>(this.getColumnWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
-	public DTPColumnWrapper getColumnForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getColumnWrappers(), identifier);
+	public Column getColumnForIdentifier(String identifier) {
+		return this.getDTPDriverAdapter().selectColumnForIdentifier(this.getColumns(), identifier);
 	}
 
-	// ***** primaryKeyColumns
+
+	// ********** primary key columns **********
 
 	public Iterable<Column> getPrimaryKeyColumns() {
 		return new ArrayIterable<Column>(this.getPrimaryKeyColumnArray());
@@ -195,7 +178,8 @@ final class DTPTableWrapper
 		return ArrayTools.contains(this.getPrimaryKeyColumnArray(), column);
 	}
 
-	// ***** foreignKeys
+
+	// ********** foreign keys **********
 
 	public Iterable<ForeignKey> getForeignKeys() {
 		return new ArrayIterable<ForeignKey>(this.getForeignKeyArray());
@@ -242,7 +226,8 @@ final class DTPTableWrapper
 		return false;
 	}
 
-	// ***** join table
+
+	// ********** join table **********
 
 	public boolean isPossibleJoinTable() {
 		if (this.getForeignKeyArray().length != 2) {
@@ -310,14 +295,33 @@ final class DTPTableWrapper
 	}
 
 
-	// ********** internal methods **********
+	// ********** misc **********
+
+	public DTPSchemaWrapper getSchema() {
+		return this.parent;
+	}
+
+	public String getName() {
+		return this.dtpTable.getName();
+	}
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpTable;
+	}
+
+	@Override
+	synchronized void catalogObjectChanged() {
+		super.catalogObjectChanged();
+		this.getConnectionProfile().tableChanged(this);
+	}
 
 	boolean wraps(org.eclipse.datatools.modelbase.sql.tables.Table table) {
 		return this.dtpTable == table;
 	}
 
 	/**
-	 * return the table for the specified DTP table
+	 * Return the table for the specified DTP table.
 	 */
 	DTPTableWrapper getTable(org.eclipse.datatools.modelbase.sql.tables.Table table) {
 		// try to short-circuit the search
@@ -405,5 +409,4 @@ final class DTPTableWrapper
 		}
     	this.columns = null;
 	}
-
 }

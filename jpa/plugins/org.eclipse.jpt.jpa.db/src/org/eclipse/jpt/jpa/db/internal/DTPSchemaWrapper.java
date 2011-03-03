@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2006, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2006, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -14,6 +14,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IProduct;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.datatools.modelbase.sql.tables.SQLTablesPackage;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
@@ -27,7 +28,7 @@ import org.eclipse.jpt.jpa.db.Table;
  *  Wrap a DTP Schema
  */
 final class DTPSchemaWrapper
-	extends DTPDatabaseObjectWrapper
+	extends DTPDatabaseObjectWrapper<DTPSchemaContainerWrapper<?>>
 	implements Schema
 {
 	/** the wrapped DTP schema */
@@ -48,13 +49,18 @@ final class DTPSchemaWrapper
 
 	// ********** constructor **********
 
-	DTPSchemaWrapper(DTPSchemaContainerWrapper container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
-		super(container, dtpSchema);
+	DTPSchemaWrapper(DTPSchemaContainerWrapper<?> container, org.eclipse.datatools.modelbase.sql.schema.Schema dtpSchema) {
+		super(container);
 		this.dtpSchema = dtpSchema;
 	}
 
 
-	// ********** DTPWrapper implementation **********
+	// ********** DTPDatabaseObjectWrapper implementation **********
+
+	@Override
+	ICatalogObject getCatalogObject() {
+		return (ICatalogObject) this.dtpSchema;
+	}
 
 	@Override
 	synchronized void catalogObjectChanged() {
@@ -69,8 +75,8 @@ final class DTPSchemaWrapper
 		return this.dtpSchema.getName();
 	}
 
-	public DTPSchemaContainerWrapper getContainer() {
-		return (DTPSchemaContainerWrapper) this.getParent();
+	public DTPSchemaContainerWrapper<?> getContainer() {
+		return this.parent;
 	}
 
 	// ***** tables
@@ -169,8 +175,8 @@ final class DTPSchemaWrapper
 		return new TransformationIterable<DatabaseObject, String>(this.getTableWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
-	public DTPTableWrapper getTableForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getTableWrappers(), identifier);
+	public Table getTableForIdentifier(String identifier) {
+		return this.getDTPDriverAdapter().selectTableForIdentifier(this.getTables(), identifier);
 	}
 
 	// ***** sequences
@@ -218,8 +224,8 @@ final class DTPSchemaWrapper
 		return new TransformationIterable<DatabaseObject, String>(this.getSequenceWrappers(), IDENTIFIER_TRANSFORMER);
 	}
 
-	public DTPSequenceWrapper getSequenceForIdentifier(String identifier) {
-		return this.selectDatabaseObjectForIdentifier(this.getSequenceWrappers(), identifier);
+	public Sequence getSequenceForIdentifier(String identifier) {
+		return this.getDTPDriverAdapter().selectSequenceForIdentifier(this.getSequences(), identifier);
 	}
 
 
@@ -230,7 +236,7 @@ final class DTPSchemaWrapper
 	}
 
 	/**
-	 * return the column for the specified DTP column
+	 * Return the column for the specified DTP column.
 	 */
 	DTPColumnWrapper getColumn(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		// try to short-circuit the search
@@ -240,7 +246,7 @@ final class DTPSchemaWrapper
 	}
 
 	/**
-	 * assume the schema contains the specified column
+	 * Assume the schema contains the specified column.
 	 */
 	DTPColumnWrapper getColumn_(org.eclipse.datatools.modelbase.sql.tables.Column dtpColumn) {
 		return this.getTable_(dtpColumn.getTable()).getColumn_(dtpColumn);

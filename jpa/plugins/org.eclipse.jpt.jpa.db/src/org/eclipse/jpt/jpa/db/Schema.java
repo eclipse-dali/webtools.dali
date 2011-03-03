@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2008, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -18,8 +18,9 @@ package org.eclipse.jpt.jpa.db;
  * pioneering adopters on the understanding that any code that uses this API
  * will almost certainly be broken (repeatedly) as the API evolves.
  */
-public interface Schema extends DatabaseObject {
-
+public interface Schema
+	extends DatabaseObject
+{
 	/**
 	 * Return the schema's container; either a catalog or a database.
 	 */
@@ -39,7 +40,7 @@ public interface Schema extends DatabaseObject {
 	int getTablesSize();
 
 	/**
-	 * Return the table with specified name. The name must be an exact match
+	 * Return the table with the specified name. The name must be an exact match
 	 * of the table's name.
 	 * @see #getTableForIdentifier(String)
 	 */
@@ -74,7 +75,7 @@ public interface Schema extends DatabaseObject {
 	int getSequencesSize();
 
 	/**
-	 * Return the sequence with specified name. The name must be an exact match
+	 * Return the sequence with the specified name. The name must be an exact match
 	 * of the sequence's name.
 	 * @see #getSequenceForIdentifier(String)
 	 */
@@ -94,5 +95,4 @@ public interface Schema extends DatabaseObject {
 	 * @see #getSortedSequenceIdentifiers()
 	 */
 	Sequence getSequenceForIdentifier(String identifier);
-
 }

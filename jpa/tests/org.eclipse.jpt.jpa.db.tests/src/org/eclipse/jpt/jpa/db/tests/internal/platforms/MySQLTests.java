@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2009 Oracle. All rights reserved.
+ * Copyright (c) 2007, 2011 Oracle. All rights reserved.
  * This program and the accompanying materials are made available under the
  * terms of the Eclipse Public License v1.0, which accompanies this distribution
  * and is available at http://www.eclipse.org/legal/epl-v10.html.
@@ -9,8 +9,11 @@
  ******************************************************************************/
 package org.eclipse.jpt.jpa.db.tests.internal.platforms;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
-
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
 import org.eclipse.jpt.jpa.db.Column;
@@ -140,7 +143,10 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate(this.buildFooDDL());
 		this.executeUpdate(this.buildBazDDL());
 		this.executeUpdate(this.buildFooBazDDL());
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		Schema schema = this.getDefaultSchema();
 
@@ -274,19 +280,25 @@ public class MySQLTests extends DTPPlatformTests {
 		this.executeUpdate("CREATE TABLE test1 (id INTEGER, name VARCHAR(20))");
 		this.executeUpdate("CREATE TABLE TEST2 (id INTEGER, name VARCHAR(20))");
 		this.executeUpdate("CREATE TABLE `TEST3` (id INTEGER, name VARCHAR(20))");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		Schema schema = this.getDefaultSchema();
 
 		Table test1Table = schema.getTableForIdentifier("test1");
 		assertNotNull(test1Table);
 
-		// this probably only works on Windows
-		Table test2Table = schema.getTableForIdentifier("test2");
+		// if 'lctn' is 0 (UNIX), the table name is case-sensitive
+		int lctn = this.getLowerCaseTableNamesValueFromDatabase();
+
+		String test2Identifier = (lctn == 0) ? "TEST2" : "test2";
+		Table test2Table = schema.getTableForIdentifier(test2Identifier);
 		assertNotNull(test2Table);
 
-		// this probably only works on Windows
-		Table test3Table = schema.getTableForIdentifier("`test3`");
+		String test3Identifier = (lctn == 0) ? "`TEST3`" : "`test3`";
+		Table test3Table = schema.getTableForIdentifier(test3Identifier);
 		assertNotNull(test3Table);
 
 		this.dropTable(this.getDatabaseName(), "test1");
@@ -299,6 +311,18 @@ public class MySQLTests extends DTPPlatformTests {
 		this.connectionProfile.disconnect();
 	}
 
+	protected int getLowerCaseTableNamesValueFromDatabase() throws SQLException {
+		// the underscore is a wild character on MySQL, so we need to escape it
+		ArrayList<HashMap<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'");
+		Map<String, Object> row = rows.get(0);
+		return Integer.valueOf((String) row.get("Value")).intValue();
+	}
+
+	/**
+	 * MySQL preserves the case of column names, delimited or not;
+	 * but they are <em>not</em> case-sensitive when used in SQL.
+	 * Delimiters are useful for reserved identifiers and special characters.
+	 */
 	public void testColumnLookup() throws Exception {
 		this.connectionProfile.connect();
 		TestConnectionListener listener = new TestConnectionListener();
@@ -312,41 +336,65 @@ public class MySQLTests extends DTPPlatformTests {
 
 		// lowercase
 		this.executeUpdate("CREATE TABLE test (id INTEGER, name VARCHAR(20))");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		Table table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("id"));
 		assertNotNull(table.getColumnNamed("name"));
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
 		this.dropTable(this.getDatabaseName(), "test");
 
 		// uppercase
 		this.executeUpdate("CREATE TABLE test (ID INTEGER, NAME VARCHAR(20))");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("ID"));
 		assertNotNull(table.getColumnNamed("NAME"));
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
 		this.dropTable(this.getDatabaseName(), "test");
 
 		// mixed case
 		this.executeUpdate("CREATE TABLE test (Id INTEGER, Name VARCHAR(20))");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
 		assertNotNull(table.getColumnNamed("Id"));
 		assertNotNull(table.getColumnNamed("Name"));
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 
 		this.dropTable(this.getDatabaseName(), "test");
 
 		// delimited
 		this.executeUpdate("CREATE TABLE test (`Id` INTEGER, `Name` VARCHAR(20))");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 
 		table = this.getDefaultSchema().getTableNamed("test");
+		assertNotNull(table.getColumnNamed("Id"));
+		assertNotNull(table.getColumnNamed("Name"));
+		assertNotNull(table.getColumnForIdentifier("id"));
+		assertNotNull(table.getColumnForIdentifier("name"));
 		assertNotNull(table.getColumnForIdentifier("`Id`"));
+		assertNotNull(table.getColumnForIdentifier("\"Id\""));
 		assertNotNull(table.getColumnForIdentifier("`Name`"));
+		assertNotNull(table.getColumnForIdentifier("\"Name\""));
 
 		this.dropTable(this.getDatabaseName(), "test");
 
@@ -378,12 +426,15 @@ public class MySQLTests extends DTPPlatformTests {
 				"org_id INTEGER, FOREIGN KEY (org_id) REFERENCES xref_test1.org(id))");
 
 		this.getJDBCConnection().setCatalog("xref_test2");
+		// the MySQL database does NOT refresh - see bug 279721...
 		((ICatalogObject) this.getDTPDatabase()).refresh();
+		// ...refresh the single schema instead
+		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
 		Schema schema2 = this.getDefaultSchema();
 		assertNotNull(schema2);
 		Table empTable = schema2.getTableNamed("emp");
 		assertNotNull(empTable);
-		// no foreign keys
+		// no foreign keys...
 		assertEquals(0, empTable.getForeignKeysSize());
 
 		this.dropDatabase("xref_test2");
@@ -400,5 +451,4 @@ public class MySQLTests extends DTPPlatformTests {
 	private void dropDatabase(String name) throws Exception {
 		this.executeUpdate("DROP DATABASE IF EXISTS " + name);
 	}
-
 }
