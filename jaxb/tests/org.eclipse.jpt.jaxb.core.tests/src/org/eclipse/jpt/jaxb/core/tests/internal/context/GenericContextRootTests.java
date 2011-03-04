@@ -13,11 +13,17 @@ import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.Expression;
+import org.eclipse.jdt.core.dom.MarkerAnnotation;
 import org.eclipse.jdt.core.dom.NormalAnnotation;
+import org.eclipse.jdt.core.dom.TypeLiteral;
 import org.eclipse.jpt.common.core.utility.jdt.AnnotatedElement;
 import org.eclipse.jpt.common.core.utility.jdt.Member;
 import org.eclipse.jpt.common.core.utility.jdt.ModifiedDeclaration;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.ArrayIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 import org.eclipse.jpt.common.utility.internal.iterators.ArrayIterator;
 import org.eclipse.jpt.jaxb.core.context.JaxbPackage;
@@ -44,36 +50,6 @@ public class GenericContextRootTests
 		return createTestPackageInfo(
 				"@XmlAccessorOrder(value = XmlAccessOrder.ALPHABETICAL)",
 				JAXB.XML_ACCESS_ORDER, JAXB.XML_ACCESSOR_ORDER);
-	}
-
-	private ICompilationUnit createUnannotatedPackageInfo(String packageName) throws CoreException {
-		return createTestPackageInfo(packageName);
-	}
-
-	private ICompilationUnit createAnnotatedRegistry() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_REGISTRY);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlRegistry");
-			}
-		});
-	}
-
-	private ICompilationUnit createAnnotatedPersistentClass() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType");
-			}
-		});
 	}
 	
 	private ICompilationUnit createAnnotatedPersistentClassWithSuperclassNamed(final String superclassName) throws Exception {
@@ -131,27 +107,6 @@ public class GenericContextRootTests
 		});
 	}
 	
-	private ICompilationUnit createUnannotatedClassNamed(String typeName) throws Exception {
-		return this.createTestType(PACKAGE_NAME, typeName + ".java", typeName, new DefaultAnnotationWriter());
-	}
-
-	private ICompilationUnit createAnnotatedEnum() throws Exception {
-		return this.createTestEnum(new DefaultEnumAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE);
-			}
-			@Override
-			public void appendEnumAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType");
-			}
-		});
-	}
-
-	private ICompilationUnit createUnannotatedEnumNamed(String enumName) throws Exception {
-		return this.createTestEnum(PACKAGE_NAME, enumName + ".java", enumName, new DefaultEnumAnnotationWriter());
-	}
-
 	public void testGetPackages() throws Exception {
 		this.createPackageInfoWithAccessorOrder();
 		Iterator<JaxbPackage> packages = this.getContextRoot().getPackages().iterator();
@@ -200,11 +155,37 @@ public class GenericContextRootTests
 	
 	protected void addXmlAccessorTypeAnnotation(ModifiedDeclaration declaration, String accessType) {
 		NormalAnnotation annotation = this.addNormalAnnotation(declaration.getDeclaration(), JAXB.XML_ACCESSOR_TYPE);
-		this.addEnumMemberValuePair(annotation, JAXB.XML_ACCESSOR_TYPE__VALUE, accessType);
+		addEnumMemberValuePair(annotation, JAXB.XML_ACCESSOR_TYPE__VALUE, accessType);
 	}
-
+	
 	protected void removeXmlAccessorTypeAnnotation(ModifiedDeclaration declaration) {
-		this.removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
+		removeAnnotation(declaration, JAXB.XML_ACCESSOR_TYPE);
+	}
+	
+	protected void addXmlSeeAlsoAnnotation(final ModifiedDeclaration declaration, String... typeNames) {
+		Annotation annotation = declaration.getAnnotationNamed(JAXB.XML_SEE_ALSO);
+		NormalAnnotation normalAnnotation = null;
+		if (annotation == null) {
+			normalAnnotation = addNormalAnnotation(declaration.getDeclaration(), JAXB.XML_SEE_ALSO);
+		}
+		else if (annotation.isMarkerAnnotation()) {
+			normalAnnotation = replaceMarkerAnnotation((MarkerAnnotation) annotation);
+		}
+		else {
+			normalAnnotation = (NormalAnnotation) annotation;
+		}
+		
+		Expression arrayInitializer = newArrayInitializer(
+				declaration.getAst(),
+				ArrayTools.array(
+						new TransformationIterable<String, TypeLiteral>(new ArrayIterable<String>(typeNames)) {
+							@Override
+							protected TypeLiteral transform(String o) {
+								return newTypeLiteral(declaration.getAst(), o);
+							}
+						},
+						new Expression[0]));
+		addMemberValuePair(normalAnnotation, JAXB.XML_SEE_ALSO__VALUE, arrayInitializer);
 	}
 
 	public void testGetRegistries() throws Exception {
@@ -308,7 +289,7 @@ public class GenericContextRootTests
 	}
 
 	public void testGetPersistentEnums() throws Exception {
-		this.createAnnotatedEnum();
+		this.createAnnotatedPersistentEnum();
 		Iterator<JaxbPersistentEnum> persistentEnums = this.getContextRoot().getPersistentEnums().iterator();
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentEnums()));
 		assertEquals(FULLY_QUALIFIED_TYPE_NAME, persistentEnums.next().getFullyQualifiedName());
@@ -516,5 +497,62 @@ public class GenericContextRootTests
 		assertEquals(1, CollectionTools.size(persistentClasses));
 		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
 		assertNull(getContextRoot().getPersistentClass(fqOtherClassName));
+	}
+	
+	public void testDirectReferencedSeeAlso() throws Exception {
+		final String otherClassName = "Other" + TYPE_NAME;
+		final String fqOtherClassName = PACKAGE_NAME_ + otherClassName;
+		final String otherClassName2 = "Other" + TYPE_NAME + "2";
+		final String fqOtherClassName2 = PACKAGE_NAME_ + otherClassName2;
+		createUnannotatedClassNamed(otherClassName);
+		createUnannotatedClassNamed(otherClassName2);
+		
+		// make sure unannotated other classes are not in context
+		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
+		
+		createAnnotatedPersistentClass();
+		JavaResourceType thisType = (JavaResourceType) getJaxbProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
+		AnnotatedElement annotatedType = annotatedElement(thisType);
+		
+		// make sure unannotated other classes are not in context
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		
+		// add an @XmlSeeAlso with one class
+		annotatedType.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						addXmlSeeAlsoAnnotation(declaration, otherClassName);
+					}
+				});
+		
+		assertEquals(2, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// change to @XmlSeeAlso with two classes
+		annotatedType.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
+						addXmlSeeAlsoAnnotation(declaration, otherClassName, otherClassName2);
+					}
+				});
+		
+		assertEquals(3, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName2));
+		
+		// remove the @XmlSeeAlso annotation
+		annotatedType.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
+					}
+				});
+		
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
 	}
 }

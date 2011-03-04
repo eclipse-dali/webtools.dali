@@ -39,14 +39,17 @@ import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
 import org.eclipse.jpt.jaxb.core.context.XmlAdaptable;
 import org.eclipse.jpt.jaxb.core.context.XmlJavaTypeAdapter;
+import org.eclipse.jpt.jaxb.core.context.XmlSeeAlso;
 import org.eclipse.jpt.jaxb.core.internal.validation.DefaultValidationMessages;
 import org.eclipse.jpt.jaxb.core.internal.validation.JaxbValidationMessages;
+import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAnnotatedElement;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorOrderAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -66,21 +69,23 @@ import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 public class GenericJavaPersistentClass
 		extends AbstractJavaPersistentType
 		implements JaxbPersistentClass {
-
+	
 	protected JaxbClass superClass;
-
+	
 	protected XmlAccessType defaultAccessType;
 	protected XmlAccessType specifiedAccessType;
-
+	
 	protected XmlAccessOrder defaultAccessOrder;
 	protected XmlAccessOrder specifiedAccessOrder;
-
-	protected final JaxbAttributesContainer attributesContainer;
-
-	protected final Map<JaxbClass, JaxbAttributesContainer> inheritedAttributesContainers = new HashMap<JaxbClass, JaxbAttributesContainer>();
-
+	
 	protected final XmlAdaptable xmlAdaptable;
-
+	
+	protected XmlSeeAlso xmlSeeAlso;
+	
+	protected final JaxbAttributesContainer attributesContainer;
+	
+	protected final Map<JaxbClass, JaxbAttributesContainer> inheritedAttributesContainers = new HashMap<JaxbClass, JaxbAttributesContainer>();
+	
 	public GenericJavaPersistentClass(JaxbContextRoot parent, JavaResourceType resourceType) {
 		super(parent, resourceType);
 		this.superClass = this.buildSuperClass();
@@ -89,27 +94,31 @@ public class GenericJavaPersistentClass
 		this.defaultAccessType = this.buildDefaultAccessType();
 		this.defaultAccessOrder = this.buildDefaultAccessOrder();
 		this.xmlAdaptable = this.buildXmlAdaptable();
+		initXmlSeeAlso();
 		this.attributesContainer = new GenericJavaAttributesContainer(this, buildAttributesContainerOwner(), resourceType);
 		this.initializeInheritedAttributes();
 	}
-
+	
+	
 	@Override
 	public JavaResourceType getJavaResourceType() {
 		return (JavaResourceType) super.getJavaResourceType();
 	}
-
+	
+	
 	// ********** synchronize/update **********
-
+	
 	@Override
 	public void synchronizeWithResourceModel() {
 		super.synchronizeWithResourceModel();
 		this.setSpecifiedAccessType_(this.getResourceAccessType());
 		this.setSpecifiedAccessOrder_(this.getResourceAccessOrder());
 		this.xmlAdaptable.synchronizeWithResourceModel();
+		syncXmlSeeAlso();
 		this.attributesContainer.synchronizeWithResourceModel();
 		this.syncInheritedAttributes();
 	}
-
+	
 	@Override
 	public void update() {
 		super.update();
@@ -118,13 +127,14 @@ public class GenericJavaPersistentClass
 		this.setDefaultAccessType(this.buildDefaultAccessType());
 		this.setDefaultAccessOrder(this.buildDefaultAccessOrder());
 		this.xmlAdaptable.update();
+		updateXmlSeeAlso();
 		this.attributesContainer.update();
 		this.updateInheritedAttributes();
 	}
-
-
+	
+	
 	// ********** JaxbType impl **********
-
+	
 	public Kind getKind() {
 		return Kind.PERSISTENT_CLASS;
 	}
@@ -139,7 +149,14 @@ public class GenericJavaPersistentClass
 							protected Iterable<String> transform(JaxbPersistentAttribute o) {
 								return o.getMapping().getDirectlyReferencedTypeNames();
 							}
-						}));
+						}),
+				getXmlSeeAlsoClasses());
+	}
+	
+	protected Iterable<String> getXmlSeeAlsoClasses() {
+		return (this.xmlSeeAlso == null) ?
+				EmptyIterable.<String>instance()
+				: getXmlSeeAlso().getDirectlyReferencedTypeNames();
 	}
 	
 	
@@ -148,13 +165,13 @@ public class GenericJavaPersistentClass
 	public JaxbClass getSuperClass() {
 		return this.superClass;
 	}
-
+	
 	protected void setSuperClass(JaxbClass superClass) {
 		JaxbClass old = this.superClass;
 		this.superClass = superClass;
 		this.firePropertyChanged(SUPER_CLASS_PROPERTY, old, superClass);
 	}
-
+	
 	protected JaxbClass buildSuperClass() {
 		HashSet<JavaResourceType> visited = new HashSet<JavaResourceType>();
 		visited.add(this.getJavaResourceType());
@@ -191,22 +208,22 @@ public class GenericJavaPersistentClass
 		JaxbClass spc = this.getClass(typeName);
 		return (spc != null && resourceType.isMapped()) ? spc : this.getSuperClass(resourceType.getSuperclassQualifiedName(), visited);  // recurse
 	}
-
+	
 	protected JaxbClass getClass(String fullyQualifiedTypeName) {
 		return this.getParent().getClass(fullyQualifiedTypeName);
 	}
 	
 	
 	// ********** inheritance **********
-
+	
 	public Iterable<JaxbClass> getInheritanceHierarchy() {
 		return this.getInheritanceHierarchyOf(this);
 	}
-
+	
 	public Iterable<JaxbClass> getAncestors() {
 		return this.getInheritanceHierarchyOf(this.superClass);
 	}
-
+	
 	protected Iterable<JaxbClass> getInheritanceHierarchyOf(JaxbClass start) {
 		// using a chain iterator to traverse up the inheritance tree
 		return new ChainIterable<JaxbClass>(start) {
@@ -216,46 +233,46 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
+	
 	// ********** access type **********
-
+	
 	public XmlAccessType getAccessType() {
 		return (this.specifiedAccessType != null) ? this.specifiedAccessType : this.defaultAccessType;
 	}
-
+	
 	public XmlAccessType getSpecifiedAccessType() {
 		return this.specifiedAccessType;
 	}
-
+	
 	public void setSpecifiedAccessType(XmlAccessType access) {
 		this.getAccessorTypeAnnotation().setValue(XmlAccessType.toJavaResourceModel(access));
 		this.setSpecifiedAccessType_(access);
 	}
-
+	
 	protected void setSpecifiedAccessType_(XmlAccessType access) {
 		XmlAccessType old = this.specifiedAccessType;
 		this.specifiedAccessType = access;
 		this.firePropertyChanged(SPECIFIED_ACCESS_TYPE_PROPERTY, old, access);
 	}
-
+	
 	public XmlAccessType getDefaultAccessType() {
 		return this.defaultAccessType;
 	}
-
+	
 	protected void setDefaultAccessType(XmlAccessType access) {
 		XmlAccessType old = this.defaultAccessType;
 		this.defaultAccessType = access;
 		this.firePropertyChanged(DEFAULT_ACCESS_TYPE_PROPERTY, old, access);
 	}
-
+	
 	protected XmlAccessType getResourceAccessType() {
 		return XmlAccessType.fromJavaResourceModel(this.getAccessorTypeAnnotation().getValue());
 	}
-
+	
 	protected XmlAccessorTypeAnnotation getAccessorTypeAnnotation() {
 		return (XmlAccessorTypeAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorTypeAnnotation.ANNOTATION_NAME);
 	}
-
+	
 	/**
 	 * If there is a @XmlAccessorType on a class, then it is used.
 	 * Otherwise, if a @XmlAccessorType exists on one of its super classes, then it is inherited.
@@ -272,57 +289,57 @@ public class GenericJavaPersistentClass
 		}
 		return XmlAccessType.PUBLIC_MEMBER;
 	}
-
+	
 	protected XmlAccessType getSuperClassAccessType() {
 		JaxbClass superClass = this.getSuperClass();
 		return superClass == null ? null : superClass.getSpecifiedAccessType();
 	}
-
+	
 	protected XmlAccessType getPackageAccessType() {
 		JaxbPackageInfo packageInfo = this.getPackageInfo();
 		return packageInfo == null ? null : packageInfo.getAccessType();
 	}
-
-
+	
+	
 	// ********** access order **********
-
+	
 	public XmlAccessOrder getAccessOrder() {
 		return (this.specifiedAccessOrder != null) ? this.specifiedAccessOrder : this.defaultAccessOrder;
 	}
-
+	
 	public XmlAccessOrder getSpecifiedAccessOrder() {
 		return this.specifiedAccessOrder;
 	}
-
+	
 	public void setSpecifiedAccessOrder(XmlAccessOrder accessOrder) {
 		this.getAccessorOrderAnnotation().setValue(XmlAccessOrder.toJavaResourceModel(accessOrder));
 		this.setSpecifiedAccessOrder_(accessOrder);
 	}
-
+	
 	protected void setSpecifiedAccessOrder_(XmlAccessOrder accessOrder) {
 		XmlAccessOrder old = this.specifiedAccessOrder;
 		this.specifiedAccessOrder = accessOrder;
 		this.firePropertyChanged(SPECIFIED_ACCESS_ORDER_PROPERTY, old, accessOrder);
 	}
-
+	
 	public XmlAccessOrder getDefaultAccessOrder() {
 		return this.defaultAccessOrder;
 	}
-
+	
 	protected void setDefaultAccessOrder(XmlAccessOrder accessOrder) {
 		XmlAccessOrder old = this.defaultAccessOrder;
 		this.defaultAccessOrder = accessOrder;
 		this.firePropertyChanged(DEFAULT_ACCESS_ORDER_PROPERTY, old, accessOrder);
 	}
-
+	
 	protected XmlAccessOrder getResourceAccessOrder() {
 		return XmlAccessOrder.fromJavaResourceModel(this.getAccessorOrderAnnotation().getValue());
 	}
-
+	
 	protected XmlAccessorOrderAnnotation getAccessorOrderAnnotation() {
 		return (XmlAccessorOrderAnnotation) getJavaResourceType().getNonNullAnnotation(XmlAccessorOrderAnnotation.ANNOTATION_NAME);
 	}
-
+	
 	/**
     * If there is a @XmlAccessorOrder on a class, then it is used.
     * Otherwise, if a @XmlAccessorOrder exists on one of its super classes, then it is inherited (by the virtue of Inherited)
@@ -340,28 +357,129 @@ public class GenericJavaPersistentClass
 		}
 		return XmlAccessOrder.UNDEFINED;
 	}
-
+	
 	protected XmlAccessOrder getSuperClassAccessOrder() {
 		JaxbClass superClass = this.getSuperClass();
 		return superClass == null ? null : superClass.getSpecifiedAccessOrder();
 	}
-
+	
 	protected XmlAccessOrder getPackageAccessOrder() {
 		JaxbPackageInfo packageInfo = this.getPackageInfo();
 		return packageInfo == null ? null : packageInfo.getAccessOrder();
 	}
-
-
+	
+	
+	//****************** XmlJavaTypeAdapter *********************
+	
+	public XmlAdaptable buildXmlAdaptable() {
+		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
+			public JavaResourceAnnotatedElement getResource() {
+				return getJavaResourceType();
+			}
+			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
+				return GenericJavaPersistentClass.this.buildXmlJavaTypeAdapter(adapterAnnotation);
+			}
+			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
+				GenericJavaPersistentClass.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
+			}
+		});
+	}
+	
+	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.getXmlJavaTypeAdapter();
+	}
+	
+	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
+		return this.xmlAdaptable.addXmlJavaTypeAdapter();
+	}
+	
+	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
+		return new GenericJavaTypeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
+	}
+	
+	public void removeXmlJavaTypeAdapter() {
+		this.xmlAdaptable.removeXmlJavaTypeAdapter();
+	}
+	
+	
+	// **************** xml see also ******************************************
+	
+	protected XmlSeeAlsoAnnotation getXmlSeeAlsoAnnotation() {
+		return (XmlSeeAlsoAnnotation) getJavaResourceType().getAnnotation(JAXB.XML_SEE_ALSO);
+	}
+	
+	protected void initXmlSeeAlso() {
+		XmlSeeAlsoAnnotation annotation = getXmlSeeAlsoAnnotation();
+		this.xmlSeeAlso = (annotation == null) ?
+				null
+				: buildXmlSeeAlso(annotation);
+	}
+	
+	protected XmlSeeAlso buildXmlSeeAlso(XmlSeeAlsoAnnotation annotation) {
+		return new GenericJavaXmlSeeAlso(this, annotation);
+	}
+	
+	public XmlSeeAlso getXmlSeeAlso() {
+		return this.xmlSeeAlso;
+	}
+	
+	public XmlSeeAlso addXmlSeeAlso() {
+		if (this.xmlSeeAlso != null) {
+			throw new IllegalStateException();
+		}
+		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) getJavaResourceType().addAnnotation(JAXB.XML_SEE_ALSO);
+		
+		XmlSeeAlso xmlSeeAlso = buildXmlSeeAlso(annotation);
+		setXmlSeeAlso_(xmlSeeAlso);
+		return xmlSeeAlso;
+	}
+	
+	protected void setXmlSeeAlso_(XmlSeeAlso xmlSeeAlso) {
+		XmlSeeAlso old = this.xmlSeeAlso;
+		this.xmlSeeAlso = xmlSeeAlso;
+		firePropertyChanged(XML_SEE_ALSO_PROPERTY, old, xmlSeeAlso);
+	}
+	
+	public void removeXmlSeeAlso() {
+		if (this.xmlSeeAlso == null) {
+			throw new IllegalStateException();
+		}
+		getJavaResourceType().removeAnnotation(JAXB.XML_SEE_ALSO);
+		setXmlSeeAlso_(null);
+	}
+	
+	protected void syncXmlSeeAlso() {
+		XmlSeeAlsoAnnotation annotation = getXmlSeeAlsoAnnotation();
+		if (annotation != null) {
+			if (this.xmlSeeAlso != null) {
+				this.xmlSeeAlso.synchronizeWithResourceModel();
+			}
+			else {
+				setXmlSeeAlso_(buildXmlSeeAlso(annotation));
+			}
+		}
+		else {
+			setXmlSeeAlso_(null);
+		}
+	}
+	
+	protected void updateXmlSeeAlso() {
+		if (this.xmlSeeAlso != null) {
+			this.xmlSeeAlso.update();
+		}
+	}
+	
+	
 	// ********** attributes **********
-
+	
 	public Iterable<JaxbPersistentAttribute> getAttributes() {
 		return this.attributesContainer.getAttributes();
 	}
-
+	
 	public int getAttributesSize() {
 		return this.attributesContainer.getAttributesSize();
 	}
-
+	
 	protected JaxbAttributesContainer.Owner buildAttributesContainerOwner() {
 		return new JaxbAttributesContainer.Owner() {
 			public XmlAccessType getAccessType() {
@@ -377,14 +495,14 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
-
+	
+	
 	// ********** inherited attributes **********
-
+	
 	public Iterable<JaxbPersistentAttribute> getInheritedAttributes() {
 		return new CompositeIterable<JaxbPersistentAttribute>(this.getInheritedAttributeSets());
 	}
-
+	
 	protected Iterable<Iterable<JaxbPersistentAttribute>> getInheritedAttributeSets() {
 		return new TransformationIterable<JaxbAttributesContainer, Iterable<JaxbPersistentAttribute>>(this.getInheritedAttributesContainers()) {
 			@Override
@@ -393,11 +511,11 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
+	
 	protected Iterable<JaxbAttributesContainer> getInheritedAttributesContainers() {
 		return new LiveCloneIterable<JaxbAttributesContainer>(this.inheritedAttributesContainers.values());  // read-only
 	}
-
+	
 	public int getInheritedAttributesSize() {
 		int size = 0;
 		for (JaxbAttributesContainer attributesContainer : getInheritedAttributesContainers()) {
@@ -405,11 +523,11 @@ public class GenericJavaPersistentClass
 		}
 		return size;
 	}
-
+	
 	protected void initializeInheritedAttributes() {
 		this.addInheritedAttributesContainer(this.getSuperClass());
 	}
-
+	
 	protected void addInheritedAttributesContainer(JaxbClass superClass) {
 		if (superClass != null) {
 			if (superClass.getKind() == Kind.TRANSIENT) {
@@ -418,11 +536,11 @@ public class GenericJavaPersistentClass
 			}
 		}
 	}
-
+	
 	protected JaxbAttributesContainer buildInheritedAttributesContainer(JaxbClass jaxbClass) {
 		return new GenericJavaAttributesContainer(this, buildInheritedAttributesContainerOwner(), jaxbClass.getJavaResourceType());
 	}
-
+	
 	protected JaxbAttributesContainer.Owner buildInheritedAttributesContainerOwner() {
 		return new JaxbAttributesContainer.Owner() {
 			public XmlAccessType getAccessType() {
@@ -438,13 +556,13 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
+	
 	protected void syncInheritedAttributes() {
 		for (JaxbAttributesContainer attributesContainer : this.inheritedAttributesContainers.values()) {
 			attributesContainer.synchronizeWithResourceModel();
 		}
 	}
-
+	
 	/**
 	 * The attributes are synchronized during the <em>update</em> because
 	 * the list of resource attributes is determined by the access type
@@ -471,21 +589,20 @@ public class GenericJavaPersistentClass
 				}
 			}
 		}
-
+		
 		for (JaxbClass superClass : contextSuperclasses) {
 			JaxbAttributesContainer container = this.inheritedAttributesContainers.remove(superClass);
 			this.fireItemsRemoved(INHERITED_ATTRIBUTES_COLLECTION, CollectionTools.collection(container.getAttributes()));
 		}
 	}
-
-
+	
 	public boolean isInherited(JaxbPersistentAttribute attribute) {
 		if (attribute.getParent() != this) {
 			throw new IllegalArgumentException("The attribute is not owned by this GenericJavaPersistentClass"); //$NON-NLS-1$
 		}
 		return !CollectionTools.contains(this.getAttributes(), attribute);
 	}
-
+	
 	public String getJavaResourceAttributeOwningTypeName(JaxbPersistentAttribute attribute) {
 		if (attribute.getParent() != this) {
 			throw new IllegalArgumentException("The attribute is not owned by this GenericJavaPersistentClass"); //$NON-NLS-1$
@@ -497,42 +614,10 @@ public class GenericJavaPersistentClass
 		}
 		throw new IllegalArgumentException("The attribute is not an inherited attribute"); //$NON-NLS-1$
 	}
-
-
-	//****************** XmlJavaTypeAdapter *********************
-
-	public XmlAdaptable buildXmlAdaptable() {
-		return new GenericJavaXmlAdaptable(this, new XmlAdaptable.Owner() {
-			public JavaResourceAnnotatedElement getResource() {
-				return getJavaResourceType();
-			}
-			public XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation adapterAnnotation) {
-				return GenericJavaPersistentClass.this.buildXmlJavaTypeAdapter(adapterAnnotation);
-			}
-			public void fireXmlAdapterChanged(XmlJavaTypeAdapter oldAdapter, XmlJavaTypeAdapter newAdapter) {
-				GenericJavaPersistentClass.this.firePropertyChanged(XML_JAVA_TYPE_ADAPTER_PROPERTY, oldAdapter, newAdapter);
-			}
-		});
-	}
-
-	public XmlJavaTypeAdapter getXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.getXmlJavaTypeAdapter();
-	}
-
-	public XmlJavaTypeAdapter addXmlJavaTypeAdapter() {
-		return this.xmlAdaptable.addXmlJavaTypeAdapter();
-	}
-
-	protected XmlJavaTypeAdapter buildXmlJavaTypeAdapter(XmlJavaTypeAdapterAnnotation xmlJavaTypeAdapterAnnotation) {
-		return new GenericJavaTypeXmlJavaTypeAdapter(this, xmlJavaTypeAdapterAnnotation);
-	}
-
-	public void removeXmlJavaTypeAdapter() {
-		this.xmlAdaptable.removeXmlJavaTypeAdapter();
-	}
-
+	
+	
 	// ********** content assist **********
-
+	
 	@Override
 	public Iterable<String> getJavaCompletionProposals(int pos, Filter<String> filter, CompilationUnit astRoot) {
 		Iterable<String> result = super.getJavaCompletionProposals(pos, filter, astRoot);
@@ -547,9 +632,9 @@ public class GenericJavaPersistentClass
 		}
 		return EmptyIterable.instance();
 	}
-
+	
 	// ********** validation **********
-
+	
 	@Override
 	public void validate(List<IMessage> messages, IReporter reporter, CompilationUnit astRoot) {
 		super.validate(messages, reporter, astRoot);
@@ -562,7 +647,7 @@ public class GenericJavaPersistentClass
 			attribute.validate(messages, reporter, astRoot);
 		}
 	}
-
+	
 	protected void validateXmlValueMapping(List<IMessage> messages, CompilationUnit astRoot) {
 		String xmlValueMapping = null;
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
@@ -598,7 +683,7 @@ public class GenericJavaPersistentClass
 			}
 		}
 	}
-
+	
 	protected void validateXmlAnyAttributeMapping(List<IMessage> messages, CompilationUnit astRoot) {
 		String xmlAnyAttributeMapping = null;
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
@@ -618,7 +703,7 @@ public class GenericJavaPersistentClass
 			}
 		}
 	}
-
+	
 	protected void validateXmlAnyElementMapping(List<IMessage> messages, CompilationUnit astRoot) {
 		String xmlAnyElementMapping = null;
 		for (JaxbPersistentAttribute attribute : getAttributes()) {
@@ -638,7 +723,7 @@ public class GenericJavaPersistentClass
 			}
 		}
 	}
-
+	
 	protected void validateXmlIDs(List<IMessage> messages, CompilationUnit astRoot) {
 		String xmlIdMapping = null;
 		for (JaxbContainmentMapping containmentMapping : getContainmentMappingsWithXmlID()) {
@@ -656,7 +741,7 @@ public class GenericJavaPersistentClass
 			}
 		}
 	}
-
+	
 	protected Iterable<JaxbContainmentMapping> getContainmentMappingsWithXmlID(){
 		return new FilteringIterable<JaxbContainmentMapping>(this.getContainmentMappings()){
 			@Override
@@ -665,11 +750,11 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
+	
 	protected Iterable<JaxbContainmentMapping> getContainmentMappings() {
 		return new SubIterableWrapper<JaxbAttributeMapping, JaxbContainmentMapping>(this.getContainmentMappings_());
 	}
-
+	
 	protected Iterable<JaxbAttributeMapping> getContainmentMappings_(){
 		return new FilteringIterable<JaxbAttributeMapping>(this.getAttributeMappings()){
 			@Override
@@ -679,7 +764,7 @@ public class GenericJavaPersistentClass
 			}
 		};
 	}
-
+	
 	private Iterable<? extends JaxbAttributeMapping> getAttributeMappings() {
 		return new TransformationIterable<JaxbPersistentAttribute, JaxbAttributeMapping>(this.getAttributes()) {
 			@Override

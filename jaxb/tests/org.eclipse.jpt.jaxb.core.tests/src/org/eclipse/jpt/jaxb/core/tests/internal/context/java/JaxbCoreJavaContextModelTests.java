@@ -13,8 +13,9 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-public class JaxbCoreJavaContextModelTests extends TestCase
-{
+public class JaxbCoreJavaContextModelTests
+		extends TestCase {
+	
 	public static Test suite() {
 		TestSuite suite = new TestSuite(JaxbCoreJavaContextModelTests.class.getName());
 		suite.addTestSuite(GenericJavaElementFactoryMethodTests.class);
@@ -33,10 +34,12 @@ public class JaxbCoreJavaContextModelTests extends TestCase
 		suite.addTestSuite(GenericJavaXmlRootElementTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTests.class);
 		suite.addTestSuite(GenericJavaXmlSchemaTypeTests.class);
+		suite.addTestSuite(GenericJavaXmlSeeAlsoTests.class);
 		suite.addTestSuite(GenericJavaXmlValueMappingTests.class);
 		return suite;
 	}
-
+	
+	
 	private JaxbCoreJavaContextModelTests() {
 		super();
 		throw new UnsupportedOperationException();

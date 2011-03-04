@@ -13,17 +13,17 @@ import java.util.Vector;
 import org.eclipse.jdt.core.IAnnotation;
 import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneListIterable;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
 /**
  * javax.xml.bind.annotation.XmlSeeAlso
  */
 public final class BinaryXmlSeeAlsoAnnotation
-	extends BinaryAnnotation
-	implements XmlSeeAlsoAnnotation
-{
+		extends BinaryAnnotation
+		implements XmlSeeAlsoAnnotation {
+	
 	private final Vector<String> classes;
 
 
@@ -86,6 +86,10 @@ public final class BinaryXmlSeeAlsoAnnotation
 
 	public void removeClass(int index) {
 		throw new UnsupportedOperationException();
+	}
+	
+	public ListIterable<String> getFullyQualifiedClasses() {
+		return getClasses();
 	}
 
 	// TODO

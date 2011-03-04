@@ -35,8 +35,8 @@ import org.eclipse.jpt.jaxb.core.context.JaxbPersistentField;
 import org.eclipse.jpt.jaxb.core.context.JaxbPersistentProperty;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessOrder;
 import org.eclipse.jpt.jaxb.core.context.XmlAccessType;
-import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JAXB;
+import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceField;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMember;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceMethod;
@@ -46,32 +46,21 @@ import org.eclipse.jpt.jaxb.core.resource.java.XmlAccessorTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlAttributeAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlJavaTypeAdapterAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlRootElementAnnotation;
+import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTransientAnnotation;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlTypeAnnotation;
 import org.eclipse.jpt.jaxb.core.tests.internal.context.JaxbContextModelTestCase;
 
 
 @SuppressWarnings("nls")
-public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
-{
+public class GenericJavaPersistentClassTests
+		extends JaxbContextModelTestCase {
 	
 	public GenericJavaPersistentClassTests(String name) {
 		super(name);
 	}
-
-	private ICompilationUnit createTypeWithXmlType() throws Exception {
-		return this.createTestType(new DefaultAnnotationWriter() {
-			@Override
-			public Iterator<String> imports() {
-				return new ArrayIterator<String>(JAXB.XML_TYPE);
-			}
-			@Override
-			public void appendTypeAnnotationTo(StringBuilder sb) {
-				sb.append("@XmlType");
-			}
-		});
-	}
-
+	
+	
 	private void createTestSubType() throws Exception {
 		SourceWriter sourceWriter = new SourceWriter() {
 			public void appendSourceTo(StringBuilder sb) {
@@ -272,9 +261,9 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		};
 		this.javaProject.createCompilationUnit(PACKAGE_NAME, "AnnotationTestType.java", sourceWriter);
 	}
-
+	
     public void testModifyFactoryClass() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -303,7 +292,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateFactoryClass() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -331,7 +320,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyFactoryMethod() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -360,7 +349,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateFactoryMethod() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -388,7 +377,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifySchemaTypeName() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -423,7 +412,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateSchemaTypeName() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -455,7 +444,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyNamespace() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -489,7 +478,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 	
 	public void testUpdateNamespace() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -601,7 +590,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	 * Otherwise, the @XmlAccessorType on a package is inherited. 	
 	 */
 	public void testGetDefaultAccessType() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		this.createTestSubType();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JaxbPersistentClass childPersistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
@@ -628,7 +617,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetSuperPersistentClass() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		this.createTestSubType();
 		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
 		JaxbPersistentClass childPersistentClass = getContextRoot().getPersistentClass(PACKAGE_NAME + ".AnnotationTestTypeChild");
@@ -696,7 +685,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetPropOrder() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -723,7 +712,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testGetPropOrderSize() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -741,7 +730,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testAddProp() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -759,7 +748,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testAddProp2() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -777,7 +766,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testRemoveProp() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -805,7 +794,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testMoveProp() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -844,7 +833,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testSyncXmlNsPrefixes() throws Exception {
-		this.createTypeWithXmlType();
+		this.createAnnotatedPersistentClass();
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
 
@@ -956,7 +945,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyXmlRootElement() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -978,7 +967,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testUpdateXmlRootElement() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 		
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -2014,7 +2003,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testModifyXmlJavaTypeAdapter() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -2033,7 +2022,7 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 	}
 
 	public void testUpdateXmlJavaTypeAdapter() throws Exception {
-		createTypeWithXmlType();
+		createAnnotatedPersistentClass();
 
 		JaxbPersistentClass persistentClass = CollectionTools.get(getContextRoot().getPersistentClasses(), 0);
 		JavaResourceAbstractType resourceType = persistentClass.getJavaResourceType();
@@ -2064,7 +2053,61 @@ public class GenericJavaPersistentClassTests extends JaxbContextModelTestCase
 		assertNull(persistentClass.getXmlJavaTypeAdapter());
 		assertNull(xmlJavaTypeAdapterAnnotation);
 	}
-
+	
+	public void testModifyXmlSeeAlso() throws Exception {
+		createAnnotatedPersistentClass();
+		
+		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		
+		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(annotation);
+		
+		persistentClass.addXmlSeeAlso();
+		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNotNull(persistentClass.getXmlSeeAlso());
+		assertNotNull(annotation);
+		
+		persistentClass.removeXmlSeeAlso();
+		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(annotation);
+	}
+	
+	public void testUpdateXmlSeeAlso() throws Exception {
+		createAnnotatedPersistentClass();
+		
+		JaxbPersistentClass persistentClass = getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME);
+		JavaResourceType resourceType = persistentClass.getJavaResourceType();
+		
+		XmlSeeAlsoAnnotation annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(annotation);
+		
+		AnnotatedElement annotatedElement = this.annotatedElement(resourceType);
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(ModifiedDeclaration declaration) {
+						GenericJavaPersistentClassTests.this.addMarkerAnnotation(declaration.getDeclaration(), JAXB.XML_SEE_ALSO);
+					}
+				});
+		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNotNull(persistentClass.getXmlSeeAlso());
+		assertNotNull(annotation);
+		
+		annotatedElement.edit(
+				new Member.Editor() {
+					public void edit(
+						ModifiedDeclaration declaration) {
+							GenericJavaPersistentClassTests.this.removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
+						}
+					});
+		annotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
+		assertNull(persistentClass.getXmlSeeAlso());
+		assertNull(annotation);
+	}
+	
 	protected void addModifiers(JavaResourceMember resourceMember, final ModifierKeyword... modifiers) {
 		AnnotatedElement annotatedElement = this.annotatedElement(resourceMember);
 		annotatedElement.edit(new Member.Editor() {

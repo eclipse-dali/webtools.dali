@@ -24,8 +24,18 @@ package org.eclipse.jpt.jaxb.core.context;
  */
 public interface JaxbPersistentClass
 		extends JaxbPersistentType, JaxbClass, XmlAdaptable {
-
-
+	
+	// ******** see also ************
+	
+	String XML_SEE_ALSO_PROPERTY = "xmlSeeAlso"; //$NON-NLS-1$
+	
+	XmlSeeAlso getXmlSeeAlso();
+	
+	XmlSeeAlso addXmlSeeAlso();
+	
+	void removeXmlSeeAlso();
+	
+	
 	/********** attributes **********/
 
 	Iterable<JaxbPersistentAttribute> getAttributes();

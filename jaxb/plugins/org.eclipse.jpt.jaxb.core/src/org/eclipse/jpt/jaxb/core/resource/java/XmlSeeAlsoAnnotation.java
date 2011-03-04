@@ -25,10 +25,15 @@ import org.eclipse.jpt.common.utility.internal.iterables.ListIterable;
  * @since 3.0
  */
 public interface XmlSeeAlsoAnnotation
-	extends Annotation
-{
+		extends Annotation {
+	
 	String ANNOTATION_NAME = JAXB.XML_SEE_ALSO;
-
+	
+	/**
+	 * Change notification constant associated with the value element
+	 */
+	String CLASSES_LIST = "classes"; //$NON-NLS-1$
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlSeeAlso annotation.
 	 * Return an empty iterator if the element does not exist in Java.
@@ -39,7 +44,6 @@ public interface XmlSeeAlsoAnnotation
 	 * will return and iterable containing: "Foo", "Bar"
 	 */
 	ListIterable<String> getClasses();
-		String CLASSES_LIST = "classes"; //$NON-NLS-1$
 	
 	/**
 	 * Corresponds to the 'value' element of the XmlSeeAlso annotation.
@@ -60,15 +64,21 @@ public interface XmlSeeAlsoAnnotation
 	 * Corresponds to the 'value' element of the XmlSeeAlso annotation.
 	 */
 	void moveClass(int targetIndex, int sourceIndex);
-
-	/**
-	 * Corresponds to the 'value' element of the XmlSeeAlso annotation.
-	 */
-	void removeClass(String clazz);
-
+	
 	/**
 	 * Corresponds to the 'value' element of the XmlSeeAlso annotation.
 	 */
 	void removeClass(int index);
-
+	
+	/**
+	 * Change notification constant associated with the fully qualified classes.
+	 * Changes should occur whenever changes occur to the "classes" list, but 
+	 * may also occur with changes to the classes resolution state (import changes, e.g.)
+	 */
+	String FULLY_QUALIFIED_CLASSES_LIST = "fullyQualifiedClasses"; //$NON-NLS-1$
+	
+	/**
+	 * Return the value elements resolved to fully qualified class names
+	 */
+	ListIterable<String> getFullyQualifiedClasses();
 }

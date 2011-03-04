@@ -18,8 +18,8 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
 import org.eclipse.jpt.jaxb.core.resource.java.XmlSeeAlsoAnnotation;
 
 @SuppressWarnings("nls")
-public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
-
+public class XmlSeeAlsoAnnotationTests
+		extends JaxbJavaResourceModelTestCase {
 
 	public XmlSeeAlsoAnnotationTests(String name) {
 		super(name);
@@ -107,23 +107,8 @@ public class XmlSeeAlsoAnnotationTests extends JaxbJavaResourceModelTestCase {
 
 		assertSourceContains("@XmlSeeAlso({ Barr.class, Blah.class, Fooo.class })", cu);
 	}
-
+	
 	public void testRemoveClass() throws Exception {
-		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
-		JavaResourceType resourceType = buildJavaResourceType(cu); 
-
-		XmlSeeAlsoAnnotation xmlSeeAlsoAnnotation = (XmlSeeAlsoAnnotation) resourceType.getAnnotation(JAXB.XML_SEE_ALSO);
-		assertTrue(xmlSeeAlsoAnnotation != null);
-
-		xmlSeeAlsoAnnotation.removeClass("Foo");
-		assertSourceContains("@XmlSeeAlso(value = Bar.class)", cu);
-
-		xmlSeeAlsoAnnotation.removeClass("Bar");
-		assertSourceContains("@XmlSeeAlso", cu);
-		assertSourceDoesNotContain("value", cu);
-	}
-
-	public void testRemoveClassIndex() throws Exception {
 		ICompilationUnit cu = this.createTestXmlSeeAlsoWithValue();
 		JavaResourceType resourceType = buildJavaResourceType(cu); 
 
