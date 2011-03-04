@@ -11,12 +11,12 @@ package org.eclipse.jpt.common.core.internal.utility.jdt;
 
 import java.util.HashSet;
 import java.util.List;
-
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
 import org.eclipse.jdt.core.dom.Annotation;
+import org.eclipse.jdt.core.dom.ArrayInitializer;
 import org.eclipse.jdt.core.dom.CompilationUnit;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IAnnotationBinding;
@@ -31,6 +31,8 @@ import org.eclipse.jpt.common.utility.JavaType;
 import org.eclipse.jpt.common.utility.MethodSignature;
 import org.eclipse.jpt.common.utility.internal.SimpleJavaType;
 import org.eclipse.jpt.common.utility.internal.SimpleMethodSignature;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
+import org.eclipse.jpt.common.utility.internal.iterables.TransformationIterable;
 
 /**
  * Convenience methods for dealing with JDT ASTs.
@@ -101,6 +103,20 @@ public class ASTTools {
 	}
 	
 	/**
+	 * If the specified expression is an array initializer, return an an iterable
+	 * on the types' fully qualfified names.  
+	 * The results may include nulls.
+	 */
+	public static Iterable<String> resolveFullyQualifiedNames(Expression expression) {
+		return new TransformationIterable<ITypeBinding, String>(resolveTypeBindings(expression)) {
+			@Override
+			protected String transform(ITypeBinding o) {
+				return (o == null) ? null : o.getQualifiedName();
+			}
+		};
+	}
+	
+	/**
 	 * If the specified expression is a type literal, return the corresponding
 	 * type binding.
 	 */
@@ -110,7 +126,25 @@ public class ASTTools {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * If the specified expression is an array initializer, return an iterable on 
+	 * the corresponding type bindings for each sub-expression.
+	 * The result may include nulls.
+	 */
+	public static Iterable<ITypeBinding> resolveTypeBindings(Expression expression) {
+		if (expression.getNodeType() == ASTNode.ARRAY_INITIALIZER) {
+			ArrayInitializer arrayExpression = (ArrayInitializer) expression;
+			return new TransformationIterable<Expression, ITypeBinding>(arrayExpression.expressions()) {
+				@Override
+				protected ITypeBinding transform(Expression o) {
+					return resolveTypeBinding(o);
+				}
+			};
+		}
+		return EmptyIterable.instance();
+	}
+	
 	public static MethodSignature buildMethodSignature(MethodDeclaration methodDeclaration) {
 		return new SimpleMethodSignature(
 				methodDeclaration.getName().getFullyQualifiedName(),
