@@ -568,6 +568,15 @@ public abstract class AnnotationTestCase
 		}
 		return null;
 	}
+	
+	protected ArrayInitializer newArrayInitializer(AST ast, Expression... expressions) {
+		ArrayInitializer arrayInitializer = ast.newArrayInitializer();
+		for (Expression expression : expressions) {
+			arrayInitializer.expressions().add(expression);
+		}
+		return arrayInitializer;
+	}
+	
 	/**
 	 * Build a number literal and set its initial value to the specified literal.
 	 */
