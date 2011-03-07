@@ -65,7 +65,6 @@ public class GenericJavaXmlSeeAlso
 		this.valueContainer.moveContextElement(targetIndex, sourceIndex);
 	}
 	
-	@Override
 	public Iterable<String> getDirectlyReferencedTypeNames() {
 		return this.annotation.getFullyQualifiedClasses();
 	}
