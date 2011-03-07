@@ -17,18 +17,18 @@ import org.eclipse.jpt.common.core.libval.LibraryValidator;
 import org.eclipse.jpt.common.eclipselink.core.internal.libval.EclipseLinkLibValUtil;
 import org.eclipse.jpt.jaxb.core.internal.libprov.JaxbUserLibraryProviderInstallOperationConfig;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.eclipselink.core.MoxyPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 import org.eclipse.osgi.service.resolver.VersionRange;
 
 
 /**
- * Library validator for Moxy user libraries.
+ * Library validator for EclipseLink JAXB user libraries.
  * 
  * In order to validate that the correct eclipselink.jar is present in the user library, the version
  * class which appears in standard EclipseLink libraries will be examined and compared against the
  * union of calculated version ranges, depending on the platform specified in the config.
  */
-public class MoxyUserLibraryValidator
+public class ELJaxbUserLibraryValidator
 		implements LibraryValidator {
 	
 	public IStatus validate(JptLibraryProviderInstallOperationConfig config) {
@@ -37,7 +37,7 @@ public class MoxyUserLibraryValidator
 		JaxbPlatformDescription platform = jaxbConfig.getJaxbPlatform();
 		Set<VersionRange> versionRanges = new HashSet<VersionRange>();
 		
-		if (MoxyPlatform.VERSION_2_3.equals(platform)) {
+		if (ELJaxbPlatform.VERSION_2_3.equals(platform)) {
 			versionRanges.add(new VersionRange("[2.3, 3.0)")); //$NON-NLS-1$
 		}
 		

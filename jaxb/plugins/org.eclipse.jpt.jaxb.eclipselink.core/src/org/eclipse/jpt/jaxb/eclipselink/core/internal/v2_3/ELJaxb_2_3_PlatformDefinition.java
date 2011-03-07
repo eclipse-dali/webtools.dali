@@ -14,14 +14,14 @@ import org.eclipse.jpt.jaxb.core.internal.jaxb21.GenericJaxb_2_1_Factory;
 import org.eclipse.jpt.jaxb.core.internal.jaxb22.AbstractJaxb_2_2_PlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
-import org.eclipse.jpt.jaxb.eclipselink.core.MoxyPlatform;
+import org.eclipse.jpt.jaxb.eclipselink.core.ELJaxbPlatform;
 
 
-public class Moxy_2_3_PlatformDefinition
+public class ELJaxb_2_3_PlatformDefinition
 		extends  AbstractJaxb_2_2_PlatformDefinition {
 	
 	// singleton
-	private static final JaxbPlatformDefinition INSTANCE = new Moxy_2_3_PlatformDefinition();
+	private static final JaxbPlatformDefinition INSTANCE = new ELJaxb_2_3_PlatformDefinition();
 	
 	/**
 	 * Return the singleton.
@@ -31,13 +31,13 @@ public class Moxy_2_3_PlatformDefinition
 	}
 	
 	
-	protected Moxy_2_3_PlatformDefinition() {
+	protected ELJaxb_2_3_PlatformDefinition() {
 		super();
 	}
 	
 	
 	public JaxbPlatformDescription getDescription() {
-		return MoxyPlatform.VERSION_2_3;
+		return ELJaxbPlatform.VERSION_2_3;
 	}
 
 	public JaxbFactory getFactory() {

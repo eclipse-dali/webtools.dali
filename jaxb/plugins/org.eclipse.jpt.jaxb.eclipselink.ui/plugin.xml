@@ -16,9 +16,9 @@
 		point="org.eclipse.jpt.jaxb.ui.jaxbPlatformUis">
 		
 		<jaxbPlatformUi
-			id="moxy_2_3.ui"
-			jaxbPlatform="moxy_2_3"
-			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3.Moxy_2_3_PlatformUi"/>
+			id="eclipselink_2_3.ui"
+			jaxbPlatform="eclipselink_2_3"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3.ELJaxb_2_3_PlatformUi"/>
 		
 	</extension>
 	

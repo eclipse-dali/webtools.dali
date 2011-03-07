@@ -14,17 +14,17 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformGroupDescription;
 
 
-public class MoxyPlatform {
+public class ELJaxbPlatform {
 	
 	public static final JaxbPlatformGroupDescription GROUP 
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("moxy"); //$NON-NLS-1$
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink"); //$NON-NLS-1$
 	
 	public static final JaxbPlatformDescription VERSION_2_3
-			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("moxy_2_3"); //$NON-NLS-1$
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_3"); //$NON-NLS-1$
 	
 	
 	/**
 	 * Not for instantiation
 	 */
-	private MoxyPlatform() {}
+	private ELJaxbPlatform() {}
 }

@@ -7,16 +7,16 @@
  *  Contributors: 
  *  	Oracle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3;
+package org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3;
 
-import org.eclipse.jpt.jaxb.ui.internal.jaxb21.GenericJaxb_2_1_NavigatorUi;
-import org.eclipse.jpt.jaxb.ui.navigator.JaxbNavigatorUi;
-import org.eclipse.jpt.jaxb.ui.platform.JaxbPlatformUi;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
+import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinitionFactory;
 
-public class Moxy_2_3_PlatformUi
-		implements JaxbPlatformUi {
+
+public class ELJaxb_2_3_PlatformDefinitionFactory
+		implements JaxbPlatformDefinitionFactory {
 	
-	public JaxbNavigatorUi getNavigatorUi() {
-		return GenericJaxb_2_1_NavigatorUi.instance();
+	public JaxbPlatformDefinition buildJaxbPlatformDefinition() {
+		return ELJaxb_2_3_PlatformDefinition.instance();
 	}
 }

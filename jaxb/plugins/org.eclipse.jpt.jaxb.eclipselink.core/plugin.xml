@@ -16,14 +16,14 @@
 		point="org.eclipse.jpt.jaxb.core.jaxbPlatforms">
 		
 		<jaxbPlatformGroup
-        	id="moxy"
-        	label="%MOXY_PLATFORM_GROUP_LABEL"/>
+        	id="eclipselink"
+        	label="%ECLIPSELINK_PLATFORM_GROUP_LABEL"/>
 		
 		<jaxbPlatform
-			id="moxy_2_3"
-			label="%MOXY_2_3_PLATFORM_LABEL"
-			factoryClass="org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.Moxy_2_3_PlatformDefinitionFactory"
-			group="moxy"
+			id="eclipselink_2_3"
+			label="%ECLIPSELINK_2_3_PLATFORM_LABEL"
+			factoryClass="org.eclipse.jpt.jaxb.eclipselink.core.internal.v2_3.ELJaxb_2_3_PlatformDefinitionFactory"
+			group="eclipselink"
 			jaxbFacetVersion="2.2"
 			default="false"/>
 		
@@ -34,15 +34,15 @@
 		point="org.eclipse.jpt.common.core.libraryValidators">
 		
 		<libraryValidator
-			id="moxyUserLibraryValidator"
-			class="org.eclipse.jpt.jaxb.eclipselink.core.internal.libval.MoxyUserLibraryValidator">
+			id="eclipselinkUserLibraryValidator"
+			class="org.eclipse.jpt.jaxb.eclipselink.core.internal.libval.ELJaxbUserLibraryValidator">
 			<enablement>
 				<and>
 					<with variable="libraryProvider">
 						<test property="org.eclipse.jpt.common.core.extendsId" value="jaxb-user-library-provider"/>
 					</with>
 					<with variable="config">
-						<test property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup" value="moxy"/>
+						<test property="org.eclipse.jpt.jaxb.core.jaxbPlatformGroup" value="eclipselink"/>
 					</with>
 				</and>
 			</enablement>
