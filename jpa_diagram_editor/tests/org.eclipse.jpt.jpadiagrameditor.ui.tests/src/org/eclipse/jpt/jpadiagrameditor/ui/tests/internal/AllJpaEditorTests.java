@@ -42,10 +42,10 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 // I have commented out the tests that required the persistence.jar, 
-// please use a "org.eclipse.jpt.jpa.jar" env. var. to access it.
+// please use a "org.eclipse.jpt.jpa.jar" environment variable to access it.
 //
-// Before un-commented out these tests, make sure that they are 
-// passing locally with a "org.eclipse.jpt.jpa.jar" env. var. 
+// Before un-commented out these tests, make sure that they are passing locally
+// by using the persistence.jar through the environment variable "org.eclipse.jpt.jpa.jar".
 // If not it will break the build.
 // -Tran Le
 
