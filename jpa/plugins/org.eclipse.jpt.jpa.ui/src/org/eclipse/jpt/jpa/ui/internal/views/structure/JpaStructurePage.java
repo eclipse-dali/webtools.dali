@@ -222,6 +222,9 @@ public class JpaStructurePage
 		this.jpaFile = jpaFile;
 		SWTUtil.asyncExec(new Runnable(){						
 			public void run() {
+				if (JpaStructurePage.this.viewer.getControl().isDisposed()) {
+					return;
+				}
 				JpaStructurePage.this.viewer.setInput(JpaStructurePage.this.jpaFile);
 			}
 		});
