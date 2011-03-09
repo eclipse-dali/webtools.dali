@@ -20,6 +20,7 @@ import org.eclipse.jpt.common.utility.internal.model.value.swing.ObjectListSelec
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.Entity;
+import org.eclipse.jpt.jpa.core.context.ReadOnlySecondaryTable;
 import org.eclipse.jpt.jpa.core.context.SecondaryTable;
 import org.eclipse.swt.widgets.Composite;
 
@@ -97,7 +98,7 @@ public abstract class AbstractSecondaryTablesComposite<T extends Entity> extends
 			@Override
 			public String getText(Object element) {
 				// TODO display a qualified name instead
-				SecondaryTable secondaryTable = (SecondaryTable) element;
+				ReadOnlySecondaryTable secondaryTable = (ReadOnlySecondaryTable) element;
 				if (secondaryTable.getName() != null) {
 					return secondaryTable.getName();
 				}
