@@ -340,8 +340,13 @@ public abstract class AbstractComboModelAdapter<E> {
 		if (this.comboHolder.isDisposed()) {
 			return;
 		}
-		this.comboHolder.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
-		this.synchronizeComboSelection();
+		this.comboHolder.setPopulating(true);
+		try {
+			this.comboHolder.remove(event.getIndex(), event.getIndex() + event.getItemsSize() - 1);
+		}
+		finally {
+			this.comboHolder.setPopulating(false);
+		}
 	}
 
 	/**

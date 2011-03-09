@@ -10,22 +10,17 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-
 import org.eclipse.jpt.common.ui.internal.widgets.EnumFormComboViewer;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.model.value.CollectionAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SortedListValueModelAdapter;
-import org.eclipse.jpt.common.utility.internal.model.value.TransformationListValueModel;
 import org.eclipse.jpt.common.utility.model.value.CollectionValueModel;
 import org.eclipse.jpt.common.utility.model.value.ListValueModel;
 import org.eclipse.jpt.common.utility.model.value.PropertyValueModel;
 import org.eclipse.jpt.common.utility.model.value.WritablePropertyValueModel;
 import org.eclipse.jpt.jpa.core.context.GeneratedValue;
 import org.eclipse.jpt.jpa.core.context.GenerationType;
-import org.eclipse.jpt.jpa.core.context.Generator;
 import org.eclipse.jpt.jpa.core.context.IdMapping;
 import org.eclipse.jpt.jpa.core.context.persistence.PersistenceUnit;
 import org.eclipse.jpt.jpa.ui.internal.JpaHelpContextIds;
@@ -79,9 +74,9 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		addLabeledEditableCombo(
 			container,
 			JptUiDetailsMessages.GeneratedValueComposite_generatorName,
-			buildGeneratorNamesModel(),
+			buildGeneraterNameListHolder(),
 			buildGeneratorNameHolder(),
-			JpaHelpContextIds.MAPPING_GENERATED_VALUE_STRATEGY
+			JpaHelpContextIds.MAPPING_GENERATED_VALUE_GENERATOR_NAME
 		);
 	}
 
@@ -165,30 +160,15 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		};
 	}
 
-	protected ListValueModel<String> buildGeneratorNamesModel() {
-		return new TransformationListValueModel<Generator, String>(this.buildSortedGeneratorsModel()) {
-			@Override
-			protected String transformItem_(Generator item) {
-				return item.getName();
-			}
-		};
+	protected ListValueModel<String> buildGeneraterNameListHolder() {
+		return new SortedListValueModelAdapter<String>(this.buildGeneratorNamesModel());
 	}
 
-	protected ListValueModel<Generator> buildSortedGeneratorsModel() {
-		return new SortedListValueModelAdapter<Generator>(this.buildGeneratorsModel(), GENERATOR_COMPARATOR);
-	}
-
-	protected static final Comparator<Generator> GENERATOR_COMPARATOR = new Comparator<Generator>() {
-		public int compare(Generator generator1, Generator generator2) {
-			return generator1.getName().compareTo(generator2.getName());
-		}
-	};
-
-	protected CollectionValueModel<Generator> buildGeneratorsModel() {
-		return new CollectionAspectAdapter<PersistenceUnit, Generator>(this.buildPersistenceUnitModel(), PersistenceUnit.GENERATORS_COLLECTION) {
+	protected CollectionValueModel<String> buildGeneratorNamesModel() {
+		return new CollectionAspectAdapter<PersistenceUnit, String>(this.buildPersistenceUnitModel(), PersistenceUnit.GENERATORS_COLLECTION) {
 			@Override
-			protected Iterator<Generator> iterator_() {
-				return this.subject.generators();
+			protected Iterable<String> getIterable() {
+				return this.subject.getUniqueGeneratorNames();
 			}
 			@Override
 			protected int size_() {
@@ -201,7 +181,7 @@ public class GeneratedValueComposite extends Pane<IdMapping>
 		return new PropertyAspectAdapter<IdMapping, PersistenceUnit>(getSubjectHolder()) {
 			@Override
 			protected PersistenceUnit buildValue_() {
-				return getSubject().getPersistenceUnit();
+				return this.subject.getPersistenceUnit();
 			}
 		};
 	}

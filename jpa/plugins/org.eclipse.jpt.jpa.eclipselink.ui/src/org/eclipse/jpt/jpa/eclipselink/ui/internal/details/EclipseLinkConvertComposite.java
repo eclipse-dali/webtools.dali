@@ -103,6 +103,7 @@ public class EclipseLinkConvertComposite
 			buildNoConverterHolder(), 
 			null);
 		PropertyValueModel<EclipseLinkConverter> converterHolder = buildConverterHolder();
+		
 		// CustomConverter
 		addRadioButton(
 			subSection, 
@@ -159,14 +160,15 @@ public class EclipseLinkConvertComposite
 
 			@Override
 			protected void setValue_(String value) {
-				// Convert the default value to an empty string
+				// Convert the default value to the default converter
 				if ((value != null) && (value.startsWith(DEFAULT_KEY))) {
-					value = "";
+					value = EclipseLinkConvert.DEFAULT_CONVERTER_NAME;
 				}
 				this.subject.setSpecifiedConverterName(value);
 			}
 		};
 	}
+	
 	private ListValueModel<String> buildConvertNameListHolder() {
 		java.util.List<ListValueModel<String>> list = new ArrayList<ListValueModel<String>>();
 		list.add(buildDefaultNameListHolder());
@@ -228,7 +230,10 @@ public class EclipseLinkConvertComposite
 						);
 					}
 					else {
-						value = JptCommonUiMessages.DefaultEmpty;
+						value = NLS.bind(
+							JptCommonUiMessages.DefaultWithOneParam,
+							EclipseLinkConvert.NO_CONVERTER
+						);
 					}
 				}
 
