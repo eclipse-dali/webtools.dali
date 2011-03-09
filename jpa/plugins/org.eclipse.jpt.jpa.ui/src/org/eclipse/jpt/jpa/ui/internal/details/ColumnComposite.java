@@ -10,11 +10,11 @@
 package org.eclipse.jpt.jpa.ui.internal.details;
 
 import java.util.Collection;
-import java.util.Iterator;
 import org.eclipse.jpt.common.ui.internal.JptCommonUiMessages;
 import org.eclipse.jpt.common.ui.internal.widgets.IntegerCombo;
 import org.eclipse.jpt.common.ui.internal.widgets.Pane;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.iterables.EmptyIterable;
 import org.eclipse.jpt.common.utility.internal.model.value.PropertyAspectAdapter;
 import org.eclipse.jpt.common.utility.internal.model.value.SimplePropertyValueModel;
 import org.eclipse.jpt.common.utility.internal.model.value.TransformationPropertyValueModel;
@@ -258,12 +258,8 @@ public class ColumnComposite
 			
 			@Override
 			protected Iterable<String> getValues_() {
-				return CollectionTools.iterable(this.values());
-			}
-			
-			protected Iterator<String> values() {
 				Column column = this.getColumn();
-				return (column == null) ? null : column.candidateTableNames();
+				return (column != null) ? CollectionTools.iterable(column.candidateTableNames()) : EmptyIterable.<String> instance();
 			}
 			
 			protected Column getColumn() {
