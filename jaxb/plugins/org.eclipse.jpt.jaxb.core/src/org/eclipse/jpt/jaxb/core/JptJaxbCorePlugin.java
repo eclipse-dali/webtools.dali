@@ -18,11 +18,13 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.content.IContentType;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jpt.common.core.JptResourceType;
 import org.eclipse.jpt.jaxb.core.internal.JptJaxbCoreMessages;
 import org.eclipse.jpt.jaxb.core.internal.platform.JaxbPlatformManagerImpl;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDescription;
@@ -52,7 +54,7 @@ public class JptJaxbCorePlugin
 		extends Plugin {
 	
 	private static volatile boolean flushPreferences = true;
-
+	
 	/**
 	 * The plug-in identifier of Dali JAXB core
 	 * (value <code>"org.eclipse.jpt.jaxb.core"</code>).
@@ -109,6 +111,27 @@ public class JptJaxbCorePlugin
 	 */
 	public static final String VALIDATION_MARKER_ID = PLUGIN_ID + ".jaxbProblemMarker";  //$NON-NLS-1$
 
+	/**
+	 * The content type for jaxb.index files
+	 */
+	public static final IContentType JAXB_INDEX_CONTENT_TYPE = getJaxbContentType("jaxbIndex");
+	
+	/**
+	 * The resource type for jaxb.index files
+	 */
+	public static final JptResourceType JAXB_INDEX_RESOURCE_TYPE = new JptResourceType(JAXB_INDEX_CONTENT_TYPE);
+	
+	private static IContentType getJaxbContentType(String contentType) {
+		return getContentType(CONTENT_PREFIX_ + contentType);
+	}
+	
+	public static final String CONTENT_PREFIX = PLUGIN_ID_ + "content"; //$NON-NLS-1$
+	
+	public static final String CONTENT_PREFIX_ = CONTENT_PREFIX + '.';
+	
+	private static IContentType getContentType(String contentType) {
+		return Platform.getContentTypeManager().getContentType(contentType);
+	}
 	
 	
 	// **************** fields ************************************************

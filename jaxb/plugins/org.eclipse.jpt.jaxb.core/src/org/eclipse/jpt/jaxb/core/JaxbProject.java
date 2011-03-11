@@ -26,6 +26,7 @@ import org.eclipse.jpt.jaxb.core.platform.JaxbPlatform;
 import org.eclipse.jpt.jaxb.core.platform.JaxbPlatformDefinition;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
+import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -201,6 +202,14 @@ public interface JaxbProject
 	 * Return null if invalid or absent or if the kind does not match.
 	 */
 	JavaResourceAbstractType getJavaResourceType(String typeName, JavaResourceAbstractType.Kind kind);
+	
+	
+	// **************** jaxb.index resources *****************************************
+	
+	/**
+	 * Return all jaxb.index resource models within the project
+	 */
+	Iterable<JaxbIndexResource> getJaxbIndexResources();
 	
 	
 	// **************** context model *****************************************

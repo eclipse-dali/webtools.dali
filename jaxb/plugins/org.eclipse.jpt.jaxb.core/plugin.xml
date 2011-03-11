@@ -22,6 +22,18 @@
 	
 	<!-- ***** extensions ***** -->
 	
+	<extension
+		point="org.eclipse.core.contenttype.contentTypes">
+		
+		<content-type
+			id="org.eclipse.jpt.jaxb.core.content.jaxbIndex"
+			name="%JAXB_INDEX_CONTENT"
+			base-type="org.eclipse.core.runtime.text"
+			priority="high"
+			file-names="jaxb.index"/>
+		
+	</extension>
+	
 	<extension 
 		point="org.eclipse.core.expressions.propertyTesters">
 		

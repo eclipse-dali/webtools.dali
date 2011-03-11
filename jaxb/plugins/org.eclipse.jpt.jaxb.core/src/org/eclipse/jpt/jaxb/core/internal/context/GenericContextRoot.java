@@ -17,7 +17,9 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.jpt.common.utility.internal.ClassName;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
+import org.eclipse.jpt.common.utility.internal.NotNullFilter;
 import org.eclipse.jpt.common.utility.internal.StringTools;
+import org.eclipse.jpt.common.utility.internal.iterables.CompositeIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.FilteringIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.LiveCloneIterable;
 import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
@@ -37,6 +39,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceAbstractType;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceEnum;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceType;
+import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.wst.validation.internal.provisional.core.IMessage;
 import org.eclipse.wst.validation.internal.provisional.core.IReporter;
 
@@ -99,7 +102,7 @@ public class GenericContextRoot
 			this.types.put(registryResourceType.getName(), buildRegistry(registryResourceType));
 		}
 		
-		// calculate initial set of persistent types (annotated with @XmlType)
+		// calculate initial set of persistent types (annotated with @XmlType or listed in jaxb.index files)
 		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialPersistentTypes();
 		
 		// while there are resource types to process or types to scan, continue to do so
@@ -197,7 +200,7 @@ public class GenericContextRoot
 			}
 		}
 		
-		// calculate initial set of persistent types (annotated with @XmlType)
+		// calculate initial set of persistent types (annotated with @XmlType or listed in jaxb.index files)
 		final Set<JavaResourceAbstractType> resourceTypesToProcess = calculateInitialPersistentTypes();
 		
 		// while there are resource types to process or types to scan, continue to do so
@@ -299,15 +302,34 @@ public class GenericContextRoot
 	
 	/*
 	 * Calculate set of resource types annotated with @XmlType (and not @XmlRegistry)
+	 * plus those referred to in jaxb.index files
 	 */
 	protected Set<JavaResourceAbstractType> calculateInitialPersistentTypes() {
-		return CollectionTools.set(
+		Set<JavaResourceAbstractType> set = CollectionTools.set(
 				new FilteringIterable<JavaResourceAbstractType>(getJaxbProject().getJavaSourceResourceTypes()) {
 					@Override
 					protected boolean accept(JavaResourceAbstractType o) {
 						return o.getAnnotation(JAXB.XML_TYPE) != null && o.getAnnotation(JAXB.XML_REGISTRY) == null;
 					}
 				});
+		CollectionTools.addAll(
+				set,
+				new FilteringIterable<JavaResourceAbstractType>(
+						new TransformationIterable<String, JavaResourceAbstractType>(
+								new CompositeIterable<String>(
+										new TransformationIterable<JaxbIndexResource, Iterable<String>>(getJaxbProject().getJaxbIndexResources()) {
+											@Override
+											protected Iterable<String>transform(JaxbIndexResource o) {
+												return o.getFullyQualifiedClassNames();
+											}
+										})) {
+							@Override
+							protected JavaResourceAbstractType transform(String o) {
+								return getJaxbProject().getJavaResourceType(o);
+							}
+						},
+						NotNullFilter.<JavaResourceAbstractType>instance()));
+		return set;
 	}
 	
 	protected void processType(JavaResourceAbstractType resourceType, Set<String> typesToUpdate) {

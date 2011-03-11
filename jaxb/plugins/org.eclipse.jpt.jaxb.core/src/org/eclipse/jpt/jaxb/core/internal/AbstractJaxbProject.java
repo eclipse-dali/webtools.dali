@@ -76,6 +76,7 @@ import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceCompilationUnit;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourceNode;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackage;
 import org.eclipse.jpt.jaxb.core.resource.java.JavaResourcePackageInfoCompilationUnit;
+import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 import org.eclipse.jst.common.project.facet.core.libprov.ILibraryProvider;
 import org.eclipse.jst.common.project.facet.core.libprov.LibraryInstallDelegate;
 import org.eclipse.jst.j2ee.model.internal.validation.ValidationCancelledException;
@@ -896,8 +897,20 @@ public abstract class AbstractJaxbProject
 //	protected Iterable<IPackageFragmentRoot> getPackageFragmentRoots() throws JavaModelException {
 //		return new ArrayIterable<IPackageFragmentRoot>(this.getJavaProject().getPackageFragmentRoots());
 //	}
-
-
+	
+	
+	// **************** jaxb.index resources *****************************************
+	
+	public Iterable<JaxbIndexResource> getJaxbIndexResources() {
+		return new TransformationIterable<JaxbFile, JaxbIndexResource>(getJaxbFiles(JptJaxbCorePlugin.JAXB_INDEX_CONTENT_TYPE)) {
+			@Override
+			protected JaxbIndexResource transform(JaxbFile o) {
+				return (JaxbIndexResource) o.getResourceModel();
+			}
+		};
+	}
+	
+	
 	// ********** Java events **********
 
 	// TODO handle changes to external projects
