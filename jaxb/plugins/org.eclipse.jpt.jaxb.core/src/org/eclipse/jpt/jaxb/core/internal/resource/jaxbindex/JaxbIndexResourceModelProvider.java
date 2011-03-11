@@ -26,18 +26,19 @@ import org.eclipse.jpt.common.utility.internal.iterables.SnapshotCloneIterable;
 import org.eclipse.jpt.jaxb.core.JaxbProject;
 import org.eclipse.jpt.jaxb.core.JaxbResourceModelProvider;
 import org.eclipse.jpt.jaxb.core.JptJaxbCorePlugin;
+import org.eclipse.jpt.jaxb.core.resource.jaxbindex.JaxbIndexResource;
 
 
 public class JaxbIndexResourceModelProvider
 		implements JaxbResourceModelProvider {
 	
 	// singleton
-	private static final JaxbResourceModelProvider INSTANCE = new JaxbIndexResourceModelProvider();
+	private static final JaxbIndexResourceModelProvider INSTANCE = new JaxbIndexResourceModelProvider();
 	
 	/**
 	 * Return the singleton.
 	 */
-	public static JaxbResourceModelProvider instance() {
+	public static JaxbIndexResourceModelProvider instance() {
 		return INSTANCE;
 	}
 	
@@ -70,6 +71,10 @@ public class JaxbIndexResourceModelProvider
 	}
 	
 	public JptResourceModel buildResourceModel(JaxbProject jaxbProject, IFile file) {
+		return buildResourceModel(file);
+	}
+	
+	public JaxbIndexResource buildResourceModel(IFile file) {
 		JaxbIndexResourceImpl resource = this.models.get(file);
 		if (resource != null) {
 			return resource;
