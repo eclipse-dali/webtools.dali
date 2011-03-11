@@ -165,7 +165,7 @@ public class JPACreateFactory {
 		return ProjectFacetsManager.getProjectFacet(facetName).getVersion(versionName);
 	}
 	
-	private static String getSystemProperty(String propertyName) {
+	protected static String getSystemProperty(String propertyName) {
 		return System.getProperty(propertyName);
 	}
 
@@ -191,16 +191,7 @@ public class JPACreateFactory {
 	}
 	
 	public static String jpaJarName() {
-		File file = null;
-		try {
-			URL bundleRoot =  JPAEditorTestsActivator.getDefault().getBundle().getEntry("/resources/javax.persistence_1.0.0.v200905011740.jar");   
-			URL fileURL = FileLocator.toFileURL(bundleRoot);
-			fileURL = new URL(URLEscaper.escape(fileURL.toString()));
-			file = new File(fileURL.toURI());			
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return file.getAbsolutePath();
+		return getSystemProperty(JPA_JAR_NAME_SYSTEM_PROPERTY);
 	}
 	
 	public IFile createEntity(JpaProject jpaProject, String fullyQualifiedName) throws Exception {
