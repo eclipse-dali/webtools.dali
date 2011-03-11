@@ -21,22 +21,9 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.graphiti.feature" version="0.8.0"/>
+      <import feature="org.eclipse.graphiti.feature" version="0.8.0" match="greaterOrEqual"/>
+      <import feature="org.eclipse.jpt.jpa.feature" version="3.0.0" match="greaterOrEqual"/>
    </requires>
-
-   <plugin
-         id="org.eclipse.jpt.common.utility"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.jpt.common.core"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
 
    <plugin
          id="org.eclipse.jpt.jpadiagrameditor.ui"
