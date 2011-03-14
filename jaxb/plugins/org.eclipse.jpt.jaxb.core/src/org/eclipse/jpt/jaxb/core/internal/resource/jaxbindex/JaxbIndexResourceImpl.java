@@ -10,6 +10,7 @@
 package org.eclipse.jpt.jaxb.core.internal.resource.jaxbindex;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
@@ -74,6 +75,14 @@ public class JaxbIndexResourceImpl
 			}
 			catch (Exception ex) {
 				JptJaxbCorePlugin.log(ex);
+			}
+			finally {
+				try {
+					reader.close();
+				}
+				catch (IOException ioe) {
+					JptJaxbCorePlugin.log(ioe);
+				}
 			}
 		}
 	}
