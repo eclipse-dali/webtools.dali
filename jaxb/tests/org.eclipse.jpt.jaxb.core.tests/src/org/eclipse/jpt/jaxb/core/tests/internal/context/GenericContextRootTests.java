@@ -9,9 +9,12 @@
  ******************************************************************************/
 package org.eclipse.jpt.jaxb.core.tests.internal.context;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Iterator;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jdt.core.ICompilationUnit;
 import org.eclipse.jdt.core.dom.Annotation;
 import org.eclipse.jdt.core.dom.Expression;
@@ -551,6 +554,49 @@ public class GenericContextRootTests
 						removeAnnotation(declaration, JAXB.XML_SEE_ALSO);
 					}
 				});
+		
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+	}
+	
+	public void testJaxbIndex() throws Exception {
+		final String otherClassName = "Other" + TYPE_NAME;
+		final String fqOtherClassName = PACKAGE_NAME_ + otherClassName;
+		final String otherClassName2 = "Other" + TYPE_NAME + "2";
+		final String fqOtherClassName2 = PACKAGE_NAME_ + otherClassName2;
+		createUnannotatedClassNamed(otherClassName);
+		createUnannotatedClassNamed(otherClassName2);
+		
+		// make sure unannotated other classes are not in context
+		assertTrue(CollectionTools.isEmpty(getContextRoot().getPersistentClasses()));
+		
+		createAnnotatedPersistentClass();
+		JavaResourceType thisType = (JavaResourceType) getJaxbProject().getJavaResourceType(FULLY_QUALIFIED_TYPE_NAME);
+		AnnotatedElement annotatedType = annotatedElement(thisType);
+		
+		// make sure unannotated other classes are not in context
+		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		
+		// add a jaxb.index with one class
+		IFile jaxbIndex = getJavaProject().getProject().getFile(new Path("src/test/jaxb.index"));
+		InputStream stream = new ByteArrayInputStream(otherClassName.getBytes());
+		jaxbIndex.create(stream, true, null);
+		
+		assertEquals(2, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		
+		// change to jaxb.index with two classes
+		jaxbIndex.setContents(new ByteArrayInputStream((otherClassName + CR + otherClassName2).getBytes()), true, false, null);
+		
+		assertEquals(3, CollectionTools.size(getContextRoot().getPersistentClasses()));
+		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName));
+		assertNotNull(getContextRoot().getPersistentClass(fqOtherClassName2));
+		
+		// clear the jaxb.index
+		jaxbIndex.setContents(new ByteArrayInputStream(new byte[0]), true, false, null);
 		
 		assertEquals(1, CollectionTools.size(getContextRoot().getPersistentClasses()));
 		assertNotNull(getContextRoot().getPersistentClass(FULLY_QUALIFIED_TYPE_NAME));
