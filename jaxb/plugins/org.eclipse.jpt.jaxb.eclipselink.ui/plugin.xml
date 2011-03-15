@@ -16,6 +16,16 @@
 		point="org.eclipse.jpt.jaxb.ui.jaxbPlatformUis">
 		
 		<jaxbPlatformUi
+			id="eclipselink_2_1.ui"
+			jaxbPlatform="eclipselink_2_1"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_1.ELJaxb_2_1_PlatformUi"/>
+		
+		<jaxbPlatformUi
+			id="eclipselink_2_2.ui"
+			jaxbPlatform="eclipselink_2_2"
+			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_2.ELJaxb_2_2_PlatformUi"/>
+		
+		<jaxbPlatformUi
 			id="eclipselink_2_3.ui"
 			jaxbPlatform="eclipselink_2_3"
 			class="org.eclipse.jpt.jaxb.eclipselink.ui.internal.v2_3.ELJaxb_2_3_PlatformUi"/>

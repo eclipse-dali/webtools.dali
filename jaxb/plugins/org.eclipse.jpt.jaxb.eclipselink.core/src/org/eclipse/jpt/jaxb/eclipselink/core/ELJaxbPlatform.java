@@ -19,6 +19,12 @@ public class ELJaxbPlatform {
 	public static final JaxbPlatformGroupDescription GROUP 
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatformGroup("eclipselink"); //$NON-NLS-1$
 	
+	public static final JaxbPlatformDescription VERSION_2_1
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_1"); //$NON-NLS-1$
+	
+	public static final JaxbPlatformDescription VERSION_2_2
+			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_2"); //$NON-NLS-1$
+	
 	public static final JaxbPlatformDescription VERSION_2_3
 			= JptJaxbCorePlugin.getJaxbPlatformManager().getJaxbPlatform("eclipselink_2_3"); //$NON-NLS-1$
 	
