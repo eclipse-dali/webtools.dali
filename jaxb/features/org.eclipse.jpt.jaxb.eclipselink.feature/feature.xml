@@ -21,10 +21,14 @@
    </license>
 
    <requires>
-      <import feature="org.eclipse.jpt.jaxb.feature" version="1.0.0"/>
+      <import feature="org.eclipse.jpt.jaxb.feature" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jpt.common.eclipselink.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.persistence.moxy" version="2.3.0" match="greaterOrEqual"/>
    </requires>
+
+	<plugin
+         id="org.eclipse.persistence.moxy"
+         version="2.3.0.qualifier"
+         unpack="false"/>
 
    <plugin
          id="org.eclipse.jpt.jaxb.eclipselink.core"
