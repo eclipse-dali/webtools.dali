@@ -2,9 +2,7 @@ package org.eclipse.jpt.jpadiagrameditor.ui.tests.internal;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,7 +17,6 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceDescription;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -46,7 +43,6 @@ import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelPropertie
 import org.eclipse.jpt.jpa.core.internal.facet.JpaFacetInstallDataModelProvider;
 import org.eclipse.jpt.jpa.core.resource.java.JavaResourcePersistentType;
 import org.eclipse.jpt.jpadiagrameditor.ui.internal.util.JpaArtifactFactory;
-import org.eclipse.jpt.jpadiagrameditor.ui.tests.internal.util.URLEscaper;
 import org.eclipse.wst.common.componentcore.datamodel.properties.IFacetDataModelProperties;
 import org.eclipse.wst.common.frameworks.datamodel.DataModelFactory;
 import org.eclipse.wst.common.frameworks.datamodel.IDataModel;
@@ -92,15 +88,17 @@ public class JPACreateFactory {
 	}
 	
 	public JpaProject createJPAProject(String projectName) throws CoreException {
-		return createJPAProject(projectName, null);
+		return createJPAProject(projectName, null, "1.0");
 	}
 
+	public JpaProject createJPA20Project(String projectName) throws CoreException {
+		return createJPAProject(projectName, null, "2.0");
+	}
 	
 	
-	public JpaProject createJPAProject(String projectName, IDataModel jpaConfig) throws CoreException {
+	public JpaProject createJPAProject(String projectName, IDataModel jpaConfig, String jpaFacetVersion) throws CoreException {
 		project = buildPlatformProject(projectName);
 		javaProject = createJavaProject(project, true);
-		String jpaFacetVersion = "1.0";
 		if (jpaConfig != null) {
 			jpaFacetVersion = jpaConfig.getStringProperty(IFacetDataModelProperties.FACET_VERSION_STR);
 		}
@@ -182,7 +180,7 @@ public class JPACreateFactory {
 	}
 	
 	public IJavaProject createJavaProject(IProject project,  
-										  @SuppressWarnings("unused") boolean autoBuild) throws CoreException {
+										  boolean autoBuild) throws CoreException {
 		facetedProject = createFacetedProject(project);
 		installFacet(facetedProject, "jst.java", "5.0");
 		javaProject = JavaCore.create(project);
@@ -237,12 +235,25 @@ public class JPACreateFactory {
 		return entity1;
 	}
 	
-	@SuppressWarnings("deprecation")
 	public IFile createEntityInProject(IProject project, 
 									   String[] packageFragments, 
 									   String entityName) throws IOException, 
 									   							 CoreException, 
 									   							 JavaModelException {
+		String folderName = getFolderName(project, packageFragments);
+		String packageName = packageFragments[0];		
+		for (int i = 1; i < packageFragments.length; i++) {
+			packageName += "." + packageFragments[i];
+		}
+		
+		IPath path = new Path(folderName);
+		IFolder folder = project.getFolder(path);		 
+		return createEntity(folder, packageName , entityName);
+	}
+
+	@SuppressWarnings("deprecation")
+	private String getFolderName(IProject project, String[] packageFragments)
+			throws JavaModelException {
 		IJavaProject javaProject = JavaCore.create(project);		
 		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0];
 		final IClasspathEntry[] classpathEntries =  javaProject.getRawClasspath();		
@@ -257,14 +268,7 @@ public class JPACreateFactory {
 		for (String fragment : packageFragments) {
 			folderName += Path.SEPARATOR + fragment;
 		}
-		String packageName = packageFragments[0];		
-		for (int i = 1; i < packageFragments.length; i++) {
-			packageName += "." + packageFragments[i];
-		}
-		
-		IPath path = new Path(folderName);
-		IFolder folder = project.getFolder(path);		 
-		return createEntity(folder, packageName , entityName);
+		return folderName;
 	}
 	
 	private IFile createEntity(IFolder folder, String packageName, String entityName) throws IOException, CoreException {
@@ -298,6 +302,204 @@ public class JPACreateFactory {
 		}
 		return file;
 	}	
+	
+	public IFile createEntityWithCompositePKInProject(IProject project,
+			String[] packageFragments, String entityName) throws IOException,
+			CoreException, JavaModelException {
+		String folderName = getFolderName(project, packageFragments);
+
+		String packageName = packageFragments[0];
+		for (int i = 1; i < packageFragments.length; i++) {
+			packageName += "." + packageFragments[i];
+		}
+
+		IPath path = new Path(folderName);
+		IFolder folder = project.getFolder(path);
+		return createEntityWithCompositePK(folder, packageName, entityName);
+	}
+
+	public IFile createIdClassInProject(IProject project,
+			String[] packageFragments, String entityName) throws IOException,
+			CoreException, JavaModelException {
+		String folderName = getFolderName(project, packageFragments);
+
+		String packageName = packageFragments[0];
+		for (int i = 1; i < packageFragments.length; i++) {
+			packageName += "." + packageFragments[i];
+		}
+
+		IPath path = new Path(folderName);
+		IFolder folder = project.getFolder(path);
+		return createIdClass(folder, packageName, entityName);
+	}
+
+	public IFile createEmbeddedClassInProject(IProject project,
+			String[] packageFragments, String entityName) throws IOException,
+			CoreException, JavaModelException {
+		String folderName = getFolderName(project, packageFragments);
+
+		String packageName = packageFragments[0];
+		for (int i = 1; i < packageFragments.length; i++) {
+			packageName += "." + packageFragments[i];
+		}
+
+		IPath path = new Path(folderName);
+		IFolder folder = project.getFolder(path);
+		return createEmbeddedClass(folder, packageName, entityName);
+	}
+
+	public IFile createEntityWithEmbeddedPKInProject(IProject project,
+			String[] packageFragments, String entityName) throws IOException,
+			CoreException, JavaModelException {
+		String folderName = getFolderName(project, packageFragments);
+
+		String packageName = packageFragments[0];
+		for (int i = 1; i < packageFragments.length; i++) {
+			packageName += "." + packageFragments[i];
+		}
+
+		IPath path = new Path(folderName);
+		IFolder folder = project.getFolder(path);
+		return createEntityWithEmbeddedPK(folder, packageName, entityName);
+	}
+	
+		
+		
+		private IFile createEntityWithCompositePK(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
+			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
+			if (!folder.exists()) {
+				createDirectories(folder, true, true, new NullProgressMonitor());
+			}
+			IFile file = folder.getFile(entityShortName + ".java");		
+			if (!file.exists()) {
+				String content = "package " + packageName + ";\n\n" 
+						+ "import javax.persistence.*;\n\n" 
+						+ "@Entity \n"
+						+ "@IdClass("+entityShortName+"Id.class)"
+					+ "public class " + entityShortName + " {\n"
+						+ "	@Id \n"
+						+ "	private String firstName;\n"
+						+ "	@Id \n"
+						+ "	private String lastName;\n"
+						+ " public "+entityShortName+"Id() {}\n"
+	                    + " public "+entityShortName+"Id(String firstName, String lastName)\n{"
+	                    + "     this.firstName = firstName;\n"
+	                    + "     this.lastName = lastName;\n"
+	                    + " }\n"
+						+ "}"; //$NON-NLS-1$
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				try {
+					stream.write(content.getBytes());
+					stream.flush();
+					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
+				} finally {
+					stream.close();
+				}	
+			}
+			return file;
+			}
+		
+		private IFile createIdClass(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
+			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
+			if (!folder.exists()) {
+				createDirectories(folder, true, true, new NullProgressMonitor());
+			}
+			IFile file = folder.getFile(entityShortName + "Id.java");		
+			if (!file.exists()) {
+				String content = "package " + packageName + ";\n\n" 
+						+ "import javax.persistence.*;\n\n" 
+						+"import java.io.Serializable;"
+						+ "public class " + entityShortName + "Id {\n"
+						+ "	private String firstName;\n"
+						+ "	private String lastName;\n"
+						+ "	public String getFirstName() {\n" 
+						+ "		return firstName;\n"
+						+ "	}\n"
+						+ "	public void setFirstName(String firstName) {\n"
+						+ "		this.firstName = firstName;\n" 
+						+ "	}\n"
+						+ "	public String getLastName() {\n" 
+						+ "		return lastName;\n"
+						+ "	}\n"
+						+ "	public void setLastName(String lastName) {\n"
+						+ "		this.lastName = lastName;\n" 
+						+ "	}\n"
+						+ "}"; //$NON-NLS-1$
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				try {
+					stream.write(content.getBytes());
+					stream.flush();
+					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
+				} finally {
+					stream.close();
+				}	
+			}
+			return file;
+			}
+		
+		private IFile createEntityWithEmbeddedPK(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
+			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
+			if (!folder.exists()) {
+				createDirectories(folder, true, true, new NullProgressMonitor());
+			}
+			IFile file = folder.getFile(entityShortName + ".java");		
+			if (!file.exists()) {
+				String content = "package " + packageName + ";\n\n" 
+						+ "import javax.persistence.*;\n\n" 					
+						+ "@Entity\n"
+						+ "public class " + entityShortName + " {\n"
+						+ "@EmbeddedId\n"
+						+ "	private "+ entityShortName +"Id id;\n"						
+						+ "public void setId(" + entityShortName+ "Id param) {\n"
+						+ "	this.id = param;\n"
+						+ "}\n"
+						+ "public "+entityShortName+"Id getId() {\n"
+						+	"return id;\n"
+						+ "}\n"						
+						+ "}"; //$NON-NLS-1$
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				try {
+					stream.write(content.getBytes());
+					stream.flush();
+					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
+				} finally {
+					stream.close();
+				}	
+			}
+			return file;
+			}
+		
+		private IFile createEmbeddedClass(IFolder folder, String packageName, String entityName) throws IOException, CoreException{
+			String entityShortName = entityName.substring(entityName.lastIndexOf('.') + 1);
+			if (!folder.exists()) {
+				createDirectories(folder, true, true, new NullProgressMonitor());
+			}
+			IFile file = folder.getFile(entityShortName + ".java");		
+		if (!file.exists()) {
+			String content = "package " + packageName + ";\n\n"
+			                 + "import javax.persistence.*;\n" 
+			                 + "@Embeddable\n"
+					         + "public class " + entityShortName + " {\n"
+					     	 +"private String firstName;\n"
+					     	 +"public String getFirstName() {\n"
+					     	 + "	return firstName;\n"
+					     	 + "}\n"
+					     	 + "public void setFirstName(String firstName) {\n"
+					     	 +	"this.firstName = firstName;\n"
+					     	 + "}\n"
+					         + "}"; //$NON-NLS-1$
+				ByteArrayOutputStream stream = new ByteArrayOutputStream();
+				try {
+					stream.write(content.getBytes());
+					stream.flush();
+					file.create(new ByteArrayInputStream(stream.toByteArray()), true, new NullProgressMonitor());
+				} finally {
+					stream.close();
+				}	
+			}
+			return file;
+			}
+	
 	
 	private void createDirectories(IContainer container, boolean force,
 			boolean local, IProgressMonitor monitor) throws CoreException {
@@ -403,22 +605,8 @@ public class JPACreateFactory {
 		return file;
 	}	
 
-	@SuppressWarnings("deprecation")
 	public IFile createFieldAnnotatedEntityInProject(IProject project, String[] packageFragments, String entityName) throws IOException, CoreException, JavaModelException {
-		IJavaProject javaProject = JavaCore.create(project);		
-		IPackageFragmentRoot[] packageFragmentRoots = new IPackageFragmentRoot[0];
-		final IClasspathEntry[] classpathEntries =  javaProject.getRawClasspath();		
-		for (IClasspathEntry classpathEntry : classpathEntries) {
-			if (classpathEntry.getEntryKind() == IClasspathEntry.CPE_SOURCE) {
-				packageFragmentRoots = javaProject.getPackageFragmentRoots(classpathEntry);
-				break;
-			}  			
-		}
-		
-		String folderName = packageFragmentRoots[0].getResource().getName();
-		for (String fragment : packageFragments) {
-			folderName += Path.SEPARATOR + fragment;
-		}
+		String folderName = getFolderName(project, packageFragments);
 		String packageName = packageFragments[0];		
 		for (int i = 1; i < packageFragments.length; i++) {
 			packageName += "." + packageFragments[i];
