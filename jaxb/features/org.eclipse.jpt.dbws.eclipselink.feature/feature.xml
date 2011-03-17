@@ -63,6 +63,11 @@
          unpack="false"/>
 
 	<plugin
+         id="javax.wsdl"
+         version="1.6.2.qualifier"
+         unpack="false"/>
+         
+	<plugin
          id="org.eclipse.persistence.asm"
          version="2.3.0.qualifier"
          unpack="false"/>
