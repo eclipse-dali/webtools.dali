@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Properties;
 import org.eclipse.datatools.connectivity.drivers.jdbc.IJDBCDriverDefinitionConstants;
 import org.eclipse.datatools.connectivity.sqm.core.rte.ICatalogObject;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.jpa.db.Column;
 import org.eclipse.jpt.jpa.db.ForeignKey;
 import org.eclipse.jpt.jpa.db.Schema;
@@ -24,14 +25,15 @@ import org.eclipse.jpt.jpa.db.Table;
 /**
  * MySQL
  * 
- * Notes:
- * - We can only get database objects from the database associated with our
- *     connection profile.
- * - We can reference objects across multiple databases, so they are sorta like
- *     schemas....
- * - Foreign keys must be defined as table-level constraints; they cannot be
- *     defined as part of the column clause.
- * - Case-sensitivity and -folding is whacked on MySQL....
+ * Notes:<ul>
+ * <li>We can only get database objects from the database associated with our
+ * connection profile.
+ * <li>We can reference objects across multiple databases, so they are sorta like
+ * schemas....
+ * <li>Foreign keys must be defined as table-level constraints; they cannot be
+ * defined as part of the column clause.
+ * <li>Case-sensitivity and -folding is whacked on MySQL....
+ * </ul>
  */
 @SuppressWarnings("nls")
 public class MySQLTests extends DTPPlatformTests {
@@ -103,7 +105,7 @@ public class MySQLTests extends DTPPlatformTests {
 	}
 
 	private String getDatabaseName() {
-		return "dalitest";
+		return this.getUserID();  // by convention...
 	}
 
 	@Override
@@ -130,14 +132,12 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.dropDatabase(this.getDatabaseName());
-		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
 		this.getJDBCConnection().setCatalog(this.getDatabaseName());
 
-		this.dropTable(this.getDatabaseName(), "foo_baz");
-		this.dropTable(this.getDatabaseName(), "baz");
-		this.dropTable(this.getDatabaseName(), "foo");
-		this.dropTable(this.getDatabaseName(), "bar");
+		this.dropTable("foo_baz");
+		this.dropTable("baz");
+		this.dropTable("foo");
+		this.dropTable("bar");
 
 		this.executeUpdate(this.buildBarDDL());
 		this.executeUpdate(this.buildFooDDL());
@@ -154,6 +154,8 @@ public class MySQLTests extends DTPPlatformTests {
 		Table fooTable = schema.getTableNamed("foo");
 		assertEquals(3, fooTable.getColumnsSize());
 		assertEquals(1, fooTable.getPrimaryKeyColumnsSize());
+		// if the tables are created with MyISAM as the backing store
+		// there will be no foreign keys
 		assertEquals(1, fooTable.getForeignKeysSize());
 
 		Column pkColumn = fooTable.getPrimaryKeyColumn();
@@ -207,18 +209,16 @@ public class MySQLTests extends DTPPlatformTests {
 		assertTrue(foo_bazTable.joinTableNameIsDefault());
 		assertTrue(foo_bazTable.getColumnNamed("foo_id").isPartOfForeignKey());
 
-		this.dropTable(this.getDatabaseName(), "foo_baz");
-		this.dropTable(this.getDatabaseName(), "baz");
-		this.dropTable(this.getDatabaseName(), "foo");
-		this.dropTable(this.getDatabaseName(), "bar");
-
-		this.dropDatabase(this.getDatabaseName());
+		this.dropTable("foo_baz");
+		this.dropTable("baz");
+		this.dropTable("foo");
+		this.dropTable("bar");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
 
-	private static final String CR = System.getProperty("line.separator");  //$NON-NLS-1$
+	private static final String CR = System.getProperty("line.separator");
 
 	private String buildBarDDL() {
 		StringBuilder sb = new StringBuilder(200);
@@ -235,7 +235,7 @@ public class MySQLTests extends DTPPlatformTests {
 		sb.append("    id INTEGER PRIMARY KEY,").append(CR);
 		sb.append("    name VARCHAR(20),").append(CR);
 		sb.append("    bar_id INTEGER,").append(CR);
-		sb.append("    FOREIGN KEY (bar_id) REFERENCES bar(id)").append(CR);
+		sb.append("    CONSTRAINT BAR FOREIGN KEY (bar_id) REFERENCES bar(id)").append(CR);
 		sb.append(")").append(CR);
 		return sb.toString();
 	}
@@ -269,13 +269,11 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.dropDatabase(this.getDatabaseName());
-		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
 		this.getJDBCConnection().setCatalog(this.getDatabaseName());
 
-		this.dropTable(this.getDatabaseName(), "test1");
-		this.dropTable(this.getDatabaseName(), "TEST2");
-		this.dropTable(this.getDatabaseName(), "`TEST3`");
+		this.dropTable("test1");
+		this.dropTable("TEST2");
+		this.dropTable("`TEST3`");
 
 		this.executeUpdate("CREATE TABLE test1 (id INTEGER, name VARCHAR(20))");
 		this.executeUpdate("CREATE TABLE TEST2 (id INTEGER, name VARCHAR(20))");
@@ -291,7 +289,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertNotNull(test1Table);
 
 		// if 'lctn' is 0 (UNIX), the table name is case-sensitive
-		int lctn = this.getLowerCaseTableNamesValueFromDatabase();
+		int lctn = this.getLowerCaseTableNamesFromDatabase();
 
 		String test2Identifier = (lctn == 0) ? "TEST2" : "test2";
 		Table test2Table = schema.getTableForIdentifier(test2Identifier);
@@ -301,17 +299,15 @@ public class MySQLTests extends DTPPlatformTests {
 		Table test3Table = schema.getTableForIdentifier(test3Identifier);
 		assertNotNull(test3Table);
 
-		this.dropTable(this.getDatabaseName(), "test1");
-		this.dropTable(this.getDatabaseName(), "TEST2");
-		this.dropTable(this.getDatabaseName(), "`TEST3`");
-
-		this.dropDatabase(this.getDatabaseName());
+		this.dropTable("test1");
+		this.dropTable("TEST2");
+		this.dropTable("`TEST3`");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
 
-	protected int getLowerCaseTableNamesValueFromDatabase() throws SQLException {
+	protected int getLowerCaseTableNamesFromDatabase() throws SQLException {
 		// the underscore is a wild character on MySQL, so we need to escape it
 		ArrayList<HashMap<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'");
 		Map<String, Object> row = rows.get(0);
@@ -328,11 +324,9 @@ public class MySQLTests extends DTPPlatformTests {
 		TestConnectionListener listener = new TestConnectionListener();
 		this.connectionProfile.addConnectionListener(listener);
 
-		this.dropDatabase(this.getDatabaseName());
-		this.executeUpdate("CREATE DATABASE " + this.getDatabaseName());
 		this.getJDBCConnection().setCatalog(this.getDatabaseName());
 
-		this.dropTable(this.getDatabaseName(), "test");
+		this.dropTable("test");
 
 		// lowercase
 		this.executeUpdate("CREATE TABLE test (id INTEGER, name VARCHAR(20))");
@@ -347,7 +341,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertNotNull(table.getColumnForIdentifier("id"));
 		assertNotNull(table.getColumnForIdentifier("name"));
 
-		this.dropTable(this.getDatabaseName(), "test");
+		this.dropTable("test");
 
 		// uppercase
 		this.executeUpdate("CREATE TABLE test (ID INTEGER, NAME VARCHAR(20))");
@@ -362,7 +356,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertNotNull(table.getColumnForIdentifier("id"));
 		assertNotNull(table.getColumnForIdentifier("name"));
 
-		this.dropTable(this.getDatabaseName(), "test");
+		this.dropTable("test");
 
 		// mixed case
 		this.executeUpdate("CREATE TABLE test (Id INTEGER, Name VARCHAR(20))");
@@ -377,7 +371,7 @@ public class MySQLTests extends DTPPlatformTests {
 		assertNotNull(table.getColumnForIdentifier("id"));
 		assertNotNull(table.getColumnForIdentifier("name"));
 
-		this.dropTable(this.getDatabaseName(), "test");
+		this.dropTable("test");
 
 		// delimited
 		this.executeUpdate("CREATE TABLE test (`Id` INTEGER, `Name` VARCHAR(20))");
@@ -391,64 +385,33 @@ public class MySQLTests extends DTPPlatformTests {
 		assertNotNull(table.getColumnNamed("Name"));
 		assertNotNull(table.getColumnForIdentifier("id"));
 		assertNotNull(table.getColumnForIdentifier("name"));
+
+		boolean quotes = this.getANSIQuotesFromDatabase();
 		assertNotNull(table.getColumnForIdentifier("`Id`"));
-		assertNotNull(table.getColumnForIdentifier("\"Id\""));
+		if (quotes) {
+			assertNotNull(table.getColumnForIdentifier("\"Id\""));
+		}
+
 		assertNotNull(table.getColumnForIdentifier("`Name`"));
-		assertNotNull(table.getColumnForIdentifier("\"Name\""));
+		if (quotes) {
+			assertNotNull(table.getColumnForIdentifier("\"Name\""));
+		}
 
-		this.dropTable(this.getDatabaseName(), "test");
-
-		this.dropDatabase(this.getDatabaseName());
-
-		this.connectionProfile.removeConnectionListener(listener);
-		this.connectionProfile.disconnect();
-	}
-
-	/**
-	 * We can only get a single "schema" per connection via DTP,
-	 * so cross-schema references are not visible.
-	 */
-	public void testCrossSchemaReference() throws Exception {
-		this.connectionProfile.connect();
-		TestConnectionListener listener = new TestConnectionListener();
-		this.connectionProfile.addConnectionListener(listener);
-
-		this.dropDatabase("xref_test2");
-		this.dropDatabase("xref_test1");
-
-		this.executeUpdate("CREATE DATABASE xref_test1");
-		this.getJDBCConnection().setCatalog("xref_test1");
-		this.executeUpdate("CREATE TABLE org (id INTEGER PRIMARY KEY, name VARCHAR(20))");
-
-		this.executeUpdate("CREATE DATABASE xref_test2");
-		this.getJDBCConnection().setCatalog("xref_test2");
-		this.executeUpdate("CREATE TABLE emp (id INTEGER PRIMARY KEY, name VARCHAR(20), " +
-				"org_id INTEGER, FOREIGN KEY (org_id) REFERENCES xref_test1.org(id))");
-
-		this.getJDBCConnection().setCatalog("xref_test2");
-		// the MySQL database does NOT refresh - see bug 279721...
-		((ICatalogObject) this.getDTPDatabase()).refresh();
-		// ...refresh the single schema instead
-		((ICatalogObject) getDTPSchema(this.getDefaultSchema())).refresh();
-		Schema schema2 = this.getDefaultSchema();
-		assertNotNull(schema2);
-		Table empTable = schema2.getTableNamed("emp");
-		assertNotNull(empTable);
-		// no foreign keys...
-		assertEquals(0, empTable.getForeignKeysSize());
-
-		this.dropDatabase("xref_test2");
-		this.dropDatabase("xref_test1");
+		this.dropTable("test");
 
 		this.connectionProfile.removeConnectionListener(listener);
 		this.connectionProfile.disconnect();
 	}
 
-	private void dropTable(String dbName, String tableName) throws Exception {
-		this.executeUpdate("DROP TABLE IF EXISTS " + dbName + '.' + tableName);
+	protected boolean getANSIQuotesFromDatabase() throws SQLException {
+		ArrayList<HashMap<String, Object>> rows = this.execute("SELECT @@SESSION.sql_mode");
+		Map<String, Object> row = rows.get(0);
+		String sql_mode = (String) row.get("@@SESSION.sql_mode");
+		String[] modes = sql_mode.split(",");
+		return Boolean.valueOf(ArrayTools.contains(modes, "ANSI_QUOTES")).booleanValue();
 	}
 
-	private void dropDatabase(String name) throws Exception {
-		this.executeUpdate("DROP DATABASE IF EXISTS " + name);
+	private void dropTable(String tableName) throws Exception {
+		this.executeUpdate("DROP TABLE IF EXISTS " + tableName);
 	}
 }

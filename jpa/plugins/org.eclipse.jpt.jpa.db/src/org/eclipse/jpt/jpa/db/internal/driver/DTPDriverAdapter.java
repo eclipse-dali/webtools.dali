@@ -46,7 +46,6 @@ public interface DTPDriverAdapter {
 	/**
 	 * Return the DTP database's catalogs.
 	 * This will be empty if the database does not support catalogs.
-	 * 
 	 * @see #supportsCatalogs()
 	 */
 	List<org.eclipse.datatools.modelbase.sql.schema.Catalog> getDTPCatalogs();
@@ -65,7 +64,6 @@ public interface DTPDriverAdapter {
 	/**
 	 * Return the DTP database's schemas.
 	 * This will be empty if the database supports catalogs.
-	 * 
 	 * @see #supportsCatalogs()
 	 */
 	List<org.eclipse.datatools.modelbase.sql.schema.Schema> getDTPSchemas();

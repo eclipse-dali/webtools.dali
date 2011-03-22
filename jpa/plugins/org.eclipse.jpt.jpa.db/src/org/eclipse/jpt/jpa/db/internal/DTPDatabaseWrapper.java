@@ -301,6 +301,7 @@ final class DTPDatabaseWrapper
 		return this.dtpDriverAdapter.selectTableForIdentifier(tables, identifier);
 	}
 
+	// TODO add to interface? (so it can be used by AbstractDTPDriverAdapter)
 	DatabaseDefinition getDTPDefinition() {
 		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.dtpDatabase);
 	}

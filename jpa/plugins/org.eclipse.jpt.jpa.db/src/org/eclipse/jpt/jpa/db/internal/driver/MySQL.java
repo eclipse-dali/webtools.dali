@@ -12,6 +12,7 @@ package org.eclipse.jpt.jpa.db.internal.driver;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
 import org.eclipse.jpt.common.utility.internal.Tools;
 import org.eclipse.jpt.jpa.db.Database;
@@ -21,7 +22,7 @@ import org.eclipse.jpt.jpa.db.Table;
 
 /**
  * MySQL is a bit unusual in that it does <em>not</em> fold <em>regular</em>
- * identifiers and most of its identifiers are <em>not</em> case-sensitive
+ * identifiers and its identifiers are <em>not</em> case-sensitive
  * (except in special cases, described below). Even <em>delimited</em> identifiers
  * are case-<em>in</em>sensitive. (Delimiters are only needed for identifiers
  * that contain special characters or are reserved words.)
@@ -40,13 +41,18 @@ import org.eclipse.jpt.jpa.db.Table;
  * O/S; and the actual case-sensitivity of the names will ulimately be
  * determined by the behavior of filenames on the O/S.
  * <p>
- * See http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html.
+ * See <a href=http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html>
+ * Identifier Case Sensitivity</a>.
  */
 class MySQL
 	extends AbstractDTPDriverAdapter
 {
-	/** lazy-initialized */
+	/** lazy-initialized; value comes from the database server */
 	private int lower_case_table_names = -1;
+
+	/** lazy-initialized; value comes from the database server */
+	private Boolean ANSI_QUOTES = null;
+
 
 	MySQL(Database database) {
 		super(database);
@@ -84,7 +90,7 @@ class MySQL
 	 * fine without any folding anyways.
 	 * <li>We only test whether a name is already folded when determining
 	 * whether it must be delimited; and MySQL ignores delimiters
-	 * when it comes to case-sensitivity, so we can leave any "normal"
+	 * when it comes to case-sensitivity, so we can leave any <em>regular</em>
 	 * mixed-case names undelimited. (MySQL only requires delimiters for
 	 * special characters and reserved words.)
 	 * </ul>
@@ -127,11 +133,10 @@ class MySQL
 	 * By default, MySQL delimits identifiers with backticks (<code>`</code>);
 	 * but it can also be configured to use double-quotes.
 	 */
-	//TODO query for ANSI_QUOTES setting
 	@Override
 	boolean identifierIsDelimited(String identifier) {
 		return StringTools.stringIsDelimited(identifier, BACKTICK)
-					|| super.identifierIsDelimited(identifier);
+					|| (StringTools.stringIsQuoted(identifier) && this.doubleQuoteIsIdentifierDelimiter());
 	}
 	private static final char BACKTICK = '`';
 
@@ -171,7 +176,7 @@ class MySQL
 				super.selectTableForIdentifier(tables, identifier);
 	}
 
-	<T extends DatabaseObject> T selectDatabaseObjectForIdentifierRespectCase(Iterable<T> databaseObjects, String identifier) {
+	private <T extends DatabaseObject> T selectDatabaseObjectForIdentifierRespectCase(Iterable<T> databaseObjects, String identifier) {
 		return this.selectDatabaseObjectNamedRespectCase(databaseObjects, this.convertIdentifierToName(identifier));
 	}
 
@@ -188,15 +193,15 @@ class MySQL
 	}
 
 
-	// ********** misc **********
+	// ********** lower_case_table_names **********
 
 	private boolean tableNamesAreCaseSensitive() {
-		return this.getLowerCaseTableNamesValue() == 0;
+		return this.getLowerCaseTableNames() == 0;
 	}
 
-	private int getLowerCaseTableNamesValue() {
+	private int getLowerCaseTableNames() {
 		if (this.lower_case_table_names == -1) {
-			this.lower_case_table_names = this.buildLowerCaseTableNamesValue();
+			this.lower_case_table_names = this.buildLowerCaseTableNames();
 		}
 		return this.lower_case_table_names;
 	}
@@ -205,17 +210,21 @@ class MySQL
 	 * If we don't have a live connection (i.e. we are working off-line),
 	 * use the current O/S default setting(?).
 	 */
-	private int buildLowerCaseTableNamesValue() {
-		int dbValue = this.getLowerCaseTableNamesValueFromDatabase();
-		return (dbValue != -1) ? dbValue : this.getLowerCaseTableNamesValueFromOS();
+	private int buildLowerCaseTableNames() {
+		int dbValue = this.getLowerCaseTableNamesFromDatabase();
+		return (dbValue != -1) ? dbValue : this.getLowerCaseTableNamesFromOS();
 	}
 
-	private int getLowerCaseTableNamesValueFromDatabase() {
+	/**
+	 * See <a href=http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html>
+	 * Identifier Case Sensitivity</a>.
+	 */
+	private int getLowerCaseTableNamesFromDatabase() {
 		if (this.getConnectionProfile().isDisconnected()) {
 			return -1;
 		}
 		// the underscore is a wild character on MySQL, so we need to escape it
-		List<Map<String, Object>> rows = this.execute("show variables like 'lower\\_case\\_table\\_names'"); //$NON-NLS-1$
+		List<Map<String, Object>> rows = this.execute("SHOW VARIABLES LIKE 'lower\\_case\\_table\\_names'"); //$NON-NLS-1$
 		if (rows.isEmpty()) {
 			return -1;
 		}
@@ -231,7 +240,7 @@ class MySQL
 	 * Return the default value for the current O/S (unfortunately this is the
 	 * client O/S, not the MySQL Server O/S...).
 	 */
-	private int getLowerCaseTableNamesValueFromOS() {
+	private int getLowerCaseTableNamesFromOS() {
 		if (Tools.osIsMac()) {
 			return 2;
 		}
@@ -239,6 +248,50 @@ class MySQL
 			return 1;
 		}
 		return 0;  // Linux etc.
+	}
+
+
+	// ********** ANSI_QUOTES **********
+
+	private boolean doubleQuoteIsIdentifierDelimiter() {
+		return this.getANSIQuotes().booleanValue();
+	}
+
+	private Boolean getANSIQuotes() {
+		if (this.ANSI_QUOTES == null) {
+			this.ANSI_QUOTES = this.buildANSIQuotes();
+		}
+		return this.ANSI_QUOTES;
+	}
+
+	/**
+	 * If we don't have a live connection (i.e. we are working off-line),
+	 * return <code>FALSE</code> (the default setting).
+	 */
+	private Boolean buildANSIQuotes() {
+		Boolean dbValue = this.getANSIQuotesFromDatabase();
+		return (dbValue != null) ? dbValue : Boolean.FALSE;
+	}
+
+	/**
+	 * See <a href=http://dev.mysql.com/doc/refman/5.0/en/server-sql-mode.html#sqlmode_ansi_quotes>
+	 * ANSI_QUOTES</a>.
+	 */
+	private Boolean getANSIQuotesFromDatabase() {
+		if (this.getConnectionProfile().isDisconnected()) {
+			return null;
+		}
+		List<Map<String, Object>> rows = this.execute("SELECT @@SESSION.sql_mode"); //$NON-NLS-1$
+		if (rows.isEmpty()) {
+			return null;
+		}
+		Map<String, Object> row = rows.get(0);
+		String sql_mode = (String) row.get("@@SESSION.sql_mode"); //$NON-NLS-1$
+		if (sql_mode == null) {
+			return null;
+		}
+		String[] modes = sql_mode.split(","); //$NON-NLS-1$
+		return Boolean.valueOf(ArrayTools.contains(modes, "ANSI_QUOTES")); //$NON-NLS-1$
 	}
 
 

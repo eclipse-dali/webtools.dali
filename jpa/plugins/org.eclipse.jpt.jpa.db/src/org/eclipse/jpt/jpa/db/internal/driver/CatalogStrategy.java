@@ -28,7 +28,6 @@ interface CatalogStrategy {
 	/**
 	 * Return the DTP database's catalogs. This will be empty if the database
 	 * does <em>not</em> support catalogs.
-	 * 
 	 * @see #supportsCatalogs()
 	 */
 	List<Catalog> getCatalogs();
@@ -36,7 +35,6 @@ interface CatalogStrategy {
 	/**
 	 * Return the DTP database's schemas. This will be empty if the database
 	 * supports catalogs.
-	 * 
 	 * @see #supportsCatalogs()
 	 */
 	List<Schema> getSchemas();

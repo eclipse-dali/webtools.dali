@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.eclipse.datatools.connectivity.sqm.core.definition.DatabaseDefinition;
+import org.eclipse.datatools.connectivity.sqm.internal.core.RDBCorePlugin;
 import org.eclipse.jpt.common.utility.internal.ArrayTools;
 import org.eclipse.jpt.common.utility.internal.CollectionTools;
 import org.eclipse.jpt.common.utility.internal.StringTools;
@@ -87,7 +89,7 @@ abstract class AbstractDTPDriverAdapter
 		return this.supportsCatalogs() ? this.getDefaultCatalogNames_() : Collections.<String>emptyList();
 	}
 
-	private final Iterable<String> getDefaultCatalogNames_() {
+	final Iterable<String> getDefaultCatalogNames_() {
 		ArrayList<String> names = new ArrayList<String>();
 		this.addDefaultCatalogNamesTo(names);
 		return names;
@@ -162,9 +164,13 @@ abstract class AbstractDTPDriverAdapter
 					|| this.nameIsNotFolded(name);
 	}
 
-	// TODO SQL reserved identifiers must be delimited
-	boolean nameIsReservedWord(@SuppressWarnings("unused") String name) {
-		return false;
+	boolean nameIsReservedWord(String name) {
+		return this.getDTPDefinition().isSQLKeyword(name);
+	}
+
+	// TODO make Database.getDTPDefinition() public?
+	DatabaseDefinition getDTPDefinition() {
+		return RDBCorePlugin.getDefault().getDatabaseDefinitionRegistry().getDefinition(this.database.getDTPDatabase());
 	}
 
 	/**
