@@ -897,6 +897,70 @@ public class CollectionToolsTests extends TestCase {
 		assertFalse(CollectionTools.elementsAreEqual(list1.iterator(), list2.iterator()));
 	}
 
+	public void testElementsAreNotIdenticalIterableIterable() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("0");
+		list1.add("1");
+		list1.add("2");
+		list1.add("3");
+		Iterable<String> iterable1 = list1;
+
+		List<String> list2 = new ArrayList<String>();
+		for (String s : list1) {
+			list2.add(s);
+		}
+		Iterable<String> iterable2 = list2;
+		assertFalse(CollectionTools.elementsAreNotIdentical(iterable1, iterable2));
+		assertTrue(CollectionTools.elementsAreEqual(iterable1, iterable2));
+	}
+
+	public void testElementsAreNotIdenticalIteratorIterator() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("0");
+		list1.add("1");
+		list1.add("2");
+		list1.add("3");
+
+		List<String> list2 = new ArrayList<String>();
+		for (String s : list1) {
+			list2.add(s);
+		}
+		assertFalse(CollectionTools.elementsAreNotIdentical(list1.iterator(), list2.iterator()));
+		assertTrue(CollectionTools.elementsAreEqual(list1.iterator(), list2.iterator()));
+	}
+
+	public void testElementsAreNotIdenticalIteratorIterator_Not() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("0");
+		list1.add("1");
+		list1.add("2");
+		list1.add("3");
+
+		List<String> list2 = new ArrayList<String>();
+		for (String s : list1) {
+			list2.add(s);
+		}
+		list2.remove(0);
+		assertTrue(CollectionTools.elementsAreNotIdentical(list1.iterator(), list2.iterator()));
+		assertFalse(CollectionTools.elementsAreEqual(list1.iterator(), list2.iterator()));
+	}
+
+	public void testElementsAreNotIdenticalIteratorIterator_DifferentSizes() {
+		List<String> list1 = new ArrayList<String>();
+		list1.add("0");
+		list1.add("1");
+		list1.add("2");
+		list1.add("3");
+
+		List<String> list2 = new ArrayList<String>();
+		for (String s : list1) {
+			list2.add(s);
+		}
+		list2.remove(3);
+		assertTrue(CollectionTools.elementsAreNotIdentical(list1.iterator(), list2.iterator()));
+		assertFalse(CollectionTools.elementsAreEqual(list1.iterator(), list2.iterator()));
+	}
+
 
 	// ********** get **********
 

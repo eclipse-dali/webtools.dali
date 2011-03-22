@@ -751,6 +751,26 @@ public final class CollectionTools {
 		return ! (iterator1.hasNext() || iterator2.hasNext());
 	}
 
+	/**
+	 * Return whether the specified iterables do <em>not</em> return the same
+	 * elements.
+	 * <p>
+	 * <code>Iterable.notIdentical(Iterable iterable)</code>
+	 */
+	public static boolean elementsAreNotIdentical(Iterable<?> iterable1, Iterable<?> iterable2) {
+		return elementsAreNotIdentical(iterable1.iterator(), iterable2.iterator());
+	}
+
+	/**
+	 * Return whether the specified iterators do <em>not</em> return the same
+	 * elements.
+	 * <p>
+	 * <code>Iterator.notIdentical(Iterator iterator)</code>
+	 */
+	public static boolean elementsAreNotIdentical(Iterator<?> iterator1, Iterator<?> iterator2) {
+		return ! elementsAreIdentical(iterator1, iterator2);
+	}
+
 
 	// ********** get **********
 
