@@ -10,3 +10,4 @@ Require-Bundle: org.eclipse.persistence.dbws.builder;bundle-version="[2.3.0,3.0.
  javax.wsdl;bundle-version="[1.6.2,2.0.0)"
 Export-Package: org.eclipse.jpt.dbws.eclipselink.core.gen,
  org.eclipse.jpt.dbws.eclipselink.core.gen.internal;x-internal:=true
+Import-Package: org.eclipse.persistence.oxm
